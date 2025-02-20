@@ -51,11 +51,11 @@ class PageController extends MobileBaseController
                 $phone = '62'.$phone;
             
             // Get user
-            $query = "SELECT id, name, phone FROM mein_users WHERE phone = :phone:";
+            $query = "SELECT id, name, phone FROM users WHERE phone = :phone:";
             $user = $db->query($query, ['phone' => $phone])->getRowArray();
         } else {
             // Get user
-            $query = "SELECT id, name, email FROM mein_users WHERE email = :email:";
+            $query = "SELECT id, name, email FROM users WHERE email = :email:";
             $user = $db->query($query, ['email' => $email])->getRowArray();
         }
 
@@ -65,7 +65,7 @@ class PageController extends MobileBaseController
             helper('text');
             $otp = random_string('numeric', 6);
             $token = sha1($otp);
-            $db->table('mein_users')->where('id', $user['id'])->update([
+            $db->table('users')->where('id', $user['id'])->update([
                 'token' => $token,
                 'otp' => $otp
             ]);
@@ -87,7 +87,7 @@ class PageController extends MobileBaseController
     public function sendOTP($user, $otp) 
     {
         // Get database pesantren
-        $Tarbiyya = new \App\Libraries\Tarbiyya();
+        $Heroic = new \App\Libraries\Heroic();
         $db = \Config\Database::connect();
 
         // Send OTP
@@ -104,7 +104,7 @@ class PageController extends MobileBaseController
             $message .= "Untuk melanjutkan, silahkan masukan kode reset kata sandi berikut ini ke dalam aplikasi:<br><br>";
             $message .= "<b>{$otp}</b><br><br>";
             $message .= "Salam,";
-            return $Tarbiyya->sendEmail($user['email'], 'Kode Reset Kata Sandi', $message);
+            return $Heroic->sendEmail($user['email'], 'Kode Reset Kata Sandi', $message);
         } else {
             $message = <<<EOD
             Halo {$user['name']},
@@ -116,7 +116,7 @@ class PageController extends MobileBaseController
 
             Salam,
             EOD;
-            return $Tarbiyya->sendWhatsapp($user['phone'], $message);
+            return $Heroic->sendWhatsapp($user['phone'], $message);
         }
     }
 }

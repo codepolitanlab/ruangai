@@ -5,7 +5,7 @@ window.intro = function() {
         swiper: null,
         init(){
             document.title = this.title
-            Alpine.store('masagi').currentPage = 'intro'
+            Alpine.store('core').currentPage = 'intro'
             
             this.swiper = new Swiper(".swiper-intro", {
                 slidesPerView: 1,
@@ -21,7 +21,7 @@ window.intro = function() {
         },
         gotoLogin(){
             localStorage.setItem('intro', 1)
-            return window.PineconeRouter.context.navigate("/login");
+            return window.PineconeRouter.context.navigate("/masuk");
         }
     }
 }

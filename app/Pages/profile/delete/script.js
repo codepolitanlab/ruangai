@@ -12,7 +12,7 @@ window.profile_delete = function(){
 
         init(){
             document.title = this.title
-            Alpine.store('masagi').currentPage = 'profile_delete'
+            Alpine.store('core').currentPage = 'profile_delete'
             
         },
 
@@ -31,7 +31,7 @@ window.profile_delete = function(){
             axios.post('/profile/delete', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Pesantrenku-ID': Alpine.store('masagi').pesantrenID,
+                    'Pesantrenku-ID': Alpine.store('core').pesantrenID,
                     'Authorization': 'Bearer ' + localStorage.getItem('heroic_token')
                 }
             }).then(response => {

@@ -13,12 +13,25 @@
         "php": "^8.1",
         "codeigniter4/framework": "^4.0",
         "codeigniter4/shield": "^1.1",
-        "yllumi/ci4-pages": "^1.0"
+        "yllumi/ci4-pages": "^1.0",
+        "ext-intl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "codeigniter4/settings": "^2.2",
+        "firebase/php-jwt": "^6.10",
+        "google/recaptcha": "^1.3",
+        "laminas/laminas-escaper": "^2.9",
+        "symfony/yaml": "^6.4"
     },
     "require-dev": {
+        "codeigniter/coding-standard": "^1.5",
         "fakerphp/faker": "^1.9",
+        "friendsofphp/php-cs-fixer": "~3.41.0",
+        "kint-php/kint": "^5.0.4",
         "mikey179/vfsstream": "^1.6",
-        "phpunit/phpunit": "^10.5.16"
+        "nexusphp/cs-config": "^3.6",
+        "phpunit/phpunit": "^9.1",
+        "predis/predis": "^1.1 || ^2.0"
     },
     "autoload": {
         "psr-4": {

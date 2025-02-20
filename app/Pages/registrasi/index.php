@@ -13,7 +13,7 @@
 
     <!-- App Capsule -->
     <div id="appCapsule" class="shadow pt-5 pb-2">
-        <div class="login-form mt-5 pt-5">
+        <div class="login-form mt-5">
             <div class="section">
                 <img src="https://image.web.id/images/logo-ruangai.png" alt="image" class="form-image">
             </div>
@@ -75,7 +75,7 @@
                             type="button" 
                             x-on:click="register" 
                             :disabled="registering"
-                            class="btn btn-primary btn-block btn-lg">
+                            class="btn btn-primary btn-block btn-lg rounded">
                             <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true" x-show="registering"></span>
                             <span x-text="registering ? 'Mendaftarkan...' : 'Daftar Akun'"></span>
                         </button>

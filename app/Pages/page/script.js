@@ -6,7 +6,7 @@ window.page = function(slug) {
         page: {},
         init(){
             document.title = this.title;
-            Alpine.store('masagi').currentPage = 'page'
+            Alpine.store('core').currentPage = 'page'
             
 
             // Get cache if exists
@@ -16,7 +16,7 @@ window.page = function(slug) {
                 fetchPageData(url, {
                     headers: {
                         'Authorization': `Bearer ` + localStorage.getItem('heroic_token'),
-                        'Pesantrenku-ID': Alpine.store('masagi').pesantrenID
+                        'Pesantrenku-ID': Alpine.store('core').pesantrenID
                     }
                 })
                 .then(data => {

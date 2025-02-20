@@ -15,9 +15,9 @@ document.addEventListener('alpine:init', () => {
 
         init(){
             document.title = this.title
-            Alpine.store('masagi').currentPage = 'reset_password'
+            Alpine.store('core').currentPage = 'reset_password'
             
-            this.logo = Alpine.store('masagi').settings.auth_logo
+            this.logo = Alpine.store('core').settings.auth_logo
 
             // Call google recaptcha
             this.recaptchaWidget = grecaptcha.render('grecaptcha', {

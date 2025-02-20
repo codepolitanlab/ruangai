@@ -14,14 +14,14 @@
                 <div>
                     <div class="form-group boxed">
                         <div class="text-start input-wrapper">
-                            <label class=" fs-6" for="identity">NPA</label>
+                            <label class=" fs-6" for="identity">Email/No.WhatsApp</label>
                             <input type="text" class="form-control" id="identity" x-model="data.username">
                         </div>
                     </div>
 
                     <div class="form-group boxed">
                         <div class="text-start input-wrapper">
-                            <label class=" fs-6" for="identity">Kata Sandi</label>
+                            <label class="fs-6" for="identity">Kata Sandi</label>
                             <input :type="showPwd ? 'text' : 'password'" class="form-control" id="pwd" autocomplete="off" x-model="data.password">
                             <i x-on:click="showPwd = !showPwd" class="input-icon-append">
                                 <ion-icon id="pw-icon" :name="showPwd ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
@@ -30,17 +30,17 @@
                     </div>
 
                     <div class="text-start mt-2">
-                        <button type="button" x-on:click="login" class="btn btn-primary btn-block btn-lg mb-2" :disabled="buttonSubmitting">
+                        <button type="button" x-on:click="login" class="btn btn-primary btn-block btn-lg rounded" :disabled="buttonSubmitting">
                             <span class="spinner-border spinner-border-sm me-1" x-show="buttonSubmitting" aria-hidden="true"></span>
                             MASUK
                         </button>
-                        <div class="d-flex justify-content-between mb-2">
-                            <div>
-                                <a href="/reset_password" style="font-size:1.1rem;color:white;text-shadow:1px 1px 2px #666">Lupa Kata Sandi?</a>
-                            </div>
-                        </div>
                         <hr>
-                        <a href="/registrasi" class="btn btn-outline-secondary bg-white btn-block btn-lg mb-2">REGISTRASI</a>
+                        <a href="/registrasi" class="btn btn-outline-secondary bg-white btn-block rounded btn-lg mb-2">REGISTRASI</a>
+                        <div class="d-flex justify-content-center mb-2">
+                            <div>
+                                <a href="/reset_password" style="font-size:1.1rem;">Lupa Kata Sandi?</a>
+                                </div>
+                        </div>
                         
                     </div>
                 </div>

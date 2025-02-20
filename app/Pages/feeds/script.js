@@ -6,7 +6,7 @@ window.feeds = function(){
         empty: false,
         init(){
             document.title = this.title;
-            Alpine.store('masagi').currentPage = 'feeds'
+            Alpine.store('core').currentPage = 'feeds'
             
 
             if(cachePageData[`feeds`]?.feeds.length > 0){
@@ -29,7 +29,7 @@ window.feeds = function(){
             fetchPageData(`feeds/supply?page=${this.nextPage}`, {
                 headers: {
                     'Authorization': `Bearer ` + localStorage.getItem('heroic_token'),
-                    'Pesantrenku-ID': Alpine.store('masagi').pesantrenID
+                    'Pesantrenku-ID': Alpine.store('core').pesantrenID
                 }
             }).then(data => {
                 if(data.data.posts.length == 0){

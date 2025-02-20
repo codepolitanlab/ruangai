@@ -17,7 +17,7 @@ document.addEventListener('alpine:init', () => {
       }
       
       document.title = this.title;
-      Alpine.store('masagi').currentPage = 'iuran'
+      Alpine.store('core').currentPage = 'iuran'
       
       this.loading = true;
       

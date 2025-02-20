@@ -39,8 +39,8 @@ class PageController extends MobileBaseController
         $token = $this->request->getPost('token');
         $paymentMethodName = $this->request->getPost('method');
 
-        $Tarbiyya = new \App\Libraries\Tarbiyya();
-        $user = $Tarbiyya->checkToken();
+        $Heroic = new \App\Libraries\Heroic();
+        $user = $Heroic->checkToken();
 
         // Get products and set product description
         [$products, $productAmount] = $this->_getProductCart($token);
@@ -89,7 +89,7 @@ class PageController extends MobileBaseController
     {
         $token = base64_decode($token);
         try {
-            $key = config('App')->jwtKey['secret'];
+            $key = config('Heroic')->jwtKey['secret'];
             $decoded = JWT::decode($token, new Key($key, 'HS256'));
         } catch (\Exception $e) {
             return $this->respond(['found' => 0, 'message' => 'Invalid token', 'token' => $token]);
@@ -105,8 +105,8 @@ class PageController extends MobileBaseController
         // TODO: Get product by type
         $db = \Config\Database::connect();
         $bills = $db->table('md_bills')
-            ->select('md_bills.*, mein_users.name')
-            ->join('mein_users', 'mein_users.id = md_bills.user_id')
+            ->select('md_bills.*, users.name')
+            ->join('users', 'users.id = md_bills.user_id')
             ->whereIn('md_bills.id', array_keys($items['bill']))
             ->where('md_bills.status', 'pending')
             ->get()

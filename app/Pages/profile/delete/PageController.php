@@ -13,9 +13,9 @@ class PageController extends MobileBaseController {
     {
         // Get database pesantren
         // Get database pesantren
-        $Tarbiyya = new \App\Libraries\Tarbiyya();
+        $Heroic = new \App\Libraries\Heroic();
         $db = \Config\Database::connect();
-        $user = $Tarbiyya->checkToken();
+        $user = $Heroic->checkToken();
 
         $phone = $this->request->getPost('whatsapp');
         $password = $this->request->getPost('password');
@@ -27,13 +27,13 @@ class PageController extends MobileBaseController {
 		if(substr($phone, 0, 1)=='8') 
 			$phone = '62'.$phone;
 
-        $found = $db->query('SELECT password FROM mein_users where id = :id: AND phone = :phone:', ['id' => $user->user_id, 'phone' => $phone])->getRow();
+        $found = $db->query('SELECT password FROM users where id = :id: AND phone = :phone:', ['id' => $user->user_id, 'phone' => $phone])->getRow();
         if($found) {
             $Phpass = new \App\Libraries\Phpass();
             if($Phpass->CheckPassword($password, $found->password))
             {
                 // Delete user
-                $db->query('DELETE FROM mein_users where id = :id:', ['id' => $user->user_id]);
+                $db->query('DELETE FROM users where id = :id:', ['id' => $user->user_id]);
 
                 header('Content-Type', 'application/json');
                 echo json_encode([

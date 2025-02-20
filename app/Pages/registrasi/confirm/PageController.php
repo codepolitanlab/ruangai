@@ -1,13 +1,16 @@
-<?php namespace App\Pages\member\register\confirm;
+<?php namespace App\Pages\registrasi\confirm;
 
-use App\Pages\member\PageController as MemberPageController;
+use App\Pages\MobileBaseController;
+use CodeIgniter\API\ResponseTrait;
 use Firebase\JWT\JWT;
 
-class PageController extends MemberPageController 
+class PageController extends MobileBaseController 
 {
+    use ResponseTrait;
+
     public function getContent()
     {
-        return pageView('member/register/confirm/index', $this->data);
+        return pageView('registrasi/confirm/index', $this->data);
     }
     
     public function postIndex()
@@ -20,11 +23,11 @@ class PageController extends MemberPageController
 
         // Get database pesantren
         // Get database pesantren
-        $Tarbiyya = new \App\Libraries\Tarbiyya();
-        $db = $Tarbiyya->initDBPesantren();
+        $Heroic = new \App\Libraries\Heroic();
+        $db = \Config\Database::connect();
 
         // Get user
-        $query = "SELECT otp, token, email FROM mein_users WHERE id = :id:";
+        $query = "SELECT otp, token, email FROM users WHERE id = :id:";
         $user = $db->query($query, ['id' => $id])->getRow();
         if($user?->otp != $otp || $user?->token != $token) {
             return $this->respond([
@@ -32,7 +35,7 @@ class PageController extends MemberPageController
             ]);
         } else {
             // Activate user status
-            $query = "UPDATE mein_users SET status = 'active', token = NULL, otp = NULL WHERE id = :id:";
+            $query = "UPDATE users SET status = 'active', token = NULL, otp = NULL WHERE id = :id:";
             $db->query($query, ['id' => $id]);
 
             // Create JWT
@@ -42,7 +45,7 @@ class PageController extends MemberPageController
                 'email' => $user->email,
                 'timestamp' => time()
             ];
-            $key = config('App')->jwtKey['secret'];
+            $key = config('Heroic')->jwtKey['secret'];
             $jwt = JWT::encode($userSession, $key, 'HS256');
 
             return $this->respond([
@@ -57,9 +60,9 @@ class PageController extends MemberPageController
         $token = $this->request->getPost('token');
 
         // Get database pesantren
-        $Tarbiyya = new \App\Libraries\Tarbiyya();
-        $db = $Tarbiyya->initDBPesantren();
-        $query = "SELECT name, phone, token FROM mein_users WHERE id = :id:";
+        $Heroic = new \App\Libraries\Heroic();
+        $db = $Heroic->initDBPesantren();
+        $query = "SELECT name, phone, token FROM users WHERE id = :id:";
         $user = $db->query($query, ['id' => $id])->getRow();
         if(strcmp($user?->token, $token) !== 0) {
             header('Content-Type', 'application/json');
@@ -74,7 +77,7 @@ class PageController extends MemberPageController
         $token = sha1($otp);
 
         // Update new otp and token to database
-        $query = "UPDATE mein_users SET otp = :otp:, token = :token: WHERE id = :id:";
+        $query = "UPDATE users SET otp = :otp:, token = :token: WHERE id = :id:";
         $db->query($query, ['otp' => $otp, 'token' => $token, 'id' => $id]);
 
         // Send OTP

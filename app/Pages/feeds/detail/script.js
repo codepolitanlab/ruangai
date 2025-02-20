@@ -7,7 +7,7 @@ window.feeds_detail = function(id){
         swiper: null,
         init(){
             document.title = this.title;
-            Alpine.store('masagi').currentPage = 'feed'
+            Alpine.store('core').currentPage = 'feed'
             
 
             // Get cache if exists
@@ -16,7 +16,7 @@ window.feeds_detail = function(id){
                 fetchPageData(`feeds/detail/supply/${this.id}`, {
                     headers: {
                         'Authorization': `Bearer ` + localStorage.getItem('heroic_token'),
-                        'Pesantrenku-ID': Alpine.store('masagi').pesantrenID
+                        'Pesantrenku-ID': Alpine.store('core').pesantrenID
                     }
                 })
                 .then(data => {

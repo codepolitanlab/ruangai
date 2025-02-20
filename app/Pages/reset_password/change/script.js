@@ -15,9 +15,9 @@ window.reset_password_confirm = function(tokens){
         
         init(){
             document.title = this.title
-            Alpine.store('masagi').currentPage = 'change_password'
+            Alpine.store('core').currentPage = 'change_password'
             
-            this.data.logo = Alpine.store('masagi').settings.auth_logo
+            this.data.logo = Alpine.store('core').settings.auth_logo
 
             const tokenRegex = /^[a-f0-9]+_[0-9]+X.+$/;
             const urlParams = new URLSearchParams(window.location.search);
@@ -52,13 +52,13 @@ window.reset_password_confirm = function(tokens){
             axios.post('/reset_password/change/confirm', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Pesantrenku-ID': Alpine.store('masagi').pesantrenID
+                    'Pesantrenku-ID': Alpine.store('core').pesantrenID
                 }
             }).then(response => {
                 if(response.data.success == 1){
                     localStorage.setItem('heroic_token', response.data.jwt)
                     setTimeout(() => {
-                        Alpine.store('masagi').sessionToken = localStorage.getItem('heroic_token')
+                        Alpine.store('core').sessionToken = localStorage.getItem('heroic_token')
                         window.PineconeRouter.context.redirect('/')
                     })
                 } else {

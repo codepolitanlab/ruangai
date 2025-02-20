@@ -12,9 +12,9 @@ class PageController extends MobileBaseController {
     public function getSupply()
     {
         $db = \Config\Database::connect();
-        $users = $db->table('mein_users')
-                    ->select('mein_users.id, name, avatar, username, anggota.kd_pc, nama_pc')
-                    ->join('anggota', 'anggota.npa = mein_users.username')
+        $users = $db->table('users')
+                    ->select('users.id, name, avatar, username, anggota.kd_pc, nama_pc')
+                    ->join('anggota', 'anggota.npa = users.username')
                     ->join('masagi_pc', 'anggota.kd_pc = masagi_pc.kd_pc')
                     ->get()
                     ->getResultArray();

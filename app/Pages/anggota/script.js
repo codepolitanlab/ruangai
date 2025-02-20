@@ -13,7 +13,7 @@ document.addEventListener('alpine:init', () => {
     },
     init() {
         document.title = this.title;
-        Alpine.store('masagi').currentPage = 'anggota';
+        Alpine.store('core').currentPage = 'anggota';
         this._fetchUsers();
     },
     filteredMember() {

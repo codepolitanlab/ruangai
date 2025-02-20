@@ -20,11 +20,8 @@ window.member_register = function(){
         },
         init(){
             document.title = this.title
-            Alpine.store('tarbiyya').currentPage = 'register'
-            Alpine.store('tarbiyya').showBottomMenu = false
-
-            this.data.logo = Alpine.store('tarbiyya').tarbiyyaSetting.auth_logo;
-            this.data.sitename = Alpine.store('tarbiyya').tarbiyyaSetting.site_title;
+            Alpine.store('core').currentPage = 'registrasi'
+            Alpine.store('core').showBottomMenu = false
         },
         register() {
             this.registering = true;
@@ -45,7 +42,7 @@ window.member_register = function(){
             axios.post('/registrasi', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Pesantrenku-ID': Alpine.store('tarbiyya').pesantrenID
+                    'Pesantrenku-ID': Alpine.store('core').pesantrenID
                 }
             }).then(response => {
                 if(response.data.success == 1){

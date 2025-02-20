@@ -7,7 +7,7 @@ window.profile = function(){
             window.scrollTo({top:0, behavior:'auto'});
             
             document.title = this.title;
-            Alpine.store('masagi').currentPage = 'profile'
+            Alpine.store('core').currentPage = 'profile'
             
 
             if(cachePageData['profile']){
@@ -15,8 +15,8 @@ window.profile = function(){
             } else {   
                 fetchPageData('profile/supply', {
                     headers: {
-                        'Authorization': `Bearer ` + Alpine.store('masagi').sessionToken,
-                        'Pesantrenku-ID': Alpine.store('masagi').pesantrenID,
+                        'Authorization': `Bearer ` + Alpine.store('core').sessionToken,
+                        'Pesantrenku-ID': Alpine.store('core').pesantrenID,
                     }
                 }).then(data => {
                     cachePageData['profile'] = data

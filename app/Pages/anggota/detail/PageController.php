@@ -20,11 +20,11 @@ class PageController extends MobileBaseController {
     private function member($user_id)
 	{
         $db = \Config\Database::connect();
-		$user = $db->table('mein_users')
-					 ->select('mein_users.id, name, avatar, username, anggota.kd_pc, nama_pc, avatar, short_description')
-					 ->join('anggota', 'anggota.npa = mein_users.username')
+		$user = $db->table('users')
+					 ->select('users.id, name, avatar, username, anggota.kd_pc, nama_pc, avatar, short_description')
+					 ->join('anggota', 'anggota.npa = users.username')
 					 ->join('masagi_pc', 'anggota.kd_pc = masagi_pc.kd_pc')
-					 ->where('mein_users.id', $user_id)
+					 ->where('users.id', $user_id)
 					 ->get()
                      ->getRowArray();
 

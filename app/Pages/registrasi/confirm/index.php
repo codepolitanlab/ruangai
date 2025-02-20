@@ -1,5 +1,4 @@
 <div id="member-register-confirm" x-data="member_register_confirm()">
-<div class="bg-image" style="background-image: url('<?=$themeURL ?>assets/img/bg-green-min.jpg'); background-repeat: no-repeat; background-size: cover; width: 100%; background-position: center; background-color: #add7cb; height: 100%; position: fixed;"></div>
 
     <div class="appHeader">
         <div class="left">
@@ -13,10 +12,10 @@
     <div id="appCapsule" class="shadow pt-5 mt-5 pb-2">
         <div class="login-form mt-1">
             <div class="section">
-                <img :src="data.logo" alt="image" class="form-image">
+                <img src="https://image.web.id/images/logo-ruangai.png" alt="image" class="form-image">
             </div>
             <div class="section mt-1">
-                <p class="text-white">Untuk melanjutkan pendaftaran, masukkan kode registrasi yang telah kami kirimkan ke nomor WhatsApp Anda.</p>
+                <p class="">Untuk melanjutkan pendaftaran, masukkan kode registrasi yang telah kami kirimkan ke nomor WhatsApp Anda.</p>
             </div>
             <div class="section mt-1 mb-5 px-0">
                 <div>                    

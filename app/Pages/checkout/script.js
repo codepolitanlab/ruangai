@@ -17,7 +17,7 @@ document.addEventListener('alpine:init', () => {
 
         init() {
             document.title = this.title;
-            Alpine.store('masagi').currentPage = 'checkout'
+            Alpine.store('core').currentPage = 'checkout'
 
             fetchPageData('/checkout/supply/' + this.token)
                 .then(response => {

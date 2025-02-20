@@ -20,17 +20,17 @@ class PageController extends MobileBaseController {
     // type: email|phone
     public function postGenerateToken($type = 'email') 
     {
-        $Tarbiyya = new \App\Libraries\Tarbiyya();
-        $user = $Tarbiyya->checkToken();
+        $Heroic = new \App\Libraries\Heroic();
+        $user = $Heroic->checkToken();
 
         // Generate token
         helper('text');
         $otp = random_string('numeric', 6);
         $token = sha1($otp);
 
-        // Save token to table mein_users
+        // Save token to table users
         $db = \Config\Database::connect();
-        $db->table('mein_users')
+        $db->table('users')
             ->where('id', $user->user_id)
             ->set(['token' => $token, 'otp_'.$type => $otp])
             ->update();
@@ -40,14 +40,14 @@ class PageController extends MobileBaseController {
 
     public function postSendOTPEmail()
     {
-        $Tarbiyya = new \App\Libraries\Tarbiyya;
+        $Heroic = new \App\Libraries\Heroic;
 
         $token = $this->request->getPost('token');
         $email = trim($this->request->getPost('email'));
-        $user = $Tarbiyya->checkToken();
+        $user = $Heroic->checkToken();
 
         $db = \Config\Database::connect();
-        $found = $db->table('mein_users')->where('id', $user->user_id)->get()->getRowArray();
+        $found = $db->table('users')->where('id', $user->user_id)->get()->getRowArray();
         if (!$found) {
             return $this->respond(['success' => 0, 'message' => 'Token invalid'], 401);
         }
@@ -69,7 +69,7 @@ class PageController extends MobileBaseController {
             Untuk melanjutkan, silahkan masukan kode verifikasi berikut ini ke dalam aplikasi:<br><br>
             <b>{$found['otp_email']}</b><br><br>
             Salam,";
-            $result = $Tarbiyya->sendEmail($email, "Konfirmasi Penggantian Alamat Email", $message);
+            $result = $Heroic->sendEmail($email, "Konfirmasi Penggantian Alamat Email", $message);
             if($result['success']) {
                 return $this->respond(['success' => 1, 'message' => 'Kode verifikasi berhasil dikirim ke nomor email Anda']);
             } else {
@@ -80,14 +80,14 @@ class PageController extends MobileBaseController {
 
     public function postSendOTPPhone()
     {
-        $Tarbiyya = new \App\Libraries\Tarbiyya;
+        $Heroic = new \App\Libraries\Heroic;
 
         $token = $this->request->getPost('token');
-        $phone = $Tarbiyya->normalizePhoneNumber(trim($this->request->getPost('phone')));
-        $user = $Tarbiyya->checkToken();
+        $phone = $Heroic->normalizePhoneNumber(trim($this->request->getPost('phone')));
+        $user = $Heroic->checkToken();
 
         $db = \Config\Database::connect();
-        $found = $db->table('mein_users')->where('id', $user->user_id)->get()->getRowArray();
+        $found = $db->table('users')->where('id', $user->user_id)->get()->getRowArray();
         if (!$found) {
             return $this->respond(['success' => 0, 'message' => 'Token invalid'], 401);
         }
@@ -111,7 +111,7 @@ class PageController extends MobileBaseController {
             *{$found['otp_phone']}*\n
             Salam,
             EOD;
-            $result = $Tarbiyya->sendWhatsapp($phone, $message);
+            $result = $Heroic->sendWhatsapp($phone, $message);
             if($result?->message_status == 'Success') {
                 return $this->respond(['success' => 1, 'message' => 'Kode verifikasi berhasil dikirim ke nomor WhatsApp Anda']);
             } else {
@@ -122,13 +122,13 @@ class PageController extends MobileBaseController {
 
     public function postChangePhone()
     {
-        $Tarbiyya = new \App\Libraries\Tarbiyya();
-        $phone = $Tarbiyya->normalizePhoneNumber(trim($this->request->getPost('phone')));
+        $Heroic = new \App\Libraries\Heroic();
+        $phone = $Heroic->normalizePhoneNumber(trim($this->request->getPost('phone')));
         $otp = $this->request->getPost('otp');
-        $user = $Tarbiyya->checkToken();
+        $user = $Heroic->checkToken();
         
         $db = \Config\Database::connect();
-        $userData = $db->table('mein_users')
+        $userData = $db->table('users')
                        ->where('id', $user->user_id)
                        ->get()->getRowArray();
 
@@ -142,7 +142,7 @@ class PageController extends MobileBaseController {
             'otp_phone' => '',
             'token' => ''
         ];
-        $db->table('mein_users')->where('id', $user->user_id)->update($data);
+        $db->table('users')->where('id', $user->user_id)->update($data);
         if($db->affectedRows() > 0) {
             return $this->respond(['success' => 1, 'message' => 'Nomor WhatsApp berhasil diubah', 'phone' => $phone]);
         } else {
@@ -152,13 +152,13 @@ class PageController extends MobileBaseController {
 
     public function postChangeEmail()
     {
-        $Tarbiyya = new \App\Libraries\Tarbiyya();
+        $Heroic = new \App\Libraries\Heroic();
         $email = trim($this->request->getPost('email'));
         $otp = $this->request->getPost('otp');
-        $user = $Tarbiyya->checkToken();
+        $user = $Heroic->checkToken();
         
         $db = \Config\Database::connect();
-        $userData = $db->table('mein_users')
+        $userData = $db->table('users')
                        ->where('id', $user->user_id)
                        ->get()->getRowArray();
 
@@ -172,7 +172,7 @@ class PageController extends MobileBaseController {
             'otp_email' => '',
             'token' => ''
         ];
-        $db->table('mein_users')->where('id', $user->user_id)->update($data);
+        $db->table('users')->where('id', $user->user_id)->update($data);
         if($db->affectedRows() > 0) {
             return $this->respond(['success' => 1, 'message' => 'Alamat Email berhasil diubah', 'email' => $email]);
         } else {

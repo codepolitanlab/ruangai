@@ -15,13 +15,13 @@ class PageController extends MobileBaseController {
     {
         $db = \Config\Database::connect();
 
-        $Tarbiyya = new \App\Libraries\Tarbiyya();
-        $user = $Tarbiyya->checkToken();
+        $Heroic = new \App\Libraries\Heroic();
+        $user = $Heroic->checkToken();
 
         // Get setting
         $this->data['bills'] = $db->table('md_bills')
-            ->select('md_bills.*, mein_users.name')
-            ->join('mein_users', 'mein_users.id = md_bills.user_id')
+            ->select('md_bills.*, users.name')
+            ->join('users', 'users.id = md_bills.user_id')
             ->where('user_id', $user->user_id)
             ->get()
             ->getResultArray();
@@ -52,7 +52,7 @@ class PageController extends MobileBaseController {
         if(! $checkoutData)
             return $this->respond(['found' => 0, 'message' => 'Invalid cart data']);
 
-        $key = config('App')->jwtKey['secret'];
+        $key = config('Heroic')->jwtKey['secret'];
         $jwt = JWT::encode($checkoutData, $key, 'HS256');
 
         return $this->respond(['found' => 1, 'token' => $jwt]);

@@ -15,7 +15,7 @@ window.home = function(){
       }
       
       document.title = this.title;
-      Alpine.store('masagi').currentPage = ''
+      Alpine.store('core').currentPage = ''
       
 
       this.pengumumanRead = JSON.parse(localStorage.getItem('pengumumanRead') ?? '[]')
@@ -26,7 +26,7 @@ window.home = function(){
         fetchPageData('home/supply', {
           headers: {
             'Authorization': `Bearer ` + localStorage.getItem('heroic_token'),
-            'Pesantrenku-ID': Alpine.store('masagi').pesantrenID
+            'Pesantrenku-ID': Alpine.store('core').pesantrenID
           }
         }).then(data => {
           cachePageData['home'] = data

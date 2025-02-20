@@ -31,15 +31,13 @@ window.member_register_confirm = function(){
         
         init(){
             document.title = this.title
-            Alpine.store('tarbiyya').currentPage = 'register_confirm'
-            Alpine.store('tarbiyya').showBottomMenu = false
-            this.data.logo = Alpine.store('tarbiyya').tarbiyyaSetting.auth_logo
+            Alpine.store('core').currentPage = 'register_confirm'
 
             const tokenRegex = /^[a-f0-9]+_[0-9]+X.+$/;
             const urlParams = new URLSearchParams(window.location.search);
             const tokens = urlParams.get('token');
             if (!tokenRegex.test(tokens)) {
-                window.PineconeRouter.context.redirect('/member/register')
+                window.PineconeRouter.context.redirect('/registrasi')
             }
 
             const [part1, rest] = tokens.split('_');  // Bagian pertama sebelum _ adalah token
@@ -62,16 +60,16 @@ window.member_register_confirm = function(){
             formData.append('id', this.data.id ?? '');
             formData.append('token', this.data.token ?? '');
             formData.append('otp', this.data.otp ?? '');
-            axios.post('/member/register/confirm', formData, {
+            axios.post('/registrasi/confirm', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Pesantrenku-ID': Alpine.store('tarbiyya').pesantrenID
+                    'Pesantrenku-ID': Alpine.store('core').pesantrenID
                 }
             }).then(response => {
                 if(response.data.success == 1){
                     localStorage.setItem('heroic_token', response.data.jwt)
                     setTimeout(() => {
-                        Alpine.store('tarbiyya').sessionToken = localStorage.getItem('heroic_token')
+                        Alpine.store('core').sessionToken = localStorage.getItem('heroic_token')
                         window.location.replace('/')
                     })
                 } else {
@@ -87,15 +85,15 @@ window.member_register_confirm = function(){
             const formData = new FormData();
             formData.append('id', this.data.id ?? '');
             formData.append('token', this.data.token ?? '');
-            axios.post('/member/register/confirm/resend', formData, {
+            axios.post('/registrasi/confirm/resend', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Pesantrenku-ID': Alpine.store('tarbiyya').pesantrenID
+                    'Pesantrenku-ID': Alpine.store('core').pesantrenID
                 }
             }).then(response => {
                 if(response.data.success == 1){
                     let token = response.data.token + '_' + response.data.id + 'X' + Math.random().toString(36).substring(7)
-                    window.PineconeRouter.context.navigate('/member/register/confirm/?token=' + token)
+                    window.PineconeRouter.context.navigate('/registrasi/confirm/?token=' + token)
                 } else {
                     this.error = response.data.message
                     this.resending = false

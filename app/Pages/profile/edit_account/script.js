@@ -25,14 +25,14 @@ window.profile_edit_account = function () {
 
     init() {
       document.title = this.title;
-      Alpine.store("masagi").currentPage = "profile";
+      Alpine.store('core').currentPage = "profile";
 
       if (cachePageData["profile"]) {
         this.data = cachePageData["profile"];
       } else {
         fetchPageData("profile/supply", {
           headers: {
-            Authorization: `Bearer ` + Alpine.store("masagi").sessionToken,
+            Authorization: `Bearer ` + Alpine.store('core').sessionToken,
           },
         }).then((data) => {
           this.data = data;

@@ -6,7 +6,7 @@ window.kajian = function(){
         empty: false,
         init(){
             document.title = this.title;
-            Alpine.store('masagi').currentPage = 'videos'
+            Alpine.store('core').currentPage = 'videos'
             
 
             if(cachePageData[`kajian`]?.videos.length > 0){
@@ -36,7 +36,7 @@ window.kajian = function(){
             fetchPageData(`kajian/supply?page=${this.nextPage}`, {
                 headers: {
                     'Authorization': `Bearer ` + localStorage.getItem('heroic_token'),
-                    'Pesantrenku-ID': Alpine.store('masagi').pesantrenID
+                    'Pesantrenku-ID': Alpine.store('core').pesantrenID
                 }
             }).then(data => {
                 if(data.data.videos.length == 0){

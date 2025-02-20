@@ -10,7 +10,7 @@ window.kajian_detail = function(id){
             window.scrollTo({top:0, behavior:'auto'});
 
             document.title = this.title;
-            Alpine.store('masagi').currentPage = 'video'
+            Alpine.store('core').currentPage = 'video'
             
 
             // Get cache if exists
@@ -19,7 +19,7 @@ window.kajian_detail = function(id){
                 fetchPageData(`kajian/detail/supply/${this.id}`, {
                     headers: {
                         'Authorization': `Bearer ` + localStorage.getItem('heroic_token'),
-                        'Pesantrenku-ID': Alpine.store('masagi').pesantrenID
+                        'Pesantrenku-ID': Alpine.store('core').pesantrenID
                     }
                 })
                 .then(data => {

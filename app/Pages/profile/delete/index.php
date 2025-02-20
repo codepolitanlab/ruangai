@@ -15,7 +15,7 @@
     <div id="appCapsule" class="shadow pt-5 mt-5 pb-2">
         <div class="delete-form text-start mt-1">
             <div class="section mt-1">
-                <h4>Aksi ini akan menutup akun Anda di aplikasi <span x-text="Alpine.store('masagi').settings.site_title"></span></h4>
+                <h4>Aksi ini akan menutup akun Anda di aplikasi <span x-text="Alpine.store('core').settings.site_title"></span></h4>
                 <p>Kami menyediakan fasilitas penutupan akun ini dalam rangka memenuhi kebijakan privasi aplikasi dan demi kenyamanan Anda sebagai anggota.
                     Anda dapat melakukan penutupan akun dan dapat melakukan aktivasi kembali di lain waktu.
                 </p>

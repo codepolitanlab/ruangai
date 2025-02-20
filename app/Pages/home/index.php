@@ -2,8 +2,8 @@
     <div class="appHeader bg-brand">
         <div class="left ps-2">
         </div>
-        <div class="pageTitle" x-show="data.logo">
-            <img :src="data.logo ? data.logo : `<?= $themeURL ?>assets/img/logo.png`" alt="" style="height: 36px">
+        <div class="pageTitle">
+            <img src="https://image.web.id/images/logo-ruangai.png" alt="" style="height: 36px">
         </div>
         <div class="right">
             <!-- <a href="#" class="headerButton toggle-searchbox text-white">
@@ -15,16 +15,8 @@
     <!-- App Capsule -->
     <div id="appCapsule">
         <div class="bg-success-2 rounded-bottom-4">
-            <img class="d-none d-md-block" :src="Alpine.store('masagi').settings.home_banner_lg" alt="home_banner_large" style="width:100%">
-            <img class="d-block d-md-none" :src="Alpine.store('masagi').settings.home_banner_sm" alt="home_banner_mobile" style="width:100%">
-        </div>
-        <div class="header-large-title my-3" style="position: absolute;top: 55px;">
-            <div class="d-flex align-items-center justify-content-start gap-3">
-                <div class="use">
-                    <div>Ahlan wa sahlan,</div>
-                    <div class="h5 m-0" x-text="Alpine.store('masagi').user.name"></div>
-                </div>
-            </div>
+            <img class="d-none d-md-block" src="https://www.artsupplies.co.uk/blog/wp-content/uploads/2018/10/the-old-guitarist-picasso.jpg" alt="home_banner_large" style="width:100%">
+            <img class="d-block d-md-none" src="https://www.artsupplies.co.uk/blog/wp-content/uploads/2018/10/the-old-guitarist-picasso.jpg" alt="home_banner_mobile" style="width:100%">
         </div>
 
         <div class="bg-brand backlayer" style="height:180px"></div>

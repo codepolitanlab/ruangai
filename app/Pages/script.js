@@ -1,6 +1,3 @@
-// Script untuk halaman utama member
-
-// Alpine data function
 document.addEventListener('alpine:init', () => {
 
     NProgress.configure({ showSpinner: false });
@@ -8,14 +5,14 @@ document.addEventListener('alpine:init', () => {
     Alpine.data("router", () => ({
         async init(){
             document.title = this.title;
-            Alpine.store('masagi').sessionToken = localStorage.getItem('heroic_token')
-            await Alpine.store('masagi').getSiteSettings()
+            Alpine.store('core').sessionToken = localStorage.getItem('heroic_token')
+            await Alpine.store('core').getSiteSettings()
         },
 
         // Check login session, dipanggil oleh x-handler template yang meemerlukan session
         isLoggedIn(context){
             if(localStorage.getItem('intro') != 1) return context.redirect('/intro')
-            if(Alpine.store('masagi').sessionToken == null) return context.redirect('/masuk')
+            if(Alpine.store('core').sessionToken == null) return context.redirect('/masuk')
         },
 
         notfound(context) {
@@ -29,16 +26,16 @@ document.addEventListener('alpine:init', () => {
     
     document.addEventListener('pinecone-start', () => {
         NProgress.start();
-        Alpine.store('masagi').pageLoaded = false
+        Alpine.store('core').pageLoaded = false
     });
     document.addEventListener('pinecone-end', () => {
         NProgress.done();
-        Alpine.store('masagi').pageLoaded = true;
+        Alpine.store('core').pageLoaded = true;
     });
     document.addEventListener('fetch-error', (err) => console.error(err));
 
     // Global store
-    Alpine.store('masagi', {
+    Alpine.store('core', {
         currentPage: 'home',
         pageLoaded: false,
         showBottomMenu: true,
@@ -46,7 +43,7 @@ document.addEventListener('alpine:init', () => {
         settings: {},
         user: {},
         async getSiteSettings() {
-            if(Object.keys(Alpine.store('masagi').settings).length < 1){
+            if(Object.keys(Alpine.store('core').settings).length < 1){
                 try{
                     await axios.get('/_components/common/settings', {
                         headers: {
@@ -54,8 +51,8 @@ document.addEventListener('alpine:init', () => {
                         }
                     })
                     .then(response => {
-                        Alpine.store('masagi').settings = response.data.settings
-                        Alpine.store('masagi').user = response.data.user
+                        Alpine.store('core').settings = response.data.settings
+                        Alpine.store('core').user = response.data.user
                     })
                     .catch(error => {
                         console.log(error);

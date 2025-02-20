@@ -18,7 +18,7 @@ class PageController extends MobileBaseController {
 		$query = "SELECT * FROM `mein_posts` WHERE `type` = 'page' AND `slug` = :slug: AND `status` = 'publish'";
 
         // Get database pesantren
-        $Tarbiyya = new \App\Libraries\Tarbiyya();
+        $Heroic = new \App\Libraries\Heroic();
         $db = \Config\Database::connect();
         $data['page'] = $db->query($query, ['slug' => $slug])->getRowArray();
 

@@ -19,11 +19,11 @@ class PageController extends MobileBaseController
         $username = strtolower($this->request->getPost('username'));
         $password = $this->request->getPost('password');
         
-        $Tarbiyya = new \App\Libraries\Tarbiyya();
+        $Heroic = new \App\Libraries\Heroic();
         $db = \Config\Database::connect();
         
         // Check login to database directly using $db
-        $found = $db->query('SELECT * FROM mein_users where (email = :username: OR phone = :username: OR username = :username:) AND status = "active"', ['username' => $username])->getRow();
+        $found = $db->query('SELECT * FROM users where (email = :username: OR phone = :username: OR username = :username:) AND status = "active"', ['username' => $username])->getRow();
         $jwt = null;
         if($found) {
             $Phpass = new \App\Libraries\Phpass();
@@ -36,7 +36,7 @@ class PageController extends MobileBaseController
                     'email' => $found->email,
                     'timestamp' => time()
                 ];
-                $jwt = JWT::encode($userSession, config('App')->jwtKey['secret'], 'HS256');
+                $jwt = JWT::encode($userSession, config('Heroic')->jwtKey['secret'], 'HS256');
 
                 $user = [
                     'name' => $found->name,

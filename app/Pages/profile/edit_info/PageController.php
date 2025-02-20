@@ -12,7 +12,7 @@ class PageController extends MobileBaseController {
     public function getSupply()
     {
         // Get database pesantren
-        $Tarbiyya = new \App\Libraries\Tarbiyya();
+        $Heroic = new \App\Libraries\Heroic();
         $db = \Config\Database::connect();
 
         $logoSetting = $db->table('mein_options')
@@ -42,16 +42,16 @@ class PageController extends MobileBaseController {
         }
         $validData = $validation->getValidated();
 
-        $Tarbiyya = new \App\Libraries\Tarbiyya();
+        $Heroic = new \App\Libraries\Heroic();
         $db = \Config\Database::connect();
-        $user = $Tarbiyya->checkToken();
+        $user = $Heroic->checkToken();
 
         // Update name
         $userData = [
             "name" => $validData['name'],
             "short_description" => $validData['short_description'],
         ];
-        $db->table('mein_users')->where('id', $user->user_id)->update($userData);
+        $db->table('users')->where('id', $user->user_id)->update($userData);
 
         // Update or insert profile if not exists
         $profileData = [

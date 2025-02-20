@@ -19,18 +19,18 @@ window.login = function () {
       }
 
       // Place sandbox login if set
-      this.sandboxLogin = JSON.parse(Alpine.store('masagi').settings.sandbox_login ? Alpine.store('masagi').settings.sandbox_login : "{}");
+      this.sandboxLogin = JSON.parse(Alpine.store('core').settings.sandbox_login ? Alpine.store('core').settings.sandbox_login : "{}");
       if(this.sandboxLogin && Object.keys(this.sandboxLogin).length > 0){
         this.data.username = this.sandboxLogin.username;
         this.data.password = this.sandboxLogin.password;
       }
       
       document.title = this.title;
-      Alpine.store('masagi').currentPage = "login";
+      Alpine.store('core').currentPage = "login";
       ;
 
-      this.data.logo = Alpine.store('masagi').settings.auth_logo;
-      this.data.sitename = Alpine.store('masagi').settings.app_title;
+      this.data.logo = Alpine.store('core').settings.auth_logo;
+      this.data.sitename = Alpine.store('core').settings.app_title;
     },
 
     login() {
@@ -50,7 +50,7 @@ window.login = function () {
         .then((response) => {
           if (response.data.found == 1) {
             localStorage.setItem("heroic_token", response.data.jwt);
-            Alpine.store('masagi').sessionToken = localStorage.getItem("heroic_token");
+            Alpine.store('core').sessionToken = localStorage.getItem("heroic_token");
 
             setTimeout(() => {
               window.location.replace("/");

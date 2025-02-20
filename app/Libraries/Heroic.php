@@ -6,7 +6,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use PHPMailer\PHPMailer\PHPMailer;
 
-class Tarbiyya {
+class Heroic {
 
     /**
      * Get database name of pesantren by kodepesantren
@@ -66,7 +66,7 @@ class Tarbiyya {
 		}
 			
 		try {
-			$key = config('App')->jwtKey['secret'];
+			$key = config('Heroic')->jwtKey['secret'];
 			$decodedToken = JWT::decode($jwt, new Key($key, 'HS256'));
 		} catch (\Exception $e){
 			$response->setStatusCode(401, 'Invalid token')->send();
@@ -99,7 +99,7 @@ class Tarbiyya {
 		}
 			
 		try {
-			$key = config('App')->jwtKey['secret'];
+			$key = config('Heroic')->jwtKey['secret'];
 			$decodedToken = JWT::decode($jwt, new Key($key, 'HS256'));
 			if (! $decodedToken) {				
 				return [];
