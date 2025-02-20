@@ -1,43 +1,27 @@
-<?php
-
-namespace App\Pages\_components\bottommenu;
+<?php namespace App\Pages\_components\bottommenu;
 
 use App\Controllers\BaseController;
 use Symfony\Component\Yaml\Yaml;
 
-class PageController extends BaseController
-{
-	// Load member layout
-	public function getIndex()
-	{
-		$data['bottommenu'] = [
-			[
-				"label" => "Beranda",
-				"url" => "/",
-				"icon" => '<i class="bi bi-house"></i>',
-			],
-			[
-				"label" => "Kabar",
-				"url" => "/feeds",
-				"icon" => '<i class="bi bi-newspaper"></i>',
-			],
-			[
-				"label" => "Anggota",
-				"url" => "/anggota",
-				"icon" => '<i class="bi bi-person-vcard"></i>',
-			],
-			[
-				"label" => "Iuran",
-				"url" => "/iuran",
-				"icon" => '<i class="bi bi-cash-coin"></i>',
-			],
-			[
-				"label" => "Akun",
-				"url" => "/profile",
-				"icon" => '<i class="bi bi-person-circle"></i>',
-			],
-		];
+class PageController extends BaseController {
 
-		return pageView('_components/bottommenu/index', $data);
+    // Load member layout
+    public function getIndex()
+	{
+		// Get bottom menu
+		// Get database pesantren
+        $Tarbiyya = new \App\Libraries\Tarbiyya();
+        $db = \Config\Database::connect();
+		if($db) {
+			$bottommenu = $db->table('menus')
+							->where('slug', 'bottommenu')
+							->where('status', 1)
+							->get()
+							->getRowArray();
+			$this->data['bottommenu'] = Yaml::parse($bottommenu['schema']);
+        }
+        
+		return pageView('_components/bottommenu/index', $this->data);
 	}
+
 }

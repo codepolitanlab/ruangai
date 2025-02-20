@@ -1,0 +1,60 @@
+<div id="member-login" x-data="login()">
+
+    <!-- App Capsule -->
+    <div id="appCapsule" class="shadow pt-5">
+        <div class="login-form mt-1">
+            <div class="section">
+                <img src="https://image.web.id/images/logo-ruangai.png" alt="image" class="form-image">
+            </div>
+            <div class="section mt-5">
+                <p class="fs-5 my-3 ">Silakan masuk untuk melanjutkan</p>
+            </div>
+
+            <div class="section mt-1">
+                <div>
+                    <div class="form-group boxed">
+                        <div class="text-start input-wrapper">
+                            <label class=" fs-6" for="identity">NPA</label>
+                            <input type="text" class="form-control" id="identity" x-model="data.username">
+                        </div>
+                    </div>
+
+                    <div class="form-group boxed">
+                        <div class="text-start input-wrapper">
+                            <label class=" fs-6" for="identity">Kata Sandi</label>
+                            <input :type="showPwd ? 'text' : 'password'" class="form-control" id="pwd" autocomplete="off" x-model="data.password">
+                            <i x-on:click="showPwd = !showPwd" class="input-icon-append">
+                                <ion-icon id="pw-icon" :name="showPwd ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
+                            </i>
+                        </div>
+                    </div>
+
+                    <div class="text-start mt-2">
+                        <button type="button" x-on:click="login" class="btn btn-primary btn-block btn-lg mb-2" :disabled="buttonSubmitting">
+                            <span class="spinner-border spinner-border-sm me-1" x-show="buttonSubmitting" aria-hidden="true"></span>
+                            MASUK
+                        </button>
+                        <div class="d-flex justify-content-between mb-2">
+                            <div>
+                                <a href="/reset_password" style="font-size:1.1rem;color:white;text-shadow:1px 1px 2px #666">Lupa Kata Sandi?</a>
+                            </div>
+                        </div>
+                        <hr>
+                        <a href="/registrasi" class="btn btn-outline-secondary bg-white btn-block btn-lg mb-2">REGISTRASI</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * App Capsule -->
+
+    <div id="toast-login-error" 
+        class="toast-box toast-bottom bg-danger" 
+        :class="errorMessage ? 'show' : ''">
+        <div class="in">
+            <div class="text" x-text="errorMessage"></div>
+        </div>
+        <button type="button" class="btn btn-sm btn-text-light" x-on:click="errorMessage = false">OK</button>
+    </div>
+</div>
