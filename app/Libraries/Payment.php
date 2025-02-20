@@ -13,7 +13,7 @@ class Payment
      */
     public function getPaymentMethods()
     {
-        $activePaymentMethods = config('App')->activePaymentMethods;
+        $activePaymentMethods = config('Heroic')->activePaymentMethods;
         $availablePaymentMethods = [];
         $categorized = [];
         foreach ($activePaymentMethods as $method) {
@@ -34,7 +34,7 @@ class Payment
      */
     public function getPaymentMethod($method)
     {
-        $activePaymentMethods = config('App')->activePaymentMethods;
+        $activePaymentMethods = config('Heroic')->activePaymentMethods;
 
         if(!in_array($method, $activePaymentMethods))
             throw new \Exception('Active payment method not defined in setting.', 401);

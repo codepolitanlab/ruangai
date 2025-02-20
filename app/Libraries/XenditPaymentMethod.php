@@ -23,8 +23,8 @@ abstract class XenditPaymentMethod extends BasePaymentMethod {
 	public function __construct(){
 		parent::__construct();
 
-		$this->secretKey = config('App')->xenditSecretKey;
-		$this->callbackToken =  config('App')->xenditCallbackToken;
+		$this->secretKey = config('Heroic')->xenditSecretKey;
+		$this->callbackToken =  config('Heroic')->xenditCallbackToken;
 	}
 
 	public function commit($order)

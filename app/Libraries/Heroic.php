@@ -139,8 +139,8 @@ class Heroic {
             CURLOPT_CUSTOMREQUEST 	=> 'POST',
             CURLOPT_POSTFIELDS 		=> [
 				'sandbox' 	=> 'false',
-            	'appkey'	=> config('App')->saungWA['appKey'],
-            	'authkey'	=> config('App')->saungWA['authKey'],
+            	'appkey'	=> config('Heroic')->saungWA['appKey'],
+            	'authkey'	=> config('Heroic')->saungWA['authKey'],
             	'to' 		=> $phone,
             	'message'	=> $message,
 			],
