@@ -4,8 +4,8 @@
 .swiper-pagination-bullet{ width: 30px !important; height: 5px !important; border-radius: 0 !important}
 .swiper-intro{ height: 80vh}
 .swiper-intro .swiper-pagination{ position: fixed; bottom: 90px}
-.img-banner{ width: 100%}
-@media only screen and (min-width: 992px){ .img-banner{ width: 75%;}}
+.img-banner{ max-width: 100%; height: 50vh; }
+@media only screen and (min-width: 992px){ .img-banner{ max-width: 75%;}}
 </style>
 
     <div id="appCapsule" class="shadow">

@@ -1,5 +1,5 @@
 <script>
     localStorage.removeItem('heroic_token')
     localStorage.removeItem('pesantrenID')
-    window.location.href = '/login'
+    window.location.href = '/masuk'
 </script>

@@ -28,7 +28,7 @@ window.profile = function(){
             // Confirm
             const confirmed = await Prompts.confirm("Anda yakin akan keluar dari aplikasi?");
             if (confirmed) {
-                window.location.href = '/logout'
+                window.location.href = '/keluar'
             }
         }
     }

@@ -1,4 +1,6 @@
-<?php namespace App\Pages\_components\bottommenu;
+<?php
+
+namespace App\Pages\_components\bottommenu;
 
 use App\Controllers\BaseController;
 use Symfony\Component\Yaml\Yaml;

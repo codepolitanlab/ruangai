@@ -1,4 +1,4 @@
-<?php namespace App\Pages\logout;
+<?php namespace App\Pages\keluar;
 
 use App\Pages\MobileBaseController;
 use CodeIgniter\API\ResponseTrait;
@@ -9,7 +9,7 @@ class PageController extends MobileBaseController
     
     public function getIndex()
     {
-        return pageView('logout/index', $this->data);
+        return pageView('keluar/index', $this->data);
     }
 
     public function getRemoveSession()
