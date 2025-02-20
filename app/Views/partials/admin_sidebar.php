@@ -1,3 +1,198 @@
+<?php
+$sidebar = [
+    'dashboard' => [
+        'label' => 'Dashboard',
+        'icon' => 'bi bi-grid-fill',
+        'url' => '/admin'
+    ],
+    'user' => [
+        'label' => 'User Management',
+        'icon' => 'bi bi-person',
+        'url' => '#',
+        'children' => [
+            'list' => [
+                'label' => 'Users',
+                'icon' => 'bi bi-people',
+                'url' => '/admin/user',
+            ],
+            'role' => [
+                'label' => 'Roles',
+                'icon' => 'bi bi-person-gear',
+                'url' => '/admin/user/roles',
+            ],
+        ]
+    ],
+    'content' => [
+        'label' => 'Content',
+        'icon' => 'bi bi-folder',
+        'url' => '#',
+        'children' => [
+            'page' => [
+                'label' => 'Pages',
+                'icon' => 'bi bi-file-text',
+                'url' => '/admin/content/pages',
+            ],
+            'microblog' => [
+                'label' => 'Microblogs',
+                'icon' => 'bi bi-chat-text',
+                'url' => '/admin/content/microblogs',
+            ],
+            'files' => [
+                'label' => 'Files',
+                'icon' => 'bi bi-file-earmark',
+                'url' => '/admin/content/files',
+            ],
+            'slider' => [
+                'label' => 'Sliders',
+                'icon' => 'bi bi-images',
+                'url' => '/admin/content/sliders',
+            ],
+            'announcement' => [
+                'label' => 'Announcements',
+                'icon' => 'bi bi-megaphone',
+                'url' => '/admin/content/announcements',
+            ],
+        ]
+    ],
+    'elearning' => [
+        'label' => 'E-Learning',
+        'icon' => 'bi bi-book',
+        'url' => '#',
+        'children' => [
+            'online_class' => [
+                'label' => 'Online Classes',
+                'icon' => 'bi bi-laptop',
+                'url' => '/admin/elearning/online-classes',
+            ],
+            'quiz' => [
+                'label' => 'Quizzes',
+                'icon' => 'bi bi-ui-checks',
+                'url' => '/admin/elearning/quizzes',
+            ],
+            'live_class' => [
+                'label' => 'Live Classes',
+                'icon' => 'bi bi-camera-video',
+                'url' => '/admin/elearning/live-classes',
+            ],
+        ]
+    ],
+    'transaction' => [
+        'label' => 'Transactions',
+        'icon' => 'bi bi-cash-stack',
+        'url' => '#',
+        'children' => [
+            'voucher' => [
+                'label' => 'Vouchers',
+                'icon' => 'bi bi-ticket-perforated',
+                'url' => '/admin/transactions/vouchers',
+            ],
+            'membership' => [
+                'label' => 'Memberships',
+                'icon' => 'bi bi-card-checklist',
+                'url' => '/admin/transactions/memberships',
+            ],
+            'transaction' => [
+                'label' => 'Transaction History',
+                'icon' => 'bi bi-receipt',
+                'url' => '/admin/transactions/history',
+            ],
+        ]
+    ],
+    'earning' => [
+        'label' => 'Earnings',
+        'icon' => 'bi bi-wallet2',
+        'url' => '#',
+        'children' => [
+            'referral' => [
+                'label' => 'Referral Earnings',
+                'icon' => 'bi bi-person-plus',
+                'url' => '/admin/earnings/referrals',
+            ],
+            'referral_partner' => [
+                'label' => 'Referral Partners',
+                'icon' => 'bi bi-people-fill',
+                'url' => '/admin/earnings/referral-partners',
+            ],
+        ]
+    ],
+    'configuration' => [
+        'label' => 'Configuration',
+        'icon' => 'bi bi-gear',
+        'url' => '#',
+        'children' => [
+            'setting' => [
+                'label' => 'Settings',
+                'icon' => 'bi bi-sliders',
+                'url' => '/admin/configuration/settings',
+            ],
+            'navigation' => [
+                'label' => 'Navigation',
+                'icon' => 'bi bi-menu-button-wide',
+                'url' => '/admin/configuration/navigation',
+            ],
+            'page_option' => [
+                'label' => 'Page Options',
+                'icon' => 'bi bi-tools',
+                'url' => '/admin/configuration/page-options',
+            ],
+            'module' => [
+                'label' => 'Modules',
+                'icon' => 'bi bi-puzzle',
+                'url' => '/admin/configuration/modules',
+            ],
+            'entry' => [
+                'label' => 'Entries',
+                'icon' => 'bi bi-pencil-square',
+                'url' => '/admin/configuration/entries',
+            ],
+            'importer' => [
+                'label' => 'Importer',
+                'icon' => 'bi bi-upload',
+                'url' => '/admin/configuration/importer',
+            ],
+            'exporter' => [
+                'label' => 'Exporter',
+                'icon' => 'bi bi-download',
+                'url' => '/admin/configuration/exporter',
+            ],
+        ]
+    ],
+];
+
+function renderMenu($menu) {
+    echo '<div class="sidebar-menu">';
+    echo '<ul class="menu">';
+
+    foreach ($menu as $key => $item) {
+        $hasChildren = isset($item['children']) && is_array($item['children']);
+
+        echo '<li class="sidebar-item ' . ($hasChildren ? 'has-sub' : '') . '">';
+        echo '<a href="' . htmlspecialchars($item['url']) . '" class="sidebar-link">';
+        echo '<i class="' . htmlspecialchars($item['icon']) . '"></i>';
+        echo '<span>' . htmlspecialchars($item['label']) . '</span>';
+        echo '</a>';
+
+        if ($hasChildren) {
+            echo '<ul class="submenu">';
+            foreach ($item['children'] as $subKey => $subItem) {
+                echo '<li class="submenu-item">';
+                echo '<a href="' . htmlspecialchars($subItem['url']) . '" class="submenu-link">';
+                echo '<i class="' . htmlspecialchars($subItem['icon']) . '"></i>';
+                echo '<span>' . htmlspecialchars($subItem['label']) . '</span>';
+                echo '</a>';
+                echo '</li>';
+            }
+            echo '</ul>';
+        }
+
+        echo '</li>';
+    }
+
+    echo '</ul>';
+    echo '</div>';
+}
+?>
+
 <div id="sidebar">
     <div class="sidebar-wrapper active">
         <div class="sidebar-header position-relative">
@@ -12,66 +207,7 @@
             </div>
         </div>
 
-        <div class="sidebar-menu">
-            <ul class="menu">
-                <!-- <li class="sidebar-title">Menu</li> -->
+        <?php renderMenu($sidebar); ?>
 
-                <li class="sidebar-item active">
-                    <a href="index.html" class='sidebar-link'>
-                        <i class="bi bi-grid-fill"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-
-                <li class="sidebar-item has-sub">
-                    <a href="#" class='sidebar-link'>
-                        <i class="bi bi-stack"></i>
-                        <span>Components</span>
-                    </a>
-
-                    <ul class="submenu ">
-                        <li class="submenu-item">
-                            <a href="component-accordion.html" class="submenu-link">Accordion</a>
-                        </li>
-
-                        <li class="submenu-item">
-                            <a href="component-alert.html" class="submenu-link">Alert</a>
-                        </li>
-                    </ul>
-                </li>
-
-            </ul>
-        </div>
-
-        <div class="sidebar-footer px-4 py-3">
-            <div class="theme-toggle d-flex align-items-center justify-content-center">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-                    role="img" class="iconify iconify--system-uicons me-2" width="20" height="20"
-                    preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 21">
-                    <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path
-                            d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"
-                            opacity=".3"></path>
-                        <g transform="translate(-210 -1)">
-                            <path d="M220.5 2.5v2m6.5.5l-1.5 1.5"></path>
-                            <circle cx="220.5" cy="11.5" r="4"></circle>
-                            <path d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2"></path>
-                        </g>
-                    </g>
-                </svg>
-                <div class="form-check form-switch fs-6">
-                    <input class="form-check-input  me-0" type="checkbox" id="toggle-dark" style="cursor: pointer">
-                    <label class="form-check-label"></label>
-                </div>
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-                    role="img" class="iconify iconify--mdi" width="20" height="20" preserveAspectRatio="xMidYMid meet"
-                    viewBox="0 0 24 24">
-                    <path fill="currentColor"
-                        d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z">
-                    </path>
-                </svg>
-            </div>
-        </div>
     </div>
 </div>

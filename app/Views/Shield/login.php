@@ -6,7 +6,7 @@
 
 <div id="auth-left">
     <div class="auth-logo text-center">
-        <a href="/"><img src="https://image.web.id/images/logo-ruangai.png" style="width: 40%; height: auto;"></a>
+        <a href="/"><img src="https://image.web.id/images/logo-ruangai.png" style="width: 200px; height: auto;"></a>
     </div>
     <h1 class="auth-title"><?= lang('Auth.login') ?></h1>
     <p class="auth-subtitle mb-5">Log in with your data that you entered during registration.</p>
