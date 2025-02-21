@@ -65,7 +65,7 @@ class PageController extends MobileBaseController
             'name' => $validData['fullname'],
             'phone' => $phone,
             'username' => $phone,
-            'password' => $password,
+            'pwd' => $password,
             'token' => $token,
             'otp' => $otp,
             'created_at' => date('Y-m-d H:i:s'),

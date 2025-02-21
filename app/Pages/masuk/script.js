@@ -42,7 +42,7 @@ window.login = function () {
       formData.append("username", this.data.username);
       formData.append("password", this.data.password);
       axios
-        .post("/login", formData, {
+        .post("/masuk", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

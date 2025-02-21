@@ -27,7 +27,7 @@ class PageController extends MobileBaseController
         $jwt = null;
         if($found) {
             $Phpass = new \App\Libraries\Phpass();
-            if($Phpass->CheckPassword($password, $found->password))
+            if($Phpass->CheckPassword($password, $found->pwd))
             {
                 // Create JWT
                 $userSession = [
