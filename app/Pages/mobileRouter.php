@@ -54,6 +54,12 @@
         x-template="['/page/content', '/_components/bottommenu']"
         ></template>
     
+    <!-- Course -->
+    <template 
+        x-route="/course/intro" 
+        x-template="['/course/intro/content', '/_components/bottommenu']"
+        ></template>
+    
     <!-- Feeds -->
     <template 
         x-route="/feeds" 

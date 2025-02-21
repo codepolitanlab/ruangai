@@ -33,7 +33,7 @@ class AddUserFields extends Migration
                 'null' => true,
                 'after' => 'email'
             ],
-            'password' => [
+            'pwd' => [
                 'type' => 'TEXT', // TinyText tidak ada di SQLite, jadi pakai TEXT
                 'null' => true,
                 'after' => 'avatar'
@@ -42,7 +42,7 @@ class AddUserFields extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 150,
                 'null' => true,
-                'after' => 'password'
+                'after' => 'pwd'
             ],
             'otp' => [
                 'type' => 'VARCHAR',
@@ -72,7 +72,7 @@ class AddUserFields extends Migration
     {
         // Hapus kolom saat rollback
         $this->forge->dropColumn('users', [
-            'name', 'phone', 'email', 'avatar', 'password', 'token', 'otp', 'otp_email', 'otp_phone'
+            'name', 'phone', 'email', 'avatar', 'pwd', 'token', 'otp', 'otp_email', 'otp_phone'
         ]);
     }
 }
