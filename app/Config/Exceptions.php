@@ -58,6 +58,8 @@ class Exceptions extends BaseConfig
      */
     public array $sensitiveDataInTrace = [];
 
+    public array $sensitiveDataInServer = ['database.default.password'];
+
     /**
      * --------------------------------------------------------------------------
      * WHETHER TO THROW AN EXCEPTION ON DEPRECATED ERRORS
