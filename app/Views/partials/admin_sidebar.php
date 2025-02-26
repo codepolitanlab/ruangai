@@ -62,12 +62,12 @@ $sidebar = [
             'online_class' => [
                 'label' => 'Online Classes',
                 'icon' => 'bi bi-laptop',
-                'url' => '/admin/elearning/online-classes',
+                'url' => '/admin/course',
             ],
             'quiz' => [
                 'label' => 'Quizzes',
                 'icon' => 'bi bi-ui-checks',
-                'url' => '/admin/elearning/quizzes',
+                'url' => '/admin/quiz',
             ],
             'live_class' => [
                 'label' => 'Live Classes',

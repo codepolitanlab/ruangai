@@ -5,18 +5,18 @@
 
 <div class="page-heading">
     <div class="page-title">
-        <div class="row">
+        <div class="row align-items-center">
             <div class="col-12 col-md-6 order-md-1 order-last">
                 <h3>Online Class</h3>
-                <p class="text-subtitle text-muted">Daftar Kelas Online</p>
-            </div>
-            <div class="col-12 col-md-6 order-md-2 order-first">
-                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                <nav aria-label="breadcrumb" class="breadcrumb-header">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item active"><a href="index.html">Dashboard</a></li>
-                        <!-- <li class="breadcrumb-item active" aria-current="page">Table</li> -->
+                        <li class="breadcrumb-item active" aria-current="page">Course</li>
                     </ol>
                 </nav>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first text-end">
+                <a href="/admin/course/form" class="btn btn-primary"><i class="bi bi-plus"></i> Create Courses</a>
             </div>
         </div>
     </div>
@@ -25,10 +25,10 @@
         <div class="card card-block rounded-xl shadow">
             <div class="header-block header-block-search ps-1 mt-2 mb-2">
                 <form role="search">
-                    <div class="input-group">
+                    <div class="input-group w-25 ms-auto me-3 mt-2">
                         <input type="text" name="search" class="form-control" placeholder="Search course" value="">
-                        <button type="submit" class="btn btn-outline-primary"><span class="fa fa-search"></span></button>
-                        <a href="https://madrasahdigital.id/admin/course" class="btn btn-outline-secondary"><span class="fa fa-refresh"></span></a>
+                        <button type="submit" class="btn btn-outline-primary"><span class="bi bi-search"></span></button>
+                        <a href="https://madrasahdigital.id/admin/course" class="btn btn-outline-secondary"><span class="bi bi-arrow-repeat"></span></a>
                     </div>
                 </form>
             </div>
@@ -48,23 +48,23 @@
                                     </div>
                                     <br>
                                     <a class="text-info font-weight-bold" href="https://madrasahdigital.id/courses/intro/ngonten-sakti-dengan-ai" target="_blank">
-                                        <span class="text-muted"><em>ngonten-sakti-dengan-ai</em> <span class="fa fa-external-link"></span></span>
+                                        <span class="text-muted"><em>ngonten-sakti-dengan-ai</em> <span class="bi bi-box-arrow-up-right"></span></span>
                                     </a>
 
                                     <div>
                                         <small>Tags:</small>
-                                        <span class="badge rounded-pill text-bg-light">ngonten</span>
-                                        <span class="badge rounded-pill text-bg-light">ai</span>
-                                        <span class="badge rounded-pill text-bg-light">artificial intelligence</span>
-                                        <span class="badge rounded-pill text-bg-light">kecerdasan buatan</span>
+                                        <span class="badge mb-1 rounded-pill text-bg-light">ngonten</span>
+                                        <span class="badge mb-1 rounded-pill text-bg-light">ai</span>
+                                        <span class="badge mb-1 rounded-pill text-bg-light">artificial intelligence</span>
+                                        <span class="badge mb-1 rounded-pill text-bg-light">kecerdasan buatan</span>
                                     </div>
 
                                     <div class="option-menu mt-3">
                                         <small class="text-muted">
-                                            <a class="btn btn-sm btn-outline-secondary" href="https://madrasahdigital.id/admin/course/manage_lessons/1"><span class="fa fa-list"></span> Manage Lessons</a>
-                                            <a class="btn btn-sm btn-outline-secondary" href="https://madrasahdigital.id/admin/course/student/index/1"><span class="fa fa-users"></span> Student list</a>
-                                            <a class="btn btn-sm btn-outline-secondary" href="https://madrasahdigital.id/admin/course/edit/1"><span class="fa fa-pencil-square"></span> Edit</a>
-                                            <a class="btn btn-sm btn-outline-danger" onclick="return confirm('Sure?')" href="https://madrasahdigital.id/admin/course/remove/1"><span class="fa fa-trash"></span> Delete</a>
+                                            <a class="btn btn-sm btn-outline-secondary" href="/admin/course/lessons/1"><span class="bi bi-list"></span> Manage Lessons</a>
+                                            <a class="btn btn-sm btn-outline-secondary" href="/admin/course/student"><span class="bi bi-users"></span> Student list</a>
+                                            <a class="btn btn-sm btn-outline-secondary" href="/admin/course/form/1"><span class="bi bi-pencil-square"></span> Edit</a>
+                                            <a class="btn btn-sm btn-outline-danger" onclick="return confirm('Sure?')" href="https://madrasahdigital.id/admin/course/remove/1"><span class="bi bi-trash"></span> Delete</a>
                                         </small>
                                     </div>
                                 </div>
@@ -77,9 +77,9 @@
                                         <div><strong class="text-nowrap">Last update:</strong> <br>30 December -0001</div>
                                     </div>
                                     <div class="col-6 col-sm-4 px-2">
-                                        <div class="d-flex"><span class="pt-1 pe-1 fa fa-minus-circle text-muted" title="quiz enabled"></span> <span>Enable Quiz</span></div>
-                                        <div class="d-flex"><span class="pt-1 pe-1 fa fa-check-circle text-success" title="lesson checklist enabled"></span> <span>Enable Checklist</span></div>
-                                        <div class="d-flex"><span class="pt-1 pe-1 fa fa-minus-circle text-muted" title="lesson checklist enabled"></span> <span>Lock Learning Step</span></div>
+                                        <div class="d-flex gap-1"><span class="pe-1 bi bi-dash-circle text-muted" title="quiz enabled"></span> <span>Enable Quiz</span></div>
+                                        <div class="d-flex gap-1"><span class="pe-1 bi bi-check-circle text-success" title="lesson checklist enabled"></span> <span>Enable Checklist</span></div>
+                                        <div class="d-flex gap-1"><span class="pe-1 bi bi-dash-circle text-muted" title="lesson checklist enabled"></span> <span>Lock Learning Step</span></div>
                                     </div>
                                     <div class="col-sm-4 px-2">
                                         <h5>Price</h5>
