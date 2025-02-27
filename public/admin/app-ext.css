@@ -45,7 +45,7 @@ a {
 
 .btn-outline-white {
   border-color: #eaeaea !important;
-  color: #7c7777 !important;
+  color: #7c7777;
 }
 
 .btn-outline-white:hover {

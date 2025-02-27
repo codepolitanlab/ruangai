@@ -1,8 +1,8 @@
 <div id="course_detail" x-data="course_detail()">
     <div id="app-header" class="appHeader main glassmorph">
-        <div class="left"><a class="headerButton" href="https://course.taeyangkulture.com/courses"><i class="bi bi-chevron-left"></i></a></div>
+        <div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
         <div class="pageTitle"><span>Detail Kelas</span></div>
-        <div class="right"><a class="headerButton" data-bs-toggle="offcanvas" data-bs-target="#shareCanvas"><i class="bi bi-share-fill me-1"></i></a></div>
+        <div class="right"><a class="headerButton" role="button" data-bs-toggle="offcanvas" data-bs-target="#shareCanvas"><i class="bi bi-share-fill me-1"></i></a></div>
     </div>
 
     <div id="appCapsule" class="shadow">
@@ -46,7 +46,7 @@
                     width: 80px;
                 }
             </style>
-            <div class="row pt-xs-0 pt-sm-4 px-xs-0 px-sm-3" style="margin-top:55px">
+            <div class="row pt-xs-0 pt-sm-4 px-xs-0 px-sm-3">
                 <div class="col-md-6 mb-3 px-0"><img src="https://course.taeyangkulture.com//uploads/taeyang/sources/Gambar%20Cover/Learning%20Option-ENGLISH-BEGINNER%201.png" class="img-fluid mb-2"></div>
                 <div class="col-md-6 px-3">
                     <h1 class="h4 title">Inggris - Beginner Book 1</h1>
@@ -68,9 +68,9 @@
                 <div class="col-12 px-3">
                     <h3 class="h5 title">Apa yang akan dipelajari</h3>
                     <div class="lessons my-4">
-                        <h6>Bab 1: Introduction</h6>
+                        <h5>Bab 1: Introduction</h5>
                         <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 1 - INTRODUCING YOURSELF</div><span class="text-muted ms-auto">(08:40)</span><i class="bi bi-lock"></i>
+                            <div><a href="/courses/lessons/1" class="text-primary text-decoration-none">CHAPTER 1 - INTRODUCING YOURSELF</a></div><span class="text-muted ms-auto">(08:40)</span><i class="bi bi-lock"></i>
                         </div>
                         <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
                             <div>CHAPTER 2 - TALKING ABOUT YOURSELF</div><span class="text-muted ms-auto">(15:16)</span><i class="bi bi-lock"></i>
@@ -82,11 +82,11 @@
                             <div>CHAPTER 4 - USING APOSTROPHES</div><span class="text-muted ms-auto">(07:24)</span><i class="bi bi-lock"></i>
                         </div>
                         <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 5 - TALKING ABOUT YOUR THINGS</div><span class="text-muted ms-auto">(13:04)</span><i class="bi bi-lock"></i>
+                            <div><a href="/courses/quiz/1" class="text-primary text-decoration-none">CHAPTER 5 - QUIZ</a></div><span class="text-muted ms-auto">(13:04)</span><i class="bi bi-lock"></i>
                         </div>
                     </div>
                     <div class="lessons my-4">
-                        <h6>Bab 2: Jobs &amp; Routines</h6>
+                        <h5>Bab 2: Jobs &amp; Routines</h5>
                         <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
                             <div>CHAPTER 6 - JOBS</div><span class="text-muted ms-auto">(17:20)</span><i class="bi bi-lock"></i>
                         </div>
@@ -101,7 +101,7 @@
                         </div>
                     </div>
                     <div class="lessons my-4">
-                        <h6>Bab 3: Clarification &amp; Confirmation</h6>
+                        <h5>Bab 3: Clarification &amp; Confirmation</h5>
                         <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
                             <div>CHAPTER 10 - NEGATIVES</div><span class="text-muted ms-auto">(13:58)</span><i class="bi bi-lock"></i>
                         </div>
@@ -113,7 +113,7 @@
                         </div>
                     </div>
                     <div class="lessons my-4">
-                        <h6>Bab 4: Town &amp; City</h6>
+                        <h5>Bab 4: Town &amp; City</h5>
                         <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
                             <div>CHAPTER 13 - MY TOWN</div><span class="text-muted ms-auto">(18:29)</span><i class="bi bi-lock"></i>
                         </div>
@@ -134,7 +134,7 @@
                         </div>
                     </div>
                     <div class="lessons my-4">
-                        <h6>Bab 5: What We Have</h6>
+                        <h5>Bab 5: What We Have</h5>
                         <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
                             <div>CHAPTER 19 - THE THINGS I HAVE</div><span class="text-muted ms-auto">(09:35)</span><i class="bi bi-lock"></i>
                         </div>
@@ -155,7 +155,7 @@
                         </div>
                     </div>
                     <div class="lessons my-4">
-                        <h6>Bab 6: Hobbies &amp; Interests</h6>
+                        <h5>Bab 6: Hobbies &amp; Interests</h5>
                         <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
                             <div>CHAPTER 25 - TALKING ABOUT SPORT</div><span class="text-muted ms-auto">(21:15)</span><i class="bi bi-lock"></i>
                         </div>
@@ -170,7 +170,7 @@
                         </div>
                     </div>
                     <div class="lessons my-4">
-                        <h6>Bab 7: Ability &amp; Learning</h6>
+                        <h5>Bab 7: Ability &amp; Learning</h5>
                         <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
                             <div>CHAPTER 29 - WHAT YOU CAN AND CAN'T DO</div><span class="text-muted ms-auto">(15:17)</span><i class="bi bi-lock"></i>
                         </div>
@@ -187,5 +187,12 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="offcanvas offcanvas-bottom" tabindex="-1" id="shareCanvas" aria-labelledby="shareCanvasLabel" style="max-width:768px;margin:0 auto;" aria-modal="true" role="dialog">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="shareCanvasLabel">Bagikan Tautan</h5><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body small"></div>
     </div>
 </div>

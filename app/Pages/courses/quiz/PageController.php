@@ -1,4 +1,4 @@
-<?php namespace App\Pages\course\intro;
+<?php namespace App\Pages\courses\quiz;
 
 use App\Pages\MobileBaseController;
 
@@ -6,7 +6,7 @@ class PageController extends MobileBaseController
 {
     public function getContent()
     {
-        $data = [];
-        return pageView('course/intro/index', $data);
+        $data['page_title'] = 'Quiz';
+        return pageView('courses/quiz/index', $data);
     }
 }

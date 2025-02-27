@@ -2173,6 +2173,14 @@ a.badge-dark {
   color: #1E74FD;
 }
 
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-6px);
+}
+
 .btn {
   height: 40px;
   padding: 3px 18px;
