@@ -27,16 +27,6 @@ class PageController extends BaseController {
 				"icon" => '<i class="bi bi-newspaper"></i>'
 			],
 			[
-				"label" => "Anggota",
-				"url" => "/anggota",
-				"icon" => '<i class="bi bi-person-vcard"></i>'
-			],
-			[
-				"label" => "Iuran",
-				"url" => "/iuran",
-				"icon" => '<i class="bi bi-cash-coin"></i>'
-			],
-			[
 				"label" => "Akun",
 				"url" => "/profile",
 				"icon" => '<i class="bi bi-person-circle"></i>'
