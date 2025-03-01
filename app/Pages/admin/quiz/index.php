@@ -16,7 +16,7 @@
                 </nav>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first text-end">
-                <!-- <a href="/admin/course/form" class="btn btn-primary"><i class="bi bi-plus"></i> Create Courses</a> -->
+                <!-- <a href="/ruangpanel/course/form" class="btn btn-primary"><i class="bi bi-plus"></i> Create Courses</a> -->
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@
                 <form>
                     <section class="mb-2">
                         <div class="mb-4">
-                            <a href="/admin/quiz/form" class="btn btn-success rounded shadow-sm">
+                            <a href="/ruangpanel/quiz/form" class="btn btn-success rounded shadow-sm">
                                 <span class="bi bi-plus"></span>
                                 <span class="d-none d-sm-inline">Tambah Quiz</span>
                             </a>
@@ -71,7 +71,7 @@
 
                             <div class="col-auto btn-group mb-2">
                                 <button type="submit" class="btn btn-primary">Submit</button>
-                                <a href="https://course.taeyangkulture.com/admin/quiz/group" class="btn btn-outline-white"></a>
+                                <a href="https://course.taeyangkulture.com/ruangpanel/quiz/group" class="btn btn-outline-white"></a>
                             </div>
                         </div>
                     </section>
@@ -130,7 +130,7 @@
                                     <td class="text-end">
                                         <div class="btn-group">
                                             <button type="submit" class="btn btn-primary"><span class="bi bi-search"></span></button>
-                                            <a href="https://course.taeyangkulture.com/admin/quiz/group" class="btn btn-outline-white"text-primary                                         <span class="bi bi-refresh"></span>
+                                            <a href="https://course.taeyangkulture.com/ruangpanel/quiz/group" class="btn btn-outline-white"text-primary                                         <span class="bi bi-refresh"></span>
                                             </a>
                                         </div>
                                     </td>
@@ -161,28 +161,28 @@
                                         <div class="btn-group mb-1">
 
 
-                                            <a data-pjax="false" target="_blank" href="https://course.taeyangkulture.com/admin/entry/exam/action/row/room/218" class="btn btn-sm btn-outline-white text-info room" title="Room">
+                                            <a data-pjax="false" target="_blank" href="https://course.taeyangkulture.com/ruangpanel/entry/exam/action/row/room/218" class="btn btn-sm btn-outline-white text-info room" title="Room">
                                                 <span class="bi bi-pc-display-horizontal"></span> Room </a>
 
 
-                                            <a data-pjax="false" target="_blank" href="https://course.taeyangkulture.com/admin/entry/exam/action/row/preview/218" class="btn btn-sm btn-outline-white text-info preview" title="Preview">
+                                            <a data-pjax="false" target="_blank" href="https://course.taeyangkulture.com/ruangpanel/entry/exam/action/row/preview/218" class="btn btn-sm btn-outline-white text-info preview" title="Preview">
                                                 <span class="bi bi-eye"></span> Preview </a>
 
 
-                                            <a target="_self" href="/admin/quiz/question" class="btn btn-sm btn-outline-white text-info questions" title="Questions">
+                                            <a target="_self" href="/ruangpanel/quiz/question" class="btn btn-sm btn-outline-white text-info questions" title="Questions">
                                                 <span class="bi bi-list-ul"></span> Questions </a>
 
 
-                                            <a target="_self" href="/admin/quiz/student" class="btn btn-sm btn-outline-white text-info student" title="Students">
+                                            <a target="_self" href="/ruangpanel/quiz/student" class="btn btn-sm btn-outline-white text-info student" title="Students">
                                                 <span class="bi bi-people-fill"></span> Students </a>
                                         </div>
 
                                         <div class="btn-group mb-1">
-                                            <button type="button" class="btn btn-sm btn-outline-white text-secondary" data-url="admin/entry/exam/detail/218" data-bs-caption="Detail data" data-bs-toggle="modal" data-bs-target="#detailModal" title="Detail"><span class="bi bi-search"></span> Detail</button>
+                                            <button type="button" class="btn btn-sm btn-outline-white text-secondary" data-url="ruangpanel/entry/exam/detail/218" data-bs-caption="Detail data" data-bs-toggle="modal" data-bs-target="#detailModal" title="Detail"><span class="bi bi-search"></span> Detail</button>
 
-                                            <a class="btn btn-sm btn-outline-white text-success " href="https://course.taeyangkulture.com/admin/entry/exam/edit/218?" title="Edit"><span class="bi bi-pencil"></span> Edit</a>
+                                            <a class="btn btn-sm btn-outline-white text-success " href="https://course.taeyangkulture.com/ruangpanel/entry/exam/edit/218?" title="Edit"><span class="bi bi-pencil"></span> Edit</a>
 
-                                            <a data-no-swup="" class="btn btn-sm btn-outline-white text-danger" onclick="return confirm('Yakin akan menghapus?')" href="https://course.taeyangkulture.com/admin/entry/exam/delete/218?" title="Delete"><span class="bi bi-remove"></span> Hapus</a>
+                                            <a data-no-swup="" class="btn btn-sm btn-outline-white text-danger" onclick="return confirm('Yakin akan menghapus?')" href="https://course.taeyangkulture.com/ruangpanel/entry/exam/delete/218?" title="Delete"><span class="bi bi-remove"></span> Hapus</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -211,28 +211,28 @@
                                         <div class="btn-group mb-1">
 
 
-                                            <a data-pjax="false" target="_blank" href="https://course.taeyangkulture.com/admin/entry/exam/action/row/room/217" class="btn btn-sm btn-outline-white text-info room" title="Room">
+                                            <a data-pjax="false" target="_blank" href="https://course.taeyangkulture.com/ruangpanel/entry/exam/action/row/room/217" class="btn btn-sm btn-outline-white text-info room" title="Room">
                                                 <span class="bi bi-pc-display-horizontal"></span> Room </a>
 
 
-                                            <a data-pjax="false" target="_blank" href="https://course.taeyangkulture.com/admin/entry/exam/action/row/preview/217" class="btn btn-sm btn-outline-white text-info preview" title="Preview">
+                                            <a data-pjax="false" target="_blank" href="https://course.taeyangkulture.com/ruangpanel/entry/exam/action/row/preview/217" class="btn btn-sm btn-outline-white text-info preview" title="Preview">
                                                 <span class="bi bi-eye"></span> Preview </a>
 
 
-                                            <a target="_self" href="/admin/quiz/question" class="btn btn-sm btn-outline-white text-info questions" title="Questions">
+                                            <a target="_self" href="/ruangpanel/quiz/question" class="btn btn-sm btn-outline-white text-info questions" title="Questions">
                                                 <span class="bi bi-list-ul"></span> Questions </a>
 
 
-                                            <a target="_self" href="/admin/quiz/student" class="btn btn-sm btn-outline-white text-info student" title="Students">
+                                            <a target="_self" href="/ruangpanel/quiz/student" class="btn btn-sm btn-outline-white text-info student" title="Students">
                                                 <span class="bi bi-people-fill"></span> Students </a>
                                         </div>
 
                                         <div class="btn-group mb-1">
-                                            <button type="button" class="btn btn-sm btn-outline-white text-secondary" data-url="admin/entry/exam/detail/217" data-bs-caption="Detail data" data-bs-toggle="modal" data-bs-target="#detailModal" title="Detail"><span class="bi bi-search"></span> Detail</button>
+                                            <button type="button" class="btn btn-sm btn-outline-white text-secondary" data-url="ruangpanel/entry/exam/detail/217" data-bs-caption="Detail data" data-bs-toggle="modal" data-bs-target="#detailModal" title="Detail"><span class="bi bi-search"></span> Detail</button>
 
-                                            <a class="btn btn-sm btn-outline-white text-success" href="https://course.taeyangkulture.com/admin/entry/exam/edit/217?" title="Edit"><span class="bi bi-pencil"></span> Edit</a>
+                                            <a class="btn btn-sm btn-outline-white text-success" href="https://course.taeyangkulture.com/ruangpanel/entry/exam/edit/217?" title="Edit"><span class="bi bi-pencil"></span> Edit</a>
 
-                                            <a data-no-swup="" class="btn btn-sm btn-outline-white text-danger" onclick="return confirm('Yakin akan menghapus?')" href="https://course.taeyangkulture.com/admin/entry/exam/delete/217?" title="Delete"><span class="bi bi-remove"></span> Hapus</a>
+                                            <a data-no-swup="" class="btn btn-sm btn-outline-white text-danger" onclick="return confirm('Yakin akan menghapus?')" href="https://course.taeyangkulture.com/ruangpanel/entry/exam/delete/217?" title="Delete"><span class="bi bi-remove"></span> Hapus</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -244,7 +244,7 @@
                 </form>
 
                 <div class="pagination">
-                    <strong>1</strong><a href="https://course.taeyangkulture.com/admin/quiz/group?page=2" data-ci-pagination-page="2">2</a><a href="https://course.taeyangkulture.com/admin/quiz/group?page=3" data-ci-pagination-page="3">3</a><a href="https://course.taeyangkulture.com/admin/quiz/group?page=2" data-ci-pagination-page="2" rel="next">&gt;</a><a href="https://course.taeyangkulture.com/admin/quiz/group?page=22" data-ci-pagination-page="22">Terakhir ›</a>
+                    <strong>1</strong><a href="https://course.taeyangkulture.com/ruangpanel/quiz/group?page=2" data-ci-pagination-page="2">2</a><a href="https://course.taeyangkulture.com/ruangpanel/quiz/group?page=3" data-ci-pagination-page="3">3</a><a href="https://course.taeyangkulture.com/ruangpanel/quiz/group?page=2" data-ci-pagination-page="2" rel="next">&gt;</a><a href="https://course.taeyangkulture.com/ruangpanel/quiz/group?page=22" data-ci-pagination-page="22">Terakhir ›</a>
                 </div>
 
             </div>

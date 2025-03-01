@@ -16,7 +16,7 @@
                 </nav>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first text-end">
-                <a href="/admin/course/form" class="btn btn-primary"><i class="bi bi-plus"></i> Create Courses</a>
+                <a href="/ruangpanel/course/form" class="btn btn-primary"><i class="bi bi-plus"></i> Create Courses</a>
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@
                     <div class="input-group w-25 ms-auto me-3 mt-2">
                         <input type="text" name="search" class="form-control" placeholder="Search course" value="">
                         <button type="submit" class="btn btn-outline-primary"><span class="bi bi-search"></span></button>
-                        <a href="https://madrasahdigital.id/admin/course" class="btn btn-outline-secondary"><span class="bi bi-arrow-repeat"></span></a>
+                        <a href="/ruangpanel/course" class="btn btn-outline-secondary"><span class="bi bi-arrow-repeat"></span></a>
                     </div>
                 </form>
             </div>
@@ -38,7 +38,7 @@
                     <div class="media-body px-3 py-2">
                         <div class="row">
                             <div class="col-lg-6 pl-2 d-flex justify-content-start mb-2">
-                                <img src="https://madrasahdigital.id//uploads/madrasahdigital/sources/Cover%20Kelas%20Online%20Ngonten%20Sakti.png" style="margin-top:10px; width:100px;height:100px;object-fit:cover;">
+                                <img src="//uploads/madrasahdigital/sources/Cover%20Kelas%20Online%20Ngonten%20Sakti.png" style="margin-top:10px; width:100px;height:100px;object-fit:cover;">
                                 <div class="ps-3 pt-2">
                                     <h5 class="mt-0 mb-1 d-inline-block">
                                         Ngonten Sakti dengan AI
@@ -47,7 +47,7 @@
                                         <span class="badge rounded-pill text-bg-success">publish</span>
                                     </div>
                                     <br>
-                                    <a class="text-info font-weight-bold" href="https://madrasahdigital.id/courses/intro/ngonten-sakti-dengan-ai" target="_blank">
+                                    <a class="text-info font-weight-bold" href="/courses/intro/ngonten-sakti-dengan-ai" target="_blank">
                                         <span class="text-muted"><em>ngonten-sakti-dengan-ai</em> <span class="bi bi-box-arrow-up-right"></span></span>
                                     </a>
 
@@ -61,10 +61,10 @@
 
                                     <div class="option-menu mt-3">
                                         <small class="text-muted">
-                                            <a class="btn btn-sm btn-outline-secondary" href="/admin/course/lessons/1"><span class="bi bi-list"></span> Manage Lessons</a>
-                                            <a class="btn btn-sm btn-outline-secondary" href="/admin/course/student"><span class="bi bi-users"></span> Student list</a>
-                                            <a class="btn btn-sm btn-outline-secondary" href="/admin/course/form/1"><span class="bi bi-pencil-square"></span> Edit</a>
-                                            <a class="btn btn-sm btn-outline-danger" onclick="return confirm('Sure?')" href="https://madrasahdigital.id/admin/course/remove/1"><span class="bi bi-trash"></span> Delete</a>
+                                            <a class="btn btn-sm btn-outline-secondary" href="/ruangpanel/course/lessons/1"><span class="bi bi-list"></span> Manage Lessons</a>
+                                            <a class="btn btn-sm btn-outline-secondary" href="/ruangpanel/course/student"><span class="bi bi-users"></span> Student list</a>
+                                            <a class="btn btn-sm btn-outline-secondary" href="/ruangpanel/course/form/1"><span class="bi bi-pencil-square"></span> Edit</a>
+                                            <a class="btn btn-sm btn-outline-danger" onclick="return confirm('Sure?')" href="/ruangpanel/course/remove/1"><span class="bi bi-trash"></span> Delete</a>
                                         </small>
                                     </div>
                                 </div>

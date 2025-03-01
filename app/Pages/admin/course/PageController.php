@@ -1,4 +1,4 @@
-<?php namespace App\Pages\admin\course;
+<?php namespace App\Pages\ruangpanel\course;
 
 use App\Controllers\BaseController;
 
@@ -7,6 +7,6 @@ class PageController extends BaseController
     public function getIndex()
     {
         $data['page_title'] = "Online Class";
-        return pageView('admin/course/index', $data);
+        return pageView('ruangpanel/course/index', $data);
     }
 }

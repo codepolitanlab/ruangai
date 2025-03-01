@@ -11,13 +11,13 @@
                 <nav aria-label="breadcrumb" class="breadcrumb-header">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="/admin/quiz">Quiz</a></li>
+                        <li class="breadcrumb-item"><a href="/ruangpanel/quiz">Quiz</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Student</li>
                     </ol>
                 </nav>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first text-end">
-                <!-- <a href="/admin/course/form" class="btn btn-primary"><i class="bi bi-plus"></i> Create Courses</a> -->
+                <!-- <a href="/ruangpanel/course/form" class="btn btn-primary"><i class="bi bi-plus"></i> Create Courses</a> -->
             </div>
         </div>
     </div>
@@ -118,7 +118,7 @@
 
                             <div class="col-auto btn-group mb-2">
                                 <button type="submit" class="btn btn-primary">Submit</button>
-                                <a href="https://course.taeyangkulture.com/admin/entry/quiz_student/?filter[group_id]=218" class="btn btn-outline-white">Reset</a>
+                                <a href="https://course.taeyangkulture.com/ruangpanel/entry/quiz_student/?filter[group_id]=218" class="btn btn-outline-white">Reset</a>
                             </div>
                         </div>
                     </section>
@@ -186,7 +186,7 @@
                                     <td class="text-end">
                                         <div class="btn-group">
                                             <button type="submit" class="btn btn-primary"><span class="bi bi-search"></span></button>
-                                            <a href="https://course.taeyangkulture.com/admin/entry/quiz_student/                    ?filter[group_id]=218" class="btn btn-outline-white">
+                                            <a href="https://course.taeyangkulture.com/ruangpanel/entry/quiz_student/                    ?filter[group_id]=218" class="btn btn-outline-white">
                                                 <span class="bi bi-refresh"></span>
                                             </a>
                                         </div>
@@ -220,14 +220,14 @@
                                         <div class="btn-group mb-1">
 
 
-                                            <a data-pjax="false" target="_blank" href="https://course.taeyangkulture.com/admin/entry/quiz_student/action/row/answer/2746" class="btn btn-sm btn-outline-white text-info answer" title="Lihat Jawaban">
+                                            <a data-pjax="false" target="_blank" href="https://course.taeyangkulture.com/ruangpanel/entry/quiz_student/action/row/answer/2746" class="btn btn-sm btn-outline-white text-info answer" title="Lihat Jawaban">
                                                 <span class="bi bi-search"></span> Lihat Jawaban </a>
                                         </div>
 
                                         <div class="btn-group mb-1">
 
 
-                                            <a data-no-swup="" class="btn btn-sm btn-outline-white text-danger " onclick="return confirm('Yakin akan menghapus?')" href="https://course.taeyangkulture.com/admin/entry/quiz_student/delete/2746?filter[group_id]=218" title="Delete"><span class="bi bi-x-lg"></span> Hapus</a>
+                                            <a data-no-swup="" class="btn btn-sm btn-outline-white text-danger " onclick="return confirm('Yakin akan menghapus?')" href="https://course.taeyangkulture.com/ruangpanel/entry/quiz_student/delete/2746?filter[group_id]=218" title="Delete"><span class="bi bi-x-lg"></span> Hapus</a>
                                         </div>
                                     </td>
                                 </tr>

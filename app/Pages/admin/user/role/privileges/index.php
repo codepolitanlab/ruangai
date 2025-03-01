@@ -12,8 +12,8 @@
             <nav aria-label="breadcrumb" class="breadcrumb-header">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="/admin/user">User</a></li>
-                    <li class="breadcrumb-item"><a href="/admin/user/role">Role</a></li>
+                    <li class="breadcrumb-item"><a href="/ruangpanel/user">User</a></li>
+                    <li class="breadcrumb-item"><a href="/ruangpanel/user/role">Role</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Privileges</li>
                 </ol>
             </nav>
@@ -21,7 +21,7 @@
 
         <div class="card p-3 card-block">
 
-            <form id="post-form" method="post" action="https://madrasahdigital.id/admin/user/role/update_role_privileges" enctype="multipart/form-data">
+            <form id="post-form" method="post" action="/ruangpanel/user/role/update_role_privileges" enctype="multipart/form-data">
 
                 <div class="pb-2 text-end">
                     <button type="submit" class="btn btn-outline-success btn-lg"><span class="bi bi-save"></span> Update</button>

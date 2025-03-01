@@ -11,13 +11,13 @@
                 <nav aria-label="breadcrumb" class="breadcrumb-header">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item active"><a href="/admin">Dashboard</a></li>
-                        <li class="breadcrumb-item active"><a href="/admin/course">Course</a></li>
+                        <li class="breadcrumb-item active"><a href="/ruangpanel/course">Course</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Add</li>
                     </ol>
                 </nav>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first text-end">
-                <a href="/admin/course/lessons/1" class="btn btn-primary"><i class="bi bi-save"></i> Manage Lessons</a>
+                <a href="/ruangpanel/course/lessons/1" class="btn btn-primary"><i class="bi bi-save"></i> Manage Lessons</a>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-save"></i> Save Courses</button>
             </div>
         </div>
@@ -26,15 +26,15 @@
     <section class="section">
         <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="course-tab" data-bs-toggle="tab" href="/admin/course/form" role="tab" aria-controls="course" aria-selected="true">Course</a>
+                <a class="nav-link active" id="course-tab" data-bs-toggle="tab" href="/ruangpanel/course/form" role="tab" aria-controls="course" aria-selected="true">Course</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="product-tab" href="/admin/course/product" role="tab" aria-controls="product" aria-selected="false" tabindex="-1">Product</a>
+                <a class="nav-link" id="product-tab" href="/ruangpanel/course/product" role="tab" aria-controls="product" aria-selected="false" tabindex="-1">Product</a>
             </li>
         </ul> -->
         <div class="list-group list-group-horizontal-sm text-center w-25" role="tablist">
-            <a href="/admin/course/form" class="list-group-item list-group-item-action border-0 rounded-0 active">Course</a>
-            <a href="/admin/course/product" class="list-group-item list-group-item-action border-0 rounded-0">Product</a>
+            <a href="/ruangpanel/course/form" class="list-group-item list-group-item-action border-0 rounded-0 active">Course</a>
+            <a href="/ruangpanel/course/product" class="list-group-item list-group-item-action border-0 rounded-0">Product</a>
         </div>
         <div class="tab-content mb-5" id="myTabContent">
             <div class="tab-pane card fade show active" id="course" role="tabpanel" aria-labelledby="course-tab" style="border-top:0; border-radius: 0 10px">
@@ -102,9 +102,9 @@
                                 <small>700x350px (2:1)</small><br>
                                 <div class="form-group mb-3">
                                     <div class="input-group mb-3">
-                                        <input type="text" id="image_cover" name="cover" class="form-control" placeholder="Choose file .." value="https://madrasahdigital.id//uploads/madrasahdigital/sources/Cover%20Kelas%20Online%20Ngonten%20Sakti.png" data-caption="Cover">
+                                        <input type="text" id="image_cover" name="cover" class="form-control" placeholder="Choose file .." value="//uploads/madrasahdigital/sources/Cover%20Kelas%20Online%20Ngonten%20Sakti.png" data-caption="Cover">
                                         <div class="input-group-append">
-                                            <a data-fancybox="" data-type="iframe" data-options="{&quot;iframe&quot; : {&quot;css&quot; : {&quot;width&quot; : &quot;80%&quot;, &quot;height&quot; : &quot;80%&quot;}}}" href="https://madrasahdigital.id/filemanager/dialog.php?type=1&amp;field_id=image_cover&amp;akey=4ab1a1be4ee36986a10ba25d532d67d2&amp;p=WyJtZWRpYSIsImRlbGV0ZV9maWxlcyIsImNyZWF0ZV9mb2xkZXJzIiwiZGVsZXRlX2ZvbGRlcnMiLCJ1cGxvYWRfZmlsZXMiLCJyZW5hbWVfZmlsZXMiLCJyZW5hbWVfZm9sZGVycyIsImR1cGxpY2F0ZV9maWxlcyIsImV4dHJhY3RfZmlsZXMiLCJjb3B5X2N1dF9maWxlcyIsImNvcHlfY3V0X2RpcnMiLCJjaG1vZF9maWxlcyIsImNobW9kX2RpcnMiLCJwcmV2aWV3X3RleHRfZmlsZXMiLCJlZGl0X3RleHRfZmlsZXMiLCJjcmVhdGVfdGV4dF9maWxlcyIsImRvd25sb2FkX2ZpbGVzIl0=" class="input-group-text btn-file-manager">Choose</a>
+                                            <a data-fancybox="" data-type="iframe" data-options="{&quot;iframe&quot; : {&quot;css&quot; : {&quot;width&quot; : &quot;80%&quot;, &quot;height&quot; : &quot;80%&quot;}}}" href="/filemanager/dialog.php?type=1&amp;field_id=image_cover&amp;akey=4ab1a1be4ee36986a10ba25d532d67d2&amp;p=WyJtZWRpYSIsImRlbGV0ZV9maWxlcyIsImNyZWF0ZV9mb2xkZXJzIiwiZGVsZXRlX2ZvbGRlcnMiLCJ1cGxvYWRfZmlsZXMiLCJyZW5hbWVfZmlsZXMiLCJyZW5hbWVfZm9sZGVycyIsImR1cGxpY2F0ZV9maWxlcyIsImV4dHJhY3RfZmlsZXMiLCJjb3B5X2N1dF9maWxlcyIsImNvcHlfY3V0X2RpcnMiLCJjaG1vZF9maWxlcyIsImNobW9kX2RpcnMiLCJwcmV2aWV3X3RleHRfZmlsZXMiLCJlZGl0X3RleHRfZmlsZXMiLCJjcmVhdGVfdGV4dF9maWxlcyIsImRvd25sb2FkX2ZpbGVzIl0=" class="input-group-text btn-file-manager">Choose</a>
                                         </div>
                                     </div>
                                 </div>
@@ -114,9 +114,9 @@
                                 <small>500x500px (1:1)</small><br>
                                 <div class="form-group mb-3">
                                     <div class="input-group mb-3">
-                                        <input type="text" id="image_thumbnail" name="thumbnail" class="form-control" placeholder="Choose file .." value="https://madrasahdigital.id//uploads/madrasahdigital/sources/Cover%20Kelas%20Online%20Ngonten%20Sakti.png" data-caption="Thumbnail">
+                                        <input type="text" id="image_thumbnail" name="thumbnail" class="form-control" placeholder="Choose file .." value="//uploads/madrasahdigital/sources/Cover%20Kelas%20Online%20Ngonten%20Sakti.png" data-caption="Thumbnail">
                                         <div class="input-group-append">
-                                            <a data-fancybox="" data-type="iframe" data-options="{&quot;iframe&quot; : {&quot;css&quot; : {&quot;width&quot; : &quot;80%&quot;, &quot;height&quot; : &quot;80%&quot;}}}" href="https://madrasahdigital.id/filemanager/dialog.php?type=1&amp;field_id=image_thumbnail&amp;akey=4ab1a1be4ee36986a10ba25d532d67d2&amp;p=WyJtZWRpYSIsImRlbGV0ZV9maWxlcyIsImNyZWF0ZV9mb2xkZXJzIiwiZGVsZXRlX2ZvbGRlcnMiLCJ1cGxvYWRfZmlsZXMiLCJyZW5hbWVfZmlsZXMiLCJyZW5hbWVfZm9sZGVycyIsImR1cGxpY2F0ZV9maWxlcyIsImV4dHJhY3RfZmlsZXMiLCJjb3B5X2N1dF9maWxlcyIsImNvcHlfY3V0X2RpcnMiLCJjaG1vZF9maWxlcyIsImNobW9kX2RpcnMiLCJwcmV2aWV3X3RleHRfZmlsZXMiLCJlZGl0X3RleHRfZmlsZXMiLCJjcmVhdGVfdGV4dF9maWxlcyIsImRvd25sb2FkX2ZpbGVzIl0=" class="input-group-text btn-file-manager">Choose</a>
+                                            <a data-fancybox="" data-type="iframe" data-options="{&quot;iframe&quot; : {&quot;css&quot; : {&quot;width&quot; : &quot;80%&quot;, &quot;height&quot; : &quot;80%&quot;}}}" href="/filemanager/dialog.php?type=1&amp;field_id=image_thumbnail&amp;akey=4ab1a1be4ee36986a10ba25d532d67d2&amp;p=WyJtZWRpYSIsImRlbGV0ZV9maWxlcyIsImNyZWF0ZV9mb2xkZXJzIiwiZGVsZXRlX2ZvbGRlcnMiLCJ1cGxvYWRfZmlsZXMiLCJyZW5hbWVfZmlsZXMiLCJyZW5hbWVfZm9sZGVycyIsImR1cGxpY2F0ZV9maWxlcyIsImV4dHJhY3RfZmlsZXMiLCJjb3B5X2N1dF9maWxlcyIsImNvcHlfY3V0X2RpcnMiLCJjaG1vZF9maWxlcyIsImNobW9kX2RpcnMiLCJwcmV2aWV3X3RleHRfZmlsZXMiLCJlZGl0X3RleHRfZmlsZXMiLCJjcmVhdGVfdGV4dF9maWxlcyIsImRvd25sb2FkX2ZpbGVzIl0=" class="input-group-text btn-file-manager">Choose</a>
                                         </div>
                                     </div>
                                 </div>

@@ -11,13 +11,13 @@
                 <nav aria-label="breadcrumb" class="breadcrumb-header">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="/admin/quiz">Quiz</a></li>
+                        <li class="breadcrumb-item"><a href="/ruangpanel/quiz">Quiz</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Form</li>
                     </ol>
                 </nav>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first text-end">
-                <!-- <a href="/admin/course/form" class="btn btn-primary"><i class="bi bi-plus"></i> Create Courses</a> -->
+                <!-- <a href="/ruangpanel/course/form" class="btn btn-primary"><i class="bi bi-plus"></i> Create Courses</a> -->
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@
                 <div class="mb-5 pb-3 border-bottom">
                     <button type="submit" name="submitBtn" value="save" class="btn btn-success me-1"><span class="bi bi-save"></span> Save</button>
                     <button type="submit" name="submitBtn" value="save_and_exit" class="btn btn-outline-success me-1"><span class="bi bi-save"></span> Save &amp; Exit</button>
-                    <a href="/admin/quiz" class="btn btn-secondary"><span class="glyphicon glyphicon-menu-left"></span> Back to Entry</a>
+                    <a href="/ruangpanel/quiz" class="btn btn-secondary"><span class="glyphicon glyphicon-menu-left"></span> Back to Entry</a>
                 </div>
 
                 <div class="row">
@@ -226,7 +226,7 @@
                                     <div class="input-group mb-3">
                                         <input type="text" id="image_cover" name="cover" class="form-control" placeholder="Choose file .." value="" data-caption="Cover">
                                         <div class="input-group-append">
-                                            <a data-fancybox="" data-type="iframe" data-options="{&quot;iframe&quot; : {&quot;css&quot; : {&quot;width&quot; : &quot;80%&quot;, &quot;height&quot; : &quot;80%&quot;}}}" href="https://madrasahdigital.id/filemanager/dialog.php?type=1&amp;field_id=image_cover&amp;akey=4ab1a1be4ee36986a10ba25d532d67d2&amp;p=WyJtZWRpYSIsImRlbGV0ZV9maWxlcyIsImNyZWF0ZV9mb2xkZXJzIiwiZGVsZXRlX2ZvbGRlcnMiLCJ1cGxvYWRfZmlsZXMiLCJyZW5hbWVfZmlsZXMiLCJyZW5hbWVfZm9sZGVycyIsImR1cGxpY2F0ZV9maWxlcyIsImV4dHJhY3RfZmlsZXMiLCJjb3B5X2N1dF9maWxlcyIsImNvcHlfY3V0X2RpcnMiLCJjaG1vZF9maWxlcyIsImNobW9kX2RpcnMiLCJwcmV2aWV3X3RleHRfZmlsZXMiLCJlZGl0X3RleHRfZmlsZXMiLCJjcmVhdGVfdGV4dF9maWxlcyIsImRvd25sb2FkX2ZpbGVzIl0=" class="input-group-text btn-file-manager">Choose</a>
+                                            <a data-fancybox="" data-type="iframe" data-options="{&quot;iframe&quot; : {&quot;css&quot; : {&quot;width&quot; : &quot;80%&quot;, &quot;height&quot; : &quot;80%&quot;}}}" href="/filemanager/dialog.php?type=1&amp;field_id=image_cover&amp;akey=4ab1a1be4ee36986a10ba25d532d67d2&amp;p=WyJtZWRpYSIsImRlbGV0ZV9maWxlcyIsImNyZWF0ZV9mb2xkZXJzIiwiZGVsZXRlX2ZvbGRlcnMiLCJ1cGxvYWRfZmlsZXMiLCJyZW5hbWVfZmlsZXMiLCJyZW5hbWVfZm9sZGVycyIsImR1cGxpY2F0ZV9maWxlcyIsImV4dHJhY3RfZmlsZXMiLCJjb3B5X2N1dF9maWxlcyIsImNvcHlfY3V0X2RpcnMiLCJjaG1vZF9maWxlcyIsImNobW9kX2RpcnMiLCJwcmV2aWV3X3RleHRfZmlsZXMiLCJlZGl0X3RleHRfZmlsZXMiLCJjcmVhdGVfdGV4dF9maWxlcyIsImRvd25sb2FkX2ZpbGVzIl0=" class="input-group-text btn-file-manager">Choose</a>
                                         </div>
                                     </div>
                                 </div>
@@ -362,7 +362,7 @@
                 <div class="">
                     <button type="submit" name="submitBtn" value="save" class="btn btn-success me-1"><span class="bi bi-save"></span> Save</button>
                     <button type="submit" name="submitBtn" value="save_and_exit" class="btn btn-outline-success me-1"><span class="bi bi-save"></span> Save &amp; Exit</button>
-                    <a href="https://madrasahdigital.id/admin/entry/exam/?" class="btn btn-secondary"><span class="glyphicon glyphicon-menu-left"></span> Back to Entry</a>
+                    <a href="/ruangpanel/entry/exam/?" class="btn btn-secondary"><span class="glyphicon glyphicon-menu-left"></span> Back to Entry</a>
                 </div>
 
             </form>

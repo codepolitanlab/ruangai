@@ -5,15 +5,15 @@
 
 <div class="page-heading">
     <section class="section">
-        <form id="post-form" method="post" action="https://madrasahdigital.id/admin/user/insert" enctype="multipart/form-data">
+        <form id="post-form" method="post" action="/ruangpanel/user/insert" enctype="multipart/form-data">
             <div class="mb-3">
                 <div class="row align-items-center">
                     <div class="col-lg-6">
-                        <h2><a href="https://madrasahdigital.id/admin/user"><?= $page_title ?></a> • New</h2>
+                        <h2><a href="/ruangpanel/user"><?= $page_title ?></a> • New</h2>
                         <nav aria-label="breadcrumb" class="breadcrumb-header">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                                <li class="breadcrumb-item"><a href="/admin/user">User</a></li>
+                                <li class="breadcrumb-item"><a href="/ruangpanel/user">User</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Form</li>
                             </ol>
                         </nav>
@@ -81,7 +81,7 @@
                                     <div class="input-group mb-3">
                                         <input type="text" id="image_avatar" name="avatar" class="form-control" placeholder="Choose file .." value="" data-caption="Avatar">
                                         <div class="input-group-append">
-                                            <a data-fancybox="" data-type="iframe" data-options="{&quot;iframe&quot; : {&quot;css&quot; : {&quot;width&quot; : &quot;80%&quot;, &quot;height&quot; : &quot;80%&quot;}}}" href="https://madrasahdigital.id/filemanager/dialog.php?type=1&amp;field_id=image_avatar&amp;akey=4ab1a1be4ee36986a10ba25d532d67d2" class="input-group-text btn-file-manager">Choose</a>
+                                            <a data-fancybox="" data-type="iframe" data-options="{&quot;iframe&quot; : {&quot;css&quot; : {&quot;width&quot; : &quot;80%&quot;, &quot;height&quot; : &quot;80%&quot;}}}" href="/filemanager/dialog.php?type=1&amp;field_id=image_avatar&amp;akey=4ab1a1be4ee36986a10ba25d532d67d2" class="input-group-text btn-file-manager">Choose</a>
                                         </div>
                                     </div>
                                 </div>

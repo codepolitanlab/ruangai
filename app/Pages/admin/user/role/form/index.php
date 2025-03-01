@@ -13,8 +13,8 @@
                     <nav aria-label="breadcrumb" class="breadcrumb-header">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="/admin/user">User</a></li>
-                            <li class="breadcrumb-item"><a href="/admin/user/role">Role</a></li>
+                            <li class="breadcrumb-item"><a href="/ruangpanel/user">User</a></li>
+                            <li class="breadcrumb-item"><a href="/ruangpanel/user/role">Role</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Form</li>
                         </ol>
                     </nav>
@@ -23,7 +23,7 @@
                 <div class="card p-3 card-block">
 
 
-                    <form id="post-form" class="slugify" method="post" action="https://madrasahdigital.id/admin/user/role/insert" enctype="multipart/form-data">
+                    <form id="post-form" class="slugify" method="post" action="/ruangpanel/user/role/insert" enctype="multipart/form-data">
 
                         <div class="mb-3">
                             <label class="form-label">Role Name</label>

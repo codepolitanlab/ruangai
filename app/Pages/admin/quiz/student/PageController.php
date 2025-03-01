@@ -1,4 +1,4 @@
-<?php namespace App\Pages\admin\quiz\student;
+<?php namespace App\Pages\ruangpanel\quiz\student;
 
 use App\Controllers\BaseController;
 
@@ -7,6 +7,6 @@ class PageController extends BaseController
     public function getIndex()
     {
         $data['page_title'] = "Quiz";
-        return pageView('admin/quiz/student/index', $data);
+        return pageView('ruangpanel/quiz/student/index', $data);
     }
 }

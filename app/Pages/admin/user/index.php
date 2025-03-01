@@ -6,8 +6,8 @@
 <div class="page-heading">
 
     <div class="d-flex mb-4">
-       <a href="/admin/user" class="btn btn-white text-success rounded-pill px-4 me-2"><i class="bi bi-person-fill"></i> Pengguna</a>
-       <a href="/admin/user/role" class="btn text-success rounded-pill px-4 me-2"><i class="bi bi-person-fill-gear"></i> Peran</a>
+       <a href="/ruangpanel/user" class="btn btn-white text-success rounded-pill px-4 me-2"><i class="bi bi-person-fill"></i> Pengguna</a>
+       <a href="/ruangpanel/user/role" class="btn text-success rounded-pill px-4 me-2"><i class="bi bi-person-fill-gear"></i> Peran</a>
     </div>
 
     <div class="page-title mb-3">
@@ -22,8 +22,8 @@
                 </nav>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first text-end">
-                <a href="/admin/course/form" class="btn btn-primary me-2"><i class="bi bi-download"></i> Ekspor</a>
-                <a href="/admin/user/form" class="btn btn-primary"><i class="bi bi-plus"></i> Tambah Pengguna</a>
+                <a href="/ruangpanel/course/form" class="btn btn-primary me-2"><i class="bi bi-download"></i> Ekspor</a>
+                <a href="/ruangpanel/user/form" class="btn btn-primary"><i class="bi bi-plus"></i> Tambah Pengguna</a>
             </div>
         </div>
     </div>
@@ -44,7 +44,7 @@
                             <br>84 orang
                         </div>
                     </div>
-                    <a class="resetcache m-2 h5" href="/admin/user/reset_cache"><span class="bi bi-arrow-repeat"></span></a>
+                    <a class="resetcache m-2 h5" href="/ruangpanel/user/reset_cache"><span class="bi bi-arrow-repeat"></span></a>
                 </div>
 
                 <div class="table-responsive">
@@ -92,7 +92,7 @@
                                 <td>
                                     <div class="btn-group">
                                         <button type="submit" class="btn btn-primary">Filter</button>
-                                        <a href="https://madrasahdigital.id/admin/user" class="btn btn-secondary">Reset</a>
+                                        <a href="/ruangpanel/user" class="btn btn-secondary">Reset</a>
                                     </div>
                                 </td>
                             </tr>
@@ -112,11 +112,11 @@
                                 <td>2025-02-25 09:38:00</td>
                                 <td class="text-end">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-outline-success text-nowrap" href="https://madrasahdigital.id/admin/user/activate/141" onclick="return confirm('Email belum tervalidasi. Lanjutkan aktivasi?')"><span class="bi bi-star"></span> Activate</a>
+                                        <a class="btn btn-sm btn-outline-success text-nowrap" href="/ruangpanel/user/activate/141" onclick="return confirm('Email belum tervalidasi. Lanjutkan aktivasi?')"><span class="bi bi-star"></span> Activate</a>
 
-                                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="https://madrasahdigital.id/admin/user/edit/141"><span class="bi bi-pencil-square"></span> Edit</a>
+                                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="/ruangpanel/user/edit/141"><span class="bi bi-pencil-square"></span> Edit</a>
 
-                                        <a class="btn btn-sm btn-outline-danger text-nowrap" onclick="return confirm('are you sure?')" href="https://madrasahdigital.id/admin/user/delete/141"><span class="bi bi-x-lg"></span> Delete</a>
+                                        <a class="btn btn-sm btn-outline-danger text-nowrap" onclick="return confirm('are you sure?')" href="/ruangpanel/user/delete/141"><span class="bi bi-x-lg"></span> Delete</a>
 
                                     </div>
                                 </td>
@@ -135,9 +135,9 @@
                                 <td>2025-02-24 08:21:27</td>
                                 <td class="text-end">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-outline-secondary" href="https://madrasahdigital.id/admin/user/edit/140"><span class="bi bi-pencil-square"></span> Edit</a>
+                                        <a class="btn btn-sm btn-outline-secondary" href="/ruangpanel/user/edit/140"><span class="bi bi-pencil-square"></span> Edit</a>
 
-                                        <a class="btn btn-sm btn-outline-danger" onclick="return confirm('are you sure?')" href="https://madrasahdigital.id/admin/user/block/140"><span class="bi bi-trash"></span> Block</a>
+                                        <a class="btn btn-sm btn-outline-danger" onclick="return confirm('are you sure?')" href="/ruangpanel/user/block/140"><span class="bi bi-trash"></span> Block</a>
                                     </div>
                                 </td>
                             </tr>
@@ -155,11 +155,11 @@
                                 <td>2025-02-21 20:32:53</td>
                                 <td class="text-end">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-outline-success text-nowrap" href="https://madrasahdigital.id/admin/user/activate/139" onclick="return confirm('Email belum tervalidasi. Lanjutkan aktivasi?')"><span class="bi bi-star"></span> Activate</a>
+                                        <a class="btn btn-sm btn-outline-success text-nowrap" href="/ruangpanel/user/activate/139" onclick="return confirm('Email belum tervalidasi. Lanjutkan aktivasi?')"><span class="bi bi-star"></span> Activate</a>
 
-                                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="https://madrasahdigital.id/admin/user/edit/139"><span class="bi bi-pencil-square"></span> Edit</a>
+                                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="/ruangpanel/user/edit/139"><span class="bi bi-pencil-square"></span> Edit</a>
 
-                                        <a class="btn btn-sm btn-outline-danger text-nowrap" onclick="return confirm('are you sure?')" href="https://madrasahdigital.id/admin/user/delete/139"><span class="bi bi-x-lg"></span> Delete</a>
+                                        <a class="btn btn-sm btn-outline-danger text-nowrap" onclick="return confirm('are you sure?')" href="/ruangpanel/user/delete/139"><span class="bi bi-x-lg"></span> Delete</a>
 
                                     </div>
                                 </td>
@@ -178,11 +178,11 @@
                                 <td>2025-02-21 11:02:12</td>
                                 <td class="text-end">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-outline-success text-nowrap" href="https://madrasahdigital.id/admin/user/activate/138" onclick="return confirm('Email belum tervalidasi. Lanjutkan aktivasi?')"><span class="bi bi-star"></span> Activate</a>
+                                        <a class="btn btn-sm btn-outline-success text-nowrap" href="/ruangpanel/user/activate/138" onclick="return confirm('Email belum tervalidasi. Lanjutkan aktivasi?')"><span class="bi bi-star"></span> Activate</a>
 
-                                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="https://madrasahdigital.id/admin/user/edit/138"><span class="bi bi-pencil-square"></span> Edit</a>
+                                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="/ruangpanel/user/edit/138"><span class="bi bi-pencil-square"></span> Edit</a>
 
-                                        <a class="btn btn-sm btn-outline-danger text-nowrap" onclick="return confirm('are you sure?')" href="https://madrasahdigital.id/admin/user/delete/138"><span class="bi bi-x-lg"></span> Delete</a>
+                                        <a class="btn btn-sm btn-outline-danger text-nowrap" onclick="return confirm('are you sure?')" href="/ruangpanel/user/delete/138"><span class="bi bi-x-lg"></span> Delete</a>
 
                                     </div>
                                 </td>
@@ -201,11 +201,11 @@
                                 <td>2025-02-21 11:00:23</td>
                                 <td class="text-end">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-outline-success text-nowrap" href="https://madrasahdigital.id/admin/user/activate/137" onclick="return confirm('Email belum tervalidasi. Lanjutkan aktivasi?')"><span class="bi bi-star"></span> Activate</a>
+                                        <a class="btn btn-sm btn-outline-success text-nowrap" href="/ruangpanel/user/activate/137" onclick="return confirm('Email belum tervalidasi. Lanjutkan aktivasi?')"><span class="bi bi-star"></span> Activate</a>
 
-                                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="https://madrasahdigital.id/admin/user/edit/137"><span class="bi bi-pencil-square"></span> Edit</a>
+                                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="/ruangpanel/user/edit/137"><span class="bi bi-pencil-square"></span> Edit</a>
 
-                                        <a class="btn btn-sm btn-outline-danger text-nowrap" onclick="return confirm('are you sure?')" href="https://madrasahdigital.id/admin/user/delete/137"><span class="bi bi-x-lg"></span> Delete</a>
+                                        <a class="btn btn-sm btn-outline-danger text-nowrap" onclick="return confirm('are you sure?')" href="/ruangpanel/user/delete/137"><span class="bi bi-x-lg"></span> Delete</a>
 
                                     </div>
                                 </td>
@@ -224,11 +224,11 @@
                                 <td>2025-02-21 10:35:38</td>
                                 <td class="text-end">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-outline-success text-nowrap" href="https://madrasahdigital.id/admin/user/activate/136" onclick="return confirm('Email belum tervalidasi. Lanjutkan aktivasi?')"><span class="bi bi-star"></span> Activate</a>
+                                        <a class="btn btn-sm btn-outline-success text-nowrap" href="/ruangpanel/user/activate/136" onclick="return confirm('Email belum tervalidasi. Lanjutkan aktivasi?')"><span class="bi bi-star"></span> Activate</a>
 
-                                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="https://madrasahdigital.id/admin/user/edit/136"><span class="bi bi-pencil-square"></span> Edit</a>
+                                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="/ruangpanel/user/edit/136"><span class="bi bi-pencil-square"></span> Edit</a>
 
-                                        <a class="btn btn-sm btn-outline-danger text-nowrap" onclick="return confirm('are you sure?')" href="https://madrasahdigital.id/admin/user/delete/136"><span class="bi bi-x-lg"></span> Delete</a>
+                                        <a class="btn btn-sm btn-outline-danger text-nowrap" onclick="return confirm('are you sure?')" href="/ruangpanel/user/delete/136"><span class="bi bi-x-lg"></span> Delete</a>
 
                                     </div>
                                 </td>
@@ -247,11 +247,11 @@
                                 <td>2025-02-21 10:33:59</td>
                                 <td class="text-end">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-outline-success text-nowrap" href="https://madrasahdigital.id/admin/user/activate/135" onclick="return confirm('Email belum tervalidasi. Lanjutkan aktivasi?')"><span class="bi bi-star"></span> Activate</a>
+                                        <a class="btn btn-sm btn-outline-success text-nowrap" href="/ruangpanel/user/activate/135" onclick="return confirm('Email belum tervalidasi. Lanjutkan aktivasi?')"><span class="bi bi-star"></span> Activate</a>
 
-                                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="https://madrasahdigital.id/admin/user/edit/135"><span class="bi bi-pencil-square"></span> Edit</a>
+                                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="/ruangpanel/user/edit/135"><span class="bi bi-pencil-square"></span> Edit</a>
 
-                                        <a class="btn btn-sm btn-outline-danger text-nowrap" onclick="return confirm('are you sure?')" href="https://madrasahdigital.id/admin/user/delete/135"><span class="bi bi-x-lg"></span> Delete</a>
+                                        <a class="btn btn-sm btn-outline-danger text-nowrap" onclick="return confirm('are you sure?')" href="/ruangpanel/user/delete/135"><span class="bi bi-x-lg"></span> Delete</a>
 
                                     </div>
                                 </td>
@@ -270,11 +270,11 @@
                                 <td>2025-02-21 10:28:00</td>
                                 <td class="text-end">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-outline-success text-nowrap" href="https://madrasahdigital.id/admin/user/activate/134" onclick="return confirm('Email belum tervalidasi. Lanjutkan aktivasi?')"><span class="bi bi-star"></span> Activate</a>
+                                        <a class="btn btn-sm btn-outline-success text-nowrap" href="/ruangpanel/user/activate/134" onclick="return confirm('Email belum tervalidasi. Lanjutkan aktivasi?')"><span class="bi bi-star"></span> Activate</a>
 
-                                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="https://madrasahdigital.id/admin/user/edit/134"><span class="bi bi-pencil-square"></span> Edit</a>
+                                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="/ruangpanel/user/edit/134"><span class="bi bi-pencil-square"></span> Edit</a>
 
-                                        <a class="btn btn-sm btn-outline-danger text-nowrap" onclick="return confirm('are you sure?')" href="https://madrasahdigital.id/admin/user/delete/134"><span class="bi bi-x-lg"></span> Delete</a>
+                                        <a class="btn btn-sm btn-outline-danger text-nowrap" onclick="return confirm('are you sure?')" href="/ruangpanel/user/delete/134"><span class="bi bi-x-lg"></span> Delete</a>
 
                                     </div>
                                 </td>
@@ -293,11 +293,11 @@
                                 <td>2025-02-21 07:26:48</td>
                                 <td class="text-end">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-outline-success text-nowrap" href="https://madrasahdigital.id/admin/user/activate/133" onclick="return confirm('Email belum tervalidasi. Lanjutkan aktivasi?')"><span class="bi bi-star"></span> Activate</a>
+                                        <a class="btn btn-sm btn-outline-success text-nowrap" href="/ruangpanel/user/activate/133" onclick="return confirm('Email belum tervalidasi. Lanjutkan aktivasi?')"><span class="bi bi-star"></span> Activate</a>
 
-                                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="https://madrasahdigital.id/admin/user/edit/133"><span class="bi bi-pencil-square"></span> Edit</a>
+                                        <a class="btn btn-sm btn-outline-secondary text-nowrap" href="/ruangpanel/user/edit/133"><span class="bi bi-pencil-square"></span> Edit</a>
 
-                                        <a class="btn btn-sm btn-outline-danger text-nowrap" onclick="return confirm('are you sure?')" href="https://madrasahdigital.id/admin/user/delete/133"><span class="bi bi-x-lg"></span> Delete</a>
+                                        <a class="btn btn-sm btn-outline-danger text-nowrap" onclick="return confirm('are you sure?')" href="/ruangpanel/user/delete/133"><span class="bi bi-x-lg"></span> Delete</a>
 
                                     </div>
                                 </td>
@@ -316,9 +316,9 @@
                                 <td>2025-02-20 09:07:16</td>
                                 <td class="text-end">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-outline-secondary" href="https://madrasahdigital.id/admin/user/edit/132"><span class="bi bi-pencil-square"></span> Edit</a>
+                                        <a class="btn btn-sm btn-outline-secondary" href="/ruangpanel/user/edit/132"><span class="bi bi-pencil-square"></span> Edit</a>
 
-                                        <a class="btn btn-sm btn-outline-danger" onclick="return confirm('are you sure?')" href="https://madrasahdigital.id/admin/user/block/132"><span class="bi bi-trash"></span> Block</a>
+                                        <a class="btn btn-sm btn-outline-danger" onclick="return confirm('are you sure?')" href="/ruangpanel/user/block/132"><span class="bi bi-trash"></span> Block</a>
                                     </div>
                                 </td>
                             </tr>
@@ -329,7 +329,7 @@
                     </table>
 
                     <div class="pagination">
-                        <strong>1</strong><a href="https://madrasahdigital.id/admin/user/index/2" data-ci-pagination-page="2">2</a><a href="https://madrasahdigital.id/admin/user/index/3" data-ci-pagination-page="3">3</a><a href="https://madrasahdigital.id/admin/user/index/2" data-ci-pagination-page="2" rel="next">&gt;</a><a href="https://madrasahdigital.id/admin/user/index/15" data-ci-pagination-page="15">Terakhir ›</a>
+                        <strong>1</strong><a href="/ruangpanel/user/index/2" data-ci-pagination-page="2">2</a><a href="/ruangpanel/user/index/3" data-ci-pagination-page="3">3</a><a href="/ruangpanel/user/index/2" data-ci-pagination-page="2" rel="next">&gt;</a><a href="/ruangpanel/user/index/15" data-ci-pagination-page="15">Terakhir ›</a>
                     </div>
 
                 </div>

@@ -1,4 +1,4 @@
-<?php namespace App\Pages\admin\course\lessons\topic;
+<?php namespace App\Pages\ruangpanel\course\lessons\topic;
 
 use App\Controllers\BaseController;
 
@@ -7,6 +7,6 @@ class PageController extends BaseController
     public function getIndex()
     {
         $data['page_title'] = "Theory";
-        return pageView('admin/course/lessons/topic/index', $data);
+        return pageView('ruangpanel/course/lessons/topic/index', $data);
     }
 }

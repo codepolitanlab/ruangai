@@ -11,13 +11,13 @@
                 <nav aria-label="breadcrumb" class="breadcrumb-header">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="/admin/quiz">Quiz</a></li>
+                        <li class="breadcrumb-item"><a href="/ruangpanel/quiz">Quiz</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Question</li>
                     </ol>
                 </nav>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first text-end">
-                <!-- <a href="/admin/course/form" class="btn btn-primary"><i class="bi bi-plus"></i> Create Courses</a> -->
+                <!-- <a href="/ruangpanel/course/form" class="btn btn-primary"><i class="bi bi-plus"></i> Create Courses</a> -->
             </div>
         </div>
     </div>

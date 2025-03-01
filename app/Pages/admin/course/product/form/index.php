@@ -11,13 +11,13 @@
                 <nav aria-label="breadcrumb" class="breadcrumb-header">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="/admin/course">Course</a></li>
+                        <li class="breadcrumb-item"><a href="/ruangpanel/course">Course</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Product</li>
                     </ol>
                 </nav>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first text-end">
-                <!-- <a href="/admin/course/form" class="btn btn-primary"><i class="bi bi-plus"></i> Create Courses</a> -->
+                <!-- <a href="/ruangpanel/course/form" class="btn btn-primary"><i class="bi bi-plus"></i> Create Courses</a> -->
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@
                 <div class="mb-5 pb-3 border-bottom">
                     <button type="submit" name="submitBtn" value="save" class="btn btn-success me-1"><span class="fa fa-save"></span> Save</button>
                     <button type="submit" name="submitBtn" value="save_and_exit" class="btn btn-outline-success me-1"><span class="fa fa-save"></span> Save &amp; Exit</button>
-                    <a href="/admin/course/product" class="btn btn-secondary"><span class="glyphicon glyphicon-menu-left"></span> Back to Entry</a>
+                    <a href="/ruangpanel/course/product" class="btn btn-secondary"><span class="glyphicon glyphicon-menu-left"></span> Back to Entry</a>
                 </div>
 
                 <div class="row">
@@ -247,7 +247,7 @@
                 <div class="">
                     <button type="submit" name="submitBtn" value="save" class="btn btn-success me-1"><span class="fa fa-save"></span> Save</button>
                     <button type="submit" name="submitBtn" value="save_and_exit" class="btn btn-outline-success me-1"><span class="fa fa-save"></span> Save &amp; Exit</button>
-                    <a href="https://madrasahdigital.id/admin/course/product?filter[course_id]=1" class="btn btn-secondary"><span class="glyphicon glyphicon-menu-left"></span> Back to Entry</a>
+                    <a href="/ruangpanel/course/product?filter[course_id]=1" class="btn btn-secondary"><span class="glyphicon glyphicon-menu-left"></span> Back to Entry</a>
                 </div>
 
             </form>

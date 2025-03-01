@@ -11,13 +11,13 @@
                 <nav aria-label="breadcrumb" class="breadcrumb-header">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item active"><a href="/admin">Dashboard</a></li>
-                        <li class="breadcrumb-item active"><a href="/admin/course">Course</a></li>
+                        <li class="breadcrumb-item active"><a href="/ruangpanel/course">Course</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Add</li>
                     </ol>
                 </nav>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first text-end">
-                <a href="/admin/course/lessons/1" class="btn btn-primary"><i class="bi bi-save"></i> Manage Lessons</a>
+                <a href="/ruangpanel/course/lessons/1" class="btn btn-primary"><i class="bi bi-save"></i> Manage Lessons</a>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-save"></i> Save Courses</button>
             </div>
         </div>
@@ -25,8 +25,8 @@
 
     <section class="section">
         <div class="list-group list-group-horizontal-sm text-center w-25" role="tablist">
-            <a href="/admin/course/form" class="list-group-item list-group-item-action border-0 rounded-0">Course</a>
-            <a href="/admin/course/product" class="list-group-item list-group-item-action border-0 rounded-0 active">Product</a>
+            <a href="/ruangpanel/course/form" class="list-group-item list-group-item-action border-0 rounded-0">Course</a>
+            <a href="/ruangpanel/course/product" class="list-group-item list-group-item-action border-0 rounded-0 active">Product</a>
         </div>
         <div class="tab-content mb-5" id="myTabContent">
             <div class="tab-pane card fade show active" id="product" role="tabpanel" aria-labelledby="product-tab" style="border-top:0; border-radius: 0 10px">
@@ -61,7 +61,7 @@
                             <form>
                                 <section class="mb-2">
                                     <div class="mb-4">
-                                        <a href="/admin/course/product/form" class="btn btn-success rounded shadow-sm">
+                                        <a href="/ruangpanel/course/product/form" class="btn btn-success rounded shadow-sm">
                                             <span class="bi bi-plus"></span>
                                             <span class="d-none d-sm-inline">Tambah Course Product</span>
                                         </a>
@@ -131,16 +131,16 @@
                                                     <div class="btn-group mb-1">
 
 
-                                                        <a target="_self" href="https://madrasahdigital.id/admin/entry/course_product/action/row/set_default/1" class="btn btn-sm btn-outline-secondary text-info set_default" title="Set Default">
+                                                        <a target="_self" href="/ruangpanel/entry/course_product/action/row/set_default/1" class="btn btn-sm btn-outline-secondary text-info set_default" title="Set Default">
                                                             <span class="bi bi-check text-success"></span> Set Default </a>
                                                     </div>
 
                                                     <div class="btn-group mb-1">
-                                                        <button type="button" class="btn btn-sm btn-outline-secondary text-secondary " data-url="admin/entry/course_product/detail/1" data-bs-caption="Detail data" data-bs-toggle="modal" data-bs-target="#detailModal" title="Detail"><span class="bi bi-search"></span> Detail</button>
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary text-secondary " data-url="ruangpanel/entry/course_product/detail/1" data-bs-caption="Detail data" data-bs-toggle="modal" data-bs-target="#detailModal" title="Detail"><span class="bi bi-search"></span> Detail</button>
 
-                                                        <a class="btn btn-sm btn-outline-secondary text-success " href="https://madrasahdigital.id/admin/entry/course_product/edit/1?filter[course_id]=1" title="Edit"><span class="bi bi-pencil"></span> Edit</a>
+                                                        <a class="btn btn-sm btn-outline-secondary text-success " href="/ruangpanel/entry/course_product/edit/1?filter[course_id]=1" title="Edit"><span class="bi bi-pencil"></span> Edit</a>
 
-                                                        <a data-no-swup="" class="btn btn-sm btn-outline-secondary text-danger " onclick="return confirm('Yakin akan menghapus?')" href="https://madrasahdigital.id/admin/entry/course_product/delete/1?filter[course_id]=1" title="Delete"><span class="bi bi-remove"></span> Hapus</a>
+                                                        <a data-no-swup="" class="btn btn-sm btn-outline-secondary text-danger " onclick="return confirm('Yakin akan menghapus?')" href="/ruangpanel/entry/course_product/delete/1?filter[course_id]=1" title="Delete"><span class="bi bi-remove"></span> Hapus</a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -177,7 +177,7 @@
                         $('#detailModal').on('show.bs.modal', function(event) {
                             var modalButton = $(event.relatedTarget);
                             var caption = $(event.relatedTarget).data('caption');
-                            var url = `https://madrasahdigital.id/` + $(event.relatedTarget).data('url');
+                            var url = `/` + $(event.relatedTarget).data('url');
                             $('#detailModalLabel').html(caption);
                             $('#detailIframe').attr('src', url);
                         })

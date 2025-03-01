@@ -11,7 +11,7 @@
                 <nav aria-label="breadcrumb" class="breadcrumb-header">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item active"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active"><a href="/admin/course">Course</a></li>
+                        <li class="breadcrumb-item active"><a href="/ruangpanel/course">Course</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Student</li>
                     </ol>
                 </nav>
@@ -50,7 +50,7 @@
                             <td class="text-end">
                                 <div class="btn-group">
                                     <button type="submit" class="btn btn-sm btn-primary"><span class="fa fa-search"></span> Filter</button>
-                                    <a href="https://madrasahdigital.id/admin/course/student/index/1" class="btn btn-sm btn-secondary"><span class="fa fa-refresh"></span> Reset</a>
+                                    <a href="/ruangpanel/course/student/index/1" class="btn btn-sm btn-secondary"><span class="fa fa-refresh"></span> Reset</a>
                                 </div>
                             </td>
                         </tr>

@@ -7,6 +7,6 @@ class PageController extends BaseController
     public function getIndex()
     {
         $data['page_title'] = "Dashboard";
-        return pageView('admin/index', $data);
+        return pageView('ruangpanel/index', $data);
     }
 }
