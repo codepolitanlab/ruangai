@@ -1,4 +1,4 @@
-<?php namespace App\Pages\admin;
+<?php namespace App\Pages\zpanel;
 
 use App\Controllers\BaseController;
 

@@ -106,7 +106,7 @@ class Filters extends BaseFilters
      */
     public array $filters = [
         'session' => [
-            'before' => ['admin*'],
+            'before' => ['zpanel*'],
         ]
     ];
 }
