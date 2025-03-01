@@ -1,9 +1,13 @@
-<textarea id="<?= str_replace(['[',']'], ['__',''], $config['field']);?>" class="form-control" name="<?= $config['field'];?>" data-caption="<?= $config['label'];?>"></textarea>
+<textarea id="<?= str_replace(['[',']'], ['__',''], $config['name']); ?>" 
+          class="form-control" 
+          name="<?= $config['name']; ?>" 
+          data-caption="<?= $config['label']; ?>"><?= $value; ?></textarea>
+
 <script>
     var simplemde = new SimpleMDE({ 
-    	element: document.getElementById('<?= $config['field'];?>'),
-    	spellChecker: false,
-    	forceSync: true
+        element: document.getElementById('<?= $config['name']; ?>'),
+        spellChecker: false,
+        forceSync: true
     });
-    simplemde.value(`<?= $value;?>`);
+    simplemde.value(`<?= $value; ?>`);
 </script>

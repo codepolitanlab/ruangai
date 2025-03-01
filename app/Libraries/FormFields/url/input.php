@@ -1,1 +1,7 @@
-<input type="text" class="form-control" id="<?= str_replace(['[',']'], ['__',''], $config['field']);?>" name="<?php echo $config['field'];?>" value="<?php echo $value;?>" aria-describedby="basic-addon3" placeholder="<?= $config['placeholder'] ?? ''; ?>" data-caption="<?= $config['label'];?>">
+<input type="url" 
+       class="form-control" 
+       id="<?= str_replace(['[',']'], ['__',''], $config['name']);?>" 
+       name="<?= $config['name'];?>" 
+       value="<?= $value;?>" 
+       placeholder="<?= $config['placeholder'] ?? ''; ?>" 
+       data-caption="<?= $config['label'];?>"/>

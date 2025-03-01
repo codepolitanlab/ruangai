@@ -14,7 +14,7 @@ class FormGenerator
     protected function buildFields(array $fieldSchemas)
     {
         foreach ($fieldSchemas as $fieldName => $fieldSchema) {
-            $class = 'App\\Libraries\\FormFields\\' . ucfirst($fieldSchema['form']) . 'Field';
+            $class = 'App\\Libraries\\FormFields\\' . $this->toClassName($fieldSchema['form']) . 'Field';
             if (class_exists($class)) {
                 $this->fields[$fieldName] = new $class($fieldSchema);
             } else {
@@ -41,4 +41,11 @@ class FormGenerator
             'fieldsHtml' => $fieldsHtml,
         ]);
     }
+
+    private function toClassName(string $str): string {
+        return preg_replace_callback('/(?:^|_)([a-z])/', function ($matches) {
+            return strtoupper($matches[1]);
+        }, $str);
+    }
+    
 }

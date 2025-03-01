@@ -1,16 +1,21 @@
-<?php if ($value ?? '') : ?>
-    <input type="text" data-toggle="datepicker" id="<?= str_replace(['[', ']'], ['__', ''], $config['field']); ?>" value="<?= date('d-m-Y', strtotime($value)); ?>" class="form-control" data-caption="<?= $config['label']; ?>" autocomplete="off" />
-<?php else : ?>
-    <input type="text" data-toggle="datepicker" id="<?= str_replace(['[', ']'], ['__', ''], $config['field']); ?>" value="" class="form-control" data-caption="<?= $config['label']; ?>" autocomplete="off" />
-<?php endif; ?>
+<?php $fieldId = str_replace(['[', ']'], ['__', ''], $config['name']); ?>
 
-<input type="hidden" id="real_<?= str_replace(['[', ']'], ['__', ''], $config['field']); ?>" name="<?= $config['field']; ?>" value="<?= $value; ?>">
+<input type="text" 
+       data-toggle="datepicker" 
+       id="<?= $fieldId; ?>" 
+       value="<?= $value; ?>" 
+       class="form-control" 
+       data-caption="<?= $config['label']; ?>" 
+       autocomplete="off" 
+       <?= $attributes; ?> />
+
+<input type="hidden" id="real_<?= $fieldId; ?>" name="<?= $config['name']; ?>" value="<?= $config['value']; ?>">
+
 <script>
     $(function() {
-        $('#<?= str_replace(['[', ']'], ['__', ''], $config['field']); ?>').on('change', function() {
+        $('#<?= $fieldId; ?>').on('change', function() {
             let mydate = moment($(this).val(), "DD-MM-YYYY").format("YYYY-MM-DD");
-            console.log(mydate);
-            $('#real_<?= str_replace(['[', ']'], ['__', ''], $config['field']); ?>').val(mydate);
-        })
-    })
+            $('#real_<?= $fieldId; ?>').val(mydate);
+        });
+    });
 </script>

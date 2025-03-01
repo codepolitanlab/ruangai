@@ -1,1 +1,8 @@
-<input id="<?= str_replace(['[', ']'], ['__', ''], $config['field']); ?>" type="email" name="<?php echo $config['field']; ?>" value="<?php echo $value; ?>" class="form-control" placeholder="<?php echo $config['placeholder'] ?? ''; ?>" data-caption="<?= $config['label']; ?>" <?= strpos($config['rules'] ?? '', 'required') !== false ? 'required' : ''; ?> />
+<input id="<?= str_replace(['[', ']'], ['__', ''], $config['name']); ?>" 
+       type="email" 
+       name="<?= $config['name']; ?>" 
+       value="<?= $value; ?>" 
+       class="form-control" 
+       placeholder="<?= $config['placeholder'] ?? ''; ?>" 
+       data-caption="<?= $config['label']; ?>" 
+       <?= strpos($config['rules'] ?? '', 'required') !== false ? 'required' : ''; ?> />

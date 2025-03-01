@@ -1,19 +1,15 @@
 <?php
 $choosen = $value;
-foreach ($config['options'] as $key => $value) :
-    $attribute = '';
-    if ($choosen == $value || $choosen == $key)
-        $attribute .= 'checked ';
-    if (strpos(($config['rules'] ?? ''), 'required') !== false)
-        $attribute .= 'required ';
-    if (($config['disabled'] ?? false) == true)
-        $attribute .= 'disabled ';
+foreach ($config['options'] as $key => $val) :
+    $attribute = ($choosen == $val || $choosen == $key) ? 'checked ' : '';
+    $attribute .= (strpos(($config['rules'] ?? ''), 'required') !== false) ? 'required ' : '';
+    $attribute .= ($config['disabled'] ?? false) ? 'disabled ' : '';
 ?>
 
-    <div class="form-check <?= ($config['inline'] ?? false) == true ? 'form-check-inline' : ''; ?>">
-        <input name="<?= $config['field']; ?>" class="form-check-input" type="radio" id="<?= $config['field'] . '_' . $key; ?>" value="<?= $key; ?>" <?= $attribute; ?>>
-        <label class="form-check-label" for="<?= $config['field'] . '_' . $key; ?>">
-            <?= $value; ?>
+    <div class="form-check <?= ($config['inline'] ?? false) ? 'form-check-inline' : ''; ?>">
+        <input name="<?= $config['name']; ?>" class="form-check-input" type="radio" id="<?= $config['name'] . '_' . $key; ?>" value="<?= $key; ?>" <?= $attribute; ?>>
+        <label class="form-check-label" for="<?= $config['name'] . '_' . $key; ?>">
+            <?= $val; ?>
         </label>
     </div>
 
