@@ -13,14 +13,18 @@
     <link rel="stylesheet" crossorigin href="/admin/compiled/css/app-dark.css">
     <link rel="stylesheet" crossorigin href="/admin/app-ext.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.9/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-tagsinput/1.3.6/jquery.tagsinput.min.css">
+    <!-- Datepicker -->
+    <link rel="stylesheet" id="theme-style" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.9/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
+
 </head>
 
 <body>
@@ -47,6 +51,8 @@
     <script src="/admin/compiled/js/app.js"></script>
 
     <!-- <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script> -->
+
+    <!-- https://fengyuanchen.github.io/datepicker -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js" type="text/javascript"></script>
 
     <!-- Ace Code Editor -->
@@ -58,6 +64,9 @@
 
     <!-- ColorPicker -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinyColorPicker/1.1.1/jqColorPicker.min.js" integrity="sha512-jQ+T1MmwqyWSgkn1MtW6OxXc6wySH9YnmC8rPlEAn0CLgWH4gY1Di/6r42BOqO9zSbLQxZ/47Xs/6qc2rIZmXw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- DatePicker -->
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js"></script>
 
     <script>
         var myckeditor = [];
@@ -81,11 +90,6 @@
 
             $('.color').colorPicker({
                 opacity: true
-            });
-
-            // DATEPICKER
-            $('[data-toggle="datepicker"]').datepicker({
-                format: 'dd-mm-yyyy'
             });
 
             $(".slugify input.title").keyup(function() {

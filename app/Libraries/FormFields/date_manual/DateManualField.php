@@ -19,9 +19,9 @@ class DateManualField extends BaseField
     {
         if (!empty($value)) {
             return [
-                'day' => date('d', strtotime($value)),
+                'year' => date('Y', strtotime($value)),
                 'month' => date('m', strtotime($value)),
-                'year' => date('Y', strtotime($value))
+                'day' => date('d', strtotime($value)),
             ];
         }
         return ['day' => '', 'month' => '', 'year' => ''];

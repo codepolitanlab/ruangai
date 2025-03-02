@@ -12,6 +12,7 @@ $time = $value['time'] ?? '';
            style="max-width:150px" 
            data-caption="<?= $config['label']; ?>" 
            autocomplete="off" 
+           <?= strpos($config['rules'] ?? '', 'required') !== false ? 'required' : ''; ?> 
            data-toggle="datepicker" />
 
     <input type="time" 
@@ -19,13 +20,17 @@ $time = $value['time'] ?? '';
            value="<?= $time; ?>" 
            class="form-control" 
            style="max-width:150px" 
+           <?= strpos($config['rules'] ?? '', 'required') !== false ? 'required' : ''; ?> 
            data-caption="<?= $config['label']; ?>" />
 </div>
 
-<input type="hidden" id="real_<?= $fieldId; ?>" name="<?= $config['name']; ?>" value="">
+<input type="hidden" id="real_<?= $fieldId; ?>" name="<?= $config['name']; ?>" value="<?= $value['original']; ?>" />
 
 <script>
     $(function() {
+        $('#<?= $fieldId; ?>_date').datepicker({
+            format: '<?= $config['format'] ?>'
+        });
         $('#<?= $fieldId; ?>_date, #<?= $fieldId; ?>_time').on('change', function() {
             let mydate = moment($('#<?= $fieldId; ?>_date').val(), "DD-MM-YYYY").format("YYYY-MM-DD");
             let mytime = $('#<?= $fieldId; ?>_time').val();

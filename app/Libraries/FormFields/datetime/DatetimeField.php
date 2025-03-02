@@ -9,8 +9,8 @@ class DatetimeField extends BaseField
     protected string $name = '';
     protected string $label = '';
     protected string $rules = '';
-    protected string $format = 'd-m-Y H:i'; // Format tampilan di input
-    protected string $dbFormat = 'Y-m-d H:i:s'; // Format penyimpanan di database
+    protected string $format = 'DD-MM-YYYY'; // Moment.js Format tampilan di input
+    protected string $dbFormat = 'YYYY-MM-DD'; // Moment.js Format penyimpanan di database
 
     /**
      * Konversi nilai sebelum ditampilkan di input (pisahkan date dan time).
@@ -20,10 +20,11 @@ class DatetimeField extends BaseField
         if (!empty($value)) {
             return [
                 'date' => date('d-m-Y', strtotime($value)),
-                'time' => date('H:i', strtotime($value))
+                'time' => date('H:i', strtotime($value)),
+                'original' => date("Y-m-d H:i:s", strtotime($value)),
             ];
         }
-        return ['date' => '', 'time' => ''];
+        return ['date' => '', 'time' => '', 'original' => ''];
     }
 
     /**

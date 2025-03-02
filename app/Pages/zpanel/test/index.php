@@ -10,7 +10,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <form>
+                    <form method="post" action="<?= current_url() ?>">
                         <?php foreach ($form as $field) : ?>
                             <div class="form-group">
                                 <label for="<?= $field['name'] ?>"><?= $field['label'] ?></label>
@@ -19,7 +19,7 @@
                             <?php endforeach; ?>
                         </div>
 
-                        <div>    
+                        <div class="border-top mt-4 pt-4">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </form>
