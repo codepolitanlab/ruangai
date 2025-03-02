@@ -16,18 +16,16 @@ abstract class BaseField
     public function __construct(array $attributes, mixed $value = null)
     {
         // Assign properti dari array ke atribut masing-masing
-        foreach ($attributes as $key => $value) {
+        foreach ($attributes as $key => $val) {
             if (property_exists($this, $key)) {
-                $this->{$key} = $value;
+                $this->{$key} = $val;
             }
         }
 
         // Assign nilai jika diberikan
-        if ($value !== null) {
-            $this->value = $value;
-        }
+        $this->value = $value;
     }
-
+    
     // Getter untuk mendapatkan semua properti sebagai array
     public function getProps(): array
     {
@@ -93,7 +91,7 @@ abstract class BaseField
         ob_start();
         extract([
             'config' => $this->getProps(),
-            'value' => $this->getValueForInput($value ?? $this->default),
+            'value' => esc($this->getValueForInput($value ?? $this->value ?? $this->default)),
             'attributes' => $this->getAttributeString()
         ]);
         include $viewPath;
@@ -114,7 +112,7 @@ abstract class BaseField
         }
 
         ob_start();
-        extract(['value' => $this->getValueForOutput($value ?? $this->default)] + $this->getProps());
+        extract(['value' => esc($this->getValueForOutput($value ?? $this->value ?? $this->default))] + $this->getProps());
         include $viewPath;
         return ob_get_clean();
     }

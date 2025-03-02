@@ -48,7 +48,17 @@
 
     <!-- <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js" type="text/javascript"></script>
-    
+
+    <!-- Ace Code Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/ace.min.js" integrity="sha512-jB1NOQkR0yLnWmEZQTUW4REqirbskxoYNltZE+8KzXqs9gHG5mrxLR5w3TwUn6AylXkhZZWTPP894xcX/X8Kbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/mode-html.min.js" integrity="sha512-vSQkVhmiIt31RHmh8b65o0ap3yoL08VJ6MeuiCGo+92JDdSSWAEWoWELEf3WBk4e2tz/0CvnTe87Y2rFrNjcbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.10.1/mode-yaml.min.js" integrity="sha512-WcvQVyf7ECu3mkQRpaJJ2l05xJAIlFM1bscCbwduQBztxzoGUWqkAawsMdLr6tkD9ke4V6soIh6aufeAuW1ruw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.1/mode-json.min.js" integrity="sha512-dux75XSGmyoN14vXQ2uJ7dvx/uOjmTZfVPG/MBk27VT/k2dug8X1TSgye8RhHv3fhhZLTnWMwi8doXXbM4cvUw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.1/mode-css.min.js" integrity="sha512-y7tJeEggFZ4vA7ILQ9woUlZKyrTDdJfzCX6xUztUU6gGMy6k1DJfE/94YxZbLu5do99cTUDW6l+xqkekx0FFlg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- ColorPicker -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinyColorPicker/1.1.1/jqColorPicker.min.js" integrity="sha512-jQ+T1MmwqyWSgkn1MtW6OxXc6wySH9YnmC8rPlEAn0CLgWH4gY1Di/6r42BOqO9zSbLQxZ/47Xs/6qc2rIZmXw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script>
         var myckeditor = [];
         var inputChanged;
@@ -142,7 +152,10 @@
                 });
             })
         }
-        initEntryScript();
+        $(function(){
+            initEntryScript();
+
+        })
 
         /* HELPER FUNCTIONS */
         //////////////////////

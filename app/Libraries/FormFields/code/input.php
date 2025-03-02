@@ -5,9 +5,7 @@
          data-input-id="<?= $fieldName; ?>" 
          data-mode="<?= $config['mode'] ?? 'html'; ?>" 
          class="code_editor mb-4" 
-         style="min-height:<?= $config['height'] ?? 400; ?>px">
-        <?= $value; ?>
-    </div>
+         style="min-height:<?= $config['height'] ?? 400; ?>px"><?= $value; ?></div>
 
     <input type="hidden" name="<?= $config['name']; ?>" id="<?= $fieldName; ?>" value="<?= htmlentities($value); ?>">
 </div>

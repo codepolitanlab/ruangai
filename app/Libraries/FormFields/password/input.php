@@ -7,7 +7,7 @@
 
     <div class="input-group-append">
        <button class="btn mb-0 btn-secondary" id="show_password_<?= str_replace(['[',']'], ['__',''], $config['name']); ?>" data-toggle="hide" type="button">
-           <span class="fa fa-eye-slash"></span>
+           <i class="bi bi-eye-slash"></i>
        </button>
     </div>
 </div>
@@ -17,10 +17,10 @@
         $('#show_password_<?= str_replace(['[',']'], ['__',''], $config['name']); ?>').on('click', function(){
             let inputField = $('#<?= str_replace(['[',']'], ['__',''], $config['name']); ?>');
             if($(this).data('toggle') === 'hide'){
-                $(this).data('toggle', 'show').html('<span class="fa fa-eye"></span>');
+                $(this).data('toggle', 'show').html('<i class="bi bi-eye"></i>');
                 inputField.attr('type', 'text');
             } else {
-                $(this).data('toggle', 'hide').html('<span class="fa fa-eye-slash"></span>');
+                $(this).data('toggle', 'hide').html('<i class="bi bi-eye-slash"></i>');
                 inputField.attr('type', 'password');
             }
         });

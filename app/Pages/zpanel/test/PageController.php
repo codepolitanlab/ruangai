@@ -18,25 +18,26 @@ class PageController extends BaseController
             //     'label' => 'Name',
             //     'type' => 'text',
             //     'placeholder' => 'Your name',
-            //     'required' => true,
+            //     'rules' => 'required',
             // ],
             // [
             //     'name' => 'email',
             //     'label' => 'Email',
-            //     'type' => 'text',
-            //     'required' => true,
+            //     'type' => 'email',
+            //     'placeholder' => 'Your email',
+            //     'rules' => 'required',
             // ],
             // [
             //     'name' => 'password',
             //     'label' => 'Password',
-            //     'type' => 'text',
-            //     'required' => true,
+            //     'type' => 'password',
+            //     'rules' => 'required',
             // ],
             // [
             //     'name' => 'hobi',
             //     'label' => 'Hobi',
             //     'type' => 'checkbox',
-            //     'required' => true,
+            //     'rules' => 'required',
             //     'options' => [
             //         'makan' => 'Makan',
             //         'minum' => 'Minum',
@@ -44,22 +45,39 @@ class PageController extends BaseController
             //     ],
             //     'default' => ['makan'],
             // ],
-            [
-                'name' => 'content',
-                'label' => 'Konten',
-                'type' => 'code',
-                'required' => true,
-                'mode' => 'html',
-                'height' => 400,
-            ],
+            // [
+            //     'name' => 'content',
+            //     'label' => 'Konten',
+            //     'type' => 'code',
+            //     'rules' => 'required',
+            //     'mode' => 'html',
+            //     'height' => 400,
+            // ],
+            // [
+            //     'name' => 'theme_color',
+            //     'label' => 'Warna Tema',
+            //     'type' => 'color',
+            //     'rules' => 'required',
+            // ],
+
 
         ];
 
-        foreach ($schema as $field) {
-            $FieldClass = "\\App\\Libraries\\FormFields\\" . $field['type'] . "\\" . ucfirst($field['type']) . "Field";
-            $fieldObj = new $FieldClass($field);
-            echo $fieldObj->renderInput();
-            // dd($fieldObj->getAttributes(), $fieldObj->renderInput());
+        $form = [];
+        foreach ($schema as $i => $field) {
+            $FieldClass = "\\App\\Libraries\\FormFields\\" . $field['type'] . "\\" . $this->toClassName($field['type']) . "Field";
+            $fieldObject = new $FieldClass($field);
+            $form[$i] = $fieldObject->getProps();
+            $form[$i]['class'] = $fieldObject;
         }
+        
+        $pageTitle = 'Test';
+        return pageView('zpanel/test/index', ['page_title' => $pageTitle, 'form' => $form]);
+    }
+
+    private function toClassName(string $str): string {
+        return preg_replace_callback('/(?:^|_)([a-z])/', function ($matches) {
+            return strtoupper($matches[1]);
+        }, $str);
     }
 }
