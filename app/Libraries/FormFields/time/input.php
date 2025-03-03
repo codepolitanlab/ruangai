@@ -1,1 +1,6 @@
-<input id="<?= str_replace(['[',']'], ['__',''], $config['field']);?>" type="time" name="<?php echo $config['field'];?>" value="<?php echo $value;?>" class="form-control" data-caption="<?= $config['label'];?>"/>
+<input id="<?= str_replace(['[',']'], ['__',''], $config['name']);?>" 
+       type="time" 
+       name="<?= $config['name'];?>" 
+       value="<?= $value;?>" 
+       class="form-control" 
+       data-caption="<?= $config['label'];?>" />

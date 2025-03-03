@@ -1,26 +1,15 @@
-<?php
-if(is_array($value))
-    $chosen = $value;
-else
-    $chosen = json_decode($value, true);
-
-if (empty($chosen)) $chosen = [];
-
-foreach ($config['options'] as $key => $val)
-{
-    if (in_array($key, array_keys($chosen)))
+<?php foreach ($config['options'] as $key => $val): 
+    if ($value && in_array($key, $value))
         $attribute = 'checked';
     else
         $attribute = '';
-    ?>
-
-    <div class="form-check">
-        <input name="<?php echo $config['field'] ;?>[<?php echo $key;?>]" class="form-check-input" type="checkbox" value="<?php echo $val;?>" id="<?php echo $key;?>" <?php echo $attribute;?>>
-        <label class="form-check-label" for="<?php echo $key;?>">
-            <?php echo $val;?>
-        </label>
-    </div>
-
-    <?php
-}
 ?>
+
+<div class="form-check">
+    <input name="<?php echo $config['name'] ;?>[<?php echo $key;?>]" class="form-check-input" type="checkbox" value="<?php echo $val;?>" id="<?php echo $key;?>" <?php echo $attribute;?>>
+    <label class="form-check-label" for="<?php echo $key;?>">
+        <?php echo $val;?>
+    </label>
+</div>
+
+<?php endforeach; ?>

@@ -3,8 +3,8 @@ description: Text input
 column: varchar
 constraint: 255
 fields:
-  field:
-    field: field
+  name:
+    field: name
     label: Field Name
     type: text
     description: Alphabet and numeric only
@@ -18,11 +18,6 @@ fields:
     field: description
     label: Description
     type: text
-
-  placeholder:
-    field: placeholder
-    label: Placeholder
-    type: text
   rules:
     field: rules
     label: Rules
@@ -32,10 +27,7 @@ fields:
     field: default
     label: Default Value
     type: text
-  mode:
-    field: mode
-    label: Value Mode
-    type: dropdown
-    options:
-      plain: Text Plain
-      yaml: YAML
+  placeholder:
+    field: placeholder
+    label: Placeholder
+    type: text
