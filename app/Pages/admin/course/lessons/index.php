@@ -22,7 +22,7 @@
                 <div class="col-md-3 border-right">
                     <div class="toolbar-lesson d-flex justify-content-between mb-2">
                         <h4 class="mb-0">Topic list</h4>
-                        <a href="/admin/course/lessons/topic" class="btn btn-sm btn-outline-white"><span class="bi bi-tag"></span> Add Topic</a>
+                        <a href="/admin/course/lessons/topic" class="btn btn-sm btn-outline-white text-dark"><span class="bi bi-tag"></span> Add Topic</a>
                     </div>
 
                     <div class="sidebar-lesson" style="margin: 0 -15px; padding: 15px;">

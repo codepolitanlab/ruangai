@@ -89,7 +89,7 @@
                                 13-05-2013, 10:10 </td>
                             <td class="text-end">
 
-                                <a class="btn btn-sm btn-outline-secondary" href="https://madrasahdigital.id/admin/user/role/privileges/2" title="Set Privilege"><span class="bi bi-key"></span> Atur Hak Akses</a>
+                                <a class="btn btn-sm btn-outline-secondary" href="/admin/user/role/privileges/2" title="Set Privilege"><span class="bi bi-key"></span> Atur Hak Akses</a>
 
                                 <div class="btn-group">
                                     <a class="btn btn-sm btn-outline-success" href="https://madrasahdigital.id/admin/user/role/edit/2" title="Edit"><span class="bi bi-pencil"></span> Edit</a>
@@ -109,7 +109,7 @@
                                 13-05-2013, 10:10 </td>
                             <td class="text-end">
 
-                                <a class="btn btn-sm btn-outline-secondary" href="https://madrasahdigital.id/admin/user/role/privileges/3" title="Set Privilege"><span class="bi bi-key"></span> Atur Hak Akses</a>
+                                <a class="btn btn-sm btn-outline-secondary" href="/admin/role/privileges/3" title="Set Privilege"><span class="bi bi-key"></span> Atur Hak Akses</a>
 
                                 <div class="btn-group">
                                     <a class="btn btn-sm btn-outline-success" href="https://madrasahdigital.id/admin/user/role/edit/3" title="Edit"><span class="bi bi-pencil"></span> Edit</a>
@@ -129,7 +129,7 @@
                                 28-12-2020, 11:11 </td>
                             <td class="text-end">
 
-                                <a class="btn btn-sm btn-outline-secondary" href="https://madrasahdigital.id/admin/user/role/privileges/4" title="Set Privilege"><span class="bi bi-key"></span> Atur Hak Akses</a>
+                                <a class="btn btn-sm btn-outline-secondary" href="/admin/role/privileges/4" title="Set Privilege"><span class="bi bi-key"></span> Atur Hak Akses</a>
 
                                 <div class="btn-group">
                                     <a class="btn btn-sm btn-outline-success" href="https://madrasahdigital.id/admin/user/role/edit/4" title="Edit"><span class="bi bi-pencil"></span> Edit</a>

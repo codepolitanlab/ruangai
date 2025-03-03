@@ -18,7 +18,7 @@ $sidebar = [
             'role' => [
                 'label' => 'Roles',
                 'icon' => 'bi bi-person-gear',
-                'url' => '/admin/user/roles',
+                'url' => '/admin/user/role',
             ],
         ]
     ],
