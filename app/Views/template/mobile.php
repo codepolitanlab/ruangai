@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <title><?= $page_title ?></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -12,11 +13,14 @@
     <link rel="icon" type="image/png" sizes="72x72" href="<?= $themeURL ?>assets/img/icon/logo-<?= $_SERVER['SITENAME'] ?? 'tarbiyya' ?>/72x72.png">
     <link rel="apple-touch-icon" sizes="192x192" href="<?= $themeURL ?>assets/img/icon/logo-<?= $_SERVER['SITENAME'] ?? 'tarbiyya' ?>/192x192.png">
     <link rel="manifest" href="/<?= ($_SERVER['SITENAME'] ?? null) ? $_SERVER['SITENAME'] : 'tarbiyya' ?>_manifest.json">
-    <script>let base_url = `<?= site_url() ?>`;</script>
+    <script>
+        let base_url = `<?= site_url() ?>`;
+    </script>
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <link rel="stylesheet" href="<?= asset_url('mobilekit/assets/css/style.css') ?>">
     <link rel="stylesheet" href="<?= asset_url('mobilekit/assets/css/custom.css') ?>">
@@ -25,7 +29,7 @@
 <body class="dark-mode-active">
     <!-- Content Section -->
     <?= $this->renderSection('content') ?>
-    
+
     <!-- Script Packages -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.7.7/dist/axios.min.js"></script>
@@ -43,18 +47,19 @@
     <script src="https://cdn.jsdelivr.net/npm/pinecone-router@5.x.x/dist/router.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js" defer></script>
 
-	<script>
-        Fancybox.bind('[data-fancybox="gallery"]', {});   
-		// Check that service workers are supported
-		if ('serviceWorker' in navigator) {
-			// Use the window load event to keep the page load performant
-			window.addEventListener('load', () => {
-				navigator.serviceWorker.register(`/sw_masagi.js`);
+    <script>
+        Fancybox.bind('[data-fancybox="gallery"]', {});
+        // Check that service workers are supported
+        if ('serviceWorker' in navigator) {
+            // Use the window load event to keep the page load performant
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register(`/sw_masagi.js`);
                 window.console.log('Service-worker registered');
-			});
-		} else {
-			window.console.debug('Service-worker not supported');
-		}
-	</script>
+            });
+        } else {
+            window.console.debug('Service-worker not supported');
+        }
+    </script>
 </body>
+
 </html>

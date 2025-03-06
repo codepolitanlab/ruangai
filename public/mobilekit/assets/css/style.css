@@ -2287,19 +2287,19 @@ a.badge-dark {
 }
 
 .btn-primary {
-  background: #1E74FD !important;
-  border-color: #1E74FD !important;
+  background: #fa2fec !important;
+  border-color: #fa2fec !important;
   color: #ffffff !important;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
-  background: #0564fd !important;
-  border-color: #0564fd !important;
+  background: #fa2fec !important;
+  border-color: #fa2fec !important;
 }
 
 .btn-primary.disabled, .btn-primary:disabled {
-  background: #1E74FD;
-  border-color: #1E74FD;
+  background: #fa2fec;
+  border-color: #fa2fec;
   opacity: 0.5;
 }
 
@@ -2822,12 +2822,12 @@ a.badge-dark {
 }
 
 .btn-twitter {
-  color: #fff !important;
-  background: #049ff6;
+  color: #FA2FEC !important;
+  background: #1a1a1a;
 }
 
 .btn-twitter:hover, .btn-twitter:active {
-  background: #048fdd;
+  background: #000;
 }
 
 .bg-twitter {
@@ -2836,12 +2836,12 @@ a.badge-dark {
 }
 
 .btn-instagram {
-  color: #fff !important;
-  background: #df237b;
+  color: #FA2FEC !important;
+  background: #1a1a1a;
 }
 
 .btn-instagram:hover, .btn-instagram:active {
-  background: #cb1e6f;
+  background: #000;
 }
 
 .bg-instagram {
@@ -2878,12 +2878,12 @@ a.badge-dark {
 }
 
 .btn-whatsapp {
-  color: #fff !important;
-  background: #0ad561;
+  color: #FA2FEC !important;
+  background: #1a1a1a;
 }
 
 .btn-whatsapp:hover, .btn-whatsapp:active {
-  background: #09bd56;
+  background: #000;
 }
 
 .bg-whatsapp {
@@ -2892,12 +2892,12 @@ a.badge-dark {
 }
 
 .btn-youtube {
-  color: #fff !important;
-  background: #ff0000;
+  color: #FA2FEC !important;
+  background: #1a1a1a;
 }
 
 .btn-youtube:hover, .btn-youtube:active {
-  background: #e60000;
+  background: #000;
 }
 
 .bg-youtube {
@@ -3683,6 +3683,10 @@ a.badge-dark {
 .dropdown-toggle:after {
   border-radius: 4px;
   margin-left: 7px;
+}
+
+.text-pink {
+  color: #fa2fec !important;
 }
 
 .text-primary,
@@ -8327,7 +8331,8 @@ body.rtl-mode .story-block .splide__slide {
 }
 
 body.dark-mode-active {
-  background: #0c1624 !important;
+  /* background: #0c1624 !important; */
+  background: #000 !important;
   color: #8195a6;
 }
 
@@ -9188,7 +9193,7 @@ body.dark-mode-active .toast-box {
 
 body.dark-mode-active .appFooter {
   border-top-color: #1B283B;
-  background: #0c1624;
+  background: #161616;
 }
 
 body.dark-mode-active .appFooter .footer-title {

@@ -1,30 +1,25 @@
-<div id="profile" x-data="profile()">
-<div class="appHeader bg-brand">
-        <div class="left ps-2">
-        </div>
-        <div class="pageTitle text-white">Akun</div>
-        <div class="right">
-        </div>
+<div id="profile" x-data="profile()" class="bg-dark">
+    <div class="appHeader bg-dark text-start">
+        <div class=" text-white">Akun</div>
     </div>
 
     <!-- App Capsule -->
-        <div id="appCapsule" class="shadow">
+    <div id="appCapsule" class="shadow">
         <div class="appContent" style="min-height:90vh">
-            <section class="section-top full mb-5">
+            <section class="mb-5">
                 <div class="">
-                    <div class="p-2 text-center position-relative bg-brand" style="height:100px;"></div>
-                    <div class="card ps-3 shadow-none bg-light text-dark container-fluid rounded-top-5 pt-3 pb-3" style="margin-top:-95px">
+                    <div class="text-center position-relative bg-brand" style="height:90px;"></div>
+                    <div class="card ps-3 shadow-none bg-dark text-dark container-fluid pt-3 pb-3" style="margin-top:-95px">
                         <div class="d-flex align-items-center justify-content-start gap-3">
                             <div>
-                                <img :src="data?.profile?.avatar ? data?.profile?.avatar : `<?= $themeURL ?>assets/img/icon/default-avatar-user.webp`" 
-                                class="rounded-circle" 
-                                :alt="data?.profile?.name" 
-                                style="width:56px">
+                                <img :src="data?.profile?.avatar ? data?.profile?.avatar : `<?= $themeURL ?>assets/img/icon/default-avatar-user.webp`"
+                                    class="rounded-circle"
+                                    :alt="data?.profile?.name"
+                                    style="width:65px">
                             </div>
-                            <div class="use text-whiter">
-                                <div class="h5 m-0" x-text="data?.profile?.name"></div>
-                                <small x-text="data?.profile?.username" class="text-muted">
-                                </small>
+                            <div class="use text-white">
+                                <div class="h6 m-0" x-text="data?.profile?.name || 'Badar Abdi Mulya'"></div>
+                                <small x-text="data?.profile?.username || 'CODING IS A SHINOBI WAYS FOR ME!!!!!'" class="text-muted"></small>
                             </div>
                         </div>
                     </div>

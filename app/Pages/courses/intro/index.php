@@ -1,5 +1,5 @@
 <div id="course_detail" x-data="course_detail()">
-    <div id="app-header" class="appHeader main glassmorph">
+    <div id="app-header" class="appHeader main glassmorph border-0">
         <div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
         <div class="pageTitle"><span>Detail Kelas</span></div>
         <div class="right"><a class="headerButton" role="button" data-bs-toggle="offcanvas" data-bs-target="#shareCanvas"><i class="bi bi-share-fill me-1"></i></a></div>
@@ -8,6 +8,7 @@
     <div id="appCapsule" class="shadow">
         <div class="appContent" style="min-height:90vh">
             <style>
+                
                 .accordion-body {
                     padding: 0 .25rem;
                 }
@@ -56,7 +57,7 @@
                         <div><del id="strike-price-label" class="h5 text-danger text-nowrap d-none"></del>
                             <div id="price-label" class="h2 text-primary mb-0 me-2">Rp 222.000</div>
                         </div>
-                        <div class="product-course-options mt-2"><button type="button" class="btn btn-check-label btn-sm me-1 active" data-id="5" data-price="222000" data-strike-price="0">1 Bulan</button><button type="button" class="btn btn-check-label btn-sm me-1 " data-id="7" data-price="599000" data-strike-price="0">3 Bulan</button></div>
+                        <div class="product-course-options mt-2"><button type="button" class="btn btn-check-label btn-sm me-1 active" data-id="5" data-price="222000" data-strike-price="0">1 Bulan</button><button type="button" class="btn btn-check-label btn-sm me-1 text-muted" data-id="7" data-price="599000" data-strike-price="0">3 Bulan</button></div>
                     </div>
                 </div>
                 <div class="px-3 mt-5 mb-3">

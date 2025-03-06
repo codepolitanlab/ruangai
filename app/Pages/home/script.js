@@ -17,24 +17,59 @@ window.home = function(){
       document.title = this.title;
       Alpine.store('core').currentPage = ''
       
-
       this.pengumumanRead = JSON.parse(localStorage.getItem('pengumumanRead') ?? '[]')
+
+      this.data.posts = [
+        {
+          id: 1,
+          title: "Belajar AI",
+          youtube_url: "/pengumuman",
+          published_at: "2022-01-01",
+          medias : [
+            {
+              url: "https://madrasahdigital.id//uploads/madrasahdigital/sources/sumber-cuan-content-creator.png",
+            }
+          ]
+        },
+        {
+          id: 2,
+          title: "Belajar AI",
+          youtube_url: "/pengumuman",
+          published_at: "2022-01-01",
+          medias : [
+            {
+              url: "https://madrasahdigital.id//uploads/madrasahdigital/sources/sumber-cuan-content-creator.png",
+            }
+          ]
+        },
+        {
+          id: 3,
+          title: "Belajar AI",
+          youtube_url: "/pengumuman",
+          published_at: "2022-01-01",
+          medias : [
+            {
+              url: "https://madrasahdigital.id//uploads/madrasahdigital/sources/sumber-cuan-content-creator.png",
+            }
+          ]
+        },
+      ]
       
-      if(cachePageData['home']){
-        this.data = cachePageData['home']
-      } else {   
-        fetchPageData('home/supply', {
-          headers: {
-            'Authorization': `Bearer ` + localStorage.getItem('heroic_token'),
-            'Pesantrenku-ID': Alpine.store('core').pesantrenID
-          }
-        }).then(data => {
-          cachePageData['home'] = data
-          this.data = data
-        }).catch(err => {
-          console.error(err)
-        })
-      }
+      // if(cachePageData['home']){
+      //   this.data = cachePageData['home']
+      // } else {
+      //   fetchPageData('home/supply', {
+      //     headers: {
+      //       'Authorization': `Bearer ` + localStorage.getItem('heroic_token'),
+      //       'Pesantrenku-ID': Alpine.store('core').pesantrenID
+      //     }
+      //   }).then(data => {
+      //     cachePageData['home'] = data
+      //     this.data = data
+      //   }).catch(err => {
+      //     console.error(err)
+      //   })
+      // }
     },
     
     initSwiperArticles () {

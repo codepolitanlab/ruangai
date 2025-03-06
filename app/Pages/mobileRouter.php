@@ -60,10 +60,20 @@
         x-route="/courses/lessons/:slug"
         x-template="['/courses/lessons/content', '/_components/bottommenu']"></template>
 
-     <!-- Quiz -->
-     <template
+    <!-- Courses -->
+    <template
         x-route="/courses/quiz/:id"
         x-template="['/courses/quiz/content', '/_components/bottommenu']"></template>
+
+    <!-- Pustaka -->
+    <template
+        x-route="/pustaka"
+        x-template="['/pustaka/content', '/_components/bottommenu']"></template>
+
+    <!-- Tanya Jawab -->
+    <template
+        x-route="/courses/tanya_jawab"
+        x-template="['/courses/tanya_jawab/content', '/_components/bottommenu']"></template>
 
     <!-- Feeds -->
     <template

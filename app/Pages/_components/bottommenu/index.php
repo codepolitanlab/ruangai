@@ -1,5 +1,5 @@
 <?php if($bottommenu ?? null): ?>
-<div class="appBottomMenu no-border shadow-lg">
+<div class="appBottomMenu bg-dark shadow-lg">
     <?php foreach($bottommenu as $menu): ?>
     <a href="<?= $menu['url'] ?>" 
         id="bottommenu-member" 
