@@ -8,7 +8,6 @@
     <div id="appCapsule" class="shadow">
         <div class="appContent" style="min-height:90vh">
             <style>
-                
                 .accordion-body {
                     padding: 0 .25rem;
                 }
@@ -47,146 +46,91 @@
                     width: 80px;
                 }
             </style>
-            <div class="row pt-xs-0 pt-sm-4 px-xs-0 px-sm-3">
-                <div class="col-md-6 mb-3 px-0"><img src="https://course.taeyangkulture.com//uploads/taeyang/sources/Gambar%20Cover/Learning%20Option-ENGLISH-BEGINNER%201.png" class="img-fluid mb-2"></div>
-                <div class="col-md-6 px-3">
-                    <h1 class="h4 title">Inggris - Beginner Book 1</h1>
-                    <div class="">
-                        <p class="text-secondary mt-2"><i class="bi bi-clock me-2"></i> Durasi 7 jam
-                            3 menit <br><i class="bi bi-book me-2"></i> 32 modul materi <br></p>
-                        <div><del id="strike-price-label" class="h5 text-danger text-nowrap d-none"></del>
-                            <div id="price-label" class="h2 text-primary mb-0 me-2">Rp 222.000</div>
+            <section class="my-2">
+                <div class="position-relative">
+                    <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%205231.png" class="w-100 position-relative" alt="">
+                    <div class="position-absolute ms-3" style="top: 18%;">
+                        <h2>Berkenalan Dengan <span class="text-pink">AI</span></h2>
+                        <div class="d-flex gap-4 mb-2">
+                            <div><i class="bi bi-people"></i> 120 Siswa</div>
+                            <div><i class="bi bi-book"></i> 50 Modul Belajar</div>
                         </div>
-                        <div class="product-course-options mt-2"><button type="button" class="btn btn-check-label btn-sm me-1 active" data-id="5" data-price="222000" data-strike-price="0">1 Bulan</button><button type="button" class="btn btn-check-label btn-sm me-1 text-muted" data-id="7" data-price="599000" data-strike-price="0">3 Bulan</button></div>
+                        <div class="progress mb-3" role="progressbar" style="height: 8px;">
+                            <div class="progress-bar bg-secondary" style="width: 25%"></div>
+                        </div>
+                        <a href="" class="btn btn-sm btn-primary rounded-pill">Lanjutkan Belajar</a>
                     </div>
                 </div>
-                <div class="px-3 mt-5 mb-3">
-                    <h3 class="h5 title">Deskripsi Singkat</h3>
-                    <p class="text-secondary lead mb-0">Mau upgrade skill &amp; pengetahuan Bahasa Inggris kamu? E-learning aja! 2 Pilihan asyik ini hanya untuk kamu, paket bulanan &amp; paket bundling untuk 3 bulan! Yuk, checkout sekarang juga!</p>
+            </section>
+            <section>
+                <div class="container px-4">
+                    <div>
+                        <h2>Deskripsi Singkat</h2>
+                        <p>Pelajari dasar-dasar Artificial Intelligence (AI), bagaimana cara kerjanya, serta peranannya dalam kehidupan sehari-hari. Kursus ini akan membimbing Anda memahami konsep AI secara sederhana sebelum mendalami topik lebih lanjut di setiap lesson!</p>
+                    </div>
+                    <div class="d-flex gap-3 mt-2 overflow-scroll py-3">
+                        <a href="#" class="btn btn-primary rounded-pill btn-lg">Materi Belajar</a>
+                        <a href="#" class="btn bg-grey rounded-pill btn-lg text-white position-relative">
+                            Live Session
+                            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                                <span class="visually-hidden">New alerts</span>
+                            </span>
+                        </a>
+                        <a href="#" class="btn bg-grey rounded-pill btn-lg text-white">Student</a>
+                        <a href="#" class="btn bg-grey rounded-pill btn-lg text-white">Tanya Jawab</a>
+                    </div>
                 </div>
-            </div>
-            <div class="row pt-xs-0 pt-4 px-xs-0 px-sm-3">
-                <div class="col-12 px-3">
-                    <h3 class="h5 title">Apa yang akan dipelajari</h3>
-                    <div class="lessons my-4">
-                        <h5>Bab 1: Introduction</h5>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div><a href="/courses/lessons/1" class="text-primary text-decoration-none">CHAPTER 1 - INTRODUCING YOURSELF</a></div><span class="text-muted ms-auto">(08:40)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 2 - TALKING ABOUT YOURSELF</div><span class="text-muted ms-auto">(15:16)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 3 - THINGS YOU HAVE</div><span class="text-muted ms-auto">(09:21)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 4 - USING APOSTROPHES</div><span class="text-muted ms-auto">(07:24)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div><a href="/courses/quiz/1" class="text-primary text-decoration-none">CHAPTER 5 - QUIZ</a></div><span class="text-muted ms-auto">(13:04)</span><i class="bi bi-lock"></i>
-                        </div>
-                    </div>
-                    <div class="lessons my-4">
-                        <h5>Bab 2: Jobs &amp; Routines</h5>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 6 - JOBS</div><span class="text-muted ms-auto">(17:20)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 7 - DAILY ROUTINES</div><span class="text-muted ms-auto">(11:24)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 8 - DESCRIBING YOUR DAY</div><span class="text-muted ms-auto">(07:04)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 9 - DESCRIBING YOUR WEEK</div><span class="text-muted ms-auto">(09:17)</span><i class="bi bi-lock"></i>
+            </section>
+            <section>
+                <div class="container px-4">
+                    <div class="card bg-grey rounded-20 p-3 mb-2" style="border: 4px solid rgba(0, 0, 0, 0.9);">
+                        <h3 class="m-0">Pengenalan</h3>
+                        <div class="card-body d-flex flex-column align-items-center gap-3 px-1">
+                            <div class="bg-dark rounded-20 p-3 w-100 d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h4 class="m-0 mb-1">Mengenal Artificial Intelligence</h4>
+                                    <h5 class="m-0 text-secondary">05:19</h5>
+                                </div>
+                                <div>
+                                    <i class="bi bi-lock-fill h4 m-0 text-white"></i>
+                                </div>
+                            </div>
+                            <div class="bg-dark rounded-20 p-3 w-100 d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h4 class="m-0 mb-1">Sejarah Artificial Intelligence</h4>
+                                    <h5 class="m-0 text-secondary">09:19</h5>
+                                </div>
+                                <div>
+                                    <i class="bi bi-lock-fill h4 m-0 text-white"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="lessons my-4">
-                        <h5>Bab 3: Clarification &amp; Confirmation</h5>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 10 - NEGATIVES</div><span class="text-muted ms-auto">(13:58)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 11 - SIMPLE QUESTIONS</div><span class="text-muted ms-auto">(11:26)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 12 - OPEN QUESTIONS</div><span class="text-muted ms-auto">(12:03)</span><i class="bi bi-lock"></i>
-                        </div>
-                    </div>
-                    <div class="lessons my-4">
-                        <h5>Bab 4: Town &amp; City</h5>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 13 - MY TOWN</div><span class="text-muted ms-auto">(18:29)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 14 - USING "A" AND "THE"</div><span class="text-muted ms-auto">(15:30)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 15 - ORDERS AND DIRECTIONS</div><span class="text-muted ms-auto">(13:14)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 16 - JOINING SENCENTES</div><span class="text-muted ms-auto">(11:49)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 17 - DESCRIBING PLACES</div><span class="text-muted ms-auto">(12:17)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 18 - QUANTITY PHRASES</div><span class="text-muted ms-auto">(11:47)</span><i class="bi bi-lock"></i>
-                        </div>
-                    </div>
-                    <div class="lessons my-4">
-                        <h5>Bab 5: What We Have</h5>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 19 - THE THINGS I HAVE</div><span class="text-muted ms-auto">(09:35)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 20 - WHAT DO YOU HAVE?</div><span class="text-muted ms-auto">(10:16)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 21 - COUNTING</div><span class="text-muted ms-auto">(17:05)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 22 - MEASURING</div><span class="text-muted ms-auto">(07:41)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 23 - AT THE SHOP</div><span class="text-muted ms-auto">(12:49)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 24 - DESCRIBING THINGS</div><span class="text-muted ms-auto">(09:13)</span><i class="bi bi-lock"></i>
-                        </div>
-                    </div>
-                    <div class="lessons my-4">
-                        <h5>Bab 6: Hobbies &amp; Interests</h5>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 25 - TALKING ABOUT SPORT</div><span class="text-muted ms-auto">(21:15)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 26 - FREE TIME</div><span class="text-muted ms-auto">(25:00)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 27 - LIKES AND DISLIKES</div><span class="text-muted ms-auto">(11:02)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 28 - EXPRESSING PREFERENCE</div><span class="text-muted ms-auto">(22:05)</span><i class="bi bi-lock"></i>
-                        </div>
-                    </div>
-                    <div class="lessons my-4">
-                        <h5>Bab 7: Ability &amp; Learning</h5>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 29 - WHAT YOU CAN AND CAN'T DO</div><span class="text-muted ms-auto">(15:17)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 30 - DESCRIBING ACTIONS</div><span class="text-muted ms-auto">(13:01)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 31 - DESCRIBING ABILITY</div><span class="text-muted ms-auto">(17:06)</span><i class="bi bi-lock"></i>
-                        </div>
-                        <div class="d-flex shadow-sm background align-items-center gap-3 p-2 px-3 mb-2"><i class="bi bi-camera-reels"></i>
-                            <div>CHAPTER 32 - ACADEMIC SUBJECT</div><span class="text-muted ms-auto">(11:41)</span><i class="bi bi-lock"></i>
+                    <div class="card bg-grey rounded-20 p-3 mb-2" style="border: 4px solid rgba(0, 0, 0, 0.9);">
+                        <h3 class="m-0">Dan Lain Lain</h3>
+                        <div class="card-body d-flex flex-column align-items-center gap-3 px-1">
+                            <div class="bg-dark rounded-20 p-3 w-100 d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h4 class="m-0 mb-1">Mengenal Artificial Intelligence</h4>
+                                    <h5 class="m-0 text-secondary">05:19</h5>
+                                </div>
+                                <div>
+                                    <i class="bi bi-lock-fill h4 m-0 text-white"></i>
+                                </div>
+                            </div>
+                            <div class="bg-dark rounded-20 p-3 w-100 d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h4 class="m-0 mb-1">Sejarah Artificial Intelligence</h4>
+                                    <h5 class="m-0 text-secondary">09:19</h5>
+                                </div>
+                                <div>
+                                    <i class="bi bi-lock-fill h4 m-0 text-white"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
     </div>
 
