@@ -75,6 +75,11 @@
         x-route="/courses/tanya_jawab"
         x-template="['/courses/tanya_jawab/content', '/_components/bottommenu']"></template>
 
+    <!-- Detail Tanya Jawab -->
+    <template
+        x-route="/courses/tanya_jawab/detail/:id"
+        x-template="['/courses/tanya_jawab/detail/content', '/_components/bottommenu']"></template>
+
     <!-- Feeds -->
     <template
         x-route="/feeds"

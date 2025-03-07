@@ -59,12 +59,14 @@
                                     </div>
                                 </div>
                                 <div class="card-body d-flex align-items-center gap-3 px-1">
-                                    <div class="bg-dark rounded-20 p-3 w-100">
-                                        <h5>Tidak dapat menemukan URL Laravel</h5>
-                                        <div class="bg-grey p-2 rounded-20 text-muted">
-                                            Ditanyakan di kelas <a href="" class="text-pink">Pengembangan Web Fullstack dengan Laravel 11</a>, Topik <a class="text-pink" href="">Setup kebutuhan untuk install project Laravel</a>
+                                    <a href="/courses/tanya_jawab/detail/1">
+                                        <div class="bg-dark rounded-20 p-3 w-100">
+                                            <h5>Tidak dapat menemukan URL Laravel</h5>
+                                            <div class="bg-grey p-2 rounded-20 text-muted">
+                                                Ditanyakan di kelas <a href="" class="text-pink">Pengembangan Web Fullstack dengan Laravel 11</a>, Topik <a class="text-pink" href="">Setup kebutuhan untuk install project Laravel</a>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </template>
