@@ -3685,8 +3685,26 @@ a.badge-dark {
   margin-left: 7px;
 }
 
+.form-check-input:checked {
+  background-color: #fa2fec;
+  border-color: white;
+}
+
+.link {
+  color: #fff;
+}
+
+.link:hover {
+  color: #fa2fec !important;
+}
+
 .text-pink {
   color: #fa2fec !important;
+}
+
+.bg-pink {
+  color: #FFF;
+  background-color: #fa2fec !important;
 }
 
 .text-primary,

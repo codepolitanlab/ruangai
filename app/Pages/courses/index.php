@@ -46,22 +46,24 @@
                         <div class="d-flex mt-4 mb-2">
                             <h3 class="m-0 me-auto">Lanjutkan Belajar</h3>
                         </div>
-                        <div class="card bg-grey rounded-20" style="border: 4px solid rgba(0, 0, 0, 0.9);">
-                            <div class="card-body d-flex align-items-center gap-3 p-2">
-                                <div class="bg-dark d-flex align-items-center justify-content-center rounded-20" style="width: 100px;height: 100px">
-                                    <i class="bi bi-journal-bookmark-fill display-3 text-pink"></i>
-                                </div>
-                                <div>
-                                    <h4 class="m-0">Lesson 02 - Pengenalan</h4>
-                                    <div class="text-muted mb-1">Potensi Dan Tantangan AI</div>
-                                    <div class="d-flex align-items-center gap-2 text-white">
-                                        <i class="bi bi-play h3 m-0"></i>
-                                        <div style="width: 200px;height: 3px;background-color: #fff;"></div>
-                                        <div>100%</div>
+                        <a href="/courses/lessons/1">
+                            <div class="card bg-grey rounded-20" style="border: 4px solid rgba(0, 0, 0, 0.9);">
+                                <div class="card-body d-flex align-items-center gap-3 p-2">
+                                    <div class="bg-dark d-flex align-items-center justify-content-center rounded-20" style="width: 100px;height: 100px">
+                                        <i class="bi bi-journal-bookmark-fill display-3 text-pink"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="m-0 link">Lesson 02 - Pengenalan</h4>
+                                        <div class="text-muted mb-1">Potensi Dan Tantangan AI</div>
+                                        <div class="d-flex align-items-center gap-2 text-white">
+                                            <i class="bi bi-play h3 m-0"></i>
+                                            <div style="width: 200px;height: 3px;background-color: #fff;"></div>
+                                            <div>100%</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="d-flex mt-4 mb-2">
                             <h3 class="m-0 me-auto">Materi Belajar</h3>
                         </div>
