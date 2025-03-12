@@ -1,4 +1,4 @@
-<div id="course_detail" x-data="course_detail()">
+<div id="student_detail" x-data="student_detail()">
     <div id="app-header" class="appHeader bg-dark main glassmorph border-0">
         <div class="left"><a class="headerButton" href="/courses/intro/inggris-beginner-book-1/student"><i class="bi bi-chevron-left"></i></a></div>
         <div class="pageTitle"><span><?= $page_title ?></span></div>

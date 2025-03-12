@@ -1,4 +1,4 @@
-<div id="tanyaJawab" x-data="tanyaJawab()">
+<div id="tanya_jawab_detail" x-data="tanya_jawab_detail()">
 
     <div id="appCapsule" class="shadow">
         <div class="appContent" style="min-height:90vh;">

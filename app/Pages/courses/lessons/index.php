@@ -1,4 +1,4 @@
-<div id="course_detail" x-data="course_detail()">
+<div id="lessons" x-data="lessons()">
     <div id="app-header" class="appHeader main glassmorph border-0">
         <div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
         <div class="pageTitle"><span>Detail Lessons</span></div>
