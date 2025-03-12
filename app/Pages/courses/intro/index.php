@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-<div id="course_detail" x-data="course_detail()">
-=======
 <div id="course_intro" x-data="course_intro($router.params.id, $router.params.slug)">
->>>>>>> 7c069b08 (Get list course and intro)
     <div id="app-header" class="appHeader main glassmorph border-0">
         <div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
         <div class="pageTitle"><span>Detail Kelas</span></div>
@@ -54,11 +50,7 @@
                 <div class="position-relative">
                     <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%205231.png" class="w-100 position-relative" alt="">
                     <div class="position-absolute ms-3" style="top: 18%;">
-<<<<<<< HEAD
-                        <h2>Berkenalan Dengan <span class="text-pink">AI</span></h2>
-=======
                         <h2 x-text="data.course.course_title"></h2>
->>>>>>> 7c069b08 (Get list course and intro)
                         <div class="d-flex gap-4 mb-2">
                             <div><i class="bi bi-people"></i> 120 Siswa</div>
                             <div><i class="bi bi-book"></i> 50 Modul Belajar</div>
