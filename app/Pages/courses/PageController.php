@@ -6,7 +6,11 @@ class PageController extends MobileBaseController
 {
     public function getContent()
     {
-        $data = [];
+        // Ambil data course dari db
+        $db = \Config\Database::connect();
+        $data['courses'] = $db->table('courses')->get()->getResultArray();
+
         return pageView('courses/index', $data);
     }
+
 }
