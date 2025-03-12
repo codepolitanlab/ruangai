@@ -1,0 +1,8 @@
+node_modules/*
+package-lock.json
+assets/js/helpers.bundle.js
+assets/js/helpers.bundle.js.LICENSE.txt
+assets/js/helpers.bundle.js.map
+assets/js/pagescript.js
+assets/js/pagescript.js.LICENSE.txt
+assets/js/pagescript.js.map
