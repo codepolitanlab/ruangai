@@ -32,10 +32,10 @@
                         <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%205394.png" class="w-100" alt="">
                         <div class="d-flex gap-3 mt-3">
                             <button class="btn btn-primary w-100 p-3 rounded-pill">
-                                <h3 class="m-0">Kelas Online</h3>
+                                <h4 class="m-0">Kelas Online</h4>
                             </button>
                             <a href="/courses/tanya_jawab" class="btn bg-grey w-100 p-3 rounded-pill text-white">
-                                <h3 class="m-0">Tanya Jawab</h3>
+                                <h4 class="m-0">Tanya Jawab</h4>
                             </a>
                         </div>
                     </div>

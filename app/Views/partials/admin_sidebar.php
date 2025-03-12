@@ -3,7 +3,7 @@ $sidebar = [
     'dashboard' => [
         'label' => 'Dashboard',
         'icon' => 'bi bi-grid-fill',
-        'url' => '/admin'
+        'url' => '/zpanel'
     ],
     'user' => [
         'label' => 'User Management',
@@ -13,12 +13,12 @@ $sidebar = [
             'list' => [
                 'label' => 'Users',
                 'icon' => 'bi bi-people',
-                'url' => '/admin/user',
+                'url' => '/zpanel/user',
             ],
             'role' => [
                 'label' => 'Roles',
                 'icon' => 'bi bi-person-gear',
-                'url' => '/admin/user/role',
+                'url' => '/zpanel/user/role',
             ],
         ]
     ],
@@ -30,27 +30,27 @@ $sidebar = [
             'page' => [
                 'label' => 'Pages',
                 'icon' => 'bi bi-file-text',
-                'url' => '/admin/content/pages',
+                'url' => '/zpanel/content/pages',
             ],
             'microblog' => [
                 'label' => 'Microblogs',
                 'icon' => 'bi bi-chat-text',
-                'url' => '/admin/content/microblogs',
+                'url' => '/zpanel/content/microblogs',
             ],
             'files' => [
                 'label' => 'Files',
                 'icon' => 'bi bi-file-earmark',
-                'url' => '/admin/content/files',
+                'url' => '/zpanel/content/files',
             ],
             'slider' => [
                 'label' => 'Sliders',
                 'icon' => 'bi bi-images',
-                'url' => '/admin/content/sliders',
+                'url' => '/zpanel/content/sliders',
             ],
             'announcement' => [
                 'label' => 'Announcements',
                 'icon' => 'bi bi-megaphone',
-                'url' => '/admin/content/announcements',
+                'url' => '/zpanel/content/announcements',
             ],
         ]
     ],
@@ -62,17 +62,17 @@ $sidebar = [
             'online_class' => [
                 'label' => 'Online Classes',
                 'icon' => 'bi bi-laptop',
-                'url' => '/admin/course',
+                'url' => '/zpanel/course',
             ],
             'quiz' => [
                 'label' => 'Quizzes',
                 'icon' => 'bi bi-ui-checks',
-                'url' => '/admin/quiz',
+                'url' => '/zpanel/quiz',
             ],
             'live_class' => [
                 'label' => 'Live Classes',
                 'icon' => 'bi bi-camera-video',
-                'url' => '/admin/elearning/live-classes',
+                'url' => '/zpanel/elearning/live-classes',
             ],
         ]
     ],
@@ -84,17 +84,17 @@ $sidebar = [
             'voucher' => [
                 'label' => 'Vouchers',
                 'icon' => 'bi bi-ticket-perforated',
-                'url' => '/admin/transactions/vouchers',
+                'url' => '/zpanel/transactions/vouchers',
             ],
             'membership' => [
                 'label' => 'Memberships',
                 'icon' => 'bi bi-card-checklist',
-                'url' => '/admin/transactions/memberships',
+                'url' => '/zpanel/transactions/memberships',
             ],
             'transaction' => [
                 'label' => 'Transaction History',
                 'icon' => 'bi bi-receipt',
-                'url' => '/admin/transactions/history',
+                'url' => '/zpanel/transactions/history',
             ],
         ]
     ],
@@ -106,12 +106,12 @@ $sidebar = [
             'referral' => [
                 'label' => 'Referral Earnings',
                 'icon' => 'bi bi-person-plus',
-                'url' => '/admin/earnings/referrals',
+                'url' => '/zpanel/earnings/referrals',
             ],
             'referral_partner' => [
                 'label' => 'Referral Partners',
                 'icon' => 'bi bi-people-fill',
-                'url' => '/admin/earnings/referral-partners',
+                'url' => '/zpanel/earnings/referral-partners',
             ],
         ]
     ],
@@ -123,37 +123,37 @@ $sidebar = [
             'setting' => [
                 'label' => 'Settings',
                 'icon' => 'bi bi-sliders',
-                'url' => '/admin/configuration/settings',
+                'url' => '/zpanel/configuration/settings',
             ],
             'navigation' => [
                 'label' => 'Navigation',
                 'icon' => 'bi bi-menu-button-wide',
-                'url' => '/admin/configuration/navigation',
+                'url' => '/zpanel/configuration/navigation',
             ],
             'page_option' => [
                 'label' => 'Page Options',
                 'icon' => 'bi bi-tools',
-                'url' => '/admin/configuration/page-options',
+                'url' => '/zpanel/configuration/page-options',
             ],
             'module' => [
                 'label' => 'Modules',
                 'icon' => 'bi bi-puzzle',
-                'url' => '/admin/configuration/modules',
+                'url' => '/zpanel/configuration/modules',
             ],
             'entry' => [
                 'label' => 'Entries',
                 'icon' => 'bi bi-pencil-square',
-                'url' => '/admin/configuration/entries',
+                'url' => '/zpanel/configuration/entries',
             ],
             'importer' => [
                 'label' => 'Importer',
                 'icon' => 'bi bi-upload',
-                'url' => '/admin/configuration/importer',
+                'url' => '/zpanel/configuration/importer',
             ],
             'exporter' => [
                 'label' => 'Exporter',
                 'icon' => 'bi bi-download',
-                'url' => '/admin/configuration/exporter',
+                'url' => '/zpanel/configuration/exporter',
             ],
         ]
     ],
@@ -198,7 +198,7 @@ function renderMenu($menu) {
         <div class="sidebar-header position-relative">
             <div class="d-flex justify-content-center align-items-center">
                 <div class="logo">
-                    <a href="/admin">HeroicAdmin</a>
+                    <a href="/zpanel">HeroicAdmin</a>
                 </div>
 
                 <div class="sidebar-toggler x">
