@@ -37,9 +37,16 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/prompts-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="<?= asset_url('mobilekit/assets/js/helpers.bundle.js') ?>"></script>
     <script src="<?= asset_url('mobilekit/assets/js/base.js') ?>"></script>
+
+    <?php if (ENVIRONMENT === 'development'): ?>
+    <script src="<?= asset_url('mobilekit/assets/js/helpers.bundle.js') ?>"></script>
     <script src="<?= asset_url('mobilekit/assets/js/pagescript.js') ?>" defer></script>
+    <?php else: ?>
+    <script src="<?= asset_url('mobilekit/assets/js/helpers.bundle.min.js') ?>"></script>
+    <script src="<?= asset_url('mobilekit/assets/js/pagescript.min.js') ?>" defer></script>
+    <?php endif; ?>
+
     <script src="https://cdn.jsdelivr.net/npm/pinecone-router@5.x.x/dist/router.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js" defer></script>
 

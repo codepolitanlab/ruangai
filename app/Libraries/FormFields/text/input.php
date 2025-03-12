@@ -5,5 +5,6 @@
     value="<?= $value ?? ''; ?>" 
     placeholder="<?= $config['placeholder'] ?? '';?>" 
     class="form-control" 
-    data-caption="<?= $config['label'];?>" <?= strpos($config['rules'] ?? '', 'required') !== false ? 'required' : ''; ?> 
+    data-caption="<?= $config['label'];?>" 
+    <?= strpos($config['rules'] ?? '', 'required') !== false ? 'required' : ''; ?> 
     autocomplete="off"/>
