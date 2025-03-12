@@ -1,6 +1,6 @@
-<div id="member-profile-edit-account" x-data="profile_edit_account()">
+<div id="member-profile-edit-account" x-data="profile_edit_account()" class="bg-dark">
 
-    <div class="appHeader bg-brand">
+    <div class="appHeader bg-dark">
         <div class="left">
             <a href="javascript:void()" onclick="history.back()" class="headerButton text-white">
                 <ion-icon name="chevron-back-outline"></ion-icon>
@@ -16,12 +16,12 @@
         <div class="section full mt-1">
             <div class="section-title">Informasi Akun</div>
 
-            <div class="wide-block pt-2 pb-2">
+            <div class="wide-block pt-2 pb-2 bg-dark">
 
                 <div class="form-group boxed">
                     <div class="text-start input-wrapper">
                         <label class="fw-bold" for="email">Email</label>
-                        <input type="email" class="form-control bg-secondary bg-opacity-10" id="email" x-model="data.profile.email" disabled>
+                        <input type="email" class="form-control" id="email" x-model="data.profile.email" disabled>
                     </div>
                 </div>
 
@@ -32,7 +32,7 @@
                 <div class="form-group boxed">
                     <div class="text-start input-wrapper">
                         <label class="fw-bold" for="whatsapp">Nomor WhatsApp</label>
-                        <input type="text" class="form-control bg-secondary bg-opacity-10" id="whatsapp" x-model="data.profile.phone" disabled>
+                        <input type="text" class="form-control" id="whatsapp" x-model="data.profile.phone" disabled>
                     </div>
                 </div>
 

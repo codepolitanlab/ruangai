@@ -17,15 +17,20 @@ class PageController extends BaseController {
 				"icon" => '<i class="bi bi-house"></i>'
 			],
 			[
+				"label" => "Pustaka",
+				"url" => "/pustaka",
+				"icon" => '<i class="bi bi-journal-bookmark-fill"></i>'
+			],
+			[
 				"label" => "Courses",
 				"url" => "/courses",
 				"icon" => '<i class="bi bi-book"></i>'
 			],
-			[
-				"label" => "Kabar",
-				"url" => "/feeds",
-				"icon" => '<i class="bi bi-newspaper"></i>'
-			],
+			// [
+			// 	"label" => "Kabar",
+			// 	"url" => "/feeds",
+			// 	"icon" => '<i class="bi bi-newspaper"></i>'
+			// ],
 			[
 				"label" => "Akun",
 				"url" => "/profile",

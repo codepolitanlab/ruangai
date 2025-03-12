@@ -50,7 +50,32 @@
         x-route="/courses"
         x-template="['/courses/content', '/_components/bottommenu']"></template>
 
-    <!-- Course -->
+    <!-- Course Live Session -->
+    <template
+        x-route="/courses/intro/:slug/live_session"
+        x-template="['/courses/intro/live_session/content', '/_components/bottommenu']"></template>
+        
+    <!-- Course Live Session Detail -->
+    <template
+        x-route="/courses/intro/:slug/live_session/:id"
+        x-template="['/courses/intro/live_session/detail/content', '/_components/bottommenu']"></template>
+
+    <!-- Course Student -->
+    <template
+        x-route="/courses/intro/:slug/student"
+        x-template="['/courses/intro/student/content', '/_components/bottommenu']"></template>
+
+    <!-- Course Detail Student -->
+    <template
+        x-route="/courses/intro/:slug/student/:id"
+        x-template="['/courses/intro/student/detail/content', '/_components/bottommenu']"></template>
+
+    <!-- Course Tanya Jawab -->
+    <template
+        x-route="/courses/intro/:slug/tanya_jawab"
+        x-template="['/courses/intro/tanya_jawab/content', '/_components/bottommenu']"></template>
+
+    <!-- Live Session -->
     <template
         x-route="/courses/intro/:slug"
         x-template="['/courses/intro/content', '/_components/bottommenu']"></template>
@@ -60,10 +85,25 @@
         x-route="/courses/lessons/:slug"
         x-template="['/courses/lessons/content', '/_components/bottommenu']"></template>
 
-     <!-- Quiz -->
-     <template
+    <!-- Courses -->
+    <template
         x-route="/courses/quiz/:id"
         x-template="['/courses/quiz/content', '/_components/bottommenu']"></template>
+
+    <!-- Pustaka -->
+    <template
+        x-route="/pustaka"
+        x-template="['/pustaka/content', '/_components/bottommenu']"></template>
+
+    <!-- Tanya Jawab -->
+    <template
+        x-route="/courses/tanya_jawab"
+        x-template="['/courses/tanya_jawab/content', '/_components/bottommenu']"></template>
+
+    <!-- Detail Tanya Jawab -->
+    <template
+        x-route="/courses/tanya_jawab/detail/:id"
+        x-template="['/courses/tanya_jawab/detail/content', '/_components/bottommenu']"></template>
 
     <!-- Feeds -->
     <template

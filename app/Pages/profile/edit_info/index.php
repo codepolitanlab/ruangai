@@ -1,6 +1,6 @@
-<div id="member-profile-edit-info" x-data="profile_edit_info()">
+<div id="member-profile-edit-info" x-data="profile_edit_info()" class="bg-dark">
 
-    <div class="appHeader bg-brand">
+    <div class="appHeader bg-dark">
         <div class="left">
             <a href="javascript:void()" onclick="history.back()" class="headerButton text-white">
                 <ion-icon name="chevron-back-outline"></ion-icon>
@@ -16,7 +16,7 @@
         <div class="section full mt-1">
             <div class="section-title">Informasi Pengguna</div>
 
-            <div class="wide-block pt-2 pb-2">
+            <div class="wide-block pt-2 pb-2 bg-dark">
 
                 <div class="form-group boxed">
                     <div class="text-start input-wrapper">
