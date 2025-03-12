@@ -69,15 +69,15 @@
                         <p>Pelajari dasar-dasar Artificial Intelligence (AI), bagaimana cara kerjanya, serta peranannya dalam kehidupan sehari-hari. Kursus ini akan membimbing Anda memahami konsep AI secara sederhana sebelum mendalami topik lebih lanjut di setiap lesson!</p>
                     </div>
                     <div class="d-flex gap-3 mt-2 overflow-scroll py-3">
-                        <a href="#" class="btn btn-primary rounded-pill btn-lg">Materi Belajar</a>
-                        <a href="/courses/intro/inggris-beginner-book-1/live_session" class="btn bg-grey rounded-pill btn-lg text-white position-relative">
+                        <a href="#" class="btn btn-primary text-nowrap rounded-pill">Materi Belajar</a>
+                        <a href="/courses/intro/inggris-beginner-book-1/live_session" class="btn bg-grey text-nowrap rounded-pill text-white position-relative">
                             Live Session
                             <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
                                 <span class="visually-hidden">New alerts</span>
                             </span>
                         </a>
-                        <a href="/courses/intro/inggris-beginner-book-1/student" class="btn bg-grey rounded-pill btn-lg text-white">Student</a>
-                        <a href="/courses/intro/inggris-beginner-book-1/tanya_jawab" class="btn bg-grey rounded-pill btn-lg text-white">Tanya Jawab</a>
+                        <a href="/courses/intro/inggris-beginner-book-1/student" class="btn bg-grey text-nowrap rounded-pill text-white">Student</a>
+                        <a href="/courses/intro/inggris-beginner-book-1/tanya_jawab" class="btn bg-grey text-nowrap rounded-pill text-white">Tanya Jawab</a>
                     </div>
                 </div>
             </section>

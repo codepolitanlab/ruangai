@@ -44,8 +44,8 @@
     <script src="<?= asset_url('mobilekit/assets/js/base.js') ?>"></script>
 
     <?php if (ENVIRONMENT === 'development'): ?>
-    <script src="<?= asset_url('mobilekit/assets/js/helpers.bundle.js') ?>"></script>
-    <script src="<?= asset_url('mobilekit/assets/js/pagescript.js') ?>" defer></script>
+    <script src="<?= asset_url('mobilekit/assets/js/helpers.bundle.dev.js') ?>"></script>
+    <script src="<?= asset_url('mobilekit/assets/js/pagescript.dev.js') ?>" defer></script>
     <?php else: ?>
     <script src="<?= asset_url('mobilekit/assets/js/helpers.bundle.min.js') ?>"></script>
     <script src="<?= asset_url('mobilekit/assets/js/pagescript.min.js') ?>" defer></script>

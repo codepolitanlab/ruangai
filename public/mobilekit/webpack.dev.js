@@ -28,7 +28,7 @@ module.exports = {
     'pagescript': getAllScripts()
   },
   output: {
-    filename: '[name].js', // Development tetap pakai nama normal
+    filename: '[name].dev.js', // Development tetap pakai nama normal
     path: path.resolve(__dirname, 'assets/js'),
   },
   module: {

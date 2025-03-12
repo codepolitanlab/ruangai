@@ -77,7 +77,7 @@
 
     <!-- Live Session -->
     <template
-        x-route="/courses/intro/:slug"
+        x-route="/courses/intro/:id/:slug"
         x-template="['/courses/intro/content', '/_components/bottommenu']"></template>
 
     <!-- Lessons -->
