@@ -8,7 +8,7 @@ class PageController extends MobileBaseController
     {
         // Ambil data course dari db
         $db = \Config\Database::connect();
-        $data['courses'] = $db->table('courses')->get()->getResultArray();
+        $data['courses'] = $db->table('courses')->limit(10)->orderBy('created_at', 'desc')->get()->getResultArray();
 
         return pageView('courses/index', $data);
     }

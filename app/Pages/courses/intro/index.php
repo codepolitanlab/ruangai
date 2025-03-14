@@ -52,8 +52,8 @@
                     <div class="position-absolute ms-3" style="top: 18%;">
                         <h2 x-text="data.course.course_title"></h2>
                         <div class="d-flex gap-4 mb-2">
-                            <div><i class="bi bi-people"></i> 120 Siswa</div>
-                            <div><i class="bi bi-book"></i> 50 Modul Belajar</div>
+                            <div><i class="bi bi-people"></i> <span x-text="data.course.total_student"></span> Siswa</div>
+                            <div><i class="bi bi-book"></i>  <span x-text="data.course.total_module"></span> Modul Belajar</div>
                         </div>
                         <div class="progress mb-3" role="progressbar" style="height: 8px;">
                             <div class="progress-bar bg-secondary" style="width: 25%"></div>
@@ -66,7 +66,7 @@
                 <div class="container px-4">
                     <div>
                         <h2>Deskripsi Singkat</h2>
-                        <p>Pelajari dasar-dasar Artificial Intelligence (AI), bagaimana cara kerjanya, serta peranannya dalam kehidupan sehari-hari. Kursus ini akan membimbing Anda memahami konsep AI secara sederhana sebelum mendalami topik lebih lanjut di setiap lesson!</p>
+                        <p x-text="data.course.description"></p>
                     </div>
                     <div class="d-flex gap-3 mt-2 overflow-scroll py-3">
                         <a href="#" class="btn btn-primary text-nowrap rounded-pill">Materi Belajar</a>
@@ -86,47 +86,17 @@
                     <div class="card bg-grey rounded-20 p-3 mb-2" style="border: 4px solid rgba(0, 0, 0, 0.9);">
                         <h3 class="m-0">Pengenalan</h3>
                         <div class="card-body d-flex flex-column align-items-center gap-3 px-1">
-                            <div class="bg-dark rounded-20 p-3 w-100 d-flex align-items-center justify-content-between">
-                                <div>
-                                    <h4 class="m-0 mb-1">Mengenal Artificial Intelligence</h4>
-                                    <h5 class="m-0 text-secondary">05:19</h5>
+                            <template x-for="lesson of data.course.lessons">
+                                <div class="bg-dark rounded-20 p-3 w-100 d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <h4 class="m-0 mb-1" x-text="lesson.lesson_title"></h4>
+                                        <h5 class="m-0 text-secondary" x-text="lesson.duration"></h5>
+                                    </div>
+                                    <div>
+                                        <i class="bi bi-lock-fill h4 m-0 text-white"></i>
+                                    </div>
                                 </div>
-                                <div>
-                                    <i class="bi bi-lock-fill h4 m-0 text-white"></i>
-                                </div>
-                            </div>
-                            <div class="bg-dark rounded-20 p-3 w-100 d-flex align-items-center justify-content-between">
-                                <div>
-                                    <h4 class="m-0 mb-1">Sejarah Artificial Intelligence</h4>
-                                    <h5 class="m-0 text-secondary">09:19</h5>
-                                </div>
-                                <div>
-                                    <i class="bi bi-lock-fill h4 m-0 text-white"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card bg-grey rounded-20 p-3 mb-2" style="border: 4px solid rgba(0, 0, 0, 0.9);">
-                        <h3 class="m-0">Dan Lain Lain</h3>
-                        <div class="card-body d-flex flex-column align-items-center gap-3 px-1">
-                            <div class="bg-dark rounded-20 p-3 w-100 d-flex align-items-center justify-content-between">
-                                <div>
-                                    <h4 class="m-0 mb-1">Mengenal Artificial Intelligence</h4>
-                                    <h5 class="m-0 text-secondary">05:19</h5>
-                                </div>
-                                <div>
-                                    <i class="bi bi-lock-fill h4 m-0 text-white"></i>
-                                </div>
-                            </div>
-                            <div class="bg-dark rounded-20 p-3 w-100 d-flex align-items-center justify-content-between">
-                                <div>
-                                    <h4 class="m-0 mb-1">Sejarah Artificial Intelligence</h4>
-                                    <h5 class="m-0 text-secondary">09:19</h5>
-                                </div>
-                                <div>
-                                    <i class="bi bi-lock-fill h4 m-0 text-white"></i>
-                                </div>
-                            </div>
+                            </template>
                         </div>
                     </div>
                 </div>
