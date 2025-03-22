@@ -54,7 +54,7 @@
                                     Ditanyakan di kelas <a href="" class="text-pink">Pengembangan Web Fullstack dengan Laravel 11</a>, Topik <a class="text-pink" href="">Setup kebutuhan untuk install project Laravel</a>
                                 </div>
                             </div>
-                            <div class="py-3 text-white">
+                            <div class="py-3 w-100 text-white">
                                 <a href="" class="text-pink d-block mb-1">[url=https://postimg.cc/Z0m91ypp][img]https://i.postimg.cc/Z0m91ypp/Screenshot-1956.png[/img][/url]</a>
                                 <a href="" class="text-pink d-block mb-2">[url=https://postimg.cc/Z0m91ypp][img]https://i.postimg.cc/Z0m91ypp/Screenshot-1956.png[/img][/url]</a>
                                 <p>aku kan lagi coba kelas laravel 11 ini nih, nah pas udah aku download C:\Program Files\Herd>composer create-project laravel/laravel</p>
@@ -77,7 +77,7 @@
                             </div>
                         </div>
                         <div class="card-body d-flex flex-column align-items-center gap-3 px-1">
-                            <div class="text-white">
+                            <div class="text-white w-100">
                                 <a href="" class="text-pink d-block mb-1">[url=https://postimg.cc/Z0m91ypp][img]https://i.postimg.cc/Z0m91ypp/Screenshot-1956.png[/img][/url]</a>
                                 <a href="" class="text-pink d-block mb-2">[url=https://postimg.cc/Z0m91ypp][img]https://i.postimg.cc/Z0m91ypp/Screenshot-1956.png[/img][/url]</a>
                                 <p>aku kan lagi coba kelas laravel 11 ini nih, nah pas udah aku download C:\Program Files\Herd>composer create-project laravel/laravel</p>

@@ -19,7 +19,7 @@ class PageController extends MobileBaseController
         $settings = setting()->get('Heroic.siteSettings');
 
         $this->data['settings'] = array_combine(array_column($settings, 'option_name'), array_column($settings, 'option_value'));
-            
+
         return pageView('home/index', $this->data);
     }
 

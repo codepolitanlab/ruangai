@@ -1,4 +1,4 @@
-<div id="lessons" x-data="lessons()">
+<div id="lesson_detail" x-data="lesson_detail($router.params.id)">
     <div id="app-header" class="appHeader main glassmorph border-0">
         <div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
         <div class="pageTitle"><span>Detail Lessons</span></div>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="container px-3">
                     <div class="mt-4">
-                        <h2 class="text-white">Kontrak Belajar</h2>
+                        <h2 class="text-white" x-text="data.lesson.lesson_title"></h2>
                         <p class="text-secondary">Pelajari dasar-dasar Artificial Intelligence (AI), bagaimana cara kerjanya, serta peranannya dalam kehidupan sehari-hari. Kursus ini akan membimbing Anda memahami konsep AI secara sederhana sebelum mendalami topik lebih lanjut di setiap lesson!</p>
                         
                         <!-- Action Buttons -->
@@ -74,65 +74,27 @@
                         <div>
                             <h3 class="text-white mb-3">Materi Belajar Lainnya</h3>
                             
-                            <div class="bg-grey mb-3 p-3 rounded-20">
-                                <h5 class="text-white mb-3">Pengenalan</h5>
-                                
-                                <!-- Completed Lesson -->
-                                <div class="card bg-dark rounded-20 p-3 mb-2">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h5 class="text-white mb-1">Selamat datang</h5>
-                                            <div class="text-secondary">03:29</div>
+                            <template x-for="(lesson, index) in data.course.lessons" :key="index">
+                                <div class="bg-grey mb-3 p-3 rounded-20">
+                                    <h5 class="text-white mb-3" x-text="lesson.section_title"></h5>
+                                    
+                                    <!-- Card Lesson -->
+                                    <a x-bind:href="`/courses/lessons/${lesson.id}`" class="d-block w-100 card-hover">
+                                        <div class="card bg-dark rounded-20 p-3 mb-2">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h5 class="text-white mb-1" x-text="lesson.lesson_title"></h5>
+                                                    <div class="text-secondary" x-text="lesson.duration"></div>
+                                                </div>
+                                                <div class="">
+                                                    <i x-show="lesson.id == $router.params.id" class="bi bi-check-circle-fill h4 m-0 text-pink"></i>
+                                                    <i x-show="lesson.id != $router.params.id" class="bi bi-play-circle-fill h4 m-0 text-white"></i>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="text-pink">
-                                            <i class="bi bi-check-circle-fill h4 m-0"></i>
-                                        </div>
-                                    </div>
+                                    </a>
                                 </div>
-                                
-                                <!-- Current Lesson -->
-                                <div class="card bg-dark rounded-20 p-3">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h5 class="text-white mb-1">Kontrak Belajar</h5>
-                                            <div class="text-secondary">02:27</div>
-                                        </div>
-                                        <div class="text-white">
-                                            <i class="bi bi-play-circle-fill h4 m-0"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-grey mb-3 p-3 rounded-20">
-                                <h5 class="text-white mb-3">AI dan Perkembangannya</h5>
-                                
-                                <!-- Completed Lesson -->
-                                <div class="card bg-dark rounded-20 p-3 mb-2">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h5 class="text-white mb-1">Selamat datang</h5>
-                                            <div class="text-secondary">03:29</div>
-                                        </div>
-                                        <div class="text-secondary">
-                                            <i class="bi bi-play-circle-fill text-white h4 m-0"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Current Lesson -->
-                                <div class="card bg-dark rounded-20 p-3">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h5 class="text-white mb-1">Kontrak Belajar</h5>
-                                            <div class="text-secondary">02:27</div>
-                                        </div>
-                                        <div class="text-white">
-                                            <i class="bi bi-play-circle-fill h4 m-0"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            </template>
                         </div>
                     </div>
                 </div>

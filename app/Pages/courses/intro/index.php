@@ -87,15 +87,17 @@
                         <h3 class="m-0">Pengenalan</h3>
                         <div class="card-body d-flex flex-column align-items-center gap-3 px-1">
                             <template x-for="lesson of data.course.lessons">
-                                <div class="bg-dark rounded-20 p-3 w-100 d-flex align-items-center justify-content-between">
-                                    <div>
-                                        <h4 class="m-0 mb-1" x-text="lesson.lesson_title"></h4>
-                                        <h5 class="m-0 text-secondary" x-text="lesson.duration"></h5>
+                                <a x-bind:href="`/courses/lessons/${lesson.id}`" class="d-block w-100 card-hover">
+                                    <div class="bg-dark rounded-20 p-3 w-100 d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <h4 class="m-0 mb-1" x-text="lesson.lesson_title"></h4>
+                                            <h5 class="m-0 text-secondary" x-text="lesson.duration"></h5>
+                                        </div>
+                                        <div>
+                                            <i class="bi bi-lock-fill h4 m-0 text-white"></i>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <i class="bi bi-lock-fill h4 m-0 text-white"></i>
-                                    </div>
-                                </div>
+                                </a>
                             </template>
                         </div>
                     </div>

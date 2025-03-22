@@ -47,6 +47,11 @@
 
     <!-- Courses -->
     <template
+        x-route="/certificate/:id"
+        x-template="['/certificate/content', '/_components/bottommenu']"></template>
+
+    <!-- Courses -->
+    <template
         x-route="/courses"
         x-template="['/courses/content', '/_components/bottommenu']"></template>
 
@@ -82,7 +87,7 @@
 
     <!-- Lessons -->
     <template
-        x-route="/courses/lessons/:slug"
+        x-route="/courses/lessons/:id"
         x-template="['/courses/lessons/content', '/_components/bottommenu']"></template>
 
     <!-- Courses -->

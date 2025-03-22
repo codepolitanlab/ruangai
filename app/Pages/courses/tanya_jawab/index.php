@@ -32,10 +32,10 @@
                         <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%205394.png" class="w-100" alt="">
                         <div class="d-flex gap-3 mt-3">
                             <a href="/courses" class="btn bg-grey w-100 p-3 rounded-pill">
-                                <h3 class="m-0">Kelas Online</h3>
+                                <h5 class="m-0">Kelas Online</h5>
                             </a>
                             <a href="/courses/tanya_jawab" class="btn btn-primary w-100 p-3 rounded-pill text-white">
-                                <h3 class="m-0">Tanya Jawab</h3>
+                                <h5 class="m-0">Tanya Jawab</h5>
                             </a>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                 <section>
                     <div class="container py-4">
                         <template x-for="article in Array(3)">
-                            <div class="card bg-grey rounded-20 p-3 mb-2" style="border: 4px solid rgba(0, 0, 0, 0.9);">
+                            <div class="card bg-grey rounded-20 p-2  mb-2" style="border: 4px solid rgba(0, 0, 0, 0.9);">
                                 <div class="d-flex justify-content-between">
                                     <div class="d-flex gap-3 align-items-center">
                                         <img src="https://cdn-icons-png.flaticon.com/512/8792/8792047.png" class="rounded-circle" style="width: 50px;height: 50px" alt="">
@@ -53,12 +53,12 @@
                                             <h6 class="m-0">UI & UX Designer - 04 Maret</h6>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-center gap-2">
+                                    <div class="d-flex flex-column flex-lg-row align-items-center gap-2">
                                         <div class="d-flex btn-primary align-items-center justify-content-center h5 m-0 rounded" style="width: 50px;height: 40px">1</div>
                                         <div class="h6 m-0 text-white">Jawaban</div>
                                     </div>
                                 </div>
-                                <div class="card-body d-flex align-items-center gap-3 px-1">
+                                <div class="card-body d-flex align-items-center gap-lg-2 px-1">
                                     <a href="/courses/tanya_jawab/detail/1">
                                         <div class="bg-dark rounded-20 p-3 w-100">
                                             <h5>Tidak dapat menemukan URL Laravel</h5>
