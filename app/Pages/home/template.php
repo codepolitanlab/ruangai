@@ -98,5 +98,9 @@
 
     </div>
 
-    <!-- * App Capsule -->
+    <!-- Bottom Menu -->
+    <?= $this->include('_bottommenu') ?>
 </div>
+
+
+<?= $this->include('home/_script') ?>

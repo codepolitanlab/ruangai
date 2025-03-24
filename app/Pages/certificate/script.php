@@ -1,5 +1,4 @@
-// Page courses
-document.addEventListener("alpine:init", () => {
+<script>
   Alpine.data("certificate", () => ({
     title: "Certificate",
     data: {
@@ -13,4 +12,4 @@ document.addEventListener("alpine:init", () => {
       Alpine.store("core").currentPage = "certificate";
     },
   }));
-});
+</script>

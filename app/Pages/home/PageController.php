@@ -9,7 +9,7 @@ class PageController extends MobileBaseController
 {
     use ResponseTrait;
 
-    public function getContent()
+    public function getTemplate()
     {
         // Get database pesantren
         $Heroic = new \App\Libraries\Heroic();
@@ -20,7 +20,7 @@ class PageController extends MobileBaseController
 
         $this->data['settings'] = array_combine(array_column($settings, 'option_name'), array_column($settings, 'option_value'));
 
-        return pageView('home/index', $this->data);
+        return pageView('home/template', $this->data);
     }
 
     public function getSupply()

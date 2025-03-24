@@ -27,6 +27,7 @@
 </head>
 
 <body class="dark-mode-active">
+<!-- <body> -->
     <!-- Content Section -->
     <?= $this->renderSection('content') ?>
 
@@ -42,17 +43,9 @@
     <script src="https://cdn.jsdelivr.net/npm/prompts-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="<?= asset_url('mobilekit/assets/js/base.js') ?>"></script>
-
-    <?php if (ENVIRONMENT === 'development'): ?>
-    <script src="<?= asset_url('mobilekit/assets/js/helpers.bundle.dev.js') ?>"></script>
-    <script src="<?= asset_url('mobilekit/assets/js/pagescript.dev.js') ?>" defer></script>
-    <?php else: ?>
-    <script src="<?= asset_url('mobilekit/assets/js/helpers.bundle.min.js') ?>"></script>
-    <script src="<?= asset_url('mobilekit/assets/js/pagescript.min.js') ?>" defer></script>
-    <?php endif; ?>
-
-    <script src="https://cdn.jsdelivr.net/npm/pinecone-router@5.x.x/dist/router.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js" defer></script>
+    <script src="<?= asset_url('vendor/heroic/heroic.min.js') ?>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pinecone-router@6.2.4/dist/router.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
     <script>
         Fancybox.bind('[data-fancybox="gallery"]', {});

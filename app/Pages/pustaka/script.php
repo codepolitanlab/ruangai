@@ -1,5 +1,4 @@
-// Page pustaka
-document.addEventListener("alpine:init", () => {
+<script>
   Alpine.data("pustaka", () => ({
     title: "Pustaka",
     data: {
@@ -13,4 +12,4 @@ document.addEventListener("alpine:init", () => {
       Alpine.store("core").currentPage = "pustaka";
     },
   }));
-});
+</script>

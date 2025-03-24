@@ -89,3 +89,5 @@
         </div>
     </div>
 </div>
+
+<?= $this->include('pustaka/script') ?>

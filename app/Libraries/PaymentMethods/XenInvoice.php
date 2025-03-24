@@ -2,7 +2,7 @@
 
 use App\Libraries\XenditPaymentMethod;
 
-class XenInvoicePaymentMethod extends XenditPaymentMethod {
+class XenInvoice extends XenditPaymentMethod {
 
 	public $name = "XenInvoice";
 	public $description = "Kanal pembayaran menggunakan antarmuka Xendit dengan beragam metode pembayaran.";

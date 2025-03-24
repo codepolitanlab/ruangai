@@ -1,11 +1,11 @@
 <?php namespace App\Pages;
 
-use App\Controllers\BaseController;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use Yllumi\Heroic\Controllers\PageBaseController;
 
-class MobileBaseController extends BaseController 
+class MobileBaseController extends PageBaseController 
 {
 	public $data = [];
 
@@ -24,7 +24,7 @@ class MobileBaseController extends BaseController
 	// This method handle GET request
 	public function getIndex()
 	{
-		return pageView('mobileLayout', $this->data);
+		return pageView('layout', $this->data);
 	}
 
 }
