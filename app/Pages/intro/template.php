@@ -42,3 +42,5 @@
     </div>
 
 </div>
+
+<?= $this->include('intro/script') ?>

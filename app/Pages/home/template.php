@@ -35,7 +35,6 @@
             <div class="swiper-pagination"></div>
         </div>
 
-
         <section class="wrapper">
             <section>
                 <div class="container py-4 px-0">
@@ -103,4 +102,4 @@
 </div>
 
 
-<?= $this->include('home/_script') ?>
+<?= $this->include('home/script') ?>

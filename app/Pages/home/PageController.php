@@ -9,19 +9,9 @@ class PageController extends MobileBaseController
 {
     use ResponseTrait;
 
-    public function getTemplate()
-    {
-        // Get database pesantren
-        $Heroic = new \App\Libraries\Heroic();
-        $db = \Config\Database::connect();
-
-        // Get setting
-        $settings = setting()->get('Heroic.siteSettings');
-
-        $this->data['settings'] = array_combine(array_column($settings, 'option_name'), array_column($settings, 'option_value'));
-
-        return pageView('home/template', $this->data);
-    }
+    public $data = [
+        'page_title' => "Beranda"
+    ];
 
     public function getSupply()
     {
