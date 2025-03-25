@@ -9,7 +9,7 @@ class PageController extends MobileBaseController
 {
     use ResponseTrait;
 
-    public function getTemplate()
+    public function getTemplate($params = null)
     {
         // Get database pesantren
         $Heroic = new \App\Libraries\Heroic();

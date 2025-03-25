@@ -1,4 +1,6 @@
-<div id="courses" x-data="courses()">
+<div id="courses" x-data="$heroic({
+    page_title: 'Kelas',
+})">
 
     <div id="appCapsule" class="shadow">
         <div class="appContent" style="min-height:90vh;">

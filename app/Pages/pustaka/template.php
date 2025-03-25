@@ -88,6 +88,8 @@
 
         </div>
     </div>
+    
+    <?= $this->include('_bottommenu') ?>
 </div>
 
 <?= $this->include('pustaka/script') ?>

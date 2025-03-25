@@ -112,4 +112,7 @@
         </div>
         <div class="offcanvas-body small"></div>
     </div>
+    <?= $this->include('_bottommenu') ?>
 </div>
+
+<?= $this->include('courses/intro/script') ?>

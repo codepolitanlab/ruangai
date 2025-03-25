@@ -10,11 +10,6 @@
         <div class="pageTitle ">
             <img src="https://ik.imagekit.io/56xwze9cy/ruangai/RuangAI.png?updatedAt=1741075465937" alt="">
         </div>
-        <!-- <div class="right">
-            <a href="#" class="headerButton toggle-searchbox text-white">
-                <ion-icon name="notifications"></ion-icon>
-            </a>
-        </div> -->
     </div>
 
     <!-- App Capsule -->
