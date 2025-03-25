@@ -15,7 +15,6 @@ class MobileBaseController extends PageBaseController
         parent::initController($request, $response, $logger);
 
 		$this->data['title'] = 'HeroicAdmin';
-		$this->data['page_title'] = 'Beranda';
 		$this->data['themeURL'] = base_url('mobilekit') .'/'; 
         $this->data['themePath'] = 'mobilekit/'; 
         $this->data['version'] = "1.0.0";

@@ -1,4 +1,4 @@
-// Page intro
+<script>
 window.intro = function() {
     return {
         title: "Intro",
@@ -25,3 +25,4 @@ window.intro = function() {
         }
     }
 }
+</script>
