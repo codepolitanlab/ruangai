@@ -1,6 +1,8 @@
 <?php
 $router = [
     "/",
+    "notfound",
+
     "/intro",
     "/masuk",
     "/aktivasi",
@@ -47,7 +49,6 @@ $router = [
     "/profile/edit_info",
     "/profile/edit_account",
     "/program_pesantren",
-    "notfound",
     "admin/list_tagihan",
     "admin/list_tagihan/generate",
 ];
@@ -63,8 +64,10 @@ $router = [
 <script>
 document.addEventListener('alpine:init', () => {
     Alpine.data('router', () => ({
+
+        // Route handlers define here..
+
         isLoggedIn(context){
-            // console.log(localStorage.getItem('heroic_token'))
             if(! localStorage.getItem('heroic_token')){
                 context.redirect('/masuk')
             }
