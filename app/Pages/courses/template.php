@@ -51,17 +51,17 @@
                             <h3 class="m-0 me-auto">Lanjutkan Belajar</h3>
                         </div>
                         <a href="/courses/lessons/1">
-                            <div class="card bg-grey rounded-20" style="border: 4px solid rgba(0, 0, 0, 0.9);">
+                            <div class="card rounded-20">
                                 <div class="card-body d-flex align-items-center gap-3 p-2">
-                                    <div class="bg-dark d-flex align-items-center justify-content-center rounded-20" style="width: 100px;height: 100px">
+                                    <div class="d-flex align-items-center justify-content-center rounded-20" style="width: 100px;height: 100px">
                                         <i class="bi bi-journal-bookmark-fill display-3 text-pink"></i>
                                     </div>
                                     <div>
-                                        <h4 class="m-0 link">Lesson 02 - Pengenalan</h4>
+                                        <h4 class="m-0">Lesson 02 - Pengenalan</h4>
                                         <div class="text-muted mb-1">Potensi Dan Tantangan AI</div>
-                                        <div class="d-flex align-items-center gap-2 text-white">
+                                        <div class="d-flex align-items-center gap-2">
                                             <i class="bi bi-play h3 m-0"></i>
-                                            <div style="width: 200px;height: 3px;background-color: #fff;"></div>
+                                            <div style="width: 200px;height: 3px;background-color: #D9D9D9"></div>
                                             <div>100%</div>
                                         </div>
                                     </div>
@@ -75,15 +75,15 @@
                         <div class="row">
 
                             <?php foreach($courses as $course): ?>
-                            <div class="col-6">
+                            <div class="col-6 mb-2">
                                 <a href="/courses/intro/<?= $course['id'] ?>/<?= $course['slug'] ?>">
                                     <div class="card card-hover rounded-4">
                                         <div class="position-relative">
                                             <img src="<?= $course['thumbnail'] ?>" class="card-img-top rounded-top-4 position-relative" alt="Cover">
                                             <small style="font-size:12px" class="badge bg-secondary rounded-0 position-absolute top-0 start-0 m-2 px-3 rounded-pill"><?= $course['level'] ?></small>
                                         </div>
-                                        <div class="card-body py-4 px-2 d-flex flex-column bg-dark">
-                                            <div class="mb-2 text-truncate-2 text-white"><?= $course['course_title'] ?></div>
+                                        <div class="card-body py-4 px-2 d-flex flex-column">
+                                            <div class="mb-2 text-truncate-2"><?= $course['course_title'] ?></div>
                                             <div class="d-flex flex-column flex-lg-row text-secondary gap-1 mb-auto">
                                                 <div class="course-attr d-flex gap-1 me-2 align-items-top"><i class="bi bi-people-fill"></i><small><?= $course['total_student'] ?> Siswa</small></div>
                                                 <div class="course-attr d-flex gap-1 align-items-top"><i class="bi bi-journal-bookmark-fill"></i><small><?= $course['total_module'] ?> Modul Belajar</small></div>

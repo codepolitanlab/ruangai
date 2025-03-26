@@ -26,8 +26,9 @@
     <link rel="stylesheet" href="<?= asset_url('mobilekit/assets/css/custom.css') ?>">
 </head>
 
-<body class="dark-mode-active">
-<!-- <body> -->
+<!-- <body class="dark-mode-active"> -->
+        
+<body>
     <!-- Content Section -->
     <?= $this->renderSection('content') ?>
 

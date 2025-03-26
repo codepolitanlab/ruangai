@@ -136,3 +136,10 @@ button.vanilla-calendar-day__btn.alpa, .presensi-status-container.alpa { backgro
     top: 12px;
     right: 10px;
 }
+
+.dark-mode-active .appHeader,
+.dark-mode-active .appBottomMenu,
+.dark-mode-active .card,
+.dark-mode-active #template-container {
+    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+}

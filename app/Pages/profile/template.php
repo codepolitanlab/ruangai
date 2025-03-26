@@ -1,5 +1,5 @@
-<div id="profile" x-data="profile()" class="bg-dark">
-    <div class="appHeader bg-dark text-start">
+<div id="profile" x-data="profile()">
+    <div class="appHeader text-start">
         <div class=" text-white">Akun</div>
     </div>
 
@@ -9,7 +9,7 @@
             <section class="mb-5">
                 <div class="">
                     <div class="text-center position-relative bg-brand" style="height:90px;"></div>
-                    <div class="card ps-3 shadow-none bg-dark text-dark container-fluid pt-3 pb-3" style="margin-top:-95px">
+                    <div class="card ps-3 shadow-none container-fluid pt-3 pb-3" style="margin-top:-95px">
                         <div class="d-flex align-items-center justify-content-start gap-3">
                             <div>
                                 <img :src="data?.profile?.avatar ? data?.profile?.avatar : `<?= $themeURL ?>assets/img/icon/default-avatar-user.webp`"
@@ -17,9 +17,9 @@
                                     :alt="data?.profile?.name"
                                     style="width:65px">
                             </div>
-                            <div class="use text-white">
+                            <div class="text-muted">
                                 <div class="h6 m-0" x-text="data?.profile?.name || 'Badar Abdi Mulya'"></div>
-                                <small x-text="data?.profile?.username || 'CODING IS A SHINOBI WAYS FOR ME!!!!!'" class="text-muted"></small>
+                                <small x-text="data?.profile?.username || 'CODING IS A SHINOBI WAYS FOR ME!!!!!'"></small>
                             </div>
                         </div>
                     </div>

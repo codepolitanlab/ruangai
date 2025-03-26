@@ -1,6 +1,6 @@
 <div 
     id="pustaka" 
-    class="bg-dark"
+    class=""
     x-data="$heroic({
         title: `<?= $page_title ?>`,
         getUrl: `/pustaka/data`
@@ -83,8 +83,8 @@
                                 <a href="#">
                                     <div class="card card-hover rounded-4">
                                         <img src="https://media.istockphoto.com/id/2179714888/id/foto/tangan-digital-dalam-seni-konsep-koneksi-jaringan-futuristik.jpg?s=612x612&w=0&k=20&c=nIGL-f-lPT3cmcqI58ENrUmrAMQH1ahQyct1FvqZIzY=" class=" card-img-top rounded-top-4" alt="...">
-                                        <div class="card-body py-4 px-3 bg-grey rounded-top-0 rounded-4">
-                                            <h5 class="m-0 text-truncate-2 text-white" x-text="article.title"></h5>
+                                        <div class="card-body py-4 px-3 rounded-top-0 rounded-4">
+                                            <h5 class="m-0 text-truncate-2" x-text="article.title"></h5>
                                         </div>
                                     </div>
                                 </a>

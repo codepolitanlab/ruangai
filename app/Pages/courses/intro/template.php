@@ -88,12 +88,12 @@
             </section>
             <section>
                 <div class="container px-4">
-                    <div class="card bg-grey rounded-20 p-3 mb-2" style="border: 4px solid rgba(0, 0, 0, 0.9);">
+                    <div class="card rounded-20 p-3 mb-2" >
                         <h3 class="m-0">Pengenalan</h3>
                         <div class="card-body d-flex flex-column align-items-center gap-3 px-1">
                             <template x-for="lesson of data.course?.lessons">
                                 <a x-bind:href="`/courses/lessons/${lesson.id}`" class="d-block w-100 card-hover">
-                                    <div class="bg-dark rounded-20 p-3 w-100 d-flex align-items-center justify-content-between">
+                                    <div class="rounded-20 p-3 w-100 d-flex align-items-center justify-content-between">
                                         <div>
                                             <h4 class="m-0 mb-1" x-text="lesson.lesson_title"></h4>
                                             <h5 class="m-0 text-secondary" x-text="lesson.duration"></h5>

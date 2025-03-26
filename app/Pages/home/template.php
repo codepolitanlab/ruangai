@@ -1,10 +1,10 @@
-<div id="template-container" class="bg-dark" x-data="home()">
+<div id="template-container" class="" x-data="home()">
 
     <style>
 
     </style>
 
-    <div class="appHeader bg-dark">
+    <div class="appHeader">
         <div class="left ps-2">
         </div>
         <div class="pageTitle ">
