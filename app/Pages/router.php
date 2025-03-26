@@ -26,7 +26,9 @@ $router = [
     "/courses/intro/:id/:slug",
     "/courses/lessons/:id",
     "/courses/quiz/:id",
-    "/pustaka",
+    "/pustaka" => [
+        "handler" => "[isLoggedIn]"
+    ],
     "/courses/tanya_jawab",
     "/courses/tanya_jawab/:id" => [
         'template' => '/courses/tanya_jawab/detail/template',
@@ -52,9 +54,21 @@ $router = [
 
 ?>
 
-<div id="router" x-data>
+<div id="router" x-data="router()">
 <?php
     helper('heroic');
     echo ltrim(renderRouter($router));
 ?>
 </div>
+
+<script>
+document.addEventListener('alpine:init', () => {
+    Alpine.data('router', () => ({
+        isLoggedIn(context){
+            if(localStorage.getItem('heroic_token')){
+                context.redirect('/masuk')
+            }
+        }
+    }))
+})
+</script>
