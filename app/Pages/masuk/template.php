@@ -58,3 +58,5 @@
         <button type="button" class="btn btn-sm btn-text-light" x-on:click="errorMessage = false">OK</button>
     </div>
 </div>
+
+<?= $this->include('masuk/script') ?>

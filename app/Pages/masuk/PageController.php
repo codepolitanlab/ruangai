@@ -7,11 +7,10 @@ use Firebase\JWT\JWT;
 class PageController extends MobileBaseController 
 {
     use ResponseTrait;
-    
-    public function getContent()
-    {
-        return pageView('masuk/index', $this->data);
-    }
+
+    public $data = [
+        'page_title' => 'Masuk'
+    ];
 
     // Check login
     public function postIndex()

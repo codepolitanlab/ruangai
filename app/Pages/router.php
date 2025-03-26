@@ -1,5 +1,4 @@
 <?php
-
 $router = [
     "/",
     "/intro",
@@ -10,6 +9,7 @@ $router = [
     "/reset_password",
     "/reset_password/change/:token",
     "/page/:slug",
+
     "/certificate/:id",
     "/courses" => [
         "preload" => true,
@@ -51,7 +51,6 @@ $router = [
     "admin/list_tagihan",
     "admin/list_tagihan/generate",
 ];
-
 ?>
 
 <div id="router" x-data="router()">
@@ -65,7 +64,8 @@ $router = [
 document.addEventListener('alpine:init', () => {
     Alpine.data('router', () => ({
         isLoggedIn(context){
-            if(localStorage.getItem('heroic_token')){
+            // console.log(localStorage.getItem('heroic_token'))
+            if(! localStorage.getItem('heroic_token')){
                 context.redirect('/masuk')
             }
         }
