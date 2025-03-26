@@ -1,13 +1,15 @@
 <?php namespace App\Pages\profile\edit_info;
 
 use App\Pages\MobileBaseController;
+use CodeIgniter\API\ResponseTrait;
 
 class PageController extends MobileBaseController {
 
-    public function getContent()
-    {
-        return pageView('profile/edit_info/index', $this->data);
-    }
+    use ResponseTrait;
+
+    public $data = [
+        "page_title" => "Edit Info Profil",
+    ];
 
     public function getSupply()
     {

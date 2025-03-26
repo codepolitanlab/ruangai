@@ -57,4 +57,8 @@
         </div>
         <button type="button" class="btn btn-sm" x-on:click="errorMessage = false">OK</button>
     </div>
+
+    <?= $this->include('_bottommenu') ?>
 </div>
+
+<?= $this->include('profile/delete/script') ?>

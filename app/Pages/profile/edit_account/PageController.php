@@ -1,16 +1,18 @@
 <?php namespace App\Pages\profile\edit_account;
 
 use App\Pages\MobileBaseController;
+use CodeIgniter\API\ResponseTrait;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
 class PageController extends MobileBaseController {
 
-    public function getContent()
-    {
-        return pageView('profile/edit_account/index', $this->data);
-    }
+    use ResponseTrait;
+
+    public $data = [
+        'page_title' => 'Edit Akun'
+    ];
 
     public function getSupply()
     {

@@ -4,10 +4,9 @@ use App\Pages\MobileBaseController;
 
 class PageController extends MobileBaseController {
 
-    public function getContent()
-    {
-        return pageView('profile/delete/index', $this->data);
-    }
+    public $data = [
+        'page_title' => 'Tutup Akun'
+    ];
 
     public function postIndex()
     {

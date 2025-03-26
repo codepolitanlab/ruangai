@@ -68,4 +68,7 @@
     </div>
     <!-- * App Capsule -->
 
+    <?= $this->include('_bottommenu') ?>
 </div>
+
+<?= $this->include('profile/edit_info/script') ?>

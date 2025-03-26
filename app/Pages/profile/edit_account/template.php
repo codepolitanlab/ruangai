@@ -47,4 +47,7 @@
 
     <?= $this->include('profile/edit_account/_change_email') ?>
     <?= $this->include('profile/edit_account/_change_phone') ?>
+    <?= $this->include('_bottommenu')?>
 </div>
+
+<?= $this->include('profile/edit_account/script') ?>
