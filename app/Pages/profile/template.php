@@ -146,4 +146,7 @@
         </div>
     </div>
     <!-- * App Capsule -->
+    <?= $this->include('_bottommenu') ?>
 </div>
+
+<?= $this->include('profile/script') ?>

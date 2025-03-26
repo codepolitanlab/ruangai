@@ -1,15 +1,17 @@
 <?php namespace App\Pages\profile;
 
 use App\Pages\MobileBaseController;
+use CodeIgniter\API\ResponseTrait;
 
 class PageController extends MobileBaseController {
 
-    public function getContent()
-    {
-        return pageView('profile/index', $this->data);
-    }
+    use ResponseTrait;
 
-    public function getSupply()
+    public $data = [
+        'page_title' => 'Profile'
+    ];
+
+    public function getData()
     {
         // Get database pesantren
         $Heroic = new \App\Libraries\Heroic();
@@ -29,7 +31,11 @@ class PageController extends MobileBaseController {
             ->where('users.id', $user->user_id)
             ->get()->getRowArray();
 
-        return $this->respond($data);
+        return $this->respond([
+            'response_code'    => 200,
+            'response_message' => 'success',
+            'data'             => $data
+        ]);
     }
 
 }

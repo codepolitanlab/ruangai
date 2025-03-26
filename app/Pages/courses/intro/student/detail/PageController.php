@@ -4,9 +4,7 @@ use App\Pages\MobileBaseController;
 
 class PageController extends MobileBaseController 
 {
-    public function getContent()
-    {
-        $data['page_title'] = 'Tanya Jawab';
-        return pageView('courses/intro/student/detail/index', $data);
-    }
+    public $data = [
+        'page_title' => 'Student Detail'
+    ];
 }

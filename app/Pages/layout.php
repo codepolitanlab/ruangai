@@ -10,3 +10,9 @@
 
 <?php $this->endSection() ?>
 <!-- END Content Section -->
+
+<?php $this->section('script') ?>
+
+    <?= $this->include('mainScript') ?>
+    
+<?php $this->endSection() ?>

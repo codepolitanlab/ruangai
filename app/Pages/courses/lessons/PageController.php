@@ -6,13 +6,12 @@ use CodeIgniter\API\ResponseTrait;
 class PageController extends MobileBaseController 
 {
     use ResponseTrait;
-    public function getContent()
-    {
-        $data['page_title'] = 'Detail Lessons';
-        return pageView('courses/lessons/index', $data);
-    }
 
-    public function getDetail($id)
+    public $data = [
+        'page_title' => 'Lessons',
+    ];
+
+    public function getData($id)
     {
         $db = \Config\Database::connect();
         // Get specific lesson
@@ -43,9 +42,16 @@ class PageController extends MobileBaseController
             $data['course'] = $course;
             $data['lesson'] = $lesson;
 
-            return $this->respond(['status' => 'success', 'data' => $data]);
+            return $this->respond([
+                'response_code'    => 200,
+                'response_message' => 'success',
+                'data'             => $data
+            ]);
         } else {
-            return $this->respond(['status' => 'failed', 'message' => 'Not found']);
+            return $this->respond([
+                'response_code'    => 404,
+                'response_message' => 'NOt found',
+            ]);
         }
     }
 }

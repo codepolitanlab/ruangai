@@ -35,7 +35,7 @@ $bottommenu = [
     <a href="<?= $menu['url'] ?>" 
         id="bottommenu-member" 
         class="item" 
-        :class="Alpine.store('core').currentPage == '<?= trim($menu['url'], '/') ?>' ? 'active' : ''"
+        :class="Alpine.store('core')?.currentPage == '<?= trim($menu['url'], '/') ?>' ? 'active' : ''"
         >
         <div class="col">
             <?= $menu['icon'] ?>

@@ -1,6 +1,8 @@
-<div id="courses" x-data="$heroic({
-    page_title: 'Kelas',
-})">
+<div 
+    id="courses" 
+    x-data="$heroic({
+        title: `<?= $page_title ?>`,
+    })">
 
     <div id="appCapsule" class="shadow">
         <div class="appContent" style="min-height:90vh;">
@@ -111,4 +113,5 @@
             </section>
         </div>
     </div>
+    <?= $this->include('_bottommenu') ?>
 </div>

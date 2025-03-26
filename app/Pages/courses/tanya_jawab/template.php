@@ -59,7 +59,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body d-flex align-items-center gap-lg-2 px-1">
-                                    <a href="/courses/tanya_jawab/detail/1">
+                                    <a href="/courses/tanya_jawab/1">
                                         <div class="bg-dark rounded-20 p-3 w-100">
                                             <h5>Tidak dapat menemukan URL Laravel</h5>
                                             <div class="bg-grey p-2 rounded-20 text-muted">
@@ -75,4 +75,5 @@
             </section>
         </div>
     </div>
+    <?= $this->include('_bottommenu') ?>
 </div>

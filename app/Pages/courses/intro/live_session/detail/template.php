@@ -1,4 +1,4 @@
-<div id="detail_live_session" x-data="detail_live_session()">
+<div id="detail_live_session">
     <div id="app-header" class="appHeader main glassmorph border-0">
         <div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
         <div class="pageTitle"><span><?= $page_title ?></span></div>

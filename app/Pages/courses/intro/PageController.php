@@ -9,14 +9,10 @@ class PageController extends MobileBaseController
 {
     use ResponseTrait;
 
-    public function getContent()
-    {
-        $data['page_title'] = 'Detail Kelas';
-
-        return pageView('courses/intro/index', $data);
-    }
-
-    public function getCourse($id)
+    public $data = [
+        'page_title' => "Detail Kelas"
+    ];
+    public function getData($id)
     {
         $db = \Config\Database::connect();
         $course = $db->table('courses')
@@ -36,9 +32,16 @@ class PageController extends MobileBaseController
             $data['course'] = $course;
             $data['course']['lessons'] = $lessons;
 
-            return $this->respond(['status' => 'success', 'data' => $data]);
+            return $this->respond([
+                'response_code'    => 200,
+                'response_message' => 'success',
+                'data'             => $data
+            ]);
         } else {
-            return $this->respond(['status' => 'failed', 'message' => 'Not found']);
+            return $this->respond([
+                'response_code'    => 404,
+                'response_message' => 'Not found',
+            ]);
         }
     }
 }

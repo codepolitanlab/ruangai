@@ -1,4 +1,8 @@
-<div id="student" x-data="student()">
+<div 
+    id="student" 
+    x-data="$heroic({
+        title: `<?= $page_title ?>`,
+    })">
     <div id="app-header" class="appHeader main glassmorph border-0">
         <div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
         <div class="pageTitle"><span><?= $page_title ?></span></div>
@@ -70,7 +74,7 @@
                         <p>Pelajari dasar-dasar Artificial Intelligence (AI), bagaimana cara kerjanya, serta peranannya dalam kehidupan sehari-hari. Kursus ini akan membimbing Anda memahami konsep AI secara sederhana sebelum mendalami topik lebih lanjut di setiap lesson!</p>
                     </div>
                     <div class="d-flex gap-3 mt-2 overflow-scroll py-3">
-                        <a href="/courses/intro/inggris-beginner-book-1" class="btn bg-grey text-white rounded-pill btn-lg">Materi Belajar</a>
+                        <a href="/courses/intro/354/laravel-redis" class="btn bg-grey text-white rounded-pill btn-lg">Materi Belajar</a>
                         <a href="/courses/intro/inggris-beginner-book-1/live_session" class="btn bg-grey rounded-pill btn-lg text-white position-relative">
                             Live Session
                             <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">

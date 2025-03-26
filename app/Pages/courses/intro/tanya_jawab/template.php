@@ -1,4 +1,4 @@
-<div id="tanya_jawab" x-data="tanya_jawab()">
+<div id="tanya_jawab">
     <div id="app-header" class="appHeader main glassmorph border-0">
         <div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
         <div class="pageTitle"><span>Detail Kelas</span></div>

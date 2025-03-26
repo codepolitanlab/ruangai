@@ -47,6 +47,8 @@
     <script src="https://cdn.jsdelivr.net/npm/pinecone-router@6.2.4/dist/router.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
+    <?= $this->renderSection('script') ?>
+    
     <script>
         Fancybox.bind('[data-fancybox="gallery"]', {});
         // Check that service workers are supported
