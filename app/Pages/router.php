@@ -44,7 +44,9 @@ $router = [
     "/kajian/:id" => [
         'template' => '/kajian/detail/template',
     ],
-    "/profile",
+    "/profile" => [
+        'preload' => true
+    ],
     "/profile/delete",
     "/profile/edit_info",
     "/profile/edit_account",
