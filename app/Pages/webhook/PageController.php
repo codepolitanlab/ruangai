@@ -3,9 +3,9 @@
 namespace App\Pages\webhook;
 
 use App\Libraries\Transaction;
-use App\Pages\MobileBaseController;
+use App\Pages\BaseController;
 
-class PageController extends MobileBaseController
+class PageController extends BaseController
 {
 
     public function getIndex()

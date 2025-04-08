@@ -1,9 +1,9 @@
 <?php namespace App\Pages\reset_password\change;
 
-use App\Pages\MobileBaseController;
+use App\Pages\BaseController;
 use Firebase\JWT\JWT;
 
-class PageController extends MobileBaseController 
+class PageController extends BaseController 
 {
     public function getContent()
     {

@@ -1,8 +1,4 @@
-<div id="template-container" class="" x-data="home()">
-
-    <style>
-
-    </style>
+<div id="home" class="" x-data="home()">
 
     <div class="appHeader">
         <div class="left ps-2">

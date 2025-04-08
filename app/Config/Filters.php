@@ -35,6 +35,7 @@ class Filters extends BaseFilters
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
         'session'       => \CodeIgniter\Shield\Filters\SessionAuth::class,
+        'htmlmin'       => \App\Filters\HtmlMinifier::class,
     ];
 
     /**
@@ -77,6 +78,7 @@ class Filters extends BaseFilters
         'after' => [
             // 'honeypot',
             // 'secureheaders',
+            'htmlmin',
         ],
     ];
 

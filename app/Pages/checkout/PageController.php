@@ -2,11 +2,11 @@
 
 namespace App\Pages\checkout;
 
-use App\Pages\MobileBaseController;
+use App\Pages\BaseController;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-class PageController extends MobileBaseController
+class PageController extends BaseController
 {
 
     public function getContent()

@@ -1,11 +1,11 @@
 <?php namespace App\Pages\courses\lessons;
 
-use App\Pages\MobileBaseController;
+use App\Pages\BaseController;
 use CodeIgniter\API\ResponseTrait;
 
-class PageController extends MobileBaseController 
+class PageController extends BaseController 
 {
-    use ResponseTrait;
+    
 
     public $data = [
         'page_title' => 'Lessons',
