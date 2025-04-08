@@ -5,7 +5,7 @@ use CodeIgniter\API\ResponseTrait;
 
 class PageController extends BaseController 
 {
-	use ResponseTrait;
+	
 
 	// Supply site setting and current user
 	public function getSettings($pesantrenID = null)

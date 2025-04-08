@@ -1,8 +1,8 @@
 <?php namespace App\Pages\feeds\detail;
 
-use App\Pages\MobileBaseController;
+use App\Pages\BaseController;
 
-class PageController extends MobileBaseController
+class PageController extends BaseController
 {
     
     public function getContent()

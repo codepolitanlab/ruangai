@@ -1,8 +1,8 @@
 <?php namespace App\Pages\profile\delete;
 
-use App\Pages\MobileBaseController;
+use App\Pages\BaseController;
 
-class PageController extends MobileBaseController {
+class PageController extends BaseController {
 
     public $data = [
         'page_title' => 'Tutup Akun'

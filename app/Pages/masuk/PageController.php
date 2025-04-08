@@ -1,12 +1,12 @@
 <?php namespace App\Pages\masuk;
 
-use App\Pages\MobileBaseController;
+use App\Pages\BaseController;
 use CodeIgniter\API\ResponseTrait;
 use Firebase\JWT\JWT;
 
-class PageController extends MobileBaseController 
+class PageController extends BaseController 
 {
-    use ResponseTrait;
+    
 
     public $data = [
         'page_title' => 'Masuk'

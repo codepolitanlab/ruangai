@@ -2,13 +2,10 @@
 
 namespace App\Pages\home;
 
-use App\Pages\MobileBaseController;
-use CodeIgniter\API\ResponseTrait;
+use App\Pages\BaseController;
 
-class PageController extends MobileBaseController
+class PageController extends BaseController
 {
-    use ResponseTrait;
-
     public $data = [
         'page_title' => "Beranda"
     ];
