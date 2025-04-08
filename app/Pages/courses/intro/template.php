@@ -55,8 +55,8 @@
                 <div class="position-relative">
                     <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%205231.png" class="w-100 position-relative" alt="">
                     <div class="position-absolute ms-3" style="top: 18%;">
-                        <h2 x-text="data.course?.course_title"></h2>
-                        <div class="d-flex gap-4 mb-2">
+                        <h2 class="text-white" x-text="data.course?.course_title"></h2>
+                        <div class="text-white d-flex gap-4 mb-2">
                             <div><i class="bi bi-people"></i> <span x-text="data.course?.total_student"></span> Siswa</div>
                             <div><i class="bi bi-book"></i>  <span x-text="data.course?.total_module"></span> Modul Belajar</div>
                         </div>

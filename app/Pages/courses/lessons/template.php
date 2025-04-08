@@ -57,7 +57,7 @@
                 </div>
                 <div class="container px-3">
                     <div class="mt-4">
-                        <h2 class="text-white" x-text="data.lesson?.lesson_title"></h2>
+                        <h2 x-text="data.lesson?.lesson_title"></h2>
                         <p class="text-secondary">Pelajari dasar-dasar Artificial Intelligence (AI), bagaimana cara kerjanya, serta peranannya dalam kehidupan sehari-hari. Kursus ini akan membimbing Anda memahami konsep AI secara sederhana sebelum mendalami topik lebih lanjut di setiap lesson!</p>
                         
                         <!-- Action Buttons -->
@@ -77,23 +77,23 @@
                         
                         <!-- Lesson List -->
                         <div>
-                            <h3 class="text-white mb-3">Materi Belajar Lainnya</h3>
+                            <h3 class="mb-3">Materi Belajar Lainnya</h3>
                             
                             <template x-for="(lesson, index) in data.course?.lessons" :key="index">
-                                <div class="bg-grey mb-3 p-3 rounded-20">
-                                    <h5 class="text-white mb-3" x-text="lesson.section_title"></h5>
+                                <div class="card bg-secondary-subtle mb-3 p-3 rounded-20">
+                                    <h5 class="mb-3" x-text="lesson.section_title"></h5>
                                     
                                     <!-- Card Lesson -->
                                     <a x-bind:href="`/courses/lessons/${lesson.id}`" class="d-block w-100 card-hover">
-                                        <div class="card bg-dark rounded-20 p-3 mb-2">
+                                        <div class="card rounded-20 p-3 mb-2">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div>
-                                                    <h5 class="text-white mb-1" x-text="lesson.lesson_title"></h5>
+                                                    <h5 class="mb-1" x-text="lesson.lesson_title"></h5>
                                                     <div class="text-secondary" x-text="lesson.duration"></div>
                                                 </div>
                                                 <div class="">
                                                     <i x-show="lesson.id == $router.params.id" class="bi bi-check-circle-fill h4 m-0 text-pink"></i>
-                                                    <i x-show="lesson.id != $router.params.id" class="bi bi-play-circle-fill h4 m-0 text-white"></i>
+                                                    <i x-show="lesson.id != $router.params.id" class="bi bi-play-circle-fill h4 m-0"></i>
                                                 </div>
                                             </div>
                                         </div>
