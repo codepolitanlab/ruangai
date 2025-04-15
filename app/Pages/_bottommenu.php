@@ -4,33 +4,33 @@ $bottommenu = [
     [
         "label" => "Beranda",
         "url" => "/",
-        "icon" => '<i class="bi bi-house"></i>'
+        "icon" => '<i class="bi bi-house text-white"></i>'
     ],
     [
         "label" => "Artikel",
         "url" => "/pustaka",
-        "icon" => '<i class="bi bi-journal-bookmark-fill"></i>'
+        "icon" => '<i class="bi bi-journal-bookmark-fill text-white"></i>'
     ],
     [
         "label" => "Courses",
         "url" => "/courses",
-        "icon" => '<i class="bi bi-book"></i>'
+        "icon" => '<i class="bi bi-book text-white"></i>'
     ],
     [
     	"label" => "Notifikasi",
     	"url" => "/notifications",
-    	"icon" => '<i class="bi bi-bell"></i>'
+    	"icon" => '<i class="bi bi-bell text-white"></i>'
     ],
     [
         "label" => "Akun",
         "url" => "/profile",
-        "icon" => '<i class="bi bi-person-circle"></i>'
+        "icon" => '<i class="bi bi-person-circle text-white"></i>'
     ],
 ];
 
 ?>
 
-<div class="appBottomMenu shadow-lg">
+<div class="appBottomMenu bg-primary shadow-lg">
     <?php foreach($bottommenu as $menu): ?>
     <a href="<?= $menu['url'] ?>" 
         id="bottommenu-member" 
@@ -39,7 +39,7 @@ $bottommenu = [
         >
         <div class="col">
             <?= $menu['icon'] ?>
-            <strong><?= $menu['label'] ?></strong>
+            <strong class="text-white"><?= $menu['label'] ?></strong>
         </div>
     </a>
     <?php endforeach; ?>

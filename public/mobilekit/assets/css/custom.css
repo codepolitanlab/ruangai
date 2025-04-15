@@ -1,18 +1,18 @@
 #appCapsule{position:relative;margin-bottom:env(safe-area-inset-bottom);margin-top:env(safe-area-inset-top)}
 .input-icon-append{display:flex;align-items:center;justify-content:center;color:#4F5050;height:38px;font-size:24px;position:absolute;right:7px;bottom:1px;width:32px;opacity:.5}
 a { color: #076b89; }
-#appCapsule{ min-height: 100vh}
-.appBottomMenu, .appHeader, #appCapsule, .extraHeader { max-width: 768px; margin: 0 auto}
+#appCapsule{ min-height: 100vh; background-color: #FFF;}
+.appBottomMenu, .appHeader, #appCapsule, .extraHeader { max-width: 475px; margin: 0 auto}
 .appHeader.bg-brand { box-shadow: none !important}
 .bg-brand { background-color: #3BC0CF !important}
 .bg-brand-2 { background-color: #157CA1 !important}
 .backlayer { width: 100%; height: 150px; position: absolute; z-index: -10; border-radius: 0 0 25px 25px}
 .glassmorph { backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.3);background: rgba(255, 255, 255, 0.1) !important;}
 .smallthin {  font-size: .74em; line-height: 14px !important; font-weight: 500;}
-.text-primary { color: #157CA1 !important}
 .rounded-thumbnail { border-radius: 15px !important}
 dl { margin-bottom: .5rem; }
 .page-content p, .page-content li { font-size: 1rem; line-height: 1.5rem; }
+.object-fit-cover { object-fit: cover; }
 .swiper-thumbnail-image { height: 150px; object-fit: cover; }
 .bg-grey {background-color: #161616 !important;}
 .rounded-20 { border-radius: 20px !important; }
