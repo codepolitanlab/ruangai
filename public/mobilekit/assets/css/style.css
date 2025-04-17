@@ -37,6 +37,16 @@ body {
   background: rgba(30, 116, 253, 0.3);
 }
 
+.nav-link {
+  background: var(--ultra-light-primary) !important;
+  color: var(--primary) !important;
+}
+
+.nav-link.active {
+  background: var(--primary) !important;
+  color: #FFF !important;
+}
+
 a {
   transition: none;
   color: #1E74FD;
@@ -1711,8 +1721,8 @@ a.badge-dark {
 .listview-title {
   color: #4F5050;
   padding: 7px 16px;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -13,6 +13,7 @@ class Router
         "/intro",
         "/masuk",
         "/aktivasi",
+        "/pengumuman",
         "/registrasi",
         "/registrasi/confirm",
         "/reset_password",

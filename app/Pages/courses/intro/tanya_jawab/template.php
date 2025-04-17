@@ -101,7 +101,7 @@
 								</div>
 							</div>
 							<div class="card-body d-flex align-items-center gap-3 px-1">
-								<a href="/courses/tanya_jawab/detail/1">
+								<a href="/courses/tanya_jawab/1">
 									<div class="bg-light rounded-20 p-3 w-100">
 										<h5>Tidak dapat menemukan URL Laravel</h5>
 										<div class="bg-white p-2 rounded-20 text-muted">

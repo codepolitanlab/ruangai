@@ -9,9 +9,8 @@
 	<div id="appCapsule" class="shadow">
 		<div class="appContent" style="min-height:90vh">
 			<section class="mb-5">
-				<div class="">
-					<div class="text-center position-relative bg-brand" style="height:90px;"></div>
-					<div class="card ps-3 shadow-none container-fluid pt-3 pb-3" style="margin-top:-95px">
+				<div class="position-relative">
+					<div class="card ps-3 bg-primary shadow-none container-fluid pt-3 pb-3" style="height: 150px;">
 						<div class="d-flex align-items-center justify-content-start gap-3">
 							<div>
 								<img :src="data?.profile?.avatar ? data?.profile?.avatar : `<?= $themeURL ?>assets/img/icon/default-avatar-user.webp`"
@@ -19,14 +18,17 @@
 									:alt="data?.profile?.name"
 									style="width:65px">
 							</div>
-							<div class="text-muted">
+							<div class="text-white">
 								<div class="h6 m-0" x-text="data?.profile?.name || 'Badar Abdi Mulya'"></div>
 								<small x-text="data?.profile?.username || 'CODING IS A SHINOBI WAYS FOR ME!!!!!'"></small>
 							</div>
 						</div>
 					</div>
 
-					<div class="text-center">
+					<div class="text-center bg-white rounded-top-5 position-relative p-1" style="margin-top: -40px;z-index: 1">
+						<div class="listview-title">
+							Personalisasi Akun
+						</div>
 						<ul class="listview image-listview flush transparent">
 							<li>
 								<a href="/profile/edit_info" class="item">
@@ -34,16 +36,16 @@
 									<span>Edit Profil</span>
 								</a>
 							</li>
+						</ul>
+
+						<div class="listview-title mt-2">
+							Akun Anda
+						</div>
+						<ul class="listview image-listview flush transparent">
 							<li>
 								<a href="/profile/edit_account" class="item">
 									<i class="fs-4 me-2 bi bi-person-vcard text-primary"></i>
 									<span>Edit Akun</span>
-								</a>
-							</li>
-							<li>
-								<a href="/invoice" class="item">
-									<i class="bi bi-receipt fs-4 text-primary me-2"></i>
-									<span>Transaksi Saya</span>
 								</a>
 							</li>
 						</ul>
@@ -89,11 +91,11 @@
 						</template>
 
 						<div class="listview-title mt-2">
-							Aplikasi Masagi
-							<span>v<?= $version; ?></span>
+							Informasi dan Dukungan
+							<!-- <span>v<?= $version; ?></span> -->
 						</div>
 						<ul class="listview image-listview flush transparent">
-							<li>
+							<!-- <li>
 								<a href="/page/about-app" class="item">
 									<i class="bi bi-info-circle text-primary fs-4 me-2"></i>
 									<span>Tentang Aplikasi</span>
@@ -104,7 +106,7 @@
 									<i class="bi bi-telephone text-primary fs-4 me-2"></i>
 									<span>Kontak Kami</span>
 								</a>
-							</li>
+							</li> -->
 							<li>
 								<a href="/page/tnc" class="item">
 									<i class="bi bi-file-earmark-ruled text-primary fs-4 me-2"></i>
@@ -117,13 +119,13 @@
 									<span>Kebijakan Privasi</span>
 								</a>
 							</li>
-							<li>
+							<!-- <li>
 								<a href="/profile/delete" class="item">
 									<i class="bi bi-door-closed text-danger fs-4 me-2"></i>
 									<span>Tutup Akun</span>
 								</a>
 							</li>
-							<!-- <li>
+							<li>
                                 <a href="/page/faq" class="item">
                                     <i class="bi bi-patch-question text-primary fs-4 me-2"></i>
                                     <span>Pertanyaan Umum</span>

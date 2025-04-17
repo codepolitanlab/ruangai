@@ -1,12 +1,12 @@
-<div id="member-profile-edit-info" x-data="profile_edit_info()" class="bg-dark">
+<div id="member-profile-edit-info" x-data="profile_edit_info()" class="primary">
 
-    <div class="appHeader bg-dark">
+    <div class="appHeader">
         <div class="left">
             <a href="javascript:void()" onclick="history.back()" class="headerButton text-white">
                 <ion-icon name="chevron-back-outline"></ion-icon>
             </a>
         </div>
-        <div class="pageTitle text-white">Edit Profil</div>
+        <div class="pageTitle">Edit Profil</div>
         <div class="right"></div>
     </div>
 
@@ -16,7 +16,7 @@
         <div class="section full mt-1">
             <div class="section-title">Informasi Pengguna</div>
 
-            <div class="wide-block pt-2 pb-2 bg-dark">
+            <div class="wide-block pt-2 pb-2">
 
                 <div class="form-group boxed">
                     <div class="text-start input-wrapper">

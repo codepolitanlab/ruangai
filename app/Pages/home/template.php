@@ -14,7 +14,7 @@
 				<div class="row text-white">
 					<div class="col-8">
 						<h2 class="text-white mb-1">Selamat Datang</h2>
-						<div>Sudah siap untuk menjadi bagian dari era Artifactial Inteligent?</div>
+						<div>Sudah siap untuk menjadi bagian dari era Artificial Intelligence?</div>
 						<button class="btn btn-sm btn-secondary mt-2">Daftar Disini <i class="bi bi-box-arrow-in-right me-0 ms-1"></i></button>
 					</div>
 				</div>
