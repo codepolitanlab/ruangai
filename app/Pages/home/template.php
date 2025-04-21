@@ -2,7 +2,7 @@
 
 	<div class="appHeader">
 		<div class="pageTitle ">
-			<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/logo-1.png" width="150" alt="">
+			<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-logo-transparan.png" width="150" alt="">
 		</div>
 	</div>
 
@@ -10,7 +10,7 @@
 	<div id="appCapsule">
 		<div class="appContent" style="min-height:90vh;">
 
-			<section class="container p-4 p-lg-5 bg-primary position-relative" style="height: 250px;">
+			<section class="container p-3 p-lg-4 bg-primary position-relative" style="height: 250px;">
 				<div class="row text-white">
 					<div class="col-8">
 						<h2 class="text-white mb-1">Selamat Datang</h2>
@@ -21,7 +21,7 @@
 				<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Mask%20group%20(2).png?updatedAt=1744602202868" class="position-absolute bottom-0 end-0" width="210" alt="">
 			</section>
 
-			<section class="p-4 pt-0" style="margin-top: -35px;">
+			<section class="p-3 pt-0" style="margin-top: -35px;">
 				<div class="card bg-light-secondary p-2 rounded-4 border border-secondary">
 					<div class="row">
 						<div class="col-2">
@@ -38,7 +38,7 @@
 					</div>
 				</div>
 			</section>
-			<section class="p-4 p-lg-5">
+			<section class="p-3 p-lg-4">
 				<div class="rounded-4 border position-relative p-1" style="border-color:rgb(240, 240, 240) !important;">
 					<div class="d-flex align-items-center justify-content-between">
 						<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206614.png" alt="Statistics" class="w-100">
@@ -56,7 +56,7 @@
 				</div>
 			</section>
 
-			<section class="p-4 p-lg-5">
+			<section class="p-3 p-lg-4">
 				<h4 class="mb-3">Materi Belajar</h4>
 				<div class="row g-3">
 					<div class="col-lg-6">
@@ -110,7 +110,7 @@
 				</div>
 			</section>
 
-			<section class="p-4 p-lg-5">
+			<section class="p-3 p-lg-4">
 				<h4 class="mb-3">Live Session</h4>
 				<!-- Completed Live Sessions -->
 				<a href="/courses/intro/inggris-beginner-book-1/live_session/1">

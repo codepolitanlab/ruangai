@@ -89,6 +89,7 @@
 			<section>
 				<div class="container px-4">
 					<div class="card rounded-20 p-3 mb-2">
+
 						<h3 class="m-0">Pengenalan</h3>
 						<div class="card-body d-flex flex-column align-items-center gap-3 px-1">
 							<template x-for="lesson of data.course?.lessons">

@@ -52,8 +52,8 @@
 			</style>
 
 			<section>
-				<div class="ratio ratio-16x9">
-					<iframe width="560" height="315" src="https://www.youtube.com/embed/LPu_sxQWmpo?si=7uHLovsFWRIqe-CB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+				<div x-show="data.lesson?.player == 'youtube'" class="ratio ratio-16x9">
+					<iframe width="560" height="315" :src="`https://www.youtube.com/embed/${data.lesson?.youtube_id}`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 				</div>
 				<div class="container px-3">
 					<div class="mt-4">
@@ -79,27 +79,28 @@
 						<div>
 							<h3 class="mb-3">Materi Belajar Lainnya</h3>
 
-							<template x-for="(lesson, index) in data.course?.lessons" :key="index">
-								<div class="card shadow-none border mb-3 p-3 rounded-20">
-									<h5 class="mb-3" x-text="lesson.section_title"></h5>
-
-									<!-- Card Lesson -->
-									<a x-bind:href="`/courses/lessons/${lesson.id}`" class="d-block w-100 card-hover">
-										<div class="card rounded-20 p-3 mb-2" :class="lesson.id == $router.params.id ? 'bg-primary text-white' : 'bg-secondary-subtle'">
-											<div class="d-flex justify-content-between align-items-center">
-												<div>
-													<div class="h6 fw-bold mb-1" x-text="lesson.lesson_title"></div>
-													<div x-text="lesson.duration"></div>
-												</div>
-												<div class="">
-													<i x-show="lesson.id == $router.params.id" class="bi bi-check-circle-fill h4 m-0 fs-4"></i>
-													<i x-show="lesson.id != $router.params.id" class="bi bi-lock-fill h4 m-0 text-muted fs-4"></i>
+							<div class="card shadow-none border mb-3 p-3 rounded-20">
+								<template x-for="(lesson, index) in data.course?.lessons" :key="index">
+									<div>
+										<h5 class="mb-1" x-text="lesson.section_title"></h5>
+										<!-- Card Lesson -->
+										<a x-bind:href="`/courses/lessons/${lesson.id}`" class="d-block w-100 card-hover">
+											<div class="card rounded-20 p-3 mb-2" :class="lesson.id == $router.params.id ? 'bg-primary text-white' : 'bg-secondary-subtle'">
+												<div class="d-flex justify-content-between align-items-center">
+													<div>
+														<div class="h6 fw-bold mb-1" x-text="lesson.lesson_title"></div>
+														<div x-text="lesson.duration"></div>
+													</div>
+													<div class="">
+														<i x-show="lesson.id == $router.params.id" class="bi bi-check-circle-fill h4 m-0 fs-4"></i>
+														<i x-show="lesson.id != $router.params.id" class="bi bi-lock-fill h4 m-0 text-muted fs-4"></i>
+													</div>
 												</div>
 											</div>
-										</div>
-									</a>
-								</div>
-							</template>
+										</a>
+									</div>
+								</template>
+							</div>
 						</div>
 					</div>
 				</div>
