@@ -2,7 +2,7 @@
 
 	<div class="appHeader">
 		<div class="pageTitle ">
-			<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/logo-1.png" width="150" alt="">
+			<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-logo-transparan.png" width="150" alt="">
 		</div>
 	</div>
 
