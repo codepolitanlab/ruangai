@@ -4,7 +4,7 @@
         title: `<?= $page_title ?>`,
         url: `courses/lessons/data/${$params.id}`
     })"
-	x-effect="fetchData(`courses/lessons/data/${$params.id}`)">
+	x-effect="loadPage(`courses/lessons/data/${$params.id}`)">
 
 	<div id="app-header" class="appHeader main border-0">
 		<div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
@@ -55,7 +55,7 @@
 
 			<section>
 				<div x-show="data.lesson?.player == 'youtube'" class="ratio ratio-16x9">
-					<iframe width="560" height="315" :src="`https://www.youtube.com/embed/${data.lesson?.youtube_id}`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+					<iframe width="560" height="315" :src="`https://www.youtube.com/embed/${data.lesson?.video}`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 				</div>
 				<div class="container px-3">
 					<div class="mt-4">

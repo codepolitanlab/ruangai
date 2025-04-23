@@ -4,7 +4,7 @@
         title: `<?= $page_title ?>`,
         url: `/courses/intro/data/${$params.id}`
     })"
-	x-effect="init($params.id)">
+	x-effect="loadPage()">
 
 	<div id="app-header" class="appHeader main border-0">
 		<div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
