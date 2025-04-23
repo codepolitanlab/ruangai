@@ -2,7 +2,7 @@
 	id="live_session"
 	x-data="$heroic({
         title: `<?= $page_title ?>`,
-        getUrl: `/courses/intro/live_session/data`
+        url: `/courses/intro/live_session/data/${$params.course_id}`
     })">
 	<div id="app-header" class="appHeader main border-0">
 		<div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
@@ -74,8 +74,8 @@
 						<p x-text="data.course?.description"></p>
 					</div>
 					<div class="d-flex gap-3 mt-2 overflow-scroll py-3">
-						<a href="/courses/intro/32/intro-to-programming" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill">Materi Belajar</a>
-						<a href="/courses/intro/inggris-beginner-book-1/live_session" class="btn btn-lg btn-primary text-nowrap rounded-pill text-white position-relative">
+						<a :href="`/courses/intro/${data.course.id}/${data.course.slug}`" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill">Materi Belajar</a>
+						<a href="javascript:void()" class="btn btn-lg btn-primary text-nowrap rounded-pill text-white position-relative">
 							Live Session
 							<span class="position-absolute top-0 start-100 translate-middle p-1 bg-secondary border border-light rounded-circle">
 								<span class="visually-hidden">New alerts</span>
@@ -90,7 +90,7 @@
 				<div class="container px-4">
 
 					<!-- Check if no live session -->
-					<template x-show="data.live_sessions.length == 0">
+					<template x-show="data.live_sessions?.length == 0">
 						<div class="card card-hover rounded-20 shadow-none border p-3 mb-2">
 							<div class="row g-3">
 								<div class="col">
@@ -105,9 +105,10 @@
 							</div>
 						</div>
 					</template>
+
 					<!-- Completed Live Sessions -->
-					<template x-show="data.live_sessions.length > 0" x-for="live_session in data.live_sessions">
-						<a href="/courses/intro/inggris-beginner-book-1/live_session/1">
+					<template x-show="data.live_sessions?.length > 0" x-for="live_session in data.live_sessions">
+						<a :href="`/courses/intro/${data.course.id}/${data.course.slug}/live_session/${live_session.id}`">
 							<div class="card card-hover rounded-20 shadow-none border p-3 mb-2">
 								<div class="row g-3">
 									<div class="col">

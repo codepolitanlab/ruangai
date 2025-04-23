@@ -8,22 +8,23 @@ class PageController extends BaseController
         'page_title' => "Live Session"
     ];
 
-    public function getData()
+    public function getData($course_id)
     {
         $db = \Config\Database::connect();
-        $live_sessions = $db->table('live_sessions')
-            ->get()
-            ->getResultArray();
+        $this->data['course'] = $db->table('courses')
+                                    ->select('id, slug')
+                                    ->where('courses.id', $course_id)
+                                    ->groupBy('courses.id')
+                                    ->get()
+                                    ->getRowArray();
 
-        if ($live_sessions) {
+        $this->data['live_sessions'] = $db->table('live_sessions')
+                                            ->get()
+                                            ->getResultArray();
 
-            $data['live_sessions'] = $live_sessions;
-
-            return $this->respond([
-                'response_code'    => 200,
-                'response_message' => 'success',
-                'data'             => $data
-            ]);
+        if ($this->data['live_sessions'])
+        {
+            return $this->respond($this->data);
         } else {
             return $this->respond([
                 'response_code'    => 404,
