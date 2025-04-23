@@ -2,8 +2,10 @@
 	id="lesson_detail"
 	x-data="$heroic({
         title: `<?= $page_title ?>`,
-        getUrl: `courses/lessons/data/${$router.params.id}`
-    })">
+        url: `courses/lessons/data/${$params.id}`
+    })"
+	x-effect="fetchData(`courses/lessons/data/${$params.id}`)">
+
 	<div id="app-header" class="appHeader main border-0">
 		<div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
 		<div class="pageTitle"><span>Detail Lessons</span></div>
@@ -85,15 +87,15 @@
 										<h5 class="mb-1" x-text="lesson.section_title"></h5>
 										<!-- Card Lesson -->
 										<a x-bind:href="`/courses/lessons/${lesson.id}`" class="d-block w-100 card-hover">
-											<div class="card rounded-20 p-3 mb-2" :class="lesson.id == $router.params.id ? 'bg-primary text-white' : 'bg-secondary-subtle'">
+											<div class="card rounded-20 p-3 mb-2" :class="lesson.id == $params.id ? 'bg-primary text-white' : 'bg-secondary-subtle'">
 												<div class="d-flex justify-content-between align-items-center">
 													<div>
 														<div class="h6 fw-bold mb-1" x-text="lesson.lesson_title"></div>
 														<div x-text="lesson.duration"></div>
 													</div>
 													<div class="">
-														<i x-show="lesson.id == $router.params.id" class="bi bi-check-circle-fill h4 m-0 fs-4"></i>
-														<i x-show="lesson.id != $router.params.id" class="bi bi-lock-fill h4 m-0 text-muted fs-4"></i>
+														<i x-show="lesson.id == $params.id" class="bi bi-check-circle-fill h4 m-0 fs-4"></i>
+														<i x-show="lesson.id != $params.id" class="bi bi-lock-fill h4 m-0 text-muted fs-4"></i>
 													</div>
 												</div>
 											</div>

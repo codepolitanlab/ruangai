@@ -44,7 +44,7 @@ class Router
         ],
         "/feeds",
         "/feeds/:id" => [
-            'template' => '/feeds/detail/template',
+            'template' => '/feeds/detail/template/:id',
         ],
         "/checkout/:token?",
         "/kajian",

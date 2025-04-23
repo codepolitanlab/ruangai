@@ -2,8 +2,10 @@
 	id="course_intro"
 	x-data="$heroic({
         title: `<?= $page_title ?>`,
-        getUrl: `/courses/intro/data/${$router.params.id}`
-    })">
+        url: `/courses/intro/data/${$params.id}`
+    })"
+	x-effect="init($params.id)">
+
 	<div id="app-header" class="appHeader main border-0">
 		<div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
 		<div class="pageTitle"><span>Detail Kelas</span></div>

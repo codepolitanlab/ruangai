@@ -3,7 +3,7 @@
     class=""
     x-data="$heroic({
         title: `<?= $page_title ?>`,
-        getUrl: `/pustaka/data`
+        url: `/pustaka/data`
     })">
 
     <div id="appCapsule" class="shadow">
