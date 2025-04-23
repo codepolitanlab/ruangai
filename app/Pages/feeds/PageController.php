@@ -2,14 +2,10 @@
 
 use App\Pages\BaseController;
 
-class PageController extends BaseController {
+class PageController extends BaseController 
+{
 
-    public function getContent()
-    {
-        return pageView('feeds/index', $this->data);
-    }
-
-    public function getSupply()
+    public function getData()
     {
         // Retrieve extension attributes
 		$page = (int)($this->request->getGet('page') ?? 1);
@@ -45,13 +41,9 @@ class PageController extends BaseController {
         {
         	$posts[$key]['medias'] = json_decode($posts[$key]['medias'], true);
         }
-        $data['posts'] = $posts;
+        $this->data['posts'] = $posts;
 
-		return $this->respond([
-			'response_code'    => 200,
-			'response_message' => 'success',
-			'data'			   => $data 
-		]);
+		return $this->respond($this->data);
     }
 
 }

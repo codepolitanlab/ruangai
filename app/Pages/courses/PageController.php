@@ -13,7 +13,7 @@ class PageController extends BaseController
     {
         // Ambil data course dari db
         $db = \Config\Database::connect();
-        $data['courses'] = [] ?? $db->table('courses')->limit(10)->orderBy('created_at', 'desc')->get()->getResultArray();
+        $data['courses'] = $db->table('courses')->limit(10)->orderBy('created_at', 'desc')->get()->getResultArray() ?? [];
         $data['page_title'] = $this->data['page_title'];
 
         return pageView('courses/template', $data);

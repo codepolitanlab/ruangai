@@ -1,7 +1,7 @@
 <div id="pengumuman"
 	x-data="$heroic({
         title: `<?= $page_title ?>`,
-        getUrl: `/pengumuman/data`
+        url: `/pengumuman/data`
     })">>
 	<div class="appHeader">
 		<div class="pageTitle ">

@@ -39,14 +39,10 @@ class PageController extends BaseController
                     ->getResultArray();
             }
 
-            $data['course'] = $course;
-            $data['lesson'] = $lesson;
+            $this->data['course'] = $course;
+            $this->data['lesson'] = $lesson;
 
-            return $this->respond([
-                'response_code'    => 200,
-                'response_message' => 'success',
-                'data'             => $data
-            ]);
+            return $this->respond($this->data);
         } else {
             return $this->respond([
                 'response_code'    => 404,

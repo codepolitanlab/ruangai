@@ -23,16 +23,16 @@ class Router
         "/courses" => [
             "preload" => true,
         ],
-        "/courses/intro/:slug/live_session",
-        "/courses/intro/:slug/live_session/:id" => [
+        "/courses/intro/:course_id/:slug/live_session",
+        "/courses/intro/:course_id/:slug/live_session/:live_id" => [
             'template' => '/courses/intro/live_session/detail/template',
         ],
-        "/courses/intro/:slug/student",
-        "/courses/intro/:slug/student/:id" => [
+        "/courses/intro/:course_id/:slug/student",
+        "/courses/intro/:course_id/:slug/student/:id" => [
             'template' => '/courses/intro/student/detail/template',
         ],
-        "/courses/intro/:slug/tanya_jawab",
-        "/courses/intro/:id/:slug",
+        "/courses/intro/;course_id/:slug/tanya_jawab",
+        "/courses/intro/:course_id/:slug",
         "/courses/lessons/:id",
         "/courses/quiz/:id",
         "/pustaka" => [
@@ -44,7 +44,7 @@ class Router
         ],
         "/feeds",
         "/feeds/:id" => [
-            'template' => '/feeds/detail/template',
+            'template' => '/feeds/detail/template/:id',
         ],
         "/checkout/:token?",
         "/kajian",
