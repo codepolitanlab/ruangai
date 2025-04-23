@@ -7,7 +7,7 @@
 	x-effect="loadPage(`courses/lessons/data/${$params.id}`)">
 
 	<div id="app-header" class="appHeader main border-0">
-		<div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
+		<div class="left"><a class="headerButton" :href="`/courses/intro/${data.course.id}/${data.course.slug}`"><i class="bi bi-chevron-left"></i></a></div>
 		<div class="pageTitle"><span>Detail Lessons</span></div>
 	</div>
 
