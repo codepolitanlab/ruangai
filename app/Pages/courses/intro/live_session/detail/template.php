@@ -1,6 +1,11 @@
-<div id="detail_live_session">
+<div
+	id="detail_live_session"
+	x-data="$heroic({
+        title: `<?= $page_title ?>`,
+        url: `courses/intro/live_session/detail/data/${$params.live_id}`
+    })">
 	<div id="app-header" class="appHeader main border-0">
-		<div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
+		<div class="left"><a class="headerButton" :href="`/courses/intro/${$params.course_id}/${$params.slug}/live_session`"><i class="bi bi-chevron-left"></i></a></div>
 		<div class="pageTitle"><span><?= $page_title ?></span></div>
 		<div class="right"><a class="headerButton" role="button" data-bs-toggle="offcanvas" data-bs-target="#shareCanvas"><i class="bi bi-share-fill me-1"></i></a></div>
 	</div>
@@ -18,10 +23,7 @@
 
 			<section>
 				<div class="container px-4 pt-2">
-					<div class="ratio ratio-16x9">
-						<iframe width="560" height="315" src="https://www.youtube.com/embed/i5j7ZnyUOPE?si=9_750eBqXXHCQcEI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-					</div>
-					<div class="mt-3">
+					<div class="mt-1">
 						<div class="badge bg-secondary mb-2 p-2">
 							<i class="bi bi-cast h6 m-0"></i>
 							<div>Live</div>
@@ -39,24 +41,20 @@
 							<h4 class="mb-3">Rekaman Live Sebelumnya</h4>
 
 							<!-- Previous Live Session Card -->
-							<div class="card shadow-none border rounded-20 p-3">
-								<div class="d-flex gap-3">
-									<div style="width: 200px; height: 100px">
-										<img src="https://plus.unsplash.com/premium_photo-1661766386981-1140b7b37193?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cHJvZmVzaW9uYWx8ZW58MHx8MHx8fDA%3D" class="rounded-3 cover" alt="Live Session 1">
-									</div>
-									<div class="flex-grow-1">
-										<div class="d-flex gap-3 mb-1 align-items-center">
-											<div class="h6 text-primary m-0">Live Session 1</div>
-											<div class="badge btn-secondary px-2">Rekaman</div>
-										</div>
-										<div class="h6 mb-3">Mengenal Lebih Dalam Peran AI di Kehidupan Sehari-hari</div>
-										<div class="d-flex gap-3">
-											<div><i class="bi bi-clock"></i> 50:22</div>
-											<div><i class="bi bi-people"></i> 120 Siswa</div>
+							<template x-for="live_session in data.live_sessions">
+								<div class="card card-hover rounded-20 shadow-none border p-3 mb-2">
+									<div class="row g-3">
+										<div class="col">
+											<h4 class="mb-3" x-text="live_session.title"></h4>
+											<div class="d-flex gap-3">
+												<div><button type="button" class="btn btn-sm btn-secondary rounded-pill"><i class="bi bi-check-circle"></i> Sudah mengikuti</button></div>
+												<div class="text-secondary"><i class="bi bi-clock"></i> <span x-text="live_session.date"></span></div>
+												<div><i class="bi bi-people"></i> <span x-text="live_session.total_student"></span> Siswa</div>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
+							</template>
 						</div>
 					</div>
 					<!-- Slice here -->

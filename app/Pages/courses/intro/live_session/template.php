@@ -2,8 +2,8 @@
 	id="live_session"
 	x-data="$heroic({
         title: `<?= $page_title ?>`,
-        url: `/courses/intro/live_session/data/${$params.course_id}`
-    })">
+        url: `courses/intro/live_session/data/${$params.course_id}`
+    })" x-debug>
 	<div id="app-header" class="appHeader main border-0">
 		<div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
 		<div class="pageTitle"><span>Detail Kelas</span></div>
@@ -55,7 +55,7 @@
 				<div class="position-relative">
 					<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%205231%20(1).png" class="w-100 position-relative" alt="">
 					<div class="position-absolute ms-3 mt-2 top-0">
-						<h3 class="text-white" x-text="data.course?.course_title || 'Belajar AI'"></h3>
+						<h4 class="text-white" x-text="data.course?.course_title || 'Belajar AI'"></h4>
 						<div class="text-white d-flex gap-4 mb-2">
 							<div><i class="bi bi-people"></i> <span x-text="data.course?.total_student"></span> Siswa</div>
 							<div><i class="bi bi-book"></i> <span x-text="data.course?.total_module"></span> Modul Belajar</div>
@@ -112,22 +112,14 @@
 							<div class="card card-hover rounded-20 shadow-none border p-3 mb-2">
 								<div class="row g-3">
 									<div class="col">
-										<div class="d-flex justify-content-between align-items-start">
-											<div>
-												<div class="d-flex gap-3 mb-1 align-items-center">
-													<h5 class="text-pink m-0" x-text="live_session.title"></h5>
-													<div class="badge btn-primary px-2">Rekaman</div>
-												</div>
-												<h4 class="mb-3" x-text="live_session.description"></h4>
-											</div>
-										</div>
+										<h4 class="mb-3" x-text="live_session.title"></h4>
 										<div class="d-flex gap-3">
-											<div><i class="bi bi-clock"></i> <span x-text="live_session.date"></span></div>
+											<div><button type="button" class="btn btn-sm btn-secondary rounded-pill"><i class="bi bi-check-circle"></i> Sudah mengikuti</button></div>
+											<div class="text-secondary"><i class="bi bi-clock"></i> <span x-text="live_session.date"></span></div>
 											<div><i class="bi bi-people"></i> <span x-text="live_session.total_student"></span> Siswa</div>
 										</div>
 									</div>
 								</div>
-
 							</div>
 						</a>
 					</template>

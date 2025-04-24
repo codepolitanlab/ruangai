@@ -2388,8 +2388,8 @@ a.badge-dark {
 }
 
 .btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active, .btn-secondary.active {
-  background: #617085 !important;
-  border-color: #617085 !important;
+  background: var(--light-secondary) !important;
+  border-color: var(--light-secondary)  !important;
 }
 
 .btn-secondary.disabled, .btn-secondary:disabled {

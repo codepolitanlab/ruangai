@@ -12,7 +12,7 @@ class PageController extends BaseController
     {
         $db = \Config\Database::connect();
         $this->data['course'] = $db->table('courses')
-                                    ->select('id, slug')
+                                    ->select('*')
                                     ->where('courses.id', $course_id)
                                     ->groupBy('courses.id')
                                     ->get()

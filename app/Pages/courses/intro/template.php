@@ -57,7 +57,7 @@
 				<div class="position-relative">
 					<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%205231%20(1).png" class="w-100 position-relative" alt="">
 					<div class="position-absolute ms-3 mt-2 top-0">
-						<h3 class="text-white" x-text="data.course?.course_title || 'Belajar AI'"></h3>
+						<h4 class="text-white" x-text="data.course?.course_title || 'Belajar AI'"></h4>
 						<div class="text-white d-flex gap-4 mb-2">
 							<div><i class="bi bi-people"></i> <span x-text="data.course?.total_student"></span> Siswa</div>
 							<div><i class="bi bi-book"></i> <span x-text="data.course?.total_module"></span> Modul Belajar</div>
