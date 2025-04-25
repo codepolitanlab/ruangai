@@ -82,7 +82,7 @@ class Transaction {
                     ->getRowArray();
 
         if($checkout) {
-            $this->type = $callbackData['paid_amount'] ? 'income' : 'withdrawal';
+            $this->type = ($callbackData['paid_amount'] ?? null) ? 'income' : 'withdrawal';
             $this->tenant_code = $checkout['tenant_code'];
             $this->user_id = $checkout['user_id'];
             $this->description = $checkout['description'];

@@ -1,4 +1,4 @@
-<div id="checkout" x-data="checkout($router.params.token)">
+<div id="checkout" x-data="checkout($params.token)">
   <style>
     .item-shrink {
       max-height: 300px;
@@ -163,3 +163,5 @@
     </div>
   </div>
 </div>
+
+<?= $this->include('checkout/script') ?>

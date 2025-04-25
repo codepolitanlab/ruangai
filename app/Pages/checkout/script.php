@@ -1,5 +1,4 @@
-// Page profile
-document.addEventListener('alpine:init', () => {
+<script>
     Alpine.data('checkout', (token) => ({
         title: "Checkout",
         token: token,
@@ -19,20 +18,20 @@ document.addEventListener('alpine:init', () => {
             document.title = this.title;
             Alpine.store('core').currentPage = 'checkout'
 
-            fetchPageData('/checkout/supply/' + this.token)
+            $heroicHelper.fetch('/checkout/supply/' + this.token)
                 .then(response => {
-                    if (response.found == 0) {
+                    if (response.data.found == 0) {
                         // Remove query string from URL
                         window.history.replaceState({}, document.title, window.location.pathname);
-                        return window.PineconeRouter.context.redirect('/iuran')
+                        return window.PineconeRouter.navigate('/iuran')
                     }
 
-                    this.paymentMethods = response.paymentMethods
-                    this.paymentMethodCategories = response.paymentMethodCategories
+                    this.paymentMethods = response.data.paymentMethods
+                    this.paymentMethodCategories = response.data.paymentMethodCategories
 
-                    this.cart = response.items
-                    this.subtotal = response.subtotal
-                    this.total = response.subtotal
+                    this.cart = response.data.items
+                    this.subtotal = response.data.subtotal
+                    this.total = response.data.subtotal
                 })
         },
 
@@ -43,9 +42,9 @@ document.addEventListener('alpine:init', () => {
         setPaymentMethod(method) {
             this.methodChosen = method
             const paymentFeeType = this.paymentMethods[this.methodChosen].paymentFeeType
-            this.adminFee = paymentFeeType == 'fixed'
-                ? this.paymentMethods[this.methodChosen].paymentFeeForCustomer
-                : Math.round(this.paymentMethods[this.methodChosen].paymentFeeForCustomer / 100 * this.subtotal);
+            this.adminFee = paymentFeeType == 'fixed' ?
+                this.paymentMethods[this.methodChosen].paymentFeeForCustomer :
+                Math.round(this.paymentMethods[this.methodChosen].paymentFeeForCustomer / 100 * this.subtotal);
             this.total = this.subtotal + this.adminFee
 
             // Close modal
@@ -80,4 +79,4 @@ document.addEventListener('alpine:init', () => {
             }
         }
     }))
-})
+</script>

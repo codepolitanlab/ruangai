@@ -9,11 +9,6 @@ use Firebase\JWT\Key;
 class PageController extends BaseController
 {
 
-    public function getContent()
-    {
-        return pageView('checkout/index', $this->data);
-    }
-
     public function getSupply($token = null)
     {
         if (!$token)

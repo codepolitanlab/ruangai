@@ -1,6 +1,6 @@
 <?php namespace App\Libraries;
 
-use Package\Commerce\modules\payment\models\Transaction;
+use App\Libraries\Transaction;
 
 /**
  * Payment Method

@@ -1,5 +1,5 @@
-// Page component
-window.reset_password_confirm = function(tokens){
+<script>
+Alpine.data('reset_password_confirm', function(tokens){
     return {
         title: "Reset Password",
         data: {
@@ -22,7 +22,7 @@ window.reset_password_confirm = function(tokens){
             const tokenRegex = /^[a-f0-9]+_[0-9]+X.+$/;
             const urlParams = new URLSearchParams(window.location.search);
             if (!tokenRegex.test(tokens)) {
-                window.PineconeRouter.context.redirect('/reset_password')
+                window.PineconeRouter.navigate('/reset_password')
             }
 
             const [part1, rest] = tokens.split('_');  // Bagian pertama sebelum _ adalah token
@@ -59,7 +59,7 @@ window.reset_password_confirm = function(tokens){
                     localStorage.setItem('heroic_token', response.data.jwt)
                     setTimeout(() => {
                         Alpine.store('core').sessionToken = localStorage.getItem('heroic_token')
-                        window.PineconeRouter.context.redirect('/')
+                        window.PineconeRouter.navigate('/')
                     })
                 } else {
                     this.error = response.data.message
@@ -67,4 +67,5 @@ window.reset_password_confirm = function(tokens){
             })
         },
     }
-}
+})
+</script>

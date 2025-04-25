@@ -1,8 +1,8 @@
-<div id="page" x-data="page($router.params.slug)">
+<div id="page" x-data="page($params.slug)">
     <div class="appHeader">
         <div class="left">
-            <a href="javascript:void()" onclick="history.back()" class="headerButton">
-                <ion-icon name="chevron-back-outline"></ion-icon>
+            <a native href="javascript:void()" onclick="history.back()" class="headerButton">
+                <i class="bi bi-chevron-left"></i>
             </a>
         </div>
         <div class="pageTitle" x-text="title"></div>
@@ -19,3 +19,5 @@
     </div>
     <!-- * App Capsule -->
 </div>
+
+<?= $this->include('page/script') ?>

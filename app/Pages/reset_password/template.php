@@ -1,10 +1,11 @@
-<div id="member-reset-password" x-data="reset_password(`<?= $recaptcha_site_key ?>`)">
-    <div class="bg-image" style="background-image: url('<?=$themeURL ?>assets/img/bg-green-min.jpg'); background-repeat: no-repeat; background-size: cover; width: 100%; background-position: center; background-color: #add7cb; height: 100%; position: fixed;"></div>
+<div id="member-reset-password" x-data="reset_password(`<?= config('App')->recaptcha['siteKey'] ?>`)">
+
+    <div class="bg-image" style="background-image: url('<?= $themeURL ?>assets/img/masagi/bg-min.png'); background-repeat: no-repeat; background-size: cover; width: 100%; background-position: center; background-color: #add7cb; height: 100%; position: fixed;"></div>
 
     <div class="appHeader">
         <div class="left">
-            <a href="javascript:void()" onclick="history.back()" class="headerButton">
-                <ion-icon name="chevron-back-outline"></ion-icon>
+            <a native href="javascript:void()" onclick="history.back()" class="headerButton">
+                <i class="bi bi-chevron-left"></i>
             </a>
         </div>
         <div class="pageTitle">Reset Kata Sandi</div>
@@ -16,12 +17,11 @@
     <div id="appCapsule" class="shadow pt-5 mt-5 pb-2">
         <div class="login-form mt-1">
             <div class="section">
-                <img :src="logo" alt="image" class="form-image">
+                <img src="<?= base_url('mobilekit/assets/img/masagi/logo-masagi-min.png') ?>" alt="image" style="width:200px">
             </div>
-            <div class="section mt-1">
-                <p class="text-white">Masukkan alamat email atau nomor WhatsApp yang Anda daftarkan di aplikasi untuk kami kirimkan kode reset kata sandi</p>
-            </div>
-            <div class="section mt-1 mb-5 px-0">
+            <div class="login-form mt-2 mx-auto pt-1 p-2 rounded glassmorph" style="background: #fffa">
+                <p>Masukkan alamat email atau nomor WhatsApp yang Anda daftarkan di aplikasi untuk kami kirimkan kode reset kata sandi</p>
+            
                 <div>                    
                     <div class="p-3">
                         <ul class="nav nav-tabs capsuled rounded-0" id="myTab" role="tablist">
@@ -66,3 +66,5 @@
     <!-- * App Capsule -->
 
 </div>
+
+<?= $this->include('reset_password/script') ?>

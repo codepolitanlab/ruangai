@@ -6,14 +6,6 @@ use CodeIgniter\API\ResponseTrait;
 class PageController extends BaseController 
 {
     
-    
-    public function getContent()
-    {
-        $this->data['recaptcha_site_key'] = config('App')->recaptcha['siteKey'];
-
-        return pageView('reset_password/index', $this->data);
-    }
-    
     public function postIndex()
     {
         $sendto = $this->request->getPost('sendto');
