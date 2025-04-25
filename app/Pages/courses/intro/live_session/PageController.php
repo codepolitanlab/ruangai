@@ -19,6 +19,7 @@ class PageController extends BaseController
                                     ->getRowArray();
 
         $this->data['live_sessions'] = $db->table('live_sessions')
+                                            ->where('course_id', $course_id)
                                             ->get()
                                             ->getResultArray();
 

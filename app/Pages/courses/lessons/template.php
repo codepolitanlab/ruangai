@@ -4,7 +4,9 @@
         title: `<?= $page_title ?>`,
         url: `courses/lessons/data/${$params.id}`
     })"
-	x-effect="loadPage(`courses/lessons/data/${$params.id}`)">
+	x-effect="loadPage(`courses/lessons/data/${$params.id}`)"
+	x-debug
+	>
 
 	<div id="app-header" class="appHeader main border-0">
 		<div class="left"><a class="headerButton" :href="`/courses/intro/${data.course.id}/${data.course.slug}`"><i class="bi bi-chevron-left"></i></a></div>
@@ -54,9 +56,21 @@
 			</style>
 
 			<section>
+				<!-- If player Youtube -->
 				<div x-show="data.lesson?.player == 'youtube'" class="ratio ratio-16x9">
-					<iframe width="560" height="315" :src="`https://www.youtube.com/embed/${data.lesson?.video}`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+					<iframe width="560" height="315" :src="`https://www.youtube.com/embed/${data.lesson?.youtube_id}`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 				</div>
+
+				<!-- If player Bunny -->
+				<div x-show="data.lesson?.player == 'bunnystream'" class="ratio ratio-16x9">
+					<!-- <iframe width="560" height="315" :src="`https://www.youtube.com/embed/${data.lesson?.youtube_id}`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
+				</div>
+
+				<!-- If player Diupload -->
+				<div x-show="data.lesson?.player == 'diupload'" class="ratio ratio-16x9">
+					<!-- <iframe width="560" height="315" :src="`https://www.youtube.com/embed/${data.lesson?.youtube_id}`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
+				</div>
+
 				<div class="container px-3">
 					<div class="mt-4">
 						<h2 x-text="data.lesson?.lesson_title"></h2>
@@ -71,10 +85,10 @@
 							<button class="btn btn-ultra-light-primary rounded-pill px-4">
 								Forum
 							</button>
-							<button class="btn btn-primary rounded-pill px-4 ms-auto">
+							<a :href="`/courses/lessons/${data.lesson?.next_lesson_id}`" class="btn btn-primary rounded-pill px-4 ms-auto">
 								<i class="bi bi-skip-forward-fill me-2"></i>
 								Berikutnya
-							</button>
+							</a>
 						</div>
 
 						<!-- Lesson List -->

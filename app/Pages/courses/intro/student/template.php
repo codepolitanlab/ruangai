@@ -2,7 +2,9 @@
 	id="student"
 	x-data="$heroic({
         title: `<?= $page_title ?>`,
-    })">
+		url: `courses/intro/student/data/${$params.course_id}`
+    })" 
+	x-debug>
 	<div id="app-header" class="appHeader main border-0">
 		<div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
 		<div class="pageTitle"><span><?= $page_title ?></span></div>
@@ -55,7 +57,7 @@
 				<div class="position-relative">
 					<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%205231%20(1).png" class="w-100 position-relative" alt="">
 					<div class="position-absolute ms-3 mt-2 top-0">
-						<h3 class="text-white" x-text="data.course?.course_title || 'Belajar AI'"></h3>
+						<h4 class="text-white" x-text="data.course?.course_title || 'Belajar AI'"></h4>
 						<div class="text-white d-flex gap-4 mb-2">
 							<div><i class="bi bi-people"></i> <span x-text="data.course?.total_student"></span> Siswa</div>
 							<div><i class="bi bi-book"></i> <span x-text="data.course?.total_module"></span> Modul Belajar</div>
@@ -75,15 +77,15 @@
 					</div>
 					<div class="d-flex gap-3 overflow-scroll py-2">
 						<div class="d-flex gap-3 overflow-scroll py-2">
-							<a href="/courses/intro/32/intro-to-programming" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill">Materi Belajar</a>
-							<a href="/courses/intro/inggris-beginner-book-1/live_session" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill position-relative">
+							<a :href="`/courses/intro/${$params.course_id}/${$params.slug}`" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill">Materi Belajar</a>
+							<a :href="`/courses/intro/${$params.course_id}/${$params.slug}/live_session`"class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill position-relative">
 								Live Session
 								<span class="position-absolute top-0 start-100 translate-middle p-1 bg-secondary border border-light rounded-circle">
 									<span class="visually-hidden">New alerts</span>
 								</span>
 							</a>
-							<a href="/courses/intro/inggris-beginner-book-1/student" class="btn btn-lg btn-primary text-nowrap rounded-pill">Student</a>
-							<a href="/courses/intro/inggris-beginner-book-1/tanya_jawab" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill">Tanya Jawab</a>
+							<a :href="`/courses/intro/${$params.course_id}/${$params.slug}/student`" class="btn btn-lg btn-primary text-nowrap rounded-pill">Student</a>
+							<!-- <a :href="`/courses/intro/${$params.course_id}/${$params.slug}/tanya_jawab`" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill">Tanya Jawab</a> -->
 						</div>
 					</div>
 				</div>
@@ -106,18 +108,18 @@
 					</div>
 
 					<!-- Student Cards -->
-					<template x-for="num in 2">
+					<template x-for="student in data.students">
 						<div class="card shadow-none border rounded-20 p-2 mb-2">
 							<div class="d-flex gap-3 align-items-center">
 								<div style="width: 100px; height: 100px">
-									<img src="https://images.unsplash.com/photo-1543132220-4bf3de6e10ae?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="cover rounded" alt="Student">
+									<img :src="student.avatar" class="cover rounded" alt="Student">
 								</div>
 								<div class="flex-grow-1">
 									<div class="d-flex justify-content-between align-items-start mb-2">
-										<div class="">Enroll : 24 Oktober 2025</div>
+										<div class="">Enroll : <span x-text="student.joined_at.slice(0, 10)"></span></div>
 									</div>
 									<h5 class="mb-2">
-										<a href="/courses/intro/inggris-beginner-book-1/student/1" class="">Badar Abdi Mulya</a>
+										<a :href="`/courses/intro/${$params.course_id}/${$params.slug}/student/${student.user_id}`" x-text="student.name"></a>
 									</h5>
 									<div class="d-flex align-items-center gap-3">
 										<div class="progress flex-grow-1" style="height: 8px">

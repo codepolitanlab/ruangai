@@ -76,15 +76,15 @@
 						<p x-text="data.course?.description"></p>
 					</div>
 					<div class="d-flex gap-3 mt-2 overflow-scroll py-3">
-						<a href="#" class="btn btn-lg btn-primary text-nowrap rounded-pill">Materi Belajar</a>
-						<a :href="`/courses/intro/${data.course?.id}/${data.course?.slug}/live_session`" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill position-relative">
+						<a :href="`/courses/intro/${$params.course_id}/${$params.slug}`" class="btn btn-lg btn-primary text-nowrap rounded-pill">Materi Belajar</a>
+						<a :href="`/courses/intro/${$params.course_id}/${$params.slug}/live_session`" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill position-relative">
 							Live Session
 							<span class="position-absolute top-0 start-100 translate-middle p-1 bg-secondary border border-light rounded-circle">
 								<span class="visually-hidden">New alerts</span>
 							</span>
 						</a>
-						<a href="/courses/intro/inggris-beginner-book-1/student" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill">Student</a>
-						<a href="/courses/intro/inggris-beginner-book-1/tanya_jawab" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill">Tanya Jawab</a>
+						<a :href="`/courses/intro/${$params.course_id}/${$params.slug}/student`" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill">Student</a>
+						<!-- <a href="/courses/intro/inggris-beginner-book-1/tanya_jawab" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill">Tanya Jawab</a> -->
 					</div>
 				</div>
 			</section>

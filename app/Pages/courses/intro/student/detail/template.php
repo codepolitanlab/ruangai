@@ -1,6 +1,11 @@
-<div id="student_detail" x-data="student_detail()">
-	<div id="app-header" class="appHeader bg-dark main glassmorph border-0">
-		<div class="left"><a class="headerButton" href="/courses/intro/inggris-beginner-book-1/student"><i class="bi bi-chevron-left"></i></a></div>
+<div id="student_detail"
+	x-data="$heroic({
+        title: `<?= $page_title ?>`,
+		url: `courses/intro/student/detail/data/${$params.id}`
+    })"
+	x-debug>
+	<div id="app-header" class="appHeader main border-0">
+		<div class="left"><a class="headerButton" :href="`/courses/intro/${$params.course_id}/${$params.slug}/student`"><i class="bi bi-chevron-left"></i></a></div>
 		<div class="pageTitle"><span><?= $page_title ?></span></div>
 		<div class="right"><a class="headerButton" role="button" data-bs-toggle="offcanvas" data-bs-target="#shareCanvas"><i class="bi bi-share-fill me-1"></i></a></div>
 	</div>
@@ -29,9 +34,9 @@
 					<!-- Profile Section -->
 					<div class="text-center mb-4 mt-3">
 						<div style="height:400px" class="mx-auto mb-3">
-							<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%205395%20(1).png?updatedAt=1741588022966" class="cover rounded-20" alt="Student Profile">
+							<img :src="data.student?.avatar" class="cover rounded-20" alt="Student Profile">
 						</div>
-						<h3 class="mb-2">Badar Abdi Mulya</h3>
+						<h3 class="mb-2" x-text="data.student?.name"></h3>
 						<p class="mb-3">CODING IS A SHINOBI WAYS FOR ME!!!!!</p>
 						<div class="bg-ultra-light rounded-pill px-4 py-2 d-inline-block">
 							<div>Enroll Kelas : 24 Oktober 2025</div>

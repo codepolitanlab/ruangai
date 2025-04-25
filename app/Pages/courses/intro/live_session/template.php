@@ -74,20 +74,36 @@
 						<p x-text="data.course?.description"></p>
 					</div>
 					<div class="d-flex gap-3 mt-2 overflow-scroll py-3">
-						<a :href="`/courses/intro/${data.course.id}/${data.course.slug}`" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill">Materi Belajar</a>
+						<a :href="`/courses/intro/${$params.course_id}/${$params.slug}`" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill">Materi Belajar</a>
 						<a href="javascript:void()" class="btn btn-lg btn-primary text-nowrap rounded-pill text-white position-relative">
 							Live Session
 							<span class="position-absolute top-0 start-100 translate-middle p-1 bg-secondary border border-light rounded-circle">
 								<span class="visually-hidden">New alerts</span>
 							</span>
 						</a>
-						<a href="/courses/intro/inggris-beginner-book-1/student" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill">Student</a>
-						<a href="/courses/intro/inggris-beginner-book-1/tanya_jawab" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill">Tanya Jawab</a>
+						<a :href="`/courses/intro/${$params.course_id}/${$params.slug}/student`" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill">Student</a>
+						<!-- <a :href="`/courses/intro/${$params.course_id}/${$params.slug}/tanya_jawab`" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill">Tanya Jawab</a> -->
 					</div>
 				</div>
 			</section>
 			<section>
 				<div class="container px-4">
+
+					<div class="card bg-light-secondary p-2 mb-4 rounded-4 border border-secondary">
+						<div class="row">
+							<div class="col-2">
+								<div class="d-flex align-items-center justify-content-center rounded-4" style="background-color: #F5CEBB;height: 50px;width: 50px">
+									<i class="bi bi-megaphone-fill fs-4 text-secondary"></i>
+								</div>
+							</div>
+							<div class="col-10">
+								<div class="d-flex flex-column">
+									<div class="fw-bold text-secondary">Pengumuman</div>
+									<small class="lh-base text-muted">Untuk menyelesaikan beasiswa ini, kamu wajib mengikuti 3x live session</small>
+								</div>
+							</div>
+						</div>
+					</div>
 
 					<!-- Check if no live session -->
 					<template x-show="data.live_sessions?.length == 0">
