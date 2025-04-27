@@ -5,7 +5,8 @@ use App\Pages\BaseController;
 class PageController extends BaseController {
 
     public $data = [
-        'page_title' => 'Tutup Akun'
+        'page_title' => 'Tutup Akun',
+        'module'     => 'profile'
     ];
 
     public function postIndex()

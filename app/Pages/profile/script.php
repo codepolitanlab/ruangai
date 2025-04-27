@@ -2,7 +2,7 @@
     Alpine.data('profile', function(){
         return {
             title: "Profile",
-            data: [],
+            data: {},
             init(){
                 window.scrollTo({top:0, behavior:'auto'});
                 
@@ -13,13 +13,10 @@
                 if($heroicHelper.cached['profile']){
                     this.data = $heroicHelper.cached['profile']
                 } else {   
-                    $heroicHelper.fetch('profile/data', {
-                        headers: {
-                            'Authorization': `Bearer ` + Alpine.store('core').sessionToken,
-                        }
-                    }).then(data => {
-                        $heroicHelper.cached['profile'] = data
-                        this.data = data
+                    $heroicHelper.fetch('profile/data')
+                    .then(response => {
+                        $heroicHelper.cached['profile'] = response.data
+                        this.data = response.data
                     })
                 }
             },

@@ -2,34 +2,27 @@
 
 $bottommenu = [
     [
-        "label" => "Beranda",
-        "url" => "/courses/intro/1/ngonten-sakti-dengan-ai",
-        "icon" => 'bi bi-house'
+        'label'  => 'Beranda',
+        'url'    => '/courses/intro/1/ngonten-sakti-dengan-ai',
+        'icon'   => 'bi bi-house',
+        'module' => 'home'
+    ],
+    [
+        'label'  => 'Pengumuman',
+        'url'    => '/pengumuman',
+        'icon'   => 'bi bi-megaphone',
+        'module' => 'pengumuman'
     ],
     // [
-    //     "label" => "Artikel",
-    //     "url" => "/pustaka",
-    //     "icon" => 'bi bi-journal-bookmark-fill'
+    //     'label' => 'Kelas',
+    //     'url' => '/courses',
+    //     'icon' => 'bi bi-book'
     // ],
     [
-        "label" => "Pengumuman",
-        "url" => "/pengumuman",
-        "icon" => 'bi bi-megaphone'
-    ],
-    // [
-    //     "label" => "Kelas",
-    //     "url" => "/courses",
-    //     "icon" => 'bi bi-book'
-    // ],
-    // [
-    // 	"label" => "Notifikasi",
-    // 	"url" => "/notifications",
-    // 	"icon" => 'bi bi-bell'
-    // ],
-    [
-        "label" => "Akun",
-        "url" => "/profile",
-        "icon" => 'bi bi-person-circle'
+        'label'  => 'Akun',
+        'url'    => '/profile',
+        'icon'   => 'bi bi-person-circle',
+        'module' => 'profile'
     ],
 ];
 
@@ -40,8 +33,7 @@ $bottommenu = [
     <a href="<?= $menu['url'] ?>" 
         id="bottommenu-member" 
         class="item" 
-        :class="Alpine.store('core')?.currentPage == '<?= trim($menu['url'], '/') ?>' ? 'active' : ''"
-        >
+        :class="data?.module == '<?= $menu['module'] ?>' ? 'active' : ''">
         <div class="col">
             <i class="<?= $menu['icon'] ?> text-white"></i>
             <strong class="text-white"><?= $menu['label'] ?></strong>
@@ -59,7 +51,9 @@ $bottommenu = [
     <ul class="listview flush transparent no-line image-listview mt-2">
         <?php foreach($bottommenu as $menu): ?>
         <li>
-            <a href="<?= $menu['url'] ?>" class="item">
+            <a href="<?= $menu['url'] ?>" 
+                class="item"
+                :class="data?.module == '<?= $menu['module'] ?>' ? 'active' : ''">
                 <div class="icon-box icon-box-transparent">
                     <i class="<?= $menu['icon'] ?>"></i>
                 </div>

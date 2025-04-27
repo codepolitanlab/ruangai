@@ -9,6 +9,7 @@ class PageController extends BaseController {
 
     public $data = [
         "page_title" => "Edit Info Profil",
+        'module'     => 'profile'
     ];
 
     public function getSupply()

@@ -24,7 +24,7 @@ body {
   /* Color theme */
   --primary: #79B2CD;
   --light-primary: #C9E5F0;
-  --ultra-light-primary: #f0eadc;
+  --ultra-light-primary: #fdf9f0;
   --secondary: #F96E2B;
   --light-secondary: #FFE4D7;
 }
@@ -80,7 +80,6 @@ button:hover, button:active, button:focus {
   z-index: 999;
   background: #FFF;
   color: #141515;
-  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.08);
 }
 
 .appHeader:before {
@@ -479,10 +478,10 @@ button:hover, button:active, button:focus {
 
 .appBottomMenu .item.active i.bi,
 .appBottomMenu .item.active i.icon,
-.appBottomMenu .item.active ion-icon,
-.appBottomMenu .item.active strong {
-  color: #26a4b3 !important;
+.appBottomMenu .item.active ion-icon {
+  color: #ffd9c6 !important;
   font-weight: 500;
+  text-shadow: 0 0 15px #fff;
 }
 
 .appBottomMenu .item:hover i.bi,

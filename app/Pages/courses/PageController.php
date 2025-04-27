@@ -6,7 +6,8 @@ class PageController extends BaseController
 {
 
     public $data = [
-        'page_title' => "Daftar Kelas"
+        'page_title' => 'Daftar Kelas',
+        'module'     => 'course'
     ];
     
     public function getTemplate($params = null)

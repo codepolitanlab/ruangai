@@ -1,16 +1,13 @@
 <div id="profile" x-data="profile()" class="header-mobile-only">
-	<div class="appHeader">
-		<div class="pageTitle ">
-        <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-logo-transparan.png" width="150" alt="">
-		</div>
-	</div>
+    
+    <?= $this->include('_appHeader'); ?>
 
 	<!-- App Capsule -->
-	<div id="appCapsule" class="">
+	<div id="appCapsule" class="bg-white">
 		<div class="appContent" style="min-height:90vh">
 			<section class="mb-5">
 				<div class="position-relative">
-					<div class="card ps-3 bg-primary shadow-none container-fluid pt-3 pb-3 rounded-0" style="height: 150px;">
+					<div class="card ps-3 bg-primary shadow-none container-fluid pt-3 pb-3 rounded-0" style="height: 135px;">
 						<div class="d-flex align-items-center justify-content-start gap-3">
 							<div>
 								<img :src="data?.profile?.avatar ? data?.profile?.avatar : `<?= $themeURL ?>assets/img/icon/default-avatar-user.webp`"

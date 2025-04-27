@@ -11,7 +11,8 @@ class PageController extends BaseController {
     
 
     public $data = [
-        'page_title' => 'Edit Akun'
+        'page_title' => 'Edit Akun',
+        'module'     => 'profile'
     ];
 
     public function getSupply()

@@ -1,9 +1,9 @@
-body {background: #f9f9f9 !important;}
+body {background: #eaf9ff !important;}
 #appCapsule{position:relative;margin-bottom:env(safe-area-inset-bottom);margin-top:env(safe-area-inset-top)}
 .input-icon-append{display:flex;align-items:center;justify-content:center;color:#4F5050;height:38px;font-size:24px;position:absolute;right:7px;bottom:1px;width:32px;opacity:.5}
 a { color: #076b89; }
 .appHeader {position: sticky;}
-#appCapsule{ min-height: 100vh; background-color: #F9F9F9; padding-top: 0;}
+#appCapsule{ min-height: 100vh; background-color: #eaf9ff; padding-top: 0;}
 .appBottomMenu, .appHeader, #appCapsule, .extraHeader { max-width: 630px; margin: 0 auto}
 
 .container-large {margin: 0 auto;}
@@ -157,7 +157,7 @@ button.vanilla-calendar-day__btn.alpa, .presensi-status-container.alpa { backgro
     left:0;
     border-right: 1px solid #cfdadf;
     height:100%;
-    width: 206px;
+    width: 250px;
     overflow: hidden;
     transition: .5s;
 }
@@ -184,12 +184,12 @@ button.vanilla-calendar-day__btn.alpa, .presensi-status-container.alpa { backgro
     .appBottomMenu {
         display: none;
     }
-    .container-large {margin-left: 210px;}
+    .container-large {margin-left: 250px;}
     .sidebar {
         display: block !important;
     }
 }
-@media (min-width: 768px) and (max-width: 1043.98px) {
+@media (min-width: 768px) and (max-width: 1129.98px) {
     .container-large {margin-left: 60px;}
     .sidebar {
         width: 60px !important;

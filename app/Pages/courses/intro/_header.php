@@ -1,8 +1,4 @@
-<div class="appHeader">
-    <div class="pageTitle ">
-        <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-logo-transparan.png" width="150" alt="">
-    </div>
-</div>
+<?= $this->include('_appHeader'); ?>
 
 <!-- <div id="app-header" class="appHeader main border-0">
     <div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
@@ -11,8 +7,8 @@
 </div> -->
 
 <section>
-    <div class="position-relative bg-dark rounded-bottom-4">
-        <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%205231%20(1).png" class="w-100 position-relative" alt="">
+    <div class="position-relative" style="background:#c9e5f0">
+        <img src="https://image.web.id/images/cover-course.png" class="w-100 position-relative" alt="">
         <div class="position-absolute bottom-0 pb-2 px-4">
             <h2 class="text-white" x-text="data.course?.course_title || 'Belajar AI'"></h2>
             <div class="text-white d-flex gap-4 mb-2">

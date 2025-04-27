@@ -8,7 +8,8 @@ use CodeIgniter\API\ResponseTrait;
 class PageController extends BaseController
 {
     public $data = [
-        'page_title' => "Detail Kelas",
+        'page_title'  => 'Detail Kelas',
+        'module'      => 'home',
         'active_page' => 'materi',
     ];
 

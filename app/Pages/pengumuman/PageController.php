@@ -5,12 +5,14 @@ use CodeIgniter\API\ResponseTrait;
 
 class PageController extends BaseController {
 
-    
-
     public $data = [
-        'page_title' => 'Pengumuman'
+        'page_title' => 'Pengumuman',
+        'module'     => 'pengumuman'
     ];
 
-    
+    public function getData()
+    {
+        return $this->respond($this->data);
+    }
 
 }

@@ -4,11 +4,8 @@
         title: `<?= $page_title ?>`,
         url: `/pengumuman/data`
     })">
-	<div class="appHeader">
-		<div class="pageTitle">
-			<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-logo-transparan.png" width="150" alt="">
-		</div>
-	</div>
+
+	<?= $this->include('_appHeader'); ?>
 
 	<!-- App Capsule -->
 	<div id="appCapsule" class="">
