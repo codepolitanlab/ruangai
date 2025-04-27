@@ -5,7 +5,8 @@ use App\Pages\BaseController;
 class PageController extends BaseController 
 {
     public $data = [
-        'page_title' => "Live Session"
+        'page_title' => "Live Session",
+        'active_page' => 'live',
     ];
 
     public function getData($course_id)
@@ -23,14 +24,12 @@ class PageController extends BaseController
                                             ->get()
                                             ->getResultArray();
 
-        if ($this->data['live_sessions'])
+        if (! $this->data['live_sessions'])
         {
-            return $this->respond($this->data);
-        } else {
-            return $this->respond([
-                'response_code'    => 404,
-                'response_message' => 'Not found',
-            ]);
+            $this->data['response_code'] = 404;
+            $this->data['response_message'] = 'Not found';
         }
+
+        return $this->respond($this->data);
     }
 }

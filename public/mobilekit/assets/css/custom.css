@@ -158,6 +158,8 @@ button.vanilla-calendar-day__btn.alpa, .presensi-status-container.alpa { backgro
     border-right: 1px solid #cfdadf;
     height:100%;
     width: 206px;
+    overflow: hidden;
+    transition: .5s;
 }
 .sidebar .icon-box-transparent {
     font-size: 28px !important;
@@ -169,6 +171,10 @@ button.vanilla-calendar-day__btn.alpa, .presensi-status-container.alpa { backgro
 }
 .sidebar .image-listview > li a.item:after {
     display: none !important;
+}
+
+.sidebar .sidebar-logo {
+    padding: 20px;
 }
 
 @media (min-width: 768px) {
@@ -187,7 +193,6 @@ button.vanilla-calendar-day__btn.alpa, .presensi-status-container.alpa { backgro
     .container-large {margin-left: 60px;}
     .sidebar {
         width: 60px !important;
-        overflow: hidden;
     }
     .sidebar .sidebar-logo {
         padding-left: 11px !important;

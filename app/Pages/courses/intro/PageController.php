@@ -7,11 +7,11 @@ use CodeIgniter\API\ResponseTrait;
 
 class PageController extends BaseController
 {
-    
-
     public $data = [
-        'page_title' => "Detail Kelas"
+        'page_title' => "Detail Kelas",
+        'active_page' => 'materi',
     ];
+
     public function getData($id)
     {
         $db = \Config\Database::connect();

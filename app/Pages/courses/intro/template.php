@@ -1,4 +1,5 @@
 <div
+	class="header-mobile-only"
 	id="course_intro"
 	x-data="$heroic({
         title: `<?= $page_title ?>`,
@@ -6,90 +7,79 @@
     })"
 	x-effect="loadPage(`/courses/intro/data/${$params.course_id}`)">
 
-	<div id="app-header" class="appHeader main border-0">
-		<div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
-		<div class="pageTitle"><span>Detail Kelas</span></div>
-		<div class="right"><a class="headerButton" role="button" data-bs-toggle="offcanvas" data-bs-target="#shareCanvas"><i class="bi bi-share-fill me-1"></i></a></div>
-	</div>
+	<style>
+		.accordion-body {
+			padding: 0 .25rem;
+		}
+
+		.list-group-item {
+			border: 0;
+		}
+
+		.accordion-body,
+		.accordion-body .list-group-item {
+			background: #fff !important;
+		}
+
+		.hovered:hover {
+			background: #eee !important;
+		}
+
+		.cover {
+			object-fit: cover;
+			width: 100%;
+			height: 100%;
+		}
+
+		.progress,
+		.progress-bar {
+			height: 22px;
+		}
+
+		.lessons a {
+			color: #009688;
+			font-weight: 400;
+			font-size: 1rem;
+		}
+
+		.author img {
+			width: 80px;
+		}
+	</style>
 
 	<div id="appCapsule" class="">
 		<div class="appContent" style="min-height:90vh">
-			<style>
-				.accordion-body {
-					padding: 0 .25rem;
-				}
 
-				.list-group-item {
-					border: 0;
-				}
+			<?= $this->include('courses/intro/_header'); ?>
 
-				.accordion-body,
-				.accordion-body .list-group-item {
-					background: #fff !important;
-				}
-
-				.hovered:hover {
-					background: #eee !important;
-				}
-
-				.cover {
-					object-fit: cover;
-					width: 100%;
-					height: 100%;
-				}
-
-				.progress,
-				.progress-bar {
-					height: 22px;
-				}
-
-				.lessons a {
-					color: #009688;
-					font-weight: 400;
-					font-size: 1rem;
-				}
-
-				.author img {
-					width: 80px;
-				}
-			</style>
-			<section class="p-3 p-lg-4">
-				<div class="position-relative">
-					<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%205231%20(1).png" class="w-100 position-relative" alt="">
-					<div class="position-absolute ms-3 mt-2 top-0">
-						<h4 class="text-white" x-text="data.course?.course_title || 'Belajar AI'"></h4>
-						<div class="text-white d-flex gap-4 mb-2">
-							<div><i class="bi bi-people"></i> <span x-text="data.course?.total_student"></span> Siswa</div>
-							<div><i class="bi bi-book"></i> <span x-text="data.course?.total_module"></span> Modul Belajar</div>
+			<section class="mt-4 mb-4 px-3">
+				<h4 class="mb-2">Lanjutkan Belajar</h4>
+				<a href="/courses/lessons/1">
+					<div class="card card-hover rounded-20">
+						<div class="card-body d-flex align-items-center gap-3 p-2">
+							<div class="d-flex align-items-center justify-content-center rounded-20 bg-ultra-light" style="width: 100px;height: 100px">
+								<i class="bi bi-journal-bookmark-fill display-3 text-pink"></i>
+							</div>
+							<div>
+								<h4 class="m-0">Lesson 02 - Pengenalan</h4>
+								<h6 class="mb-1">Potensi Dan Tantangan AI</h6>
+								<div class="d-flex align-items-center gap-2">
+									<i class="bi bi-play-fill h3 m-0 text-primary"></i>
+									<div class="progress w-100" style="height: 5px;">
+										<div class="progress-bar w-75 bg-primary"></div>
+									</div>
+									<div>70%</div>
+								</div>
+							</div>
 						</div>
-						<div class="progress mb-3 w-50" role="progressbar" style="height: 8px;">
-							<div class="progress-bar bg-primary" style="width: 25%"></div>
-						</div>
-						<a href="" class="btn btn-sm btn-primary rounded-pill">Lanjutkan Belajar</a>
 					</div>
-				</div>
+				</a>
 			</section>
+			
+			<?= $this->include('courses/intro/_menu'); ?>
+
 			<section>
-				<div class="container px-4">
-					<div>
-						<h2>Deskripsi Singkat</h2>
-						<p x-text="data.course?.description"></p>
-					</div>
-					<div class="d-flex gap-3 mt-2 overflow-scroll py-3">
-						<a :href="`/courses/intro/${$params.course_id}/${$params.slug}`" class="btn btn-lg btn-primary text-nowrap rounded-pill">Materi Belajar</a>
-						<a :href="`/courses/intro/${$params.course_id}/${$params.slug}/live_session`" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill position-relative">
-							Live Session
-							<span class="position-absolute top-0 start-100 translate-middle p-1 bg-secondary border border-light rounded-circle">
-								<span class="visually-hidden">New alerts</span>
-							</span>
-						</a>
-						<a :href="`/courses/intro/${$params.course_id}/${$params.slug}/student`" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill">Student</a>
-						<!-- <a href="/courses/intro/inggris-beginner-book-1/tanya_jawab" class="btn btn-lg btn-ultra-light-primary text-nowrap rounded-pill">Tanya Jawab</a> -->
-					</div>
-				</div>
-			</section>
-			<section>
-				<div class="container px-4">
+				<div class="px-3 p-md-0">
 					<div class="card rounded-20 p-3 mb-2">
 
 						<h3 class="m-0">Pengenalan</h3>

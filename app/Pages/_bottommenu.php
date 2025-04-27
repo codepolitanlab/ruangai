@@ -3,7 +3,7 @@
 $bottommenu = [
     [
         "label" => "Beranda",
-        "url" => "/",
+        "url" => "/courses/intro/1/ngonten-sakti-dengan-ai",
         "icon" => 'bi bi-house'
     ],
     // [
@@ -16,11 +16,11 @@ $bottommenu = [
         "url" => "/pengumuman",
         "icon" => 'bi bi-megaphone'
     ],
-    [
-        "label" => "Kelas",
-        "url" => "/courses",
-        "icon" => 'bi bi-book'
-    ],
+    // [
+    //     "label" => "Kelas",
+    //     "url" => "/courses",
+    //     "icon" => 'bi bi-book'
+    // ],
     // [
     // 	"label" => "Notifikasi",
     // 	"url" => "/notifications",
@@ -52,7 +52,7 @@ $bottommenu = [
 
 
 <nav class="sidebar position-fixed">
-    <div class="sidebar-logo p-2">
+    <div class="sidebar-logo">
         <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-logo-transparan.png" width="150" alt="">
     </div>
 
