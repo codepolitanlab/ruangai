@@ -52,7 +52,9 @@
 
 			<?= $this->include('courses/intro/_header'); ?>
 
-			<section class="mt-4 mb-4 px-3">
+			<?= $this->include('courses/intro/_menu'); ?>
+
+			<section class="mb-4 px-3">
 				<h4 class="mb-2">Lanjutkan Belajar</h4>
 				<a href="/courses/lessons/1">
 					<div class="card card-hover rounded-20">
@@ -75,8 +77,6 @@
 					</div>
 				</a>
 			</section>
-			
-			<?= $this->include('courses/intro/_menu'); ?>
 
 			<section>
 				<div class="px-3 p-md-0">

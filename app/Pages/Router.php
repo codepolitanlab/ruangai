@@ -23,17 +23,27 @@ class Router
         "/courses" => [
             "preload" => true,
         ],
-        "/courses/intro/:course_id/:slug/live_session",
+        "/courses/intro/:course_id/:slug/live_session" => [
+            "preload" => true,
+        ],
         "/courses/intro/:course_id/:slug/live_session/:live_id" => [
             'template' => '/courses/intro/live_session/detail/template',
+            "preload" => true,
         ],
-        "/courses/intro/:course_id/:slug/student",
+        "/courses/intro/:course_id/:slug/student" => [
+            "preload" => true,
+        ],
         "/courses/intro/:course_id/:slug/student/:id" => [
             'template' => '/courses/intro/student/detail/template',
+            "preload" => true,
         ],
         "/courses/intro/;course_id/:slug/tanya_jawab",
-        "/courses/intro/:course_id/:slug",
-        "/courses/lessons/:id",
+        "/courses/intro/:course_id/:slug" => [
+            "preload" => true,
+        ],
+        "/courses/lessons/:id" => [
+            "preload" => true,
+        ],
         "/courses/quiz/:id",
         "/pustaka" => [
             "handler" => "[isLoggedIn]"

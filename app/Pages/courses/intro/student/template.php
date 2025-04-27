@@ -1,4 +1,5 @@
 <div
+	class="header-mobile-only"
 	id="student"
 	x-data="$heroic({
         title: `<?= $page_title ?>`,
