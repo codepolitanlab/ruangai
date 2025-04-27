@@ -1,19 +1,18 @@
 <div
+	class="container-large"
 	id="lesson_detail"
 	x-data="$heroic({
         title: `<?= $page_title ?>`,
         url: `courses/lessons/data/${$params.id}`
     })"
-	x-effect="loadPage(`courses/lessons/data/${$params.id}`)"
-	x-debug
-	>
+	x-effect="loadPage(`courses/lessons/data/${$params.id}`)">
 
 	<div id="app-header" class="appHeader main border-0">
 		<div class="left"><a class="headerButton" :href="`/courses/intro/${data.course.id}/${data.course.slug}`"><i class="bi bi-chevron-left"></i></a></div>
 		<div class="pageTitle"><span>Detail Lessons</span></div>
 	</div>
 
-	<div id="appCapsule" class="shadow">
+	<div id="appCapsule" class="appCapsule-lg">
 		<div class="appContent" style="min-height:90vh">
 			<style>
 				.accordion-body {

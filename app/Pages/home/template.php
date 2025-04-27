@@ -1,4 +1,4 @@
-<div id="home" class="" x-data="home()">
+<div id="home" class="header-mobile-only" x-data="home()">
 
 	<div class="appHeader">
 		<div class="pageTitle ">
@@ -244,7 +244,7 @@
 		</div>
 	</div>
 
-	<!-- Bottom Menu -->
+	<!-- Bottom and Sidebar Menu -->
 	<?= $this->include('_bottommenu') ?>
 </div>
 

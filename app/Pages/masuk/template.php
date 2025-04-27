@@ -4,7 +4,7 @@
     <div id="appCapsule" class="shadow pt-5">
         <div class="login-form mt-1">
             <div class="section">
-                <img src="https://image.web.id/images/logo-ruangai.png" alt="image" class="form-image">
+                <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-logo-transparan.png" width="150" alt="">
             </div>
             <div class="section mt-5">
                 <p class="fs-5 my-3 ">Silakan masuk untuk melanjutkan</p>

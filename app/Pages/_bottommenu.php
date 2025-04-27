@@ -4,32 +4,32 @@ $bottommenu = [
     [
         "label" => "Beranda",
         "url" => "/",
-        "icon" => '<i class="bi bi-house text-white"></i>'
+        "icon" => 'bi bi-house'
     ],
     // [
     //     "label" => "Artikel",
     //     "url" => "/pustaka",
-    //     "icon" => '<i class="bi bi-journal-bookmark-fill text-white"></i>'
+    //     "icon" => 'bi bi-journal-bookmark-fill'
     // ],
     [
         "label" => "Pengumuman",
         "url" => "/pengumuman",
-        "icon" => '<i class="bi bi-megaphone text-white"></i>'
+        "icon" => 'bi bi-megaphone'
     ],
     [
-        "label" => "Courses",
+        "label" => "Kelas",
         "url" => "/courses",
-        "icon" => '<i class="bi bi-book text-white"></i>'
+        "icon" => 'bi bi-book'
     ],
     // [
     // 	"label" => "Notifikasi",
     // 	"url" => "/notifications",
-    // 	"icon" => '<i class="bi bi-bell text-white"></i>'
+    // 	"icon" => 'bi bi-bell'
     // ],
     [
         "label" => "Akun",
         "url" => "/profile",
-        "icon" => '<i class="bi bi-person-circle text-white"></i>'
+        "icon" => 'bi bi-person-circle'
     ],
 ];
 
@@ -43,9 +43,32 @@ $bottommenu = [
         :class="Alpine.store('core')?.currentPage == '<?= trim($menu['url'], '/') ?>' ? 'active' : ''"
         >
         <div class="col">
-            <?= $menu['icon'] ?>
+            <i class="<?= $menu['icon'] ?> text-white"></i>
             <strong class="text-white"><?= $menu['label'] ?></strong>
         </div>
     </a>
     <?php endforeach; ?>
 </div>
+
+
+<nav class="sidebar position-fixed">
+    <div class="sidebar-logo p-2">
+        <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-logo-transparan.png" width="150" alt="">
+    </div>
+
+    <ul class="listview flush transparent no-line image-listview mt-2">
+        <?php foreach($bottommenu as $menu): ?>
+        <li>
+            <a href="<?= $menu['url'] ?>" class="item">
+                <div class="icon-box icon-box-transparent">
+                    <i class="<?= $menu['icon'] ?>"></i>
+                </div>
+                <div class="in">
+                    <?= $menu['label'] ?>
+                </div>
+            </a>
+        </li>
+        <?php endforeach; ?>
+    </ul>
+
+</nav>

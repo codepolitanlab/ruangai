@@ -3,7 +3,7 @@
 	x-data="$heroic({
         title: `<?= $page_title ?>`,
         url: `courses/intro/live_session/data/${$params.course_id}`
-    })" x-debug>
+    })">
 	<div id="app-header" class="appHeader main border-0">
 		<div class="left"><a class="headerButton" href="/courses"><i class="bi bi-chevron-left"></i></a></div>
 		<div class="pageTitle"><span>Detail Kelas</span></div>

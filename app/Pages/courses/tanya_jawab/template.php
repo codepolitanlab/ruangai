@@ -1,6 +1,6 @@
 <div id="tanya_jawab" x-data="tanya_jawab()">
 
-	<div id="appCapsule" class="shadow">
+	<div id="appCapsule" class="">
 		<div class="appContent" style="min-height:90vh;">
 			<style>
 				#appCapsule {

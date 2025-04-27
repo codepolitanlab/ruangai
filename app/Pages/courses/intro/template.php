@@ -12,7 +12,7 @@
 		<div class="right"><a class="headerButton" role="button" data-bs-toggle="offcanvas" data-bs-target="#shareCanvas"><i class="bi bi-share-fill me-1"></i></a></div>
 	</div>
 
-	<div id="appCapsule" class="shadow">
+	<div id="appCapsule" class="">
 		<div class="appContent" style="min-height:90vh">
 			<style>
 				.accordion-body {

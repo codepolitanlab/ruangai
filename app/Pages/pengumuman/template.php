@@ -1,16 +1,17 @@
 <div id="pengumuman"
+	class="header-mobile-only"
 	x-data="$heroic({
         title: `<?= $page_title ?>`,
         url: `/pengumuman/data`
-    })">>
+    })">
 	<div class="appHeader">
-		<div class="pageTitle ">
-			<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/logo-1.png" width="150" alt="">
+		<div class="pageTitle">
+			<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-logo-transparan.png" width="150" alt="">
 		</div>
 	</div>
 
 	<!-- App Capsule -->
-	<div id="appCapsule" class="shadow">
+	<div id="appCapsule" class="">
 		<div class="appContent" style="min-height:90vh">
 			<section class="p-3 p-lg-4">
 				<!-- Generate here -->

@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="<?= asset_url('mobilekit/assets/css/custom.css') ?>">
 </head>
 
-<body class="bg-light-primary">
+<body>
         
 <!-- <body> -->
     <!-- Content Section -->
