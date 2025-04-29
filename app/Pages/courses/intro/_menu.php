@@ -2,15 +2,19 @@
     .menu-responsive {
         transform: translate(-42px, 0) scale(0.7);
     }
-
+    .menu-responsive .btn .h6 {
+        font-size: 18px !important;
+        line-height: 0;  
+    } 
     @media (min-width: 768px) {
         .menu-responsive {
             transform: translate(0, 0) scale(1);
         }
     }
+    
 </style>
 
-<section class="mb-4 p-3 bg-white rounded-4">
+<section class="mb-4 mt-3 p-3 bg-white rounded-4">
     <div class="position-relative">
         <img src="https://image.web.id/images/cover-course.png" class="w-100 position-relative rounded-4" alt="">
         <div class="position-absolute pb-2 px-4" style="top: 10%;">

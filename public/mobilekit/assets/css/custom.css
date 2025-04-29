@@ -5,7 +5,7 @@ a { color: #076b89; }
 .appHeader {position: sticky;}
 #appCapsule{ min-height: 100vh; background-color: #eaf9ff; padding-top: 0;}
 .appBottomMenu, .appHeader, #appCapsule, .extraHeader { max-width: 630px; margin: 0 auto}
-
+.appContent { padding: 0 16px 16px; }
 .container-large {margin: 0 auto;}
 .container-large .appHeader, 
 .container-large #appCapsule, 

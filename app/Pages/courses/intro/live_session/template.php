@@ -7,7 +7,7 @@
     })">
 
 	<div id="appCapsule" class="">
-		<div class="appContent p-3" style="min-height:90vh">
+		<div class="appContent" style="min-height:90vh">
 			
 			<?= $this->include('courses/intro/_header'); ?>
 

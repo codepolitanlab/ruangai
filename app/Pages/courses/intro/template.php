@@ -48,13 +48,13 @@
 	</style>
 
 	<div id="appCapsule" class="">
-		<div class="appContent p-4" style="min-height:90vh">
+		<div class="appContent" style="min-height:90vh">
 
 			<?= $this->include('courses/intro/_header'); ?>
 
 			<?= $this->include('courses/intro/_menu'); ?>
 
-			<section class="mb-4 bg-white p-3 rounded-4">
+			<section class="mb-4 mt-3 bg-white p-3 rounded-4">
 				<div class="h5 mb-3">Lanjutkan Belajar</div>
 				<a href="/courses/lessons/1">
 					<div class="card shadow-none bg-light-secondary card-hover rounded-20">

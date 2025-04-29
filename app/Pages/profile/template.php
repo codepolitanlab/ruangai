@@ -4,7 +4,7 @@
 
 	<!-- App Capsule -->
 	<div id="appCapsule" class="bg-white">
-		<div class="appContent" style="min-height:90vh">
+		<div class="appContent px-0" style="min-height:90vh">
 			<section class="mb-5">
 				<div class="position-relative">
 					<div class="card ps-3 bg-primary shadow-none container-fluid pt-3 pb-3 rounded-0" style="height: 135px;">
