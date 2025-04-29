@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class AddUserFields extends Migration
+class AlterUserFields extends Migration
 {
     public function up()
     {

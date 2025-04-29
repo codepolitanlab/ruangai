@@ -1,7 +1,6 @@
 <section 
     id="course-card-header" 
-    class="mb-4 rounded-4 bg-white" 
-    >
+    class="mb-4 rounded-4 bg-white">
     <div class="position-relative py-3 mt-2 mt-md-3 rounded-top-4"
         style="background: url(https://image.web.id/images/cover-course.png); background-size: cover">
         <div class="pb-2 px-4" style="top: 10%;">

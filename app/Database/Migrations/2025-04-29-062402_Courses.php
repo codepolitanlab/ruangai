@@ -3,6 +3,7 @@
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
+use CodeIgniter\Database\RawSql;
 
 class Courses extends Migration
 {
@@ -28,7 +29,7 @@ class Courses extends Migration
             'course_order' => [ 'type' => 'INT', 'default' => 0 ],
             'last_update' => [ 'type' => 'DATETIME', 'null' => true ],
             'level' => [ 'type' => 'VARCHAR', 'constraint' => 20, 'null' => true ],
-            'created_at' => [ 'type' => 'TIMESTAMP', 'null' => true, 'default' => 'CURRENT_TIMESTAMP' ],
+            'created_at' => [ 'type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP') ],
             'updated_at' => [ 'type' => 'TIMESTAMP', 'null' => true ],
             'deleted_at' => [ 'type' => 'TIMESTAMP', 'null' => true ],
         ]);
@@ -44,7 +45,7 @@ class Courses extends Migration
             'topic_order' => [ 'type' => 'TINYINT', 'default' => 0 ],
             'free' => [ 'type' => 'TINYINT', 'constraint' => 1, 'default' => 0 ],
             'status' => [ 'type' => 'TINYINT', 'constraint' => 1, 'default' => 1 ],
-            'created_at' => [ 'type' => 'TIMESTAMP', 'null' => true, 'default' => 'CURRENT_TIMESTAMP' ],
+            'created_at' => [ 'type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP') ],
             'updated_at' => [ 'type' => 'DATETIME', 'null' => true ],
             'deleted_at' => [ 'type' => 'DATETIME', 'null' => true ],
         ]);
@@ -66,7 +67,7 @@ class Courses extends Migration
             'id' => [ 'type' => 'INT', 'auto_increment' => true ],
             'user_id' => [ 'type' => 'INT' ],
             'course_id' => [ 'type' => 'INT' ],
-            'created_at' => [ 'type' => 'TIMESTAMP', 'null' => true, 'default' => 'CURRENT_TIMESTAMP' ],
+            'created_at' => [ 'type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP') ],
             'updated_at' => [ 'type' => 'TIMESTAMP', 'null' => true ],
             'deleted_at' => [ 'type' => 'TIMESTAMP', 'null' => true ],
         ]);
@@ -78,7 +79,7 @@ class Courses extends Migration
             'id' => [ 'type' => 'INT', 'unsigned' => true, 'auto_increment' => true ],
             'label_id' => [ 'type' => 'INT' ],
             'course_id' => [ 'type' => 'VARCHAR', 'constraint' => 255 ],
-            'created_at' => [ 'type' => 'TIMESTAMP', 'null' => true, 'default' => 'CURRENT_TIMESTAMP' ],
+            'created_at' => [ 'type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP') ],
             'updated_at' => [ 'type' => 'TIMESTAMP', 'null' => true ],
             'deleted_at' => [ 'type' => 'TIMESTAMP', 'null' => true ],
         ]);
@@ -93,7 +94,7 @@ class Courses extends Migration
             'lesson_id' => ['type' => 'INT', 'unsigned' => true],
             'durasi_akses' => ['type' => 'INT', 'default' => 0],
             'waktu_paham' => ['type' => 'DATETIME', 'null' => true],
-            'created_at' => ['type' => 'TIMESTAMP', 'null' => true, 'default' => 'CURRENT_TIMESTAMP'],
+            'created_at' => ['type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at' => ['type' => 'TIMESTAMP', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
@@ -105,7 +106,7 @@ class Courses extends Migration
             'course_id' => ['type' => 'INT'],
             'lesson_id' => ['type' => 'INT'],
             'user_id' => ['type' => 'INT'],
-            'created_at' => ['type' => 'TIMESTAMP', 'null' => true, 'default' => 'CURRENT_TIMESTAMP'],
+            'created_at' => ['type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at' => ['type' => 'TIMESTAMP', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
@@ -144,7 +145,7 @@ class Courses extends Migration
             'free' => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 0],
             'hash' => ['type' => 'VARCHAR', 'constraint' => 255],
             'checksum' => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
-            'created_at' => ['type' => 'TIMESTAMP', 'null' => true, 'default' => 'CURRENT_TIMESTAMP'],
+            'created_at' => ['type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at' => ['type' => 'DATETIME', 'null' => true],
             'deleted_at' => ['type' => 'DATETIME', 'null' => true],
         ]);
@@ -176,7 +177,7 @@ class Courses extends Migration
             'author_contact' => ['type' => 'VARCHAR', 'constraint' => 50, 'null' => true],
             'author_whatsapp' => ['type' => 'TEXT', 'null' => true],
             'author_email' => ['type' => 'VARCHAR', 'constraint' => 130, 'null' => true],
-            'created_at' => ['type' => 'TIMESTAMP', 'null' => true, 'default' => 'CURRENT_TIMESTAMP'],
+            'created_at' => ['type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at' => ['type' => 'TIMESTAMP', 'null' => true],
             'deleted_at' => ['type' => 'TIMESTAMP', 'null' => true],
         ]);
@@ -193,7 +194,7 @@ class Courses extends Migration
             'description' => ['type' => 'TEXT'],
             'status' => ['type' => 'ENUM', 'constraint' => ['draft', 'publish', 'deleted'], 'default' => 'publish'],
             'is_public' => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 1],
-            'created_at' => ['type' => 'TIMESTAMP', 'null' => true, 'default' => 'CURRENT_TIMESTAMP'],
+            'created_at' => ['type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at' => ['type' => 'TIMESTAMP', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
@@ -207,7 +208,7 @@ class Courses extends Migration
             'path_id' => ['type' => 'INT'],
             'sort' => ['type' => 'INT'],
             'status' => ['type' => 'ENUM', 'constraint' => ['draft', 'publish', 'deleted'], 'default' => 'publish'],
-            'created_at' => ['type' => 'TIMESTAMP', 'null' => true, 'default' => 'CURRENT_TIMESTAMP'],
+            'created_at' => ['type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at' => ['type' => 'TIMESTAMP', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
@@ -221,7 +222,7 @@ class Courses extends Migration
             'duration' => ['type' => 'INT', 'default' => 31],
             'price' => ['type' => 'INT'],
             'strike_price' => ['type' => 'INT', 'null' => true],
-            'created_at' => ['type' => 'TIMESTAMP', 'default' => 'CURRENT_TIMESTAMP'],
+            'created_at' => ['type' => 'TIMESTAMP', 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at' => ['type' => 'DATETIME', 'null' => true],
             'deleted_at' => ['type' => 'DATETIME', 'null' => true],
             'description' => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
@@ -238,7 +239,7 @@ class Courses extends Migration
             'course_id' => ['type' => 'INT'],
             'progress' => ['type' => 'TINYINT', 'null' => true, 'default' => 0],
             'graduate' => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 0],
-            'created_at' => ['type' => 'TIMESTAMP', 'null' => true, 'default' => 'CURRENT_TIMESTAMP'],
+            'created_at' => ['type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at' => ['type' => 'TIMESTAMP', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
