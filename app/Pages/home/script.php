@@ -17,9 +17,9 @@
           window.PineconeRouter.navigate('/courses/intro/353/laravel-security');
         }
 
-        if (localStorage.getItem('intro') != 1) {
-          window.PineconeRouter.navigate('/intro');
-        }
+        // if (localStorage.getItem('intro') != 1) {
+        //   window.PineconeRouter.navigate('/intro');
+        // }
 
         document.title = this.title;
         Alpine.store('core').currentPage = ''
