@@ -1,3 +1,15 @@
+<style>
+	.text-responsive {
+		margin-top: 10px !important;
+	}
+
+	@media (min-width: 768px) {
+		.text-responsive {
+			margin-top: 50px !important;
+		}
+	}
+</style>
+
 <div id="home" class="header-mobile-only" x-data="home()">
 
 	<div class="appHeader">
@@ -38,12 +50,13 @@
 					</div>
 				</div>
 			</section>
+
 			<section class="p-3 p-lg-4">
 				<div class="rounded-4 border position-relative p-1" style="border-color:rgb(240, 240, 240) !important;">
 					<div class="d-flex align-items-center justify-content-between">
 						<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206614.png" alt="Statistics" class="w-100">
 					</div>
-					<div class="position-absolute end-0 top-0 m-2 mt-1">
+					<div class="position-absolute end-0 top-0 m-2 text-responsive">
 						<div>
 							<div class="display-6 fw-bold text-primary">1.800</div>
 							<div class="text-end">Total Peserta</div>

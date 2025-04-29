@@ -7,14 +7,14 @@
     })">
 
 	<div id="appCapsule" class="">
-		<div class="appContent" style="min-height:90vh">
+		<div class="appContent p-3" style="min-height:90vh">
 			
 			<?= $this->include('courses/intro/_header'); ?>
 
 			<?= $this->include('courses/intro/_menu'); ?>
 
 			<section>
-				<div class="container px-4">
+				<div class="">
 					<div class="d-flex justify-content-between align-items-center">
 						<div class="d-flex align-items-center h6">
 							<span>Filter</span>
@@ -34,8 +34,8 @@
 					<template x-for="student in data.students">
 						<div class="card shadow-none border rounded-20 p-2 mb-2">
 							<div class="d-flex gap-3 align-items-center">
-								<div style="width: 100px; height: 100px">
-									<img :src="student.avatar" class="cover rounded" alt="Student">
+								<div style="width: 100px; height: 150px">
+									<img :src="student.avatar" class="cover w-100 rounded" alt="Student">
 								</div>
 								<div class="flex-grow-1">
 									<div class="d-flex justify-content-between align-items-start mb-2">

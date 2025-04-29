@@ -3,7 +3,7 @@
 $bottommenu = [
     [
         'label'  => 'Beranda',
-        'url'    => '/courses/intro/1/ngonten-sakti-dengan-ai',
+        'url'    => '/courses/intro/353/laravel-security',
         'icon'   => 'bi bi-house',
         'module' => 'home'
     ],
@@ -43,7 +43,7 @@ $bottommenu = [
 </div>
 
 
-<nav class="sidebar position-fixed">
+<nav class="sidebar position-fixed bg-white">
     <div class="sidebar-logo">
         <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-logo-transparan.png" width="150" alt="">
     </div>

@@ -7,14 +7,14 @@
     })">
 
 	<div id="appCapsule" class="">
-		<div class="appContent" style="min-height:90vh">
+		<div class="appContent p-3" style="min-height:90vh">
 			
 			<?= $this->include('courses/intro/_header'); ?>
 
 			<?= $this->include('courses/intro/_menu'); ?>
 
 			<section>
-				<div class="container px-4">
+				<div class="">
 
 					<div class="card bg-light-secondary p-2 mb-4 rounded-4 border border-secondary">
 						<div class="row">
