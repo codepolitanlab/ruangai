@@ -47,7 +47,7 @@ window.feeds = function(){
             })
         },
         showDetail(index){
-            window.PineconeRouter.context.navigate(`/feeds/${this.feeds[index].id}`);
+            window.PineconeRouter.navigate(`/feeds/${this.feeds[index].id}`);
         },
         stripIntro(wordNum, sentence, index){
             let words = sentence.split(` `);

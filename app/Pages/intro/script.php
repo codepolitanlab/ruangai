@@ -21,7 +21,7 @@ window.intro = function() {
         },
         gotoLogin(){
             localStorage.setItem('intro', 1)
-            return window.PineconeRouter.context.navigate("/masuk");
+            return window.PineconeRouter.navigate("/masuk");
         }
     }
 }

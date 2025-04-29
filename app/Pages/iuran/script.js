@@ -13,7 +13,7 @@ document.addEventListener('alpine:init', () => {
 
     init() {      
       if(localStorage.getItem('intro') != 1){
-        window.PineconeRouter.context.redirect('/intro');
+        window.PineconeRouter.navigate('/intro');
       }
       
       document.title = this.title;
@@ -94,7 +94,7 @@ document.addEventListener('alpine:init', () => {
         .then(response => {
           if(response.data.found == 1) {
             const token = btoa(response.data.token)
-            window.PineconeRouter.context.navigate('/checkout/' + token)
+            window.PineconeRouter.navigate('/checkout/' + token)
           }
         })
         .catch((error) => console.log(error))

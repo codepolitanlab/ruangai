@@ -23,8 +23,10 @@
     document.addEventListener('alpine:init', () => {
         
         // Setup Pinecone Router
-        window.PineconeRouter.settings.basePath = '/';
-        window.PineconeRouter.settings.templateTargetId = 'app';
+        window.PineconeRouter.settings({
+			basePath: '/',
+			targetID: 'app',
+		})
         
         NProgress.configure({ showSpinner: false });
         document.addEventListener('pinecone-start', () => {

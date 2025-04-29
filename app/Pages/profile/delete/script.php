@@ -37,7 +37,7 @@
 			}).then(response => {
 				if (response.data.success == 1) {
 					localStorage.removeItem('heroic_token')
-					window.PineconeRouter.context.navigate('/login')
+					window.PineconeRouter.navigate('/login')
 				} else {
 					this.errorMessage = response.data.message
 				}
