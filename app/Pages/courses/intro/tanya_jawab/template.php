@@ -5,63 +5,11 @@
 		<div class="right"><a class="headerButton" role="button" data-bs-toggle="offcanvas" data-bs-target="#shareCanvas"><i class="bi bi-share-fill me-1"></i></a></div>
 	</div>
 
+	<?= $this->include('_appHeader'); ?>
+
 	<div id="appCapsule" class="">
 		<div class="appContent" style="min-height:90vh">
-			<style>
-				.accordion-body {
-					padding: 0 .25rem;
-				}
 
-				.list-group-item {
-					border: 0;
-				}
-
-				.accordion-body,
-				.accordion-body .list-group-item {
-					background: #fff !important;
-				}
-
-				.hovered:hover {
-					background: #eee !important;
-				}
-
-				.cover {
-					object-fit: cover;
-					width: 100%;
-					height: 100%;
-				}
-
-				.progress,
-				.progress-bar {
-					height: 22px;
-				}
-
-				.lessons a {
-					color: #009688;
-					font-weight: 400;
-					font-size: 1rem;
-				}
-
-				.author img {
-					width: 80px;
-				}
-			</style>
-			<section class="p-3 p-lg-4">
-				<div class="position-relative">
-					<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%205231%20(1).png" class="w-100 position-relative" alt="">
-					<div class="position-absolute ms-3 mt-2 top-0">
-						<h3 class="text-white" x-text="data.course?.course_title || 'Belajar AI'"></h3>
-						<div class="text-white d-flex gap-4 mb-2">
-							<div><i class="bi bi-people"></i> <span x-text="data.course?.total_student"></span> Siswa</div>
-							<div><i class="bi bi-book"></i> <span x-text="data.course?.total_module"></span> Modul Belajar</div>
-						</div>
-						<div class="progress mb-3 w-50" role="progressbar" style="height: 8px;">
-							<div class="progress-bar bg-primary" style="width: 25%"></div>
-						</div>
-						<a href="" class="btn btn-sm btn-primary rounded-pill">Lanjutkan Belajar</a>
-					</div>
-				</div>
-			</section>
 			<section>
 				<div class="container px-4">
 					<div>

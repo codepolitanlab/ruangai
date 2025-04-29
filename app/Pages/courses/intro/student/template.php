@@ -6,12 +6,12 @@
 		url: `courses/intro/student/data/${$params.course_id}`
     })">
 
+	<?= $this->include('_appHeader'); ?>
+
 	<div id="appCapsule" class="">
 		<div class="appContent" style="min-height:90vh">
 			
 			<?= $this->include('courses/intro/_header'); ?>
-
-			<?= $this->include('courses/intro/_menu'); ?>
 
 			<section>
 				<div class="">
