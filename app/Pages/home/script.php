@@ -10,6 +10,9 @@
     pengumumanRead: [],
 
     init() {
+      // Sementara redirect ke intro course
+      window.PineconeRouter.navigate('/courses/intro/353/laravel-security');
+
       if (localStorage.getItem('intro') != 1) {
         window.PineconeRouter.context.redirect('/intro');
       }
