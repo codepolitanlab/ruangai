@@ -126,8 +126,8 @@ class Heroic {
     {
 		// Make sure the number begin with 62
 		$phone = $this->normalizePhoneNumber($phone);
-		
-        $curl = curl_init();
+
+		$curl = curl_init();
         curl_setopt_array($curl, [
             CURLOPT_URL 			=> 'https://app.saungwa.com/api/create-message',
             CURLOPT_RETURNTRANSFER 	=> true,

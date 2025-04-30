@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Controllers\api;
+namespace App\Controllers\Api;
 
+use App\Models\ScholarshipParticipantModel;
+use App\Models\UserModel;
 use CodeIgniter\API\ResponseTrait;
-use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\RESTful\ResourceController;
 
 class ScholarshipController extends ResourceController
@@ -25,51 +26,28 @@ class ScholarshipController extends ResourceController
         return $this->response->setJSON($data);
     }
 
-    public function create()
+    public function register()
     {
-        $rules = [
-            'fullname'   => 'required|max_length[255]',
-            'program'    => 'required',
-        ];
-
-        if (!$this->validate($rules)) {
-            $response = [
-                'status'   => false,
-                'errors'   => $this->validator->getErrors(),
-                'message'  => 'Validasi data gagal'
-            ];
-            return $this->respond($response, 400);
-        }
-
         $data = $this->request->getPost();
-        $data['created_at'] = date('Y-m-d H:i:s');
-        
-        try {
-            $builder = $this->db->table($this->table);
-            $builder->insert($data);
-            $scholarshipId = $this->db->insertID();
 
-            if ($scholarshipId) {
-                $response = [
-                    'status'   => true,
-                    'data'     => ['id' => $scholarshipId],
-                    'message'  => 'Data beasiswa berhasil ditambahkan'
-                ];
-                return $this->respondCreated($response);
-            } else {
-                $response = [
-                    'status'   => false,
-                    'message'  => 'Gagal menyimpan data beasiswa'
-                ];
-                return $this->respond($response);
-            }
-        } catch (DatabaseException $e) {
-            $response = [
-                'status'   => false,
-                'message'  => 'Terjadi kesalahan database: ' . $e->getMessage()
-            ];
-            return $this->respond($response);
+        // Validasi minimum
+        if (!isset($data['phone'], $data['name'], $data['email'])) {
+            return $this->failValidationErrors(['message' => 'Data tidak lengkap.']);
         }
+
+        $userModel = new UserModel();
+        $userId = $userModel->insert([
+            'name'     => $data['name'],
+            'username' => $data['name'] . '123',
+            'email'    => $data['email'],
+            'phone'    => $data['phone'],
+        ]);
+        $data['user_id'] = $userId;
+
+        $participantModel = new ScholarshipParticipantModel();
+        $participantModel->insert($data);
+
+        return $this->respondCreated(['status' => 'success', 'message' => 'Registrasi berhasil, selamat anda telah mendapatkan Beasiswa RuangAI.']);
     }
 
 }
