@@ -40,6 +40,7 @@ class AuthController extends ResourceController
             'otp_code' => $otpCode,
             'whatsapp_number' => $number,
             'expired_at' => $expiredAt,
+            'created_at' => date('Y-m-d H:i:s'),
         ]);
 
         // Kirim via WhatsApp
