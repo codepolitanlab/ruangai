@@ -7,6 +7,8 @@
     })"
 	x-effect="loadPage(`/courses/intro/data/${$params.course_id}`)">
 
+	<?= $this->include('_appHeader'); ?>
+
 	<style>
 		.accordion-body {
 			padding: 0 .25rem;
@@ -52,8 +54,6 @@
 
 			<?= $this->include('courses/intro/_header'); ?>
 
-			<?= $this->include('courses/intro/_menu'); ?>
-
 			<section class="mb-4 mt-3 bg-white p-3 rounded-4">
 				<div class="h5 mb-3">Lanjutkan Belajar</div>
 				<a href="/courses/lessons/1">
@@ -63,15 +63,8 @@
 								<i class="bi bi-journal-bookmark-fill display-5 text-secondary"></i>
 							</div>
 							<div class="w-100">
-								<h4 class="m-0">Lesson 02 - Pengenalan</h4>
+								<h5 class="m-0">Lesson 02 - Pengenalan</h5>
 								<div class="mb-1">Potensi Dan Tantangan AI</div>
-								<div class="d-flex align-items-center gap-2">
-									<i class="bi bi-play-fill h3 m-0 text-secondary"></i>
-									<div class="progress w-100" style="height: 5px;background: #f5cebb">
-										<div class="progress-bar w-75 bg-secondary"></div>
-									</div>
-									<div>70%</div>
-								</div>
 							</div>
 						</div>
 					</div>

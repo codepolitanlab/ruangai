@@ -54,7 +54,7 @@ window.kajian = function(){
             })
         },
         showDetail(index){
-            window.PineconeRouter.context.navigate(`/kajian/${this.videos[index].id}`);
+            window.PineconeRouter.navigate(`/kajian/${this.videos[index].id}`);
         },
         stripIntro(wordNum, sentence, index){
             let words = sentence.split(` `);

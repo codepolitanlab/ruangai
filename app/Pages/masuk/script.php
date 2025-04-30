@@ -15,7 +15,7 @@
 
       async init() {
         if (localStorage.getItem("intro") != 1) {
-          window.PineconeRouter.context.navigate("/intro");
+          window.PineconeRouter.navigate("/intro");
         }
 
         // Place sandbox login if set

@@ -37,7 +37,7 @@ window.member_register_confirm = function(){
             const urlParams = new URLSearchParams(window.location.search);
             const tokens = urlParams.get('token');
             if (!tokenRegex.test(tokens)) {
-                window.PineconeRouter.context.redirect('/registrasi')
+                window.PineconeRouter.navigate('/registrasi')
             }
 
             const [part1, rest] = tokens.split('_');  // Bagian pertama sebelum _ adalah token
@@ -93,7 +93,7 @@ window.member_register_confirm = function(){
             }).then(response => {
                 if(response.data.success == 1){
                     let token = response.data.token + '_' + response.data.id + 'X' + Math.random().toString(36).substring(7)
-                    window.PineconeRouter.context.navigate('/registrasi/confirm/?token=' + token)
+                    window.PineconeRouter.navigate('/registrasi/confirm/?token=' + token)
                 } else {
                     this.error = response.data.message
                     this.resending = false

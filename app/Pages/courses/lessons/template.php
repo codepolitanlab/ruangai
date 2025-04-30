@@ -13,46 +13,7 @@
 	</div>
 
 	<div id="appCapsule" class="appCapsule-lg">
-		<div class="appContent" style="min-height:90vh">
-			<style>
-				.accordion-body {
-					padding: 0 .25rem;
-				}
-
-				.list-group-item {
-					border: 0;
-				}
-
-				.accordion-body,
-				.accordion-body .list-group-item {
-					background: #fff !important;
-				}
-
-				.hovered:hover {
-					background: #eee !important;
-				}
-
-				.cover {
-					object-fit: cover;
-					width: 100%;
-					height: 100%;
-				}
-
-				.progress,
-				.progress-bar {
-					height: 22px;
-				}
-
-				.lessons a {
-					color: #009688;
-					font-weight: 400;
-					font-size: 1rem;
-				}
-
-				.author img {
-					width: 80px;
-				}
-			</style>
+		<div class="appContent px-0" style="min-height:90vh">
 
 			<section>
 				<!-- If player Youtube -->
@@ -77,13 +38,9 @@
 
 						<!-- Action Buttons -->
 						<div class="d-flex gap-3 mb-5">
-							<button class="btn btn-ultra-light-primary rounded-pill px-4" data-bs-toggle="offcanvas" data-bs-target="#shareCanvas">
-								<i class="bi bi-share-fill me-2"></i>
-								Bagikan
-							</button>
-							<button class="btn btn-ultra-light-primary rounded-pill px-4">
+							<!-- <button class="btn btn-ultra-light-primary rounded-pill px-4">
 								Forum
-							</button>
+							</button> -->
 							<a :href="`/courses/lessons/${data.lesson?.next_lesson_id}`" class="btn btn-primary rounded-pill px-4 ms-auto">
 								<i class="bi bi-skip-forward-fill me-2"></i>
 								Berikutnya

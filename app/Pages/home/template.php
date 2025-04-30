@@ -1,16 +1,8 @@
-<style>
-	.text-responsive {
-		margin-top: 10px !important;
-	}
-
-	@media (min-width: 768px) {
-		.text-responsive {
-			margin-top: 50px !important;
-		}
-	}
-</style>
-
-<div id="home" class="header-mobile-only" x-data="home()">
+<div 
+	id="home" 
+	class="header-mobile-only" 
+	x-data="home()"
+	x-init="initialize">
 
 	<div class="appHeader">
 		<div class="pageTitle ">
