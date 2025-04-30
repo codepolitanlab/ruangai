@@ -6,6 +6,7 @@ use CodeIgniter\RESTful\ResourceController;
 use App\Models\OtpWhatsappModel;
 use App\Models\UserModel;
 use App\Libraries\Heroic;
+use Firebase\JWT\JWT;
 
 class AuthController extends ResourceController
 {
@@ -82,6 +83,7 @@ class AuthController extends ResourceController
         return $this->respond([
             'isValid' => true,
             'isExist' => $user ? true : false,
+            'token' => JWT::encode(['whatsapp_number' => $number], env('JWT_SECRET') ?? 'supersecret', 'HS256'),
         ]);
     }
 }
