@@ -5,7 +5,7 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('cobacoba', 'Home::index');
+$routes->get('testing', 'Home::index');
 
 // Api
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($routes) {
