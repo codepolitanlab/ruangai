@@ -67,7 +67,7 @@ class GitPull extends BaseCommand
             CLI::write("Melakukan git pull untuk branch {$repo->getCurrentBranchName()} di folder: $repoPath", 'yellow');
 
             $result = $repo->pull([$params[0] ?? 'origin', $params[1] ?? $repo->getCurrentBranchName()]);
-            CLI::write("Pull berhasil: \n$result", 'green');
+            CLI::write("Pull berhasil: \n{var_dump($result)}", 'green');
         } catch (\Exception $e) {
             CLI::error("Gagal melakukan git pull: " . $e->getMessage());
         }
