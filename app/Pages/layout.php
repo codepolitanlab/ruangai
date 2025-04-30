@@ -78,15 +78,54 @@
     
 
     Fancybox.bind('[data-fancybox="gallery"]', {});
-    // Check that service workers are supported
+
+    // Register Service Worker
+    // and Web Push Notification
+    const publicKey = 'BDSkwRKMHK7WT6hTXe7oj0OJ6q9pqIX61tjZc4jR9b7ldszNsmRb1AbAVVFPxUerbhsOaV9Xa-99IEgUHzr2IcM';
+    let swRegistration = null;
+
+    function urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+        const rawData = atob(base64);
+        return Uint8Array.from([...rawData].map(char => char.charCodeAt(0)));
+    }
+
     if ('serviceWorker' in navigator) {
-        // Use the window load event to keep the page load performant
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register(`/sw_masagi.js`);
-            window.console.log('Service-worker registered');
+            navigator.serviceWorker.register(`/sw.js`).then(registration => {
+                console.log('Service worker registered.');
+                swRegistration = registration;
+            }).catch(err => {
+                console.error('Service worker registration failed:', err);
+            });
         });
     } else {
-        window.console.debug('Service-worker not supported');
+        console.debug('Service-worker not supported');
     }
+
+    async function subscribeToPush() {
+        if (!swRegistration) {
+            console.error('Service worker not yet registered');
+            return;
+        }
+
+        try {
+            const subscription = await swRegistration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array(publicKey)
+            });
+
+            const formData = new FormData();
+            formData.append('subscription', JSON.stringify(subscription));
+
+            // Kirim menggunakan Axios
+            const response = await axios.post('/api/push/register', formData);
+            alert(response.data.status);
+        } catch (err) {
+            console.error('Push subscription error:', err);
+        }
+    }
+
 </script>
 <?php $this->endSection() ?>

@@ -3,6 +3,7 @@
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
+use CodeIgniter\Database\RawSql;
 
 class OtpWhatsapp extends Migration
 {
@@ -13,7 +14,7 @@ class OtpWhatsapp extends Migration
             'otp_code'         => ['type' => 'VARCHAR', 'constraint' => 6],
             'whatsapp_number'  => ['type' => 'VARCHAR', 'constraint' => 20],
             'expired_at'       => ['type' => 'DATETIME'],
-            'created_at'       => ['type' => 'DATETIME', 'default' => 'CURRENT_TIMESTAMP'],
+            'created_at'       => ['type' => 'DATETIME', 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at'       => ['type' => 'DATETIME', 'null' => true],
             'deleted_at'       => ['type' => 'DATETIME', 'null' => true],
         ]);
