@@ -83,7 +83,7 @@ class AuthController extends ResourceController
         return $this->respond([
             'isValid' => true,
             'isExist' => $user ? true : false,
-            'token' => JWT::encode(['whatsapp_number' => $number], env('JWT_SECRET') ?? 'supersecret', 'HS256'),
+            'token' => JWT::encode(['whatsapp_number' => $number], config('Heroic')->jwtKey['secret'], 'HS256'),
         ]);
     }
 }

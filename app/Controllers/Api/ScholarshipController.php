@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Api;
 
+use App\Models\OtpWhatsappModel;
 use App\Models\ScholarshipParticipantModel;
 use App\Models\UserModel;
 use CodeIgniter\API\ResponseTrait;
@@ -22,7 +23,7 @@ class ScholarshipController extends ResourceController
 
     public function index()
     {
-        $data = 'asd';
+        $data = 'Test Controller';
         return $this->response->setJSON($data);
     }
 
@@ -30,9 +31,20 @@ class ScholarshipController extends ResourceController
     {
         $data = $this->request->getPost();
 
-        // Validasi minimum
-        if (!isset($data['phone'], $data['name'], $data['email'])) {
-            return $this->failValidationErrors(['message' => 'Data tidak lengkap.']);
+        // Minimum validate
+        if (!isset($data['name'], $data['email'])) {
+            return $this->failValidationErrors(['message' => 'Mohon untuk melengkapi data.']);
+        }
+
+        // Get JWT from headers
+        $jwt = $this->checkToken();
+
+        // Compare JWT with data otp_whatsapps
+        $otpModel = new OtpWhatsappModel();
+        $isRegistered = $otpModel->where('whatsapp_number', $jwt->whatsapp_number)->first();
+
+        if (!$isRegistered) {
+            return $this->fail(['status' => 'failed', 'message' => 'Autentikasi gagal.']);
         }
 
         $userModel = new UserModel();
@@ -40,9 +52,11 @@ class ScholarshipController extends ResourceController
             'name'     => $data['name'],
             'username' => $data['name'] . '123',
             'email'    => $data['email'],
-            'phone'    => $data['phone'],
+            'phone'    => $jwt->whatsapp_number,
         ]);
+
         $data['user_id'] = $userId;
+        $data['whatsapp'] = $jwt->whatsapp_number;
 
         $participantModel = new ScholarshipParticipantModel();
         $participantModel->insert($data);
