@@ -32,7 +32,7 @@ class ScholarshipController extends ResourceController
         $data = $this->request->getPost();
 
         // Minimum validate
-        if (!isset($data['name'], $data['email'])) {
+        if (!isset($data['fullname'], $data['email'])) {
             return $this->failValidationErrors(['message' => 'Mohon untuk melengkapi data.']);
         }
 
@@ -57,8 +57,8 @@ class ScholarshipController extends ResourceController
         }
 
         $userId = $userModel->insert([
-            'name'     => $data['name'],
-            'username' => $data['name'] . bin2hex(random_bytes(5)),
+            'name'     => $data['fullname'],
+            'username' => $data['fullname'] . bin2hex(random_bytes(5)),
             'email'    => $data['email'],
             'phone'    => $jwt->whatsapp_number,
         ]);
