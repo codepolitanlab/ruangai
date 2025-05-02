@@ -23,7 +23,7 @@ class ScholarshipController extends ResourceController
 
     public function index()
     {
-        $data = 'Test Controller';
+        $data = 'Test Controllers';
         return $this->response->setJSON($data);
     }
 
