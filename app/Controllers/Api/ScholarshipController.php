@@ -77,4 +77,10 @@ class ScholarshipController extends ResourceController
         return $this->respondCreated(['status' => 'success', 'message' => 'Registrasi berhasil, selamat anda telah mendapatkan Beasiswa RuangAI.']);
     }
 
+    public function checkToken()
+    {
+        $Heroic = new \App\Libraries\Heroic();
+        return $Heroic->checkToken();
+    }
+
 }
