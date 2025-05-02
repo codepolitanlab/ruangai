@@ -49,16 +49,16 @@ class ScholarshipController extends ResourceController
 
         
         $userModel = new UserModel();
-        
+
         // Check if user already registered by email
-        $user = $userModel->where('email', $data['email'])->first();
+        $user = $userModel->where('email', $data['email'])->where('deleted_at', null)->first();
         if ($user) {
             return $this->fail(['status' => 'failed', 'message' => 'Akun sudah pernah terdaftar.']);
         }
 
         $userId = $userModel->insert([
             'name'     => $data['name'],
-            'username' => $data['name'] . random_bytes(5),
+            'username' => $data['name'] . bin2hex(random_bytes(5)),
             'email'    => $data['email'],
             'phone'    => $jwt->whatsapp_number,
         ]);
