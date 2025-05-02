@@ -47,13 +47,26 @@ class ScholarshipController extends ResourceController
             return $this->fail(['status' => 'failed', 'message' => 'Autentikasi gagal.']);
         }
 
+        
         $userModel = new UserModel();
+        
+        // Check if user already registered by email
+        $user = $userModel->where('email', $data['email'])->first();
+        if ($user) {
+            return $this->fail(['status' => 'failed', 'message' => 'Akun sudah pernah terdaftar.']);
+        }
+
         $userId = $userModel->insert([
             'name'     => $data['name'],
-            'username' => $data['name'] . '123',
+            'username' => $data['name'] . random_bytes(5),
             'email'    => $data['email'],
             'phone'    => $jwt->whatsapp_number,
         ]);
+
+        // if failed insert users
+        if (!$userId) {
+            return $this->fail(['status' => 'failed', 'message' => 'Registrasi gagal.']);
+        }
 
         $data['user_id'] = $userId;
         $data['whatsapp'] = $jwt->whatsapp_number;
