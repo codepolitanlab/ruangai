@@ -60,9 +60,12 @@ class ScholarshipController extends ResourceController
             return $this->fail(['status' => 'failed', 'message' => 'Akun sudah pernah terdaftar.']);
         }
 
+        // Get username from fullname, remove space and lowercase all with sufix random
+        $username = str_replace(' ', '', strtolower($data['fullname'])) . bin2hex(random_bytes(5));
+
         $userId = $userModel->insert([
             'name'     => $data['fullname'],
-            'username' => $data['fullname'] . bin2hex(random_bytes(5)),
+            'username' => $username,
             'email'    => $data['email'],
             'phone'    => $jwt->whatsapp_number,
         ]);
