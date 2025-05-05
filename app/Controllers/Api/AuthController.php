@@ -45,7 +45,8 @@ class AuthController extends ResourceController
         ]);
 
         // Kirim via WhatsApp
-        $this->heroic->sendWhatsapp($number, "Kode OTP kamu adalah: *$otpCode*. Berlaku 1 menit.");
+        $message = "Terima kasih telah menggunakan aplikasi RuangAI.\n\nUntuk melanjutkan proses login atau pendaftaran, silakan masukkan kode verifikasi berikut ini ke dalam aplikasi:\n\n$otpCode\n\nSalam,";
+        $this->heroic->sendWhatsapp($number, $message);
 
         return $this->respond([
             'whatsapp_number' => $number,
