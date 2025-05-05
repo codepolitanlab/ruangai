@@ -78,7 +78,7 @@ class AuthController extends ResourceController
         }
 
         $userModel = new UserModel();
-        $user = $userModel->where('phone', $number)->first();
+        $user = $userModel->where('phone', $number)->where('deleted_at', null)->first();
 
         return $this->respond([
             'isValid' => true,
