@@ -47,11 +47,15 @@ class ScholarshipController extends ResourceController
             return $this->fail(['status' => 'failed', 'message' => 'Autentikasi gagal.']);
         }
 
-        
         $userModel = new UserModel();
+        // Check if user already registered by email and or where phone
+        $user = $userModel->groupStart()
+            ->where('email', $data['email'])
+            ->orWhere('phone', $data['phone'])
+            ->groupEnd()
+            ->where('deleted_at', null)
+            ->first();
 
-        // Check if user already registered by email
-        $user = $userModel->where('email', $data['email'])->where('deleted_at', null)->first();
         if ($user) {
             return $this->fail(['status' => 'failed', 'message' => 'Akun sudah pernah terdaftar.']);
         }
