@@ -81,6 +81,13 @@ class AuthController extends ResourceController
         $userModel = new UserModel();
         $user = $userModel->where('phone', $number)->where('deleted_at', null)->first();
 
+        // Update last active
+        if ($user) {
+            $userModel->update($user['id'], [
+                'last_active' => date('Y-m-d H:i:s'),
+            ]);
+        }
+
         return $this->respond([
             'isValid' => true,
             'isExist' => $user ? true : false,
