@@ -38,9 +38,9 @@ class UserController extends ResourceController
         
         // Insert or Update data on profile
         $userProfileModel = new UserProfile();
-        $userProfile = $userProfileModel->where('user_id', $user->id)->first();
+        $userProfile = $userProfileModel->where('user_id', $user['id'])->first();
         if ($userProfile) {
-            $userProfileModel->update($userProfile->id, [
+            $userProfileModel->update($userProfile['id'], [
                 'bank_name'    => $data['bank_name'],
                 'bank_account' => $data['bank_account'],
                 'bank_code'    => $data['bank_code'],
