@@ -39,6 +39,7 @@ class UserController extends ResourceController
         // Insert or Update data on profile
         $userProfileModel = new UserProfile();
         $userProfile = $userProfileModel->where('user_id', $user['id'])->first();
+
         if ($userProfile) {
             $userProfileModel->update($userProfile['id'], [
                 'bank_name'    => $data['bank_name'],
@@ -54,6 +55,7 @@ class UserController extends ResourceController
             ]);
         }
 
+        return $this->respond(['status' => 'success', 'message' => 'Data berhasil disimpan.']);
     }
 
     public function checkToken()
