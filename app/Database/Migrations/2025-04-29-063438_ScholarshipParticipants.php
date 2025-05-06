@@ -30,6 +30,7 @@ class ScholarshipParticipants extends Migration
             'type_of_business'  => ['type' => 'VARCHAR', 'constraint' => 100, 'null' => true],
             'business_duration' => ['type' => 'VARCHAR', 'constraint' => 100, 'null' => true],
             'reference'         => ['type' => 'VARCHAR', 'constraint' => 100, 'null' => true],
+            'referral_code'     => ['type' => 'VARCHAR', 'constraint' => 20],
             'created_at'        => ['type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at'        => ['type' => 'TIMESTAMP', 'null' => true],
             'deleted_at'        => ['type' => 'TIMESTAMP', 'null' => true],

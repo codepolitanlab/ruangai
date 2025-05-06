@@ -21,6 +21,12 @@ class ScholarshipController extends ResourceController
         $this->db = \Config\Database::connect();
     }
 
+    public function checkToken()
+    {
+        $Heroic = new \App\Libraries\Heroic();
+        return $Heroic->checkToken();
+    }
+
     public function index()
     {
         $data = 'Test Controllers';
@@ -51,7 +57,7 @@ class ScholarshipController extends ResourceController
         // Check if user already registered by email and or where phone
         $user = $userModel->groupStart()
             ->where('email', $data['email'])
-            ->orWhere('phone', $data['phone'])
+            ->orWhere('phone', $jwt->whatsapp_number)
             ->groupEnd()
             ->where('deleted_at', null)
             ->first();
@@ -77,6 +83,7 @@ class ScholarshipController extends ResourceController
 
         $data['user_id'] = $userId;
         $data['whatsapp'] = $jwt->whatsapp_number;
+        $data['referral_code'] = strtoupper(substr(uniqid(), -6));
 
         $participantModel = new ScholarshipParticipantModel();
         $participantModel->insert($data);
@@ -84,10 +91,27 @@ class ScholarshipController extends ResourceController
         return $this->respondCreated(['status' => 'success', 'message' => 'Registrasi berhasil, selamat anda telah mendapatkan Beasiswa RuangAI.']);
     }
 
-    public function checkToken()
+    public function userReferral()
     {
-        $Heroic = new \App\Libraries\Heroic();
-        return $Heroic->checkToken();
-    }
+        $jwt = $this->checkToken();
+        $participantModel = new ScholarshipParticipantModel();
 
+        $leader = $participantModel
+            ->where('whatsapp', $jwt->whatsapp_number)
+            ->where('deleted_at', null)
+            ->first();
+
+        if (!$leader) {
+            return $this->respond([]);
+        }
+
+        $memberQuery = $participantModel->where('reference', $leader['referral_code'])->get();
+        $members = $memberQuery->getResultArray();
+
+        $data['referral_code'] = $leader['referral_code'];
+        $data['total_member'] = $memberQuery->getNumRows();
+        $data['members'] = $members;
+
+        return $this->respond($data);
+    }
 }

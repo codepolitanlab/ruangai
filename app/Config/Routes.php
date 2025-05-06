@@ -17,6 +17,9 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
     // Route scholarship
     $routes->get('scholarship', 'ScholarshipController::index');
     $routes->post('scholarship', 'ScholarshipController::register');
+
+    $routes->get('referral', 'ScholarshipController::userReferral');
+    $routes->post('user/profile/update', 'UserController::saveProfile');
     
     $routes->get('push/send', 'WebpushController::send');
     $routes->post('push/register', 'WebpushController::register');
