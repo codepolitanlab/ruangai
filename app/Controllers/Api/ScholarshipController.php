@@ -134,4 +134,22 @@ class ScholarshipController extends ResourceController
 
         return $this->respond($data);
     }
+
+    public function program()
+    {
+        $program = $this->request->getGet('name');
+
+        if ($program === 'RuangAI2025B1') {
+            $scholarshipModel = new ScholarshipParticipantModel();
+            $quota = 10000;
+            $quota_used = $scholarshipModel->where('program', 'RuangAI2025B1')->where('deleted_at', null)->countAllResults();
+        }
+
+        $data['program'] = $program;
+        $data['quota'] = $quota ?? 0;
+        $data['quota_used'] = $quota_used ?? 0;
+        $data['quota_left'] = $quota - $quota_used;
+
+        return $this->respond($data);
+    }
 }

@@ -20,6 +20,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
 
     $routes->get('referral', 'ScholarshipController::userReferral');
     $routes->post('user/profile/update', 'UserController::saveProfile');
+    $routes->get('program', 'ScholarshipController::program');
     
     $routes->get('push/send', 'WebpushController::send');
     $routes->post('push/register', 'WebpushController::register');
