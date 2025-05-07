@@ -99,6 +99,7 @@ class ScholarshipController extends ResourceController
         $leader = $participantModel
             ->where('whatsapp', $jwt->whatsapp_number)
             ->where('deleted_at', null)
+            ->orderBy('created_at', 'DESC')
             ->first();
 
         if (!$leader) {
