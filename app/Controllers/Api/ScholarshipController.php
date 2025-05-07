@@ -113,9 +113,9 @@ class ScholarshipController extends ResourceController
         $bank = null;
         if ($profile) {
             $bank = (object) [
-                'bank_name'    => $profile['bank_name'],
-                'bank_account' => $profile['bank_account'],
-                'bank_code'    => $profile['bank_code'],
+                'bank_name'      => $profile['bank_name'],
+                'account_name'   => $profile['account_name'],
+                'account_number' => $profile['account_number'],
             ];
         }
 
@@ -123,7 +123,7 @@ class ScholarshipController extends ResourceController
             ->where('reference', $leader['referral_code'])
             ->where('deleted_at', null)
             ->get();
-            
+
         $members = $memberQuery->getResultArray();
 
         $data['referral_code'] = $leader['referral_code'];

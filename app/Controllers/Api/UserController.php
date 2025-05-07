@@ -42,16 +42,16 @@ class UserController extends ResourceController
 
         if ($userProfile) {
             $userProfileModel->update($userProfile['id'], [
-                'bank_name'    => $data['bank_name'],
-                'bank_account' => $data['bank_account'],
-                'bank_code'    => $data['bank_code'],
+                'bank_name'      => $data['bank_name'],
+                'account_number' => $data['account_name'],
+                'account_name'   => $data['account_number'],
             ]);
         } else {
             $userProfileModel->insert([
-                'user_id'      => $user['id'],
-                'bank_name'    => $data['bank_name'],
-                'bank_account' => $data['bank_account'],
-                'bank_code'    => $data['bank_code'],
+                'user_id'        => $user['id'],
+                'bank_name'      => $data['bank_name'],
+                'account_number' => $data['account_number'],
+                'account_name'   => $data['account_name'],
             ]);
         }
 
