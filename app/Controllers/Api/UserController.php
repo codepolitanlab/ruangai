@@ -30,7 +30,7 @@ class UserController extends ResourceController
         $jwt = $this->checkToken();
 
         $userModel = new UserModel();
-        $user = $userModel->where('phone', $jwt->whatsapp_number)->first();
+        $user = $userModel->where('phone', $jwt->whatsapp_number)->where('deleted_at', null)->first();
         
         if (!$user) {
             return $this->fail(['status' => 'failed', 'message' => 'Pengguna tidak ditemukan.']);
@@ -38,7 +38,7 @@ class UserController extends ResourceController
         
         // Insert or Update data on profile
         $userProfileModel = new UserProfile();
-        $userProfile = $userProfileModel->where('user_id', $user['id'])->first();
+        $userProfile = $userProfileModel->where('user_id', $user['id'])->where('deleted_at', null)->first();
 
         if ($userProfile) {
             $userProfileModel->update($userProfile['id'], [

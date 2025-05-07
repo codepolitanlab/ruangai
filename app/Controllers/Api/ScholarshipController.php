@@ -102,14 +102,33 @@ class ScholarshipController extends ResourceController
             ->first();
 
         if (!$leader) {
-            return $this->respond([]);
+            return $this->respond(['status' => 'failed', 'message' => 'Pengguna tidak ditemukan.']);
         }
 
-        $memberQuery = $participantModel->where('reference', $leader['referral_code'])->get();
+        // Get data bank from user profile
+        $userProfileModel = new \App\Models\UserProfile();
+        $profile = $userProfileModel->where('user_id', $leader['user_id'])->where('deleted_at', null)->first();
+
+        // Save bank on type object
+        $bank = null;
+        if ($profile) {
+            $bank = (object) [
+                'bank_name'    => $profile['bank_name'],
+                'bank_account' => $profile['bank_account'],
+                'bank_code'    => $profile['bank_code'],
+            ];
+        }
+
+        $memberQuery = $participantModel->select('fullname, created_at as joined_at')
+            ->where('reference', $leader['referral_code'])
+            ->where('deleted_at', null)
+            ->get();
+            
         $members = $memberQuery->getResultArray();
 
         $data['referral_code'] = $leader['referral_code'];
         $data['total_member'] = $memberQuery->getNumRows();
+        $data['bank'] = $bank;
         $data['members'] = $members;
 
         return $this->respond($data);
