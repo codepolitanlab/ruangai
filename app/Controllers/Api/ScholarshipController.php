@@ -120,17 +120,28 @@ class ScholarshipController extends ResourceController
             ];
         }
 
-        $memberQuery = $participantModel->select('fullname, created_at as joined_at')
+        $memberQuery = $participantModel->select('fullname, status, created_at as joined_at')
             ->where('reference', $leader['referral_code'])
             ->where('deleted_at', null)
             ->get();
 
         $members = $memberQuery->getResultArray();
 
+        // Filter member graduated by status completed
+        $graduated = count(array_filter($members, function ($member) {
+            return $member['status'] === 'lulus';
+        }));
+
+        $commision = 5000;
+        $disbursed = 5000;
+
         $data['referral_code'] = $leader['referral_code'];
-        $data['total_member'] = $memberQuery->getNumRows();
         $data['bank'] = $bank;
         $data['members'] = $members;
+        $data['total_member'] = $memberQuery->getNumRows();
+        $data['total_graduated'] = $graduated;
+        $data['total_commission'] = $commision * $graduated;
+        $data['total_disbursed'] = $disbursed;
 
         return $this->respond($data);
     }
