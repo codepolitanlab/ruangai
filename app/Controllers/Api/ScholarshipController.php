@@ -141,14 +141,20 @@ class ScholarshipController extends ResourceController
 
         if ($program === 'RuangAI2025B1') {
             $scholarshipModel = new ScholarshipParticipantModel();
-            $quota = 10000;
+            $eventModel = new \App\Models\Events();
+
+            $masterProgram = $eventModel->where('code', 'RuangAI2025B1')->first();
+            $program = $masterProgram['title'];
+            $quota = $masterProgram['quota'];
             $quota_used = $scholarshipModel->where('program', 'RuangAI2025B1')->where('deleted_at', null)->countAllResults();
+            $graduated = $scholarshipModel->where('program', 'RuangAI2025B1')->where('deleted_at', null)->where('status', 'lulus')->countAllResults();
         }
 
         $data['program'] = $program;
         $data['quota'] = $quota ?? 0;
         $data['quota_used'] = $quota_used ?? 0;
         $data['quota_left'] = $quota - $quota_used;
+        $data['graduated'] = $graduated ?? 0;
 
         return $this->respond($data);
     }
