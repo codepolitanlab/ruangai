@@ -3,7 +3,7 @@
     <div class="appHeader">
         <div class="left">
             <a href="javascript:void()" onclick="history.back()" class="headerButton">
-                <ion-icon name="chevron-back-outline"></ion-icon>
+                <i class="bi bi-chevron-left"></i>
             </a>
         </div>
         <div class="pageTitle">Tutup Akun</div>

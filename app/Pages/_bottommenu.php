@@ -63,10 +63,6 @@ $bottommenu = [
             </a>
         </li>
         <?php endforeach; ?>
-        <li class="ms-3">
-            <button class="btn btn-primary" onclick="subscribeToPush()">Subscribe</button>
-            <button class="btn btn-warning" onclick="unsubscribeToPush()">Unsubscribe</button>
-        </li>
     </ul>
 
 </nav>

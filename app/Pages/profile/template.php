@@ -39,6 +39,12 @@
 									<span>Edit Akun</span>
 								</a>
 							</li>
+							<li>
+								<a href="/webpush" class="item">
+									<i class="fs-4 me-2 bi bi-bell text-primary"></i>
+									<span>Notifikasi</span>
+								</a>
+							</li>
 						</ul>
 
                         <div class="listview-title mt-2">

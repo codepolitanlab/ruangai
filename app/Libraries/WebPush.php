@@ -2,11 +2,11 @@
 
 namespace App\Libraries;
 
-use Minishlink\WebPush\WebPush;
+use Minishlink\WebPush\WebPush as TheWebPush;
 use Minishlink\WebPush\Subscription;
 use Config\Database;
 
-class PushNotification
+class WebPush
 {
     protected $db;
     protected $auth;
@@ -17,7 +17,7 @@ class PushNotification
 
         $this->auth = [
             'VAPID' => [
-                'subject' => 'mailto:you@example.com',
+                'subject' => 'mailto:contact@codepolitan.com',
                 'publicKey' => 'BDSkwRKMHK7WT6hTXe7oj0OJ6q9pqIX61tjZc4jR9b7ldszNsmRb1AbAVVFPxUerbhsOaV9Xa-99IEgUHzr2IcM',
                 'privateKey' => 'DA8Ng4cFIn5W-mI5urQG3rghIziI5Yfh1i1gKzvUkyE',
             ],
@@ -43,7 +43,7 @@ class PushNotification
 
     public function sendNotification(array $subscriptionData, array $payload)
     {
-        $webPush = new WebPush($this->auth);
+        $webPush = new TheWebPush($this->auth);
 
         $subscription = Subscription::create([
             'endpoint' => $subscriptionData['endpoint'],
@@ -67,7 +67,7 @@ class PushNotification
         $subs = $builder->get()->getResultArray();
 
         $success = 0;
-        $webPush = new WebPush($this->auth);
+        $webPush = new TheWebPush($this->auth);
 
         foreach ($subs as $row) {
             $subscription = Subscription::create([
