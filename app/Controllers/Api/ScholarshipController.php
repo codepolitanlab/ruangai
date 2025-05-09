@@ -87,6 +87,14 @@ class ScholarshipController extends ResourceController
         $data['status'] = 'terdaftar';
 
         $participantModel = new ScholarshipParticipantModel();
+
+        // Check existing by user_id before insert
+        $participant = $participantModel->where('user_id', $userId)->where('deleted_at', null)->first();
+
+        if ($participant) {
+            return $this->fail(['status' => 'failed', 'message' => 'Beasiswa sudah pernah terdaftar.']);
+        }
+
         $participantModel->insert($data);
 
         return $this->respondCreated(['status' => 'success', 'message' => 'Registrasi berhasil, selamat anda telah mendapatkan Beasiswa RuangAI.']);
