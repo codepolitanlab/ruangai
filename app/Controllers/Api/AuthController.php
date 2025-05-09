@@ -45,7 +45,8 @@ class AuthController extends ResourceController
         ]);
 
         // Kirim via WhatsApp
-        $this->heroic->sendWhatsapp($number, "Kode OTP kamu adalah: *$otpCode*. Berlaku 1 menit.");
+        $message = "Terima kasih telah menggunakan aplikasi RuangAI.\n\nUntuk melanjutkan proses login atau pendaftaran, silakan masukkan kode verifikasi berikut ini ke dalam aplikasi:\n\n*$otpCode*\n\nSalam,";
+        $this->heroic->sendWhatsapp($number, $message);
 
         return $this->respond([
             'whatsapp_number' => $number,
@@ -78,12 +79,19 @@ class AuthController extends ResourceController
         }
 
         $userModel = new UserModel();
-        $user = $userModel->where('phone', $number)->first();
+        $user = $userModel->where('phone', $number)->where('deleted_at', null)->first();
+
+        // Update last active
+        if ($user) {
+            $userModel->update($user['id'], [
+                'last_active' => date('Y-m-d H:i:s'),
+            ]);
+        }
 
         return $this->respond([
             'isValid' => true,
             'isExist' => $user ? true : false,
-            'token' => JWT::encode(['whatsapp_number' => $number], env('JWT_SECRET') ?? 'supersecret', 'HS256'),
+            'token' => JWT::encode(['whatsapp_number' => $number], config('Heroic')->jwtKey['secret'], 'HS256'),
         ]);
     }
 }

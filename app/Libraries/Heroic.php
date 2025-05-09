@@ -57,8 +57,8 @@ class Heroic {
 			$response->setStatusCode(401, 'Authorization token not found')->send();
 			exit;
 		}
-
-		$jwt = explode(' ', $token)[1] ?? null;
+		
+		$jwt = explode(' ', $token)[0] ?? null;
 
 		if (! $jwt) {
 			$response->setStatusCode(401, 'Authorization token not found')->send();

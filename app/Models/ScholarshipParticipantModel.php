@@ -11,7 +11,7 @@ class ScholarshipParticipantModel extends Model
         'user_id', 'fullname', 'email', 'whatsapp', 'date_of_birth',
         'gender', 'province', 'city', 'occupation', 'work_experience',
         'skill', 'institution', 'major', 'semester', 'grade',
-        'type_of_business', 'business_duration', 'reference', 'program'
+        'type_of_business', 'business_duration', 'education_level', 'graduation_year', 'link_business', 'last_project', 'reference', 'program', 'referral_code'
     ];
     protected $useTimestamps = true;
 }
