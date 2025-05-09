@@ -84,6 +84,7 @@ class ScholarshipController extends ResourceController
         $data['user_id'] = $userId;
         $data['whatsapp'] = $jwt->whatsapp_number;
         $data['referral_code'] = strtoupper(substr(uniqid(), -6));
+        $data['status'] = 'terdaftar';
 
         $participantModel = new ScholarshipParticipantModel();
         $participantModel->insert($data);
