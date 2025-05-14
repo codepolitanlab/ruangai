@@ -174,7 +174,7 @@ class ScholarshipController extends ResourceController
         $data['program'] = $program;
         $data['quota'] = $quota ?? 0;
         $data['quota_used'] = $quota_used ?? 0;
-        $data['quota_left'] = $quota - $quota_used;
+        $data['quota_left'] = $quota - $graduated;
         $data['graduated'] = $graduated ?? 0;
 
         return $this->respond($data);
