@@ -142,7 +142,7 @@ class ScholarshipController extends ResourceController
         }));
 
         $commision = 5000;
-        $disbursed = 5000;
+        $disbursed = 0;
 
         $data['referral_code'] = $leader['referral_code'];
         $data['bank'] = $bank;
