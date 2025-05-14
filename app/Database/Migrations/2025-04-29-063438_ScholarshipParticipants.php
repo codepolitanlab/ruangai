@@ -35,6 +35,7 @@ class ScholarshipParticipants extends Migration
             'last_project'      => ['type' => 'VARCHAR', 'constraint' => 100, 'null' => true],
             'reference'         => ['type' => 'VARCHAR', 'constraint' => 100, 'null' => true],
             'referral_code'     => ['type' => 'VARCHAR', 'constraint' => 20],
+            'withdrawal'        => ['type' => 'INT', 'constraint' => 5, 'default' => 0], 
             'status'            => ['type' => 'ENUM', 'constraint' => ['terdaftar', 'lulus', 'tidak lulus'], 'default' => 'terdaftar'],
             'created_at'        => ['type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at'        => ['type' => 'TIMESTAMP', 'null' => true],

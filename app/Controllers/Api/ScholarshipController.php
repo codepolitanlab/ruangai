@@ -74,6 +74,7 @@ class ScholarshipController extends ResourceController
             'username' => $username,
             'email'    => $data['email'],
             'phone'    => $jwt->whatsapp_number,
+            'phone_valid' => 1
         ]);
 
         // if failed insert users

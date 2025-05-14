@@ -62,6 +62,18 @@ class AlterUserFields extends Migration
                 'null' => true,
                 'after' => 'otp_email'
             ],
+            'phone_valid' => [
+                'type' => 'INT',
+                'constraint' => 1,
+                'null' => true,
+                'after' => 'otp_phone'
+            ],
+            'email_valid' => [
+                'type' => 'INT',
+                'constraint' => 1,
+                'null' => true,
+                'after' => 'phone_valid'
+            ]
         ];
 
         // Tambahkan kolom ke tabel users
