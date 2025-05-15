@@ -74,6 +74,7 @@ class WASenderController extends ResourceController
             'whatsapp_number' => $phone,
             'otp_code' => $otpCode,
             'created_at' => $now,
+            'expired_at' => date('Y-m-d H:i:s', strtotime('+5 minutes')),
             'reminded' => 0
         ]);
 
