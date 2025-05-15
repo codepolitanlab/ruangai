@@ -25,6 +25,9 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
     $routes->get('push/send', 'WebpushController::send');
     $routes->post('push/register', 'WebpushController::register');
     $routes->get('push/generate_vapid', 'WebpushController::generateVAPID');
+    
+    $routes->get('wasender', 'WASenderController::index');
+    $routes->post('wasender/incoming', 'WASenderController::incoming');
 });
 
 
