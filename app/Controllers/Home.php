@@ -8,4 +8,15 @@ class Home extends BaseController
     {
         return view('welcome_message');
     }
+
+    public function email()
+    {
+        $Heroic = new \App\Libraries\Heroic();
+
+        $to = 'toha.samba@gmail.com';
+        $subject = 'Selamat Bergabung di Komiunitas RuangAI';
+        $message = 'Terima kasih terlah bergabung. Selamat kamu telah menjadi juara di RuangAI';
+
+        $Heroic->sendEmail($to, $subject, $message, 1);
+    }
 }
