@@ -30,7 +30,7 @@ class WASenderController extends ResourceController
         }
 
         $db = \Config\Database::connect();
-        $builder = $db->table('otp_requests');
+        $builder = $db->table('otp_whatsapps');
 
         $phone = str_replace('@c.us', '', $data['from']);
         $now = date('Y-m-d H:i:s');
@@ -39,14 +39,14 @@ class WASenderController extends ResourceController
         // Cek apakah ada OTP aktif dalam 5 menit terakhir
         $query = $builder
             ->select('*')
-            ->where('phone', $phone)
+            ->where('whatsapp_number', $phone)
             ->where('created_at >=', $fiveMinutesAgo)
             ->orderBy('created_at', 'DESC')
             ->get(1);
 
         if ($query->getNumRows() > 0) {
             $row = $query->getRow();
-            $otpCode = $row->otp;
+            $otpCode = $row->otp_code;
 
             if ($row->reminded == 0) {
                 // Kirim reminder hanya sekali
@@ -71,8 +71,8 @@ class WASenderController extends ResourceController
         $otpCode = random_int(100000, 999999);
 
         $builder->insert([
-            'phone' => $phone,
-            'otp' => $otpCode,
+            'whatsapp_number' => $phone,
+            'otp_code' => $otpCode,
             'created_at' => $now,
             'reminded' => 0
         ]);
@@ -101,7 +101,7 @@ class WASenderController extends ResourceController
     {
         $client = \Config\Services::curlrequest();
 
-        $url = 'http://localhost:3001/send';
+        $url = 'http://139.59.99.174:3001/send';
 
         $body = [
             'to'      => $phone,
