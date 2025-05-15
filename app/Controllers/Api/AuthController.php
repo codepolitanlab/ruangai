@@ -68,7 +68,7 @@ class AuthController extends ResourceController
 
         $otpModel = new OtpWhatsappModel();
         $row = $otpModel
-            ->where('whatsapp_number', $number)
+            ->where('whatsapp_number', $this->heroic->normalizePhoneNumber($number))
             ->where('otp_code', $code)
             ->where('expired_at >=', date('Y-m-d H:i:s'))
             ->orderBy('id', 'DESC')
