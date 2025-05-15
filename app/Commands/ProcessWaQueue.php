@@ -32,8 +32,8 @@ class ProcessWaQueue extends BaseCommand
                 CLI::write("Sending to $phone: $message");
 
                 $client = \Config\Services::curlrequest();
-                // $url = 'http://139.59.99.174:3001/send';
-                $url = 'http://localhost:3001/send';
+                $url = 'http://139.59.99.174:3001/send';
+                // $url = 'http://localhost:3001/send';
 
                 try {
                     $response = $client->post($url, [
