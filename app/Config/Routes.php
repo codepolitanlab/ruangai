@@ -11,6 +11,7 @@ $routes->get('test', 'Home::index');
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($routes) {
     // Route login
     $routes->post('auth/send-otp', 'AuthController::sendOtp');
+    $routes->post('auth/send-otp-email', 'AuthController::sendOtpEmail');
     $routes->post('auth/verify-otp', 'AuthController::verifyOtp');
     $routes->post('auth/register', 'AuthController::register');
 

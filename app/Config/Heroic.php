@@ -56,7 +56,7 @@ class Heroic extends BaseConfig
     // SaungWA
     public $saungWA = [
         'authKey' => 'Bl25APBU3Tcahyo9Rd0ZcCbloR4Gj1i6Ll5lRq6Y3J4DikKUS4',
-        // 'appKey' => 'da892a07-7b1d-42fb-bcd3-fa407fd2eaed',
+        'appKey' => 'da892a07-7b1d-42fb-bcd3-fa407fd2eaed',
     ];
 
     // ReCAPTCHA
