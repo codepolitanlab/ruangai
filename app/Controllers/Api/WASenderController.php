@@ -5,6 +5,8 @@ namespace App\Controllers\Api;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\HTTP\CURLRequest;
+use Pheanstalk\Pheanstalk;
+use Pheanstalk\Values\TubeName;
 
 class WASenderController extends ResourceController
 {
@@ -57,7 +59,7 @@ class WASenderController extends ResourceController
                     ->where('id', $row->id)
                     ->update(['reminded' => 1]);
 
-                $this->sendMessage($phone, $message);
+                $this->sendMessageToQueue($phone, $message);
             }
 
             // Tidak mengirim apa-apa jika sudah diingatkan
@@ -92,42 +94,53 @@ class WASenderController extends ResourceController
         ];
 
         $message = str_replace('{OTP}', $otpCode, $messages[array_rand($messages)]);
-        $this->sendMessage($phone, $message);
 
-        return $this->respond(['status' => 'success', 'otp' => $otpCode, 'phone' => $phone]);
+        $this->sendMessageToQueue($phone, $message);
+
+        return $this->respond(['status' => 'queued', 'otp' => $otpCode, 'phone' => $phone]);
     }
     
-
-    private function sendMessage($phone, $message)
+    private function sendMessageToQueue($phone, $message)
     {
-        $client = \Config\Services::curlrequest();
-
-        $url = 'http://139.59.99.174:3001/send';
-
-        $body = [
-            'to'      => $phone,
-            'message' => $message
-        ];
-
-        try {
-            $response = $client->post($url, [
-                'headers' => [
-                    'Content-Type' => 'application/json'
-                ],
-                'body' => json_encode($body)
-            ]);
-
-            // Tampilkan hasil respons
-            return $this->response->setJSON([
-                'status' => true,
-                'response' => json_decode($response->getBody(), true)
-            ]);
-        } catch (\Exception $e) {
-            return $this->response->setJSON([
-                'status' => false,
-                'error' => $e->getMessage()
-            ]);
-        }
+        $pheanstalk = Pheanstalk::create('127.0.0.1');
+        $tube       = new TubeName('wasender');
+        $pheanstalk->useTube($tube);
+        $pheanstalk->put(json_encode([
+                'phone'   => $phone,
+                'message' => $message
+        ]));
     }
+
+    // private function sendMessage($phone, $message)
+    // {
+    //     $client = \Config\Services::curlrequest();
+
+    //     $url = 'http://139.59.99.174:3001/send';
+
+    //     $body = [
+    //         'to'      => $phone,
+    //         'message' => $message
+    //     ];
+
+    //     try {
+    //         $response = $client->post($url, [
+    //             'headers' => [
+    //                 'Content-Type' => 'application/json'
+    //             ],
+    //             'body' => json_encode($body)
+    //         ]);
+
+    //         // Tampilkan hasil respons
+    //         return $this->response->setJSON([
+    //             'status' => true,
+    //             'response' => json_decode($response->getBody(), true)
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         return $this->response->setJSON([
+    //             'status' => false,
+    //             'error' => $e->getMessage()
+    //         ]);
+    //     }
+    // }
 
 }
