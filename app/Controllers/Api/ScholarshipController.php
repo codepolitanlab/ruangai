@@ -36,6 +36,7 @@ class ScholarshipController extends ResourceController
     public function register()
     {
         $data = $this->request->getPost();
+        $Heroic = new \App\Libraries\Heroic();
 
         // Minimum validate
         if (!isset($data['fullname'], $data['email'])) {
@@ -47,7 +48,7 @@ class ScholarshipController extends ResourceController
 
         // Compare JWT with data otp_whatsapps
         $otpModel = new OtpWhatsappModel();
-        $isRegistered = $otpModel->where('whatsapp_number', $jwt->whatsapp_number)->first();
+        $isRegistered = $otpModel->where('whatsapp_number', $Heroic->normalizePhoneNumber($jwt->whatsapp_number))->first();
 
         if (!$isRegistered) {
             return $this->fail(['status' => 'failed', 'message' => 'Autentikasi gagal.']);
