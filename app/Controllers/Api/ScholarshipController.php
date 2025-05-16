@@ -7,6 +7,7 @@ use App\Models\ScholarshipParticipantModel;
 use App\Models\UserModel;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\RESTful\ResourceController;
+use Firebase\JWT\JWT;
 
 class ScholarshipController extends ResourceController
 {
@@ -15,6 +16,31 @@ class ScholarshipController extends ResourceController
     protected $db;
     protected $table = 'scholarship_participants';
     protected $format = 'json';
+
+    private $disallowed_domains = [
+        'mailinator.com',
+        'guerrillamail.com',
+        '10minutemail.com',
+        'tempmail.com',
+        'yopmail.com',
+        'throwawaymail.com',
+        'emailondeck.com',
+        'fakemailgenerator.com',
+        'mohmal.com',
+        'getnada.com',
+        'mytemp.email',
+        'maildrop.cc',
+        'dispostable.com',
+        'mailnesia.com',
+        'tempinbox.com',
+        'spambog.com',
+        'trashmail.com',
+        'temp-mail.org',
+        'sharklasers.com',
+        'mailcatch.com',
+        'inboxbear.com',
+        'codepolitan.com'
+    ];
 
     public function __construct()
     {
@@ -43,22 +69,27 @@ class ScholarshipController extends ResourceController
             return $this->failValidationErrors(['message' => 'Mohon untuk melengkapi data.']);
         }
 
-        // Get JWT from headers
-        $jwt = $this->checkToken();
-
-        // Compare JWT with data otp_whatsapps
-        $otpModel = new OtpWhatsappModel();
-        $isRegistered = $otpModel->where('whatsapp_number', $Heroic->normalizePhoneNumber($jwt->whatsapp_number))->first();
-
-        if (!$isRegistered) {
-            return $this->fail(['status' => 'failed', 'message' => 'Autentikasi gagal.']);
+        if ($this->isDisallowedDomain($data['email'])) {
+            return $this->fail(['status' => 'failed', 'message' => 'Domain email tidak diizinkan.']);
         }
 
+        // Get JWT from headers
+        // $jwt = $this->checkToken();
+
+        // Compare JWT with data otp_whatsapps
+        // $otpModel = new OtpWhatsappModel();
+        // $isRegistered = $otpModel->where('whatsapp_number', $Heroic->normalizePhoneNumber($jwt->whatsapp_number))->first();
+
+        // if (!$isRegistered) {
+        //     return $this->fail(['status' => 'failed', 'message' => 'Autentikasi gagal.']);
+        // }
+
+        $number = $Heroic->normalizePhoneNumber($data['whatsapp_number']);
+        
         $userModel = new UserModel();
-        // Check if user already registered by email and or where phone
         $user = $userModel->groupStart()
             ->where('email', $data['email'])
-            ->orWhere('phone', $jwt->whatsapp_number)
+            ->orWhere('phone', $number)
             ->groupEnd()
             ->where('deleted_at', null)
             ->first();
@@ -68,14 +99,16 @@ class ScholarshipController extends ResourceController
         }
 
         // Get username from fullname, remove space and lowercase all with sufix random
-        $username = str_replace(' ', '', strtolower($data['fullname'])) . bin2hex(random_bytes(5));
-
+        $username = str_replace(' ', '', strtolower($data['fullname'])) . '_' . bin2hex(random_bytes(4));
+        
+        $Phpass = new \App\Libraries\Phpass();
+        $password = $Phpass->HashPassword($data['password']);
         $userId = $userModel->insert([
             'name'     => $data['fullname'],
             'username' => $username,
             'email'    => $data['email'],
-            'phone'    => $jwt->whatsapp_number,
-            'phone_valid' => 1
+            'phone'    => $number,
+            'pwd'      => $password,
         ]);
 
         // if failed insert users
@@ -84,7 +117,7 @@ class ScholarshipController extends ResourceController
         }
 
         $data['user_id'] = $userId;
-        $data['whatsapp'] = $jwt->whatsapp_number;
+        $data['whatsapp'] = $number;
         $data['referral_code'] = strtoupper(substr(uniqid(), -6));
         $data['status'] = 'terdaftar';
 
@@ -99,7 +132,18 @@ class ScholarshipController extends ResourceController
 
         $participantModel->insert($data);
 
-        return $this->respondCreated(['status' => 'success', 'message' => 'Registrasi berhasil, selamat anda telah mendapatkan Beasiswa RuangAI.']);
+        // Jwt only email, whatsapp_number, user_id
+        $jwt = JWT::encode([
+            'email' => $data['email'],
+            'whatsapp_number' => $number,
+            'user_id' => $userId
+        ], config('Heroic')->jwtKey['secret'], 'HS256');
+
+        return $this->respondCreated([
+            'status' => 'success',
+            'message' => 'Registrasi berhasil, selamat anda telah mendapatkan Beasiswa RuangAI.',
+            'token' => $jwt
+        ]);
     }
 
     public function userReferral()
@@ -179,5 +223,17 @@ class ScholarshipController extends ResourceController
         $data['graduated'] = $graduated ?? 0;
 
         return $this->respond($data);
+    }
+
+    public function isDisallowedDomain($email) {
+        // Pisahkan email menjadi username dan domain
+        list($user, $domain) = explode('@', $email);
+
+        // Cek apakah domain ada di dalam daftar disallowed_domains
+        if (in_array($domain, $this->disallowed_domains)) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 }

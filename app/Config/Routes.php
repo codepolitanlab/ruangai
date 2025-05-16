@@ -11,9 +11,14 @@ $routes->get('test/email', 'Home::email');
 // Api
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($routes) {
     // Route login
+    $routes->post('auth/register', 'AuthController::register');
+    $routes->post('auth/login', 'AuthController::login');
+    $routes->post('auth/forgot-password', 'AuthController::forgotPassword');
+    $routes->post('auth/reset-password', 'AuthController::resetPassword');
     $routes->post('auth/send-otp', 'AuthController::sendOtp');
     $routes->post('auth/send-otp-email', 'AuthController::sendOtpEmail');
     $routes->post('auth/verify-otp', 'AuthController::verifyOtp');
+    $routes->post('auth/verify-otp-email', 'AuthController::verifyOtpEmail');
     $routes->post('auth/register', 'AuthController::register');
 
     // Route scholarship

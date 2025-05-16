@@ -20,6 +20,118 @@ class AuthController extends ResourceController
         helper(['text', 'date']);
     }
 
+    public function login()
+    {
+        $data = $this->request->getPost();
+
+        // Validate data
+        if (!isset($data['email'], $data['password'])) {
+            return $this->failValidationErrors(['message' => 'Mohon untuk melengkapi data.']);
+        }
+
+        $userModel = new UserModel();
+        $user = $userModel->where('email', $data['email'])->where('deleted_at', null)->first();
+        if (!$user) {
+            return $this->fail('Email atau password salah.');
+        }
+
+        $Phpass = new \App\Libraries\Phpass();
+        if(!$Phpass->CheckPassword($data['password'], $user['pwd']))
+        {
+            return $this->fail('Email atau password salah.');
+        }
+
+        $userModel->update($user['id'], ['last_active' => date('Y-m-d H:i:s')]);
+
+        // Send token to user
+        $token = JWT::encode([
+            'email' => $user['email'],
+            'whatsapp_number' => $user['phone'],
+            'user_id' => $user['id'],
+            'isValidEmail' => $user['email_valid'],
+            'exp' => time() + 60 * 60
+        ], config('Heroic')->jwtKey['secret'], 'HS256');
+
+        return $this->respond([
+            'status' => 'success',
+            'token' => $token,
+        ]);
+    }
+
+    public function register()
+    {
+        $data = $this->request->getPost();
+
+        // Validate
+        if (!isset($data['email'], $data['password'], $data['whatsapp_number'])) {
+            return $this->failValidationErrors(['message' => 'Mohon untuk melengkapi data.']);
+        }
+
+        $userModel = new UserModel();
+        $user = $userModel->where('email', $data['email'])->orWhere('phone', $data['whatsapp_number'])->where('deleted_at', null)->first();
+        if ($user) {
+            return $this->fail('Akun sudah terdaftar.');
+        }
+
+        // Register user to database
+        $Phpass = new \App\Libraries\Phpass();
+        $password = $Phpass->HashPassword(trim($data['password']));
+
+        $username = explode('@', $data['email']);
+        $userModel->insert([
+            'email' => $data['email'],
+            'username' => strtolower($username[0]) . '_' . mt_rand(1000, 9999),
+            'pwd' => $password,
+            'phone' => $this->heroic->normalizePhoneNumber($data['whatsapp_number']),
+        ]);
+
+        return $this->respond(['status' => 'success', 'message' => 'Pengguna berhasil didaftarkan.']);
+    }
+
+    public function forgotPassword()
+    {
+        $data = $this->request->getPost();
+
+        // Validate
+        if (!isset($data['email'])) {
+            return $this->failValidationErrors(['message' => 'Mohon untuk melengkapi data.']);
+        }
+
+        $userModel = new UserModel();
+        $user = $userModel->where('email', $data['email'])->where('deleted_at', null)->first();
+        if (!$user) {
+            return $this->fail('Akun tidak terdaftar.');
+        }
+
+        // Send email to user
+        $subject = "Lupa Password RuangAI";
+        $message = "Terima kasih telah menggunakan aplikasi RuangAI.<br><br>Untuk melanjutkan proses lupa password, silakan klik tombol di bawah ini:<br><br><a href='https://ruangai.com/lupa-password'>Lupa Password</a><br><br>Salam,";
+
+        $this->heroic->sendEmail($user['email'], $subject, $message, 1);
+
+        return $this->respond(['status' => 'success', 'message' => 'Email berhasil dikirim.']);
+    }
+
+    public function resetPassword()
+    {
+        $data = $this->request->getPost();
+
+        // Validate
+        if (!isset($data['email'], $data['password'])) {
+            return $this->failValidationErrors(['message' => 'Mohon untuk melengkapi data.']);
+        }
+
+        $userModel = new UserModel();
+        $user = $userModel->where('email', $data['email'])->where('deleted_at', null)->first();
+        if (!$user) {
+            return $this->fail('Akun tidak terdaftar.');
+        }
+
+        $userModel->update($user['id'], ['pwd' => password_hash($data['password'], PASSWORD_DEFAULT)]);
+
+        return $this->respond(['status' => 'success', 'message' => 'Password berhasil diubah.']);
+    }
+
     public function sendOtp()
     {
         $number = $this->request->getPost('whatsapp_number');
