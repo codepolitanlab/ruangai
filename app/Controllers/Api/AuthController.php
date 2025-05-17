@@ -109,7 +109,7 @@ class AuthController extends ResourceController
             }
     
         } else {
-            return $this->respond([
+            return $this->fail([
                 'status' => 'failed',
                 'message' => 'Failed captcha'
             ]);
