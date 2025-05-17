@@ -34,7 +34,7 @@ class UserModel extends Model
                 $messageEmail .= '<a href="' . $callback . '">' . $callback . '</a>';
                 $messageEmail .= '<br/><br/>Salam,<br/>RuangAI';
 
-                $Heroic->sendEmail($email, $messageEmail, 'RuangAI Info - Reset Password');
+                $Heroic->sendEmail($email, 'RuangAI Info - Reset Password', $messageEmail);
 
                 return [
                     'status' => 'success',
