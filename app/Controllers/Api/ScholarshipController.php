@@ -150,9 +150,11 @@ class ScholarshipController extends ResourceController
     {
         $jwt = $this->checkToken();
         $participantModel = new ScholarshipParticipantModel();
+        $Heroic = new \App\Libraries\Heroic();
 
         $leader = $participantModel
             ->where('whatsapp', $jwt->whatsapp_number)
+            ->orWhere('whatsapp', $Heroic->normalizePhoneNumber($jwt->whatsapp_number))
             ->where('deleted_at', null)
             ->orderBy('created_at', 'DESC')
             ->first();

@@ -93,43 +93,83 @@ class AuthController extends ResourceController
         $data = $this->request->getPost();
 
         // Validate
-        if (!isset($data['email'])) {
+        if (empty($data['email']) || empty($data['callback']) || empty($data['token'])) {
             return $this->failValidationErrors(['message' => 'Mohon untuk melengkapi data.']);
         }
 
-        $userModel = new UserModel();
-        $user = $userModel->where('email', $data['email'])->where('deleted_at', null)->first();
-        if (!$user) {
-            return $this->fail('Akun tidak terdaftar.');
+        if($this->_verifyRecaptcha($data['token'])) {
+            $userModel = new UserModel();
+    
+            $forgotPassword = $userModel->forgotPassword($data['email'], true, false, $data['callback']);
+
+            if ($forgotPassword['status'] == 'success') {
+                return $this->respond(['status' => 'success', 'message' => $forgotPassword['message']]);
+            } else {
+                return $this->fail(['status' => 'failed', 'message' => $forgotPassword['message']]);
+            }
+    
+        } else {
+            return $this->respond([
+                'status' => 'failed',
+                'message' => 'Failed captcha'
+            ]);
         }
 
-        // Send email to user
-        $subject = "Lupa Password RuangAI";
-        $message = "Terima kasih telah menggunakan aplikasi RuangAI.<br><br>Untuk melanjutkan proses lupa password, silakan klik tombol di bawah ini:<br><br><a href='https://ruangai.com/lupa-password'>Lupa Password</a><br><br>Salam,";
-
-        $this->heroic->sendEmail($user['email'], $subject, $message, 1);
-
-        return $this->respond(['status' => 'success', 'message' => 'Email berhasil dikirim.']);
     }
 
     public function resetPassword()
     {
         $data = $this->request->getPost();
 
-        // Validate
-        if (!isset($data['email'], $data['password'])) {
+        // Validate not isset and not empty
+        if (empty($data['password']) || empty($data['token'])) {
             return $this->failValidationErrors(['message' => 'Mohon untuk melengkapi data.']);
         }
 
         $userModel = new UserModel();
-        $user = $userModel->where('email', $data['email'])->where('deleted_at', null)->first();
-        if (!$user) {
-            return $this->fail('Akun tidak terdaftar.');
+        $resetPassword = $userModel->resetPassword($data['token'], $data['password']);
+
+        if ($resetPassword['status'] == 'failed') {
+            return $this->fail('Akun tidak terdaftar atau OTP expired.');
         }
 
-        $userModel->update($user['id'], ['pwd' => password_hash($data['password'], PASSWORD_DEFAULT)]);
+        return $this->respond(['status' => 'success', 'message' => $resetPassword['message']]);
+    }
 
-        return $this->respond(['status' => 'success', 'message' => 'Password berhasil diubah.']);
+    private function _verifyRecaptcha($token) {
+
+        $secret = '6LegjmApAAAAADEJOdhueo68VXfHALLhhZ4Am9Od'; // Obtain from reCAPTCHA admin console
+        $url = 'https://www.google.com/recaptcha/api/siteverify';
+        $data = array(
+          'secret' => $secret,
+          'response' => $token
+        );
+      
+        $options = array(
+          'http' => array(
+            'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+            'method' => 'POST',
+            'content' => http_build_query($data)
+          )
+        );
+      
+        $context = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        
+        if ($result === false) {
+            // Error fetching reCAPTCHA verification response
+            return false;
+        }
+        
+        $response = json_decode($result);
+
+        if ($response->success) {
+          // reCAPTCHA verification succeeded
+          return true;
+        } else {
+          // reCAPTCHA verification failed
+          return false;
+        }
     }
 
     public function sendOtp()
