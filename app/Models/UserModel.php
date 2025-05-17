@@ -38,7 +38,7 @@ class UserModel extends Model
 
                 return [
                     'status' => 'success',
-                    'message' => 'Tautan untuk mengganti password sudah dikirim ke Email.'
+                    'message' => 'Tautan untuk mengganti password sudah dikirim ke Email. Cek folder spam apabila tidak ada Email yang masuk.'
                 ];
             }
         }
