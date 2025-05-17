@@ -28,9 +28,10 @@ class UserController extends ResourceController
 
         // Check table users by user jwt
         $jwt = $this->checkToken();
+        $Heroic = new \App\Libraries\Heroic();
 
         $userModel = new UserModel();
-        $user = $userModel->where('phone', $jwt->whatsapp_number)->where('deleted_at', null)->first();
+        $user = $userModel->where('phone', $jwt->whatsapp_number)->orWhere('phone', $Heroic->normalizePhoneNumber($jwt->whatsapp_number))->where('deleted_at', null)->first();
         
         if (!$user) {
             return $this->fail(['status' => 'failed', 'message' => 'Pengguna tidak ditemukan.']);
