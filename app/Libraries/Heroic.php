@@ -81,11 +81,10 @@ class Heroic {
 		if($getUserData) {
 			// Get user data from database
 			$db = \Config\Database::connect();
-			$user = $db->table('mein_users')
-				->select('role_id, role_slug, name, username, email, avatar, phone, short_description, kd_pc, kd_pd, kd_pw')
-				->join('mein_roles', 'mein_users.role_id = mein_roles.id')
-				->join('anggota', 'mein_users.username = anggota.npa')
-				->where('mein_users.id', $decodedToken->user_id)
+			$user = $db->table('users')
+				->select('role_id, role_slug, name, username, email, avatar, phone, short_description')
+				->join('mein_roles', 'users.role_id = mein_roles.id')
+				->where('users.id', $decodedToken->user_id)
 				->get()
 				->getRowArray();
 

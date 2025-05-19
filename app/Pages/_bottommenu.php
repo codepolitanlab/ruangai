@@ -30,7 +30,7 @@ $bottommenu = [
 
 ?>
 
-<div class="appBottomMenu shadow-lg">
+<div class="appBottomMenu shadow-lg px-0">
     <?php foreach($bottommenu as $menu): ?>
     <a href="<?= $menu['url'] ?>" 
         id="bottommenu-member" 

@@ -3,8 +3,8 @@
 namespace App\Libraries;
 
 use App\Models\UserModel;
-use Exception;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class Auth
 {
@@ -51,26 +51,73 @@ class Auth
 
         // Buat token
         $user['jwt'] = JWT::encode([
-            'email' => $user['email'],
+            'email'           => $user['email'],
             'whatsapp_number' => $user['phone'],
-            'user_id' => $user['id'],
-            'isValidEmail' => $user['email_valid'],
-            'exp' => time() + 7 * 24 * 60 * 60
+            'user_id'         => $user['id'],
+            'isValidEmail'    => $user['email_valid'],
+            'exp'             => time() + 7 * 24 * 60 * 60
         ], config('Heroic')->jwtKey['secret'], 'HS256');
 
         return ['success', '', $user];
     }
 
+    public function instantLogin($token)
+    {
+        try {
+            $decodedToken = $this->checkToken("Bearer " . $token);   
+        } catch (\Exception $e) {
+            return ['failed', $e->getMessage(), []];
+        }
+
+        $userModel = new UserModel();
+        $user = $userModel->find($decodedToken['user_id']);
+        $user['jwt'] = $token;
+
+        return ['success', '', $user];
+    }
+
+    public function checkToken($token = null, $getUserData = false)
+	{
+		$headers = getallheaders();
+		$request = service('request');
+		$response = service('response');
+
+		$token = $token ?? $headers['Authorization'] ?? $request->getGet('authorization') ?? null;
+
+        try {
+            $decodedToken = $this->validateToken($token);
+            $decodedToken = (array) $decodedToken;
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage(), $e->getCode());
+        }
+
+		if($getUserData) {
+			// Get user data from database
+			$db = \Config\Database::connect();
+			$user = $db->table('users')
+				->select('role_id, role_slug, name, username, email, avatar, phone')
+				->join('roles', 'users.role_id = roles.id')
+				->where('users.id', $decodedToken['user_id'])
+				->get()
+				->getRowArray();
+
+			$decodedToken['user'] = $user;
+		}
+
+		return $decodedToken;
+	}
+
     /**
 	 * Check User's JWT Token
 	 */
-	public function checkToken($token = null)
+	public function validateToken($token = null)
 	{
 		if(! $token) {
-			throw new Exception('Authorization token not found');
+			throw new \Exception('Authorization token not found');
 		}
 		
-		$jwt = explode(' ', $token)[0] ?? null;
+        // Separate 'Bearer '
+		$jwt = explode(' ', $token)[1] ?? null;
         
 		if (! $jwt) {
             throw new \Exception('Authorization token not found', 401);

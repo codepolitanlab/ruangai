@@ -39,12 +39,6 @@
 									<span>Edit Akun</span>
 								</a>
 							</li>
-							<li>
-								<a href="/webpush" class="item">
-									<i class="fs-4 me-2 bi bi-bell text-primary"></i>
-									<span>Notifikasi</span>
-								</a>
-							</li>
 						</ul>
 
                         <div class="listview-title mt-2">
@@ -76,12 +70,12 @@
                                     <span>Kebijakan Privasi</span>
                                 </a>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <a href="/profile/delete" class="item">
                                     <i class="bi bi-door-closed text-danger fs-4 me-2"></i>
                                     <span>Tutup Akun</span>
                                 </a>
-                            </li>
+                            </li> -->
                             <!-- <li>
                                 <a href="/page/faq" class="item">
                                     <i class="bi bi-patch-question text-primary fs-4 me-2"></i>
