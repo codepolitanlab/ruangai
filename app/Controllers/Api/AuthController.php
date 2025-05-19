@@ -49,7 +49,7 @@ class AuthController extends ResourceController
             'whatsapp_number' => $user['phone'],
             'user_id' => $user['id'],
             'isValidEmail' => $user['email_valid'],
-            'exp' => time() + 60 * 60
+            'exp' => time() + 7 * 24 * 60 * 60
         ], config('Heroic')->jwtKey['secret'], 'HS256');
 
         return $this->respond([
