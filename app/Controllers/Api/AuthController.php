@@ -36,8 +36,7 @@ class AuthController extends ResourceController
         }
 
         $Phpass = new \App\Libraries\Phpass();
-        if(!$Phpass->CheckPassword($data['password'], $user['pwd']))
-        {
+        if (!$Phpass->CheckPassword($data['password'], $user['pwd'])) {
             return $this->fail('Email atau password salah.');
         }
 
@@ -97,9 +96,9 @@ class AuthController extends ResourceController
             return $this->failValidationErrors(['message' => 'Mohon untuk melengkapi data.']);
         }
 
-        if($this->_verifyRecaptcha($data['token'])) {
+        if ($this->_verifyRecaptcha($data['token'])) {
             $userModel = new UserModel();
-    
+
             $forgotPassword = $userModel->forgotPassword($data['email'], true, false, $data['callback']);
 
             if ($forgotPassword['status'] == 'success') {
@@ -107,14 +106,12 @@ class AuthController extends ResourceController
             } else {
                 return $this->fail(['status' => 'failed', 'message' => $forgotPassword['message']]);
             }
-    
         } else {
             return $this->fail([
                 'status' => 'failed',
                 'message' => 'Failed captcha'
             ]);
         }
-
     }
 
     public function resetPassword()
@@ -136,39 +133,40 @@ class AuthController extends ResourceController
         return $this->respond(['status' => 'success', 'message' => $resetPassword['message']]);
     }
 
-    private function _verifyRecaptcha($token) {
+    private function _verifyRecaptcha($token)
+    {
 
         $secret = '6LegjmApAAAAADEJOdhueo68VXfHALLhhZ4Am9Od'; // Obtain from reCAPTCHA admin console
         $url = 'https://www.google.com/recaptcha/api/siteverify';
         $data = array(
-          'secret' => $secret,
-          'response' => $token
+            'secret' => $secret,
+            'response' => $token
         );
-      
+
         $options = array(
-          'http' => array(
-            'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-            'method' => 'POST',
-            'content' => http_build_query($data)
-          )
+            'http' => array(
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method' => 'POST',
+                'content' => http_build_query($data)
+            )
         );
-      
+
         $context = stream_context_create($options);
         $result = file_get_contents($url, false, $context);
-        
+
         if ($result === false) {
             // Error fetching reCAPTCHA verification response
             return false;
         }
-        
+
         $response = json_decode($result);
 
         if ($response->success) {
-          // reCAPTCHA verification succeeded
-          return true;
+            // reCAPTCHA verification succeeded
+            return true;
         } else {
-          // reCAPTCHA verification failed
-          return false;
+            // reCAPTCHA verification failed
+            return false;
         }
     }
 
@@ -279,7 +277,7 @@ class AuthController extends ResourceController
 
         // Kirim via Email
         $subject = "Kode Verifikasi RuangAI";
-        $message = "Terima kasih telah menggunakan aplikasi RuangAI.<br><br>Untuk melanjutkan proses login atau pendaftaran, silakan masukkan kode verifikasi berikut ini ke dalam aplikasi:<br><br><b>$otpCode</b><br><br>Salam,";
+        $message = "Terima kasih telah menggunakan aplikasi RuangAI.<br><br>Untuk melanjutkan proses verifikasi Email, silakan masukkan kode verifikasi berikut ini ke dalam aplikasi:<br><br><b>$otpCode</b><br><br>Salam,";
         $this->heroic->sendEmail($identity, $subject, $message);
 
         return $this->respond([
@@ -290,6 +288,9 @@ class AuthController extends ResourceController
 
     public function verifyOtpEmail()
     {
+        $Heroic = new \App\Libraries\Heroic();
+        $jwt = $Heroic->checkToken();
+
         $identity = $this->request->getPost('identity');
         $code = $this->request->getPost('otp_code');
 
@@ -298,6 +299,18 @@ class AuthController extends ResourceController
                 'identity' => 'Email wajib diisi.',
                 'otp_code' => 'Kode OTP wajib diisi.',
             ]);
+        }
+
+        $userModel = new UserModel();
+        // Check table users email_valid
+        $user = $userModel->where('email', $identity)->where('deleted_at', null)->first();
+
+        if (!$user) {
+            return $this->fail(['status' => 'failed', 'message' => 'Email tidak terdaftar.']);
+        }
+
+        if ($user['email_valid'] == 1) {
+            return $this->fail(['status' => 'failed', 'message' => 'Email sudah terverifikasi.']);
         }
 
         $otpModel = new OtpRequests();
@@ -309,23 +322,15 @@ class AuthController extends ResourceController
             ->first();
 
         if (!$row) {
-            return $this->respond(['isValid' => false, 'isExist' => false]);
+            return $this->fail(['status' => 'failed', 'message' => 'Kode OTP salah atau kadaluarsa.']);
         }
 
-        $userModel = new UserModel();
-        $user = $userModel->where('email', $identity)->where('deleted_at', null)->first();
-
-        // Update last active
-        if ($user) {
-            $userModel->update($user['id'], [
-                'last_active' => date('Y-m-d H:i:s'),
-            ]);
-        }
+        // Set email_valid to table users
+        $userModel->update($jwt->user_id, ['email_valid' => 1 ]);
 
         return $this->respond([
-            'isValid' => true,
-            'isExist' => $user ? true : false,
-            'token' => JWT::encode(['email' => $identity], config('Heroic')->jwtKey['secret'], 'HS256'),
+            'status' => 'success',
+            'message' => 'Verifikasi email berhasil.',
         ]);
     }
 }

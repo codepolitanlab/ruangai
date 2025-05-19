@@ -15,6 +15,7 @@ class UserProfile extends Migration
             'bank_name'      => ['type' => 'VARCHAR', 'constraint' => 100],
             'account_number' => ['type' => 'VARCHAR', 'constraint' => 100],
             'account_name'   => ['type' => 'VARCHAR', 'constraint' => 255],
+            'account_valid'  => ['type' => 'INT', 'constraint' => 1, 'default' => 0, 'null' => true],
             'created_at'     => ['type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at'     => ['type' => 'TIMESTAMP', 'null' => true],
             'deleted_at'     => ['type' => 'TIMESTAMP', 'null' => true],
