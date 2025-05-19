@@ -16,7 +16,7 @@
 			<section>
 				<div class="">
 
-					<div class="card bg-light-secondary p-2 mb-4 rounded-4 border border-secondary">
+					<div class="card bg-light-secondary p-2 mb-4 rounded-4 border shadow-none">
 						<div class="row">
 							<div class="col-2">
 								<div class="d-flex align-items-center justify-content-center rounded-4" style="background-color: #F5CEBB;height: 50px;width: 50px">
@@ -52,14 +52,14 @@
 					<!-- Completed Live Sessions -->
 					<template x-show="data.live_sessions?.length > 0" x-for="live_session in data.live_sessions">
 						<a :href="`/courses/intro/${data.course.id}/${data.course.slug}/live_session/${live_session.id}`">
-							<div class="card card-hover rounded-20 shadow-none border p-3 mb-2">
+							<div class="card rounded-20 shadow-none border p-3 mb-2">
 								<div class="row g-3">
 									<div class="col">
-										<h4 class="mb-3" x-text="live_session.title"></h4>
-										<div class="d-flex gap-3">
+										<strong class="text-secondary mb-3" x-text="live_session.title"></strong>
+										<h4 class="h5 mb-3" x-text="live_session.description"></h4>
+										<div class="d-flex gap-3 justify-content-between">
 											<div><button type="button" class="btn btn-sm btn-secondary rounded-pill"><i class="bi bi-check-circle"></i> Sudah mengikuti</button></div>
-											<div class="text-secondary"><i class="bi bi-clock"></i> <span x-text="live_session.date"></span></div>
-											<div><i class="bi bi-people"></i> <span x-text="live_session.total_student"></span> Siswa</div>
+											<div class="text-muted"><i class="bi bi-clock"></i> <span x-text="$heroicHelper.formatDate(live_session.created_at)"></span></div>
 										</div>
 									</div>
 								</div>

@@ -54,41 +54,26 @@
 
 			<?= $this->include('courses/intro/_header'); ?>
 
-			<section class="mb-4 mt-3 bg-white p-3 rounded-4">
-				<div class="h5 mb-3">Lanjutkan Belajar</div>
-				<a href="/courses/lesson/1">
-					<div class="card shadow-none bg-light-secondary card-hover rounded-20">
-						<div class="card-body d-flex align-items-center gap-3 p-3">
-							<div class="d-flex align-items-center justify-content-center rounded-20" style="width: 90px;height: 70px;background: #f5cebb">
-								<i class="bi bi-journal-bookmark-fill display-5 text-secondary"></i>
-							</div>
-							<div class="w-100">
-								<h5 class="m-0">Lesson 02 - Pengenalan</h5>
-								<div class="mb-1">Potensi Dan Tantangan AI</div>
-							</div>
-						</div>
+			<template x-for="(lessons,topic) of data.course?.lessons">
+				<section class="card shadow-none rounded-3 p-3 mb-3">
+					<div class="h5 m-0" x-text="topic"></div>
+					<div class="card-body d-flex flex-column align-items-center gap-3 px-0">
+						<template x-for="lesson of lessons">
+							<a x-bind:href="`/courses/lesson/${lesson.id}`" class="d-block w-100">
+								<div class="rounded-20 p-3 w-100 d-flex bg-light align-items-center justify-content-between">
+									<div>
+										<h4 class="fw-normal m-0 mb-1" x-text="lesson.lesson_title"></h4>
+										<h5 class="m-0 text-muted" x-text="lesson.duration"></h5>
+									</div>
+									<div>
+										<i class="bi bi-lock-fill h4 m-0"></i>
+									</div>
+								</div>
+							</a>
+						</template>
 					</div>
-				</a>
-			</section>
-
-			<section class="card shadow-none rounded-20 p-3 mb-2">
-				<div class="h5 m-0">Pengenalan</div>
-				<div class="card-body d-flex flex-column align-items-center gap-3 px-0">
-					<template x-for="lesson of data.course?.lessons">
-						<a x-bind:href="`/courses/lesson/${lesson.id}`" class="d-block w-100 card-hover">
-							<div class="rounded-20 p-3 w-100 d-flex bg-light align-items-center justify-content-between">
-								<div>
-									<h4 class="fw-normal m-0 mb-1" x-text="lesson.lesson_title"></h4>
-									<h5 class="m-0 text-muted" x-text="lesson.duration"></h5>
-								</div>
-								<div>
-									<i class="bi bi-lock-fill h4 m-0"></i>
-								</div>
-							</div>
-						</a>
-					</template>
-				</div>
-			</section>
+				</section>
+			</template>
 		</div>
 	</div>
 
