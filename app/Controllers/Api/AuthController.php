@@ -325,8 +325,11 @@ class AuthController extends ResourceController
             return $this->fail(['status' => 'failed', 'message' => 'Kode OTP salah atau kadaluarsa.']);
         }
 
-        // Set email_valid to table users
-        $userModel->update($jwt->user_id, ['email_valid' => 1 ]);
+        // Set email_valid to table users where user_id and identity email
+        $userModel
+            ->where('id', $jwt->user_id)
+            ->where('email', $identity)
+            ->update(['email_valid' => 1]);
 
         return $this->respond([
             'status' => 'success',
