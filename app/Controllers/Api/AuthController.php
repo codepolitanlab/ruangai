@@ -281,8 +281,8 @@ class AuthController extends ResourceController
         $this->heroic->sendEmail($identity, $subject, $message);
 
         return $this->respond([
-            'identity' => $identity,
-            'otp_code' => $otpCode, // note: jangan tampilkan ini di production
+            'status' => 'success',
+            'message' => 'Kode verifikasi telah dikirim ke email Anda.', // note: jangan tampilkan ini di production
         ]);
     }
 
