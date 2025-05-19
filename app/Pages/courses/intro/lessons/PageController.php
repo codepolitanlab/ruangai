@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Pages\courses\intro;
+namespace App\Pages\courses\intro\lessons;
 
 use App\Pages\BaseController;
+use CodeIgniter\API\ResponseTrait;
 
 class PageController extends BaseController
 {
     public $data = [
-        'page_title'  => 'Detail Kelas',
-        'module'      => 'course_intro',
+        'page_title'  => 'Daftar Materi',
+        'module'      => 'course_lesson',
         'active_page' => 'materi',
     ];
 

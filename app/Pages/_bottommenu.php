@@ -5,38 +5,40 @@ $bottommenu = [
         'label'  => 'Beranda',
         'url'    => '/courses/intro/353/laravel-security',
         'icon'   => 'bi bi-house',
-        'module' => 'home'
+        'module' => 'course_intro'
     ],
     [
-        'label'  => 'Pengumuman',
-        'url'    => '/pengumuman',
+        'label'  => 'Materi',
+        'url'    => '/courses/intro/353/laravel-security/lessons',
         'icon'   => 'bi bi-megaphone',
-        'module' => 'pengumuman'
+        'icon'   => 'bi bi-journal-check',
+        'module' => 'course_lesson'
     ],
-    // [
-    //     'label' => 'Kelas',
-    //     'url' => '/courses',
-    //     'icon' => 'bi bi-book'
-    // ],
+    [
+        'label'  => 'Live Session',
+        'url'    => '/courses/intro/353/laravel-security/live_session',
+        'icon'   => 'bi bi-camera-video',
+        'module' => 'course_live'
+    ],
     [
         'label'  => 'Akun',
         'url'    => '/profile',
-        'icon'   => 'bi bi-person-circle',
+        'icon'   => 'bi bi-person',
         'module' => 'profile'
     ],
 ];
 
 ?>
 
-<div class="appBottomMenu bg-primary shadow-lg">
+<div class="appBottomMenu shadow-lg">
     <?php foreach($bottommenu as $menu): ?>
     <a href="<?= $menu['url'] ?>" 
         id="bottommenu-member" 
         class="item" 
         :class="data?.module == '<?= $menu['module'] ?>' ? 'active' : ''">
         <div class="col">
-            <i class="<?= $menu['icon'] ?> text-white"></i>
-            <strong class="text-white"><?= $menu['label'] ?></strong>
+            <i class="<?= $menu['icon'] ?>"></i>
+            <strong class=""><?= $menu['label'] ?></strong>
         </div>
     </a>
     <?php endforeach; ?>

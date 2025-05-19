@@ -23,6 +23,9 @@ class Router
         '/courses' => [
             'preload' => true,
         ],
+        '/courses/intro/:course_id/:slug/lessons' => [
+            'preload' => true,
+        ],
         '/courses/intro/:course_id/:slug/live_session' => [
             'preload' => true,
         ],
@@ -41,7 +44,7 @@ class Router
         '/courses/intro/:course_id/:slug' => [
             'preload' => true,
         ],
-        '/courses/lessons/:id' => [
+        '/courses/lesson/:id' => [
             'preload' => true,
         ],
         12 => '/courses/quiz/:id',

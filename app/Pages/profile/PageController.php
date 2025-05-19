@@ -1,4 +1,6 @@
-<?php namespace App\Pages\profile;
+<?php 
+
+namespace App\Pages\profile;
 
 use App\Pages\BaseController;
 

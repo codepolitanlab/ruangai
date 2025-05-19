@@ -45,7 +45,7 @@ class Heroic {
 	/**
 	 * Check user token
 	 */
-	public function checkToken()
+	public function checkToken($getUserData = false)
 	{
 		$headers = getallheaders();
 		$request = service('request');
@@ -57,8 +57,8 @@ class Heroic {
 			$response->setStatusCode(401, 'Authorization token not found')->send();
 			exit;
 		}
-		
-		$jwt = explode(' ', $token)[0] ?? null;
+
+		$jwt = explode(' ', $token)[1] ?? null;
 
 		if (! $jwt) {
 			$response->setStatusCode(401, 'Authorization token not found')->send();
@@ -76,6 +76,20 @@ class Heroic {
 		if (! $decodedToken) {				
 			$response->setStatusCode(401, 'Authorization token not found')->send();
 			exit;
+		}
+
+		if($getUserData) {
+			// Get user data from database
+			$db = \Config\Database::connect();
+			$user = $db->table('mein_users')
+				->select('role_id, role_slug, name, username, email, avatar, phone, short_description, kd_pc, kd_pd, kd_pw')
+				->join('mein_roles', 'mein_users.role_id = mein_roles.id')
+				->join('anggota', 'mein_users.username = anggota.npa')
+				->where('mein_users.id', $decodedToken->user_id)
+				->get()
+				->getRowArray();
+
+			$decodedToken->user = $user;
 		}
 
 		return $decodedToken;
