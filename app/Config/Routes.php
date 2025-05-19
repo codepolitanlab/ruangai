@@ -36,6 +36,3 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
     $routes->get('wasender', 'WASenderController::index');
     $routes->post('wasender/incoming', 'WASenderController::incoming');
 });
-
-
-service('auth')->routes($routes);

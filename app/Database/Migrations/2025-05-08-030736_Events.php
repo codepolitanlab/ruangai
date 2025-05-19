@@ -20,9 +20,9 @@ class Events extends Migration
             'quota'             => ['type' => 'INT', 'constraint' => 5, 'default' => 0],
             'total_participant' => ['type' => 'INT', 'constraint' => 5, 'default' => 0],
             'organizer'         => ['type' => 'VARCHAR', 'constraint' => 100, 'null' => true],
-            'status'            => ['type' => 'ENUM', 'constraint' => ['draft', 'published', 'cancelled', 'completed'], 'default' => 'draft'],
+            'status'            => ['type' => 'VARCHAR', 'constraint' => 20, 'default' => 'draft'], //['draft', 'published', 'cancelled', 'completed']
             'publish_at'        => ['type' => 'TIMESTAMP', 'null' => true],
-            'is_featured'       => ['type' => 'BOOLEAN', 'default' => 0],
+            'is_featured'       => ['type' => 'BOOLEAN', 'default' => false],
             'banner_image'      => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
             'created_at'        => ['type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at'        => ['type' => 'TIMESTAMP', 'null' => true],
