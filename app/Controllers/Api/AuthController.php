@@ -326,7 +326,7 @@ class AuthController extends ResourceController
         }
 
         // Set email_valid to table users where user_id and identity email
-        $userModel->where('id', $jwt->user_id)->where('email', $identity)->update(['email_valid' => 1]);
+        $userModel->update($user['id'], ['email_valid' => 1]);
 
         // Send token to user
         $token = JWT::encode([
