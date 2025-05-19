@@ -14,15 +14,10 @@ class PageController extends BaseController
     public function getData()
     {
         // Get database pesantren
-        $Heroic = new \App\Libraries\Heroic();
-        $user = $Heroic->checkToken();
+        $Auth = new \App\Libraries\Auth();
+        $user = $Auth->checkToken(null, true);
         
-        $db = \Config\Database::connect();
-        $this->data['profile'] = $db->table('users')
-            ->select('users.id, users.name, users.username,
-                users.email, users.avatar, users.phone')
-            ->where('users.id', $user->user_id)
-            ->get()->getRowArray();
+        $this->data['profile'] = $user;
 
         return $this->respond($this->data);
     }

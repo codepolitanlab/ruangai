@@ -10,14 +10,14 @@
 					<div class="card ps-3 bg-primary shadow-none container-fluid pt-3 pb-3 rounded-0" style="height: 135px;">
 						<div class="d-flex align-items-center justify-content-start gap-3">
 							<div>
-								<img :src="data?.profile?.avatar ? data?.profile?.avatar : `<?= $themeURL ?>assets/img/icon/default-avatar-user.webp`"
+								<img :src="data?.profile?.user?.avatar ? data?.profile?.user?.avatar : `<?= $themeURL ?>assets/img/icon/default-avatar-user.webp`"
 									class="rounded-circle"
-									:alt="data?.profile?.name"
+									:alt="data?.profile?.user?.name"
 									style="width:65px">
 							</div>
 							<div class="text-white">
-								<div class="h6 m-0" x-text="data?.profile?.name || 'Badar Abdi Mulya'"></div>
-								<small x-text="data?.profile?.username || 'CODING IS A SHINOBI WAYS FOR ME!!!!!'"></small>
+								<div class="h6 m-0" x-text="data?.profile?.user?.name || 'Undefined'"></div>
+								<small x-text="data?.profile?.user?.email || 'CODING IS A SHINOBI WAYS FOR ME!!!!!'"></small>
 							</div>
 						</div>
 					</div>
