@@ -326,14 +326,21 @@ class AuthController extends ResourceController
         }
 
         // Set email_valid to table users where user_id and identity email
-        $userModel
-            ->where('id', $jwt->user_id)
-            ->where('email', $identity)
-            ->update(['email_valid' => 1]);
+        $userModel->where('id', $jwt->user_id)->where('email', $identity)->update(['email_valid' => 1]);
+
+        // Send token to user
+        $token = JWT::encode([
+            'email' => $user['email'],
+            'whatsapp_number' => $user['phone'],
+            'user_id' => $user['id'],
+            'isValidEmail' => $user['email_valid'],
+            'exp' => time() + 7 * 24 * 60 * 60
+        ], config('Heroic')->jwtKey['secret'], 'HS256');
 
         return $this->respond([
             'status' => 'success',
             'message' => 'Verifikasi email berhasil.',
+            'token' => $token
         ]);
     }
 }
