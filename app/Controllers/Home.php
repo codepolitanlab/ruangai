@@ -19,4 +19,12 @@ class Home extends BaseController
 
         $Heroic->sendEmail($to, $subject, $message, 1);
     }
+
+    public function checkToken($token)
+    {
+        $Auth = new \App\Libraries\Auth();
+        $result = $Auth->validateToken('Bearer ' . $token);
+
+        dd($result);
+    }
 }
