@@ -29,31 +29,16 @@ class AuthController extends ResourceController
             return $this->failValidationErrors(['message' => 'Mohon untuk melengkapi data.']);
         }
 
-        $userModel = new UserModel();
-        $user = $userModel->where('email', $data['email'])->where('deleted_at', null)->first();
-        if (!$user) {
-            return $this->fail('Email atau password salah.');
+        $Auth = new \App\Libraries\Auth();
+        [$status, $message, $user] = $Auth->login($data['email'], $data['password']);
+
+        if ($status == 'failed') {
+            return $this->fail($message);
         }
-
-        $Phpass = new \App\Libraries\Phpass();
-        if (!$Phpass->CheckPassword($data['password'], $user['pwd'])) {
-            return $this->fail('Email atau password salah.');
-        }
-
-        $userModel->update($user['id'], ['last_active' => date('Y-m-d H:i:s')]);
-
-        // Send token to user
-        $token = JWT::encode([
-            'email' => $user['email'],
-            'whatsapp_number' => $user['phone'],
-            'user_id' => $user['id'],
-            'isValidEmail' => $user['email_valid'],
-            'exp' => time() + 7 * 24 * 60 * 60
-        ], config('Heroic')->jwtKey['secret'], 'HS256');
 
         return $this->respond([
-            'status' => 'success',
-            'token' => $token,
+            'status' => $status,
+            'token' => $user['jwt'],
         ]);
     }
 

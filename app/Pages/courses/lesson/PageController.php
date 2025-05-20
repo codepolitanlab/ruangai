@@ -1,14 +1,13 @@
-<?php namespace App\Pages\courses\lessons;
+<?php namespace App\Pages\courses\lesson;
 
 use App\Pages\BaseController;
-use CodeIgniter\API\ResponseTrait;
 
 class PageController extends BaseController 
 {
-    
 
     public $data = [
         'page_title' => 'Lessons',
+        'module' => 'course_lesson'
     ];
 
     public function getData($id)

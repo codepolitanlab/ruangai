@@ -68,9 +68,10 @@
         });
         
         Alpine.data('router', () => ({
-            isLoggedIn(context){
+            isLoggedIn(context, controller){
                 if(! localStorage.getItem('heroic_token')){
-                    context.redirect('/masuk')
+                    // this.$router.navigate('/masuk')
+                    window.location.replace('https://ruangai.id/signin')
                 }
             }
         }))

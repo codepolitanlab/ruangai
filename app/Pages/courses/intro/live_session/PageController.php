@@ -5,7 +5,8 @@ use App\Pages\BaseController;
 class PageController extends BaseController 
 {
     public $data = [
-        'page_title' => "Live Session",
+        'page_title'  => "Live Session",
+        'module'      => 'course_live',
         'active_page' => 'live',
     ];
 

@@ -36,6 +36,7 @@ class Filters extends BaseFilters
         'performance'   => PerformanceMetrics::class,
         'session'       => \CodeIgniter\Shield\Filters\SessionAuth::class,
         'htmlmin'       => \App\Filters\HtmlMinifier::class,
+        'requestlog'    => \App\Filters\RequestLogger::class,
     ];
 
     /**
@@ -74,6 +75,7 @@ class Filters extends BaseFilters
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',
+            'requestlog',
         ],
         'after' => [
             // 'honeypot',

@@ -22,33 +22,14 @@ class PageController extends BaseController
         $db = \Config\Database::connect();
         
         // Check login to database directly using $db
-        $found = $db->query('SELECT * FROM users where (email = :username: OR phone = :username: OR username = :username:) AND status = "active"', ['username' => $username])->getRow();
-        $jwt = null;
-        if($found) {
-            $Phpass = new \App\Libraries\Phpass();
-            if($Phpass->CheckPassword($password, $found->pwd))
-            {
-                // Create JWT
-                $userSession = [
-                    'logged_in' => true,
-                    'user_id' => $found->id,
-                    'email' => $found->email,
-                    'timestamp' => time()
-                ];
-                $jwt = JWT::encode($userSession, config('Heroic')->jwtKey['secret'], 'HS256');
-
-                $user = [
-                    'name' => $found->name,
-                    'email' => $found->email,
-                    'phone' => $found->phone
-                ];
-            }
-        }
+        $Auth = new \App\Libraries\Auth();
+        [$status, $message, $user] = $Auth->login($username, $password);
 
         return $this->respond([
-            'found' => $jwt ? 1 : 0,
-            'jwt' => $jwt,
-            'user' => $user ?? []
+            'found'   => $status == 'success' ? 1 : 0,
+            'message' => $message,
+            'jwt'     => $user['jwt'] ?? '',
+            'user'    => $user ?? []
         ]);
     }
 

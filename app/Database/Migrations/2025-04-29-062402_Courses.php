@@ -25,7 +25,7 @@ class Courses extends Migration
             'total_student' => [ 'type' => 'INT', 'default' => 0 ],
             'tags' => [ 'type' => 'VARCHAR', 'constraint' => 255, 'null' => true ],
             'premium' => [ 'type' => 'TINYINT', 'constraint' => 1, 'default' => 0 ],
-            'status' => [ 'type' => 'ENUM', 'constraint' => ['draft', 'publish', 'deleted', 'invisible'], 'default' => 'draft' ],
+            'status' => [ 'type' => 'VARCHAR', 'constraint' => 20, 'default' => 'draft' ],
             'course_order' => [ 'type' => 'INT', 'default' => 0 ],
             'last_update' => [ 'type' => 'DATETIME', 'null' => true ],
             'level' => [ 'type' => 'VARCHAR', 'constraint' => 20, 'null' => true ],
@@ -118,9 +118,9 @@ class Courses extends Migration
         $this->forge->addField([
             'id' => ['type' => 'INT', 'auto_increment' => true],
             'lesson_id' => ['type' => 'INT'],
-            'theory' => ['type' => 'LONGTEXT'],
+            'theory' => ['type' => 'TEXT'],
             'revision' => ['type' => 'TINYINT', 'default' => 0],
-            'status' => ['type' => 'ENUM', 'constraint' => ['draft', 'publish'], 'default' => 'draft'],
+            'status' => ['type' => 'VARCHAR', 'constraint' => 20, 'default' => 'draft'],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->createTable('course_lesson_theory');
@@ -192,7 +192,7 @@ class Courses extends Migration
             'landing_url' => ['type' => 'VARCHAR', 'constraint' => 255],
             'image_url' => ['type' => 'VARCHAR', 'constraint' => 200, 'null' => true],
             'description' => ['type' => 'TEXT'],
-            'status' => ['type' => 'ENUM', 'constraint' => ['draft', 'publish', 'deleted'], 'default' => 'publish'],
+            'status' => ['type' => 'VARCHAR', 'constraint' => 20, 'default' => 'publish'],
             'is_public' => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 1],
             'created_at' => ['type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at' => ['type' => 'TIMESTAMP', 'null' => true],
@@ -207,7 +207,7 @@ class Courses extends Migration
             'object_type' => ['type' => 'VARCHAR', 'constraint' => 30, 'default' => 'course'],
             'path_id' => ['type' => 'INT'],
             'sort' => ['type' => 'INT'],
-            'status' => ['type' => 'ENUM', 'constraint' => ['draft', 'publish', 'deleted'], 'default' => 'publish'],
+            'status' => ['type' => 'VARCHAR', 'constraint' => 20, 'default' => 'publish'],
             'created_at' => ['type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at' => ['type' => 'TIMESTAMP', 'null' => true],
         ]);

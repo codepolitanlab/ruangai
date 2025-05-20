@@ -3,17 +3,20 @@
 	id="lesson_detail"
 	x-data="$heroic({
         title: `<?= $page_title ?>`,
-        url: `courses/lessons/data/${$params.id}`
+        url: `courses/lesson/data/${$params.id}`
     })"
-	x-effect="loadPage(`courses/lessons/data/${$params.id}`)">
+	x-effect="loadPage(`courses/lesson/data/${$params.id}`)">
 
 	<div id="app-header" class="appHeader main border-0">
-		<div class="left"><a class="headerButton" :href="`/courses/intro/${data.course.id}/${data.course.slug}`"><i class="bi bi-chevron-left"></i></a></div>
-		<div class="pageTitle"><span>Detail Lessons</span></div>
+		<div class="left">
+			<a class="headerButton" :href="`/courses/intro/${data.course.id}/${data.course.slug}`"><i class="bi bi-chevron-left"></i></a>
+			<span x-text="data.course.course_title"></span>
+		</div>
+		<div class="pageTitle"></div>
 	</div>
 
 	<div id="appCapsule" class="appCapsule-lg">
-		<div class="appContent px-0" style="min-height:90vh">
+		<div class="appContent px-0 bg-white rounded-4" style="min-height:95vh">
 
 			<section>
 				<!-- If player Youtube -->
@@ -55,44 +58,11 @@
 								Saya Sudah Faham, Berikutnya
 							</a>
 						</div>
-
-						<!-- Lesson List -->
-						<!-- <div>
-							<h3 class="mb-3">Materi Belajar Lainnya</h3>
-
-							<div class="card shadow-none border mb-3 p-3 rounded-20">
-								<template x-for="(lesson, index) in data.course?.lessons" :key="index">
-									<div>
-										<h5 class="mb-1" x-text="lesson.section_title"></h5>
-										<a x-bind:href="`/courses/lessons/${lesson.id}`" class="d-block w-100 card-hover">
-											<div class="card rounded-20 p-3 mb-2" :class="lesson.id == $params.id ? 'bg-primary text-white' : 'bg-secondary-subtle'">
-												<div class="d-flex justify-content-between align-items-center">
-													<div>
-														<div class="h6 fw-bold mb-1" x-text="lesson.lesson_title"></div>
-														<div x-text="lesson.duration"></div>
-													</div>
-													<div class="">
-														<i x-show="lesson.id == $params.id" class="bi bi-check-circle-fill h4 m-0 fs-4"></i>
-														<i x-show="lesson.id != $params.id" class="bi bi-lock-fill h4 m-0 text-muted fs-4"></i>
-													</div>
-												</div>
-											</div>
-										</a>
-									</div>
-								</template>
-							</div>
-						</div> -->
 					</div>
 				</div>
 			</section>
 
 		</div>
-	</div>
-	<div class="offcanvas offcanvas-bottom" tabindex="-1" id="shareCanvas" aria-labelledby="shareCanvasLabel" style="max-width:768px;margin:0 auto;" aria-modal="true" role="dialog">
-		<div class="offcanvas-header">
-			<h5 class="offcanvas-title" id="shareCanvasLabel">Bagikan Tautan</h5><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-		</div>
-		<div class="offcanvas-body small"></div>
 	</div>
 
 	<?= $this->include('_bottommenu') ?>

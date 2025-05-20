@@ -10,14 +10,14 @@
 					<div class="card ps-3 bg-primary shadow-none container-fluid pt-3 pb-3 rounded-0" style="height: 135px;">
 						<div class="d-flex align-items-center justify-content-start gap-3">
 							<div>
-								<img :src="data?.profile?.avatar ? data?.profile?.avatar : `<?= $themeURL ?>assets/img/icon/default-avatar-user.webp`"
+								<img :src="data?.profile?.user?.avatar ? data?.profile?.user?.avatar : `<?= $themeURL ?>assets/img/icon/default-avatar-user.webp`"
 									class="rounded-circle"
-									:alt="data?.profile?.name"
+									:alt="data?.profile?.user?.name"
 									style="width:65px">
 							</div>
 							<div class="text-white">
-								<div class="h6 m-0" x-text="data?.profile?.name || 'Badar Abdi Mulya'"></div>
-								<small x-text="data?.profile?.username || 'CODING IS A SHINOBI WAYS FOR ME!!!!!'"></small>
+								<div class="h6 m-0" x-text="data?.profile?.user?.name || 'Undefined'"></div>
+								<small x-text="data?.profile?.user?.email || 'CODING IS A SHINOBI WAYS FOR ME!!!!!'"></small>
 							</div>
 						</div>
 					</div>
@@ -37,12 +37,6 @@
 								<a href="/profile/edit_account" class="item">
 									<i class="fs-4 me-2 bi bi-person-vcard text-primary"></i>
 									<span>Edit Akun</span>
-								</a>
-							</li>
-							<li>
-								<a href="/webpush" class="item">
-									<i class="fs-4 me-2 bi bi-bell text-primary"></i>
-									<span>Notifikasi</span>
 								</a>
 							</li>
 						</ul>
@@ -76,12 +70,12 @@
                                     <span>Kebijakan Privasi</span>
                                 </a>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <a href="/profile/delete" class="item">
                                     <i class="bi bi-door-closed text-danger fs-4 me-2"></i>
                                     <span>Tutup Akun</span>
                                 </a>
-                            </li>
+                            </li> -->
                             <!-- <li>
                                 <a href="/page/faq" class="item">
                                     <i class="bi bi-patch-question text-primary fs-4 me-2"></i>

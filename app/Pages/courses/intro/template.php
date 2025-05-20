@@ -71,33 +71,8 @@
 				</a>
 			</section>
 
-			<section class="card shadow-none rounded-20 p-3 mb-2">
-				<div class="h5 m-0">Pengenalan</div>
-				<div class="card-body d-flex flex-column align-items-center gap-3 px-0">
-					<template x-for="lesson of data.course?.lessons">
-						<a x-bind:href="`/courses/lessons/${lesson.id}`" class="d-block w-100 card-hover">
-							<div class="rounded-20 p-3 w-100 d-flex bg-light align-items-center justify-content-between">
-								<div>
-									<h4 class="fw-normal m-0 mb-1" x-text="lesson.lesson_title"></h4>
-									<h5 class="m-0 text-muted" x-text="lesson.duration"></h5>
-								</div>
-								<div>
-									<i x-show="lesson.locked" class="bi bi-lock-fill h4 m-0"></i>
-									<i x-show="!lesson.locked" class="bi bi-check-circle text-success h4 m-0"></i>
-								</div>
-							</div>
-						</a>
-					</template>
-				</div>
-			</section>
 		</div>
 	</div>
 
-	<div class="offcanvas offcanvas-bottom" tabindex="-1" id="shareCanvas" aria-labelledby="shareCanvasLabel" style="max-width:768px;margin:0 auto;" aria-modal="true" role="dialog">
-		<div class="offcanvas-header">
-			<h5 class="offcanvas-title" id="shareCanvasLabel">Bagikan Tautan</h5><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-		</div>
-		<div class="offcanvas-body small"></div>
-	</div>
 	<?= $this->include('_bottommenu') ?>
 </div>
