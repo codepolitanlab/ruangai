@@ -76,6 +76,11 @@ class Auth
         return ['success', '', $user];
     }
 
+    public function allowRoles(array $roles) {
+        $user = $this->checkToken();
+        return in_array($user['role_slug'], $roles);
+    }
+
     public function checkToken($token = null, $getUserData = false)
 	{
 		$headers = getallheaders();

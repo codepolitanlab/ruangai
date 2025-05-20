@@ -1,19 +1,12 @@
-<?php namespace App\Pages;
+<?php namespace App\Pages\zpanel;
 
-use CodeIgniter\API\ResponseTrait;
+use App\Pages\BaseController as PagesBaseController;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use Yllumi\Heroic\Controllers\HeroicController;
 
-class BaseController extends HeroicController 
+class AdminController extends PagesBaseController
 {
-	use ResponseTrait;
-
-	protected $helpers = [
-		'Yllumi\Ci4Pages\Helpers\pageview',
-		'Yllumi\Heroic\Helpers\heroic',
-	];
 	
 	public $data = [
 		'page_title' => 'Homepage'
@@ -28,6 +21,8 @@ class BaseController extends HeroicController
 
 		// Preload any models, libraries, etc, here.
 
+		$this->data['themeURL'] = base_url('admin') .'/'; 
+        $this->data['themePath'] = 'admin/'; 
     }
 
 }

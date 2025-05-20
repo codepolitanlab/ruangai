@@ -1,6 +1,6 @@
-<?= $this->extend('template/admin') ?>
+<?= $this->extend('layouts/admin') ?>
 
-<!-- START Content Section -->
+<!-- START Content  ction -->
 <?php $this->section('main') ?>
 
 <div class="page-heading">

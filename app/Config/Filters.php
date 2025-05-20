@@ -34,7 +34,6 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
-        'session'       => \CodeIgniter\Shield\Filters\SessionAuth::class,
         'htmlmin'       => \App\Filters\HtmlMinifier::class,
         'requestlog'    => \App\Filters\RequestLogger::class,
     ];
@@ -109,8 +108,6 @@ class Filters extends BaseFilters
      * @var array<string, array<string, list<string>>>
      */
     public array $filters = [
-        'session' => [
-            'before' => ['zpanel*'],
-        ]
+        
     ];
 }
