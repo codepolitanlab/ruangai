@@ -18,7 +18,14 @@
 			<section>
 				<!-- If player Youtube -->
 				<div x-show="data.lesson?.player == 'youtube'" class="ratio ratio-16x9">
-					<iframe width="560" height="315" :src="`https://www.youtube.com/embed/${data.lesson?.youtube_id}`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+					<iframe width="560" height="315"
+						:src="`https://www.youtube.com/embed/${data.lesson?.youtube_id}?autoplay=1&mute=1`"
+						title="YouTube video player"
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+						referrerpolicy="strict-origin-when-cross-origin"
+						allowfullscreen>
+					</iframe>
 				</div>
 
 				<!-- If player Bunny -->
@@ -31,31 +38,32 @@
 					<!-- <iframe width="560" height="315" :src="`https://www.youtube.com/embed/${data.lesson?.youtube_id}`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
 				</div>
 
-				<div class="container px-3">
+				<div class="container">
 					<div class="mt-4">
-						<h2 x-text="data.lesson?.lesson_title"></h2>
-						<p class="">Pelajari dasar-dasar Artificial Intelligence (AI), bagaimana cara kerjanya, serta peranannya dalam kehidupan sehari-hari. Kursus ini akan membimbing Anda memahami konsep AI secara sederhana sebelum mendalami topik lebih lanjut di setiap lesson!</p>
+						<div class="card border-0 shadow-none rounded-4 p-3 mb-3">
+							<h2 x-text="data.lesson?.lesson_title"></h2>
+							<p class="">Pelajari dasar-dasar Artificial Intelligence (AI), bagaimana cara kerjanya, serta peranannya dalam kehidupan sehari-hari. Kursus ini akan membimbing Anda memahami konsep AI secara sederhana sebelum mendalami topik lebih lanjut di setiap lesson!</p>
+						</div>
 
 						<!-- Action Buttons -->
 						<div class="d-flex gap-3 mb-5">
-							<!-- <button class="btn btn-ultra-light-primary rounded-pill px-4">
-								Forum
+							<!-- <button class="btn btn-ultra-light-primary rounded-pill px-4 ms-auto">
+								Saya Sudah Faham
 							</button> -->
 							<a :href="`/courses/lessons/${data.lesson?.next_lesson_id}`" class="btn btn-primary rounded-pill px-4 ms-auto">
 								<i class="bi bi-skip-forward-fill me-2"></i>
-								Berikutnya
+								Saya Sudah Faham, Berikutnya
 							</a>
 						</div>
 
 						<!-- Lesson List -->
-						<div>
+						<!-- <div>
 							<h3 class="mb-3">Materi Belajar Lainnya</h3>
 
 							<div class="card shadow-none border mb-3 p-3 rounded-20">
 								<template x-for="(lesson, index) in data.course?.lessons" :key="index">
 									<div>
 										<h5 class="mb-1" x-text="lesson.section_title"></h5>
-										<!-- Card Lesson -->
 										<a x-bind:href="`/courses/lessons/${lesson.id}`" class="d-block w-100 card-hover">
 											<div class="card rounded-20 p-3 mb-2" :class="lesson.id == $params.id ? 'bg-primary text-white' : 'bg-secondary-subtle'">
 												<div class="d-flex justify-content-between align-items-center">
@@ -73,7 +81,7 @@
 									</div>
 								</template>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</section>

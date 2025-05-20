@@ -82,7 +82,8 @@
 									<h5 class="m-0 text-muted" x-text="lesson.duration"></h5>
 								</div>
 								<div>
-									<i class="bi bi-lock-fill h4 m-0"></i>
+									<i x-show="lesson.locked" class="bi bi-lock-fill h4 m-0"></i>
+									<i x-show="!lesson.locked" class="bi bi-check-circle text-success h4 m-0"></i>
 								</div>
 							</div>
 						</a>

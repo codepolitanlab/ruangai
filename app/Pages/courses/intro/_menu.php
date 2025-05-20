@@ -19,9 +19,9 @@
                 <span class="visually-hidden">New alerts</span>
         </h6>
     </a>
-    <a :href="`/courses/intro/${$params.course_id}/${$params.slug}/student`"
+    <!-- <a :href="`/courses/intro/${$params.course_id}/${$params.slug}/student`"
         class="btn text-nowrap rounded-pill"
         :class="data.active_page == 'student' ? `btn-primary` : `btn-ultra-light-primary`">
         <h6 class="h6 m-0">Siswa</h6>
-    </a>
+    </a> -->
 </div>
