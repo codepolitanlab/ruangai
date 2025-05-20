@@ -117,7 +117,7 @@ class Auth
 		}
 		
         // Separate 'Bearer '
-		$jwt = explode(' ', $token)[1] ?? null;
+		$jwt = explode(' ', $token)[1] ?? explode(' ', $token)[0];
         
 		if (! $jwt) {
             throw new \Exception('Authorization token not found', 401);
