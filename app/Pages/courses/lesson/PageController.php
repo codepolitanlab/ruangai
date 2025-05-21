@@ -110,9 +110,18 @@ class PageController extends BaseController
         $lesson_id = $data['lesson_id'];
 
         $course = $db->table('course_lessons')
-            ->where('id', $lesson_id)
+            ->select('courses.id as course_id, courses.slug as course_slug')
+            ->join('courses', 'courses.id = course_lessons.course_id')
+            ->where('course_lessons.id', $lesson_id)
             ->get()
             ->getRowArray();
+
+        if (!$course) {
+            return $this->respond([
+               'status'    => 'failed',
+               'message' => 'Course tidak ditemukan',
+            ]);
+        }
 
         // Check if the user has already completed this lesson
         $existingProgress = $db->table('course_lesson_progress')
@@ -126,7 +135,7 @@ class PageController extends BaseController
 
             // Insert new progress record
             $progressData = [
-                'user_id' => $jwt->user_id,
+                'user_id'   => $jwt->user_id,
                 'lesson_id' => $lesson_id,
                 'course_id' => $course['course_id'],
             ];
@@ -135,12 +144,13 @@ class PageController extends BaseController
 
             if ($inserted) {
                 return $this->respond([
-                    'status'    => 'success',
+                    'status'  => 'success',
                     'message' => 'Berhasil menyelesaikan materi',
+                    'course'  => $course,
                 ]);
             } else {
                 return $this->respond([
-                    'status'    => 'failed',
+                    'status'  => 'failed',
                     'message' => 'Gagal menyelesaikan materi',
                 ]);
             }

@@ -80,7 +80,7 @@
 
 							<template x-if="!data.lesson?.next_lesson">
 								<div class="ms-auto">
-									<button class="btn btn-success rounded-pill px-4">
+									<button @click="markAsComplete(data.lesson?.id, data.lesson?.next_lesson?.id)" class="btn btn-success rounded-pill px-4">
 										<i class="bi bi-check-circle-fill me-2"></i>
 										Selesai
 									</button>

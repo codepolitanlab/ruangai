@@ -25,8 +25,13 @@ Alpine.data("lesson", function () {
         .then((response) => {
           if (response.data.status == "success") {
             alert(response.data.message);
-            // Redirect to next lesson
-            window.location.replace("/courses/lesson/" + nextLessonId);
+            if (!nextLessonId) {
+              let courseId = response.data.course.course_id;
+              let courseSlug = response.data.course.course_slug;
+              window.location.replace("/courses/intro/" + courseId + "/" + courseSlug + "/lessons");
+            } else {
+              window.location.replace("/courses/lesson/" + nextLessonId);
+            }
           } else {
             alert(response.data.message);
           }
