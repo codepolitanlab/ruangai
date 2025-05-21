@@ -174,6 +174,7 @@ class ScholarshipController extends ResourceController
                 'bank_name'      => $profile['bank_name'],
                 'account_name'   => $profile['account_name'],
                 'account_number' => $profile['account_number'],
+                'identity_card_image' => $profile['identity_card_image'],
             ];
         }
 
