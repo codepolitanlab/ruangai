@@ -5,6 +5,7 @@
         title: `<?= $page_title ?>`,
         url: `/courses/intro/lessons/data/${$params.course_id}`
     })"
+	x-debug
 	x-effect="loadPage(`/courses/intro/lessons/data/${$params.course_id}`)">
 
 	<?= $this->include('_appHeader'); ?>
@@ -44,6 +45,12 @@
 			font-size: 1rem;
 		}
 
+		.disabled {
+			pointer-events: none;
+			opacity: 0.6;
+			cursor: not-allowed;
+		}
+
 		.author img {
 			width: 80px;
 		}
@@ -54,19 +61,29 @@
 
 			<?= $this->include('courses/intro/_header'); ?>
 
-			<template x-for="(lessons,topic) of data.course?.lessons">
+			<template x-for="(lessons,topic) of data.course?.lessons" x-data="listLesson()">
 				<section class="card shadow-none rounded-3 p-3 mb-3">
 					<div class="h5 m-0" x-text="topic"></div>
 					<div class="card-body d-flex flex-column align-items-center gap-3 px-0">
-						<template x-for="lesson of lessons">
-							<a x-bind:href="`/courses/lesson/${lesson.id}`" class="d-block w-100">
+						<template x-for="(lesson, index) of lessons">
+							<a x-bind:href="`/courses/lesson/${lesson.id}`"
+								:class="{'disabled': !canAccessLesson(lesson, index, lessons, data.course?.lessons)}"
+								class="d-block w-100">
 								<div class="rounded-20 p-3 w-100 d-flex bg-light align-items-center justify-content-between">
 									<div>
 										<h4 class="fw-normal m-0 mb-1" x-text="lesson.lesson_title"></h4>
 										<h5 class="m-0 text-muted" x-text="lesson.duration"></h5>
 									</div>
 									<div>
-										<i class="bi bi-lock-fill h4 m-0"></i>
+										<template x-if="lesson.is_completed">
+											<i class="bi bi-check-circle text-success h4 m-0"></i>
+										</template>
+										<template x-if="!lesson.is_completed && canAccessLesson(lesson, index, lessons, data.course?.lessons)">
+											<i class="bi bi-play-circle text-primary h4 m-0"></i>
+										</template>
+										<template x-if="!lesson.is_completed && !canAccessLesson(lesson, index, lessons, data.course?.lessons)">
+											<i class="bi bi-lock h4 m-0"></i>
+										</template>
 									</div>
 								</div>
 							</a>
@@ -83,5 +100,7 @@
 		</div>
 		<div class="offcanvas-body small"></div>
 	</div>
+
 	<?= $this->include('_bottommenu') ?>
+	<?= $this->include('courses/intro/lessons/script') ?>
 </div>

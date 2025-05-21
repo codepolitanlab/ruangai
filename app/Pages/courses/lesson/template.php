@@ -5,17 +5,18 @@
         title: `<?= $page_title ?>`,
         url: `courses/lesson/data/${$params.id}`
     })"
+	x-debug
 	x-effect="loadPage(`courses/lesson/data/${$params.id}`)">
 
 	<div id="app-header" class="appHeader main border-0">
 		<div class="left">
-			<a class="headerButton" :href="`/courses/intro/${data.course.id}/${data.course.slug}`"><i class="bi bi-chevron-left"></i></a>
+			<a class="headerButton" :href="`/courses/intro/${data.course.id}/${data.course.slug}/lessons`"><i class="bi bi-chevron-left"></i></a>
 			<span x-text="data.course.course_title"></span>
 		</div>
 		<div class="pageTitle"></div>
 	</div>
 
-	<div id="appCapsule" class="appCapsule-lg">
+	<div id="appCapsule" class="appCapsule-lg" x-data="lesson()">
 		<div class="appContent px-0 bg-white rounded-4" style="min-height:95vh">
 
 			<section>
@@ -50,13 +51,41 @@
 
 						<!-- Action Buttons -->
 						<div class="d-flex gap-3 mb-5">
-							<!-- <button class="btn btn-ultra-light-primary rounded-pill px-4 ms-auto">
-								Saya Sudah Faham
-							</button> -->
-							<a :href="`/courses/lessons/${data.lesson?.next_lesson_id}`" class="btn btn-primary rounded-pill px-4 ms-auto">
-								<i class="bi bi-skip-forward-fill me-2"></i>
-								Saya Sudah Faham, Berikutnya
-							</a>
+							<template x-if="data.lesson?.prev_lesson">
+								<div class="d-flex flex-column align-items-start gap-2">
+									<a :href="`/courses/lesson/${data.lesson?.prev_lesson.id}`" class="btn btn-ultra-light-primary rounded-pill px-4">
+										<i class="bi bi-skip-backward-fill me-2"></i>
+										Sebelumnya
+									</a>
+									<small class="text-muted" x-text="'Sebelumnya: ' + data.lesson?.prev_lesson.lesson_title"></small>
+								</div>
+							</template>
+
+							<template x-if="!data.lesson?.is_completed && data.lesson?.next_lesson">
+								<button @click="markAsComplete(data.lesson?.id, data.lesson?.next_lesson?.id)" class="btn btn-primary rounded-pill px-4 ms-auto">
+									<i class="bi bi-check-circle me-2"></i>
+									Saya Sudah Faham
+								</button>
+							</template>
+							
+							<template x-if="data.lesson?.is_completed && data.lesson?.next_lesson">
+								<div class="d-flex flex-column align-items-end gap-2 ms-auto">
+									<a :href="`/courses/lesson/${data.lesson?.next_lesson.id}`" class="btn btn-primary rounded-pill px-4">
+										<i class="bi bi-skip-forward-fill me-2"></i>
+										Berikutnya
+									</a>
+									<small class="text-muted" x-text="'Selanjutnya: ' + data.lesson?.next_lesson.lesson_title"></small>
+								</div>
+							</template>
+
+							<template x-if="!data.lesson?.next_lesson">
+								<div class="ms-auto">
+									<button class="btn btn-success rounded-pill px-4">
+										<i class="bi bi-check-circle-fill me-2"></i>
+										Selesai
+									</button>
+								</div>
+							</template>
 						</div>
 					</div>
 				</div>
@@ -66,4 +95,5 @@
 	</div>
 
 	<?= $this->include('_bottommenu') ?>
+	<?= $this->include('courses/lesson/script') ?>
 </div>
