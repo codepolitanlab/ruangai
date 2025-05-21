@@ -1,19 +1,12 @@
-<?php namespace App\Pages;
+<?php namespace App\Pages\zpanel;
 
-use CodeIgniter\API\ResponseTrait;
+use App\Controllers\BaseController;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use Yllumi\Heroic\Controllers\HeroicController;
 
-class BaseController extends HeroicController 
+class AdminController extends BaseController
 {
-	use ResponseTrait;
-
-	protected $helpers = [
-		'Yllumi\Ci4Pages\Helpers\pageview',
-		'Yllumi\Heroic\Helpers\heroic',
-	];
 	
 	public $data = [
 		'page_title' => 'Homepage'
@@ -26,8 +19,10 @@ class BaseController extends HeroicController
     {
         parent::initController($request, $response, $logger);
 
-		// Preload any models, libraries, etc, here.
-
+		// Check session
+		if (!session()->get('logged_in')) {
+			header('Location: zpanel/login');
+		}
     }
 
 }

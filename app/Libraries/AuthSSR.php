@@ -6,7 +6,7 @@ use App\Models\UserModel;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-class Auth
+class AuthSSR
 {
     /**
      * Login user
@@ -50,13 +50,10 @@ class Auth
         $userModel->update($user['id'], ['last_active' => date('Y-m-d H:i:s')]);
 
         // Buat token
-        $user['jwt'] = JWT::encode([
-            'email'           => $user['email'],
-            'whatsapp_number' => $user['phone'],
+        session()->set([
+            'logged_in'       => true,
             'user_id'         => $user['id'],
-            'isValidEmail'    => $user['email_valid'],
-            'exp'             => time() + 7 * 24 * 60 * 60
-        ], config('Heroic')->jwtKey['secret'], 'HS256');
+        ]);
 
         return ['success', '', $user];
     }
