@@ -11,7 +11,7 @@
 	<div id="app-header" class="appHeader main border-0">
 		<div class="left">
 			<a class="headerButton" :href="`/courses/intro/${data.course.id}/${data.course.slug}/lessons`"><i class="bi bi-chevron-left"></i></a>
-			<span x-text="data.course.course_title"></span>
+			<span x-text="data.course.lessons.find(lesson => lesson.id == $params.id).topic_title"></span>
 		</div>
 		<div class="pageTitle"></div>
 	</div>

@@ -51,7 +51,8 @@ class PageController extends BaseController
                         course_lessons.lesson_title, 
                         course_lessons.topic_id,
                         course_topics.topic_order,
-                        course_lessons.lesson_order
+                        course_lessons.lesson_order,
+                        course_topics.topic_title
                     ')
                     ->join('course_topics', 'course_topics.id = course_lessons.topic_id')
                     ->where('course_lessons.course_id', $course['id'])
@@ -67,6 +68,7 @@ class PageController extends BaseController
 
                 $course['lessons'] = $lessons;
                 $lesson['is_completed'] = in_array($lesson['id'], $completedLessonIds);
+
                 // Get previous lesson
                 $prevLesson = $db->table('course_lessons')
                     ->select('id, lesson_title')
@@ -75,6 +77,7 @@ class PageController extends BaseController
                     ->orderBy('lesson_order', 'DESC')
                     ->get()
                     ->getRowArray();
+
                 // Get next lesson
                 $nextLesson = $db->table('course_lessons')
                     ->select('id, lesson_title')
