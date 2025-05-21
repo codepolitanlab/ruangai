@@ -46,6 +46,7 @@ class UserController extends ResourceController
                 'bank_name'      => $data['bank_name'],
                 'account_number' => $data['account_number'],
                 'account_name'   => $data['account_name'],
+                'identity_card_image' => $data['identity_card_image'] ?? null,
             ]);
         } else {
             $userProfileModel->insert([
@@ -53,6 +54,7 @@ class UserController extends ResourceController
                 'bank_name'      => $data['bank_name'],
                 'account_number' => $data['account_number'],
                 'account_name'   => $data['account_name'],
+                'identity_card_image' => $data['identity_card_image'] ?? null,
             ]);
         }
 
