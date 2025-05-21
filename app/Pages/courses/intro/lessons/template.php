@@ -62,7 +62,7 @@
 			<?= $this->include('courses/intro/_header'); ?>
 
 			<template x-if="!data.course?.lessons || Object.keys(data.course?.lessons).length === 0">
-				<div class="card shadow-none rounded-3 p-3 mb-3 text-center">
+				<div class="card shadow-none rounded-4 p-3 mb-3 text-center">
 					<div class="mb-3">
 						<i class="bi bi-journal-x display-4"></i>
 					</div>
