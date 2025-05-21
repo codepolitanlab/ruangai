@@ -1,11 +1,11 @@
 <?php namespace App\Pages\zpanel;
 
-use App\Pages\BaseController as PagesBaseController;
+use App\Controllers\BaseController;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
-class AdminController extends PagesBaseController
+class AdminController extends BaseController
 {
 	
 	public $data = [
@@ -19,10 +19,10 @@ class AdminController extends PagesBaseController
     {
         parent::initController($request, $response, $logger);
 
-		// Preload any models, libraries, etc, here.
-
-		$this->data['themeURL'] = base_url('admin') .'/'; 
-        $this->data['themePath'] = 'admin/'; 
+		// Check session
+		if (!session()->get('logged_in')) {
+			header('Location: zpanel/login');
+		}
     }
 
 }

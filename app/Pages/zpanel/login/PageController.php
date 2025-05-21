@@ -1,51 +1,46 @@
-<?php namespace App\Pages\login;
+<?php 
+
+namespace App\Pages\zpanel\login;
 
 use App\Pages\BaseController;
-use CodeIgniter\API\ResponseTrait;
-use Firebase\JWT\JWT;
 
-class PageController extends BaseController 
+class PageController extends BaseController
 {
-    use ResponseTrait;
+    public $data = [
+        'page_title' => "Login"
+    ];
+
+    public function getIndex()
+    {
+        return pageView('zpanel/login/index', $this->data);
+    }
 
     // Check login
     public function postIndex()
     {
-        $username = strtolower($this->request->getPost('username'));
+        $username = strtolower($this->request->getPost('identity'));
         $password = $this->request->getPost('password');
-        
-        $Tarbiyya = new \App\Libraries\Tarbiyya();
-        $db = \Config\Database::connect();
-        
-        // Check login to database directly using $db
-        $found = $db->query('SELECT * FROM mein_users where (email = :username: OR phone = :username: OR username = :username:) AND status = "active"', ['username' => $username])->getRow();
-        $jwt = null;
-        if($found) {
-            $Phpass = new \App\Libraries\Phpass();
-            if($Phpass->CheckPassword($password, $found->password))
-            {
-                // Create JWT
-                $userSession = [
-                    'logged_in' => true,
-                    'user_id' => $found->id,
-                    'email' => $found->email,
-                    'timestamp' => time()
-                ];
-                $jwt = JWT::encode($userSession, config('App')->jwtKey['secret'], 'HS256');
 
-                $user = [
-                    'name' => $found->name,
-                    'email' => $found->email,
-                    'phone' => $found->phone
-                ];
-            }
+        if(empty($username) || empty($password)) {
+            session()->setFlashdata('message', 'Username dan Password harus diisi');
+            redirectPage('zpanel/login');
         }
+        
+        $Auth = new \App\Libraries\AuthSSR();
+        [$status, $message, $user] = $Auth->login($username, $password);
 
-        return $this->respond([
-            'found' => $jwt ? 1 : 0,
-            'jwt' => $jwt,
-            'user' => $user ?? []
-        ]);
+        if($status == 'failed') {
+            session()->setFlashdata('message', $message);
+            redirectPage('zpanel/login');
+        }
+        
+        redirectPage('zpanel');
+    }
+
+    public function getLogout()
+    {
+        session()->destroy();
+        redirectPage('zpanel/login');
     }
 
     public function getTest()
