@@ -61,35 +61,47 @@
 
 			<?= $this->include('courses/intro/_header'); ?>
 
-			<template x-for="(lessons,topic) of data.course?.lessons" x-data="listLesson()">
-				<section class="card shadow-none rounded-3 p-3 mb-3">
-					<div class="h5 m-0" x-text="topic"></div>
-					<div class="card-body d-flex flex-column align-items-center gap-3 px-0">
-						<template x-for="(lesson, index) of lessons">
-							<a x-bind:href="`/courses/lesson/${lesson.id}`"
-								:class="{'disabled': !canAccessLesson(lesson, index, lessons, data.course?.lessons)}"
-								class="d-block w-100">
-								<div class="rounded-20 p-3 w-100 d-flex bg-light align-items-center justify-content-between">
-									<div>
-										<h4 class="fw-normal m-0 mb-1" x-text="lesson.lesson_title"></h4>
-										<h5 class="m-0 text-muted" x-text="lesson.duration"></h5>
-									</div>
-									<div>
-										<template x-if="lesson.is_completed">
-											<i class="bi bi-check-circle text-success h4 m-0"></i>
-										</template>
-										<template x-if="!lesson.is_completed && canAccessLesson(lesson, index, lessons, data.course?.lessons)">
-											<i class="bi bi-play-circle text-primary h4 m-0"></i>
-										</template>
-										<template x-if="!lesson.is_completed && !canAccessLesson(lesson, index, lessons, data.course?.lessons)">
-											<i class="bi bi-lock h4 m-0"></i>
-										</template>
-									</div>
-								</div>
-							</a>
-						</template>
+			<template x-if="!data.course?.lessons || Object.keys(data.course?.lessons).length === 0">
+				<div class="card shadow-none rounded-3 p-3 mb-3 text-center">
+					<div class="mb-3">
+						<i class="bi bi-journal-x display-4"></i>
 					</div>
-				</section>
+					<h3 class="text-muted mb-2">Belum Ada Materi</h3>
+					<p class="text-muted">Materi untuk kursus ini belum tersedia.</p>
+				</div>
+			</template>
+
+			<template x-if="data.course?.lessons && Object.keys(data.course?.lessons).length > 0">
+				<template x-for="(lessons,topic) of data.course?.lessons" x-data="listLesson()">
+					<section class="card shadow-none rounded-3 p-3 mb-3">
+						<div class="h5 m-0" x-text="topic"></div>
+						<div class="card-body d-flex flex-column align-items-center gap-3 px-0">
+							<template x-for="(lesson, index) of lessons">
+								<a x-bind:href="`/courses/lesson/${lesson.id}`"
+									:class="{'disabled': !canAccessLesson(lesson, index, lessons, data.course?.lessons)}"
+									class="d-block w-100">
+									<div class="rounded-20 p-3 w-100 d-flex bg-light align-items-center justify-content-between">
+										<div>
+											<h4 class="fw-normal m-0 mb-1" x-text="lesson.lesson_title"></h4>
+											<h5 class="m-0 text-muted" x-text="lesson.duration"></h5>
+										</div>
+										<div>
+											<template x-if="lesson.is_completed">
+												<i class="bi bi-check-circle text-success h4 m-0"></i>
+											</template>
+											<template x-if="!lesson.is_completed && canAccessLesson(lesson, index, lessons, data.course?.lessons)">
+												<i class="bi bi-play-circle text-primary h4 m-0"></i>
+											</template>
+											<template x-if="!lesson.is_completed && !canAccessLesson(lesson, index, lessons, data.course?.lessons)">
+												<i class="bi bi-lock h4 m-0"></i>
+											</template>
+										</div>
+									</div>
+								</a>
+							</template>
+						</div>
+					</section>
+				</template>
 			</template>
 		</div>
 	</div>
