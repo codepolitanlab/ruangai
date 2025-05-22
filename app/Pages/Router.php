@@ -45,7 +45,8 @@ class Router
             'preload' => true,
             'handler' => '[isLoggedIn]',
         ],
-        '/courses/lesson/:id' => [
+        '/courses/:course_id/lesson/:lesson_id' => [
+            'template' => '/courses/lesson/template',
             'preload' => true,
             'handler' => '[isLoggedIn]',
         ],
