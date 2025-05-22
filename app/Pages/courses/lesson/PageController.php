@@ -3,6 +3,7 @@
 namespace App\Pages\courses\lesson;
 
 use App\Pages\BaseController;
+use Symfony\Component\Yaml\Yaml;
 
 class PageController extends BaseController
 {
@@ -29,6 +30,10 @@ class PageController extends BaseController
 
         if ($lesson) 
         {
+            // Handle quiz format first
+            if($lesson['type'] == 'quiz' && $lesson['quiz'])
+                $lesson['quiz'] = $this->prepareQuiz($lesson['quiz']);
+
             // Subquery untuk mendapatkan lesson yang sudah selesai
             $completedLessons = $db->table('course_lesson_progress')
                 ->select('lesson_id')
@@ -87,6 +92,7 @@ class PageController extends BaseController
         }
     }
 
+    // Submit progress learnong
     public function postIndex()
     {
         $data = $this->request->getPost();
@@ -148,5 +154,11 @@ class PageController extends BaseController
            'status'    => 'failed',
            'message' => 'Anda sudah menyelesaikan materi ini',
         ]);
+    }
+
+    private function prepareQuiz($yaml)
+    {
+        $arrayQuiz = Yaml::parse($yaml);
+        return $arrayQuiz['quiz'] ?? [];
     }
 }
