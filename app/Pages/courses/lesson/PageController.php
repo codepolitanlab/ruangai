@@ -62,32 +62,22 @@ class PageController extends BaseController
                     ->getResultArray();
 
                 // Menambahkan status completed ke setiap lesson
-                foreach ($lessons as &$lessonItem) {
-                    $lessonItem['is_completed'] = in_array($lessonItem['id'], $completedLessonIds);
+                $orderedLessons = [];
+                foreach ($lessons as $lessonItem) {
+                    $orderedLessons[$lessonItem['id']] = $lessonItem;
+                    $orderedLessons[$lessonItem['id']]['is_completed'] = in_array($lessonItem['id'], $completedLessonIds);
                 }
 
-                $course['lessons'] = $lessons;
+                $course['lessons'] = $orderedLessons;
                 $lesson['is_completed'] = in_array($lesson['id'], $completedLessonIds);
 
-                // Get previous lesson
-                $prevLesson = $db->table('course_lessons')
-                    ->select('id, lesson_title')
-                    ->where('course_id', $course['id'])
-                    ->where('lesson_order <', $lesson['lesson_order'])
-                    ->orderBy('lesson_order', 'DESC')
-                    ->get()
-                    ->getRowArray();
-
-                // Get next lesson
-                $nextLesson = $db->table('course_lessons')
-                    ->select('id, lesson_title')
-                    ->where('course_id', $course['id'])
-                    ->where('lesson_order >', $lesson['lesson_order'])
-                    ->orderBy('lesson_order', 'ASC')
-                    ->get()
-                    ->getRowArray();
-                $lesson['prev_lesson'] = $prevLesson;
-                $lesson['next_lesson'] = $nextLesson;
+                // Get previous and next lesson
+                $IDs = array_keys($course['lessons']);
+                $currentIndexID = array_search($id, $IDs);
+                $prevLesson = $IDs[$currentIndexID - 1] ?? null;
+                $nextLesson = $IDs[$currentIndexID + 1] ?? null;
+                $lesson['prev_lesson'] = $prevLesson ? $course['lessons'][$prevLesson] : null;
+                $lesson['next_lesson'] = $nextLesson ? $course['lessons'][$nextLesson] : null;
             }
 
             $this->data['course'] = $course;

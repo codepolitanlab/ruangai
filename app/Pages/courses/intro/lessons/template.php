@@ -5,7 +5,7 @@
         title: `<?= $page_title ?>`,
         url: `/courses/intro/lessons/data/${$params.course_id}`
     })"
-	x-debug
+	
 	x-effect="loadPage(`/courses/intro/lessons/data/${$params.course_id}`)">
 
 	<?= $this->include('_appHeader'); ?>

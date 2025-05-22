@@ -3,7 +3,7 @@
         title: `<?= $page_title ?>`,
 		url: `courses/intro/student/detail/data/${$params.id}`
     })"
-	x-debug>
+	>
 	<div id="app-header" class="appHeader main border-0">
 		<div class="left"><a class="headerButton" :href="`/courses/intro/${$params.course_id}/${$params.slug}/student`"><i class="bi bi-chevron-left"></i></a></div>
 		<div class="pageTitle"><span><?= $page_title ?></span></div>

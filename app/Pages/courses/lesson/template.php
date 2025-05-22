@@ -5,7 +5,6 @@
         title: `<?= $page_title ?>`,
         url: `courses/lesson/data/${$params.id}`
     })"
-	x-debug
 	x-effect="loadPage(`courses/lesson/data/${$params.id}`)">
 
 	<div id="app-header" class="appHeader main border-0">
@@ -53,16 +52,22 @@
 						<div class="d-flex gap-3 mb-5">
 							<template x-if="data.lesson?.prev_lesson">
 								<div class="d-flex flex-column align-items-start gap-2">
-									<a :href="`/courses/lesson/${data.lesson?.prev_lesson.id}`" class="btn btn-ultra-light-primary rounded-pill px-4">
-										<i class="bi bi-skip-backward-fill me-2"></i>
-										Sebelumnya
+									<a :href="`/courses/lesson/${data.lesson?.prev_lesson.id}`" 
+										class="btn btn-outline-secondary rounded-pill ps-4 pe-3 py-4">
+										<i class="bi bi-arrow-left me-2"></i>
+										<div class="text-start me-3 mt-2">
+											<span>Sebelumnya</span>
+											<h5 class="h6" x-text="data.lesson?.prev_lesson.lesson_title"></h5>
+										</div>
 									</a>
-									<small class="text-muted" x-text="'Sebelumnya: ' + data.lesson?.prev_lesson.lesson_title"></small>
 								</div>
 							</template>
 
 							<template x-if="!data.lesson?.is_completed && data.lesson?.next_lesson">
-								<button @click="markAsComplete(data.lesson?.id, data.lesson?.next_lesson?.id)" class="btn btn-primary rounded-pill px-4 ms-auto">
+								<button @click="markAsComplete(data.lesson?.id, data.lesson?.next_lesson?.id)" 
+									class="btn btn-lg btn-primary rounded-pill px-4 ms-auto"
+									:class="showButtonPaham ? '' : 'disabled'"
+									x-transition>
 									<i class="bi bi-check-circle me-2"></i>
 									Saya Sudah Faham
 								</button>
@@ -70,11 +75,14 @@
 							
 							<template x-if="data.lesson?.is_completed && data.lesson?.next_lesson">
 								<div class="d-flex flex-column align-items-end gap-2 ms-auto">
-									<a :href="`/courses/lesson/${data.lesson?.next_lesson.id}`" class="btn btn-primary rounded-pill px-4">
-										<i class="bi bi-skip-forward-fill me-2"></i>
-										Berikutnya
+									<a :href="`/courses/lesson/${data.lesson?.next_lesson.id}`" 
+									   class="btn btn-outline-secondary rounded-pill ps-4 pe-3 py-4">
+										<div class="text-end me-3 mt-2">
+											<span class="">Selanjutnya</span><br>
+											<h5 class="h6 " x-text="data.lesson?.next_lesson.lesson_title"></h5>
+										</div>
+										<i class="bi bi-arrow-right me-2"></i>
 									</a>
-									<small class="text-muted" x-text="'Selanjutnya: ' + data.lesson?.next_lesson.lesson_title"></small>
 								</div>
 							</template>
 
