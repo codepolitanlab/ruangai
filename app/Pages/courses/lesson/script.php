@@ -1,12 +1,13 @@
 <script>
-Alpine.data("lesson", function () {
-  return {
-    title: "Lesson",
-    showButtonPaham: false,
-    waitToShowButtonPaham: 1000 * 3,
-    errorMessage: null,
-    buttonSubmitting: false,
-    sanboxLogin: {},
+  Alpine.data("lesson", function() {
+    return {
+      title: "Lesson",
+      showButtonPaham: false,
+      waitToShowButtonPaham: 1000 * 3,
+      errorMessage: null,
+      buttonSubmitting: false,
+
+      currentQuestion: 0,
 
       async init() {
         // Show button saya sudah paham setelah n detik
@@ -49,4 +50,36 @@ Alpine.data("lesson", function () {
 
     };
   });
+
+  Alpine.data('lesson_quiz', function(parentQuizzes) {
+    return {
+      quizzes: parentQuizzes,
+      quizKeys: [],
+      currentIndex: 0,
+      answers: {},
+
+      init() {
+        this.quizKeys = Object.keys(this.quizzes);
+      },
+
+      get currentKey() {
+        return this.quizKeys[this.currentIndex];
+      },
+      get currentQuiz() {
+        return this.quizzes[this.currentKey];
+      },
+      nextQuiz() {
+        if (this.currentIndex < this.quizKeys.length - 1) this.currentIndex++;
+      },
+      prevQuiz() {
+        if (this.currentIndex > 0) this.currentIndex--;
+      },
+      goTo(index) {
+        this.currentIndex = index;
+      },
+      storeAnswer(key, value) {
+        this.answers[key] = value;
+      }
+    }
+  })
 </script>

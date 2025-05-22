@@ -31,8 +31,11 @@ class PageController extends BaseController
         if ($lesson) 
         {
             // Handle quiz format first
-            if($lesson['type'] == 'quiz' && $lesson['quiz'])
-                $lesson['quiz'] = $this->prepareQuiz($lesson['quiz']);
+            if($lesson['type'] == 'quiz' && $lesson['quiz']) {
+                [$questions, $answers] = $this->prepareQuiz($lesson['quiz']);
+
+                $lesson['quiz'] = $questions;
+            }
 
             // Subquery untuk mendapatkan lesson yang sudah selesai
             $completedLessons = $db->table('course_lesson_progress')
@@ -156,9 +159,23 @@ class PageController extends BaseController
         ]);
     }
 
+    // Parse quiz into [$questions, $answers]
     private function prepareQuiz($yaml)
     {
         $arrayQuiz = Yaml::parse($yaml);
-        return $arrayQuiz['quiz'] ?? [];
+
+        $questions = [];
+        $answers = [];
+        foreach ($arrayQuiz['quiz'] as $item) {
+            $hash = substr(md5($item['question']), -6);
+            $questions[$hash] = [
+                'type' => $item['type'],
+                'question' => $item['question'],
+                'options' => $item['options'] ?? [],
+            ];
+            $answers[$hash] = $item['answer'];
+        }
+
+        return [$questions, $answers];
     }
 }
