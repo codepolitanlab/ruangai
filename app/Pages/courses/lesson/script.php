@@ -3,7 +3,7 @@ Alpine.data("lesson", function () {
   return {
     title: "Lesson",
     showButtonPaham: false,
-    waitToShowButtonPaham: 1000 * 30,
+    waitToShowButtonPaham: 1000 * 3,
     errorMessage: null,
     buttonSubmitting: false,
     sanboxLogin: {},

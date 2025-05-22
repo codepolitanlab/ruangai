@@ -3,26 +3,26 @@
 	id="lesson_detail"
 	x-data="$heroic({
         title: `<?= $page_title ?>`,
-        url: `courses/lesson/data/${$params.id}`
+        url: `courses/lesson/data/${$params.course_id}/${$params.lesson_id}`
     })"
-	x-effect="loadPage(`courses/lesson/data/${$params.id}`)">
+	x-effect="loadPage(`courses/lesson/data/${$params.course_id}/${$params.lesson_id}`)">
 
 	<div id="app-header" class="appHeader main border-0">
 		<div class="left">
 			<a class="headerButton" :href="`/courses/intro/${data.course.id}/${data.course.slug}/lessons`"><i class="bi bi-chevron-left"></i></a>
-			<span x-text="data.course.lessons.find(lesson => lesson.id == $params.id).topic_title"></span>
+			<span x-text="data.lesson.course_title + ' - ' + data.lesson.topic_title"></span>
 		</div>
 		<div class="pageTitle"></div>
 	</div>
 
 	<div id="appCapsule" class="appCapsule-lg" x-data="lesson()">
-		<div class="appContent px-0 bg-white rounded-4" style="min-height:95vh">
+		<div class="appContent px-0 bg-white rounded-bottom-4" style="min-height:95vh">
 
 			<section>
 				<!-- If player Youtube -->
-				<div x-show="data.lesson?.player == 'youtube'" class="ratio ratio-16x9">
+				<div x-show="data.lesson?.video && data.lesson?.player == 'youtube'" class="ratio ratio-16x9">
 					<iframe width="560" height="315"
-						:src="`https://www.youtube.com/embed/${data.lesson?.youtube_id}?autoplay=1&mute=1`"
+						:src="`${data.lesson?.video}&autoplay=1`"
 						title="YouTube video player"
 						frameborder="0"
 						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -42,7 +42,7 @@
 				</div>
 
 				<div class="container">
-					<div class="mt-4">
+					<div class="pt-4">
 						<div class="card border-0 shadow-none rounded-4 p-3 mb-3">
 							<h2 x-text="data.lesson?.lesson_title"></h2>
 							<p class="">Pelajari dasar-dasar Artificial Intelligence (AI), bagaimana cara kerjanya, serta peranannya dalam kehidupan sehari-hari. Kursus ini akan membimbing Anda memahami konsep AI secara sederhana sebelum mendalami topik lebih lanjut di setiap lesson!</p>
@@ -52,7 +52,7 @@
 						<div class="d-flex gap-3 mb-5">
 							<template x-if="data.lesson?.prev_lesson">
 								<div class="d-flex flex-column align-items-start gap-2">
-									<a :href="`/courses/lesson/${data.lesson?.prev_lesson.id}`" 
+									<a :href="`/courses/${data.lesson.course_id}/lesson/${data.lesson?.prev_lesson.id}`" 
 										class="btn btn-outline-secondary rounded-pill ps-4 pe-3 py-4">
 										<i class="bi bi-arrow-left me-2"></i>
 										<div class="text-start me-3 mt-2">
@@ -63,7 +63,7 @@
 								</div>
 							</template>
 
-							<template x-if="!data.lesson?.is_completed && data.lesson?.next_lesson">
+							<template x-if="!data.lesson?.is_completed && data.lesson?.next_lesson && data.lesson?.type == 'theory'">
 								<button @click="markAsComplete(data.lesson?.id, data.lesson?.next_lesson?.id)" 
 									class="btn btn-lg btn-primary rounded-pill px-4 ms-auto"
 									:class="showButtonPaham ? '' : 'disabled'"
@@ -75,7 +75,7 @@
 							
 							<template x-if="data.lesson?.is_completed && data.lesson?.next_lesson">
 								<div class="d-flex flex-column align-items-end gap-2 ms-auto">
-									<a :href="`/courses/lesson/${data.lesson?.next_lesson.id}`" 
+									<a :href="`/courses/${data.lesson.course_id}/lesson/${data.lesson?.next_lesson.id}`" 
 									   class="btn btn-outline-secondary rounded-pill ps-4 pe-3 py-4">
 										<div class="text-end me-3 mt-2">
 											<span class="">Selanjutnya</span><br>

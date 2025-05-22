@@ -77,7 +77,7 @@
 						<div class="h5 m-0" x-text="topic"></div>
 						<div class="card-body d-flex flex-column align-items-center gap-3 px-0">
 							<template x-for="(lesson, index) of lessons">
-								<a x-bind:href="`/courses/lesson/${lesson.id}`"
+								<a x-bind:href="`/courses/${data.course.id}/lesson/${lesson.id}`"
 									:class="{'disabled': !canAccessLesson(lesson, index, lessons, data.course?.lessons)}"
 									class="d-block w-100">
 									<div class="rounded-20 p-3 w-100 d-flex bg-light align-items-center justify-content-between">
