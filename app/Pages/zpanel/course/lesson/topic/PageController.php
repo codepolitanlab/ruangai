@@ -8,31 +8,62 @@ class PageController extends AdminController
         'page_title' => "Topik Kelas"
     ];
 
-    public function getIndex($course_id)
+    public function getIndex($course_id, $topic_id = null)
     {
         $db = \Config\Database::connect();
-        $this->data['course'] = $db->table('courses')->where('id', $course_id)->get()->getRowArray();
+        $this->data['course'] = $db->table('courses')
+                                    ->where('id', $course_id)
+                                    ->get()
+                                    ->getRowArray();
+
+        if($topic_id) {
+            $this->data['topic'] = $db->table('course_topics')
+                                        ->where('id', $topic_id)
+                                        ->where('course_id', $course_id)
+                                        ->get()
+                                        ->getRowArray();
+        }
 
         return pageView('zpanel/course/lesson/topic/index', $this->data);
     }
 
-    public function postIndex($course_id)
+    public function postIndex($course_id, $topic_id = null)
     {
         $postData = $this->request->getPost();
         
         $CourseTopicModel = model('CourseTopic');
-        $lastTopic = $CourseTopicModel->select('topic_order')->where('course_id', $course_id)->orderBy('topic_order', 'DESC')->first();
 
-        $data = [
-            'course_id'     => (int)$course_id,
-            'topic_title'   => $postData['topic_title'],
-            'topic_slug'    => url_title($postData['topic_title'], '-', true),
-            'topic_order'   => (int)($lastTopic['topic_order'] ?? 0) + 1,
-            'free'          => (int)($postData['free'] ?? 0),
-            'status'        => (int)($postData['status'] ?? 0)
-        ];
-        $CourseTopicModel->insert($data);
+        // Update
+        if($topic_id) 
+        {
+            $data = [
+                'topic_title'   => $postData['topic_title'],
+                'topic_slug'    => url_title($postData['topic_title'], '-', true),
+                'free'          => (int)($postData['free'] ?? 0),
+                'status'        => (int)($postData['status'] ?? 0)
+            ];
+            $CourseTopicModel->update($topic_id, $data);
+            return redirectPage('/zpanel/course/lesson/topic/'.$course_id . '/' . $topic_id);
 
-        return redirectPage('/zpanel/course/lesson/topic/'.$course_id);
+        // Insert
+        } else {
+            $lastTopic = $CourseTopicModel
+                            ->select('topic_order')
+                            ->where('course_id', $course_id)
+                            ->orderBy('topic_order', 'DESC')
+                            ->first();
+            
+            $data = [
+                'course_id'     => (int)$course_id,
+                'topic_title'   => $postData['topic_title'],
+                'topic_slug'    => url_title($postData['topic_title'], '-', true),
+                'topic_order'   => (int)($lastTopic['topic_order'] ?? 0) + 1,
+                'free'          => (int)($postData['free'] ?? 0),
+                'status'        => (int)($postData['status'] ?? 0)
+            ];
+            $CourseTopicModel->insert($data);
+            return redirectPage('/zpanel/course/lesson/topic/'.$course_id);
+        }
+
     }
 }
