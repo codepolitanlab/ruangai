@@ -207,3 +207,7 @@ button.vanilla-calendar-day__btn.alpa, .presensi-status-container.alpa { backgro
         padding: 12px !important;
     }
 }
+
+.text-success-darker {
+    color: #2E7D32 !important;
+}

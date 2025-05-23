@@ -50,10 +50,6 @@ class Router
             'preload' => true,
             'handler' => '[isLoggedIn]',
         ],
-        '/courses/quiz/:id' => [
-            'preload' => true,
-            'handler' => '[isLoggedIn]',
-        ],
         '/courses/tanya_jawab' => [],
         '/courses/tanya_jawab/:id' => [
             'template' => '/courses/tanya_jawab/detail/template',

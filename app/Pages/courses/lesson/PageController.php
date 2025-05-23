@@ -32,8 +32,9 @@ class PageController extends BaseController
         {
             // Handle quiz format first
             if($lesson['type'] == 'quiz' && $lesson['quiz']) {
-                [$questions, $answers] = $this->prepareQuiz($lesson['quiz']);
+                [$description, $questions, $answers] = $this->prepareQuiz($lesson['quiz']);
 
+                $lesson['quiz_description'] = $description;
                 $lesson['quiz'] = $questions;
             }
 
@@ -95,34 +96,101 @@ class PageController extends BaseController
         }
     }
 
-    // Submit progress learnong
+    // Submit progress learning
     public function postIndex()
     {
         $data = $this->request->getPost();
         $Heroic = new \App\Libraries\Heroic();
 
         $jwt = $Heroic->checkToken();
-
-        $db = \Config\Database::connect();
+        $course_id = $data['course_id'];
         $lesson_id = $data['lesson_id'];
+
+        $result = $this->writeProgress($jwt->user_id, $course_id, $lesson_id);
+
+        return $this->respond($result);
+    }
+
+    public function postQuiz()
+    {
+        $data = $this->request->getPost();
+        $Heroic = new \App\Libraries\Heroic();
+
+        $jwt = $Heroic->checkToken();
+
+        $course_id    = $data['course_id'];
+        $lesson_id    = $data['lesson_id'];
+        $user_answers = json_decode($data['answers'], true);
+        
+        $db = \Config\Database::connect();
+        $lesson = $db->table('course_lessons')
+            ->select('quiz')
+            ->where('course_lessons.id', $lesson_id)
+            ->where('course_lessons.course_id', $course_id)
+            ->get()
+            ->getRowArray();
+
+        [$description, $questions, $rightAnswers] = $this->prepareQuiz($lesson['quiz']);
+
+        $hasil = [];
+        $benar = 0;
+        foreach ($rightAnswers as $id => $kunci) {
+            $jawabanUser = $user_answers[$id] ?? null;
+
+            // Normalisasi untuk tipe true_false (string 'true'/'false' ke boolean)
+            if (is_bool($kunci['value'])) {
+                $jawabanUser = $jawabanUser === "true" ? true : false;
+            }
+
+            $isCorrect = $jawabanUser === $kunci['value'];
+            $hasil[$id] = [
+                'jawaban'    => $user_answers[$id] ?? null,
+                'benar'      => $isCorrect,
+                'penjelasan' => $isCorrect ? $kunci['explanation'] : null
+            ];
+
+            if ($isCorrect) $benar++;
+        }
+
+        $score = $benar / count($rightAnswers) * 100;
+        $minimumScore = 75;
+        $isPass = $score >= $minimumScore;
+
+        if($isPass)
+            $this->writeProgress($jwt->user_id, $course_id, $lesson_id);
+
+        return $this->respond([
+            'hasil' => $hasil, 
+            'benar' => $benar, 
+            'score' => $score,
+            'is_pass' => $isPass,
+            'min_score' => $minimumScore
+        ]);
+    }
+
+    // Write progress learning
+    private function writeProgress($user_id, $course_id, $lesson_id) 
+    {
+        $db = \Config\Database::connect();
 
         $course = $db->table('course_lessons')
             ->select('courses.id as course_id, courses.slug as course_slug')
             ->join('courses', 'courses.id = course_lessons.course_id')
             ->where('course_lessons.id', $lesson_id)
+            ->where('course_lessons.course_id', $course_id)
             ->get()
             ->getRowArray();
 
         if (!$course) {
-            return $this->respond([
-               'status'    => 'failed',
+            return [
+               'status'  => 'failed',
                'message' => 'Course tidak ditemukan',
-            ]);
+            ];
         }
 
         // Check if the user has already completed this lesson
         $existingProgress = $db->table('course_lesson_progress')
-            ->where('user_id', $jwt->user_id)
+            ->where('user_id', $user_id)
             ->where('lesson_id', $lesson_id)
             ->where('course_id', $course['course_id'])
             ->get()
@@ -132,7 +200,7 @@ class PageController extends BaseController
 
             // Insert new progress record
             $progressData = [
-                'user_id'   => $jwt->user_id,
+                'user_id'   => $user_id,
                 'lesson_id' => $lesson_id,
                 'course_id' => $course['course_id'],
             ];
@@ -140,23 +208,19 @@ class PageController extends BaseController
             $inserted = $db->table('course_lesson_progress')->insert($progressData);
 
             if ($inserted) {
-                return $this->respond([
+                return [
                     'status'  => 'success',
                     'message' => 'Berhasil menyelesaikan materi',
                     'course'  => $course,
-                ]);
+                ];
             } else {
-                return $this->respond([
+                return [
                     'status'  => 'failed',
                     'message' => 'Gagal menyelesaikan materi',
-                ]);
+                ];
             }
         }
-
-        return $this->respond([
-           'status'    => 'failed',
-           'message' => 'Anda sudah menyelesaikan materi ini',
-        ]);
+        
     }
 
     // Parse quiz into [$questions, $answers]
@@ -164,18 +228,22 @@ class PageController extends BaseController
     {
         $arrayQuiz = Yaml::parse($yaml);
 
+        $description = $arrayQuiz['description'];
         $questions = [];
         $answers = [];
         foreach ($arrayQuiz['quiz'] as $item) {
             $hash = substr(md5($item['question']), -6);
             $questions[$hash] = [
-                'type' => $item['type'],
+                'type'     => $item['type'],
                 'question' => $item['question'],
-                'options' => $item['options'] ?? [],
+                'options'  => $item['options'] ?? [],
             ];
-            $answers[$hash] = $item['answer'];
+            $answers[$hash] = [
+                'value'       => $item['answer'],
+                'explanation' => $item['explanation'] ?? null,
+            ];
         }
 
-        return [$questions, $answers];
+        return [$description, $questions, $answers];
     }
 }

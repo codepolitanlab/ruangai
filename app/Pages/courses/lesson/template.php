@@ -50,7 +50,7 @@
 						<h2 x-text="data.lesson?.lesson_title"></h2>
 
 						<template x-if="data.lesson?.text">
-							<p class="">Pelajari dasar-dasar Artificial Intelligence (AI), bagaimana cara kerjanya, serta peranannya dalam kehidupan sehari-hari. Kursus ini akan membimbing Anda memahami konsep AI secara sederhana sebelum mendalami topik lebih lanjut di setiap lesson!</p>
+							<p class="" x-html="data.lesson?.text"></p>
 						</template>
 					</div>
 
@@ -65,7 +65,7 @@
 						<template x-if="data.lesson?.prev_lesson">
 							<div class="d-flex flex-column align-items-start gap-2">
 								<a :href="`/courses/${data.lesson.course_id}/lesson/${data.lesson?.prev_lesson.id}`"
-									class="btn btn-outline-secondary rounded-pill ps-4 pe-3 py-4">
+									class="btn btn-outline-secondary rounded-pill ps-4 pe-3" style="height:auto">
 									<i class="bi bi-arrow-left me-2"></i>
 									<div class="text-start me-3 mt-2 d-none d-lg-block">
 										<span>Sebelumnya</span>
@@ -76,9 +76,9 @@
 						</template>
 
 						<template x-if="!data.lesson?.is_completed && data.lesson?.next_lesson && data.lesson?.type == 'theory'">
-							<button @click="markAsComplete(data.lesson?.id, data.lesson?.next_lesson?.id)"
+							<button @click="markAsComplete(data.lesson?.course_id, data.lesson?.id, data.lesson?.next_lesson?.id)"
 								class="btn btn-lg btn-primary rounded-pill px-4 ms-auto"
-								:class="showButtonPaham ? '' : 'disabled'"
+								:class="{'disabled': !showButtonPaham, 'btn-progress': buttonSubmitting}"
 								x-transition>
 								<i class="bi bi-check-circle me-2"></i>
 								Saya Sudah Faham
@@ -88,7 +88,7 @@
 						<template x-if="data.lesson?.is_completed && data.lesson?.next_lesson">
 							<div class="d-flex flex-column align-items-end gap-2 ms-auto">
 								<a :href="`/courses/${data.lesson.course_id}/lesson/${data.lesson?.next_lesson.id}`"
-									class="btn btn-outline-secondary rounded-pill ps-4 pe-3 py-4">
+									class="btn btn-outline-secondary rounded-5 ps-4 pe-3" style="height:auto">
 									<div class="text-end me-3 mt-2">
 										<span class="">Selanjutnya</span><br>
 										<h5 class="h6 " x-text="data.lesson?.next_lesson.lesson_title"></h5>
