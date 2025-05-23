@@ -10,9 +10,10 @@
 	<div id="app-header" class="appHeader main border-0">
 		<div class="left">
 			<a class="headerButton" :href="`/courses/intro/${data.course?.id}/${data.course?.slug}/lessons`"><i class="bi bi-chevron-left"></i></a>
+		</div>
+		<div class="">
 			<span x-text="data.lesson?.course_title + ' - ' + data.lesson?.topic_title"></span>
 		</div>
-		<div class="pageTitle"></div>
 	</div>
 
 	<div id="appCapsule" class="appCapsule-lg" x-data="lesson()">

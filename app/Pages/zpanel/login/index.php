@@ -10,8 +10,8 @@
             </div>
             <p class="auth-subtitle mb-5">Admin Login</p>
 
-            <?php if (session()->getFlashdata('message')) : ?>
-                <div class="alert bg-warning text-light"><?= session()->getFlashdata('message') ?></div>
+            <?php if ($message = session()->getFlashdata('message')) : ?>
+                <div class="alert bg-warning"><?= $message ?? '' ?></div>
             <?php endif; ?>
             
             <form action="<?= site_url('zpanel/login') ?>" method="post">

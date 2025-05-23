@@ -22,6 +22,8 @@ class AuthSSR
 
         // Bangun query untuk OR kondisi
         $builder = $userModel->builder();
+        $builder->select('users.id as id, role_slug, pwd');
+        $builder->join('roles', 'users.role_id = roles.id');
         $builder->where('deleted_at', null);
 
         // Tambahkan kondisi OR untuk setiap identity_type
@@ -53,6 +55,7 @@ class AuthSSR
         session()->set([
             'logged_in'       => true,
             'user_id'         => $user['id'],
+            'role_slug'       => $user['role_slug'],
         ]);
 
         return ['success', '', $user];
