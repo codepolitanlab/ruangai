@@ -8,11 +8,20 @@ class PageController extends AdminController
         'page_title' => "Daftar Materi"
     ];
 
+    protected $CourseModel;
+
     public function getIndex($course_id)
     {
-        $db = \Config\Database::connect();
-        $this->data['course'] = $db->table('courses')->where('id', $course_id)->get()->getRowArray();
+        $this->getBasicCourseData($course_id);        
 
         return pageView('zpanel/course/lesson/index', $this->data);
+    }
+
+    protected function initBasicCourseData($course_id)
+    {
+        // Wajib selalu dibawa untuk suplai data header dan sidebar
+        $this->CourseModel = new \App\Models\Course();
+        $this->data['course'] = $this->CourseModel->where('id', $course_id)->get()->getRowArray();
+        $this->data['topics'] = $this->CourseModel->getTopicLessons($course_id);
     }
 }

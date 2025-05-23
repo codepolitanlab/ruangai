@@ -1,8 +1,8 @@
 <?php namespace App\Pages\zpanel\course\lesson\topic;
 
-use App\Pages\zpanel\AdminController;
+use App\Pages\zpanel\course\lesson\PageController as CourseLessonController;
 
-class PageController extends AdminController 
+class PageController extends CourseLessonController 
 {
     public $data = [
         'page_title' => "Topik Kelas"
@@ -10,12 +10,10 @@ class PageController extends AdminController
 
     public function getIndex($course_id, $topic_id = null)
     {
-        $db = \Config\Database::connect();
-        $this->data['course'] = $db->table('courses')
-                                    ->where('id', $course_id)
-                                    ->get()
-                                    ->getRowArray();
+        $this->initBasicCourseData($course_id);
 
+        $db = \Config\Database::connect();
+        
         if($topic_id) {
             $this->data['topic'] = $db->table('course_topics')
                                         ->where('id', $topic_id)

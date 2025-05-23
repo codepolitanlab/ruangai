@@ -14,7 +14,7 @@
                 <?= $this->include('zpanel/course/lesson/_sidebar') ?>
 
                 <div class="col-md-9 px-4">
-                    <h3 class="mt-2 mb-4"><?= $topic['topic_title'] ? 'Edit Topic' : 'New Topic' ?></h3>
+                    <h3 class="mt-2 mb-4">🏷️ <?= isset($topic) ? 'Edit Topic' : 'New Topic' ?></h3>
 
                     <form action="<?= site_url('/zpanel/course/lesson/topic/'.$course['id']. '/' . ($topic['id'] ?? '')) ?>" method="POST" class="p-2">
                         <div class="row mb-3">
@@ -28,13 +28,13 @@
                         <div class="d-flex justify-content-start">
                             <div class="pe-5">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" value="1" name="status" type="checkbox" role="switch" id="topic_status" <?= $topic['status'] ? 'checked' : '' ?>>
+                                    <input class="form-check-input" value="1" name="status" type="checkbox" role="switch" id="topic_status" <?= ($topic['status'] ?? null) ? 'checked' : '' ?>>
                                     <label class="form-check-label" for="topic_status">Publish Topic?</label>
                                 </div>
                             </div>
                             <div class="pe-5">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" value="1" name="free" type="checkbox" role="switch" id="topic_free" <?= $topic['free'] ? 'checked' : '' ?>>
+                                    <input class="form-check-input" value="1" name="free" type="checkbox" role="switch" id="topic_free" <?= ($topic['free'] ?? null) ? 'checked' : '' ?>>
                                     <label class="form-check-label" for="topic_free">Is Topic Free?</label>
                                 </div>
                             </div>
