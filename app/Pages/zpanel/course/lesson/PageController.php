@@ -12,7 +12,7 @@ class PageController extends AdminController
 
     public function getIndex($course_id)
     {
-        $this->getBasicCourseData($course_id);        
+        $this->initBasicCourseData($course_id);        
 
         return pageView('zpanel/course/lesson/index', $this->data);
     }

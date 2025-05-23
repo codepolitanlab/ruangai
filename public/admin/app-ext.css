@@ -217,7 +217,7 @@ html[data-bs-theme="dark"] .dropdown-divider {
 }
 
 .sidebar-lesson {
-  height: 550px;
+  max-height: 78vh;
   overflow: auto;
 }
 

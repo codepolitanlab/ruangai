@@ -1,9 +1,4 @@
 <div class="col-md-3">
-    <div class="toolbar-lesson d-flex justify-content-between mb-2">
-        <h4 class="mb-0">Topic list</h4>
-        <a href="<?= site_url("/zpanel/course/lesson/topic/" . $course['id']) ?>" class="btn btn-sm btn-outline-secondary"><span class="bi bi-tag"></span> Add Topic</a>
-    </div>
-
     <div class="sidebar-lesson" style="margin: 0 -15px; padding: 15px;">
         <ul class="lesson-list list-unstyled">
             <?php if ($topics ?? null) : ?>
