@@ -17,7 +17,7 @@
                 </nav>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first text-end">
-                <a href="/zpanel/course/lessons/1" class="btn btn-primary"><i class="bi bi-save"></i> Manage Lessons</a>
+                <a href="/zpanel/course/lesson/1" class="btn btn-primary"><i class="bi bi-save"></i> Manage Lessons</a>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal"><i class="bi bi-save"></i> Save Courses</button>
             </div>
         </div>
