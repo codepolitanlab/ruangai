@@ -41,6 +41,7 @@ class PageController extends BaseController
                 ->select('course_lessons.*, course_topics.*, course_lessons.id as id')
                 ->join('course_topics', 'course_topics.id = course_lessons.topic_id', 'left')
                 ->where('course_lessons.course_id', $id)
+                ->where('course_lessons.deleted_at', null)
                 ->orderBy('course_topics.topic_order', 'ASC')
                 ->orderBy('course_lessons.lesson_order', 'ASC')
                 ->get()

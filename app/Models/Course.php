@@ -48,7 +48,9 @@ class Course extends Model
     {
         $lessonData = $this->db
                         ->table('course_lessons')
-                        ->select('course_lessons.*, course_topics.topic_order')
+                        ->select('course_lessons.id, course_lessons.lesson_title, course_lessons.status, 
+                        course_lessons.type, course_lessons.free, course_lessons.course_id, course_lessons.topic_id,
+                        course_lessons.lesson_order, course_topics.topic_order')
                         ->join('course_topics', 'course_topics.id = course_lessons.topic_id')
                         ->where('course_lessons.course_id', $course_id)
                         ->where('course_lessons.deleted_at', null)

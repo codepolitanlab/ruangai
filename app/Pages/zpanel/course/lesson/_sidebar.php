@@ -27,8 +27,9 @@
                                         <label class="d-flex justify-content-between my-1">
                                             <span>
                                                 <a 
-                                                    href="<?= site_url('/zpanel/course/lesson/theory/' . $lesson['course_id'] . '/' . $lesson['topic_id'] . '/' . $lesson['id']) ?>" 
+                                                    href="<?= site_url('/zpanel/course/lesson/'.$lesson['type'].'/' . $lesson['course_id'] . '/' . $lesson['topic_id'] . '/' . $lesson['id']) ?>" 
                                                     data-title="<?= $lesson['lesson_title'] ?>">
+                                                    <span class="badge bg-info"><?= $lesson['lesson_order'] ?></span>
                                                     <span class="bi text-primary <?= $lesson['type'] == 'quiz' ? 'bi-question-circle' : 'bi-file-earmark-text' ?>"></span>
                                                     <?php if (! $lesson['free']) echo '<span class="bi bi-unlock text-danger"></span>' ?>
                                                     <br>
