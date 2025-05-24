@@ -43,7 +43,7 @@
                         <div class="row mt-3 pt-3 border-top">
                             <div class="col-6">
                                 <?php if ($topic ?? null): ?>
-                                    <a href="<?= site_url('/zpanel/course/lesson/topic/delete/' . $course['id'] . '/' . $topic['id']) ?>"
+                                    <a href="<?= site_url('/zpanel/course/lesson/topic/deleteTopic/' . $course['id'] . '/' . $topic['id']) ?>"
                                         class="btn btn-danger"
                                         onclick="return confirm('Yakin akan menghapus topik?')">
                                         <i class="bi bi-trash3"></i> Hapus</a>

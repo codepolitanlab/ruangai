@@ -156,7 +156,7 @@
                             <?php if (isset($lesson['id'])): ?>
                                 <a class="text-danger"
                                     onclick="return confirm('Anda yakin akan menghapus lesson ini?')"
-                                    href="<?= site_url('/zpanel/course/lesson/delete/' . $course['id'] . '/' . $lesson['id']) ?>">
+                                    href="<?= site_url('/zpanel/course/lesson/deleteLesson/' . $course['id'] . '/' . $lesson['id']) ?>">
                                     <span class="bi bi-trash"></span> Hapus Material
                                 </a>
                             <?php endif; ?>
