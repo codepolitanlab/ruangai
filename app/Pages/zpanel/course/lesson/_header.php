@@ -1,7 +1,6 @@
 <div class="mb-3">
     <div class="row">
         <div class="col">
-
             <h2 class="d-flex">
                 <div>
                     <a href="<?= site_url("/zpanel/course") ?>"><i class="bi bi-house"></i></a>

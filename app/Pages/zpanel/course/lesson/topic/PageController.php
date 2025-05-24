@@ -60,8 +60,22 @@ class PageController extends CourseLessonController
                 'status'        => (int)($postData['status'] ?? 0)
             ];
             $CourseTopicModel->insert($data);
-            return redirectPage('/zpanel/course/lesson/topic/'.$course_id);
+            return redirectPage('/zpanel/course/lesson/topic/'.$course_id .'/'. $CourseTopicModel->getInsertID());
         }
-
     }
+
+    public function getDelete($course_id, $topic_id)
+    {
+        $CourseTopicModel = model('CourseTopic');
+
+        $hasLessons = $CourseTopicModel->hasLessons($topic_id);
+        if($hasLessons) {
+            session()->setFlashdata('error_message', 'Tidak dapat menghapus topik karena masih memiliki materi');
+            return redirectPage('/zpanel/course/lesson/topic/'.$course_id .'/'. $topic_id);
+        }
+        
+        $CourseTopicModel->delete($topic_id);
+        session()->setFlashdata('success_message', 'Topik telah dihapus');
+        return redirectPage('/zpanel/course/lesson/'.$course_id);
+    }   
 }

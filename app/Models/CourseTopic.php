@@ -10,7 +10,7 @@ class CourseTopic extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
+    protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = ['course_id', 'topic_title', 'topic_slug', 'topic_order', 'free', 'status'];
 
@@ -43,4 +43,12 @@ class CourseTopic extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function hasLessons($topic_id)
+    {
+        return $this->db->table('course_lessons')
+                        ->where('topic_id', $topic_id)
+                        ->where('deleted_at', null)
+                        ->countAllResults();
+    }
 }

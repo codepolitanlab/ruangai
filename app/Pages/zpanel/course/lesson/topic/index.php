@@ -16,7 +16,7 @@
                 <div class="col-md-9 px-4">
                     <h3 class="mt-2 mb-4">🏷️ <?= isset($topic) ? 'Edit Topic' : 'New Topic' ?></h3>
 
-                    <form action="<?= site_url('/zpanel/course/lesson/topic/'.$course['id']. '/' . ($topic['id'] ?? '')) ?>" method="POST" class="p-2">
+                    <form action="<?= site_url('/zpanel/course/lesson/topic/' . $course['id'] . '/' . ($topic['id'] ?? '')) ?>" method="POST" class="p-2">
                         <div class="row mb-3">
                             <input type="hidden" name="topic_order" value="10">
                             <div class="col-7">
@@ -42,10 +42,20 @@
 
                         <div class="row mt-3 pt-3 border-top">
                             <div class="col-6">
+                                <?php if ($topic ?? null): ?>
+                                    <a href="<?= site_url('/zpanel/course/lesson/topic/delete/' . $course['id'] . '/' . $topic['id']) ?>"
+                                        class="btn btn-danger"
+                                        onclick="return confirm('Yakin akan menghapus topik?')">
+                                        <i class="bi bi-trash3"></i> Hapus</a>
+                                <?php endif; ?>
                             </div>
                             <div class="col-6 text-end">
-                                <a class="btn btn-secondary" href="<?= site_url('/zpanel/course/lesson/'.$course['id']) ?>"><span class="fa fa-arrow-left"></span> Cancel</a>
-                                <button type="submit" class="btn btn-success"><span class="fa fa-save"></span> Save Topic</button>
+                                <a class="btn btn-secondary" href="<?= site_url('/zpanel/course/lesson/' . $course['id']) ?>">
+                                    <i class="bi bi-arrow-left"></i> Cancel
+                                </a>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-save"></i> Save Topic
+                                </button>
                             </div>
                         </div>
                     </form>

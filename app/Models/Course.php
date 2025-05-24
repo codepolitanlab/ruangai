@@ -10,7 +10,7 @@ class Course extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
+    protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = [];
 
@@ -51,6 +51,7 @@ class Course extends Model
                         ->select('course_lessons.*, course_topics.topic_order')
                         ->join('course_topics', 'course_topics.id = course_lessons.topic_id')
                         ->where('course_lessons.course_id', $course_id)
+                        ->where('course_lessons.deleted_at', null)
                         ->orderBy('course_topics.topic_order', 'ASC')
                         ->orderBy('course_lessons.lesson_order', 'ASC')
                         ->get()
@@ -59,6 +60,7 @@ class Course extends Model
         $topicData = $this->db
                         ->table('course_topics')
                         ->where('course_id', $course_id)
+                        ->where('deleted_at', null)
                         ->orderBy('topic_order', 'ASC')
                         ->get()
                         ->getResultArray();
