@@ -29,7 +29,7 @@ class PageController extends CourseLessonController
     {
         $postData = $this->request->getPost();
         
-        $CourseTopicModel = model('CourseTopic');
+        $TopicModel = model('CourseTopic');
 
         // Update
         if($topic_id) 
@@ -40,14 +40,15 @@ class PageController extends CourseLessonController
                 'free'          => (int)($postData['free'] ?? 0),
                 'status'        => (int)($postData['status'] ?? 0)
             ];
-            $CourseTopicModel->update($topic_id, $data);
+            $TopicModel->update($topic_id, $data);
             return redirectPage('/zpanel/course/lesson/topic/'.$course_id . '/' . $topic_id);
 
         // Insert
         } else {
-            $lastTopic = $CourseTopicModel
+            $lastTopic = $TopicModel
                             ->select('topic_order')
                             ->where('course_id', $course_id)
+                            ->where('deleted_at', null)
                             ->orderBy('topic_order', 'DESC')
                             ->first();
             
@@ -59,23 +60,23 @@ class PageController extends CourseLessonController
                 'free'          => (int)($postData['free'] ?? 0),
                 'status'        => (int)($postData['status'] ?? 0)
             ];
-            $CourseTopicModel->insert($data);
-            return redirectPage('/zpanel/course/lesson/topic/'.$course_id .'/'. $CourseTopicModel->getInsertID());
+            $TopicModel->insert($data);
+            return redirectPage('/zpanel/course/lesson/topic/'.$course_id .'/'. $TopicModel->getInsertID());
         }
     }
 
-    public function getDelete($course_id, $topic_id)
+    public function getDeleteTopic($course_id, $topic_id)
     {
-        $CourseTopicModel = model('CourseTopic');
+        $TopicModel = model('CourseTopic');
 
-        $hasLessons = $CourseTopicModel->hasLessons($topic_id);
+        $hasLessons = $TopicModel->hasLessons($topic_id);
         if($hasLessons) {
             session()->setFlashdata('error_message', 'Tidak dapat menghapus topik karena masih memiliki materi');
             return redirectPage('/zpanel/course/lesson/topic/'.$course_id .'/'. $topic_id);
         }
         
-        $CourseTopicModel->delete($topic_id);
+        $TopicModel->delete($topic_id);
         session()->setFlashdata('success_message', 'Topik telah dihapus');
         return redirectPage('/zpanel/course/lesson/'.$course_id);
-    }   
+    }
 }

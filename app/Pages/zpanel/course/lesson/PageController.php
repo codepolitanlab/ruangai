@@ -24,4 +24,14 @@ class PageController extends AdminController
         $this->data['course'] = $this->CourseModel->where('id', $course_id)->get()->getRowArray();
         $this->data['topics'] = $this->CourseModel->getTopicLessons($course_id);
     }
+
+    public function getDeleteLesson($course_id, $lesson_id)
+    {
+        $LessonModel = model('CourseLesson');
+
+        $LessonModel->delete($lesson_id);
+
+        session()->setFlashdata('success_message', 'Material telah dihapus');
+        return redirectPage('/zpanel/course/lesson/'.$course_id);
+    }
 }
