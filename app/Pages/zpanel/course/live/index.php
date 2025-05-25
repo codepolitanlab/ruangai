@@ -18,6 +18,7 @@
             </div>
             <div class="col-12 col-md-4 order-md-2 order-first text-end">
                 <a href="<?= site_url('/zpanel/course/live/create/' . $course['id']); ?>" class="btn btn-primary"><i class="bi bi-plus"></i> Add Batch</a>
+                <a href="<?= site_url('/zpanel/course/live/blueprint/' . $course['id']); ?>" class="btn btn-outline-secondary"><i class="bi bi-plus"></i> Manage Meeting Blueprint</a>
             </div>
         </div>
     </div>
