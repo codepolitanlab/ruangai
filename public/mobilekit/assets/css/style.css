@@ -27,6 +27,7 @@ body {
   --ultra-light-primary: #fdf9f0;
   --secondary: #F96E2B;
   --light-secondary: #FFE4D7;
+  --dark-secondary: #c05c2a;
 }
 
 ::-webkit-scrollbar {
@@ -2389,8 +2390,8 @@ a.badge-dark {
 }
 
 .btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active, .btn-secondary.active {
-  background: var(--light-secondary) !important;
-  border-color: var(--light-secondary)  !important;
+  background: var(--dark-secondary) !important;
+  border-color: var(--dark-secondary)  !important;
 }
 
 .btn-secondary.disabled, .btn-secondary:disabled {
