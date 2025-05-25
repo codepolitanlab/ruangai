@@ -1,6 +1,5 @@
 <?php $this->extend('layouts/admin') ?>
 
-<!-- START Content Section -->
 <?php $this->section('main') ?>
 
 <div class="page-heading">
@@ -11,15 +10,14 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="<?= site_url('/zpanel'); ?>">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="<?= site_url('/zpanel/course'); ?>">Courses</a></li>
-                        <li class="breadcrumb-item"><a href="<?= site_url('/zpanel/course/live/'.$course['id']); ?>">Live Session</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Meeting Blueprints</li>
+                        <li class="breadcrumb-item active" aria-current="page">Live Batches</li>
                     </ol>
                 </nav>
-                <h3>Live Meeting Blueprints</h3>
+                <h3>Live Batches</h3>
                 <h5 class="h6">Course: <?= $course['course_title']; ?></h5>
             </div>
             <div class="col-12 col-md-4 order-md-2 order-first text-end">
-                <a href="<?= site_url('/zpanel/course/live/blueprint/create/' . $course['id']); ?>" class="btn btn-primary"><i class="bi bi-plus"></i> Add Meeting</a>
+                <a href="<?= site_url('/zpanel/course/live/create/' . $course['id']); ?>" class="btn btn-primary"><i class="bi bi-plus"></i> Add Batch</a>
             </div>
         </div>
     </div>
@@ -34,26 +32,24 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Mentor</th>
-                <th>Duration</th>
-                <th>Order</th>
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($blueprints as $b): ?>
+            <?php foreach ($batches as $batch): ?>
                 <tr>
-                    <td><?= $b['id'] ?></td>
-                    <td><?= $b['title'] ?></td>
-                    <td><?= $b['description'] ?></td>
-                    <td><?= $b['mentor_name'] ?></td>
-                    <td><?= $b['duration'] ?></td>
-                    <td><?= $b['order'] ?></td>
+                    <td><?= $batch['id'] ?></td>
+                    <td><?= $batch['name'] ?></td>
+                    <td><?= $batch['start_date'] ?></td>
+                    <td><?= $batch['end_date'] ?></td>
+                    <td><?= $batch['status'] ?></td>
                     <td>
-                        <a href="<?= site_url('zpanel/course/live/blueprint/update/'. $b['course_id'] . '/' . $b['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="<?= site_url('zpanel/course/live/blueprint/delete/'. $b['course_id'] . '/' .$b['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                        <a href="<?= site_url('zpanel/course/live/update/'. $course['id'] . '/' . $batch['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="<?= site_url('zpanel/course/live/delete/'. $course['id'] . '/' . $batch['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -63,6 +59,4 @@
     <?= $pager->links() ?>
 </div>
 
-
 <?php $this->endSection() ?>
-<!-- END Content Section -->

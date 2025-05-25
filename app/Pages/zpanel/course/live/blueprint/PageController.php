@@ -23,7 +23,7 @@ class PageController extends AdminController
             ->where('id', $course_id)
             ->get()
             ->getRowArray();
-        $this->data['blueprints'] = $this->model->paginate(10);
+        $this->data['blueprints'] = $this->model->orderBy('order', 'asc')->paginate(10);
         $this->data['pager'] = $this->model->pager;
 
         return pageView('zpanel/course/live/blueprint/index', $this->data);
@@ -37,7 +37,7 @@ class PageController extends AdminController
             ->get()
             ->getRowArray();
 
-        return pageView('zpanel/course/live/blueprint/create', $this->data);
+        return pageView('zpanel/course/live/blueprint/form', $this->data);
     }
 
     public function postCreate()
@@ -57,7 +57,7 @@ class PageController extends AdminController
             ->getRowArray();
 
         $this->data['blueprint'] = $this->model->where('id', $id)->where('course_id', $course_id)->first();
-        return pageView('zpanel/course/live/blueprint/create', $this->data);
+        return pageView('zpanel/course/live/blueprint/form', $this->data);
     }
 
     public function postUpdate()
