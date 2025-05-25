@@ -76,5 +76,7 @@ class Router
         '/webpush' => [
             'handler' => '[isLoggedIn]',
         ],
+        '/zpanel/course/live_meeting_blueprint' => [],
+        '/zpanel/course/live' => [],
     ];
 }
