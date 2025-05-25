@@ -237,3 +237,5 @@ html[data-bs-theme="dark"] .dropdown-divider {
 .select2-container .select2-selection--single {padding: 5px 2px;height: 38px !important; border: 1px solid #dce7f1 !important;}
 .select2-container--default .select2-selection--single .select2-selection__arrow { top: 5px !important; right: 5px !important; }
 .select2-container {position: relative; width: 100% !important;}
+
+.btn .bi { vertical-align: text-bottom; }

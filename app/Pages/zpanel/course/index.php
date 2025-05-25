@@ -56,8 +56,9 @@
 
                                     <div class="option-menu mt-3">
                                         <small class="text-muted">
-                                            <a class="btn btn-sm btn-outline-secondary" href="/zpanel/course/lesson/<?= $course['id'] ?>"><span class="bi bi-list"></span> Manage Lessons</a>
-                                            <a class="btn btn-sm btn-outline-secondary" href="/zpanel/course/student/<?= $course['id'] ?>"><span class="bi bi-users"></span> Student list</a>
+                                            <a class="btn btn-sm btn-outline-secondary" href="/zpanel/course/lesson/<?= $course['id'] ?>"><span class="bi bi-list"></span> Lessons</a>
+                                            <a class="btn btn-sm btn-outline-secondary" href="/zpanel/course/live/<?= $course['id'] ?>"><span class="bi bi-camera"></span> Live Session</a>
+                                            <a class="btn btn-sm btn-outline-secondary" href="/zpanel/course/student/<?= $course['id'] ?>"><span class="bi bi-people"></span> Student</a>
                                             <a class="btn btn-sm btn-outline-secondary" href="/zpanel/course/edit/<?= $course['id'] ?>"><span class="bi bi-pencil-square"></span> Edit</a>
                                         </small>
                                     </div>

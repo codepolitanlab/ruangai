@@ -49,11 +49,13 @@ class PageController extends BaseController
 
             $this->data['course'] = $course;
 
+            $lessonsCompleted = [];
             foreach ($lessons as $key => $lesson) {
                 // Tambahkan status is_completed ke setiap lesson
-                $lesson['is_completed'] = in_array($lesson['id'], $completedLessonIds);
                 $this->data['course']['lessons'][$lesson['topic_title']][$lesson['id']] = $lesson;
+                $lessonsCompleted[$lesson['id']] = in_array($lesson['id'], $completedLessonIds);
             }
+            $this->data['lessonsCompleted'] = $lessonsCompleted;
 
             return $this->respond($this->data);
         } else {
