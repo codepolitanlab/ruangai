@@ -15,6 +15,11 @@ $sidebar = [
                 'icon' => 'bi bi-people',
                 'url' => '/zpanel/user',
             ],
+            'scholarship' => [
+                'label' => 'Scholarship',
+                'icon' => 'bi bi-people',
+                'url' => '/zpanel/user/scholarship',
+            ],
             'role' => [
                 'label' => 'Roles',
                 'icon' => 'bi bi-person-gear',
