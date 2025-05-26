@@ -92,16 +92,16 @@
 									class="btn btn-outline-secondary rounded-5 ps-4 pe-3" style="height:auto">
 									<div class="text-end me-3 mt-2">
 										<span class="">Selanjutnya</span><br>
-										<h5 class="h6 " x-text="data.lesson?.next_lesson.lesson_title"></h5>
+										<h5 class="h6" x-text="data.lesson?.next_lesson.lesson_title"></h5>
 									</div>
 									<i class="bi bi-arrow-right me-2"></i>
 								</a>
 							</div>
 						</template>
 
-						<template x-if="!data.lesson?.next_lesson">
+						<template x-if="!data.lesson?.next_lesson && !data.lesson?.is_completed">
 							<div class="ms-auto">
-								<button @click="markAsComplete(data.lesson?.id, data.lesson?.next_lesson?.id)" class="btn btn-success rounded-pill px-4">
+								<button @click="markAsComplete(data.lesson?.course_id,data.lesson?.id, data.lesson?.next_lesson?.id)" class="btn btn-success rounded-pill px-4">
 									<i class="bi bi-check-circle-fill me-2"></i>
 									Selesai
 								</button>

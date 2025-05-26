@@ -156,13 +156,14 @@ class PageController extends BaseController
         $minimumScore = 75;
         $isPass = $score >= $minimumScore;
 
-        if($isPass)
+        if($isPass) {
             $this->writeProgress($jwt->user_id, $course_id, $lesson_id);
+        }
 
         return $this->respond([
             'hasil' => $hasil, 
             'benar' => $benar, 
-            'score' => $score,
+            'score' => min($score, 100), // Pastikan score tidak lebih dari 100%
             'is_pass' => $isPass,
             'min_score' => $minimumScore
         ]);
@@ -197,7 +198,6 @@ class PageController extends BaseController
             ->getRowArray();
 
         if (!$existingProgress) {
-
             // Insert new progress record
             $progressData = [
                 'user_id'   => $user_id,
@@ -208,6 +208,9 @@ class PageController extends BaseController
             $inserted = $db->table('course_lesson_progress')->insert($progressData);
 
             if ($inserted) {
+                // Update progress di course_students
+                $this->updateCourseProgress($user_id, $course['course_id']);
+
                 return [
                     'status'  => 'success',
                     'message' => 'Berhasil menyelesaikan materi',
@@ -220,7 +223,57 @@ class PageController extends BaseController
                 ];
             }
         }
+    }
+
+    // Update progress di course_students
+    private function updateCourseProgress($user_id, $course_id)
+    {
+        $db = \Config\Database::connect();
+
+        // Hitung progress course
+        $totalQuery = $db->table('course_lessons')
+            ->select('course_lessons.id, course_lesson_progress.lesson_id')
+            ->where('course_lessons.course_id', $course_id)
+            ->join('course_lesson_progress', 'course_lesson_progress.lesson_id = course_lessons.id AND course_lesson_progress.user_id = ' . $user_id, 'left')
+            ->get()
+            ->getResultArray();
+
+        $totalLessons = count($totalQuery);
+        $completedLessons = 0;
         
+        foreach ($totalQuery as $row) {
+            if ($row['lesson_id'] !== null) {
+                $completedLessons++;
+            }
+        }
+
+        // Pastikan progress tidak lebih dari 100%
+        $progress = min(($completedLessons / $totalLessons) * 100, 100);
+
+        // Update atau insert ke course_students
+        $existingStudent = $db->table('course_students')
+            ->where('user_id', $user_id)
+            ->where('course_id', $course_id)
+            ->get()
+            ->getRowArray();
+
+        $studentData = [
+            'user_id' => $user_id,
+            'course_id' => $course_id,
+            'progress' => $progress,
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+
+        if ($existingStudent) {
+            $db->table('course_students')
+                ->where('user_id', $user_id)
+                ->where('course_id', $course_id)
+                ->update($studentData);
+        } else {
+            $studentData['created_at'] = date('Y-m-d H:i:s');
+            $studentData['updated_at'] = null;
+            $db->table('course_students')->insert($studentData);
+        }
     }
 
     // Parse quiz into [$questions, $answers]

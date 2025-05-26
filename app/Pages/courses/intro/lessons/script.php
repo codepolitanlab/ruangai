@@ -38,7 +38,7 @@
 
         countPercentageCompleteness(numCompleted, lessonsCompleted)
         {
-            return numCompleted / Object.keys(lessonsCompleted).length * 100;
+            return Math.round(numCompleted / Object.keys(lessonsCompleted).length * 100);
         }
     }));
 </script>
