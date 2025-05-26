@@ -37,6 +37,9 @@
 		.rounded-20 {
 			border-radius: 20px;
 		}
+		.bg-warning-2 {
+			background-color: #fe9500;
+		}
 	</style>
 
 	<div id="appCapsule">
@@ -49,7 +52,7 @@
 					</div>
 					<div>
 						<h5 class="mb-0 fw-normal">Selamat Belajar,</h5>
-						<h4 class="mb-0">Badar Abdi Mulya</h4>
+						<h4 class="mb-0" x-text="data.name"></h4>
 					</div>
 				</div>
 				<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206633.png" class="position-absolute bottom-0 end-0 w-25" alt="">
@@ -89,12 +92,14 @@
 
 				<!-- Modul Selesai -->
 				<a href="/courses/intro/1/belajar-fundamental-ai/lessons">
-					<div class="card border-0 rounded-4 mb-4" style="background: #79b2cd;">
+					<div class="card border-0 rounded-4 mb-4"
+						:class="data.total_lessons == data.lesson_completed ? 'bg-success bg-opacity-50' : 'bg-primary'">
 						<div class="card-body d-flex align-items-center gap-3 p-4">
 
 							<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
 								style="width: 64px; height: 64px;">
-								<i class="bi bi-journal-bookmark-fill display-5" style="color: #79b2cd;"></i>
+								<i class="bi display-5"
+								   :class="data.total_lessons == data.lesson_completed ? 'bi-check text-success' : 'bi-journal-bookmark-fill text-primary'"></i>
 							</div>
 							<div class="flex-grow-1">
 								<div class="d-flex align-items-end gap-2">
@@ -103,14 +108,14 @@
 								</div>
 								<div class="d-flex align-items-center">
 									<div class="flex-grow-1">
-										<div class="progress" style="height: 7px; background: #5b9ab8;">
+										<div class="progress bg-dark bg-opacity-25" style="height: 7px;">
 											<div class="progress-bar bg-white" 
 												role="progressbar" 
-												:style="{width: Math.round(data.percent_completed) + '%'}" 
-												:aria-valuenow="Math.round(data.percent_completed)" aria-valuemin="0" aria-valuemax="100"></div>
+												:style="{width: Math.round(data.lesson_completed/data.total_lessons*100) + '%'}" 
+												:aria-valuenow="Math.round(data.lesson_completed/data.total_lessons*100)" aria-valuemin="0" aria-valuemax="100"></div>
 										</div>
 									</div>
-									<span class="ms-3 fw-bold text-white" style="font-size: 1rem;" x-text="Math.round(data.percent_completed) + '%'">0%</span>
+									<span class="ms-3 fw-bold text-white" style="font-size: 1rem;" x-text="Math.round(data.lesson_completed/data.total_lessons*100) + '%'">0%</span>
 								</div>
 								<div class="text-white text-end small"><span x-text="data.total_lessons"></span> total materi dan kuis</div>
 							</div>
@@ -120,24 +125,29 @@
 
 				<!-- Live Session Wajib -->
 				<a href="/courses/intro/1/belajar-fundamental-ai/live_session">
-					<div class="card border-0 rounded-4" style="background: #fe9500;">
+					<div class="card border-0 rounded-4 bg-warning-2"
+						:class="data.live_attendance >= 3 ? 'bg-success bg-opacity-50' : 'bg-warning-2'">
 						<div class="card-body d-flex align-items-center gap-3 p-4">
 
 							<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
 								style="width: 64px; height: 64px;">
-								<i class="bi bi-camera-video text-warning display-5"></i>
+								<i class="bi display-5"
+								   :class="data.live_attendance >= 3 ? 'bi-check text-success' : 'bi-camera-video text-warning'"></i>
 							</div>
 							<div class="flex-grow-1">
 								<div class="d-flex align-items-end gap-2">
-									<h2 class="mb-0 fw-bold text-white">1</h2>
+									<h2 class="mb-0 fw-bold text-white" x-text="data.live_attendance"></h2>
 									<span class="mb-1 text-white">sessi live diikuti</span>
 								</div>
 								<div class="d-flex align-items-center gap-2 mt-2 mb-1">
-									<div class="flex-fill rounded-pill" style="height:7px; background:#ffffff;">&nbsp;</div>
-									<div class="flex-fill rounded-pill" style="height:7px; background:#cb7e10;">&nbsp;</div>
-									<div class="flex-fill rounded-pill" style="height:7px; background:#cb7e10;">&nbsp;</div>
+									<template x-for="i in 3">
+										<div 
+											class="flex-fill rounded-pill" 
+											:class="data.live_attendance >= i ? 'bg-white' : 'bg-dark bg-opacity-25'"
+											style="height:7px;">&nbsp;</div>
+									</template>
 								</div>
-								<div class="text-white text-end small">Minimal 3 dari 10 sessi</div>
+								<div class="text-white text-end small">Minimal 3 dari <span x-text="data.live_meetings"></span> sessi</div>
 							</div>
 						</div>
 					</div>

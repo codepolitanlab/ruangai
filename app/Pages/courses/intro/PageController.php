@@ -15,7 +15,8 @@ class PageController extends BaseController
     public function getData($id)
     {
         $Heroic = new \App\Libraries\Heroic();
-        $jwt = $Heroic->checkToken();
+        $jwt = $Heroic->checkToken(true);
+        $this->data['name'] = $jwt->user['name'];
 
         $db = \Config\Database::connect();
         $course = $db->table('courses')
@@ -35,8 +36,22 @@ class PageController extends BaseController
 
             $this->data['total_lessons'] = $completedLessons['total_lessons'] ?? 1;
             $this->data['lesson_completed'] = $completedLessons['completed'] ?? 0;
-            $this->data['percent_completed'] = $this->data['lesson_completed']/$this->data['total_lessons'] * 100;
             $this->data['course'] = $course;
+
+            // Get count live attendance user
+            $this->data['live_attendance'] = $db->table('live_attendance')
+                ->where('user_id', $jwt->user_id)
+                ->where('course_id', $id)
+                ->countAllResults();
+
+            // Get total live_meetings
+            $this->data['live_meetings'] = $db->table('live_meetings')
+                ->select('live_meetings.id')
+                ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id AND live_batch.id = '.$course['current_batch_id'])
+                ->where('course_id', $id)
+                ->countAllResults();
+
+                $this->data['course_completed'] = $this->data['total_lessons'] == $this->data['lesson_completed'] && $this->data['live_meetings'] >= 3 ? true : false;
 
             return $this->respond($this->data);
         } else {
