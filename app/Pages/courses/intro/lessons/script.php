@@ -6,38 +6,34 @@
             return topicLessons.every(lesson => lesson.is_completed);
         },
 
+        isLessonCompleted(lessonID, lessonsCompleted) {
+            const found = lessonsCompleted.find(item => item.id === lessonID);
+            return found ? found.completed === true : false;
+        },
+
         nextLesson(lessonsCompleted) {
-            // Step 1: Konversi key ke array number dan urutkan
-            let keys = Object.keys(lessonsCompleted);
-
-            // Step 2: Cari lesson complete terakhir
-            let nextID = null;
-            for (let id of keys) {
-                nextID = id;
-                if (lessonsCompleted[id] === false) {
-                    break;
-                }
-            }
-
-            return nextID;
+            const nextItem = lessonsCompleted.find(item => item.completed === false);
+            return nextItem ? nextItem.id : null;
         },
 
         // Method untuk mengecek apakah lesson bisa diakses
         canAccessLesson(lesson_id, lessonsCompleted) {
-            if(lessonsCompleted[lesson_id] === true) {
+            // Cek apakah lesson_id sudah di-complete
+            const found = lessonsCompleted.find(item => item.id === lesson_id);
+            if (found && found.completed === true) {
                 return true;
             }
 
-            const nextID = this.nextLesson(lessonsCompleted);
-            if(lesson_id === nextID) {
+            // Cari lesson selanjutnya yang belum completed
+            const next = this.nextLesson(lessonsCompleted);
+            if (lesson_id === next) {
                 return true;
             }
 
             return false;
         },
 
-        countPercentageCompleteness(numCompleted, lessonsCompleted)
-        {
+        countPercentageCompleteness(numCompleted, lessonsCompleted) {
             return Math.round(numCompleted / Object.keys(lessonsCompleted).length * 100);
         }
     }));

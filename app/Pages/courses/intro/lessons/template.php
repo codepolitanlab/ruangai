@@ -50,16 +50,16 @@
 						<h4 class="h5" x-text="data.course?.course_title"></h4>
 						<p>
 							<span class="h5 text-primary opacity-100" x-text="data.numCompleted"></span>
-							<span class="text-dark opacity-50">/ 
-								<span x-text="data.lessonsCompleted ? Object.keys(data.lessonsCompleted).length : 0"></span> 
+							<span class="text-dark opacity-50">/
+								<span x-text="data.lessonsCompleted ? data.lessonsCompleted.length : 0"></span>
 								materi selesai
 							</span>
 						</p>
-						<button class="btn btn-secondary btn-sm rounded-pill" 
+						<button class="btn btn-secondary btn-sm rounded-pill"
 							x-on:click="$router.navigate(`/courses/${data.course?.id}/lesson/${nextLesson(data.lessonsCompleted)}`)">
 							Lanjutkan Belajar</button>
 					</div>
-					
+
 					<svg class="progress-ring" width="120" height="120">
 						<circle class="progress-ring__circle-bg" stroke="#e9ecef" stroke-width="10" fill="transparent" r="50" cx="60" cy="60" />
 						<circle class="progress-ring__circle" stroke="#81B0CA" stroke-width="10" fill="transparent" r="50" cx="60" cy="60"
@@ -90,19 +90,21 @@
 									class="d-block w-100">
 									<div
 										class="lesson-item rounded-20 p-3 w-100 d-flex align-items-center justify-content-between"
-										:class="{'completed': data.lessonsCompleted[lessonID], 'active': canAccessLesson(lessonID, data.lessonsCompleted)}">
+										:class="{ 'completed': isLessonCompleted(lessonID, data.lessonsCompleted),
+												  'active': canAccessLesson(lessonID, data.lessonsCompleted) }">
 										<div>
+
 											<h4 class="fw-normal m-0 mb-1" x-text="lesson.lesson_title"></h4>
 											<h5 class="m-0 text-muted" x-text="lesson.duration"></h5>
 										</div>
 										<div>
-											<template x-if="data.lessonsCompleted[lessonID]">
+											<template x-if="isLessonCompleted(lessonID, data.lessonsCompleted)">
 												<i class="bi bi-check-circle-fill text-success h4 m-0"></i>
 											</template>
-											<template x-if="!data.lessonsCompleted[lessonID] && canAccessLesson(lessonID, data.lessonsCompleted)">
+											<template x-if="!isLessonCompleted(lessonID, data.lessonsCompleted) && canAccessLesson(lessonID, data.lessonsCompleted)">
 												<i class="bi bi-play-circle-fill text-primary h4 m-0"></i>
 											</template>
-											<template x-if="!data.lessonsCompleted[lessonID] && !canAccessLesson(lessonID, data.lessonsCompleted)">
+											<template x-if="!isLessonCompleted(lessonID, data.lessonsCompleted) && !canAccessLesson(lessonID, data.lessonsCompleted)">
 												<i class="bi bi-lock-fill text-dark opacity-50 h4 m-0"></i>
 											</template>
 										</div>
