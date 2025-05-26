@@ -65,31 +65,14 @@
                         <div class="row mt-3">
                             <div class="col-4">
                                 <div class="mb-3">
-                                    <label class="form-label" for="video">Video Type</label>
-                                    <select name="player" id="player" class="form-select">
-                                        <option value="">- tanpa video -</option>
-                                        <option 
-                                            value="youtube" 
-                                            <?= set_select('player', 'youtube', ($lesson['player'] ?? null) == 'youtube') ?>>
-                                            Youtube
-                                        </option>
-                                        <option 
-                                            value="diupload" 
-                                            <?= set_select('player', 'diupload', ($lesson['player'] ?? null) == 'diupload') ?>>
-                                            Diupload
-                                        </option>
-                                        <option 
-                                            value="vdocipher" 
-                                            <?= set_select('player', 'vdocipher', ($lesson['player'] ?? null) == 'vdocipher') ?>>
-                                            VDOCipher
-                                        </option>
-                                    </select>
+                                    <label class="form-label" for="video_diupload">Video Diupload</label>
+                                    <input type="text" id="video_diupload" name="video_diupload" class="form-control" value="<?= $lesson['video_diupload'] ?? ''; ?>">
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="mb-3">
-                                    <label class="form-label" for="video">Video Embed URL</label>
-                                    <input type="text" id="video" name="video" class="form-control" value="<?= $lesson['video'] ?? ''; ?>">
+                                    <label class="form-label" for="video_bunny">Video Bunny</label>
+                                    <input type="text" id="video_bunny" name="video_bunny" class="form-control" value="<?= $lesson['video_bunny'] ?? ''; ?>">
                                 </div>
                             </div>
                             <div class="col-4">

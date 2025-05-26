@@ -45,16 +45,16 @@ class PageController extends CourseLessonController
         if ($postData['lesson_id'] ?? null) 
         {
             $data = [
-                'course_id'     => (int)$postData['course_id'],
-                'topic_id'      => (int)$postData['topic_id'],
-                'lesson_title'  => $postData['lesson_title'],
-                'lesson_slug'   => $postData['lesson_slug'],
-                'text'          => $postData['text'],
-                'status'        => (int)($postData['status'] ?? 0),
-                'free'          => (int)($postData['free'] ?? 0),
-                'video'         => $postData['video'],
-                'player'        => $postData['player'],
-                'duration'      => $postData['duration'],
+                'course_id'      => (int)$postData['course_id'],
+                'topic_id'       => (int)$postData['topic_id'],
+                'lesson_title'   => $postData['lesson_title'],
+                'lesson_slug'    => $postData['lesson_slug'],
+                'text'           => $postData['text'],
+                'status'         => (int)($postData['status'] ?? 0),
+                'free'           => (int)($postData['free'] ?? 0),
+                'video_diupload' => $postData['video_diupload'] ?? null,
+                'video_bunny'    => $postData['video_bunny'] ?? null,
+                'duration'       => $postData['duration'],
             ];
             $LessonModel->update($postData['lesson_id'], $data);
             session()->setFlashdata('success_message', 'Materi telah diperbaharui');
@@ -75,18 +75,18 @@ class PageController extends CourseLessonController
 
             // Simpan postData
             $data = [
-                'course_id'     => (int)$postData['course_id'],
-                'topic_id'      => (int)$postData['topic_id'],
-                'lesson_title'  => $postData['lesson_title'],
-                'lesson_order'  => ($lastOrder['lesson_order'] ?? 0) + 1,
-                'lesson_slug'   => $postData['lesson_slug'],
-                'text'          => $postData['text'],
-                'type'          => 'theory',
-                'status'        => (int)($postData['status'] ?? 0),
-                'free'          => (int)($postData['free'] ?? 0),
-                'video'         => $postData['video'],
-                'player'        => $postData['player'],
-                'duration'      => $postData['duration'],
+                'course_id'      => (int)$postData['course_id'],
+                'topic_id'       => (int)$postData['topic_id'],
+                'lesson_title'   => $postData['lesson_title'],
+                'lesson_order'   => ($lastOrder['lesson_order'] ?? 0) + 1,
+                'lesson_slug'    => $postData['lesson_slug'],
+                'text'           => $postData['text'],
+                'type'           => 'thelastOrderory',
+                'status'         => (int)($postData['status'] ?? 0),
+                'free'           => (int)($postData['free'] ?? 0),
+                'video_diupload' => $postData['video_diupload'] ?? null,
+                'video_bunny'    => $postData['video_bunny'] ?? null,
+                'duration'       => $postData['duration'],
             ];
 
             $LessonModel->insert($data);
