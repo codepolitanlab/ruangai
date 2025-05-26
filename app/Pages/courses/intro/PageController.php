@@ -14,6 +14,9 @@ class PageController extends BaseController
 
     public function getData($id)
     {
+        $Heroic = new \App\Libraries\Heroic();
+        $jwt = $Heroic->checkToken();
+
         $db = \Config\Database::connect();
         $course = $db->table('courses')
             ->where('courses.id', $id)
@@ -22,15 +25,18 @@ class PageController extends BaseController
             ->getRowArray();
 
         if ($course) {
-            // Get lessons for this course
-            $lessons = $db->table('course_lessons')
-                ->where('course_id', $id)
-                ->orderBy('created_at', 'asc')
+            // Get completed lessons for current user
+            $completedLessons = $db->table('course_lessons')
+                ->select('count(course_lessons.id) as total_lessons, count(course_lesson_progress.user_id) as completed')
+                ->join('course_lesson_progress', 'course_lesson_progress.lesson_id = course_lessons.id AND user_id = '.$jwt->user_id, 'left')
+                ->where('course_lessons.course_id', $id)
                 ->get()
-                ->getResultArray();
+                ->getRowArray();
 
+            $this->data['total_lessons'] = $completedLessons['total_lessons'] ?? 1;
+            $this->data['lesson_completed'] = $completedLessons['completed'] ?? 0;
+            $this->data['percent_completed'] = $this->data['lesson_completed']/$this->data['total_lessons'] * 100;
             $this->data['course'] = $course;
-            $this->data['course']['lessons'] = $lessons;
 
             return $this->respond($this->data);
         } else {

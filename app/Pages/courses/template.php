@@ -2,7 +2,8 @@
 	id="courses"
 	x-data="$heroic({
         title: `<?= $page_title ?>`,
-    })">
+    })"
+	x-init="$router.navigate('/courses/intro/1/belajar-fundamental-ai')">
 
 	<div id="appCapsule">
 		<div class="appContent" style="min-height:90vh;">

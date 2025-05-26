@@ -4,7 +4,6 @@ use App\Pages\BaseController;
 
 class PageController extends BaseController 
 {
-
     public $data = [
         'page_title' => 'Daftar Kelas',
         'module'     => 'course'
@@ -14,10 +13,9 @@ class PageController extends BaseController
     {
         // Ambil data course dari db
         $db = \Config\Database::connect();
-        $data['courses'] = $db->table('courses')->limit(10)->orderBy('created_at', 'desc')->get()->getResultArray() ?? [];
-        $data['page_title'] = $this->data['page_title'];
+        $this->data['courses'] = $db->table('courses')->limit(10)->orderBy('created_at', 'desc')->get()->getResultArray() ?? [];
 
-        return pageView('courses/template', $data);
+        return pageView('courses/template', $this->data);
     }
 
 }

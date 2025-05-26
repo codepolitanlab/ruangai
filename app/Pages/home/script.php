@@ -14,7 +14,7 @@
         // Sementara redirect ke intro course
         if(this.redirectToCourse) {
           console.log('redirecting...')
-          window.PineconeRouter.navigate('/courses/intro/353/laravel-security');
+          window.PineconeRouter.navigate('/courses/intro/1/belajar-fundamental-ai');
         }
 
         // if (localStorage.getItem('intro') != 1) {

@@ -5,6 +5,7 @@
 		title: `<?= $page_title ?>`, 
 		url: `/courses/intro/data/${$params.course_id}`,
 		meta: {
+			expandDesc: false,
 			graduate: false
 		}
 	})"
@@ -60,10 +61,24 @@
 					<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206751%20(2).png" class="card-img-top cover rounded-4" style="height: 200px;" alt="AI Course">
 					<div class="card-body p-2">
 						<h2 class=" mt-2">Kelas - Belajar Fundamental AI</h2>
-						<p class="card-text p-0">
+						<p class="card-text p-0 mb-0">
 							Pelajari dasar-dasar Artificial Intelligence (AI), bagaimana cara kerjanya, serta perannya dalam kehidupan sehari-hari.
-							<a href="#" class="text-primary text-decoration-none p-0">Lihat Selengkapnya</a>
+							<button
+								x-show="!meta.expandDesc" x-transition
+								@click="meta.expandDesc = !meta.expandDesc" 
+								class="border-0 bg-transparent text-primary text-decoration-none p-0">
+								Lihat selengkapnya
+							</button>
 						</p>
+						<div class="mt-3" x-show="meta.expandDesc" x-transition>
+							<p>Kelas ini merupakan kelas pertama program RuangAI dari CODEPOLITAn yang fokus membahas tentang fundamental kecerdasan artifisial dengan total durasi belajar 15 jam, terdiri dari 30 materi dan 10 sessi live bersama mentor AI.</p>
+							<p>Kelas ini merupakan bagian dari program AI Opportunity Fund: Asia Pasifik, bekerja sama dengan AVPN dan didukung oleh Google.org dan Asian Development Bank.</p>
+							<button
+								@click="meta.expandDesc = !meta.expandDesc" 
+								class="border-0 bg-transparent text-primary text-decoration-none p-0">
+								Lihat lebih sedikit
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -73,7 +88,7 @@
 				<h4 class="mb-4">Progres Belajar</h4>
 
 				<!-- Modul Selesai -->
-				<a href="/course/intro/1/belajar-fundamental-ai/lessons">
+				<a href="/courses/intro/1/belajar-fundamental-ai/lessons">
 					<div class="card border-0 rounded-4 mb-4" style="background: #79b2cd;">
 						<div class="card-body d-flex align-items-center gap-3 p-4">
 
@@ -83,25 +98,28 @@
 							</div>
 							<div class="flex-grow-1">
 								<div class="d-flex align-items-end gap-2">
-									<h2 class="mb-0 fw-bold text-white">12</h2>
+									<h2 class="mb-0 fw-bold text-white" x-text="data.lesson_completed">0</h2>
 									<span class="mb-1 text-white">materi selesai</span>
 								</div>
 								<div class="d-flex align-items-center">
 									<div class="flex-grow-1">
 										<div class="progress" style="height: 7px; background: #5b9ab8;">
-											<div class="progress-bar" role="progressbar" style="width: 55%; background: #ffffff;" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+											<div class="progress-bar bg-white" 
+												role="progressbar" 
+												:style="{width: Math.round(data.percent_completed) + '%'}" 
+												:aria-valuenow="Math.round(data.percent_completed)" aria-valuemin="0" aria-valuemax="100"></div>
 										</div>
 									</div>
-									<span class="ms-3 fw-bold text-white" style="font-size: 1rem;">55%</span>
+									<span class="ms-3 fw-bold text-white" style="font-size: 1rem;" x-text="Math.round(data.percent_completed) + '%'">0%</span>
 								</div>
-								<div class="text-white text-end small">30 total materi dan kuis</div>
+								<div class="text-white text-end small"><span x-text="data.total_lessons"></span> total materi dan kuis</div>
 							</div>
 						</div>
 					</div>
 				</a>
 
 				<!-- Live Session Wajib -->
-				<a href="/course/intro/1/belajar-fundamental-ai/live_session">
+				<a href="/courses/intro/1/belajar-fundamental-ai/live_session">
 					<div class="card border-0 rounded-4" style="background: #fe9500;">
 						<div class="card-body d-flex align-items-center gap-3 p-4">
 
