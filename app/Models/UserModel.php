@@ -8,7 +8,7 @@ class UserModel extends Model
 {
     protected $table = 'users';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['name', 'username', 'email', 'pwd', 'phone', 'token', 'last_active', 'phone_valid', 'email_valid'];
+    protected $allowedFields = ['name', 'username', 'email', 'avatar', 'role_id', 'pwd', 'phone', 'token', 'last_active', 'phone_valid', 'email_valid', 'created_at', 'updated_at', 'deleted_at'];
     protected $useTimestamps = true;
 
     public function forgotPassword($email, $sendEmail, $sendWhatsapp, $callback)

@@ -85,7 +85,7 @@ class ScholarshipController extends ResourceController
         // }
 
         $number = $Heroic->normalizePhoneNumber($data['whatsapp_number']);
-        
+
         $userModel = new UserModel();
         $user = $userModel->groupStart()
             ->where('email', $data['email'])
@@ -100,7 +100,7 @@ class ScholarshipController extends ResourceController
 
         // Get username from fullname, remove space and lowercase all with sufix random
         $username = str_replace(' ', '', strtolower($data['fullname'])) . '_' . bin2hex(random_bytes(4));
-        
+
         $Phpass = new \App\Libraries\Phpass();
         $password = $Phpass->HashPassword($data['password']);
         $userId = $userModel->insert([
@@ -129,8 +129,17 @@ class ScholarshipController extends ResourceController
         if ($participant) {
             return $this->fail(['status' => 'failed', 'message' => 'Beasiswa sudah pernah terdaftar.']);
         }
-
+        
+        // Insert data to scholarship_participants
         $participantModel->insert($data);
+
+        // Insert data to course_students
+        $courseStudentModel = new \App\Models\CourseStudent();
+        $courseStudentModel->insert([
+            'user_id' => $userId,
+            'course_id' => 1,
+            'created_at' => date('Y-m-d H:i:s'),
+        ]);
 
         // Jwt only email, whatsapp_number, user_id
         $jwt = JWT::encode([
@@ -228,7 +237,8 @@ class ScholarshipController extends ResourceController
         return $this->respond($data);
     }
 
-    public function isDisallowedDomain($email) {
+    public function isDisallowedDomain($email)
+    {
         // Pisahkan email menjadi username dan domain
         list($user, $domain) = explode('@', $email);
 

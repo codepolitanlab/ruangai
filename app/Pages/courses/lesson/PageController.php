@@ -20,7 +20,7 @@ class PageController extends BaseController
         $db = \Config\Database::connect();
         // Get specific lesson
         $lesson = $db->table('course_lessons')
-            ->select('course_lessons.*, courses.course_title, course_topics.topic_title')
+            ->select('course_lessons.*, courses.course_title, courses.slug as course_slug, course_topics.topic_title')
             ->join('courses', 'courses.id = course_lessons.course_id')
             ->join('course_topics', 'course_topics.id = course_lessons.topic_id')
             ->where('course_lessons.course_id', $course_id)

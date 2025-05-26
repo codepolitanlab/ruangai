@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Pages\zpanel\user;
+namespace App\Pages\zpanel\user\scholarship;
 
 use App\Controllers\BaseController;
 
@@ -8,10 +8,10 @@ class PageController extends BaseController
 {
     public function getIndex()
     {
-        $data['page_title'] = "Users";
+        $data['page_title'] = "Scholarship";
 
         // Definisikan field yang bisa difilter
-        $filterFields = ['id' => 'users.id', 'name' => 'name', 'email' => 'email', 'role' => 'role_id'];
+        $filterFields = ['fullname' => 'fullname', 'email' => 'email', 'status' => 'status', 'program' => 'program'];
         $filters = [];
 
         // Ambil semua filter dari URL secara dinamis
@@ -25,7 +25,7 @@ class PageController extends BaseController
         }
 
         // Ambil model Users
-        $userModel = new \App\Models\UserModel();
+        $scholarshipModel = new \App\Models\ScholarshipParticipantModel();
 
         // Set jumlah item per halaman
         $per_page = 10;
@@ -34,46 +34,34 @@ class PageController extends BaseController
         $current_page = $this->request->getGet('page') ?? 1;
 
         // Buat query dasar
-        $baseQuery = $userModel->where('deleted_at', null);
+        $baseQuery = $scholarshipModel->where('deleted_at', null);
 
         // Terapkan semua filter yang aktif
         foreach ($filters as $field => $value) {
             $baseQuery->like($field, $value);
         }
 
-        // Clone query untuk total_users agar tidak terpengaruh pagination
-        $totalQuery = clone $baseQuery;
-
         // Ambil data paginasi dengan output array object
-        $data['users'] = $baseQuery
-            ->select('users.*, roles.role_name')
+        $data['scholarships'] = $baseQuery
             ->orderBy('created_at', 'DESC')
-            ->join('roles', 'roles.id = users.role_id')
             ->asObject()
             ->paginate($per_page);
 
         // Simpan pager untuk ditampilkan di view
-        $data['pager'] = $userModel->pager;
+        $data['pager'] = $scholarshipModel->pager;
 
-        // Hitung total users berdasarkan filter yang aktif
+        // Jika ada query filter yang aktif, hitung total data yang sesuai
         if (!empty($filters)) {
-            $data['total_users'] = count($data['users']);
+            $data['total_users'] = count($data['scholarships']);
         } else {
-            $data['total_users'] = $totalQuery->countAllResults();
+            // Jika tidak ada filter, hitung total data secara keseluruhan
+            $data['total_users'] = $scholarshipModel->countAllResults();
         }
 
         // Tambahkan current_page dan per_page ke data
         $data['current_page'] = $current_page;
         $data['per_page'] = $per_page;
 
-        // Get roles for dropdown
-        $db = \Config\Database::connect();
-        $data['roles'] = $db->table('roles')
-            ->select('id, role_name')
-            ->where('status', 'active')
-            ->get()
-            ->getResultArray();
-
-        return pageView('zpanel/user/index', $data);
+        return pageView('zpanel/user/scholarship/index', $data);
     }
 }
