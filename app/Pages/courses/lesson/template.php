@@ -66,7 +66,7 @@
 						<template x-if="data.lesson?.prev_lesson">
 							<div class="d-flex flex-column align-items-start gap-2">
 								<a :href="`/courses/${data.lesson.course_id}/lesson/${data.lesson?.prev_lesson.id}`"
-									class="btn btn-outline-secondary rounded-pill ps-4 pe-3" style="height:auto">
+									class="btn btn-outline-secondary rounded-pill ps-4 pe-3" style="height:auto; min-height: 48px;">
 									<i class="bi bi-arrow-left me-2"></i>
 									<div class="text-start me-3 mt-2 d-none d-lg-block">
 										<span>Sebelumnya</span>

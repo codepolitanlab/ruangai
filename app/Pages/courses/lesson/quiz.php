@@ -94,9 +94,9 @@
                     <div class="d-flex justify-content-between mt-4">
                         <div>
                             <button class="btn btn-outline-primary" @click="prevQuiz" x-transition x-show="currentIndex > 0"><i class="bi bi-caret-left m-0"></i></button>
+                            <button class="btn btn-outline-primary" @click="nextQuiz" x-transition x-show="currentIndex < quizKeys.length - 1"><i class="bi bi-caret-right m-0"></i></button>
                         </div>
                         <div>
-                            <button class="btn btn-outline-primary" @click="nextQuiz" x-transition x-show="currentIndex < quizKeys.length - 1"><i class="bi bi-caret-right m-0"></i></button>
 
                             <button class="btn btn-success" :class="{ 'btn-progress': finishQuiz }" @click="submitQuiz" x-transition x-show="Object.keys(answers).length === quizKeys.length">Cek Jawaban</button>
                         </div>
