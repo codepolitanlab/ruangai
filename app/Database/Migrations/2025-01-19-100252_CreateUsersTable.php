@@ -58,6 +58,16 @@ class CreateUsersTable extends Migration
                 'constraint' => 6,
                 'null'       => true
             ],
+            'phone_valid'   => [
+                'type'       => 'BOOLEAN',
+                'null'       => true,
+                'default'    => false
+            ],
+            'email_valid'   => [
+                'type'       => 'BOOLEAN',
+                'null'       => true,
+                'default'    => false
+            ],
             'username'        => [
                 'type'       => 'VARCHAR',
                 'constraint' => 30,

@@ -3,20 +3,20 @@
 $bottommenu = [
     [
         'label'  => 'Beranda',
-        'url'    => '/courses/intro/353/laravel-security',
+        'url'    => '/courses/intro/1/belajar-fundamental-ai',
         'icon'   => 'bi bi-house',
         'module' => 'course_intro'
     ],
     [
         'label'  => 'Materi',
-        'url'    => '/courses/intro/353/laravel-security/lessons',
+        'url'    => '/courses/intro/1/belajar-fundamental-ai/lessons',
         'icon'   => 'bi bi-megaphone',
         'icon'   => 'bi bi-journal-check',
         'module' => 'course_lesson'
     ],
     [
         'label'  => 'Live Session',
-        'url'    => '/courses/intro/353/laravel-security/live_session',
+        'url'    => '/courses/intro/1/belajar-fundamental-ai/live_session',
         'icon'   => 'bi bi-camera-video',
         'module' => 'course_live'
     ],
