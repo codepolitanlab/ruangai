@@ -14,7 +14,7 @@
                 <div>
                     <div class="form-group boxed">
                         <div class="text-start input-wrapper">
-                            <label class=" fs-6" for="identity">Email/No.WhatsApp</label>
+                            <label class=" fs-6" for="identity">Email</label>
                             <input type="text" class="form-control" id="identity" x-model="data.username">
                         </div>
                     </div>
@@ -34,14 +34,6 @@
                             <span class="spinner-border spinner-border-sm me-1" x-show="buttonSubmitting" aria-hidden="true"></span>
                             MASUK
                         </button>
-                        <hr>
-                        <a href="/registrasi" class="btn btn-outline-secondary bg-white btn-block rounded btn-lg mb-2">REGISTRASI</a>
-                        <div class="d-flex justify-content-center mb-2">
-                            <div>
-                                <a href="/reset_password" style="font-size:1.1rem;">Lupa Kata Sandi?</a>
-                                </div>
-                        </div>
-                        
                     </div>
                 </div>
             </div>

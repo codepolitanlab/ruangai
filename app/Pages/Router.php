@@ -12,17 +12,17 @@ class Router
         'notfound' => [
             'preload' => true,
         ],
-        '/intro' => [],
+        // '/intro' => [],
         '/masuk' => [],
         '/masuk/instant/:token' => [
             'template' => '/masuk/instant/template',
         ],
-        '/pengumuman' => [],
-        '/registrasi' => [],
-        '/registrasi/confirm' => [],
-        '/reset_password' => [],
-        '/reset_password/change/:token' => [],
-        '/page/:slug' => [],
+        // '/pengumuman' => [],
+        // '/registrasi' => [],
+        // '/registrasi/confirm' => [],
+        // '/reset_password' => [],
+        // '/reset_password/change/:token' => [],
+        // '/page/:slug' => [],
         '/certificate/:id' => [
             'preload' => true,
             'handler' => '[isLoggedIn]',
@@ -50,33 +50,31 @@ class Router
             'preload' => true,
             'handler' => '[isLoggedIn]',
         ],
-        '/courses/tanya_jawab' => [],
-        '/courses/tanya_jawab/:id' => [
-            'template' => '/courses/tanya_jawab/detail/template',
-        ],
-        '/profile' => [
-            'preload' => true,
-            'handler' => '[isLoggedIn]',
-        ],
-        '/profile/delete' => [
-            'preload' => true,
-            'handler' => '[isLoggedIn]',
-        ],
-        '/profile/edit_info' => [
-            'preload' => true,
-            'handler' => '[isLoggedIn]',
-        ],
-        '/profile/edit_account' => [
-            'preload' => true,
-            'handler' => '[isLoggedIn]',
-        ],
-        '/notification' => [
-            'handler' => '[isLoggedIn]',
-        ],
-        '/webpush' => [
-            'handler' => '[isLoggedIn]',
-        ],
-        '/zpanel/course/live_meeting_blueprint' => [],
-        '/zpanel/course/live' => [],
+        // '/courses/tanya_jawab' => [],
+        // '/courses/tanya_jawab/:id' => [
+        //     'template' => '/courses/tanya_jawab/detail/template',
+        // ],
+        // '/profile' => [
+        //     'preload' => true,
+        //     'handler' => '[isLoggedIn]',
+        // ],
+        // '/profile/delete' => [
+        //     'preload' => true,
+        //     'handler' => '[isLoggedIn]',
+        // ],
+        // '/profile/edit_info' => [
+        //     'preload' => true,
+        //     'handler' => '[isLoggedIn]',
+        // ],
+        // '/profile/edit_account' => [
+        //     'preload' => true,
+        //     'handler' => '[isLoggedIn]',
+        // ],
+        // '/notification' => [
+        //     'handler' => '[isLoggedIn]',
+        // ],
+        // '/webpush' => [
+        //     'handler' => '[isLoggedIn]',
+        // ],
     ];
 }

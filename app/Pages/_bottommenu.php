@@ -21,9 +21,10 @@ $bottommenu = [
         'module' => 'course_live'
     ],
     [
-        'label'  => 'Akun',
-        'url'    => '/profile',
-        'icon'   => 'bi bi-person',
+        'label'  => 'Keluar',
+        'url'    => '/logout',
+        'native' => true,
+        'icon'   => 'bi bi-door-closed text-danger',
         'module' => 'profile'
     ],
 ];
@@ -33,6 +34,7 @@ $bottommenu = [
 <div class="appBottomMenu shadow-lg px-0">
     <?php foreach($bottommenu as $menu): ?>
     <a href="<?= $menu['url'] ?>" 
+        <?= $menu['native'] ?? null ? 'native' : '' ?>
         id="bottommenu-member" 
         class="item" 
         :class="data?.module == '<?= $menu['module'] ?>' ? 'active' : ''">
@@ -53,7 +55,8 @@ $bottommenu = [
     <ul class="listview flush transparent no-line image-listview mt-2">
         <?php foreach($bottommenu as $menu): ?>
         <li>
-            <a href="<?= $menu['url'] ?>" 
+            <a href="<?= $menu['url'] ?>"
+                <?= $menu['native'] ?? null ? 'native' : '' ?>
                 class="item"
                 :class="data?.module == '<?= $menu['module'] ?>' ? 'active' : ''">
                 <div class="icon-box icon-box-transparent">

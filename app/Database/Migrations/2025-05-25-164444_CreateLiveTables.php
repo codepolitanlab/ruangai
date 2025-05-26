@@ -3,6 +3,7 @@
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
+use CodeIgniter\Database\RawSql;
 
 class CreateLiveTables extends Migration
 {
@@ -17,7 +18,7 @@ class CreateLiveTables extends Migration
             'mentor_name'  => ['type' => 'VARCHAR', 'constraint' => 255],
             'duration'     => ['type' => 'VARCHAR', 'constraint' => 5, 'null' => true, 'comment' => 'HH:MM'],
             'order'        => ['type' => 'INT'],
-            'created_at'   => ['type' => 'DATETIME', 'null' => true],
+            'created_at'   => ['type' => 'DATETIME', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at'   => ['type' => 'DATETIME', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
@@ -32,8 +33,9 @@ class CreateLiveTables extends Migration
             'start_date'   => ['type' => 'DATE'],
             'end_date'     => ['type' => 'DATE'],
             'status'       => ['type' => 'VARCHAR', 'constraint' => 50, 'default' => 'upcoming'],
-            'created_at'   => ['type' => 'DATETIME', 'null' => true],
+            'created_at'   => ['type' => 'DATETIME', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at'   => ['type' => 'DATETIME', 'null' => true],
+            'deleted_at'   => ['type' => 'DATETIME', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('course_id', 'courses', 'id', 'CASCADE', 'CASCADE');
@@ -51,7 +53,7 @@ class CreateLiveTables extends Migration
             'meeting_time'  => ['type' => 'TIME'],
             'zoom_link'     => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
             'recording_link'=> ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
-            'created_at'    => ['type' => 'DATETIME', 'null' => true],
+            'created_at'    => ['type' => 'DATETIME', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at'    => ['type' => 'DATETIME', 'null' => true],
             'deleted_at'    => ['type' => 'DATETIME', 'null' => true],
         ]);
@@ -64,7 +66,7 @@ class CreateLiveTables extends Migration
             'id'            => ['type' => 'INT', 'unsigned' => true, 'auto_increment' => true],
             'user_id'       => ['type' => 'INT', 'unsigned' => true],
             'live_batch_id' => ['type' => 'INT', 'unsigned' => true],
-            'created_at'    => ['type' => 'DATETIME', 'null' => true],
+            'created_at'    => ['type' => 'DATETIME', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at'    => ['type' => 'DATETIME', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
@@ -77,7 +79,7 @@ class CreateLiveTables extends Migration
             'id'              => ['type' => 'INT', 'unsigned' => true, 'auto_increment' => true],
             'user_id'         => ['type' => 'INT', 'unsigned' => true],
             'live_meeting_id' => ['type' => 'INT', 'unsigned' => true],
-            'created_at'      => ['type' => 'DATETIME', 'null' => true],
+            'created_at'      => ['type' => 'DATETIME', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at'      => ['type' => 'DATETIME', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
