@@ -27,38 +27,6 @@ $sidebar = [
             ],
         ]
     ],
-    'content' => [
-        'label' => 'Content',
-        'icon' => 'bi bi-folder',
-        'url' => '#',
-        'children' => [
-            'page' => [
-                'label' => 'Pages',
-                'icon' => 'bi bi-file-text',
-                'url' => '/zpanel/content/pages',
-            ],
-            'microblog' => [
-                'label' => 'Microblogs',
-                'icon' => 'bi bi-chat-text',
-                'url' => '/zpanel/content/microblogs',
-            ],
-            'files' => [
-                'label' => 'Files',
-                'icon' => 'bi bi-file-earmark',
-                'url' => '/zpanel/content/files',
-            ],
-            'slider' => [
-                'label' => 'Sliders',
-                'icon' => 'bi bi-images',
-                'url' => '/zpanel/content/sliders',
-            ],
-            'announcement' => [
-                'label' => 'Announcements',
-                'icon' => 'bi bi-megaphone',
-                'url' => '/zpanel/content/announcements',
-            ],
-        ]
-    ],
     'elearning' => [
         'label' => 'E-Learning',
         'icon' => 'bi bi-book',
@@ -69,99 +37,121 @@ $sidebar = [
                 'icon' => 'bi bi-laptop',
                 'url' => '/zpanel/course',
             ],
-            'quiz' => [
-                'label' => 'Quizzes',
-                'icon' => 'bi bi-ui-checks',
-                'url' => '/zpanel/quiz',
-            ],
-            'live_class' => [
-                'label' => 'Live Classes',
-                'icon' => 'bi bi-camera-video',
-                'url' => '/zpanel/elearning/live-classes',
-            ],
         ]
     ],
-    'transaction' => [
-        'label' => 'Transactions',
-        'icon' => 'bi bi-cash-stack',
-        'url' => '#',
-        'children' => [
-            'voucher' => [
-                'label' => 'Vouchers',
-                'icon' => 'bi bi-ticket-perforated',
-                'url' => '/zpanel/transactions/vouchers',
-            ],
-            'membership' => [
-                'label' => 'Memberships',
-                'icon' => 'bi bi-card-checklist',
-                'url' => '/zpanel/transactions/memberships',
-            ],
-            'transaction' => [
-                'label' => 'Transaction History',
-                'icon' => 'bi bi-receipt',
-                'url' => '/zpanel/transactions/history',
-            ],
-        ]
-    ],
-    'earning' => [
-        'label' => 'Earnings',
-        'icon' => 'bi bi-wallet2',
-        'url' => '#',
-        'children' => [
-            'referral' => [
-                'label' => 'Referral Earnings',
-                'icon' => 'bi bi-person-plus',
-                'url' => '/zpanel/earnings/referrals',
-            ],
-            'referral_partner' => [
-                'label' => 'Referral Partners',
-                'icon' => 'bi bi-people-fill',
-                'url' => '/zpanel/earnings/referral-partners',
-            ],
-        ]
-    ],
-    'configuration' => [
-        'label' => 'Configuration',
-        'icon' => 'bi bi-gear',
-        'url' => '#',
-        'children' => [
-            'setting' => [
-                'label' => 'Settings',
-                'icon' => 'bi bi-sliders',
-                'url' => '/zpanel/configuration/settings',
-            ],
-            'navigation' => [
-                'label' => 'Navigation',
-                'icon' => 'bi bi-menu-button-wide',
-                'url' => '/zpanel/configuration/navigation',
-            ],
-            'page_option' => [
-                'label' => 'Page Options',
-                'icon' => 'bi bi-tools',
-                'url' => '/zpanel/configuration/page-options',
-            ],
-            'module' => [
-                'label' => 'Modules',
-                'icon' => 'bi bi-puzzle',
-                'url' => '/zpanel/configuration/modules',
-            ],
-            'entry' => [
-                'label' => 'Entries',
-                'icon' => 'bi bi-pencil-square',
-                'url' => '/zpanel/configuration/entries',
-            ],
-            'importer' => [
-                'label' => 'Importer',
-                'icon' => 'bi bi-upload',
-                'url' => '/zpanel/configuration/importer',
-            ],
-            'exporter' => [
-                'label' => 'Exporter',
-                'icon' => 'bi bi-download',
-                'url' => '/zpanel/configuration/exporter',
-            ],
-        ]
-    ],
+    // 'content' => [
+    //     'label' => 'Content',
+    //     'icon' => 'bi bi-folder',
+    //     'url' => '#',
+    //     'children' => [
+    //         'page' => [
+    //             'label' => 'Pages',
+    //             'icon' => 'bi bi-file-text',
+    //             'url' => '/zpanel/content/pages',
+    //         ],
+    //         'microblog' => [
+    //             'label' => 'Microblogs',
+    //             'icon' => 'bi bi-chat-text',
+    //             'url' => '/zpanel/content/microblogs',
+    //         ],
+    //         'files' => [
+    //             'label' => 'Files',
+    //             'icon' => 'bi bi-file-earmark',
+    //             'url' => '/zpanel/content/files',
+    //         ],
+    //         'slider' => [
+    //             'label' => 'Sliders',
+    //             'icon' => 'bi bi-images',
+    //             'url' => '/zpanel/content/sliders',
+    //         ],
+    //         'announcement' => [
+    //             'label' => 'Announcements',
+    //             'icon' => 'bi bi-megaphone',
+    //             'url' => '/zpanel/content/announcements',
+    //         ],
+    //     ]
+    // ],
+    // 'transaction' => [
+    //     'label' => 'Transactions',
+    //     'icon' => 'bi bi-cash-stack',
+    //     'url' => '#',
+    //     'children' => [
+    //         'voucher' => [
+    //             'label' => 'Vouchers',
+    //             'icon' => 'bi bi-ticket-perforated',
+    //             'url' => '/zpanel/transactions/vouchers',
+    //         ],
+    //         'membership' => [
+    //             'label' => 'Memberships',
+    //             'icon' => 'bi bi-card-checklist',
+    //             'url' => '/zpanel/transactions/memberships',
+    //         ],
+    //         'transaction' => [
+    //             'label' => 'Transaction History',
+    //             'icon' => 'bi bi-receipt',
+    //             'url' => '/zpanel/transactions/history',
+    //         ],
+    //     ]
+    // ],
+    // 'earning' => [
+    //     'label' => 'Earnings',
+    //     'icon' => 'bi bi-wallet2',
+    //     'url' => '#',
+    //     'children' => [
+    //         'referral' => [
+    //             'label' => 'Referral Earnings',
+    //             'icon' => 'bi bi-person-plus',
+    //             'url' => '/zpanel/earnings/referrals',
+    //         ],
+    //         'referral_partner' => [
+    //             'label' => 'Referral Partners',
+    //             'icon' => 'bi bi-people-fill',
+    //             'url' => '/zpanel/earnings/referral-partners',
+    //         ],
+    //     ]
+    // ],
+    // 'configuration' => [
+    //     'label' => 'Configuration',
+    //     'icon' => 'bi bi-gear',
+    //     'url' => '#',
+    //     'children' => [
+    //         'setting' => [
+    //             'label' => 'Settings',
+    //             'icon' => 'bi bi-sliders',
+    //             'url' => '/zpanel/configuration/settings',
+    //         ],
+    //         'navigation' => [
+    //             'label' => 'Navigation',
+    //             'icon' => 'bi bi-menu-button-wide',
+    //             'url' => '/zpanel/configuration/navigation',
+    //         ],
+    //         'page_option' => [
+    //             'label' => 'Page Options',
+    //             'icon' => 'bi bi-tools',
+    //             'url' => '/zpanel/configuration/page-options',
+    //         ],
+    //         'module' => [
+    //             'label' => 'Modules',
+    //             'icon' => 'bi bi-puzzle',
+    //             'url' => '/zpanel/configuration/modules',
+    //         ],
+    //         'entry' => [
+    //             'label' => 'Entries',
+    //             'icon' => 'bi bi-pencil-square',
+    //             'url' => '/zpanel/configuration/entries',
+    //         ],
+    //         'importer' => [
+    //             'label' => 'Importer',
+    //             'icon' => 'bi bi-upload',
+    //             'url' => '/zpanel/configuration/importer',
+    //         ],
+    //         'exporter' => [
+    //             'label' => 'Exporter',
+    //             'icon' => 'bi bi-download',
+    //             'url' => '/zpanel/configuration/exporter',
+    //         ],
+    //     ]
+    // ],
 ];
 
 function renderMenu($menu) {
