@@ -55,8 +55,8 @@
 			<div class="section p-3 bg-white rounded-4 mb-3">
 				<div class="card border-0 shadow-none overflow-hidden">
 					<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206751%20(2).png" class="card-img-top cover rounded-4" style="height: 200px;" alt="AI Course">
-					<div class="card-body">
-						<h5 class="card-title">Kelas - Belajar Fundamental AI</h5>
+					<div class="card-body p-2">
+						<h2 class=" mt-2">Kelas - Belajar Fundamental AI</h2>
 						<p class="card-text p-0">
 							Pelajari dasar-dasar Artificial Intelligence (AI), bagaimana cara kerjanya, serta perannya dalam kehidupan sehari-hari.
 							<a href="#" class="text-primary text-decoration-none p-0">Lihat Selengkapnya</a>
@@ -86,7 +86,7 @@
 								<div class="progress mb-2" style="height: 4px; background: #DBE6EC;">
 									<div class="progress-bar bg-primary" style="width: 33%;"></div>
 								</div>
-								<div class="text-muted text-end small">30 Total Modul</div>
+								<div class="text-muted text-end text-primary small">30 Total Modul</div>
 							</div>
 						</div>
 					</div>
