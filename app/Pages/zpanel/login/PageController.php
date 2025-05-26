@@ -31,7 +31,7 @@ class PageController extends BaseController
 
         if($status == 'failed') {
             session()->setFlashdata('message', $message);
-            redirectPage('zpanel/login');
+            redirectPage('/zpanel/login');
         }
         
         redirectPage('zpanel');

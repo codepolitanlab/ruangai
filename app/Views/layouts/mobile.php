@@ -44,6 +44,8 @@
     <script src="https://cdn.jsdelivr.net/npm/pinecone-router@7.0.x/dist/router.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
     <?= $this->renderSection('script') ?>
 </body>
 

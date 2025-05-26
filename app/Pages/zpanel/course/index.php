@@ -1,4 +1,4 @@
-<?= $this->extend('layouts/admin') ?>
+<?php $this->extend('layouts/admin') ?>
 
 <!-- START Content Section -->
 <?php $this->section('main') ?>
@@ -34,37 +34,32 @@
             </div>
 
             <ul class="list-unstyled mt-3">
+                <?php if($courses) : ?>
+                <?php foreach ($courses as $course) : ?>
                 <li class="media border-top">
                     <div class="media-body px-3 py-2">
                         <div class="row">
                             <div class="col-lg-6 pl-2 d-flex justify-content-start mb-2">
-                                <img src="//uploads/madrasahdigital/sources/Cover%20Kelas%20Online%20Ngonten%20Sakti.png" style="margin-top:10px; width:100px;height:100px;object-fit:cover;">
+                                <img src="<?= $course['cover'] ?>" 
+                                    style="margin-top:10px; width:100px;height:100px;object-fit:cover;">
                                 <div class="ps-3 pt-2">
                                     <h5 class="mt-0 mb-1 d-inline-block">
-                                        Ngonten Sakti dengan AI
+                                        <?= $course['course_title'] ?>
                                     </h5>
                                     <div class="d-inline-block align-text-bottom ms-1">
-                                        <span class="badge rounded-pill text-bg-success">publish</span>
+                                        <span class="badge rounded-pill text-bg-success"><?= $course['status'] ?></span>
                                     </div>
                                     <br>
-                                    <a class="text-info font-weight-bold" href="/courses/intro/ngonten-sakti-dengan-ai" target="_blank">
-                                        <span class="text-muted"><em>ngonten-sakti-dengan-ai</em> <span class="bi bi-box-arrow-up-right"></span></span>
+                                    <a class="text-info font-weight-bold" href="<?= site_url('courses/intro/' . $course['id'] . '/' . $course['slug']) ?>" target="_blank">
+                                        <span class="text-muted"><em><?= $course['slug'] ?></em> <span class="bi bi-box-arrow-up-right"></span></span>
                                     </a>
-
-                                    <div>
-                                        <small>Tags:</small>
-                                        <span class="badge mb-1 rounded-pill text-bg-light">ngonten</span>
-                                        <span class="badge mb-1 rounded-pill text-bg-light">ai</span>
-                                        <span class="badge mb-1 rounded-pill text-bg-light">artificial intelligence</span>
-                                        <span class="badge mb-1 rounded-pill text-bg-light">kecerdasan buatan</span>
-                                    </div>
 
                                     <div class="option-menu mt-3">
                                         <small class="text-muted">
-                                            <a class="btn btn-sm btn-outline-secondary" href="/zpanel/course/lessons/1"><span class="bi bi-list"></span> Manage Lessons</a>
-                                            <a class="btn btn-sm btn-outline-secondary" href="/zpanel/course/student"><span class="bi bi-users"></span> Student list</a>
-                                            <a class="btn btn-sm btn-outline-secondary" href="/zpanel/course/form/1"><span class="bi bi-pencil-square"></span> Edit</a>
-                                            <a class="btn btn-sm btn-outline-danger" onclick="return confirm('Sure?')" href="/zpanel/course/remove/1"><span class="bi bi-trash"></span> Delete</a>
+                                            <a class="btn btn-sm btn-outline-secondary" href="/zpanel/course/lesson/<?= $course['id'] ?>"><span class="bi bi-list"></span> Lessons</a>
+                                            <a class="btn btn-sm btn-outline-secondary" href="/zpanel/course/live/<?= $course['id'] ?>"><span class="bi bi-camera"></span> Live Session</a>
+                                            <a class="btn btn-sm btn-outline-secondary" href="/zpanel/course/student/<?= $course['id'] ?>"><span class="bi bi-people"></span> Student</a>
+                                            <a class="btn btn-sm btn-outline-secondary" href="/zpanel/course/edit/<?= $course['id'] ?>"><span class="bi bi-pencil-square"></span> Edit</a>
                                         </small>
                                     </div>
                                 </div>
@@ -72,9 +67,9 @@
                             <div class="col-lg-6 p-2 mb-2 font-smaller">
                                 <div class="row">
                                     <div class="col-6 col-sm-4">
-                                        <div class="text-nowrap"><strong>Total modul:</strong> 50</div>
-                                        <div><strong>Durasi:</strong> 08:54:51</div>
-                                        <div><strong class="text-nowrap">Last update:</strong> <br>30 December -0001</div>
+                                        <div class="text-nowrap"><strong>Total modul:</strong> <?= $course['total_module'] ?></div>
+                                        <div><strong>Durasi:</strong> <?= convertSecondsToTime($course['total_time']) ?></div>
+                                        <div><strong class="text-nowrap">Last update:</strong> <br><?= date("d m Y, H:i", strtotime($course['last_update'] ?? $course['updated_at'])) ?></div>
                                     </div>
                                     <div class="col-6 col-sm-4 px-2">
                                         <div class="d-flex gap-1"><span class="pe-1 bi bi-dash-circle text-muted" title="quiz enabled"></span> <span>Enable Quiz</span></div>
@@ -95,6 +90,8 @@
                         </div>
                     </div>
                 </li>
+                <?php endforeach; ?>
+                <?php endif; ?>
             </ul>
         </div>
     </section>

@@ -3,44 +3,43 @@
     return {
       title: "Lesson",
       showButtonPaham: false,
-      waitToShowButtonPaham: 1000 * 30,
+      waitToShowButtonPaham: 1000 * 3,
       errorMessage: null,
       buttonSubmitting: false,
-      sanboxLogin: {},
+
+      currentQuestion: 0,
 
       async init() {
         // Show button saya sudah paham setelah n detik
         setTimeout(() => this.showButtonPaham = true, this.waitToShowButtonPaham)
       },
 
-      markAsComplete(lessonId, nextLessonId) {
-        console.log(lessonId);
-        // With form data
-        const formData = new FormData();
-        formData.append("lesson_id", lessonId);
-        axios
-          .post("/courses/lesson/", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              "Authorization": localStorage.getItem("heroic_token"),
-            },
+      markAsComplete(course_id, lesson_id, next_lesson_id) {
+        this.buttonSubmitting = true;
+        $heroicHelper
+          .post(`/courses/lesson`, {
+            course_id: course_id,
+            lesson_id: lesson_id
           })
           .then((response) => {
             if (response.data.status == "success") {
               $heroicHelper.toastr(response.data.message, "success");
-              if (!nextLessonId) {
+              if (!next_lesson_id) {
                 let courseId = response.data.course.course_id;
                 let courseSlug = response.data.course.course_slug;
                 setTimeout(() => {
-                  window.location.replace("/courses/intro/" + courseId + "/" + courseSlug + "/lessons");
+                  this.buttonSubmitting = false;
+                  this.$router.navigate(`/courses/intro/${courseId}/${courseSlug}/lessons`);
                 }, 3000)
               } else {
                 setTimeout(() => {
-                  window.location.replace("/courses/lesson/" + nextLessonId);
+                  this.buttonSubmitting = false;
+                  this.$router.navigate(`/courses/${course_id}/lesson/${next_lesson_id}`);
                 }, 3000)
               }
             } else {
               setTimeout(() => {
+                this.buttonSubmitting = false;
                 $heroicHelper.toastr(response.data.message, "danger");
               }, 3000)
             }
@@ -49,4 +48,72 @@
 
     };
   });
+
+  Alpine.data('lesson_quiz', function(parentQuizzes, course_id, lesson_id) {
+    return {
+      quizzes: parentQuizzes,
+      course_id,
+      lesson_id,
+      quizKeys: [],
+      currentIndex: 0,
+      answers: {},
+      startQuiz: false,
+      finishQuiz: false,
+      result: {},
+
+      init() {
+        this.quizKeys = Object.keys(this.quizzes);
+      },
+
+      get currentKey() {
+        return this.quizKeys[this.currentIndex];
+      },
+      get currentQuiz() {
+        return this.quizzes[this.currentKey];
+      },
+      nextQuiz() {
+        if (this.currentIndex < this.quizKeys.length - 1) this.currentIndex++;
+      },
+      prevQuiz() {
+        if (this.currentIndex > 0) this.currentIndex--;
+      },
+      goTo(index) {
+        this.currentIndex = index;
+      },
+      storeAnswer(key, value) {
+        this.answers[key] = value;
+      },
+      submitQuiz() {
+        this.finishQuiz = true;
+        let url = `/courses/lesson/quiz`;
+        $heroicHelper.post(url, {
+            answers: this.answers,
+            course_id: this.course_id,
+            lesson_id: this.lesson_id
+          })
+          .then((response) => {
+            console.log(response)
+            if (response.status == 200) {
+              this.result = response.data;
+
+              // Show confetti
+              if (this.result.is_pass) {
+                confetti({
+                  particleCount: 150
+                });
+              }
+            } else {
+              $heroicHelper.toastr(response.data.message, "danger");
+            }
+          });
+      },
+      tryAgain() {
+        this.finishQuiz = false;
+        this.currentIndex = 0;
+        this.answers = {};
+        this.result = {};
+        this.startQuiz = false;
+      },
+    }
+  })
 </script>

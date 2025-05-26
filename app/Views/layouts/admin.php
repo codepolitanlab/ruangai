@@ -36,8 +36,10 @@
         <!-- Content Section -->
         <div id="main" class="layout-navbar navbar-fixed position-relative">
             <?= $this->include('partials/admin_header') ?>
-
+            
             <div id="main-content">
+                <?= $this->include('partials/admin_alerts') ?>
+                
                 <?= $this->renderSection('main') ?>
             </div>
 

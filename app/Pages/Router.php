@@ -45,11 +45,8 @@ class Router
             'preload' => true,
             'handler' => '[isLoggedIn]',
         ],
-        '/courses/lesson/:id' => [
-            'preload' => true,
-            'handler' => '[isLoggedIn]',
-        ],
-        '/courses/quiz/:id' => [
+        '/courses/:course_id/lesson/:lesson_id' => [
+            'template' => '/courses/lesson/template',
             'preload' => true,
             'handler' => '[isLoggedIn]',
         ],
@@ -79,5 +76,7 @@ class Router
         '/webpush' => [
             'handler' => '[isLoggedIn]',
         ],
+        '/zpanel/course/live_meeting_blueprint' => [],
+        '/zpanel/course/live' => [],
     ];
 }

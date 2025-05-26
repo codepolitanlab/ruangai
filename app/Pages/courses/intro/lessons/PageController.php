@@ -41,6 +41,7 @@ class PageController extends BaseController
                 ->select('course_lessons.*, course_topics.*, course_lessons.id as id')
                 ->join('course_topics', 'course_topics.id = course_lessons.topic_id', 'left')
                 ->where('course_lessons.course_id', $id)
+                ->where('course_lessons.deleted_at', null)
                 ->orderBy('course_topics.topic_order', 'ASC')
                 ->orderBy('course_lessons.lesson_order', 'ASC')
                 ->get()
@@ -48,11 +49,15 @@ class PageController extends BaseController
 
             $this->data['course'] = $course;
 
+            $lessonsCompleted = [];
+            $numCompleted = 0;
             foreach ($lessons as $key => $lesson) {
                 // Tambahkan status is_completed ke setiap lesson
-                $lesson['is_completed'] = in_array($lesson['id'], $completedLessonIds);
                 $this->data['course']['lessons'][$lesson['topic_title']][$lesson['id']] = $lesson;
+                if($lessonsCompleted[$lesson['id']] = in_array($lesson['id'], $completedLessonIds)) $numCompleted++;
             }
+            $this->data['lessonsCompleted'] = $lessonsCompleted;
+            $this->data['numCompleted'] = $numCompleted;
 
             return $this->respond($this->data);
         } else {

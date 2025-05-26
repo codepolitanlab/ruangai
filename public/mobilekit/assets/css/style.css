@@ -27,6 +27,7 @@ body {
   --ultra-light-primary: #fdf9f0;
   --secondary: #F96E2B;
   --light-secondary: #FFE4D7;
+  --dark-secondary: #c05c2a;
 }
 
 ::-webkit-scrollbar {
@@ -2389,8 +2390,8 @@ a.badge-dark {
 }
 
 .btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active, .btn-secondary.active {
-  background: var(--light-secondary) !important;
-  border-color: var(--light-secondary)  !important;
+  background: var(--dark-secondary) !important;
+  border-color: var(--dark-secondary)  !important;
 }
 
 .btn-secondary.disabled, .btn-secondary:disabled {
@@ -4690,7 +4691,7 @@ textarea,
   cursor: pointer;
   position: relative;
   min-height: 20px;
-  padding: 0px 0 0 32px;
+  padding: 0px 0 5px 32px;
   line-height: 1.7em;
   color: #141515;
 }
@@ -4698,7 +4699,7 @@ textarea,
 .form-check .form-check-label:after {
   position: absolute;
   left: 0;
-  top: 0;
+  top: 2px;
   content: "";
   display: block;
   width: 22px;
@@ -4715,7 +4716,7 @@ textarea,
   height: 22px;
   position: absolute;
   left: 0;
-  top: 0;
+  top: 2px;
   z-index: 3;
   opacity: 0;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
