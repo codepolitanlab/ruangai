@@ -21,6 +21,7 @@
 
 			<section>
 				<div id="video_player">
+
 					<!-- If player Youtube -->
 					<div x-show="data.lesson?.player == 'youtube'" class="ratio ratio-16x9">
 						<iframe width="560" height="315"
@@ -33,14 +34,25 @@
 						</iframe>
 					</div>
 
-					<!-- If player Bunny -->
-					<div x-show="data.lesson?.player == 'bunnystream'" class="ratio ratio-16x9">
-						<iframe width="560" height="315" :src="`https://iframe.mediadelivery.net/embed/${data.lesson?.bunnystream_id}`" title="Bunny video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+					<!-- Video Player Container -->
+					<div x-show="data.lesson?.player == 'bunnystream' || data.lesson?.player == 'diupload'" class="ratio ratio-16x9">
+						<iframe
+							:id="selectedServer === 1 ? 'diupload-player' : 'bunny-player'"
+							width="560"
+							height="315"
+							:src="getVideoUrl(data.lesson?.diupload_id, data.lesson?.bunnystream_id)"
+							title="Video player"
+							frameborder="0"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+							referrerpolicy="strict-origin-when-cross-origin"
+							allowfullscreen>
+						</iframe>
 					</div>
 
-					<!-- If player Diupload -->
-					<div x-show="data.lesson?.player == 'diupload'" class="ratio ratio-16x9">
-						<iframe width="560" height="315" :src="`https://diupload.com/embed/${data.lesson?.diupload_id}`" title="Diupload video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+					<!-- Server Selection Buttons -->
+					<div class="btn-group m-3" x-show="data.lesson?.bunnystream_id">
+						<button class="btn btn-sm" :class="selectedServer === 1 ? 'btn-primary' : 'btn-outline-primary'" @click="switchServerVideo(1)">Server 1</button>
+						<button class="btn btn-sm" :class="selectedServer === 2 ? 'btn-primary' : 'btn-outline-primary'" @click="switchServerVideo(2)">Server 2</button>
 					</div>
 				</div>
 

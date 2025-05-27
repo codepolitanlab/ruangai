@@ -6,12 +6,25 @@
       waitToShowButtonPaham: 1000 * 3,
       errorMessage: null,
       buttonSubmitting: false,
+      selectedServer: 1,
 
       currentQuestion: 0,
 
       async init() {
         // Show button saya sudah paham setelah n detik
         setTimeout(() => this.showButtonPaham = true, this.waitToShowButtonPaham)
+      },
+
+      getVideoUrl(diupload_id, bunnystream_id) {
+        if (this.selectedServer === 1) {
+          return `https://diupload.com/embed/${diupload_id}`;
+        } else {
+          return `https://iframe.mediadelivery.net/embed/431005/${bunnystream_id}?autoplay=true`;
+        }
+      },
+
+      switchServerVideo(server) {
+        this.selectedServer = server;
       },
 
       markAsComplete(course_id, lesson_id, next_lesson_id) {

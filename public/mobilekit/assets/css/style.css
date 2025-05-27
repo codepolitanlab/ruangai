@@ -2510,9 +2510,9 @@ a.badge-dark {
 
 .btn-outline-primary {
   background: transparent;
-  border-color: #1E74FD;
+  border-color: var(--primary);
   border-width: 1px !important;
-  color: #1E74FD;
+  color: var(--primary);
   transition: none;
 }
 
