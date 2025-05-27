@@ -22,7 +22,7 @@
 			<section>
 				<div id="video_player">
 					<!-- If player Youtube -->
-					<div x-show="data.lesson?.video && data.lesson?.player == 'youtube'" class="ratio ratio-16x9">
+					<div x-show="data.lesson?.player == 'youtube'" class="ratio ratio-16x9">
 						<iframe width="560" height="315"
 							:src="`${data.lesson?.video}&autoplay=1`"
 							title="YouTube video player"
@@ -35,12 +35,12 @@
 
 					<!-- If player Bunny -->
 					<div x-show="data.lesson?.player == 'bunnystream'" class="ratio ratio-16x9">
-						<!-- <iframe width="560" height="315" :src="`https://www.youtube.com/embed/${data.lesson?.youtube_id}`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
+						<iframe width="560" height="315" :src="`https://iframe.mediadelivery.net/embed/${data.lesson?.bunnystream_id}`" title="Bunny video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 					</div>
 
 					<!-- If player Diupload -->
 					<div x-show="data.lesson?.player == 'diupload'" class="ratio ratio-16x9">
-						<!-- <iframe width="560" height="315" :src="`https://www.youtube.com/embed/${data.lesson?.youtube_id}`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
+						<iframe width="560" height="315" :src="`https://diupload.com/embed/${data.lesson?.diupload_id}`" title="Diupload video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 					</div>
 				</div>
 

@@ -115,7 +115,8 @@
 												:aria-valuenow="Math.round(data.lesson_completed/data.total_lessons*100)" aria-valuemin="0" aria-valuemax="100"></div>
 										</div>
 									</div>
-									<span class="ms-3 fw-bold text-white" style="font-size: 1rem;" x-text="Math.round(data.lesson_completed/data.total_lessons*100) + '%'">0%</span>
+									<span x-show="data?.total_lessons" class="ms-3 fw-bold text-white" style="font-size: 1rem;" x-text="Math.round(data.lesson_completed/data.total_lessons*100) + '%'">0%</span>
+									<span x-show="!data?.total_lessons" class="ms-3 fw-bold text-white" style="font-size: 1rem;">0%</span>
 								</div>
 								<div class="text-white text-end small"><span x-text="data.total_lessons"></span> total materi dan kuis</div>
 							</div>
