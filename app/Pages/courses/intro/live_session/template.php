@@ -201,7 +201,21 @@
 											<dd>Felisha Rehtaliani, Aji Raga Pamungkas</dd>
 										</dl>
 										<div class="d-flex gap-2 mt-4">
-											<button class="btn btn-primary rounded-3"> <i class="bi bi-camera-video"></i> Gabung Zoom</button>
+											<a :href="live_session.zoom_link"
+												target="_blank"
+												class="btn btn-primary rounded-3" 
+												x-show="['ongoing', 'upcoming'].includes(live_session.status_date)" 
+												:disabled="live_session.zoom_link == null"> 
+												<i class="bi bi-camera-video"></i> Gabung Zoom
+											</a>
+											<a
+												:href="live_session.recording_link"
+												target="_blank" 
+												class="btn btn-danger rounded-3" 
+												x-show="['attended','completed'].includes(live_session.status_date)" 
+												:disabled="live_session.recording_link == null"> 
+												<i class="bi bi-camera-video"></i> Rekaman Video
+											</a>
 											<!-- <button class="btn btn-outline-secondary rounded-3"> <i class="bi bi-person-check-fill"></i> Isi Presensi</button> -->
 										</div>
 									</div>
