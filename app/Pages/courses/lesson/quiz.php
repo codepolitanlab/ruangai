@@ -40,7 +40,7 @@
                     <!-- Card Pertanyaan -->
                     <div class="card mb-4 shadow-lg quiz-item" :id="key">
                         <div class="card-body">
-                            <h6 class="h6" x-text="currentQuiz.question"></h6>
+                            <h6 class="h6" x-html="currentQuiz.question"></h6>
 
                             <!-- TRUE/FALSE -->
                             <template x-if="currentQuiz.type === 'true_false'">
@@ -143,7 +143,7 @@
                             <template x-for="(quiz, key) in quizzes" :key="key">
                                 <div class="mb-4 p-3"
                                     :class="result.hasil[key].benar ? 'bg-success bg-opacity-10' : 'bg-danger bg-opacity-10'">
-                                    <h5 class="h6" x-text="quiz.question"></h5>
+                                    <h5 class="h6" x-html="quiz.question"></h5>
 
                                     <!-- TRUE/FALSE -->
                                     <template x-if="quiz.type === 'true_false'">
@@ -208,7 +208,7 @@
                                             </template>
                                             <p class="mt-3 mb-1 fs-6 text-success-darker" x-show="result.hasil[key].benar">
                                                 <strong>Penjelasan:</strong><br>
-                                                <span x-text="result.hasil[key].penjelasan"></span>
+                                                <span x-html="result.hasil[key].penjelasan"></span>
                                             </p>
                                         </div>
                                     </template>

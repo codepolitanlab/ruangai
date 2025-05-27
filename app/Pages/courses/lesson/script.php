@@ -3,7 +3,7 @@
     return {
       title: "Lesson",
       showButtonPaham: false,
-      waitToShowButtonPaham: 1000 * 30,
+      waitToShowButtonPaham: 1000 * 3,
       errorMessage: null,
       buttonSubmitting: false,
       selectedServer: null,
@@ -37,7 +37,7 @@
           })
           .then((response) => {
             if (response.data.status == "success") {
-              $heroicHelper.toastr(response.data.message, "success");
+              $heroicHelper.toastr(response.data.message, "success", 'bottom');
               if (!next_lesson_id) {
                 let courseId = response.data.course.course_id;
                 let courseSlug = response.data.course.course_slug;

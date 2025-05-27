@@ -25,6 +25,7 @@ class PageController extends BaseController
             ->join('course_topics', 'course_topics.id = course_lessons.topic_id')
             ->where('course_lessons.course_id', $course_id)
             ->where('course_lessons.id', $lesson_id)
+            ->where('course_lessons.deleted_at', null)
             ->get()
             ->getRowArray();
 
@@ -68,6 +69,7 @@ class PageController extends BaseController
                 ')
                 ->join('course_topics', 'course_topics.id = course_lessons.topic_id')
                 ->where('course_lessons.course_id', $course_id)
+                ->where('course_lessons.deleted_at', null)
                 ->orderBy('course_topics.topic_order', 'ASC')
                 ->orderBy('course_lessons.lesson_order', 'ASC')
                 ->get()

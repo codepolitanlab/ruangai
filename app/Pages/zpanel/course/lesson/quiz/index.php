@@ -96,7 +96,7 @@
                                 <div class="mb-3">
                                     <label for="editor">Code Editor</label>
                                     <div id="editor" style="height: 300px; width: 100%; border: 1px solid #ddd; border-radius: 4px;"><?= set_value('quiz', $lesson['quiz'] ?? ''); ?></div>
-                                    <input type="hidden" name="quiz" id="yaml_quiz">
+                                    <input type="hidden" name="quiz" id="yaml_quiz" value="<?= set_value('quiz', $lesson['quiz'] ?? ''); ?>">
                                 </div>
                             </div>
                         </div>
