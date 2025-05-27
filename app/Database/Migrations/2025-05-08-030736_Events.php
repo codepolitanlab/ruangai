@@ -22,7 +22,7 @@ class Events extends Migration
             'organizer'         => ['type' => 'VARCHAR', 'constraint' => 100, 'null' => true],
             'status'            => ['type' => 'VARCHAR', 'constraint' => 20, 'default' => 'draft'], //['draft', 'published', 'cancelled', 'completed']
             'publish_at'        => ['type' => 'TIMESTAMP', 'null' => true],
-            'is_featured'       => ['type' => 'BOOLEAN', 'default' => false],
+            'is_featured'       => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 0],
             'banner_image'      => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
             'created_at'        => ['type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],
             'updated_at'        => ['type' => 'TIMESTAMP', 'null' => true],
