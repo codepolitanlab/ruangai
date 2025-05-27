@@ -16,14 +16,14 @@
 		</div>
 	</div>
 
-	<div id="appCapsule" class="appCapsule-lg" x-data="lesson()">
+	<div id="appCapsule" class="appCapsule-lg" x-data="lesson_detail_script(data.lesson?.default_video_server)">
 		<div class="appContent px-0 bg-white rounded-bottom-4" style="min-height:95vh">
 
 			<section>
 				<div id="video_player">
 
 					<!-- If player Youtube -->
-					<div x-show="data.lesson?.player == 'youtube'" class="ratio ratio-16x9">
+					<!-- <div x-show="data.lesson?.player == 'youtube'" class="ratio ratio-16x9">
 						<iframe width="560" height="315"
 							:src="`${data.lesson?.video}&autoplay=1`"
 							title="YouTube video player"
@@ -32,15 +32,15 @@
 							referrerpolicy="strict-origin-when-cross-origin"
 							allowfullscreen>
 						</iframe>
-					</div>
+					</div> -->
 
-					<!-- Video Player Container -->
-					<div x-show="data.lesson?.player == 'bunnystream' || data.lesson?.player == 'diupload'" class="ratio ratio-16x9">
+					<!-- Video Player -->
+					<div x-show="data.lesson?.default_video_server" class="ratio ratio-16x9">
 						<iframe
-							:id="selectedServer === 1 ? 'diupload-player' : 'bunny-player'"
+							:id="data.lesson?.default_video_server + `-player`"
 							width="560"
 							height="315"
-							:src="getVideoUrl(data.lesson?.diupload_id, data.lesson?.bunnystream_id)"
+							:src="getVideoUrl(data.lesson?.default_video_server, data.lesson['video_' + data.lesson?.default_video_server])"
 							title="Video player"
 							frameborder="0"
 							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -50,9 +50,17 @@
 					</div>
 
 					<!-- Server Selection Buttons -->
-					<div class="btn-group m-3" x-show="data.lesson?.bunnystream_id">
-						<button class="btn btn-sm" :class="selectedServer === 1 ? 'btn-primary' : 'btn-outline-primary'" @click="switchServerVideo(1)">Server 1</button>
-						<button class="btn btn-sm" :class="selectedServer === 2 ? 'btn-primary' : 'btn-outline-primary'" @click="switchServerVideo(2)">Server 2</button>
+					<div class="btn-group m-3" x-show="data.lesson?.video_diupload && data.lesson?.video_bunny">
+						<button 
+							class="btn btn-sm" 
+							:class="data.lesson?.default_video_server === 'diupload' ? 'btn-primary' : 'btn-outline-primary'" 
+							@click="data.lesson.default_video_server ='diupload'">
+							Server 1</button>
+						<button 
+							class="btn btn-sm" 
+							:class="data.lesson?.default_video_server === 'bunny' ? 'btn-primary' : 'btn-outline-primary'" 
+							@click="data.lesson.default_video_server = 'bunny'">
+							Server 2</button>
 					</div>
 				</div>
 

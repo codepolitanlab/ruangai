@@ -38,6 +38,13 @@ class PageController extends BaseController
                 $lesson['quiz'] = $questions;
             }
 
+            // Set default video server
+            $lesson['default_video_server'] = null;
+            if($lesson['video_diupload'])
+                $lesson['default_video_server'] = 'diupload';
+            else if($lesson['video_bunny'])
+                $lesson['default_video_server'] = 'bunny';
+
             // Subquery untuk mendapatkan lesson yang sudah selesai
             $completedLessons = $db->table('course_lesson_progress')
                 ->select('lesson_id')

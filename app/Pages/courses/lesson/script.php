@@ -1,30 +1,31 @@
 <script>
-  Alpine.data("lesson", function() {
+  Alpine.data("lesson_detail_script", function() {
     return {
       title: "Lesson",
       showButtonPaham: false,
       waitToShowButtonPaham: 1000 * 3,
       errorMessage: null,
       buttonSubmitting: false,
-      selectedServer: 1,
+      selectedServer: null,
 
       currentQuestion: 0,
 
-      async init() {
+      init() {
         // Show button saya sudah paham setelah n detik
         setTimeout(() => this.showButtonPaham = true, this.waitToShowButtonPaham)
       },
 
-      getVideoUrl(diupload_id, bunnystream_id) {
-        if (this.selectedServer === 1) {
-          return `https://diupload.com/embed/${diupload_id}`;
-        } else {
-          return `https://iframe.mediadelivery.net/embed/431005/${bunnystream_id}?autoplay=true`;
+      getVideoUrl(type, video_id) {
+        if (type == 'diupload') {
+          return `https://diupload.com/embed/${video_id}`;
+        } else if (type == 'bunny') {
+          return `https://iframe.mediadelivery.net/embed/431005/${video_id}?autoplay=true`;
         }
       },
 
       switchServerVideo(server) {
         this.selectedServer = server;
+        console.log(this.selectedServer);
       },
 
       markAsComplete(course_id, lesson_id, next_lesson_id) {
