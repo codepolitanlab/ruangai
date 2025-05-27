@@ -49,6 +49,7 @@
                     <td><?= $batch['end_date'] ?></td>
                     <td><?= $batch['status'] ?></td>
                     <td>
+                        <a href="<?= site_url('zpanel/course/live/schedule/' . $batch['id']) ?>" class="btn btn-sm btn-primary">Meeting Schedule</a>
                         <a href="<?= site_url('zpanel/course/live/update/'. $course['id'] . '/' . $batch['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
                         <a href="<?= site_url('zpanel/course/live/delete/'. $course['id'] . '/' . $batch['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
                     </td>
@@ -57,7 +58,7 @@
         </tbody>
     </table>
 
-    <?= $pager->links() ?>
+    <?= $pager->links('default', 'bootstrap') ?>
 </div>
 
 <?php $this->endSection() ?>
