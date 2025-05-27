@@ -37,6 +37,7 @@
                     <th>ID</th>
                     <th>Status</th>
                     <th>Title</th>
+                    <th>Subtitle</th>
                     <th>Description</th>
                     <th>Mentor</th>
                     <th>Meeting Date</th>
@@ -56,6 +57,7 @@
                             </span>
                         </td>
                         <td><?= $meeting['title'] ?></td>
+                        <td><?= $meeting['subtitle'] ?></td>
                         <td><?= $meeting['description'] ?></td>
                         <td><?= $meeting['mentor_name'] ?></td>
                         <td><?= date('d M Y', strtotime($meeting['meeting_date'])) ?></td>

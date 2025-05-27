@@ -20,6 +20,10 @@
                     <input type="text" name="title" id="title" class="form-control" value="<?= $meeting['title'] ?? '' ?>" required>
                 </div>
                 <div class="mb-3">
+                    <label for="subtitle" class="form-label">Sub Judul Meeting</label>
+                    <input type="text" name="subtitle" id="subtitle" class="form-control" value="<?= $meeting['subtitle'] ?? '' ?>" required>
+                </div>
+                <div class="mb-3">
                     <label for="description" class="form-label">Deskripsi</label>
                     <textarea name="description" id="description" class="form-control" rows="3"><?= $meeting['description'] ?? '' ?></textarea>
                 </div>
