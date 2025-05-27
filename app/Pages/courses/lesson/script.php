@@ -3,7 +3,7 @@
     return {
       title: "Lesson",
       showButtonPaham: false,
-      waitToShowButtonPaham: 1000 * 3,
+      waitToShowButtonPaham: 1000 * 30,
       errorMessage: null,
       buttonSubmitting: false,
       selectedServer: null,
