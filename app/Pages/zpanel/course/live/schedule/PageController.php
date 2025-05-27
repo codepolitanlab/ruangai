@@ -21,7 +21,11 @@ class PageController extends AdminController
 
     public function getIndex($batch_id)
     {
-        $this->data['meetings'] = $this->model->where('live_batch_id', $batch_id)->paginate(10);
+        $this->data['meetings'] = $this->model
+                                        ->where('live_batch_id', $batch_id)
+                                        ->orderBy('meeting_date', 'asc')
+                                        ->orderBy('meeting_time', 'asc')
+                                        ->paginate(10);
         $this->data['pager'] = $this->model->pager;
         $this->data['batch'] = $this->batchModel->find($batch_id);
 
