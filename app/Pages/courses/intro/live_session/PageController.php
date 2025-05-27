@@ -14,14 +14,14 @@ class PageController extends BaseController
     {
         $db = \Config\Database::connect();
         $this->data['course'] = $db->table('courses')
-                                    ->select('*')
                                     ->where('courses.id', $course_id)
                                     ->groupBy('courses.id')
                                     ->get()
                                     ->getRowArray();
 
-        $this->data['live_sessions'] = $db->table('live_sessions')
-                                            ->where('course_id', $course_id)
+        $this->data['live_sessions'] = $db->table('live_meetings')
+                                            ->where('live_batch_id', $this->data['course']['current_batch_id'])
+                                            ->where('deleted_at', null)
                                             ->get()
                                             ->getResultArray();
 

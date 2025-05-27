@@ -11,23 +11,19 @@
 	<div id="appCapsule" class="">
 		<div class="appContent" style="min-height:90vh">
 
-			<?= $this->include('courses/intro/_header'); ?>
+			<div class="card my-4 rounded-4">
+				<div class="card-body">
 
-			<section>
-				<div class="">
-
-					<div class="card bg-light-secondary p-2 mb-4 rounded-4 border shadow-none">
-						<div class="row">
-							<div class="col-2">
-								<div class="d-flex align-items-center justify-content-center rounded-4" style="background-color: #F5CEBB;height: 50px;width: 50px">
+					<div class="card bg-light-secondary pe-3 p-2 mb-4 rounded-4 border shadow-none">
+						<div class="d-flex gap-2 align-items-center">
+							<div class="py-1">
+								<div class="d-flex align-items-center justify-content-center rounded-4" style="background-color: #F5CEBB; height: 48px; min-width: 48px">
 									<i class="bi bi-megaphone-fill fs-4 text-secondary"></i>
 								</div>
 							</div>
-							<div class="col-10">
-								<div class="d-flex flex-column">
-									<div class="fw-bold text-secondary">Pengumuman</div>
-									<small class="lh-base text-muted">Untuk menyelesaikan beasiswa ini, kamu wajib mengikuti 3x live session</small>
-								</div>
+							<div>
+								<div class="fw-bold text-secondary">Pengumuman</div>
+								<p class="mb-1 text-muted small" style="line-height:16px">Untuk menyelesaikan program ini, kamu wajib mengikuti min. 3 sessi live</p>
 							</div>
 						</div>
 					</div>
@@ -49,130 +45,59 @@
 						</div>
 					</template>
 
-					<div class="accordion p-3 border-0 rounded-4" id="accordionPanelsStayOpenExample">
-						<template x-show="data.live_sessions?.length > 0" x-for="(live_session, index) in data.live_sessions" :key="index">
-							<div class="accordion-item card card-hover rounded-20 shadow-none border p-3 mb-2">
-								<div type="button" :data-bs-toggle="'collapse'" :data-bs-target="'#panelsStayOpen-collapse-' + index" :aria-expanded="index === 0 ? 'true' : 'false'" :aria-controls="'panelsStayOpen-collapse-' + index">
-									<div class="row g-3">
-										<div class="col">
-											<h4 class="mb-3" x-text="live_session.title"></h4>
-											<div class="d-flex gap-3" x-data="{
-													sessionDate: new Date(live_session.date),
-													today: new Date(),
-													getSessionStatus: function() {
-														this.sessionDate.setHours(0, 0, 0, 0);
-														this.today.setHours(0, 0, 0, 0);
+					<div>
+						<div class="accordion bg-transparent border-0" id="accordion-livesession">
 
-														if (live_session.is_followed) { // Tambahkan properti is_followed di data Anda
-															return 'followed'; // Status baru: sudah mengikuti
-														} else if (this.sessionDate.getTime() > this.today.getTime()) {
-															return 'upcoming'; // Akan Datang
-														} else if (this.sessionDate.getTime() === this.today.getTime()) {
-															return 'on-going'; // Sedang Berlangsung
-														} else {
-															return 'finished'; // Selesai
-														}
-													}
-												}">
-												<div x-show="getSessionStatus() === 'followed'">
-													<button type="button" class="btn btn-sm btn-secondary rounded-pill">
-														<i class="bi bi-check-circle"></i> Sudah mengikuti
-													</button>
-												</div>
-												<div x-show="getSessionStatus() === 'on-going'">
-													<a :href="live_session.zoom_link" target="_blank" class="btn btn-sm btn-primary rounded-pill">
-														<i class="bi bi-camera-video"></i> Gabung Sekarang
-													</a>
-												</div>
-												<div x-show="getSessionStatus() === 'finished'">
-													<button type="button" class="btn btn-sm btn-secondary rounded-pill" disabled>
-														<i class="bi bi-camera-video"></i>
-														<span x-text="getSessionStatus() === 'upcoming' ? 'Akan Datang' : 'Selesai'"></span>
-													</button>
-												</div>
-												<div x-show="getSessionStatus() === 'upcoming'">
-													<button type="button" class="btn btn-sm rounded-pill" style="background-color: #D9D9D9;border-color: #D9D9D9;" disabled>
-														<i class="bi bi-camera-video"></i>
-														<span>Akan Datang</span>
-													</button>
-												</div>
-
-												<div class="text-secondary"><i class="bi bi-clock"></i> <span x-text="live_session.date"></span></div>
-											</div>
+							<template x-for="live_session in data.live_sessions">
+							<div class="accordion-item p-2 bg-dark bg-opacity-10 rounded-4 mb-1">
+								<div class="accordion-header bg-white rounded-4 py-2 d-flex flex-column flex-md-row gap-3 align-items-md-center">
+									<button class="accordion-button" type="button" data-bs-toggle="collapse" :data-bs-target="`#live_`+live_session.id" aria-expanded="true" :aria-controls="`live_`+live_session.id">
+										<div>
+											<h5 class="text-muted mb-1 ms-1" x-text="live_session.subtitle"></h5>
+											<h4 class="mb-1 ms-1" x-text="live_session.title"></h4>
+											<p class="m-0 d-flex gap-3 text-muted">
+												<span class="d-flex">
+													<i class="bi bi-calendar me-1 fs-6"></i>
+													<span x-text="$heroicHelper.formatDate(live_session.meeting_date)"></span>
+												</span>
+												<span class="d-flex">
+													<i class="bi bi-clock me-1 fs-6"></i>
+													<span x-text="live_session.meeting_time.substring(0, 5) + ` WIB`"></span>
+												</span>
+											</p>
 										</div>
-									</div>
+										<div class="badge bg-warning ms-auto p-2 text-dark">Belum Dimulai</div>
+									</button>
 								</div>
-								<div :id="'panelsStayOpen-collapse-' + index" class="accordion-collapse collapse" :aria-labelledby="'panelsStayOpen-heading-' + index">
-									<div 
-										class="accordion-body" 
-										x-data="{
-											sessionDate: new Date(live_session.date),
-											today: new Date(),
-											isOnGoing: function() {
-												this.sessionDate.setHours(0, 0, 0, 0);
-												this.today.setHours(0, 0, 0, 0);
-												return this.sessionDate.getTime() === this.today.getTime();
-											}
-										}">
-										<div class="mb-3">
-											<div class="fw-bold">Deskripsi:</div>
-											<div x-text="live_session.description"></div>
-										</div>
-
-										<div class="mb-3">
-											<div class="fw-bold">Status:</div>
-											<span 
-												class="badge" 
-												x-data="{
-												sessionDate: new Date(live_session.date),
-												today: new Date(),
-												getStatusBadge: function() {
-													this.sessionDate.setHours(0, 0, 0, 0);
-													this.today.setHours(0, 0, 0, 0);
-
-													if (this.sessionDate.getTime() > this.today.getTime()) {
-														return { text: 'Akan Datang', class: 'bg-warning text-dark' };
-													} else if (this.sessionDate.getTime() === this.today.getTime()) {
-														return { text: 'Sedang Berlangsung', class: 'bg-primary' };
-													} else {
-														return { text: 'Selesai', class: 'bg-success' };
-													}
-												}
-											}" :class="getStatusBadge().class" x-text="getStatusBadge().text"></span>
-										</div>
-
-										<div class="mb-3" x-show="isOnGoing()">
-											<div class="fw-bold">Link Zoom:</div>
-											<a :href="live_session.zoom_link" target="_blank" class="btn btn-sm btn-outline-primary">
-												<i class="bi bi-camera-video"></i> Gabung Zoom
-											</a>
-										</div>
-
-										<div class="mb-3" x-show="isOnGoing()">
-											<div class="fw-bold">Passcode:</div>
-											<span x-text="live_session.zoom_passcode"></span>
-										</div>
-
-										<div x-show="isOnGoing()">
-											<button type="button" class="btn btn-primary">
-												<i class="bi bi-person-check"></i> Ambil Presensi
-											</button>
+								<div :id="`live_`+live_session.id" class="bg-white rounded-4 mt-1 accordion-collapse collapse" data-bs-parent="#accordion-livesession">
+									<div class="accordion-body">
+										<dl>
+											<dt>Deskripsi</dt>
+											<dd x-text="live_session.description"></dd>
+										</dl>
+										<dl>
+											<dt>Mentor</dt>
+											<dd>Felisha Rehtaliani, Aji Raga Pamungkas</dd>
+										</dl>
+										<div class="d-flex gap-2 mt-4">
+											<button class="btn btn-primary rounded-3"> <i class="bi bi-camera-video"></i> Gabung Zoom</button>
+											<button class="btn btn-outline-secondary rounded-3"> <i class="bi bi-person-check-fill"></i> Isi Presensi</button>
 										</div>
 									</div>
 								</div>
 							</div>
-						</template>
+							</template>
+
+						</div>
 					</div>
 				</div>
-			</section>
-		</div>
-	</div>
+			</div>
 
-	<div class="offcanvas offcanvas-bottom" tabindex="-1" id="shareCanvas" aria-labelledby="shareCanvasLabel" style="max-width:768px;margin:0 auto;" aria-modal="true" role="dialog">
-		<div class="offcanvas-header">
-			<h5 class="offcanvas-title" id="shareCanvasLabel">Bagikan Tautan</h5><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+			<div class="offcanvas offcanvas-bottom" tabindex="-1" id="shareCanvas" aria-labelledby="shareCanvasLabel" style="max-width:768px;margin:0 auto;" aria-modal="true" role="dialog">
+				<div class="offcanvas-header">
+					<h5 class="offcanvas-title" id="shareCanvasLabel">Bagikan Tautan</h5><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div class="offcanvas-body small"></div>
+			</div>
+			<?= $this->include('_bottommenu') ?>
 		</div>
-		<div class="offcanvas-body small"></div>
-	</div>
-	<?= $this->include('_bottommenu') ?>
-</div>
