@@ -3244,11 +3244,6 @@ a.badge-dark {
   transform: rotate(90deg);
 }
 
-.accordion .accordion-header .btn.collapsed:before,
-.accordion .accordion-header .accordion-button.collapsed:before {
-  background: #E1E1E1;
-}
-
 .accordion .accordion-header .btn i.bi,
 .accordion .accordion-header .btn i.icon,
 .accordion .accordion-header .btn ion-icon,
@@ -9503,4 +9498,8 @@ body.dark-mode-active.rtl-mode .notification-dialog.android-style .notification-
   bottom: 1px;
   width: 32px;
   opacity: 0.5;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
