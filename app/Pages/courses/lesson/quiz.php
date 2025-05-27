@@ -156,10 +156,12 @@
                                                     value="true"
                                                     :checked="result.hasil[key].jawaban === 'true'"
                                                     readonly>
-                                                <label class="form-check-label" :for="'true_' + key">Benar</label>
-                                                <i class="bi ms-2 fs-5"
-                                                    x-show="result.hasil[key].jawaban === 'true'"
-                                                    :class="result.hasil[key].benar ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+                                                <label class="form-check-label" :for="'true_' + key">
+                                                    Benar
+                                                    <i class="bi ms-2 fs-5"
+                                                        x-show="result.hasil[key].jawaban === 'true'"
+                                                        :class="result.hasil[key].benar ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+                                                </label>
                                             </div>
                                             <div class="form-check">
                                                 <input
@@ -169,10 +171,12 @@
                                                     value="false"
                                                     :checked="result.hasil[key].jawaban === 'false'"
                                                     readonly>
-                                                <label class="form-check-label" :for="'false_' + key">Salah</label>
-                                                <i class="bi ms-2 fs-5"
-                                                    x-show="result.hasil[key].jawaban === 'false'"
-                                                    :class="result.hasil[key].benar ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+                                                <label class="form-check-label" :for="'false_' + key">
+                                                    Salah
+                                                    <i class="bi ms-2 fs-5"
+                                                        x-show="result.hasil[key].jawaban === 'false'"
+                                                        :class="result.hasil[key].benar ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+                                                </label>
                                             </div>
                                             <p class="mt-3 mb-1 fs-6 text-success-darker" x-show="result.hasil[key].benar">
                                                 <strong>Penjelasan:</strong><br>
@@ -194,10 +198,12 @@
                                                         :id="optionKey + '_' + key"
                                                         :checked="result.hasil[key].jawaban === optionKey"
                                                         readonly>
-                                                    <label class="form-check-label" x-text="`${optionKey}. ${optionText}`"></label>
-                                                    <i class="bi ms-2 fs-5"
-                                                        x-show="result.hasil[key].jawaban === optionKey"
-                                                        :class="result.hasil[key].benar ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+                                                    <label class="form-check-label">
+                                                        <span x-text="`${optionKey}. ${optionText}`"></span>
+                                                        <i class="bi ms-2 fs-5"
+                                                            x-show="result.hasil[key].jawaban === optionKey"
+                                                            :class="result.hasil[key].benar ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+                                                    </label>
                                                 </div>
                                             </template>
                                             <p class="mt-3 mb-1 fs-6 text-success-darker" x-show="result.hasil[key].benar">
