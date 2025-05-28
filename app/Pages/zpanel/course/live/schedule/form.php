@@ -55,6 +55,10 @@
                     <label for="recording_link" class="form-label">Link Recording</label>
                     <input type="url" name="recording_link" id="recording_link" class="form-control" value="<?= $meeting['recording_link'] ?? '' ?>">
                 </div>
+                <div class="mb-3">
+                    <label for="form_feedback_url" class="form-label">Form Feedback URL</label>
+                    <input type="url" name="form_feedback_url" id="form_feedback_url" class="form-control" value="<?= $meeting['form_feedback_url'] ?? '' ?>">
+                </div>
                 <button type="submit" class="btn btn-success">Simpan</button>
             </form>
         </div>

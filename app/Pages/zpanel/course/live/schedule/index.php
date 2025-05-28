@@ -44,6 +44,7 @@
                     <th>Meeting Time</th>
                     <th>Zoom Link</th>
                     <th>Recording</th>
+                    <th>Feedback</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -76,6 +77,7 @@
                                 <span class="text-muted">Not available</span>
                             <?php endif; ?>
                         </td>
+                        <td> <a href="<?= $meeting['form_feedback_url'] ?>" target="_blank"><?= $meeting['form_feedback_url'] ?></a></td>
                         <td>
                             <a href="<?= site_url('zpanel/course/live/schedule/update/'. $batch['id'] . '/' . $meeting['id']) ?>" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
                             <a href="<?= site_url('zpanel/course/live/schedule/delete/'. $batch['id'] . '/' . $meeting['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')"><i class="bi bi-trash"></i></a>
