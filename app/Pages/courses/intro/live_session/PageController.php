@@ -71,6 +71,8 @@ class PageController extends BaseController
             }
         }
 
+        $this->data['enable_live_recording'] = service('settings')->get('Course.enableLiveRecording');
+
         $this->data['attended'] = $attended;
 
         return $this->respond($this->data);
