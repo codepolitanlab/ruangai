@@ -14,6 +14,7 @@ class AddColumnParticipatingProgramToScholarship extends Migration
                 'constraint' => 1,
                 'default' => null,
                 'null' => true,
+                'after' => 'accept_agreement',
             ],
         ]);
     }
