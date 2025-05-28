@@ -99,7 +99,7 @@
 								:class="{'disabled': !showButtonPaham, 'btn-progress': buttonSubmitting}"
 								x-transition>
 								<i class="bi bi-check-circle me-2"></i>
-								Saya Sudah Faham
+								Saya Sudah Paham
 							</button>
 						</template>
 
