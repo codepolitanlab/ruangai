@@ -25,6 +25,7 @@
       },
       
       setTimerButtonPaham() {
+        this.showButtonPaham = false;
         setTimeout(() => this.showButtonPaham = true, this.waitToShowButtonPaham)
       },
 
@@ -56,20 +57,17 @@
                 let courseSlug = response.data.course.course_slug;
                 setTimeout(() => {
                   this.buttonSubmitting = false;
-                  this.showButtonPaham = false;
                   this.$router.navigate(`/courses/intro/${courseId}/${courseSlug}/lessons`);
                 }, 3000)
               } else {
                 setTimeout(() => {
                   this.buttonSubmitting = false;
-                  this.showButtonPaham = false;
                   this.$router.navigate(`/courses/${course_id}/lesson/${next_lesson_id}`);
                 }, 3000)
               }
             } else {
               setTimeout(() => {
                 this.buttonSubmitting = false;
-                this.showButtonPaham = false;
                 $heroicHelper.toastr(response.data.message, "danger");
               }, 3000)
             }
