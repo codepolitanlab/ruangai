@@ -15,9 +15,6 @@ class PageController extends BaseController
 
     public function getData($id)
     {
-        $benchmark = service('timer');
-        $benchmark->start('renderData');
-
         $Heroic = new \App\Libraries\Heroic();
         $jwt = $Heroic->checkToken();
         
@@ -76,17 +73,11 @@ class PageController extends BaseController
             $this->data['lessonsCompleted'] = $lessonsCompleted;
             $this->data['numCompleted'] = $numCompleted;
 
-            $benchmark->stop('renderData');
-            $this->data['runtime'] = $benchmark->getElapsedTime('renderData');
-
             return $this->respond($this->data);
         } else {
-            $benchmark->stop('renderData');
-
             return $this->respond([
                 'response_code'    => 404,
                 'response_message' => 'Not found',
-                'runtime'          => $benchmark->getElapsedTime('renderData'),
             ]);
         }
     }
