@@ -255,4 +255,13 @@ class ScholarshipController extends ResourceController
             return FALSE;
         }
     }
+
+    public function frontendSettings()
+    {
+        $db = \Config\Database::connect();
+        $course = $db->table('courses')->where('id', 1)->get()->getRowArray();
+        $data['publish_class'] = $course['status'] == 'publish' ? true : false;
+        
+        return $this->respond($data);
+    }
 }
