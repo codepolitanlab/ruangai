@@ -109,7 +109,7 @@
 							<div class="flex-grow-1">
 								<div class="d-flex align-items-end gap-2">
 									<h2 class="mb-0 fw-bold text-white" x-text="data.lesson_completed">0</h2>
-									<span class="mb-1 text-white">materi selesai</span>
+									<span class="mb-1 text-white">Materi Selesai</span>
 								</div>
 								<div class="d-flex align-items-center">
 									<div class="flex-grow-1">
@@ -143,7 +143,7 @@
 							<div class="flex-grow-1">
 								<div class="d-flex align-items-end gap-2">
 									<h2 class="mb-0 fw-bold text-white" x-text="data.live_attendance"></h2>
-									<span class="mb-1 text-white">sesi live diikuti</span>
+									<span class="mb-1 text-white">Sesi Live Diikuti</span>
 								</div>
 								<div class="d-flex align-items-center gap-2 mt-2 mb-1">
 									<template x-for="i in 3">
@@ -153,7 +153,7 @@
 											style="height:7px;">&nbsp;</div>
 									</template>
 								</div>
-								<div class="text-white text-end small">Minimal 3 dari <span x-text="data.live_meetings"></span> sessi</div>
+								<div class="text-white text-end small">Minimal 3 dari <span x-text="data.live_meetings"></span> sesi</div>
 							</div>
 						</div>
 					</div>
