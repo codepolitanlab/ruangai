@@ -1,11 +1,8 @@
 <div
 	class="container-large"
 	id="lesson_detail"
-	x-data="$heroic({
-        title: `<?= $page_title ?>`,
-        url: `courses/lesson/data/${$params.course_id}/${$params.lesson_id}`
-    })"
-	x-effect="loadPage(`courses/lesson/data/${$params.course_id}/${$params.lesson_id}`)">
+	x-data="lesson_detail_script($params.course_id, $params.lesson_id, <?= service('settings')->get('Course.waitToEnableButtonUnderstand'); ?>)"
+	x-effect="loadPage(`courses/lesson/data/${$params.course_id}/${$params.lesson_id}`); setTimerButtonPaham()">
 
 	<div id="app-header" class="appHeader main border-0">
 		<div class="left">
@@ -16,7 +13,7 @@
 		</div>
 	</div>
 
-	<div id="appCapsule" class="appCapsule-lg" x-data="lesson_detail_script(data.lesson?.default_video_server)">
+	<div id="appCapsule" class="appCapsule-lg">
 		<div class="appContent px-0 bg-white rounded-bottom-4" style="min-height:95vh">
 
 			<section>

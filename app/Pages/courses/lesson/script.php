@@ -1,9 +1,16 @@
 <script>
-  Alpine.data("lesson_detail_script", function() {
+  Alpine.data("lesson_detail_script", function(course_id, lesson_id, waitToShowButtonPaham = 30000) {
+    let base = $heroic({
+        title: `<?= $page_title ?>`,
+        url: `courses/lesson/data/${course_id}/${lesson_id}`
+    });
+
     return {
+      ...base,
+
       title: "Lesson",
       showButtonPaham: false,
-      waitToShowButtonPaham: 1000 * 3,
+      waitToShowButtonPaham: waitToShowButtonPaham,
       errorMessage: null,
       buttonSubmitting: false,
       selectedServer: null,
@@ -11,7 +18,13 @@
       currentQuestion: 0,
 
       init() {
+        base.init.call(this);
+
         // Show button saya sudah paham setelah n detik
+        this.setTimerButtonPaham();
+      },
+      
+      setTimerButtonPaham() {
         setTimeout(() => this.showButtonPaham = true, this.waitToShowButtonPaham)
       },
 
@@ -43,17 +56,20 @@
                 let courseSlug = response.data.course.course_slug;
                 setTimeout(() => {
                   this.buttonSubmitting = false;
+                  this.showButtonPaham = false;
                   this.$router.navigate(`/courses/intro/${courseId}/${courseSlug}/lessons`);
                 }, 3000)
               } else {
                 setTimeout(() => {
                   this.buttonSubmitting = false;
+                  this.showButtonPaham = false;
                   this.$router.navigate(`/courses/${course_id}/lesson/${next_lesson_id}`);
                 }, 3000)
               }
             } else {
               setTimeout(() => {
                 this.buttonSubmitting = false;
+                this.showButtonPaham = false;
                 $heroicHelper.toastr(response.data.message, "danger");
               }, 3000)
             }
