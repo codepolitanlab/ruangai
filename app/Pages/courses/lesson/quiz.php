@@ -40,7 +40,7 @@
                     <!-- Card Pertanyaan -->
                     <div class="card mb-4 shadow-lg quiz-item" :id="key">
                         <div class="card-body">
-                            <h6 class="h6" x-text="currentQuiz.question"></h6>
+                            <h6 class="h6" x-html="currentQuiz.question"></h6>
 
                             <!-- TRUE/FALSE -->
                             <template x-if="currentQuiz.type === 'true_false'">
@@ -143,7 +143,7 @@
                             <template x-for="(quiz, key) in quizzes" :key="key">
                                 <div class="mb-4 p-3"
                                     :class="result.hasil[key].benar ? 'bg-success bg-opacity-10' : 'bg-danger bg-opacity-10'">
-                                    <h5 class="h6" x-text="quiz.question"></h5>
+                                    <h5 class="h6" x-html="quiz.question"></h5>
 
                                     <!-- TRUE/FALSE -->
                                     <template x-if="quiz.type === 'true_false'">
@@ -156,10 +156,12 @@
                                                     value="true"
                                                     :checked="result.hasil[key].jawaban === 'true'"
                                                     readonly>
-                                                <label class="form-check-label" :for="'true_' + key">Benar</label>
-                                                <i class="bi ms-2 fs-5"
-                                                    x-show="result.hasil[key].jawaban === 'true'"
-                                                    :class="result.hasil[key].benar ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+                                                <label class="form-check-label" :for="'true_' + key">
+                                                    Benar
+                                                    <i class="bi ms-2 fs-5"
+                                                        x-show="result.hasil[key].jawaban === 'true'"
+                                                        :class="result.hasil[key].benar ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+                                                </label>
                                             </div>
                                             <div class="form-check">
                                                 <input
@@ -169,10 +171,12 @@
                                                     value="false"
                                                     :checked="result.hasil[key].jawaban === 'false'"
                                                     readonly>
-                                                <label class="form-check-label" :for="'false_' + key">Salah</label>
-                                                <i class="bi ms-2 fs-5"
-                                                    x-show="result.hasil[key].jawaban === 'false'"
-                                                    :class="result.hasil[key].benar ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+                                                <label class="form-check-label" :for="'false_' + key">
+                                                    Salah
+                                                    <i class="bi ms-2 fs-5"
+                                                        x-show="result.hasil[key].jawaban === 'false'"
+                                                        :class="result.hasil[key].benar ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+                                                </label>
                                             </div>
                                             <p class="mt-3 mb-1 fs-6 text-success-darker" x-show="result.hasil[key].benar">
                                                 <strong>Penjelasan:</strong><br>
@@ -194,15 +198,17 @@
                                                         :id="optionKey + '_' + key"
                                                         :checked="result.hasil[key].jawaban === optionKey"
                                                         readonly>
-                                                    <label class="form-check-label" x-text="`${optionKey}. ${optionText}`"></label>
-                                                    <i class="bi ms-2 fs-5"
-                                                        x-show="result.hasil[key].jawaban === optionKey"
-                                                        :class="result.hasil[key].benar ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+                                                    <label class="form-check-label">
+                                                        <span x-text="`${optionKey}. ${optionText}`"></span>
+                                                        <i class="bi ms-2 fs-5"
+                                                            x-show="result.hasil[key].jawaban === optionKey"
+                                                            :class="result.hasil[key].benar ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+                                                    </label>
                                                 </div>
                                             </template>
                                             <p class="mt-3 mb-1 fs-6 text-success-darker" x-show="result.hasil[key].benar">
                                                 <strong>Penjelasan:</strong><br>
-                                                <span x-text="result.hasil[key].penjelasan"></span>
+                                                <span x-html="result.hasil[key].penjelasan"></span>
                                             </p>
                                         </div>
                                     </template>

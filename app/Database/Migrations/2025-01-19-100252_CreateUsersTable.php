@@ -59,14 +59,14 @@ class CreateUsersTable extends Migration
                 'null'       => true
             ],
             'phone_valid'   => [
-                'type'       => 'BOOLEAN',
+                'type'       => 'TINYINT',
                 'null'       => true,
-                'default'    => false
+                'default'    => 0
             ],
             'email_valid'   => [
-                'type'       => 'BOOLEAN',
+                'type'       => 'TINYINT',
                 'null'       => true,
-                'default'    => false
+                'default'    => 0
             ],
             'username'        => [
                 'type'       => 'VARCHAR',

@@ -81,7 +81,7 @@ class PageController extends CourseLessonController
                 'lesson_order'   => ($lastOrder['lesson_order'] ?? 0) + 1,
                 'lesson_slug'    => $postData['lesson_slug'],
                 'text'           => $postData['text'],
-                'type'           => 'thelastOrderory',
+                'type'           => 'theory',
                 'status'         => (int)($postData['status'] ?? 0),
                 'free'           => (int)($postData['free'] ?? 0),
                 'video_diupload' => $postData['video_diupload'] ?? null,

@@ -25,6 +25,7 @@ class PageController extends BaseController
             ->join('course_topics', 'course_topics.id = course_lessons.topic_id')
             ->where('course_lessons.course_id', $course_id)
             ->where('course_lessons.id', $lesson_id)
+            ->where('course_lessons.deleted_at', null)
             ->get()
             ->getRowArray();
 
@@ -37,6 +38,13 @@ class PageController extends BaseController
                 $lesson['quiz_description'] = $description;
                 $lesson['quiz'] = $questions;
             }
+
+            // Set default video server
+            $lesson['default_video_server'] = null;
+            if($lesson['video_diupload'])
+                $lesson['default_video_server'] = 'diupload';
+            else if($lesson['video_bunny'])
+                $lesson['default_video_server'] = 'bunny';
 
             // Subquery untuk mendapatkan lesson yang sudah selesai
             $completedLessons = $db->table('course_lesson_progress')
@@ -61,6 +69,7 @@ class PageController extends BaseController
                 ')
                 ->join('course_topics', 'course_topics.id = course_lessons.topic_id')
                 ->where('course_lessons.course_id', $course_id)
+                ->where('course_lessons.deleted_at', null)
                 ->orderBy('course_topics.topic_order', 'ASC')
                 ->orderBy('course_lessons.lesson_order', 'ASC')
                 ->get()

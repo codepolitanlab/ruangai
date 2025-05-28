@@ -136,7 +136,7 @@
 							</div>
 							<div>
 								<div class="fw-bold text-secondary">Pengumuman</div>
-								<p class="mb-1 text-muted small" style="line-height:16px">Untuk menyelesaikan program ini, kamu wajib mengikuti min. 3 sessi live</p>
+								<p class="mb-1 text-muted small" style="line-height:16px">Untuk menyelesaikan program ini, kamu wajib mengikuti min. 3 sesi live</p>
 							</div>
 						</div>
 					</div>
@@ -187,7 +187,7 @@
 										<div class="badge bg-primary-subtle ms-auto px-2 py-3 text-dark opacity-50" x-show="live_session.status_date == 'upcoming'">Akan datang</div>
 										<div class="badge bg-white ms-auto px-2 py-3 text-warning" x-show="live_session.status_date == 'ongoing'"><i class="bi bi-broadcast"></i> Sedang berlangsung</div>
 										<div class="badge bg-white border border-success ms-auto px-2 py-3 text-success" x-show="live_session.status_date == 'attended'"><i class="bi bi-check-circle"></i> Sudah mengikuti</div>
-										<div class="badge bg-secondary-subtle border border-secondary-subtle ms-auto px-2 py-3 text-dark opacity-75" x-show="live_session.status_date == 'completed'"> Sessi selesai</div>
+										<div class="badge bg-secondary-subtle border border-secondary-subtle ms-auto px-2 py-3 text-dark opacity-75" x-show="live_session.status_date == 'completed'"> Sesi selesai</div>
 									</button>
 								</div>
 								<div :id="`live_`+live_session.id" class="bg-white rounded-4 mt-1 accordion-collapse collapse" data-bs-parent="#accordion-livesession">

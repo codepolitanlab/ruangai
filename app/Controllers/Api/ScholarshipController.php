@@ -131,10 +131,10 @@ class ScholarshipController extends ResourceController
         }
         
         // Insert data to scholarship_participants
-        $data['semester'] = $data['semester'] ?? 0;
-        $data['grade'] = $data['grade'] ?? 0;
-        $data['accept_terms'] = $data['accept_terms'] ?? 0;
-        $data['accept_agreement'] = $data['accept_agreement'] ?? 0;
+        $data['semester'] = ! empty($data['semester']) ? $data['semester'] : 0;
+        $data['grade'] = ! empty($data['grade']) ? $data['grade'] : 0;
+        $data['accept_terms'] = ! empty($data['accept_terms']) ? $data['accept_terms'] : 0;
+        $data['accept_agreement'] = ! empty($data['accept_agreement']) ? $data['accept_agreement'] : 0;
 
         $participantModel->insert($data);
 

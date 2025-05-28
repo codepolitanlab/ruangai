@@ -79,7 +79,7 @@
 							</button>
 						</p>
 						<div class="mt-3" x-show="meta.expandDesc" x-transition>
-							<p>Kelas ini merupakan kelas pertama program RuangAI dari CODEPOLITAn yang fokus membahas tentang fundamental kecerdasan artifisial dengan total durasi belajar 15 jam, terdiri dari 30 materi dan 10 sessi live bersama mentor AI.</p>
+							<p>Kelas ini merupakan kelas pertama program RuangAI dari CODEPOLITAn yang fokus membahas tentang fundamental kecerdasan artifisial dengan total durasi belajar 15 jam, terdiri dari 30 materi dan 10 sesi live bersama mentor AI.</p>
 							<p>Kelas ini merupakan bagian dari program AI Opportunity Fund: Asia Pasifik, bekerja sama dengan AVPN dan didukung oleh Google.org dan Asian Development Bank.</p>
 							<button
 								@click="meta.expandDesc = !meta.expandDesc" 
@@ -143,7 +143,7 @@
 							<div class="flex-grow-1">
 								<div class="d-flex align-items-end gap-2">
 									<h2 class="mb-0 fw-bold text-white" x-text="data.live_attendance"></h2>
-									<span class="mb-1 text-white">sessi live diikuti</span>
+									<span class="mb-1 text-white">sesi live diikuti</span>
 								</div>
 								<div class="d-flex align-items-center gap-2 mt-2 mb-1">
 									<template x-for="i in 3">
@@ -191,7 +191,7 @@
 							<i class="bi bi-award text-dark opacity-50 display-5"></i>
 						</div>
 						<div class="flex-grow-1">
-							<h5 class="h6 opacity-50 mb-0">Selesaikan materi dan sessi live wajib untuk mendapatkan sertifikat.</h5>
+							<h5 class="h6 opacity-50 mb-0">Selesaikan materi dan sesi live wajib untuk mendapatkan sertifikat.</h5>
 							<!-- <div class="fw-bold" style="font-size:1.2rem; color:#fff;">Klaim Sertifikat Sekarang!</div> -->
 						</div>
 					</div>

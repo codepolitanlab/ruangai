@@ -14,10 +14,6 @@
       sanboxLogin: {},
 
       async init() {
-        if (localStorage.getItem("intro") != 1) {
-          window.PineconeRouter.navigate("/intro");
-        }
-
         // Place sandbox login if set
         this.sandboxLogin = JSON.parse(Alpine.store('core').settings.sandbox_login ? Alpine.store('core').settings.sandbox_login : "{}");
         if (this.sandboxLogin && Object.keys(this.sandboxLogin).length > 0) {
