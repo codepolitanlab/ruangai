@@ -135,6 +135,7 @@ class ScholarshipController extends ResourceController
         $data['grade'] = ! empty($data['grade']) ? $data['grade'] : 0;
         $data['accept_terms'] = ! empty($data['accept_terms']) ? $data['accept_terms'] : 0;
         $data['accept_agreement'] = ! empty($data['accept_agreement']) ? $data['accept_agreement'] : 0;
+        $data['is_participating_other_ai_program'] = ! empty($data['is_participating_other_ai_program']) ? $data['is_participating_other_ai_program'] : 0;
 
         $participantModel->insert($data);
 
