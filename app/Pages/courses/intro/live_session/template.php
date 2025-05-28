@@ -72,7 +72,10 @@
 
 			<div class="card my-4 rounded-4 shadow-none">
 				<div class="card-body">
-					<h4 class="h5 mb-3" x-text="`Live Session - ` + data.course?.course_title"></h4>
+					<h4 class="h5 mb-3" 
+						x-show="data.course?.course_title" 
+						x-transition
+						x-text="`Live Session - ` + data.course?.course_title + `: ` + data.course?.name"></h4>
 
 					<!-- <div class="d-flex mb-3">
 						<div class="date-box attended me-1 p-2 text-center border rounded-3">
@@ -147,7 +150,7 @@
 				<div class="card-body">
 
 					<!-- Check if no live session -->
-					<template x-show="data.live_sessions?.length == 0">
+					<template x-show="data.live_sessions?.length == 0" x-transition>
 						<div class="card card-hover rounded-20 shadow-none border p-3 mb-2">
 							<div class="row g-3">
 								<div class="col">
@@ -163,7 +166,7 @@
 						</div>
 					</template>
 
-					<div>
+					<div x-show="data.live_sessions?.length > 0" x-transition>
 						<div class="accordion bg-transparent border-0" id="accordion-livesession">
 
 							<template x-for="live_session in data.live_sessions">
@@ -209,15 +212,17 @@
 												<i class="bi bi-camera-video"></i> 
 												<span x-text="! live_session.zoom_link ? 'Zoom link belum tersedia' : 'Gabung Zoom'">Gabung Zoom</span>
 											</a>
-											<a
-												:href="live_session.recording_link"
-												target="_blank" 
-												class="btn btn-danger rounded-3" 
-												x-show="['attended','completed'].includes(live_session.status_date)" 
-												:class="! live_session.recording_link ? 'disabled' : ''"> 
-												<i class="bi bi-play-circle-fill"></i> 
-												<span x-text="! live_session.recording_link ? 'Rekaman belum tersedia' : 'Rekaman Video'"></span>
-											</a>
+											<template x-if="data.enable_live_recording">
+												<a
+													:href="live_session.recording_link"
+													target="_blank" 
+													class="btn btn-danger rounded-3" 
+													x-show="['attended','completed'].includes(live_session.status_date)" 
+													:class="! live_session.recording_link ? 'disabled' : ''"> 
+													<i class="bi bi-play-circle-fill"></i> 
+													<span x-text="! live_session.recording_link ? 'Rekaman belum tersedia' : 'Rekaman Video'"></span>
+												</a>
+											</template>
 											<!-- <button class="btn btn-outline-secondary rounded-3"> <i class="bi bi-person-check-fill"></i> Isi Presensi</button> -->
 										</div>
 									</div>

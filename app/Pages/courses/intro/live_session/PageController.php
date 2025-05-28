@@ -17,8 +17,9 @@ class PageController extends BaseController
 
         $db = \Config\Database::connect();
         $this->data['course'] = $db->table('courses')
+                                    ->select('courses.*, courses.id, live_batch.*, live_batch.id as batch_id')
+                                    ->join('live_batch', 'live_batch.id = courses.current_batch_id', 'left')
                                     ->where('courses.id', $course_id)
-                                    ->groupBy('courses.id')
                                     ->get()
                                     ->getRowArray();
 
@@ -69,6 +70,8 @@ class PageController extends BaseController
                 }
             }
         }
+
+        $this->data['enable_live_recording'] = service('settings')->get('Course.enableLiveRecording');
 
         $this->data['attended'] = $attended;
 
