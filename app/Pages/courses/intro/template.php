@@ -1,14 +1,7 @@
 <div
 	class="header-mobile-only"
 	id="course_intro"
-	x-data="$heroic({
-		title: `<?= $page_title ?>`, 
-		url: `/courses/intro/data/${$params.course_id}`,
-		meta: {
-			expandDesc: false,
-			graduate: false
-		}
-	})"
+	x-data="courseIntro($params.course_id)"
 	x-effect="loadPage(`/courses/intro/data/${$params.course_id}`)">
 
 	<?= $this->include('_appHeader'); ?>
@@ -43,6 +36,18 @@
 	</style>
 
 	<div id="appCapsule">
+		<!-- Fullscreen Alert Overlay -->
+		<!-- <div x-show="!data.is_enrolled" class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background: rgba(0,0,0,0.9); z-index: 9999;">
+			<div class="text-center p-4">
+				<div class="alert alert-warning mb-4" role="alert">
+					<i class="bi bi-exclamation-triangle fs-1 d-block"></i>
+					<h4 class="text-warning mb-2">Akses Terbatas</h4>
+					<p class="mb-4">Anda belum terdaftar di kelas ini. Silakan daftar terlebih dahulu untuk mengakses materi.</p>
+					<a target="_blank" href="https://ruangai.id/registration" class="btn btn-warning">Daftar Sekarang</a>
+				</div>
+			</div>
+		</div> -->
+
 		<div class="appContent py-4" style="min-height:90vh">
 			<!-- Header -->
 			<div class="section p-4 px-3 bg-white rounded-4 mb-3 position-relative overflow-hidden">
@@ -196,4 +201,5 @@
 	</div>
 
 	<?= $this->include('_bottommenu') ?>
+	<?= $this->include('courses/intro/script') ?>
 </div>

@@ -51,7 +51,8 @@ class PageController extends BaseController
                 ->where('course_id', $id)
                 ->countAllResults();
 
-                $this->data['course_completed'] = $this->data['total_lessons'] == $this->data['lesson_completed'] && $this->data['live_meetings'] >= 3 ? true : false;
+            $this->data['course_completed'] = $this->data['total_lessons'] == $this->data['lesson_completed'] && $this->data['live_meetings'] >= 3 ? true : false;
+            $this->data['is_enrolled'] = $db->table('course_students')->where('course_id', $id)->where('user_id', $jwt->user_id)->countAllResults() > 0 ? true : false;
 
             return $this->respond($this->data);
         } else {
