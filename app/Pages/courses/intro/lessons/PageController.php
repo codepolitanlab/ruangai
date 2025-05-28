@@ -15,15 +15,25 @@ class PageController extends BaseController
 
     public function getData($id)
     {
+        $benchmark = service('timer');
+        $benchmark->start('renderData');
+
         $Heroic = new \App\Libraries\Heroic();
         $jwt = $Heroic->checkToken();
         
         $db = \Config\Database::connect();
-        $course = $db->table('courses')
-            ->where('courses.id', $id)
-            ->groupBy('courses.id')
-            ->get()
-            ->getRowArray();
+
+        // Get course
+        if (! $course = cache('course_'.$id)) {
+            $course = $db->table('courses')
+                        ->where('id', $id)
+                        ->get()
+                        ->getRowArray();
+                        
+            // Save into the cache for 5 minutes
+            cache()->save('course_'.$id, $course, 3600);
+        }
+        $this->data['course'] = $course;
 
         if ($course) {
             // Get completed lessons for current user
@@ -37,17 +47,20 @@ class PageController extends BaseController
             $completedLessonIds = array_column($completedLessons, 'lesson_id');
 
             // Get lessons for this course
-            $lessons = $db->table('course_lessons')
-                ->select('course_lessons.*, course_topics.*, course_lessons.id as id')
-                ->join('course_topics', 'course_topics.id = course_lessons.topic_id', 'left')
-                ->where('course_lessons.course_id', $id)
-                ->where('course_lessons.deleted_at', null)
-                ->orderBy('course_topics.topic_order', 'ASC')
-                ->orderBy('course_lessons.lesson_order', 'ASC')
-                ->get()
-                ->getResultArray();
-
-            $this->data['course'] = $course;
+            if (! $lessons = cache('course_lessons_'.$id)) {
+                $lessons = $db->table('course_lessons')
+                    ->select('course_lessons.*, course_topics.*, course_lessons.id as id')
+                    ->join('course_topics', 'course_topics.id = course_lessons.topic_id', 'left')
+                    ->where('course_lessons.course_id', $id)
+                    ->where('course_lessons.deleted_at', null)
+                    ->orderBy('course_topics.topic_order', 'ASC')
+                    ->orderBy('course_lessons.lesson_order', 'ASC')
+                    ->get()
+                    ->getResultArray();
+                
+                // Save into the cache for 1 hours
+                cache()->save('course_lessons_'.$id, $lessons, 3600);
+            }
 
             $lessonsCompleted = [];
             $numCompleted = 0;
@@ -63,11 +76,17 @@ class PageController extends BaseController
             $this->data['lessonsCompleted'] = $lessonsCompleted;
             $this->data['numCompleted'] = $numCompleted;
 
+            $benchmark->stop('renderData');
+            $this->data['runtime'] = $benchmark->getElapsedTime('renderData');
+
             return $this->respond($this->data);
         } else {
+            $benchmark->stop('renderData');
+
             return $this->respond([
                 'response_code'    => 404,
                 'response_message' => 'Not found',
+                'runtime'          => $benchmark->getElapsedTime('renderData'),
             ]);
         }
     }

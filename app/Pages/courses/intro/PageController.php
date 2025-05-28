@@ -14,16 +14,25 @@ class PageController extends BaseController
 
     public function getData($id)
     {
+        $benchmark = service('timer');
+        $benchmark->start('renderData');
+
         $Heroic = new \App\Libraries\Heroic();
         $jwt = $Heroic->checkToken(true);
         $this->data['name'] = $jwt->user['name'];
 
         $db = \Config\Database::connect();
-        $course = $db->table('courses')
-            ->where('courses.id', $id)
-            ->groupBy('courses.id')
-            ->get()
-            ->getRowArray();
+
+        // Get course
+        if (! $course = cache('course_'.$id)) {
+            $course = $db->table('courses')
+                        ->where('id', $id)
+                        ->get()
+                        ->getRowArray();
+                        
+            // Save into the cache for 5 minutes
+            cache()->save('course_'.$id, $course, 3600);
+        }
 
         if ($course) {
             // Get completed lessons for current user
@@ -54,11 +63,17 @@ class PageController extends BaseController
             $this->data['course_completed'] = $this->data['total_lessons'] == $this->data['lesson_completed'] && $this->data['live_meetings'] >= 3 ? true : false;
             $this->data['is_enrolled'] = $db->table('course_students')->where('course_id', $id)->where('user_id', $jwt->user_id)->countAllResults() > 0 ? true : false;
 
+            $benchmark->stop('renderData');
+            $this->data['runtime'] = $benchmark->getElapsedTime('renderData');
+
             return $this->respond($this->data);
         } else {
+            $benchmark->stop('renderData');
+
             return $this->respond([
                 'response_code'    => 404,
                 'response_message' => 'Not found',
+                'runtime'          => $benchmark->getElapsedTime('renderData'),
             ]);
         }
     }
