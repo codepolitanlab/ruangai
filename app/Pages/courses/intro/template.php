@@ -146,7 +146,7 @@
 									<span class="mb-1 text-white">Sesi Live Diikuti</span>
 								</div>
 								<div class="d-flex align-items-center gap-2 mt-2 mb-1">
-									<template x-for="i in 10">
+									<template x-for="i in data.live_meetings">
 										<div 
 											class="flex-fill rounded-pill" 
 											:class="data.live_attendance >= i ? 'bg-white' : 'bg-dark bg-opacity-25'"
