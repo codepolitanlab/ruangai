@@ -96,7 +96,7 @@
 							</div>
 						</template>
 
-						<template x-if="!data.lesson?.is_completed && data.lesson?.next_lesson && data.lesson?.type == 'theory'">
+						<template x-if="!data.lesson?.is_completed && data.lesson?.type == 'theory'">
 							<button @click="markAsComplete(data.lesson?.course_id, data.lesson?.id, data.lesson?.next_lesson?.id)"
 								class="btn btn-lg btn-primary rounded-pill px-4 ms-auto"
 								:class="{'disabled': !showButtonPaham, 'btn-progress': buttonSubmitting}"
@@ -119,14 +119,6 @@
 							</div>
 						</template>
 
-						<template x-if="!data.lesson?.next_lesson && !data.lesson?.is_completed">
-							<div class="ms-auto">
-								<button @click="markAsComplete(data.lesson?.course_id,data.lesson?.id, data.lesson?.next_lesson?.id)" class="btn btn-success rounded-pill px-4">
-									<i class="bi bi-check-circle-fill me-2"></i>
-									Selesai
-								</button>
-							</div>
-						</template>
 					</div>
 
 				</div>
