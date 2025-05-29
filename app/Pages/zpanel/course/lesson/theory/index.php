@@ -86,26 +86,26 @@
                         <div class="d-flex mt-3 justify-content-start">
                             <div class="pe-5">
                                 <div class="form-check form-switch">
-                                    <input 
-                                        class="form-check-input" 
-                                        value="1" 
-                                        name="status" 
-                                        type="checkbox" 
-                                        role="switch" 
-                                        id="lesson_status" 
+                                    <input
+                                        class="form-check-input"
+                                        value="1"
+                                        name="status"
+                                        type="checkbox"
+                                        role="switch"
+                                        id="lesson_status"
                                         <?= ($lesson['status'] ?? null) ? 'checked' : '' ?>>
                                     <label class="form-check-label" for="lesson_status">Publish Material?</label>
                                 </div>
                             </div>
                             <div class="pe-5">
                                 <div class="form-check form-switch">
-                                    <input 
-                                        class="form-check-input" 
-                                        value="1" 
-                                        name="free" 
-                                        type="checkbox" 
-                                        role="switch" 
-                                        id="lesson_free" 
+                                    <input
+                                        class="form-check-input"
+                                        value="1"
+                                        name="free"
+                                        type="checkbox"
+                                        role="switch"
+                                        id="lesson_free"
                                         <?= ($lesson['free'] ?? null) ? 'checked' : '' ?>>
                                     <label class="form-check-label" for="lesson_free">Is Material Free?</label>
                                 </div>
@@ -116,19 +116,27 @@
                             <div class="col-12">
                                 <div class="mb-3">
                                     <label class="form-label" for="editor">Text Content</label>
-                                    <textarea id="editor" name="text"><?= $lesson['text'] ?? ''; ?></textarea>
+
+                                    <div>
+                                        <textarea name="text" id="basic-example"><?= $lesson['text'] ?? ''; ?></textarea>
+                                    </div>
                                     <script>
-                                        let editorInstance;
-                                        ClassicEditor
-                                            .create(document.querySelector('#editor'))
-                                            .then(editor => {
-                                                editorInstance = editor;
-                                                editor.ui.view.editable.element.style.height = "300px";
-                                            })
-                                            .catch(error => {
-                                                console.error(error);
-                                            });
+                                        tinymce.init({
+                                            selector: 'textarea#basic-example',
+                                            height: 500,
+                                            plugins: [
+                                                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                                                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                                                'insertdatetime', 'media', 'table', 'help', 'wordcount'
+                                            ],
+                                            toolbar: 'undo redo | blocks | ' +
+                                            'bold italic backcolor | alignleft aligncenter ' +
+                                            'alignright alignjustify | bullist numlist outdent indent | ' +
+                                            'removeformat | help',
+                                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+                                        });
                                     </script>
+
                                 </div>
                             </div>
                         </div>
@@ -153,12 +161,6 @@
 
                     <script>
                         $(function() {
-                            var editor = new SimpleMDE({
-                                element: document.getElementById("simplemde-editor"),
-                                autofocus: true,
-                                spellChecker: false
-                            });
-
                             // Set autocomplete.
                             $('.autocomplete').select2();
 

@@ -17,9 +17,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-tagsinput/1.3.6/jquery.tagsinput.min.css">
     <!-- Datepicker -->
     <link rel="stylesheet" id="theme-style" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css">
-
+    
+    <script src="/vendor/tinymce/js/tinymce/tinymce.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.9/dist/js/select2.min.js"></script>
@@ -51,8 +52,6 @@
     <script src="/admin/static/js/components/dark.js"></script>
     <script src="/admin/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="/admin/compiled/js/app.js"></script>
-
-    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script> -->
 
     <!-- https://fengyuanchen.github.io/datepicker -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js" type="text/javascript"></script>
