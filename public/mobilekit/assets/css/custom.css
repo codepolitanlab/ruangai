@@ -213,5 +213,5 @@ button.vanilla-calendar-day__btn.alpa, .presensi-status-container.alpa { backgro
 }
 
 div#lesson_text_container img {
-    width: 100%;
+    max-width: 100%;
 }
