@@ -63,7 +63,6 @@ class PageController extends CourseLessonController
         // Insert
         } else {
 
-
             // Ambil lesson_order terakhir
             $lastOrder = $LessonModel->table('course_lessons')
                 ->select('lesson_order')
