@@ -58,6 +58,11 @@ class PageController extends CourseLessonController
             ];
             $LessonModel->update($postData['lesson_id'], $data);
             session()->setFlashdata('success_message', 'Materi telah diperbaharui');
+
+            // Clear cache lesson
+            cache()->delete('course_' . $postData['lesson_id'] .'_lessons');
+            cache()->delete('lesson_' . $postData['lesson_id']);
+
             return redirectPage('/zpanel/course/lesson/theory/' . $postData['course_id'] . '/' . $postData['topic_id'] . '/' . $postData['lesson_id']);
 
         // Insert
@@ -90,6 +95,11 @@ class PageController extends CourseLessonController
 
             $LessonModel->insert($data);
             $lesson_id = $LessonModel->getInsertID();
+
+            // Clear cache lesson
+            cache()->delete('course_' . $lesson_id .'_lessons');
+            cache()->delete('lesson_' . $lesson_id);
+                                    
             session()->setFlashdata('success_message', 'Materi telah disimpan');
             return redirectPage('/zpanel/course/lesson/theory/' . $postData['course_id'] . '/' . $postData['topic_id'] . '/' . $lesson_id);
         }
