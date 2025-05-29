@@ -18,7 +18,7 @@
     <!-- Datepicker -->
     <link rel="stylesheet" id="theme-style" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css">
     
-    <script src="/vendor/tinymce/js/tinymce/tinymce.min.js"></script>
+    <script src="/admin/tinymce/js/tinymce/tinymce.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
