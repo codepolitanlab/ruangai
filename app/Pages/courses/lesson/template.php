@@ -65,7 +65,7 @@
 
 					<div id="lesson_text_container"
 						class="card border-0 shadow-none rounded-4 p-3 mb-3">
-						<h2 x-text="data.lesson?.lesson_title"></h2>
+						<h2 class="h2 mb-5" x-text="data.lesson?.lesson_title"></h2>
 
 						<template x-if="data.lesson?.text">
 							<p class="" x-html="data.lesson?.text"></p>
