@@ -52,6 +52,8 @@
           .then((response) => {
             if (response.data.status == "success") {
               $heroicHelper.toastr(response.data.message, "success", 'bottom');
+              // unset cache lesson list
+              $heroicHelper.cached[`/courses/intro/lessons/data/${course_id}`] = null;
               if (!next_lesson_id) {
                 let courseId = response.data.course.course_id;
                 let courseSlug = response.data.course.course_slug;
