@@ -68,7 +68,7 @@
 						<h2 class="h2 mb-5" x-text="data.lesson?.lesson_title"></h2>
 
 						<template x-if="data.lesson?.text">
-							<p class="" x-html="data.lesson?.text"></p>
+							<p class="" x-html="data.lesson?.text" x-init="$nextTick(() => setNativeLinks())"></p>
 						</template>
 					</div>
 

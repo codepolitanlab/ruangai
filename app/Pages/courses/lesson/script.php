@@ -23,6 +23,18 @@
         // Show button saya sudah paham setelah n detik
         this.setTimerButtonPaham();
       },
+
+      setNativeLinks(selector = '#lesson_text_container') {
+        const container = document.querySelector(selector);
+        if (container) {
+          const links = container.querySelectorAll('a');
+          links.forEach(link => {
+            link.setAttribute('native', '');
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener noreferrer');
+          });
+        }
+      },
       
       setTimerButtonPaham() {
         this.showButtonPaham = false;
