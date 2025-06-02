@@ -30,9 +30,9 @@ class AuthSSR
         $builder->groupStart(); // Mulai grup OR
         foreach ($identity_type as $index => $field) {
             if ($index === 0) {
-                $builder->where($field, $identity);
+                $builder->where('LOWER('.$field.')', strtolower($identity));
             } else {
-                $builder->orWhere($field, $identity);
+                $builder->orWhere('LOWER('.$field.')', strtolower($identity));
             }
         }
         $builder->groupEnd(); // Tutup grup OR
