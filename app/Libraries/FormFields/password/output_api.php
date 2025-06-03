@@ -1,3 +1,3 @@
 <?php
 
-return $result[$config['field']];
+return $result[$config['name']];

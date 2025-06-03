@@ -2,7 +2,7 @@
 // Mutation.
 if (isset($config['relation']))
 {
-	$field = $config['field'];
+	$field = $config['name'];
 	$entry = $config['relation']['entry'];
 	$caption = $config['relation']['caption'];
 

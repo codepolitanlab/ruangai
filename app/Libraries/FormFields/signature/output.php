@@ -1,13 +1,13 @@
 <?php
-$file = $result[$config['field']];
+$file = $result[$config['name']];
 $pathinfo = pathinfo((string) $file);
 ?>
 
 <?php if ($file) : ?>
-    <a id="<?= $config['field'] . '_' . $result['id']; ?>" class="btn btn-sm btn-secondary" href="<?= $file; ?>" data-thumbnail="<?= $file; ?>" title="<?= $pathinfo['basename']; ?>" data-pjax=false target="_blank"><span class="fa fa-image"></span></a>
+    <a id="<?= $config['name'] . '_' . $result['id']; ?>" class="btn btn-sm btn-secondary" href="<?= $file; ?>" data-thumbnail="<?= $file; ?>" title="<?= $pathinfo['basename']; ?>" data-pjax=false target="_blank"><span class="fa fa-image"></span></a>
     <script>
         $(function() {
-            $('#<?= $config['field'] . '_' . $result['id']; ?>').popover({
+            $('#<?= $config['name'] . '_' . $result['id']; ?>').popover({
                 trigger: 'hover',
                 html: true,
                 content: function() {

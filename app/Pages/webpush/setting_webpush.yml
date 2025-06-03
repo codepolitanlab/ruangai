@@ -1,0 +1,15 @@
+title: Web Push
+description: Web Push Settings
+fields:
+  WebPush.subject:
+    field: WebPush.subject
+    label: Subject
+    form: text
+  WebPush.publicKey:
+    field: WebPush.publicKey
+    label: Public Key
+    form: text
+  WebPush.privateKey:
+    field: WebPush.privateKey
+    label: Private Key
+    form: text

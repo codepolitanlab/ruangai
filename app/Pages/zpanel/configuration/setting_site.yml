@@ -1,0 +1,69 @@
+title: Site
+description: Site Settings
+fields:
+  Site.siteTitle:
+    field: Site.siteTitle
+    label: Site Title
+    form: text
+  Site.siteDescription:
+    field: Site.siteDescription
+    label: Site Description
+    form: textarea
+  Site.siteLogo:
+    field: Site.siteLogo
+    label: Site Logo
+    form: text
+  Site.siteLogoMonochrome:
+    field: Site.siteLogoMonochrome
+    label: Site Logo Monochrome
+    form: text
+  Site.siteLogoSmall:
+    field: Site.siteLogoSmall
+    label: Site Logo Small
+    form: text
+  Site.address:
+    field: Site.address
+    label: Address
+    form: text
+  Site.phone:
+    field: Site.phone
+    label: Phone
+    form: text
+  Site.email:
+    field: Site.email
+    label: Email
+    form: text
+  Site.latlong:
+    field: Site.latlong
+    label: Latitude/Longitude
+    description: "ex: -6.200000, 106.816666"
+    form: text
+  Site.authLogo:
+    field: Site.authLogo
+    label: Auth Logo
+    form: text
+  Site.navbarLogo:
+    field: Site.navbarLogo
+    label: Navbar Logo
+    form: text
+  Site.loginCover:
+    field: Site.loginCover
+    label: Login Cover Image
+    form: text
+  Site.currency:
+    field: Site.currency
+    label: Currency
+    form: text
+  Site.maintenanceMode:
+    field: Site.maintenanceMode
+    label: Maintenance Mode
+    form: dropdown
+    options:
+      0: Disabled
+      1: Enabled
+  Site.sandboxLogin:
+    field: Site.sandboxLogin
+    label: Sandbox Login
+    context: raw
+    form: code
+    mode: json

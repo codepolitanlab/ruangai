@@ -3,7 +3,7 @@
 $ci = &get_instance();
 $ci->load->helper('media/filemanager');
 
-$data = get_file_urls($result[$config['field']]);
+$data = get_file_urls($result[$config['name']]);
 
 if($config['original_only'] ?? '')
 	$data = $data['original'];

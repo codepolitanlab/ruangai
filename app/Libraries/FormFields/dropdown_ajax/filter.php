@@ -1,5 +1,5 @@
 <?php
-$idname = str_replace(['[',']'], ['__',''], $config['field']);
+$idname = str_replace(['[',']'], ['__',''], $config['name']);
 
 if($config['relation']['table'] ?? '')
   $table = $config['relation']['table'];
@@ -12,7 +12,7 @@ else {
 $attributes = 'id="'.$idname.'" class="form-select" data-caption="'.$config['label'].'"';
 $default_option = [];
 $filter = ci()->input->get('filter', true);
-$value = $filter[$config['field']] ?? '';
+$value = $filter[$config['name']] ?? '';
 if($value){
   if($record = $this->db->select(implode(',',$config['relation']['searchby']))
                         ->where($config['relation']['foreign_key'],$value)
@@ -25,7 +25,7 @@ if($value){
     $default_option[$value] = implode(" - ", $default_option[$value]);
   }
 }
-echo form_dropdown('filter['.$config['field'].']', $default_option, $value, $attributes);
+echo form_dropdown('filter['.$config['name'].']', $default_option, $value, $attributes);
 
 if ($config['relation'] ?? '')
   echo ("<script>

@@ -3,15 +3,15 @@
 if (isset($config['relation']))
 {
 	$entry = $config['relation']['entry'];
-	$config['field'] = $config['relation']['caption'];
+	$config['name'] = $config['relation']['caption'];
 	
 	if(!empty($result[$entry])){
-		$value = array_column($result[$entry], $config['field']);
+		$value = array_column($result[$entry], $config['name']);
 		foreach ($value as $val)
 			echo "<span class='badge badge-info'>$val</span>&nbsp;";
 	}
 }
 else 
 {
-    echo $config['options'][$result[$config['field']]];
+    echo $config['options'][$result[$config['name']]];
 }

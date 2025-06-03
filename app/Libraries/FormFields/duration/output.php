@@ -1,5 +1,5 @@
 <?php
-$hms = explode(":", $result[$config['field']]);
+$hms = explode(":", $result[$config['name']]);
 $h = $hms[0] ?? 0;
 $m = $hms[1] ?? 0;
 $s = $hms[2] ?? 0;

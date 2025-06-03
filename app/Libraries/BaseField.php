@@ -12,6 +12,7 @@ abstract class BaseField
     protected mixed $default = null;
     protected array $attr = [];
     protected mixed $value;
+    protected string $escapeContext = 'html';
 
     public function __construct(array $attributes, mixed $value = null)
     {
@@ -64,16 +65,15 @@ abstract class BaseField
      */
     protected function getAttributeString(): string
     {
-        if (empty($this->attr)) {
-            return '';
-        }
+        return implode(' ', array_map(fn($k, $v) => is_bool($v) ? $k : $k.'="'.htmlspecialchars($v).'"', array_keys($this->attr), $this->attr));
+    }
 
-        $attrs = [];
-        foreach ($this->attr as $key => $val) {
-            $attrs[] = $key . '="' . htmlentities($val) . '"';
-        }
-
-        return implode(' ', $attrs);
+    /**
+     * Render field label
+     */
+    public function renderLabel(): string
+    {
+        return '<label for="' . $this->name . '">' . $this->label . '</label>';
     }
 
     /**
@@ -91,7 +91,7 @@ abstract class BaseField
         ob_start();
         extract([
             'config' => $this->getProps(),
-            'value' => esc($this->getValueForInput($value ?? $this->value ?? $this->default)),
+            'value' => esc($this->getValueForInput($value ?? $this->value ?? $this->default), $this->escapeContext),
             'attributes' => $this->getAttributeString()
         ]);
         include $viewPath;

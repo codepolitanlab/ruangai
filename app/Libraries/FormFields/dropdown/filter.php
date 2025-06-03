@@ -25,5 +25,5 @@ else
 	$config['options'] = [""=>""] + $config['options'];
 ?>
 
-<?= form_dropdown("filter[".$config['field']."]", $config['options'], $this->input->get("filter[{$config['field']}]", true), 'class="form-select form-select-sm form-filter-dropdown" placeholder="filter by '.$config['field'].'" id="filter-'. $config['field'].'"'); ?>
+<?= form_dropdown("filter[".$config['name']."]", $config['options'], $this->input->get("filter[{$config['name']}]", true), 'class="form-select form-select-sm form-filter-dropdown" placeholder="filter by '.$config['name'].'" id="filter-'. $config['name'].'"'); ?>
 

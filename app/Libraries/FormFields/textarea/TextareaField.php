@@ -9,9 +9,9 @@ class TextareaField extends BaseField
     protected string $name = '';
     protected string $label = '';
     protected string $rules = '';
-    protected string $default = '';
+    protected mixed $default = '';
     protected mixed $value;
     protected string $placeholder = '';
     protected int $rows = 5;
-    protected string $attr = '';
+    protected array $attr = [];
 }

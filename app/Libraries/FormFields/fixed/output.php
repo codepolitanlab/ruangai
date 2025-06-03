@@ -1,7 +1,7 @@
 <?php
 // Mutation.
 if (isset($config['relation'])) {
-    $field = $config['field'];
+    $field = $config['name'];
     $entry = $config['relation']['alias'] ?? $config['relation']['entry'];
     $caption = $config['relation']['caption'];
 
@@ -24,7 +24,7 @@ if (isset($config['relation'])) {
         ? '<a href="' . site_url($linkTo) . $result[$entry]['id'] . '" target="' . $linkTarget . '">' . $output . '</a>'
         : $output;
 } else {
-    $value = $result[$config['field']];
+    $value = $result[$config['name']];
     if ($value)
         echo $config['options'][$value] ?? $value;
     else

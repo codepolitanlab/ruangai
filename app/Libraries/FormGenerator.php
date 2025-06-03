@@ -4,7 +4,7 @@ namespace App\Libraries;
 
 class FormGenerator
 {
-    protected $fields = [];
+    public $fields = [];
 
     public function __construct(array $schema)
     {
@@ -14,7 +14,7 @@ class FormGenerator
     protected function buildFields(array $fieldSchemas)
     {
         foreach ($fieldSchemas as $fieldName => $fieldSchema) {
-            $class = 'App\\Libraries\\FormFields\\' . $this->toClassName($fieldSchema['form']) . 'Field';
+            $class = '\\App\\Libraries\\FormFields\\' . $fieldSchema['form'] . '\\' . $this->toClassName($fieldSchema['form']) . 'Field';
             if (class_exists($class)) {
                 $this->fields[$fieldName] = new $class($fieldSchema);
             } else {
@@ -25,11 +25,14 @@ class FormGenerator
 
     public function renderFields(): string
     {
-        $output = '';
+        $html = '';
         foreach ($this->fields as $field) {
-            $output .= $field->render();
+            $html .= '<div class="form-group">' . "\n";
+            $html .= $field->renderLabel();
+            $html .= $field->renderInput();
+            $html .= '</div>' . "\n";
         }
-        return $output;
+        return $html;
     }
 
     public function renderForm(string $action, string $method = 'POST'): string

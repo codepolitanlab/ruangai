@@ -1,14 +1,14 @@
 <?php
-$file = $result[$config['field']];
+$file = $result[$config['name']];
 $thumb = str_replace('/sources/','/thumbs/', (string) $file);
 $pathinfo = pathinfo((string) $file);
 ?>
 
 <?php if($file): ?>
-<a id="<?= $config['field'].'_'.$result['id']; ?>" class="btn btn-sm btn-secondary" href="<?= $file; ?>" data-thumbnail="<?= $thumb; ?>" title="<?= $pathinfo['basename']; ?>" target="_blank"><span class="fa fa-image"></span></a>
+<a id="<?= $config['name'].'_'.$result['id']; ?>" class="btn btn-sm btn-secondary" href="<?= $file; ?>" data-thumbnail="<?= $thumb; ?>" title="<?= $pathinfo['basename']; ?>" target="_blank"><span class="fa fa-image"></span></a>
 <script>
 	$(function(){
-		$('#<?= $config['field'].'_'.$result['id']; ?>').popover({
+		$('#<?= $config['name'].'_'.$result['id']; ?>').popover({
 			trigger: 'hover',
 			html: true,
 			content: function () {

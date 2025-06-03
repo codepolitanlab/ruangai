@@ -110,48 +110,18 @@ $sidebar = [
     //         ],
     //     ]
     // ],
-    // 'configuration' => [
-    //     'label' => 'Configuration',
-    //     'icon' => 'bi bi-gear',
-    //     'url' => '#',
-    //     'children' => [
-    //         'setting' => [
-    //             'label' => 'Settings',
-    //             'icon' => 'bi bi-sliders',
-    //             'url' => '/zpanel/configuration/settings',
-    //         ],
-    //         'navigation' => [
-    //             'label' => 'Navigation',
-    //             'icon' => 'bi bi-menu-button-wide',
-    //             'url' => '/zpanel/configuration/navigation',
-    //         ],
-    //         'page_option' => [
-    //             'label' => 'Page Options',
-    //             'icon' => 'bi bi-tools',
-    //             'url' => '/zpanel/configuration/page-options',
-    //         ],
-    //         'module' => [
-    //             'label' => 'Modules',
-    //             'icon' => 'bi bi-puzzle',
-    //             'url' => '/zpanel/configuration/modules',
-    //         ],
-    //         'entry' => [
-    //             'label' => 'Entries',
-    //             'icon' => 'bi bi-pencil-square',
-    //             'url' => '/zpanel/configuration/entries',
-    //         ],
-    //         'importer' => [
-    //             'label' => 'Importer',
-    //             'icon' => 'bi bi-upload',
-    //             'url' => '/zpanel/configuration/importer',
-    //         ],
-    //         'exporter' => [
-    //             'label' => 'Exporter',
-    //             'icon' => 'bi bi-download',
-    //             'url' => '/zpanel/configuration/exporter',
-    //         ],
-    //     ]
-    // ],
+    'configuration' => [
+        'label' => 'Configuration',
+        'icon' => 'bi bi-gear',
+        'url' => '#',
+        'children' => [
+            'setting' => [
+                'label' => 'Settings',
+                'icon' => 'bi bi-sliders',
+                'url' => '/zpanel/configuration',
+            ],
+        ]
+    ],
 ];
 
 function renderMenu($menu) {

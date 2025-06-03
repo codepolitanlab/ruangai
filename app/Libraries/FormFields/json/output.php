@@ -1,6 +1,6 @@
 <div>
 <?php 
-$jsonVal = json_decode($result[$config['field']], true);
+$jsonVal = json_decode($result[$config['name']], true);
 if($jsonVal)
     foreach ($jsonVal as $key => $value)
     {

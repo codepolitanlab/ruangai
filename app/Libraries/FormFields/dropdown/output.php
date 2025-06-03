@@ -2,7 +2,7 @@
 // Mutation.
 if (isset($config['relation']))
 {
-	$field = $config['field'];
+	$field = $config['name'];
 	$entry = $config['relation']['alias'] ?? $config['relation']['entry'];
 	$caption = $config['relation']['caption'];
 
@@ -28,13 +28,13 @@ if (isset($config['relation']))
 
 else if ($config['option_source'] ?? null) {
 	$options = ci()->shared['ActionClass']->{$config['option_source']}();
-	$value = $result[$config['field']] ?? 0;
+	$value = $result[$config['name']] ?? 0;
 	echo $options[$value] ?? '-';
 }
 
 else 
 {
-	$value = $result[$config['field']] ?? null;
+	$value = $result[$config['name']] ?? null;
 	if($value)
 	    echo $config['options'][$value] ?? $value;
 	else
