@@ -209,6 +209,7 @@ class ScholarshipController extends ResourceController
         $disbursed = 0;
 
         $data['referral_code'] = $leader['referral_code'];
+        $data['program'] = $leader['program'];
         $data['bank'] = $bank;
         $data['members'] = $members;
         $data['total_member'] = $memberQuery->getNumRows();
