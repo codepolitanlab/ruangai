@@ -33,19 +33,35 @@ class PageController extends BaseController
             if (!empty($filter['created_at'])) {
                 $students->like('scholarship_participants.created_at', $filter['created_at']);
             }
-            if (!empty($filter['order'])) {
-                $students->orderBy('scholarship_participants.created_at', $filter['order']);
+
+            // Handle sorting
+            if (!empty($filter['field']) && !empty($filter['order'])) {
+                $orderField = match($filter['field']) {
+                    'fullname' => 'scholarship_participants.fullname',
+                    'whatsapp' => 'scholarship_participants.whatsapp',
+                    'progress' => 'course_students.progress',
+                    'last_progress_at' => 'course_students.updated_at',
+                    default => 'scholarship_participants.created_at'
+                };
+                $students->orderBy($orderField, $filter['order']);
+            } else {
+                $students->orderBy('scholarship_participants.created_at', 'desc');
             }
+        } else {
+            $students->orderBy('scholarship_participants.created_at', 'desc');
         }
 
-        // Order and paginate
-        $students->orderBy('scholarship_participants.id', 'DESC');
-        $data['students'] = $students->asObject()->paginate(10);
+        // Get perpage value from request, default to 10
+        $perpage = (int) $this->request->getGet('perpage') ?: 10;
+        
+        // Paginate results
+        $data['students'] = $students->asObject()->paginate($perpage);
         $data['pager'] = $students->pager;
         $data['programs'] = model('Events')->findAll();
 
-        // Pass filter values to view
+        // Pass filter values and perpage to view
         $data['filter'] = $filter;
+        $data['perpage'] = $perpage;
 
         return pageView('zpanel/course/student/index', $data);
     }

@@ -36,13 +36,26 @@
             <div class="card-body table-responsive">
                 <form method="GET" action="/zpanel/course/student">
                     <?php $total = count($students) ?>
-                    <div class="d-flex justify-content-between">
-                        <p>Total: <b><?= $total ?></b></p>
-                        <div>
-                            <select name="filter[order]" class="form-control form-control-sm ms-1">
-                                <option value="desc" <?= @$filter['order'] == 'desc' ? 'selected' : '' ?>>Terbaru</option>
-                                <option value="asc" <?= @$filter['order'] == 'asc' ? 'selected' : '' ?>>Terlama</option>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <p class="mb-0">Total: <b><?= $total ?></b></p>
+                        <div class="d-flex align-items-center gap-2">
+                            <small class="fw-bold">Order By:</small>
+                            <select name="filter[field]" class="form-select form-select-sm" style="width: auto;">
+                                <option value="fullname" <?= @$filter['field'] == 'fullname' ? 'selected' : '' ?>>Fullname</option>
+                                <option value="whatsapp" <?= @$filter['field'] == 'whatsapp' ? 'selected' : '' ?>>WhatsApp</option>
+                                <option value="progress" <?= @$filter['field'] == 'progress' ? 'selected' : '' ?>>Progress</option>
+                                <option value="last_progress_at" <?= @$filter['field'] == 'last_progress_at' ? 'selected' : '' ?>>Last Progress</option>
                             </select>
+                            <select name="filter[order]" class="form-select form-select-sm" style="width: auto;">
+                                <option value="desc" <?= @$filter['order'] == 'desc' ? 'selected' : '' ?>>Desc</option>
+                                <option value="asc" <?= @$filter['order'] == 'asc' ? 'selected' : '' ?>>Asc</option>
+                            </select>
+                            <small class="fw-bold">Perpage:</small>
+                            <input type="number" name="perpage" class="form-control form-control-sm" style="width: 70px;" value="<?= @$perpage ?? 10 ?>" placeholder="Per Page">
+                            <div class="btn-group ms-3">
+                                <button type="submit" class="btn btn-sm btn-primary"><span class="fa fa-search"></span> Filter</button>
+                                <a href="/zpanel/course/student" class="btn btn-sm btn-secondary"><span class="fa fa-refresh"></span> Reset</a>
+                            </div>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -79,12 +92,6 @@
                                         <input type="number" min="0" max="100" class="form-control form-control-sm text-center mx-auto" name="filter[progress]" value="<?= @$filter['progress'] ?>" placeholder="filter progress">
                                     </td>
                                     <td></td>
-                                    <td class="text-end">
-                                        <div class="btn-group">
-                                            <button type="submit" class="btn btn-sm btn-primary"><span class="fa fa-search"></span> Filter</button>
-                                            <a href="/zpanel/course/student" class="btn btn-sm btn-secondary"><span class="fa fa-refresh"></span> Reset</a>
-                                        </div>
-                                    </td>
                                 </tr>
                                 <!-- Data Rows -->
                                 <?php foreach ($students as $student): ?>
