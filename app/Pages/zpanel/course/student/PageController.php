@@ -11,8 +11,9 @@ class PageController extends BaseController
         $students = new \App\Models\ScholarshipParticipantModel();
         
         // Base query with joins and subqueries
-        $students->select('scholarship_participants.id, scholarship_participants.fullname, scholarship_participants.whatsapp, scholarship_participants.program, scholarship_participants.created_at, users.last_active, (SELECT course_lessons.lesson_title FROM course_lesson_progress clp JOIN course_lessons ON course_lessons.id = clp.lesson_id WHERE clp.user_id = users.id ORDER BY clp.id DESC LIMIT 1) as lesson_title, (SELECT clp.created_at FROM course_lesson_progress clp WHERE clp.user_id = users.id ORDER BY clp.id DESC LIMIT 1) as last_progress_at');
+        $students->select('scholarship_participants.id, scholarship_participants.fullname, scholarship_participants.whatsapp, scholarship_participants.program, scholarship_participants.created_at, users.last_active, course_students.progress, course_students.updated_at as last_progress_at');
         $students->join('users', 'users.id = scholarship_participants.user_id');
+        $students->join('course_students', 'course_students.user_id = users.id', 'left');
 
         // Apply filters
         $filter = $this->request->getGet('filter');
@@ -26,12 +27,22 @@ class PageController extends BaseController
             if (!empty($filter['whatsapp'])) {
                 $students->like('scholarship_participants.whatsapp', $filter['whatsapp']);
             }
+            if (!empty($filter['progress'])) {
+                $students->like('course_students.progress', $filter['progress']);
+            }
+            if (!empty($filter['created_at'])) {
+                $students->like('scholarship_participants.created_at', $filter['created_at']);
+            }
+            if (!empty($filter['order'])) {
+                $students->orderBy('scholarship_participants.created_at', $filter['order']);
+            }
         }
 
         // Order and paginate
         $students->orderBy('scholarship_participants.id', 'DESC');
         $data['students'] = $students->asObject()->paginate(10);
         $data['pager'] = $students->pager;
+        $data['programs'] = model('Events')->findAll();
 
         // Pass filter values to view
         $data['filter'] = $filter;
