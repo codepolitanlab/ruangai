@@ -44,7 +44,7 @@ class PageController extends BaseController
             $completedLessonIds = array_column($completedLessons, 'lesson_id');
 
             // Get lessons for this course
-            if (! $lessons = cache('course_lessons_'.$id)) {
+            if (! $lessons = cache('course_'.$id.'_lessons')) {
                 $lessons = $db->table('course_lessons')
                     ->select('course_lessons.*, course_topics.*, course_lessons.id as id')
                     ->join('course_topics', 'course_topics.id = course_lessons.topic_id', 'left')
@@ -56,7 +56,7 @@ class PageController extends BaseController
                     ->getResultArray();
                 
                 // Save into the cache for 1 hours
-                cache()->save('course_lessons_'.$id, $lessons, 3600);
+                cache()->save('course_'.$id.'_lessons', $lessons, 3600);
             }
 
             $lessonsCompleted = [];

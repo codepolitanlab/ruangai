@@ -101,11 +101,23 @@
                                         <td><?= esc($student->program) ?></td>
                                         <td><?= date('d M Y', strtotime($student->created_at)) ?></td>
                                         <td>
-                                            <!-- data from $student->progress -->
-                                            <svg class="progress-ring" width="120" height="120">
-                                                <circle class="progress-ring__circle-bg" stroke="#e9ecef" stroke-width="7" fill="transparent" r="30" cx="60" cy="60" />
-                                                <circle class="progress-ring__circle" stroke="#81B0CA" stroke-width="7" fill="transparent" r="30" cx="60" cy="60"
-                                                    stroke-dasharray="314" stroke-dashoffset="<?php echo 314 - (314 * $student->progress) / 100; ?>" transform="rotate(-90 60 60)" />
+                                            <svg class="progress-ring" width="80" height="80">
+                                                <!-- Lingkaran Background -->
+                                                <circle class="progress-ring__circle-bg" stroke="#e9ecef" stroke-width="7" fill="transparent" r="30" cx="40" cy="40" />
+
+                                                <!-- Lingkaran Progres -->
+                                                <circle
+                                                    class="progress-ring__circle"
+                                                    stroke="#81B0CA"
+                                                    stroke-width="7"
+                                                    fill="transparent"
+                                                    r="30"
+                                                    cx="40" cy="40"
+                                                    stroke-dasharray="188.4"
+                                                    stroke-dashoffset="<?= 188.4 - (188.4 * ($student->progress ?? 0) / 100); ?>"
+                                                    transform="rotate(-90 40 40)" />
+
+                                                <!-- Teks Persen -->
                                                 <text x="50%" y="50%" text-anchor="middle" dy=".3em" font-size=".8rem" fill="#81B0CA">
                                                     <?= $student->progress ?? 0; ?>%
                                                 </text>

@@ -23,6 +23,18 @@
         // Show button saya sudah paham setelah n detik
         this.setTimerButtonPaham();
       },
+
+      setNativeLinks(selector = '#lesson_text_container') {
+        const container = document.querySelector(selector);
+        if (container) {
+          const links = container.querySelectorAll('a');
+          links.forEach(link => {
+            link.setAttribute('native', '');
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener noreferrer');
+          });
+        }
+      },
       
       setTimerButtonPaham() {
         this.showButtonPaham = false;
@@ -52,6 +64,8 @@
           .then((response) => {
             if (response.data.status == "success") {
               $heroicHelper.toastr(response.data.message, "success", 'bottom');
+              // unset cache lesson list
+              $heroicHelper.cached[`/courses/intro/lessons/data/${course_id}`] = null;
               if (!next_lesson_id) {
                 let courseId = response.data.course.course_id;
                 let courseSlug = response.data.course.course_slug;
