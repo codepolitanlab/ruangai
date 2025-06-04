@@ -57,7 +57,7 @@ fields:
   Site.maintenanceMode:
     field: Site.maintenanceMode
     label: Maintenance Mode
-    form: dropdown
+    form: switch
     options:
       0: Disabled
       1: Enabled

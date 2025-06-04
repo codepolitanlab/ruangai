@@ -38,7 +38,7 @@
         <div id="main" class="layout-navbar navbar-fixed position-relative">
             <?= $this->include('partials/admin_header') ?>
             
-            <div id="main-content">
+            <div id="main-content" class="p-4">
                 <?= $this->include('partials/admin_alerts') ?>
                 
                 <?= $this->renderSection('main') ?>

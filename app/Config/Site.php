@@ -20,6 +20,6 @@ class Site extends BaseConfig
     public $navbarLogo         = "https://ppitarbiyya.test//uploads/ppitarbiyya/sources/ppitarbiyya-white.png";
     public $loginCover         = "";
     public $currency           = "Rp";
-    public $maintenance_mode   = false;
+    public $maintenanceMode    = false;
     public $sandboxLogin       = '{"username":"", "password":""}';
 }

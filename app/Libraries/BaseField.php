@@ -12,7 +12,7 @@ abstract class BaseField
     protected mixed $default = null;
     protected array $attr = [];
     protected mixed $value;
-    protected string $escapeContext = 'html';
+    protected string $context = 'html';
 
     public function __construct(array $attributes, mixed $value = null)
     {
@@ -91,7 +91,7 @@ abstract class BaseField
         ob_start();
         extract([
             'config' => $this->getProps(),
-            'value' => esc($this->getValueForInput($value ?? $this->value ?? $this->default), $this->escapeContext),
+            'value' => esc($this->getValueForInput($value ?? $this->value ?? $this->default), $this->context),
             'attributes' => $this->getAttributeString()
         ]);
         include $viewPath;

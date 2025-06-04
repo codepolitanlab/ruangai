@@ -1,13 +1,10 @@
-<label class="switch">
-    <input type="checkbox" <?= $value == '1' ? 'checked':''; ?>>
-    <span class="slider round"></span>
-    <input type="hidden" name="<?= $config['name'];?>" value="<?= $value; ?>">
-</label>
-
-<script>
-    $(function(){
-        $('input[type=checkbox]').on('change', function(){
-            $(this).siblings('input[type=hidden]').val(Number($(this).prop('checked')));
-        });
-    });
-</script>
+<div class="form-check form-switch">
+    <input 
+        class="form-check-input" 
+        name="<?= $config['name']; ?>" 
+        type="checkbox" 
+        role="switch" 
+        id="switchCheckChecked" 
+        value="<?= $value; ?>" 
+        <?= (bool)$value ? 'checked' : ''; ?>>
+</div>
