@@ -168,10 +168,12 @@ class ScholarshipController extends ResourceController
         $Heroic = new \App\Libraries\Heroic();
 
         $leader = $participantModel
-            ->where('whatsapp', $jwt->whatsapp_number)
-            ->orWhere('whatsapp', $Heroic->normalizePhoneNumber($jwt->whatsapp_number))
-            ->where('deleted_at', null)
-            ->orderBy('created_at', 'DESC')
+            ->select('scholarship_participants.*, events.title as program_title, events.telegram_link, events.date_start')
+            ->join('events', 'events.code = scholarship_participants.program', 'left')
+            ->where('scholarship_participants.whatsapp', $jwt->whatsapp_number)
+            ->orWhere('scholarship_participants.whatsapp', $Heroic->normalizePhoneNumber($jwt->whatsapp_number))
+            ->where('scholarship_participants.deleted_at', null)
+            ->orderBy('scholarship_participants.created_at', 'DESC')
             ->first();
 
         if (!$leader) {
@@ -210,6 +212,9 @@ class ScholarshipController extends ResourceController
 
         $data['referral_code'] = $leader['referral_code'];
         $data['program'] = $leader['program'];
+        $data['program_title'] = $leader['program_title'];
+        $data['program_date_start'] = $leader['date_start'];
+        $data['telegram_link'] = $leader['telegram_link'];
         $data['bank'] = $bank;
         $data['members'] = $members;
         $data['total_member'] = $memberQuery->getNumRows();

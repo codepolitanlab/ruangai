@@ -41,6 +41,7 @@
                         <div class="d-flex align-items-center gap-2">
                             <small class="fw-bold">Order By:</small>
                             <select name="filter[field]" class="form-select form-select-sm" style="width: auto;">
+                                <option value="" selected>--Select--</option>
                                 <option value="fullname" <?= @$filter['field'] == 'fullname' ? 'selected' : '' ?>>Fullname</option>
                                 <option value="whatsapp" <?= @$filter['field'] == 'whatsapp' ? 'selected' : '' ?>>WhatsApp</option>
                                 <option value="progress" <?= @$filter['field'] == 'progress' ? 'selected' : '' ?>>Progress</option>
