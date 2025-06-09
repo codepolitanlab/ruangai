@@ -201,7 +201,7 @@
 										</dl>
 										<dl>
 											<dt>Mentor</dt>
-											<dd>Felisha Rehtaliani, Aji Raga Pamungkas</dd>
+											<dd x-text="live_session.mentor_name"></dd>
 										</dl>
 										<div class="d-flex gap-2 mt-4">
 											<a :href="live_session.zoom_link"
