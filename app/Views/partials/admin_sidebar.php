@@ -39,6 +39,11 @@ $sidebar = [
             ],
         ]
     ],
+    'events' => [
+        'label' => 'Events',
+        'icon' => 'bi bi-calendar',
+        'url' => '/zpanel/events'
+    ],
     // 'content' => [
     //     'label' => 'Content',
     //     'icon' => 'bi bi-folder',

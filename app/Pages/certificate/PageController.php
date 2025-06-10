@@ -8,10 +8,13 @@ use CodeIgniter\API\ResponseTrait;
 class PageController extends BaseController
 {
     
-
-    public function getSupply()
+    public function getTemplate($id = null)
     {
-        
+        // Ambil data course dari db
+        $db = \Config\Database::connect();
+        $this->data['certificate'] = null;
+
+        return pageView('certificate/template', $this->data);
     }
 
 }

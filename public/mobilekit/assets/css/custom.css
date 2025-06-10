@@ -215,3 +215,61 @@ button.vanilla-calendar-day__btn.alpa, .presensi-status-container.alpa { backgro
 div#lesson_text_container img {
     max-width: 100%;
 }
+
+
+@page {
+    size: A4 landscape;
+    margin: 0;
+    padding: 0;
+    /* overflow: hidden; */
+}
+
+/* Gaya default untuk tampilan di layar */
+#img-cert {
+    width: 600px;
+    height: auto;
+    display: block;
+}
+
+#no-certi {
+    top: 110px;
+    left: 27px;
+    font-size: 12px;
+    /* Ukuran font default di layar */
+}
+
+#name-certi {
+    top: 165px;
+    left: 27px;
+    /* Pastikan ada ukuran font default agar bisa di-override */
+    font-size: 24px;
+    /* Contoh: ukuran default untuk h3 */
+}
+
+/* --- Gaya khusus untuk pencetakan --- */
+@media print {
+    #img-cert {
+        width: 1117px !important;
+        /* Lebar saat dicetak */
+        height: auto !important;
+    }
+
+    #no-certi {
+        /* Atur posisi dan ukuran font saat dicetak */
+        top: 215px !important;
+        /* Contoh posisi baru */
+        left: 50px !important;
+        /* Contoh posisi baru */
+        font-size: 23px !important;
+        /* Ukuran font saat dicetak */
+    }
+
+    #name-certi {
+        /* Atur posisi dan ukuran font saat dicetak */
+        top: 310px !important;
+        /* Posisi yang Anda inginkan saat dicetak */
+        left: 50px !important;
+        font-size: 40px !important;
+        /* Ukuran font yang Anda inginkan saat dicetak */
+    }
+}
