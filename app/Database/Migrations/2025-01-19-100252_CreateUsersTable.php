@@ -70,7 +70,7 @@ class CreateUsersTable extends Migration
             ],
             'username'        => [
                 'type'       => 'VARCHAR',
-                'constraint' => 30,
+                'constraint' => 100,
                 'null'       => true
             ],
             'status'          => [
