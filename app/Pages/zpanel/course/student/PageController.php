@@ -28,7 +28,7 @@ class PageController extends BaseController
                 $students->like('scholarship_participants.whatsapp', $filter['whatsapp']);
             }
             if (!empty($filter['progress'])) {
-                $students->like('course_students.progress', $filter['progress']);
+                $students->where('course_students.progress', $filter['progress']);
             }
             if (!empty($filter['created_at'])) {
                 $students->like('scholarship_participants.created_at', $filter['created_at']);
