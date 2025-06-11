@@ -23,42 +23,49 @@
         </div>
     </div>
 
-    <?php if (session()->getFlashdata('success')): ?>
-        <div class="alert alert-success">
-            <?= session()->getFlashdata('success') ?>
+    <section class="section">
+        <div class="card rounded-xl shadow">
+            <div class="card-body">
+                <?php if (session()->getFlashdata('success')): ?>
+                    <div class="alert alert-success">
+                        <?= session()->getFlashdata('success') ?>
+                    </div>
+                <?php endif; ?>
+            
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($batches as $batch): ?>
+                            <tr>
+                                <td><?= $batch['id'] ?></td>
+                                <td><?= $batch['name'] ?></td>
+                                <td><?= $batch['start_date'] ?></td>
+                                <td><?= $batch['end_date'] ?></td>
+                                <td><?= $batch['status'] ?></td>
+                                <td>
+                                    <a href="<?= site_url('zpanel/course/live/schedule/' . $batch['id']) ?>" class="btn btn-sm btn-primary">Meeting Schedule</a>
+                                    <a href="<?= site_url('zpanel/course/live/update/'. $course['id'] . '/' . $batch['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
+                                    <a href="<?= site_url('zpanel/course/live/delete/'. $course['id'] . '/' . $batch['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            
+                <?= $pager->links('default', 'bootstrap') ?>
+            </div>
         </div>
-    <?php endif; ?>
+    </section>
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($batches as $batch): ?>
-                <tr>
-                    <td><?= $batch['id'] ?></td>
-                    <td><?= $batch['name'] ?></td>
-                    <td><?= $batch['start_date'] ?></td>
-                    <td><?= $batch['end_date'] ?></td>
-                    <td><?= $batch['status'] ?></td>
-                    <td>
-                        <a href="<?= site_url('zpanel/course/live/schedule/' . $batch['id']) ?>" class="btn btn-sm btn-primary">Meeting Schedule</a>
-                        <a href="<?= site_url('zpanel/course/live/update/'. $course['id'] . '/' . $batch['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="<?= site_url('zpanel/course/live/delete/'. $course['id'] . '/' . $batch['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-
-    <?= $pager->links('default', 'bootstrap') ?>
 </div>
 
 <?php $this->endSection() ?>

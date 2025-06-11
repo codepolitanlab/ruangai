@@ -8,13 +8,13 @@ use CodeIgniter\API\ResponseTrait;
 class PageController extends BaseController
 {
     
-    public function getTemplate($id = null)
+    public function getData($id = null)
     {
-        // Ambil data course dari db
-        $db = \Config\Database::connect();
-        $this->data['certificate'] = null;
-
-        return pageView('certificate/template', $this->data);
+        dd($id);
+        return $this->respond([
+            'status' => true,
+            'message' => 'Data berhasil diambil',
+        ]);
     }
 
 }

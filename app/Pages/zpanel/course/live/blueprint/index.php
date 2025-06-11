@@ -24,43 +24,50 @@
         </div>
     </div>
 
-    <?php if (session()->getFlashdata('success')): ?>
-        <div class="alert alert-success">
-            <?= session()->getFlashdata('success') ?>
+    <section class="section">
+        <div class="card rounded-xl shadow">
+            <div class="card-body">
+                <?php if (session()->getFlashdata('success')): ?>
+                    <div class="alert alert-success">
+                        <?= session()->getFlashdata('success') ?>
+                    </div>
+                <?php endif; ?>
+            
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Mentor</th>
+                            <th>Duration</th>
+                            <th>Order</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($blueprints as $b): ?>
+                            <tr>
+                                <td><?= $b['id'] ?></td>
+                                <td><?= $b['title'] ?></td>
+                                <td><?= $b['description'] ?></td>
+                                <td><?= $b['mentor_name'] ?></td>
+                                <td><?= $b['duration'] ?></td>
+                                <td><?= $b['order'] ?></td>
+                                <td>
+                                    <a href="<?= site_url('zpanel/course/live/blueprint/update/'. $b['course_id'] . '/' . $b['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
+                                    <a href="<?= site_url('zpanel/course/live/blueprint/delete/'. $b['course_id'] . '/' .$b['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            
+                <?= $pager->links('default', 'bootstrap') ?>
+            </div>
         </div>
-    <?php endif; ?>
+    </section>
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Mentor</th>
-                <th>Duration</th>
-                <th>Order</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($blueprints as $b): ?>
-                <tr>
-                    <td><?= $b['id'] ?></td>
-                    <td><?= $b['title'] ?></td>
-                    <td><?= $b['description'] ?></td>
-                    <td><?= $b['mentor_name'] ?></td>
-                    <td><?= $b['duration'] ?></td>
-                    <td><?= $b['order'] ?></td>
-                    <td>
-                        <a href="<?= site_url('zpanel/course/live/blueprint/update/'. $b['course_id'] . '/' . $b['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="<?= site_url('zpanel/course/live/blueprint/delete/'. $b['course_id'] . '/' .$b['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-
-    <?= $pager->links() ?>
 </div>
 
 

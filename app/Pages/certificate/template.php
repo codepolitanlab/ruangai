@@ -1,6 +1,9 @@
-<div id="certificate" class="">
+<div
+    id="certificate"
+    x-data="certificate($params.id)"
+    x-effect="loadPage(`/certificate/data/${$params.id}`)"
+>
     <div id="appCapsule" class="pt-0 bg-white">
-        
         <div class="appContent" style="min-height:90vh;">
             <div class="container pt-5">
                 <div class="text-center table-responsive shadow">
@@ -36,4 +39,6 @@
             location.reload(); // Jika perlu reload untuk event listeners
         }
     </script>
+
+    <?= $this->include('certificate/script') ?>
 </div>
