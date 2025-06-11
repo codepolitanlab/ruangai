@@ -25,6 +25,6 @@ class AddColumnCertClaimDateAndLiveAttendedToCourseStudents extends Migration
 
     public function down()
     {
-        $this->forge->dropColumn('events', ['cert_claim_date', 'live_attended']);
+        $this->forge->dropColumn('course_students', ['cert_claim_date', 'live_attended']);
     }
 }
