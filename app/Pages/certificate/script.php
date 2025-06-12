@@ -3,6 +3,11 @@
     let base = $heroic({
       title: `<?= $page_title ?>`,
       url: `/certificate/data/${id}`,
+
+      data: {
+        comment: "",
+        rating: null,
+      },
       meta: {
         expandDesc: false,
         graduate: false
@@ -16,13 +21,28 @@
 
       init() {
         base.init.call(this);
-        // this.$watch('data', (value) => {
-        //     if (!value.is_enrolled) {
-        //         alert("Kamu belum terdaftar di kelas. Silahkan daftar terlebih dahulu.")
-        //         window.location.replace(`https://www.ruangai.id/registration`)
-        //     }
-        // });
       },
+
+      submitFeedback() {
+
+        if(!this.data.comment || !this.data.rating) {
+          alert("Silahkan isi komentar dan rating terlebih dahulu.")
+          return
+        }
+        $heroicHelper.post(`/certificate/feedback`, {
+            comment: this.data.comment,
+            rating: this.data.rating,
+          })
+          .then((response) => {
+            if (response.data.status == 'success') {
+              alert("Feedback berhasil dikirim.")
+              window.location.reload()
+            }
+          })
+          .catch((error) => {
+            alert("Terjadi kesalahan saat mengirim feedback.")
+          });
+      }
 
     };
   });
