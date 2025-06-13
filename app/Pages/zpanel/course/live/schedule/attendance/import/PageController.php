@@ -82,7 +82,7 @@ class PageController extends BaseController
                 'course_id'       => $live_meeting['course_id'],
                 'live_meeting_id' => $live_meeting_id,
                 'user_id'         => $user['id'],
-                'duration'        => $duration
+                'duration'        => $duration ?? 0
             ]);
             $imported++;
         }
