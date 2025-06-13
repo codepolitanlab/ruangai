@@ -42,7 +42,7 @@
                                 <th width="25%">Status</th>
                                 <th width="20%">Title</th>
                                 <th width="20%">Subtitle</th>
-                                <th width="30%">Description</th>
+                                <!-- <th width="30%">Description</th> -->
                                 <th width="20%">Mentor</th>
                                 <th width="25%" class="text-nowrap">Meeting Date</th>
                                 <th width="25%" class="text-nowrap">Meeting Time</th>
@@ -65,7 +65,7 @@
                                     </td>
                                     <td><?= $meeting['title'] ?></td>
                                     <td><?= $meeting['subtitle'] ?></td>
-                                    <td><?= $meeting['description'] ?></td>
+                                    <!-- <td><?= $meeting['description'] ?></td> -->
                                     <td><?= $meeting['mentor_name'] ?></td>
                                     <td><?= date('d M Y', strtotime($meeting['meeting_date'])) ?></td>
                                     <td><?= date('H:i', strtotime($meeting['meeting_time'])) ?> WIB</td>
@@ -85,7 +85,7 @@
                                     </td>
                                     <td> <a href="<?= $meeting['form_feedback_url'] ?>" target="_blank"><?= $meeting['form_feedback_url'] ?></a></td>
                                     <td class="text-center">
-                                        <a href="<?= site_url('zpanel/course/live/schedule/attendance/' . $meeting['id']) ?>" class="btn btn-sm btn-primary mb-1"><i class="bi bi-people"></i></a>
+                                        <a href="<?= site_url('zpanel/course/live/schedule/attendance/' . $meeting['id']) ?>" class="btn btn-sm btn-primary mb-1"><i class="bi bi-people"></i> Attendance</a>
                                         <a href="<?= site_url('zpanel/course/live/schedule/update/' . $batch['id'] . '/' . $meeting['id']) ?>" class="btn btn-sm btn-warning mb-1"><i class="bi bi-pencil"></i></a>
                                         <a href="<?= site_url('zpanel/course/live/schedule/delete/' . $batch['id'] . '/' . $meeting['id']) ?>" class="btn btn-sm btn-danger mb-1" onclick="return confirm('Are you sure?')"><i class="bi bi-trash"></i></a>
                                     </td>
