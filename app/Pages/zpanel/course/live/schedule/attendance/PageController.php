@@ -59,7 +59,7 @@ class PageController extends AdminController
         $data['live_session'] = model('LiveMeetingModel')->where('id', $meeting_id)->first();
 
         // Count total records
-        $data['total_records'] = $this->model->countAllResults();
+        $data['total_records'] = $this->model->where('live_meeting_id', $meeting_id)->countAllResults();
 
         return pageView('zpanel/course/live/schedule/attendance/index', $data);
     }
