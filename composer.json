@@ -25,6 +25,7 @@
         "minishlink/web-push": "^9.0",
         "pda/pheanstalk": "^5.1",
         "phpmailer/phpmailer": "^6.10",
+        "spatie/image-optimizer": "^1.8",
         "symfony/yaml": "^6.4",
         "yllumi/ci4-pages": "^1.0",
         "yllumi/heroic": "^1.0"
