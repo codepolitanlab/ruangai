@@ -9,13 +9,10 @@ use Spatie\ImageOptimizer\OptimizerChainFactory;
 class PageController extends BaseController
 {
 
-<<<<<<< HEAD
-=======
     public $data = [
         'page_title'  => 'Certificate',
     ];
     
->>>>>>> 430273f9
     public function getData($id = null)
     {
         $Heroic = new \App\Libraries\Heroic();
