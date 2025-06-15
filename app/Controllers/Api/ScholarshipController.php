@@ -88,7 +88,7 @@ class ScholarshipController extends ResourceController
 
         $userModel = new UserModel();
         $user = $userModel->groupStart()
-            ->where('email', $data['email'])
+            ->where('LOWER(email)', strtolower($data['email']))
             ->orWhere('phone', $number)
             ->groupEnd()
             ->where('deleted_at', null)
@@ -106,7 +106,7 @@ class ScholarshipController extends ResourceController
         $userId = $userModel->insert([
             'name'     => $data['fullname'],
             'username' => $username,
-            'email'    => $data['email'],
+            'email'    => strtolower($data['email']),
             'phone'    => $number,
             'pwd'      => $password,
         ]);
@@ -149,7 +149,7 @@ class ScholarshipController extends ResourceController
 
         // Jwt only email, whatsapp_number, user_id
         $jwt = JWT::encode([
-            'email' => $data['email'],
+            'email' => strtolower($data['email']),
             'whatsapp_number' => $number,
             'user_id' => $userId
         ], config('Heroic')->jwtKey['secret'], 'HS256');
@@ -252,7 +252,7 @@ class ScholarshipController extends ResourceController
     public function isDisallowedDomain($email)
     {
         // Pisahkan email menjadi username dan domain
-        list($user, $domain) = explode('@', $email);
+        list($user, $domain) = explode('@', strtolower($email));
 
         // Cek apakah domain ada di dalam daftar disallowed_domains
         if (in_array($domain, $this->disallowed_domains)) {

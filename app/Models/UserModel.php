@@ -16,7 +16,7 @@ class UserModel extends Model
         $userModel = new UserModel();
         $Heroic = new \App\Libraries\Heroic();
 
-        $user = $userModel->where('email', $email)->where('deleted_at', null)->first();
+        $user = $userModel->where('LOWER(email)', strtolower($email))->where('deleted_at', null)->first();
         $token = $this->generateActivationToken();
 
         if ($user) {

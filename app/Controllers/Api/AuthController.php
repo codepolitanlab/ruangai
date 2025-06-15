@@ -52,7 +52,7 @@ class AuthController extends ResourceController
         }
 
         $userModel = new UserModel();
-        $user = $userModel->where('email', $data['email'])->orWhere('phone', $data['whatsapp_number'])->where('deleted_at', null)->first();
+        $user = $userModel->where('LOWER(email)', $data['email'])->orWhere('phone', $data['whatsapp_number'])->where('deleted_at', null)->first();
         if ($user) {
             return $this->fail('Akun sudah terdaftar.');
         }
@@ -63,8 +63,8 @@ class AuthController extends ResourceController
 
         $username = explode('@', $data['email']);
         $userModel->insert([
-            'email' => $data['email'],
-            'username' => strtolower($username[0]) . '_' . mt_rand(1000, 9999),
+            'email' => strtolower($data['email']),
+            'username' => strtolower(substr($username[0], 0, 5)) . '_' . mt_rand(1000, 9999),
             'pwd' => $password,
             'phone' => $this->heroic->normalizePhoneNumber($data['whatsapp_number']),
         ]);

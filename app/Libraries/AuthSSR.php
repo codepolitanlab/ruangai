@@ -100,7 +100,7 @@ class AuthSSR
 			// Get user data from database
 			$db = \Config\Database::connect();
 			$user = $db->table('users')
-				->select('users.id, role_id, role_slug, name, username, email, avatar, phone')
+				->select('users.id, role_id, role_slug, name, username, LOWER(email), avatar, phone')
 				->join('roles', 'users.role_id = roles.id', 'left')
 				->where('users.id', $decodedToken['user_id'])
 				->get()

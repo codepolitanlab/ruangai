@@ -24,37 +24,9 @@
                 </div>
 
 
-                <div x-show="!data.student.cert_claim_date">
-                    <!-- Show form feedback with rating star -->
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="text-center">
-                                <h4 class="mb-3">KLAIM Sertifikat</h4>
-                            </div>
-                            <p>Tulis Testimoni Kamu selama Belajar di RuangAI </p>
-                            <form @submit.prevent="submitFeedback">
-                                <div class="form-group mb-3">
-                                    <textarea minlength="15" cols="30" rows="5" class="form-control" placeholder="tuliskan disini" x-model="data.comment" required></textarea>
-                                </div>
-                                <div class="mt-4">RATE Kepuasan kamu Belajar di RuangAI</div>
-                                <div x-data="{ localRating: data.rating || 0 }" class="d-flex mt-2 mb-5">
-                                    <template x-for="i in 4" :key="i">
-                                        <svg @click="localRating = i; data.rating = i"
-                                            :class="{'text-warning': i <= localRating, 'text-muted': i > localRating}"
-                                            class="bi bi-star-fill"
-                                            width="30" height="30" fill="currentColor" viewBox="0 0 16 16"
-                                            style="cursor: pointer;">
-                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.997L.945 7.085c-.322-.322-.12-.76.223-.788l4.042-.56L6.99 1.498c.183-.343.6-.343.784 0l1.853 3.53L14.85 6.297c.343.028.545.466.223.788l-3.69 3.612.83 4.997c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                        </svg>
-                                    </template>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <button type="submit" class="btn btn-primary w-100">Submit dan Claim Certificate</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
+                <div class="text-center" x-show="!data.student">
+                    <h4>404</h4>
+                    <p>Kode sertifikat tidak valid</p>
                 </div>
             </div>
         </div>

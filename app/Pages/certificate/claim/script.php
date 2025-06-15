@@ -1,14 +1,18 @@
 <script>
-  Alpine.data("certificate", function(code) {
+  Alpine.data("certificate_claim", function(course_id) {
     let base = $heroic({
       title: `<?= $page_title ?>`,
-      url: `/certificate/data/${code}`,
+      url: `/certificate/claim/data/${course_id}`,
+      meta: {
+        course_id: course_id
+      }
     })
 
     return {
       ...base,
-      title: "Certificate",
+      title: "Claim Certificate",
       errorMessage: null,
+      submitting: false,
 
       data: {
         comment: "",
@@ -25,7 +29,10 @@
           await Prompts.alert("Silahkan isi komentar dan rating terlebih dahulu.");
           return
         }
-        $heroicHelper.post(`/certificate/feedback`, {
+
+        // this.submitting = true;
+        $heroicHelper.post(`/certificate/claim`, {
+            course_id: this.meta.course_id,
             comment: this.data.comment,
             rating: this.data.rating,
             name: this.data.student.name,
@@ -38,6 +45,7 @@
           })
           .catch(async (error) => {
             await Prompts.alert("Terjadi kesalahan saat mengirim feedback.")
+            this.submitting = false;
           });
       }
 
