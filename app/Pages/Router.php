@@ -23,8 +23,10 @@ class Router
         // '/reset_password' => [],
         // '/reset_password/change/:token' => [],
         // '/page/:slug' => [],
-        '/certificate/:id' => [
-            'preload' => true,
+        '/certificate/claim/:course_id' => [
+            'handler' => '[isLoggedIn]',
+        ],
+        '/certificate/:code' => [
             'handler' => '[isLoggedIn]',
         ],
         '/courses' => [],

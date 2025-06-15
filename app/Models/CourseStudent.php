@@ -43,4 +43,14 @@ class CourseStudent extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getLastCertNumber()
+    {
+        $number = $this->select('cert_number')
+                        ->orderBy('cert_number', 'desc')
+                        ->get()
+                        ->getRowArray();
+
+        return $number['cert_number'] ?? 0;
+    }
 }
