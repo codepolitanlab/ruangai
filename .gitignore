@@ -125,3 +125,7 @@ nb-configuration.xml
 
 /results/
 /phpunit*.xml
+
+# Certificate
+!public/certificates/tpl/*
+public/certificates/*.jpg

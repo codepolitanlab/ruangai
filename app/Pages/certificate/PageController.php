@@ -19,7 +19,12 @@ class PageController extends BaseController
                         ->where('cert_code', $code)
                         ->first();
                         
-        $this->data['student'] = $student;
+        $this->data['student'] = [
+            'cert_code'       => $student['cert_code'],
+            'cert_url'        => json_decode($student['cert_url']),
+            'cert_claim_date' => $student['cert_claim_date'],
+            'updated_at'      => $student['updated_at'],
+        ];
         return $this->respond($this->data);
     }
 

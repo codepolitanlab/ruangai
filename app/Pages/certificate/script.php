@@ -1,3 +1,8 @@
+<!-- Tambahkan JSZip dari CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<!-- Tambahkan FileSaver.js dari CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
 <script>
   Alpine.data("certificate", function(code) {
     let base = $heroic({
@@ -21,7 +26,7 @@
 
       async submitFeedback() {
 
-        if(!this.data.comment || !this.data.rating) {
+        if (!this.data.comment || !this.data.rating) {
           await Prompts.alert("Silahkan isi komentar dan rating terlebih dahulu.");
           return
         }
@@ -39,6 +44,49 @@
           .catch(async (error) => {
             await Prompts.alert("Terjadi kesalahan saat mengirim feedback.")
           });
+      },
+
+      async downloadImagesAsZip() {
+        const zip = new JSZip();
+        const folder = zip.folder("sertifikat"); // buat folder dalam ZIP
+
+        const imageUrls = [
+          {
+            'filepath': this.data.student.cert_url.id.front,
+            'filename': 'id_1.jpg'
+          },
+          {
+            'filepath': this.data.student.cert_url.id.back,
+            'filename': 'id_2.jpg'
+          },
+          {
+            'filepath': this.data.student.cert_url.en.front,
+            'filename': 'en_1.jpg'
+          },
+          {
+            'filepath': this.data.student.cert_url.en.back,
+            'filename': 'en_2.jpg'
+          },
+        ];
+
+        for (let i = 0; i < imageUrls.length; i++) {
+          const url = imageUrls[i].filepath;
+          const filename = imageUrls[i].filename;
+
+          try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+
+            folder.file(filename, blob);
+          } catch (err) {
+            console.error(`Gagal mengunduh ${url}:`, err);
+          }
+        }
+
+        const zipBlob = await zip.generateAsync({
+          type: "blob"
+        });
+        saveAs(zipBlob, "sertifikat.zip");
       }
 
     };
