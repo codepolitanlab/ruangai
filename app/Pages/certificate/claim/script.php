@@ -21,16 +21,23 @@
 
       init() {
         base.init.call(this);
+
+        // Pantau fetch selesai (asumsinya base.getUrl memanggil fetch otomatis)
+        this.$watch('data', (newData) => {
+          if (newData?.student?.cert_code) {
+            this.$router.navigate(`/certificate/${newData.student.cert_code}`);
+          }
+        });
       },
 
       async submitFeedback() {
 
-        if(!this.data.comment || !this.data.rating) {
+        if (!this.data.comment || !this.data.rating) {
           await Prompts.alert("Silahkan isi komentar dan rating terlebih dahulu.");
           return
         }
 
-        // this.submitting = true;
+        this.submitting = true;
         $heroicHelper.post(`/certificate/claim`, {
             course_id: this.meta.course_id,
             comment: this.data.comment,
@@ -40,7 +47,7 @@
           .then(async (response) => {
             if (response.data.status == 'success') {
               await Prompts.alert("Feedback berhasil dikirim.")
-              window.location.reload()
+              this.$router.navigate(`/certificate/${response.data.data.code}`)
             }
           })
           .catch(async (error) => {

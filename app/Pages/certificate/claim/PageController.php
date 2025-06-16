@@ -37,20 +37,32 @@ class PageController extends BaseController
 
         // Check field data
         if (!$post['name']) {
-            return $this->respond(['error' => 'Name is required']);
+            return $this->respond([
+                'status' => 'error', 
+                'message' => 'Name is required'
+            ]);
         }
         if (!$post['comment']) {
-            return $this->respond(['error' => 'Comment is required']);
+            return $this->respond([
+                'status' => 'error', 
+                'message' => 'Comment is required'
+            ]);
         }
         if (!$post['rating']) {
-            return $this->respond(['error' => 'Rating is required']);
+            return $this->respond([
+                'status' => 'error', 
+                'message' => 'Rating is required'
+            ]);
         }
 
         // Check requirement
         try {
-            $studentID = $this->checkRequirement($jwt->user_id, $course_id);
+            $this->checkRequirement($jwt->user_id, $course_id);
         } catch (\Exception $e) {
-            return $this->respond(['error' => $e->getMessage()]);
+            return $this->respond([
+                'status' => 'error', 
+                'message' => $e->getMessage()
+            ]);
         }
 
         // Save feedback
@@ -71,21 +83,36 @@ class PageController extends BaseController
             ->update(['name' => trim($post['name'])]);
 
         // Generate certificate
-        $this->generateCertificate($jwt->user_id, $course_id);
+        $certResult = $this->generateCertificate($jwt->user_id, $course_id);
 
         // Update cert_claim_date on course_students by user_id and course_id
         $db = \Config\Database::connect();
-        $cert_code = substr(sha1($jwt->user_id . '-' . $course_id), 0, 6) . date('Ymd');
         $db->table('course_students')
             ->where('user_id', $jwt->user_id)
             ->where('course_id', $course_id)
-            ->where('progress', 100)
-            ->update(['cert_claim_date' => date('Y-m-d H:i:s'), 'cert_code' => $cert_code]);
+            ->update([
+                'graduate'        => 1, 
+                'cert_claim_date' => date('Y-m-d H:i:s'), 
+                'cert_code'       => $certResult['code'],
+                'cert_number'     => $certResult['number'],
+                'cert_url'        => json_encode($certResult['url']),
+            ]);
 
         return $this->respond([
-            'status' => 'success',
+            'status'  => 'success',
             'message' => 'Feedback berhasil disimpan',
+            'data'    => [
+                'code' => $certResult['code']
+            ]
         ]);
+    }
+
+    public function getTest()
+    {
+        $code = md5('code');
+        echo $code;
+        echo "<br>";
+        echo $cert_code = strtoupper(substr(sha1('902-1'), -6)) . date('Hi');
     }
 
     private function checkRequirement($user_id, $course_id)
@@ -123,35 +150,53 @@ class PageController extends BaseController
         return $learningStatus['id'];
     }
 
-    public function getGenerate($data = [])
+    public function getSimulate($user_id = 37, $course_id =1 )
     {
-        // TODO: Check completeness
+        $certResult = $this->generateCertificate($user_id, $course_id);
 
-        // TODO: Generate certificate image 
-        $certTemplate = FCPATH . 'mobilekit/assets/img/template-certificate-min.jpg';
-        
-        // $certName = 'Kresna Galuh D. Herlangga';
-        $certName = 'Aldiansyah Ibrahim';
-        $certNumber = 'CP-RAI/2025/V/0001';
-        $certFilename = $this->generateCertificate($certTemplate, $certName, $certNumber);
-        
-        // Get filename from path
-        $certFilename = basename($certFilename);
-        echo "<img src=" . base_url('certificates/'. $certFilename) . " width='3000'>";
+        $lastCertNumber = model('CourseStudent')->getLastCertNumber($user_id);
 
-        // TODO: Save certificate image to storage
+        // Update cert_claim_date on course_students by user_id and course_id
+        $db = \Config\Database::connect();
+        $db->table('course_students')
+            ->where('user_id', $user_id)
+            ->where('course_id', $course_id)
+            ->update([
+                'graduate'        => 1, 
+                'cert_claim_date' => date('Y-m-d H:i:s'), 
+                'cert_code'       => $certResult['code'],
+                'cert_number'     => $certResult['number'],
+                'cert_url'        => json_encode($certResult['url']),
+            ]);
 
-        // TODO: Save certificate path to database
-
-        // TODO: Return certificate path
+        echo "<img src=" . $certResult['url']['id']['front'] . " width='3000'>";
     }
 
-    private function generateCertificate($user_id, $course_id)
+    public function getRegenerate($code = null)
     {
-        // TODO: get certificate template from course
-        $certTemplate = FCPATH . 'mobilekit/assets/img/template-certificate-min.jpg';
+        // Get course_students by code
+        $db = \Config\Database::connect();
+        $cert = $db->table('course_students')
+                    ->where('cert_code', $code)
+                    ->get()
+                    ->getRowArray();
+        
+        // Generate certificate
+        $certResult = $this->generateCertificate($cert['user_id'], $cert['course_id'], $cert['cert_number']);
 
-        // TODO: get user data from database
+        // Update cert_claim_date on course_students by user_id and course_id
+        $db = \Config\Database::connect();
+        $db->table('course_students')
+            ->where('user_id', $cert['user_id'])
+            ->where('course_id', $cert['course_id'])
+            ->update(['cert_url' => json_encode($certResult['url'])]);
+
+        redirectPage('certificate/' . $code);
+    }
+
+    private function prepareCertData($user_id, $course_id ,$outputDir, $certNumber = null)
+    {
+        // Get user data from database
         $db = \Config\Database::connect();
         $user = $db->table('users')
                     ->select('name')
@@ -159,72 +204,109 @@ class PageController extends BaseController
                     ->get()
                     ->getRowArray();
 
-        $certName = $user['name'];
-        $lastCertNumber = model('CourseStudent')->getLastCertNumber();
-        $certNumber = 'CP-RAI/'.date('Y').'/'.date('m').'/'.str_pad($lastCertNumber + 1, 4, '0', STR_PAD_LEFT);
-        
-        $outputDir = FCPATH . 'certificates';
+        // Prepare attributes for every texts
+        $data['texts']['name']['value'] = $user['name'];
+        $data['texts']['name']['x'] = 160;
+        $data['texts']['name']['y'] = 1180;
+        $data['texts']['name']['color'] = [121, 178, 205];
+        $data['texts']['name']['fontSize'] = strlen($user['name']) <= 24 ? 130 : 105;
+        $data['texts']['name']['fontPath'] = FCPATH . 'mobilekit/assets/fonts/Ubuntu/Ubuntu-Medium.ttf';
+
+        $nameArray = $this->splitNameIfLong($user['name'],  29);
+        if (isset($nameArray[1])) {
+            $data['texts']['name']['value'] = $nameArray[0];
+            $data['texts']['name']['x'] = 160;
+            $data['texts']['name']['y'] = 1070;
+            $data['texts']['name']['color'] = [121, 178, 205];
+            $data['texts']['name']['fontSize'] = 115;
+            $data['texts']['name']['fontPath'] = FCPATH . 'mobilekit/assets/fonts/Ubuntu/Ubuntu-Medium.ttf';
+
+            $lineSpacing = 150;
+            $data['texts']['name2']['value'] = $nameArray[1];
+            $data['texts']['name2']['x'] = 160;
+            $data['texts']['name2']['y'] = $data['texts']['name']['y'] + $lineSpacing;
+            $data['texts']['name2']['color'] = [121, 178, 205];
+            $data['texts']['name2']['fontSize'] = 115;
+            $data['texts']['name2']['fontPath'] = FCPATH . 'mobilekit/assets/fonts/Ubuntu/Ubuntu-Medium.ttf';
+        }
+
+        $data['number'] = $certNumber;
+        if(!$data['number']) {
+            $lastCertNumber = model('CourseStudent')->getLastCertNumber($user_id);
+            $data['number'] = $lastCertNumber + 1;
+        }
+        $data['texts']['number']['value'] = 'No: CP-RAI/'.date('Y').'/'.date('m').'/'.str_pad($data['number'], 4, '0', STR_PAD_LEFT);
+        $data['texts']['number']['x'] = 160;
+        $data['texts']['number']['y'] = 670;
+        $data['texts']['number']['color'] = [121, 178, 205];
+        $data['texts']['number']['fontSize'] = 48;
+        $data['texts']['number']['fontPath'] = FCPATH . 'mobilekit/assets/fonts/Ubuntu/Ubuntu-Medium.ttf';
+
+        // Set certificate template path
+        $data['template']['id']['front'] = FCPATH . 'certificates/tpl/id_'.$course_id.'.tpl-min.jpg';
+        $data['template']['id']['back']  = FCPATH . 'certificates/tpl/id_back_'.$course_id.'-min.jpg';
+        $data['template']['en']['front'] = FCPATH . 'certificates/tpl/en_'.$course_id.'.tpl-min.jpg';
+        $data['template']['en']['back']  = FCPATH . 'certificates/tpl/en_back_'.$course_id.'-min.jpg';
+
+        // Generate certificate code and output filename
+        $data['code'] = strtoupper(substr(sha1($user_id . '-' . $course_id), -6)) . date('dH');
+        $data['filename']['id']['front'] = FCPATH . $outputDir . '/' . $data['code'] . 'id.jpg';
+        $data['filename']['id']['back']  = FCPATH . 'certificates/tpl/id_back_'.$course_id.'-min.jpg';
+        $data['filename']['en']['front'] = FCPATH . $outputDir . '/' . $data['code'] . 'en.jpg';
+        $data['filename']['en']['back']  = FCPATH . 'certificates/tpl/en_back_'.$course_id.'-min.jpg';
+
+        $data['url']['id']['front'] = base_url($outputDir . '/' . $data['code'] . 'id.jpg');
+        $data['url']['id']['back']  = base_url('certificates/tpl/id_back_'.$course_id.'-min.jpg');
+        $data['url']['en']['front'] = base_url($outputDir . '/' . $data['code'] . 'en.jpg');
+        $data['url']['en']['back']  = base_url('certificates/tpl/en_back_'.$course_id.'-min.jpg');
+
+        return $data;
+    }
+
+    private function generateCertificate($user_id, $course_id, $number = null)
+    {
+        // Buat folder storage jika belum ada
+        $outputDir = 'certificates';
         if (!file_exists($outputDir)) {
             mkdir($outputDir, 0775, true);
         }
 
-        // Buat folder storage jika belum ada
-        if (!file_exists($outputDir)) {
-            mkdir($outputDir, 0777, true);
-        }
-
-        // Load template gambar
-        if (!file_exists($certTemplate)) {
-            throw new \Exception('Certificate template not found');
-        }
-        $image = imagecreatefromjpeg($certTemplate); // atau imagecreatefromjpeg()
-
-        // Warna teks (hitam)
-        $fontColor = imagecolorallocate($image, 121, 178, 205);
-
-        // Path ke font (TTF)
-        $fontPath = FCPATH . 'mobilekit/assets/fonts/Ubuntu/Ubuntu-Medium.ttf'; // pastikan file ini ada
-        if (!file_exists($fontPath)) {
-            throw new \Exception('Font not found');
-        }
-
-        // Koordinat posisi teks (atur sesuai kebutuhan)
-        $nameX = 160;
-        $nameY = 1100;
-        $nameFontSize = strlen($certName) <= 24 ? 130 : 120;
-        $numberX = 160;
-        $numberY = 710;
-        $numberFontSize = 48;
-
-        // Tulis nama
-        $certNameArray = $this->splitNameIfLong($certName,  28);
-        if (isset($certNameArray[1])) {
-            $nameY = 1020;
-            $lineSpacing = 120;
-            $nameFontSize = 95;
-            imagettftext($image, $nameFontSize, 0, $nameX, $nameY, $fontColor, $fontPath, $certNameArray[0]);
-            imagettftext($image, $nameFontSize, 0, $nameX, $nameY + $lineSpacing, $fontColor, $fontPath, $certNameArray[1]);
-        } else {
-            imagettftext($image, $nameFontSize, 0, $nameX, $nameY, $fontColor, $fontPath, $certName);
-        }
-
-        // Tulis nomor sertifikat
-        imagettftext($image, $numberFontSize, 0, $numberX, $numberY, $fontColor, $fontPath, 'Nomor: ' . $certNumber);
-
-        // Nama file hasil
-        $filename = $outputDir . '/' . preg_replace('/\s+/', '_', strtolower($certName)) . '.jpg';
-
-        // Simpan hasilnya
-        imagejpeg($image, $filename);
-
-        // Bebaskan memori
-        imagedestroy($image);
-
-        // Optimize jpeg
-        $optimizerChain = OptimizerChainFactory::create();
-        $optimizerChain->optimize($filename);
+        // Get certificate data
+        $certData = $this->prepareCertData($user_id, $course_id, $outputDir, $number);
         
-        return $filename;
+        foreach($certData['template'] as $lang => $template) {
+            $certTemplate = $template['front'];
+            $outputFilename = $certData['filename'][$lang]['front'];
+
+            // Load template gambar
+            if (!file_exists($certTemplate)) {
+                throw new \Exception('Certificate template not found: '. $template['front']);
+            }
+
+            // Generate certificate image and all texts
+            $image = imagecreatefromjpeg($certTemplate);
+            foreach($certData['texts'] as $text) {
+                $value     = $text['value'];
+                $fontSize  = $text['fontSize'];
+                $angle     = 0;
+                $xAxis     = $text['x'];
+                $yAxis     = $text['y'];
+                $fontColor = imagecolorallocate($image, $text['color'][0], $text['color'][1], $text['color'][2]);
+                $fontPath  = $text['fontPath'];
+                imagettftext($image, $fontSize, $angle, $xAxis, $yAxis, $fontColor, $fontPath, $value);
+            }
+
+            // Save the result
+            imagejpeg($image, $outputFilename);
+            imagedestroy($image);
+
+            // Optimize jpeg
+            $optimizerChain = OptimizerChainFactory::create();
+            $optimizerChain->optimize($outputFilename);
+            unset($optimizerChain);
+        }
+
+        return $certData;
     }
 
     private function splitNameIfLong($name, $maxLength = 25)

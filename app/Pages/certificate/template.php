@@ -1,24 +1,21 @@
 <div
     id="certificate"
-    x-data="certificate($params.id)"
-    x-effect="loadPage(`/certificate/data/${$params.id}`)"
+    x-data="certificate($params.code)"
+    x-effect="loadPage(`/certificate/data/${$params.code}`)"
 >
     <div id="appCapsule" class="pt-0 bg-white">
-        <div class="appContent" style="min-height:90vh;">
-            <div class="container pt-5">
+        <div class="appContent px-0" style="min-height:90vh;">
+            <div class="container pt-5 px-0">
                 <div x-show="data.student.cert_claim_date">
-                    <div class="text-center table-responsive shadow">
-                        <div id="print-area" class="position-relative">
-                            <img src="<?= base_url('mobilekit/assets/img/template-certificate.jpg') ?>" id="img-cert" class="position-relative" alt="">
-                            <div class="text-primary position-absolute" id="no-certi">No: CP-RAI/2025/V/0001</div>
-                            <h3 class="text-primary position-absolute" id="name-certi" x-text="data.student.name"></h3>
+                    <div class="text-center">
+                        <div id="print-area" class="position-relative table-responsive shadow">
+                            <img :src="data.student.cert_url.id.front + '?' + (Math.floor(new Date(data.student.updated_at.replace(' ', 'T')).getTime() / 1000))" id="img-cert" class="position-relative" >
                         </div>
                     </div>
-                    <div class="mt-3 text-center">
-                        <h3>Congratulations</h3>
-                        <div>Sertifikat ini adalah dokumen resmi dan valid dirilis <br> oleh CODEPOLITAN</div>
+                    <div class="mt-4 px-3 text-center">
+                        <div>Sertifikat ini adalah dokumen resmi dan valid dirilis oleh CODEPOLITAN</div>
                         <div class="d-flex gap-2 justify-content-center mt-3">
-                            <button onclick="printArea('print-area')" class="btn btn-primary rounded-pill"><i class="bi bi-download"></i> Unduh</button>
+                            <button @click="downloadImagesAsZip()" class="btn btn-primary rounded-pill"><i class="bi bi-download"></i> Unduh</button>
                         </div>
                     </div>
                 </div>
@@ -31,22 +28,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        function printArea(areaId) {
-
-            var printContents = document.getElementById(areaId).outerHTML; // Menggunakan outerHTML
-            var originalContents = document.body.innerHTML;
-
-            document.body.innerHTML = printContents;
-
-            window.print();
-
-            document.body.innerHTML = originalContents;
-
-            location.reload(); // Jika perlu reload untuk event listeners
-        }
-    </script>
-
-    <?= $this->include('certificate/script') ?>
 </div>
+    
+<?= $this->include('certificate/script') ?>
