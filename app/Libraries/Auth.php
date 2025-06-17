@@ -51,7 +51,7 @@ class Auth
 
         // Buat token
         $user['jwt'] = JWT::encode([
-            'email'           => $user['email'],
+            'email'           => strtolower($user['email']),
             'whatsapp_number' => $user['phone'],
             'user_id'         => $user['id'],
             'isValidEmail'    => $user['email_valid'],
@@ -100,7 +100,7 @@ class Auth
 			// Get user data from database
 			$db = \Config\Database::connect();
 			$user = $db->table('users')
-				->select('users.id, role_id, role_slug, name, username, email, avatar, phone')
+				->select('users.id, role_id, role_slug, name, username, LOWER(email), avatar, phone')
 				->join('roles', 'users.role_id = roles.id', 'left')
 				->where('users.id', $decodedToken['user_id'])
 				->get()

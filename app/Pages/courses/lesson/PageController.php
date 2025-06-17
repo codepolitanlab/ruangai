@@ -270,7 +270,8 @@ class PageController extends BaseController
             'user_id' => $user_id,
             'course_id' => $course_id,
             'progress' => $progress,
-            'updated_at' => date('Y-m-d H:i:s')
+            'progress_update' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
         ];
 
         if ($existingStudent) {

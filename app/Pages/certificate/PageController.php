@@ -3,33 +3,34 @@
 namespace App\Pages\certificate;
 
 use App\Pages\BaseController;
-use CodeIgniter\API\ResponseTrait;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class PageController extends BaseController
 {
-
-<<<<<<< HEAD
-=======
     public $data = [
         'page_title'  => 'Certificate',
     ];
     
->>>>>>> 430273f9
-    public function getData($id = null)
+    public function getData($code = null)
     {
         $Heroic = new \App\Libraries\Heroic();
-        $jwt = $Heroic->checkToken();
 
         $student = model('CourseStudent')
-                        ->select('course_students.*, users.name')
-                        ->join('users', 'users.id = course_students.user_id')
-                        ->where('user_id', $jwt->user_id)
-                        ->where('course_id', 1)
-                        ->where('progress', 100)
+                        ->where('cert_code', $code)
                         ->first();
                         
-        $this->data['student'] = $student;
+        $this->data['student'] = [
+            'cert_code'       => $student['cert_code'],
+            'cert_url'        => json_decode($student['cert_url']),
+            'cert_claim_date' => $student['cert_claim_date'],
+            'updated_at'      => $student['updated_at'],
+        ];
+
+        // Get course
+        $this->data['course'] = model('Course')
+            ->where('id', $student['course_id'])
+            ->first();
+
         return $this->respond($this->data);
     }
 
@@ -64,7 +65,7 @@ class PageController extends BaseController
         ]);
     }
 
-    public function getClaim($id = null)
+    public function getGenerate($id = null)
     {
         // TODO: Check completeness
 
