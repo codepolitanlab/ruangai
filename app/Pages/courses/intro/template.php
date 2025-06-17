@@ -194,8 +194,11 @@
 							<div class="flex-grow-1">
 								<h5 x-show="!data.course_completed" class="h6 opacity-50 mb-0">Selesaikan materi dan sesi live wajib untuk mendapatkan sertifikat.</h5>
 								<div x-show="data.course_completed">
-									<h3 class="fw-bold mb-1" style="font-size:1.2rem; color:#fff;">Klaim Sertifikat</h3>
-									<p class="text-white mb-1">Klik untuk mengklaim dan mengunduh sertifikat</p>
+									<h3 
+										class="fw-bold mb-1" 
+										style="font-size:1.2rem; color:#fff;" 
+										x-text="data.student.cert_code ? `Unduh Sertifikat` : `Klaim Sertifikat`"></h3>
+									<p class="text-white mb-1" x-show="!data.student.cert_code">Klik untuk mengklaim dan mengunduh sertifikat</p>
 								</div>
 							</div>
 						</div>
