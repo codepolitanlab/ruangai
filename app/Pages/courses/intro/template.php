@@ -69,7 +69,7 @@
 				<div class="card border-0 shadow-none overflow-hidden">
 					<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206751%20(2).png" class="card-img-top cover rounded-4" style="height: 200px;" alt="AI Course">
 					<div class="card-body p-2">
-						<h2 class=" mt-2">Kelas - Dasar dan Penggunaan Generative AI</h2>
+						<h2 class=" mt-2">Kelas - <span x-text="data.course.course_title"></span></h2>
 						<p class="card-text p-0 mb-0">
 							Pelajari dasar-dasar Artificial Intelligence (AI), bagaimana cara kerjanya, serta perannya dalam kehidupan sehari-hari.
 							<button
