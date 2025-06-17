@@ -27,6 +27,7 @@ class PageController extends AdminController
         $this->model->select('live_attendance.id, users.name, users.email, live_attendance.duration');
         $this->model->join('users', 'users.id = live_attendance.user_id');
         $this->model->where('live_attendance.live_meeting_id', $meeting_id);
+        $this->model->where('live_attendance.deleted_at', null);
 
         // Apply filters
         $filter = $this->request->getGet('filter');
