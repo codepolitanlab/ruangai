@@ -25,6 +25,12 @@ class PageController extends BaseController
             'cert_claim_date' => $student['cert_claim_date'],
             'updated_at'      => $student['updated_at'],
         ];
+
+        // Get course
+        $this->data['course'] = model('Course')
+            ->where('id', $student['course_id'])
+            ->first();
+
         return $this->respond($this->data);
     }
 
