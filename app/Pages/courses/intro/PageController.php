@@ -48,6 +48,7 @@ class PageController extends BaseController
             $this->data['live_attendance'] = $db->table('live_attendance')
                 ->where('user_id', $jwt->user_id)
                 ->where('course_id', $id)
+                ->where('deleted_at', null)
                 ->countAllResults();
 
             // Get total live_meetings
@@ -57,7 +58,15 @@ class PageController extends BaseController
                 ->where('course_id', $id)
                 ->countAllResults();
 
-            $this->data['course_completed'] = $this->data['total_lessons'] == $this->data['lesson_completed'] && $this->data['live_meetings'] >= 3 ? true : false;
+            // Get course_students
+            $this->data['student'] = $db->table('course_students')
+                                        ->select('progress, cert_claim_date, cert_code')
+                                        ->where('course_id', $id)
+                                        ->where('user_id', $jwt->user_id)
+                                        ->get()
+                                        ->getRowArray();
+
+            $this->data['course_completed'] = $this->data['total_lessons'] == $this->data['lesson_completed'] && $this->data['live_attendance'] >= 3 ? true : false;
             $this->data['is_enrolled'] = $db->table('course_students')->where('course_id', $id)->where('user_id', $jwt->user_id)->countAllResults() > 0 ? true : false;
 
             return $this->respond($this->data);

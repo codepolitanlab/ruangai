@@ -30,6 +30,7 @@
 		.rounded-20 {
 			border-radius: 20px;
 		}
+
 		.bg-warning-2 {
 			background-color: #fe9500;
 		}
@@ -73,7 +74,7 @@
 							Pelajari dasar-dasar Artificial Intelligence (AI), bagaimana cara kerjanya, serta perannya dalam kehidupan sehari-hari.
 							<button
 								x-show="!meta.expandDesc" x-transition
-								@click="meta.expandDesc = !meta.expandDesc" 
+								@click="meta.expandDesc = !meta.expandDesc"
 								class="border-0 bg-transparent text-primary text-decoration-none p-0">
 								Lihat selengkapnya
 							</button>
@@ -82,7 +83,7 @@
 							<p>Kelas ini merupakan kelas pertama program RuangAI dari CODEPOLITAn yang fokus membahas tentang fundamental kecerdasan artifisial dengan total durasi belajar 15 jam, terdiri dari 30 materi dan 10 sesi live bersama mentor AI.</p>
 							<p>Kelas ini merupakan bagian dari program AI Opportunity Fund: Asia Pasifik, bekerja sama dengan AVPN dan didukung oleh Google.org dan Asian Development Bank.</p>
 							<button
-								@click="meta.expandDesc = !meta.expandDesc" 
+								@click="meta.expandDesc = !meta.expandDesc"
 								class="border-0 bg-transparent text-primary text-decoration-none p-0">
 								Lihat lebih sedikit
 							</button>
@@ -104,7 +105,7 @@
 							<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
 								style="width: 64px; height: 64px;">
 								<i class="bi display-5"
-								   :class="data.total_lessons == data.lesson_completed ? 'bi-check text-success' : 'bi-journal-bookmark-fill text-primary'"></i>
+									:class="data.total_lessons == data.lesson_completed ? 'bi-check text-success' : 'bi-journal-bookmark-fill text-primary'"></i>
 							</div>
 							<div class="flex-grow-1">
 								<div class="d-flex align-items-end gap-2">
@@ -114,9 +115,9 @@
 								<div class="d-flex align-items-center">
 									<div class="flex-grow-1">
 										<div class="progress bg-dark bg-opacity-25" style="height: 7px;">
-											<div class="progress-bar bg-white" 
-												role="progressbar" 
-												:style="{width: Math.round(data.lesson_completed/data.total_lessons*100) + '%'}" 
+											<div class="progress-bar bg-white"
+												role="progressbar"
+												:style="{width: Math.round(data.lesson_completed/data.total_lessons*100) + '%'}"
 												:aria-valuenow="Math.round(data.lesson_completed/data.total_lessons*100)" aria-valuemin="0" aria-valuemax="100"></div>
 										</div>
 									</div>
@@ -138,7 +139,7 @@
 							<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
 								style="width: 64px; height: 64px;">
 								<i class="bi display-5"
-								   :class="data.live_attendance >= 3 ? 'bi-check text-success' : 'bi-camera-video text-warning'"></i>
+									:class="data.live_attendance >= 3 ? 'bi-check text-success' : 'bi-camera-video text-warning'"></i>
 							</div>
 							<div class="flex-grow-1">
 								<div class="d-flex align-items-end gap-2">
@@ -147,8 +148,8 @@
 								</div>
 								<div class="d-flex align-items-center gap-2 mt-2 mb-1">
 									<template x-for="i in data.live_meetings">
-										<div 
-											class="flex-fill rounded-pill" 
+										<div
+											class="flex-fill rounded-pill"
 											:class="data.live_attendance >= i ? 'bg-white' : 'bg-dark bg-opacity-25'"
 											style="height:7px;">&nbsp;</div>
 									</template>
@@ -182,20 +183,23 @@
 			<div class="section p-3 pb-4 bg-white rounded-4">
 				<h4 class="fw-bold mb-3" style="color: #222;">Klaim Sertifikat</h4>
 
-				<div
-					class="card border-0 rounded-4 bg-dark bg-opacity-10"
-					:class="meta.graduate ? 'bg-secondary' : 'bg-dark bg-opacity-10'">
-					<div class="card-body d-flex align-items-center gap-3 p-4">
-						<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
-							style="min-width: 64px; height: 64px;">
-							<i class="bi bi-award text-dark opacity-50 display-5"></i>
-						</div>
-						<div class="flex-grow-1">
-							<h5 class="h6 opacity-50 mb-0">Selesaikan materi dan sesi live wajib untuk mendapatkan sertifikat.</h5>
-							<!-- <div class="fw-bold" style="font-size:1.2rem; color:#fff;">Klaim Sertifikat Sekarang!</div> -->
+					<div class="card border-0 rounded-4 bg-dark bg-opacity-10 cursor-pointer"
+						@click="claimCertificate()"
+						:class="data.course_completed ? 'bg-secondary' : 'bg-dark bg-opacity-10'">
+						<div class="card-body d-flex align-items-center gap-3 p-4">
+							<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
+								style="min-width: 64px; height: 64px;">
+								<i class="bi bi-award text-dark opacity-50 display-5"></i>
+							</div>
+							<div class="flex-grow-1">
+								<h5 x-show="!data.course_completed" class="h6 opacity-50 mb-0">Selesaikan materi dan sesi live wajib untuk mendapatkan sertifikat.</h5>
+								<div x-show="data.course_completed">
+									<h3 class="fw-bold mb-1" style="font-size:1.2rem; color:#fff;">Klaim Sertifikat</h3>
+									<p class="text-white mb-1">Klik untuk mengklaim dan mengunduh sertifikat</p>
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
 			</div>
 		</div>
 	</div>

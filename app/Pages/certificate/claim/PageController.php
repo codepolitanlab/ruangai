@@ -16,6 +16,16 @@ class PageController extends BaseController
         $Heroic = new \App\Libraries\Heroic();
         $jwt = $Heroic->checkToken();
 
+        // Check requirement
+        try {
+            $this->checkRequirement($jwt->user_id, $course_id);
+        } catch (\Exception $e) {
+            return $this->respond([
+                'status' => 'error', 
+                'message' => $e->getMessage()
+            ]);
+        }
+
         $student = model('CourseStudent')
                         ->select('course_students.*, users.name')
                         ->join('users', 'users.id = course_students.user_id')
@@ -139,6 +149,7 @@ class PageController extends BaseController
                                     ->select('live_meeting_id')
                                     ->where('user_id', $user_id)
                                     ->where('course_id', $course_id)
+                                    ->where('deleted_at', null)
                                     ->groupBy('live_meeting_id')
                                     ->countAllResults();
 
