@@ -161,12 +161,11 @@ class PageController extends BaseController
         return $learningStatus['id'];
     }
 
-    public function getSimulate($user_id = 37, $course_id =1 )
+    public function getSimulate($user_id = 37, $course_id = 1)
     {
         $certResult = $this->generateCertificate($user_id, $course_id);
-
-        $lastCertNumber = model('CourseStudent')->getLastCertNumber($user_id);
-
+        $certURLs = $certResult->getOutputURLs();
+        
         // Update cert_claim_date on course_students by user_id and course_id
         $db = \Config\Database::connect();
         $db->table('course_students')
@@ -175,12 +174,14 @@ class PageController extends BaseController
             ->update([
                 'graduate'        => 1, 
                 'cert_claim_date' => date('Y-m-d H:i:s'), 
-                'cert_code'       => $certResult['code'],
-                'cert_number'     => $certResult['number'],
-                'cert_url'        => json_encode($certResult['url']),
+                'cert_code'       => $certResult->code,
+                'cert_number'     => $certResult->numberOrder,
+                'cert_url'        => json_encode($certURLs),
             ]);
 
-        echo "<img src=" . $certResult['url']['id']['front'] . " width='3000'>";
+            echo "<img src=" . $certURLs[1] . " width='3000'>";
+            echo "<img src=" . $certURLs[2] . " width='3000'>";
+            echo "<img src=" . $certURLs[3] . " width='3000'>";
     }
 
     public function getRegenerate($code = null)
@@ -274,29 +275,30 @@ class PageController extends BaseController
         return $data;
     }
 
-    private function generateCertificate($user_id, $course_id, $number = null)
+    private function generateCertificate($user_id, $course_id, $certNumberOrder = null)
     {
-        // Buat folder storage jika belum ada
-        $outputDir = 'certificates';
-        if (!file_exists($outputDir)) {
-            mkdir($outputDir, 0775, true);
-        }
+        // Ambil konfigurasi sertifikat
+        $CertConfigClassname = "\App\Pages\certificate\claim\CertConfig_" . $course_id;
+        $CertConfig = new $CertConfigClassname($user_id, $course_id, $certNumberOrder);
 
-        // Get certificate data
-        $certData = $this->prepareCertData($user_id, $course_id, $outputDir, $number);
+        // Buat folder storage jika belum ada
+        if (!file_exists($CertConfig->outputDir)) {
+            mkdir($CertConfig->outputDir, 0775, true);
+        }
         
-        foreach($certData['template'] as $lang => $template) {
-            $certTemplate = $template['front'];
-            $outputFilename = $certData['filename'][$lang]['front'];
+        // Generate each certificate
+        foreach($CertConfig->pages as $pagenumber => $page) {
+            $certTemplate = $page['templatePath'];
+            $outputFilename = $page['outputPath'];
 
             // Load template gambar
             if (!file_exists($certTemplate)) {
-                throw new \Exception('Certificate template not found: '. $template['front']);
+                throw new \Exception('Certificate template not found: '. $certTemplate);
             }
 
             // Generate certificate image and all texts
             $image = imagecreatefromjpeg($certTemplate);
-            foreach($certData['texts'] as $text) {
+            foreach($page['texts'] as $text) {
                 $value     = $text['value'];
                 $fontSize  = $text['fontSize'];
                 $angle     = 0;
@@ -317,20 +319,7 @@ class PageController extends BaseController
             unset($optimizerChain);
         }
 
-        return $certData;
+        return $CertConfig;
     }
-
-    private function splitNameIfLong($name, $maxLength = 25)
-    {
-        if (strlen($name) <= $maxLength) {
-            return [$name]; // cukup satu baris
-        }
-
-        // Pisahkan berdasarkan spasi
-        $words = explode(' ', $name, 3);
-        $line1 = $words[0] . ' ' . $words[1];
-        $line2 = $words[2];
-
-        return [$line1, $line2];
-    }
+    
 }
