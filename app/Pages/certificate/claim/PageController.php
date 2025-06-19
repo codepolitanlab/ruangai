@@ -3,6 +3,13 @@
 namespace App\Pages\certificate\claim;
 
 use App\Pages\BaseController;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\Label\Font\OpenSans;
+use Endroid\QrCode\Label\LabelAlignment;
+use Endroid\QrCode\RoundBlockSizeMode;
+use Endroid\QrCode\Writer\PngWriter;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class PageController extends BaseController
@@ -10,7 +17,7 @@ class PageController extends BaseController
     public $data = [
         'page_title'  => 'Claim Certificate',
     ];
-    
+
     public function getData($course_id)
     {
         $Heroic = new \App\Libraries\Heroic();
@@ -21,19 +28,19 @@ class PageController extends BaseController
             $this->checkRequirement($jwt->user_id, $course_id);
         } catch (\Exception $e) {
             return $this->respond([
-                'status' => 'error', 
+                'status' => 'error',
                 'message' => $e->getMessage()
             ]);
         }
 
         $student = model('CourseStudent')
-                        ->select('course_students.*, users.name')
-                        ->join('users', 'users.id = course_students.user_id')
-                        ->where('user_id', $jwt->user_id)
-                        ->where('course_id', $course_id)
-                        ->where('progress', 100)
-                        ->first();
-                        
+            ->select('course_students.*, users.name')
+            ->join('users', 'users.id = course_students.user_id')
+            ->where('user_id', $jwt->user_id)
+            ->where('course_id', $course_id)
+            ->where('progress', 100)
+            ->first();
+
         $this->data['student'] = $student;
         return $this->respond($this->data);
     }
@@ -48,19 +55,19 @@ class PageController extends BaseController
         // Check field data
         if (!$post['name']) {
             return $this->respond([
-                'status' => 'error', 
+                'status' => 'error',
                 'message' => 'Name is required'
             ]);
         }
         if (!$post['comment']) {
             return $this->respond([
-                'status' => 'error', 
+                'status' => 'error',
                 'message' => 'Comment is required'
             ]);
         }
         if (!$post['rating']) {
             return $this->respond([
-                'status' => 'error', 
+                'status' => 'error',
                 'message' => 'Rating is required'
             ]);
         }
@@ -70,7 +77,7 @@ class PageController extends BaseController
             $this->checkRequirement($jwt->user_id, $course_id);
         } catch (\Exception $e) {
             return $this->respond([
-                'status' => 'error', 
+                'status' => 'error',
                 'message' => $e->getMessage()
             ]);
         }
@@ -101,8 +108,8 @@ class PageController extends BaseController
             ->where('user_id', $jwt->user_id)
             ->where('course_id', $course_id)
             ->update([
-                'graduate'        => 1, 
-                'cert_claim_date' => date('Y-m-d H:i:s'), 
+                'graduate'        => 1,
+                'cert_claim_date' => date('Y-m-d H:i:s'),
                 'cert_code'       => $certResult['code'],
                 'cert_number'     => $certResult['number'],
                 'cert_url'        => json_encode($certResult['url']),
@@ -130,30 +137,30 @@ class PageController extends BaseController
         // Check if user has completed the course
         $db = \Config\Database::connect();
         $learningStatus = $db->table('course_students')
-                            ->where('user_id', $user_id)
-                            ->where('course_id', $course_id)
-                            ->get()
-                            ->getRowArray();
+            ->where('user_id', $user_id)
+            ->where('course_id', $course_id)
+            ->get()
+            ->getRowArray();
 
         if (!$learningStatus) {
             throw new \Exception('User tidak ditemukan atau sudah pernah klaim sertifikat.');
         }
-        
+
         // Check if user has complete live session at least 3 times
-        if($learningStatus['progress'] < 100) {
+        if ($learningStatus['progress'] < 100) {
             throw new \Exception('User belum menyelesaikan belajar.');
         }
 
-        if($learningStatus['live_attended'] < 3) {
+        if ($learningStatus['live_attended'] < 3) {
             $liveIsCompleted = $db->table('live_attendance')
-                                    ->select('live_meeting_id')
-                                    ->where('user_id', $user_id)
-                                    ->where('course_id', $course_id)
-                                    ->where('deleted_at', null)
-                                    ->groupBy('live_meeting_id')
-                                    ->countAllResults();
+                ->select('live_meeting_id')
+                ->where('user_id', $user_id)
+                ->where('course_id', $course_id)
+                ->where('deleted_at', null)
+                ->groupBy('live_meeting_id')
+                ->countAllResults();
 
-            if($liveIsCompleted < 3) {
+            if ($liveIsCompleted < 3) {
                 throw new \Exception('User belum memenuhi ketentuan minimum mengikuti live session.');
             }
         }
@@ -165,23 +172,23 @@ class PageController extends BaseController
     {
         $certResult = $this->generateCertificate($user_id, $course_id);
         $certURLs = $certResult->getOutputURLs();
-        
+
         // Update cert_claim_date on course_students by user_id and course_id
         $db = \Config\Database::connect();
         $db->table('course_students')
             ->where('user_id', $user_id)
             ->where('course_id', $course_id)
             ->update([
-                'graduate'        => 1, 
-                'cert_claim_date' => date('Y-m-d H:i:s'), 
+                'graduate'        => 1,
+                'cert_claim_date' => date('Y-m-d H:i:s'),
                 'cert_code'       => $certResult->code,
                 'cert_number'     => $certResult->numberOrder,
                 'cert_url'        => json_encode($certURLs),
             ]);
 
-            echo "<img src=" . $certURLs[1] . " width='3000'>";
-            echo "<img src=" . $certURLs[2] . " width='3000'>";
-            echo "<img src=" . $certURLs[3] . " width='3000'>";
+        echo "<img src=" . $certURLs[1] . " width='3000'>";
+        echo "<img src=" . $certURLs[2] . " width='3000'>";
+        echo "<img src=" . $certURLs[3] . " width='3000'>";
     }
 
     public function getRegenerate($code = null)
@@ -189,10 +196,10 @@ class PageController extends BaseController
         // Get course_students by code
         $db = \Config\Database::connect();
         $cert = $db->table('course_students')
-                    ->where('cert_code', $code)
-                    ->get()
-                    ->getRowArray();
-        
+            ->where('cert_code', $code)
+            ->get()
+            ->getRowArray();
+
         // Generate certificate
         $certResult = $this->generateCertificate($cert['user_id'], $cert['course_id'], $cert['cert_number']);
 
@@ -206,75 +213,6 @@ class PageController extends BaseController
         redirectPage('certificate/' . $code);
     }
 
-    private function prepareCertData($user_id, $course_id ,$outputDir, $certNumber = null)
-    {
-        // Get user data from database
-        $db = \Config\Database::connect();
-        $user = $db->table('users')
-                    ->select('name')
-                    ->where('id', $user_id)
-                    ->get()
-                    ->getRowArray();
-
-        // Prepare attributes for every texts
-        $data['texts']['name']['value'] = $user['name'];
-        $data['texts']['name']['x'] = 160;
-        $data['texts']['name']['y'] = 1180;
-        $data['texts']['name']['color'] = [121, 178, 205];
-        $data['texts']['name']['fontSize'] = strlen($user['name']) <= 24 ? 130 : 105;
-        $data['texts']['name']['fontPath'] = FCPATH . 'mobilekit/assets/fonts/Ubuntu/Ubuntu-Medium.ttf';
-
-        $nameArray = $this->splitNameIfLong($user['name'],  29);
-        if (isset($nameArray[1])) {
-            $data['texts']['name']['value'] = $nameArray[0];
-            $data['texts']['name']['x'] = 160;
-            $data['texts']['name']['y'] = 1070;
-            $data['texts']['name']['color'] = [121, 178, 205];
-            $data['texts']['name']['fontSize'] = 115;
-            $data['texts']['name']['fontPath'] = FCPATH . 'mobilekit/assets/fonts/Ubuntu/Ubuntu-Medium.ttf';
-
-            $lineSpacing = 150;
-            $data['texts']['name2']['value'] = $nameArray[1];
-            $data['texts']['name2']['x'] = 160;
-            $data['texts']['name2']['y'] = $data['texts']['name']['y'] + $lineSpacing;
-            $data['texts']['name2']['color'] = [121, 178, 205];
-            $data['texts']['name2']['fontSize'] = 115;
-            $data['texts']['name2']['fontPath'] = FCPATH . 'mobilekit/assets/fonts/Ubuntu/Ubuntu-Medium.ttf';
-        }
-
-        $data['number'] = $certNumber;
-        if(!$data['number']) {
-            $lastCertNumber = model('CourseStudent')->getLastCertNumber($user_id);
-            $data['number'] = $lastCertNumber + 1;
-        }
-        $data['texts']['number']['value'] = 'No: CP-RAI/'.date('Y').'/'.date('m').'/'.str_pad($data['number'], 4, '0', STR_PAD_LEFT);
-        $data['texts']['number']['x'] = 160;
-        $data['texts']['number']['y'] = 670;
-        $data['texts']['number']['color'] = [121, 178, 205];
-        $data['texts']['number']['fontSize'] = 48;
-        $data['texts']['number']['fontPath'] = FCPATH . 'mobilekit/assets/fonts/Ubuntu/Ubuntu-Medium.ttf';
-
-        // Set certificate template path
-        $data['template']['id']['front'] = FCPATH . 'certificates/tpl/id_'.$course_id.'.tpl-min.jpg';
-        $data['template']['id']['back']  = FCPATH . 'certificates/tpl/id_back_'.$course_id.'-min.jpg';
-        $data['template']['en']['front'] = FCPATH . 'certificates/tpl/en_'.$course_id.'.tpl-min.jpg';
-        $data['template']['en']['back']  = FCPATH . 'certificates/tpl/en_back_'.$course_id.'-min.jpg';
-
-        // Generate certificate code and output filename
-        $data['code'] = strtoupper(substr(sha1($user_id . '-' . $course_id), -6)) . date('dH');
-        $data['filename']['id']['front'] = FCPATH . $outputDir . '/' . $data['code'] . 'id.jpg';
-        $data['filename']['id']['back']  = FCPATH . 'certificates/tpl/id_back_'.$course_id.'-min.jpg';
-        $data['filename']['en']['front'] = FCPATH . $outputDir . '/' . $data['code'] . 'en.jpg';
-        $data['filename']['en']['back']  = FCPATH . 'certificates/tpl/en_back_'.$course_id.'-min.jpg';
-
-        $data['url']['id']['front'] = base_url($outputDir . '/' . $data['code'] . 'id.jpg');
-        $data['url']['id']['back']  = base_url('certificates/tpl/id_back_'.$course_id.'-min.jpg');
-        $data['url']['en']['front'] = base_url($outputDir . '/' . $data['code'] . 'en.jpg');
-        $data['url']['en']['back']  = base_url('certificates/tpl/en_back_'.$course_id.'-min.jpg');
-
-        return $data;
-    }
-
     private function generateCertificate($user_id, $course_id, $certNumberOrder = null)
     {
         // Ambil konfigurasi sertifikat
@@ -285,20 +223,20 @@ class PageController extends BaseController
         if (!file_exists($CertConfig->outputDir)) {
             mkdir($CertConfig->outputDir, 0775, true);
         }
-        
+
         // Generate each certificate
-        foreach($CertConfig->pages as $pagenumber => $page) {
+        foreach ($CertConfig->pages as $pagenumber => $page) {
             $certTemplate = $page['templatePath'];
             $outputFilename = $page['outputPath'];
 
             // Load template gambar
             if (!file_exists($certTemplate)) {
-                throw new \Exception('Certificate template not found: '. $certTemplate);
+                throw new \Exception('Certificate template not found: ' . $certTemplate);
             }
 
             // Generate certificate image and all texts
             $image = imagecreatefromjpeg($certTemplate);
-            foreach($page['texts'] as $text) {
+            foreach ($page['texts'] as $text) {
                 $value     = $text['value'];
                 $fontSize  = $text['fontSize'];
                 $angle     = 0;
@@ -307,6 +245,14 @@ class PageController extends BaseController
                 $fontColor = imagecolorallocate($image, $text['color'][0], $text['color'][1], $text['color'][2]);
                 $fontPath  = $text['fontPath'];
                 imagettftext($image, $fontSize, $angle, $xAxis, $yAxis, $fontColor, $fontPath, $value);
+            }
+
+            if($page['qrcode'] ?? null) 
+            {
+                $qr = $this->getQR($page['qrcode']['value'], $page['qrcode']['size'], $page['qrcode']['margin'], $page['qrcode']['logo'], $page['qrcode']['logoSize']);
+                $qrX = $page['qrcode']['x'];
+                $qrY = $page['qrcode']['y'];
+                imagecopy($image, $qr, $qrX, $qrY, 0, 0, $page['qrcode']['size'] + $page['qrcode']['margin']*2, $page['qrcode']['size'] + 60);
             }
 
             // Save the result
@@ -321,5 +267,34 @@ class PageController extends BaseController
 
         return $CertConfig;
     }
-    
+
+    public function getQR($string, $size = 400, $margin = 10, $logo = null, $logoSize = null)
+    {
+        $builder = new Builder(
+            writer: new PngWriter(),
+            writerOptions: [],
+            validateResult: false,
+            data: $string,
+            encoding: new Encoding('UTF-8'),
+            errorCorrectionLevel: ErrorCorrectionLevel::High,
+            size: $size,
+            margin: $margin,
+            roundBlockSizeMode: RoundBlockSizeMode::Margin,
+            logoPath: $logo,
+            logoResizeToWidth: $logoSize,
+            logoPunchoutBackground: true,
+            labelText: 'Scan to verify',
+            labelFont: new OpenSans(30),
+            labelAlignment: LabelAlignment::Center
+        );
+
+        $result = $builder->build();
+        // header('Content-Type: '.$result->getMimeType());
+        // echo $result->getString();die;
+
+        // Directly output the QR code
+        $qrData = $result->getString();
+        $qrImage = imagecreatefromstring($qrData);
+        return $qrImage;
+    }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Pages\certificate\claim;
 
+use Endroid\QrCode\QrCode;
+
 // Certificate configuration for course id 1
 class CertConfig_1
 {
@@ -69,7 +71,16 @@ class CertConfig_1
                     'fontSize' => 42,
                     'fontPath' => FCPATH . 'mobilekit/assets/fonts/Ubuntu/Ubuntu-Regular.ttf',
                 ],
-            ]
+            ], 
+            'qrcode' => [
+                'value' => 'https://ruangai.id/c/' . $this->code,
+                'x' => $this->pageWidth - 500,
+                'y' => $this->pageHeight - 700,
+                'size' => 400,
+                'margin' => 10,
+                'logo' => FCPATH . 'mobilekit/assets/img/logo-small.png',
+                'logoSize' => 84,
+            ],
         ];
         $this->pages[1]['texts']['date_expired']['x'] = $this->rightAlignTextX($this->pages[1]['texts']['date_expired']['value'], $this->pages[1]['texts']['date_expired']['fontSize'], $this->pages[1]['texts']['date_expired']['fontPath'], $this->pageWidth, 50);
 
@@ -148,5 +159,11 @@ class CertConfig_1
 
         // Format hasil
         return $formatter->format($date);
+    }
+
+    public function generateQR()
+    {
+        $qrCode = QrCode::create('https://link-sertifikat.com/abc123')
+                    ->setSize(300);
     }
 }
