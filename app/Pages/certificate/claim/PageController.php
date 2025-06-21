@@ -209,7 +209,7 @@ class PageController extends BaseController
         $db->table('course_students')
             ->where('user_id', $cert['user_id'])
             ->where('course_id', $cert['course_id'])
-            ->update(['cert_url' => json_encode($certResult->getOutputURLs())]);
+            ->update(['cert_url' => json_encode($certResult->getOutputURLs()), 'updated_at' => date('Y-m-d H:i:s')]);
 
         redirectPage('certificate/' . $code);
     }

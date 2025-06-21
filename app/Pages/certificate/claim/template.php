@@ -39,7 +39,7 @@
                                     </template>
                                 </div>
                                 <div class="form-group mt-4">
-                                    <p>Pastikan nama (dan gelar) sudah benar untuk dicetak di sertifikat</p>
+                                    <p>Pastikan nama (dan gelar) sudah benar untuk dicetak di sertifikat. Gunakan huruf kapital hanya di awal kata.</p>
                                     <input type="text" class="form-control" x-model="data.student.name" required>
                                     <p class="small text-warning">Sertifikat hanya dapat digenerate satu kali</p>
                                 </div>
