@@ -9,6 +9,9 @@ $routes->get('test', 'Home::index');
 $routes->get('test/email', 'Home::email');
 
 $routes->get('checkToken/(:any)', 'Home::checkToken/$1');
+$routes->get('c/(:any)', function($code) {
+    header('Location: /certificate/'.$code);die;
+});
 
 // Api
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($routes) {
