@@ -209,7 +209,7 @@ class PageController extends BaseController
         $db->table('course_students')
             ->where('user_id', $cert['user_id'])
             ->where('course_id', $cert['course_id'])
-            ->update(['cert_url' => json_encode($certResult['url'])]);
+            ->update(['cert_url' => json_encode($certResult->getOutputURLs())]);
 
         redirectPage('certificate/' . $code);
     }
@@ -248,12 +248,11 @@ class PageController extends BaseController
                 imagettftext($image, $fontSize, $angle, $xAxis, $yAxis, $fontColor, $fontPath, $value);
             }
 
-            if($page['qrcode'] ?? null) 
-            {
+            if ($page['qrcode'] ?? null) {
                 $qr = $this->getQR($page['qrcode']['value'], $page['qrcode']['size'], $page['qrcode']['margin'], $page['qrcode']['logo'], $page['qrcode']['logoSize']);
                 $qrX = $page['qrcode']['x'];
                 $qrY = $page['qrcode']['y'];
-                imagecopy($image, $qr, $qrX, $qrY, 0, 0, $page['qrcode']['size'] + $page['qrcode']['margin']*2, $page['qrcode']['size'] + 60);
+                imagecopy($image, $qr, $qrX, $qrY, 0, 0, $page['qrcode']['size'] + $page['qrcode']['margin'] * 2, $page['qrcode']['size'] + 60);
             }
 
             // Save the result
@@ -271,25 +270,24 @@ class PageController extends BaseController
 
     public function getQR($string, $size = 400, $margin = 10, $logo = null, $logoSize = null)
     {
-        $builder = new Builder(
-            writer: new PngWriter(),
-            writerOptions: [],
-            validateResult: false,
-            data: $string,
-            encoding: new Encoding('UTF-8'),
-            errorCorrectionLevel: ErrorCorrectionLevel::High,
-            size: $size,
-            margin: $margin,
-            roundBlockSizeMode: RoundBlockSizeMode::Margin,
-            logoPath: $logo,
-            logoResizeToWidth: $logoSize,
-            logoPunchoutBackground: true,
-            labelText: 'Scan to verify',
-            labelFont: new OpenSans(30),
-            labelAlignment: LabelAlignment::Center
-        );
+        $result = $result = Builder::create()
+            ->writer(new PngWriter())
+            ->writerOptions([])
+            ->data($string)
+            ->encoding(new Encoding('UTF-8'))
+            ->errorCorrectionLevel(ErrorCorrectionLevel::High)
+            ->size($size)
+            ->margin($margin)
+            ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
+            ->logoPath($logo)
+            ->logoResizeToWidth($logoSize)
+            ->logoPunchoutBackground(true)
+            ->labelText('This is the label')
+            ->labelFont(new OpenSans(30))
+            ->labelAlignment(LabelAlignment::Center)
+            ->validateResult(false)
+            ->build();
 
-        $result = $builder->build();
         // header('Content-Type: '.$result->getMimeType());
         // echo $result->getString();die;
 
