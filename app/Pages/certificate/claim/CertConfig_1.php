@@ -155,7 +155,7 @@ class CertConfig_1
         }
 
         // Formatter tanggal lokal Indonesia
-        $formatter = new \IntlDateFormatter($locale, \IntlDateFormatter::{$format}, \IntlDateFormatter::NONE);
+        $formatter = new \IntlDateFormatter($locale, constant('\IntlDateFormatter::' . $format), \IntlDateFormatter::NONE);
 
         // Format hasil
         return $formatter->format($date);
