@@ -24,13 +24,15 @@ class PageController extends BaseController
                                     ->getRowArray();
 
         $attended = $db->table('live_attendance')
-                        ->select('live_meeting_id')
-                        ->where('course_id', $course_id)
+                        ->select('live_meeting_id, live_meetings.title, live_meetings.subtitle, live_meetings.theme_code, live_meetings.meeting_date, live_meetings.meeting_time, live_batch.name as batch_title')
+                        ->join('live_meetings', 'live_meetings.id = live_attendance.live_meeting_id')
+                        ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
+                        ->where('live_attendance.course_id', $course_id)
                         ->where('user_id', $jwt->user_id)
                         ->get()
                         ->getResultArray();
         if($attended) {
-            $attended = array_column($attended, 'live_meeting_id');
+            $attendedCode = array_column($attended, 'theme_code');
         }
 
         $live_sessions = $db->table('live_meetings')
@@ -74,6 +76,7 @@ class PageController extends BaseController
         $this->data['enable_live_recording'] = service('settings')->get('Course.enableLiveRecording');
 
         $this->data['attended'] = $attended;
+        $this->data['attendedCode'] = $attendedCode;
 
         return $this->respond($this->data);
     }
