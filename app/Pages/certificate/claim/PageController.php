@@ -110,16 +110,17 @@ class PageController extends BaseController
             ->update([
                 'graduate'        => 1,
                 'cert_claim_date' => date('Y-m-d H:i:s'),
-                'cert_code'       => $certResult['code'],
-                'cert_number'     => $certResult['number'],
-                'cert_url'        => json_encode($certResult['url']),
+                'cert_code'       => $certResult->code,
+                'cert_number'     => $certResult->numberOrder,
+                'cert_url'        => json_encode($certResult->getOutputURLs()),
+                'expire_at'       => null,
             ]);
 
         return $this->respond([
             'status'  => 'success',
             'message' => 'Feedback berhasil disimpan',
             'data'    => [
-                'code' => $certResult['code']
+                'code' => $certResult->code
             ]
         ]);
     }

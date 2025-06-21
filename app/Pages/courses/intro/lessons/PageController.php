@@ -73,7 +73,7 @@ class PageController extends BaseController
             $this->data['lessonsCompleted'] = $lessonsCompleted;
             $this->data['numCompleted'] = $numCompleted;
 
-             // Get course_students
+            // Get course_students
             $this->data['student'] = $db->table('course_students')
                                         ->select('progress, cert_claim_date, cert_code, expire_at')
                                         ->where('course_id', $id)
