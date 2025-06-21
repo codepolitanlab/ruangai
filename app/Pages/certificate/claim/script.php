@@ -22,6 +22,10 @@
       init() {
         base.init.call(this);
 
+        if (this.data?.student?.cert_code) {
+          this.$router.navigate(`/certificate/${this.data.student.cert_code}`);
+        }
+
         // Pantau fetch selesai (asumsinya base.getUrl memanggil fetch otomatis)
         this.$watch('data', (newData) => {
           if (newData?.student?.cert_code) {
