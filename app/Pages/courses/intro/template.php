@@ -64,6 +64,7 @@
 				<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206633.png" class="position-absolute bottom-0 end-0 w-25" alt="">
 			</div>
 
+			<!-- Show Expire Alert -->
 			<template x-if="data.is_expire">
 				<div class="card bg-warning-2 rounded-4 mb-3 shadow-none">
 					<div class="card-body d-flex gap-3">
