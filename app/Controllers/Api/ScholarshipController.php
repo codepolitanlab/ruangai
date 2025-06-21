@@ -270,4 +270,31 @@ class ScholarshipController extends ResourceController
         
         return $this->respond($data);
     }
+
+    public function syncGraduatedB1()
+    {
+        // Get student from course id 1 which has graduated
+        $courseStudentModel = new \App\Models\CourseStudent();
+        $graduated = $courseStudentModel->select('course_students.user_id')
+                                        ->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id')
+                                        ->where('program', 'RuangAI2025B1')
+                                        ->where('course_id', 1)
+                                        ->where('course_students.graduate', 1)
+                                        ->where('scholarship_participants.status !=', 'lulus')
+                                        ->get()
+                                        ->getResultArray();
+        if($graduated) {
+            $graduated = array_column($graduated, 'user_id');
+
+            $participantModel = new ScholarshipParticipantModel();
+            $participantModel->where('program', 'RuangAI2025B1')
+                            ->whereIn('user_id', $graduated)
+                            ->set(['status' => 'lulus'])
+                            ->update();
+            $result = $participantModel->affectedRows();
+            echo "Updated: " . $result . " rows from " . count($graduated) . " rows";
+        } else {
+            echo "No update";
+        }
+    }
 }
