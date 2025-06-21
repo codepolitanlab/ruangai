@@ -52,20 +52,16 @@
 
         const imageUrls = [
           {
-            'filepath': this.data.student.cert_url.id.front,
-            'filename': 'id_1.jpg'
+            'filepath': this.data.student.cert_url[1],
+            'filename': 'id.jpg'
           },
           {
-            'filepath': this.data.student.cert_url.id.back,
-            'filename': 'id_2.jpg'
+            'filepath': this.data.student.cert_url[2],
+            'filename': 'en.jpg'
           },
           {
-            'filepath': this.data.student.cert_url.en.front,
-            'filename': 'en_1.jpg'
-          },
-          {
-            'filepath': this.data.student.cert_url.en.back,
-            'filename': 'en_2.jpg'
+            'filepath': this.data.student.cert_url[3],
+            'filename': 'transcript.jpg'
           },
         ];
 
