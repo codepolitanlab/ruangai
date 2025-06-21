@@ -21,9 +21,11 @@
                     </div>
                     <div class="mt-4 px-3 text-center">
                         <div>Sertifikat ini adalah dokumen resmi dan valid dirilis oleh CODEPOLITAN</div>
-                        <div class="d-flex gap-2 justify-content-center mt-3">
-                            <button @click="downloadImagesAsZip()" class="btn btn-primary rounded-pill"><i class="bi bi-download"></i> Unduh</button>
-                        </div>
+                        <template x-if="localStorage.getItem('heroic_token')">
+                            <div class="d-flex gap-2 justify-content-center mt-3">
+                                <button @click="downloadImagesAsZip()" class="btn btn-primary rounded-pill"><i class="bi bi-download"></i> Unduh</button>
+                            </div>
+                        </template>
                     </div>
                 </div>
 
