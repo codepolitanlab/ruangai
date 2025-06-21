@@ -60,7 +60,7 @@ class PageController extends BaseController
 
             // Get course_students
             $this->data['student'] = $db->table('course_students')
-                                        ->select('progress, cert_claim_date, cert_code')
+                                        ->select('progress, cert_claim_date, cert_code, expire_at')
                                         ->where('course_id', $id)
                                         ->where('user_id', $jwt->user_id)
                                         ->get()
@@ -68,6 +68,7 @@ class PageController extends BaseController
 
             $this->data['course_completed'] = $this->data['total_lessons'] == $this->data['lesson_completed'] && $this->data['live_attendance'] >= 3 ? true : false;
             $this->data['is_enrolled'] = $db->table('course_students')->where('course_id', $id)->where('user_id', $jwt->user_id)->countAllResults() > 0 ? true : false;
+            $this->data['is_expire'] = $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
 
             return $this->respond($this->data);
         } else {

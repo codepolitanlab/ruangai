@@ -64,6 +64,18 @@
 				<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206633.png" class="position-absolute bottom-0 end-0 w-25" alt="">
 			</div>
 
+			<template x-if="data.is_expire">
+				<div class="card bg-warning-2 rounded-4 mb-3 shadow-none">
+					<div class="card-body d-flex gap-3">
+						<i class="bi bi-stopwatch-fill text-white display-3 shaky-icon"></i>
+						<div>
+							<h4 class="text-white">Waktu akses kamu untuk kelas ini telah berakhir</h4>
+							<p class="m-0 text-white">Tapi tenang aja! Silakan hubungi tim admin temanRAI via email ke <u><a class="text-white fw-bold" href="mailto:temanrai@codepolitan.com">temanrai@codepolitan.com</a></u> untuk permintaan perpanjangan kelas ini.</p>
+						</div>
+					</div>
+				</div>
+			</template>
+
 			<!-- Card Kelas -->
 			<div class="section p-3 bg-white rounded-4 mb-3">
 				<div class="card border-0 shadow-none overflow-hidden">
@@ -97,9 +109,9 @@
 				<h4 class="mb-4">Progres Belajar</h4>
 
 				<!-- Modul Selesai -->
-				<a href="/courses/intro/1/belajar-fundamental-ai/lessons">
+				<a :native="data.is_expire" :href="data.is_expire ? `javascript:void()` : `/courses/intro/1/belajar-fundamental-ai/lessons`">
 					<div class="card border-0 rounded-4 mb-4"
-						:class="data.total_lessons == data.lesson_completed ? 'bg-success bg-opacity-50' : 'bg-primary'">
+						:class="{'bg-dark bg-opacity-25': data.is_expire, 'bg-success bg-opacity-50': data.total_lessons == data.lesson_completed && !data.is_expire, 'bg-primary': data.total_lessons != data.lesson_completed && !data.is_expire}">
 						<div class="card-body d-flex align-items-center gap-3 p-4">
 
 							<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
@@ -131,9 +143,9 @@
 				</a>
 
 				<!-- Live Session Wajib -->
-				<a href="/courses/intro/1/belajar-fundamental-ai/live_session">
+				<a :native="data.is_expire" :href="data.is_expire ? `javascript:void()` : `/courses/intro/1/belajar-fundamental-ai/live_session`">
 					<div class="card border-0 rounded-4 bg-warning-2"
-						:class="data.live_attendance >= 3 ? 'bg-success bg-opacity-50' : 'bg-warning-2'">
+						:class="{'bg-dark bg-opacity-25': data.is_expire, 'bg-success bg-opacity-50': data.live_attendance >= 3 && !data.is_expire, 'bg-warning-2': data.live_attendance >= 3 && !data.is_expire}">
 						<div class="card-body d-flex align-items-center gap-3 p-4">
 
 							<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
@@ -183,26 +195,26 @@
 			<div class="section p-3 pb-4 bg-white rounded-4">
 				<h4 class="fw-bold mb-3" style="color: #222;">Klaim Sertifikat</h4>
 
-					<div class="card border-0 rounded-4 bg-dark bg-opacity-10 cursor-pointer"
-						@click="claimCertificate()"
-						:class="data.course_completed ? 'bg-secondary' : 'bg-dark bg-opacity-10'">
-						<div class="card-body d-flex align-items-center gap-3 p-4">
-							<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
-								style="min-width: 64px; height: 64px;">
-								<i class="bi bi-award text-dark opacity-50 display-5"></i>
-							</div>
-							<div class="flex-grow-1">
-								<h5 x-show="!data.course_completed" class="h6 opacity-50 mb-0">Selesaikan materi dan sesi live wajib untuk mendapatkan sertifikat.</h5>
-								<div x-show="data.course_completed">
-									<h3 
-										class="fw-bold mb-1" 
-										style="font-size:1.2rem; color:#fff;" 
-										x-text="data.student.cert_code ? `Unduh Sertifikat` : `Klaim Sertifikat`"></h3>
-									<p class="text-white mb-1" x-show="!data.student.cert_code">Klik untuk mengklaim dan mengunduh sertifikat</p>
-								</div>
+				<div class="card border-0 rounded-4 bg-dark bg-opacity-10 cursor-pointer"
+					@click="claimCertificate()"
+					:class="data.course_completed ? 'bg-secondary' : 'bg-dark bg-opacity-10'">
+					<div class="card-body d-flex align-items-center gap-3 p-4">
+						<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
+							style="min-width: 64px; height: 64px;">
+							<i class="bi bi-award text-dark opacity-50 display-5"></i>
+						</div>
+						<div class="flex-grow-1">
+							<h5 x-show="!data.course_completed" class="h6 opacity-50 mb-0">Selesaikan materi dan sesi live wajib untuk mendapatkan sertifikat.</h5>
+							<div x-show="data.course_completed">
+								<h3
+									class="fw-bold mb-1"
+									style="font-size:1.2rem; color:#fff;"
+									x-text="data.student.cert_code ? `Unduh Sertifikat` : `Klaim Sertifikat`"></h3>
+								<p class="text-white mb-1" x-show="!data.student.cert_code">Klik untuk mengklaim dan mengunduh sertifikat</p>
 							</div>
 						</div>
 					</div>
+				</div>
 			</div>
 		</div>
 	</div>
