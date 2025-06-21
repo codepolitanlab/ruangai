@@ -76,6 +76,9 @@
 		.accordion-item.ongoing .accordion-button .text-muted {
 			color: white !important;
 		}
+		.bg-warning-2 {
+			background-color: #fe9500;
+		}
 	</style>
 
 	<?= $this->include('_appHeader'); ?>
@@ -105,6 +108,19 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- Show Expire Alert -->
+			<template x-if="data.is_expire">
+				<div class="card bg-warning-2 rounded-4 mb-3 shadow-none">
+					<div class="card-body d-flex gap-3">
+						<i class="bi bi-stopwatch-fill text-white display-3 shaky-icon"></i>
+						<div>
+							<h4 class="text-white">Waktu akses kamu untuk kelas ini telah berakhir</h4>
+							<p class="m-0 text-white">Tapi tenang aja! Silakan hubungi tim admin temanRAI via email ke <u><a class="text-white fw-bold" href="mailto:temanrai@codepolitan.com">temanrai@codepolitan.com</a></u> untuk permintaan perpanjangan kelas ini.</p>
+						</div>
+					</div>
+				</div>
+			</template>
 
 			<div class="nav nav-pills mb-1">
 				<div class="nav-item">
@@ -176,7 +192,7 @@
 														<dd x-text="live_session.mentor_name"></dd>
 													</dl>
 													<div class="d-flex gap-2 mt-4">
-														<template x-if="!data.attendedCode.includes(live_session.theme_code)">
+														<template x-if="!data.attendedCode.includes(live_session.theme_code) && !data.is_expire">
 															<a :href="live_session.zoom_link"
 																target="_blank"
 																class="btn btn-primary rounded-3"

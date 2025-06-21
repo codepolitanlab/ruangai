@@ -73,6 +73,15 @@ class PageController extends BaseController
             $this->data['lessonsCompleted'] = $lessonsCompleted;
             $this->data['numCompleted'] = $numCompleted;
 
+             // Get course_students
+            $this->data['student'] = $db->table('course_students')
+                                        ->select('progress, cert_claim_date, cert_code, expire_at')
+                                        ->where('course_id', $id)
+                                        ->where('user_id', $jwt->user_id)
+                                        ->get()
+                                        ->getRowArray();
+            $this->data['is_expire'] = $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
+
             return $this->respond($this->data);
         } else {
             return $this->respond([

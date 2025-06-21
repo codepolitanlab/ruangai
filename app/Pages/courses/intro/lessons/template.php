@@ -39,6 +39,9 @@
 		.lesson-item.completed .bi {
 			color: #fff !important;
 		}
+		.bg-warning-2 {
+			background-color: #fe9500;
+		}
 	</style>
 
 	<div id="appCapsule" class="">
@@ -69,6 +72,19 @@
 				</div>
 			</div>
 
+			<!-- Show Expire Alert -->
+			<template x-if="data.is_expire">
+				<div class="card bg-warning-2 rounded-4 mb-3 shadow-none">
+					<div class="card-body d-flex gap-3">
+						<i class="bi bi-stopwatch-fill text-white display-3 shaky-icon"></i>
+						<div>
+							<h4 class="text-white">Waktu akses kamu untuk kelas ini telah berakhir</h4>
+							<p class="m-0 text-white">Tapi tenang aja! Silakan hubungi tim admin temanRAI via email ke <u><a class="text-white fw-bold" href="mailto:temanrai@codepolitan.com">temanrai@codepolitan.com</a></u> untuk permintaan perpanjangan kelas ini.</p>
+						</div>
+					</div>
+				</div>
+			</template>
+
 			<template x-if="!data.course?.lessons || Object.keys(data.course?.lessons).length === 0">
 				<div class="card shadow-none rounded-4 p-3 mb-3 text-center">
 					<div class="mb-3">
@@ -85,13 +101,15 @@
 						<div class="h5 m-0" x-text="topic"></div>
 						<div class="card-body d-flex flex-column align-items-center gap-3 px-0">
 							<template x-for="(lesson, lessonID) of topicLessons">
-								<a x-bind:href="`/courses/${data.course.id}/lesson/${lessonID}`"
+								<a :native="data.is_expire"
+									:href="data.is_expire ? `javascript:void()` : `/courses/${data.course.id}/lesson/${lessonID}`"
 									:class="{'disabled': !canAccessLesson(lessonID, data.lessonsCompleted)}"
 									class="d-block w-100">
 									<div
 										class="lesson-item rounded-20 p-3 w-100 d-flex align-items-center justify-content-between"
 										:class="{ 'completed': isLessonCompleted(lessonID, data.lessonsCompleted),
-												  'active': canAccessLesson(lessonID, data.lessonsCompleted) }">
+												  'active': canAccessLesson(lessonID, data.lessonsCompleted),
+												  'disabled': data.is_expire }">
 										<div>
 
 											<h4 class="fw-normal m-0 mb-1" x-text="lesson.lesson_title"></h4>
