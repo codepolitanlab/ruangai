@@ -29,7 +29,7 @@ class PageController extends BaseController
         } catch (\Exception $e) {
             return $this->respond([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => "Terjadi kesalahan saat mengambil data sertifikat."
             ]);
         }
 
@@ -203,7 +203,7 @@ class PageController extends BaseController
 
         // Generate certificate
         $certResult = $this->generateCertificate($cert['user_id'], $cert['course_id'], $cert['cert_number']);
-        
+
         // Update cert_claim_date on course_students by user_id and course_id
         $db = \Config\Database::connect();
         $db->table('course_students')
@@ -295,5 +295,78 @@ class PageController extends BaseController
         $qrData = $result->getString();
         $qrImage = imagecreatefromstring($qrData);
         return $qrImage;
+    }
+
+    public function getRegenerateManual()
+    {
+        // disable timeout
+        set_time_limit(0);
+
+        // Daftar kode yang akan di-regenerate
+        $kodeList = [
+            "6C7BCC2208",
+            "8747E02209",
+            "688B3F2209",
+            "24CFC82209",
+            "6E083B2209",
+            "E151D42209",
+            "95282C2209",
+            "C2A2082209",
+            "2358FD2209",
+            "134F932209",
+            "A763272209",
+            "E627192209",
+            "AA5A232209",
+            "ED290A2209",
+            "036E772209",
+            "72FC952209",
+            "B3C91D2209",
+            "D1F23A2209",
+            "EA768A2209",
+            "D827252209",
+            "2A70522209",
+            "2732212210",
+            "98817E2210",
+            "A6732F2210",
+            "5DC9A62210",
+            "2683EF2210",
+            "9329622210",
+            "1899632210",
+            "6929E52210",
+            "F5BF4D2210",
+            "83BEA92210",
+            "4F05242210",
+            "D75E7B2210",
+            "D5E3412210",
+            "CDDBF12210",
+            "DA3CDD2210",
+            "DC750C2210",
+            "5377B62210",
+            "E57F6C2210",
+            "39980B2210",
+        ];
+
+        foreach ($kodeList as $kode) {
+            $url = "https://app.ruangai.id/certificate/claim/regenerate/" . $kode;
+
+            // Gunakan cURL untuk memanggil URL
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $error = curl_error($ch);
+
+            curl_close($ch);
+
+            if ($httpCode === 200) {
+                echo "Sukses regenerate untuk kode: $kode\n";
+            } else {
+                echo "Gagal regenerate untuk kode: $kode | Status: $httpCode | Error: $error\n";
+            }
+
+            // Delay opsional untuk menghindari server overload
+            usleep(1000000); // 0.2 detik
+        }
     }
 }
