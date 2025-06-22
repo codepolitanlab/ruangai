@@ -29,7 +29,7 @@ class PageController extends BaseController
         } catch (\Exception $e) {
             return $this->respond([
                 'status' => 'error',
-                'message' => "Terjadi kesalahan saat mengambil data sertifikat."
+                'message' => "Terjadi kesalahan saat mengecek kelengkapan data sebelum get data sertifikat."
             ]);
         }
 
@@ -78,7 +78,7 @@ class PageController extends BaseController
         } catch (\Exception $e) {
             return $this->respond([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => "Terjadi kesalahan saat mengecek kelengkapan data sebelum generate sertifikat."
             ]);
         }
 
