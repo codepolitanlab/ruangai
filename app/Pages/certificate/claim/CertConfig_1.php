@@ -19,13 +19,15 @@ class CertConfig_1
         // Get user data from database
         $db = \Config\Database::connect();
         $user = $db->table('users')
-            ->select('name')
-            ->where('id', $user_id)
+            ->select('name, cert_code')
+            ->join('course_students', 'users.id = course_students.user_id')
+            ->where('course_students.user_id', $user_id)
+            ->where('course_students.course_id', $course_id)
             ->get()
             ->getRowArray();
 
         // Required variables
-        $this->code  = strtoupper(substr(sha1($user_id . '-' . $course_id), -6)) . date('dH');
+        $this->code  = $user['cert_code'] ?? strtoupper(substr(sha1($user_id . '-' . $course_id), -6)) . date('dH');
         $this->numberOrder = $certNumberOrder;
         if (!$certNumberOrder) {
             $lastCertNumberOrder = model('CourseStudent')->getLastCertNumber($user_id);

@@ -203,7 +203,7 @@ class PageController extends BaseController
 
         // Generate certificate
         $certResult = $this->generateCertificate($cert['user_id'], $cert['course_id'], $cert['cert_number']);
-
+        
         // Update cert_claim_date on course_students by user_id and course_id
         $db = \Config\Database::connect();
         $db->table('course_students')
