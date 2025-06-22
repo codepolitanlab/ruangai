@@ -73,7 +73,7 @@ class CertConfig_1
                 ],
             ], 
             'qrcode' => [
-                'value' => 'https://ruangai.id/c/' . $this->code,
+                'value' => 'https://app.ruangai.id/c/' . $this->code,
                 'x' => $this->pageWidth - 500,
                 'y' => $this->pageHeight - 700,
                 'size' => 400,

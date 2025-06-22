@@ -270,7 +270,7 @@ class PageController extends BaseController
 
     public function getQR($string, $size = 400, $margin = 10, $logo = null, $logoSize = null)
     {
-        $result = $result = Builder::create()
+        $result = Builder::create()
             ->writer(new PngWriter())
             ->writerOptions([])
             ->data($string)
@@ -282,7 +282,7 @@ class PageController extends BaseController
             ->logoPath($logo)
             ->logoResizeToWidth($logoSize)
             ->logoPunchoutBackground(true)
-            ->labelText('This is the label')
+            ->labelText('Scan to verify')
             ->labelFont(new OpenSans(30))
             ->labelAlignment(LabelAlignment::Center)
             ->validateResult(false)
