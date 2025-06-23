@@ -5,7 +5,6 @@
         title: `<?= $page_title ?>`,
         url: `/courses/intro/lessons/data/${$params.course_id}`
     })"
-
 	x-effect="loadPage(`/courses/intro/lessons/data/${$params.course_id}`)">
 
 	<?= $this->include('_appHeader'); ?>
@@ -58,9 +57,13 @@
 								materi selesai
 							</span>
 						</p>
-						<button class="btn btn-secondary btn-sm rounded-pill"
+						<button x-show="data.student.progress < 100" class="btn btn-secondary btn-sm rounded-pill"
 							x-on:click="$router.navigate(`/courses/${data.course?.id}/lesson/${nextLesson(data.lessonsCompleted)}`)">
 							Lanjutkan Belajar</button>
+
+						<button x-show="data.student.progress == 100" class="btn btn-secondary btn-sm rounded-pill"
+							x-on:click="$router.navigate(`/courses/${data.course?.id}/lesson/${data.lessonsCompleted[0].id}`)">
+							Belajar Lagi</button>
 					</div>
 
 					<svg class="progress-ring" width="120" height="120">
