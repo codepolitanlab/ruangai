@@ -24,6 +24,12 @@ class Router
         // '/reset_password/change/:token' => [],
         // '/page/:slug' => [],
         '/certificate/claim/:course_id' => [
+<<<<<<< HEAD
+=======
+            'handler' => '[isLoggedIn]',
+        ],
+        '/certificate/:code' => [
+>>>>>>> 4990ba3e (Generate certificate)
             'handler' => '[isLoggedIn]',
         ],
         '/certificate/:code' => [],
