@@ -57,11 +57,11 @@
 								materi selesai
 							</span>
 						</p>
-						<button x-show="data.student.progress < 100" class="btn btn-secondary btn-sm rounded-pill"
+						<button x-show="data.student.progress < 100 && !data.is_expire" class="btn btn-secondary btn-sm rounded-pill"
 							x-on:click="$router.navigate(`/courses/${data.course?.id}/lesson/${nextLesson(data.lessonsCompleted)}`)">
 							Lanjutkan Belajar</button>
 
-						<button x-show="data.student.progress == 100" class="btn btn-secondary btn-sm rounded-pill"
+						<button x-show="data.student.progress == 100 && !data.is_expire" class="btn btn-secondary btn-sm rounded-pill"
 							x-on:click="$router.navigate(`/courses/${data.course?.id}/lesson/${data.lessonsCompleted[0].id}`)">
 							Belajar Lagi</button>
 					</div>
