@@ -26,11 +26,7 @@
 
       async submitFeedback() {
 
-<<<<<<< HEAD
         if (!this.data.comment || !this.data.rating) {
-=======
-        if(!this.data.comment || !this.data.rating) {
->>>>>>> 4990ba3e (Generate certificate)
           await Prompts.alert("Silahkan isi komentar dan rating terlebih dahulu.");
           return
         }

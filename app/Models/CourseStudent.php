@@ -44,17 +44,11 @@ class CourseStudent extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-<<<<<<< HEAD
     public function getLastCertNumber($current_user_id)
     {
         $number = $this->select('cert_number')
                         ->where('user_id !=', $current_user_id)
                         ->where('cert_number !=', null)
-=======
-    public function getLastCertNumber()
-    {
-        $number = $this->select('cert_number')
->>>>>>> 4990ba3e (Generate certificate)
                         ->orderBy('cert_number', 'desc')
                         ->get()
                         ->getRowArray();

@@ -21,7 +21,6 @@
 
       init() {
         base.init.call(this);
-<<<<<<< HEAD
 
         if (this.data?.student?.cert_code) {
           this.$router.navigate(`/certificate/${this.data.student.cert_code}`);
@@ -33,26 +32,16 @@
             this.$router.navigate(`/certificate/${newData.student.cert_code}`);
           }
         });
-=======
->>>>>>> 4990ba3e (Generate certificate)
       },
 
       async submitFeedback() {
 
-<<<<<<< HEAD
         if (!this.data.comment || !this.data.rating) {
-=======
-        if(!this.data.comment || !this.data.rating) {
->>>>>>> 4990ba3e (Generate certificate)
           await Prompts.alert("Silahkan isi komentar dan rating terlebih dahulu.");
           return
         }
 
-<<<<<<< HEAD
         this.submitting = true;
-=======
-        // this.submitting = true;
->>>>>>> 4990ba3e (Generate certificate)
         $heroicHelper.post(`/certificate/claim`, {
             course_id: this.meta.course_id,
             comment: this.data.comment,
@@ -62,11 +51,7 @@
           .then(async (response) => {
             if (response.data.status == 'success') {
               await Prompts.alert("Feedback berhasil dikirim.")
-<<<<<<< HEAD
               this.$router.navigate(`/certificate/${response.data.data.code}`)
-=======
-              window.location.reload()
->>>>>>> 4990ba3e (Generate certificate)
             }
           })
           .catch(async (error) => {

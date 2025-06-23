@@ -8,14 +8,11 @@
     <div id="appCapsule" class="pt-0">
         <div class="appContent" style="min-height:90vh;">
             <div class="pt-4">
-<<<<<<< HEAD
 
                 <div x-show="data.status == 'error'">
                     <p class="alert alert-warning" x-text="data.message"></p>
                     <a href="/" class="btn btn-link"><span class="bi bi-arrow-left"></span> Kembali</a>
                 </div>
-=======
->>>>>>> 4990ba3e (Generate certificate)
                 
                 <div x-show="!data.student.cert_claim_date">
                     <!-- Show form feedback with rating star -->
