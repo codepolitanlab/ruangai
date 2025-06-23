@@ -17,7 +17,7 @@ class PageController extends BaseController
     public $data = [
         'page_title'  => 'Claim Certificate',
     ];
-
+    
     public function getData($course_id)
     {
         $Heroic = new \App\Libraries\Heroic();

@@ -163,9 +163,4 @@ class CertConfig_1
         return $formatter->format($date);
     }
 
-    public function generateQR()
-    {
-        $qrCode = QrCode::create('https://link-sertifikat.com/abc123')
-                    ->setSize(300);
-    }
 }
