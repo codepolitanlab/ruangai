@@ -76,7 +76,7 @@ class PageController extends BaseController
         $this->data['enable_live_recording'] = service('settings')->get('Course.enableLiveRecording');
 
         $this->data['attended'] = $attended;
-        $this->data['attendedCode'] = $attendedCode;
+        $this->data['attendedCode'] = $attendedCode ?? [];
 
         // Get course_students
         $this->data['student'] = $db->table('course_students')
