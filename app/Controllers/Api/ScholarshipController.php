@@ -238,6 +238,17 @@ class ScholarshipController extends ResourceController
             $quota = $masterProgram['quota'];
             $quota_used = $scholarshipModel->where('program', 'RuangAI2025B1')->where('deleted_at', null)->countAllResults();
             $graduated = $scholarshipModel->where('program', 'RuangAI2025B1')->where('deleted_at', null)->where('status', 'lulus')->countAllResults();
+
+            $courseStudentModel = new \App\Models\CourseStudent();
+            
+            $count_user_progress = $courseStudentModel
+                        ->select('course_students.user_id')
+                        ->join('live_attendance', 'live_attendance.user_id = course_students.user_id', 'left')
+                        ->where('course_students.course_id', 1)
+                        ->where('course_students.progress >', 10)
+                        ->groupBy('course_students.user_id')
+                        ->having('COUNT(live_attendance.id) >=', 3)
+                        ->countAllResults(); // Ini akan menghitung baris setelah grouping dan having
         }
 
         $data['program'] = $program;
@@ -245,6 +256,7 @@ class ScholarshipController extends ResourceController
         $data['quota_used'] = $quota_used ?? 0;
         $data['quota_left'] = $quota - $graduated;
         $data['graduated'] = $graduated ?? 0;
+        $data['user_progress'] = $count_user_progress;
 
         return $this->respond($data);
     }
