@@ -243,11 +243,10 @@ class ScholarshipController extends ResourceController
             
             $count_user_progress = $courseStudentModel
                         ->select('course_students.user_id')
-                        ->join('live_attendance', 'live_attendance.user_id = course_students.user_id', 'left')
                         ->where('course_students.course_id', 1)
-                        ->where('course_students.progress >', 10)
-                        ->groupBy('course_students.user_id')
-                        ->having('COUNT(live_attendance.id) >=', 3)
+                        ->where('course_students.progress >', 0)
+                        ->where('course_students.progress <', 100)
+                        ->where('course_students.graduate', 0)
                         ->countAllResults(); // Ini akan menghitung baris setelah grouping dan having
         }
 
@@ -256,7 +255,7 @@ class ScholarshipController extends ResourceController
         $data['quota_used'] = $quota_used ?? 0;
         $data['quota_left'] = $quota - $graduated;
         $data['graduated'] = $graduated ?? 0;
-        // dd($data);
+        $data['user_progress'] = $count_user_progress;
 
         return $this->respond($data);
     }
