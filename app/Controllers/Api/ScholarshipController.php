@@ -256,11 +256,7 @@ class ScholarshipController extends ResourceController
         $data['quota_used'] = $quota_used ?? 0;
         $data['quota_left'] = $quota - $graduated;
         $data['graduated'] = $graduated ?? 0;
-<<<<<<< HEAD
-        // dd($data);
-=======
         $data['user_progress'] = $count_user_progress;
->>>>>>> 22f3ecf4
 
         return $this->respond($data);
     }
