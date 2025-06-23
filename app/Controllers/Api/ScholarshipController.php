@@ -245,7 +245,6 @@ class ScholarshipController extends ResourceController
                         ->select('course_students.user_id')
                         ->where('course_students.course_id', 1)
                         ->where('course_students.progress >', 0)
-                        ->where('course_students.progress <', 100)
                         ->where('course_students.graduate', 0)
                         ->countAllResults(); // Ini akan menghitung baris setelah grouping dan having
         }
