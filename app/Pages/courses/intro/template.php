@@ -146,7 +146,7 @@
 				<!-- Live Session Wajib -->
 				<a :native="data.is_expire" :href="data.is_expire ? `javascript:void()` : `/courses/intro/1/belajar-fundamental-ai/live_session`">
 					<div class="card border-0 rounded-4 bg-warning-2"
-						:class="{'bg-dark bg-opacity-25': data.is_expire, 'bg-success bg-opacity-50': data.live_attendance >= 3 && !data.is_expire, 'bg-warning-2': data.live_attendance >= 3 && !data.is_expire}">
+						:class="{'bg-dark bg-opacity-25': data.is_expire, 'bg-success bg-opacity-50': data.live_attendance >= 3 && !data.is_expire, 'bg-warning-2': data.live_attendance < 3 && !data.is_expire}">
 						<div class="card-body d-flex align-items-center gap-3 p-4">
 
 							<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
