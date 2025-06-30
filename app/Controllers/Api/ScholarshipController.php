@@ -227,17 +227,17 @@ class ScholarshipController extends ResourceController
 
     public function program()
     {
-        $program = $this->request->getGet('name');
+        $programCode = $this->request->getGet('name');
 
-        if ($program === 'RuangAI2025B1') {
+        if ($programCode === 'RuangAI2025B1') {
             $scholarshipModel = new ScholarshipParticipantModel();
             $eventModel = new \App\Models\Events();
 
-            $masterProgram = $eventModel->where('code', $program)->first();
+            $masterProgram = $eventModel->where('code', $programCode)->first();
             $program = $masterProgram['title'];
             $quota = $masterProgram['quota'];
-            $quota_used = $scholarshipModel->where('program', $program)->where('deleted_at', null)->countAllResults();
-            $graduated = $scholarshipModel->where('program', $program)->where('deleted_at', null)->where('status', 'lulus')->countAllResults();
+            $quota_used = $scholarshipModel->where('program', $programCode)->where('deleted_at', null)->countAllResults();
+            $graduated = $scholarshipModel->where('program', $programCode)->where('deleted_at', null)->where('status', 'lulus')->countAllResults();
 
             $courseStudentModel = new \App\Models\CourseStudent();
             
