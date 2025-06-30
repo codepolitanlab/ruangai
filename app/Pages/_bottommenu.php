@@ -3,20 +3,20 @@
 $bottommenu = [
     [
         'label'  => 'Beranda',
-        'url'    => '/courses/intro/1/belajar-fundamental-ai',
+        'url'    => '/courses/intro/1/dasar-dan-penggunaan-generative-ai',
         'icon'   => 'bi bi-house',
         'module' => 'course_intro'
     ],
     [
         'label'  => 'Materi',
-        'url'    => '/courses/intro/1/belajar-fundamental-ai/lessons',
+        'url'    => '/courses/intro/1/dasar-dan-penggunaan-generative-ai/lessons',
         'icon'   => 'bi bi-megaphone',
         'icon'   => 'bi bi-journal-check',
         'module' => 'course_lesson'
     ],
     [
         'label'  => 'Live Session',
-        'url'    => '/courses/intro/1/belajar-fundamental-ai/live_session',
+        'url'    => '/courses/intro/1/dasar-dan-penggunaan-generative-ai/live_session',
         'icon'   => 'bi bi-camera-video',
         'module' => 'course_live'
     ],

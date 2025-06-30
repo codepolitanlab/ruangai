@@ -14,7 +14,7 @@
         // Sementara redirect ke intro course
         if(this.redirectToCourse) {
           console.log('redirecting...')
-          window.PineconeRouter.navigate('/courses/intro/1/belajar-fundamental-ai');
+          window.PineconeRouter.navigate('/courses/intro/1/dasar-dan-penggunaan-generative-ai');
         }
 
         // if (localStorage.getItem('intro') != 1) {

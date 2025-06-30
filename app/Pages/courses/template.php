@@ -3,7 +3,7 @@
 	x-data="$heroic({
         title: `<?= $page_title ?>`,
     })"
-	x-init="$router.navigate('/courses/intro/1/belajar-fundamental-ai')">
+	x-init="$router.navigate('/courses/intro/1/dasar-dan-penggunaan-generative-ai')">
 
 	<div id="appCapsule">
 		<div class="appContent" style="min-height:90vh;">

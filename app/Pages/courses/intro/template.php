@@ -110,7 +110,7 @@
 				<h4 class="mb-4">Progres Belajar</h4>
 
 				<!-- Modul Selesai -->
-				<a :native="data.is_expire" :href="data.is_expire ? `javascript:void()` : `/courses/intro/1/belajar-fundamental-ai/lessons`">
+				<a :native="data.is_expire" :href="data.is_expire ? `javascript:void()` : `/courses/intro/1/dasar-dan-penggunaan-generative-ai/lessons`">
 					<div class="card border-0 rounded-4 mb-4"
 						:class="{'bg-dark bg-opacity-25': data.is_expire, 'bg-success bg-opacity-50': data.total_lessons == data.lesson_completed && !data.is_expire, 'bg-primary': data.total_lessons != data.lesson_completed && !data.is_expire}">
 						<div class="card-body d-flex align-items-center gap-3 p-4">
@@ -144,7 +144,7 @@
 				</a>
 
 				<!-- Live Session Wajib -->
-				<a :native="data.is_expire" :href="data.is_expire ? `javascript:void()` : `/courses/intro/1/belajar-fundamental-ai/live_session`">
+				<a :native="data.is_expire" :href="data.is_expire ? `javascript:void()` : `/courses/intro/1/dasar-dan-penggunaan-generative-ai/live_session`">
 					<div class="card border-0 rounded-4 bg-warning-2"
 						:class="{'bg-dark bg-opacity-25': data.is_expire, 'bg-success bg-opacity-50': data.live_attendance >= 3 && !data.is_expire, 'bg-warning-2': data.live_attendance < 3 && !data.is_expire}">
 						<div class="card-body d-flex align-items-center gap-3 p-4">
