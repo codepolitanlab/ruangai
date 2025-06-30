@@ -288,7 +288,7 @@ class AuthController extends ResourceController
 
         $userModel = new UserModel();
         // Check table users email_valid
-        $user = $userModel->where('email', $identity)->where('deleted_at', null)->first();
+        $user = $userModel->where('LOWER(email)', $identity)->where('deleted_at', null)->first();
 
         if (!$user) {
             return $this->fail(['status' => 'failed', 'message' => 'Email tidak terdaftar.']);
@@ -315,7 +315,7 @@ class AuthController extends ResourceController
 
         // Send token to user
         $token = JWT::encode([
-            'email' => $user['email'],
+            'email' => strtolower($user['email']),
             'whatsapp_number' => $user['phone'],
             'user_id' => $user['id'],
             'isValidEmail' => $user['email_valid'],
