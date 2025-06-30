@@ -233,11 +233,11 @@ class ScholarshipController extends ResourceController
             $scholarshipModel = new ScholarshipParticipantModel();
             $eventModel = new \App\Models\Events();
 
-            $masterProgram = $eventModel->where('code', 'RuangAI2025B1')->first();
+            $masterProgram = $eventModel->where('code', $program)->first();
             $program = $masterProgram['title'];
             $quota = $masterProgram['quota'];
-            $quota_used = $scholarshipModel->where('program', 'RuangAI2025B1')->where('deleted_at', null)->countAllResults();
-            $graduated = $scholarshipModel->where('program', 'RuangAI2025B1')->where('deleted_at', null)->where('status', 'lulus')->countAllResults();
+            $quota_used = $scholarshipModel->where('program', $program)->where('deleted_at', null)->countAllResults();
+            $graduated = $scholarshipModel->where('program', $program)->where('deleted_at', null)->where('status', 'lulus')->countAllResults();
 
             $courseStudentModel = new \App\Models\CourseStudent();
             
@@ -283,28 +283,53 @@ class ScholarshipController extends ResourceController
 
     public function syncGraduatedB1()
     {
-        // Get student from course id 1 which has graduated
+        // Get course_students yang progressnya sudah 100 tapi graduate masih 0
         $courseStudentModel = new \App\Models\CourseStudent();
-        $graduated = $courseStudentModel->select('course_students.user_id')
-                                        ->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id')
-                                        ->where('program', 'RuangAI2025B1')
+        $students = $courseStudentModel->select('course_students.user_id, progress, graduate')
                                         ->where('course_id', 1)
-                                        ->where('course_students.graduate', 1)
-                                        ->where('scholarship_participants.status !=', 'lulus')
+                                        ->where('course_students.graduate', 0)
+                                        ->where('course_students.progress', 100)
                                         ->get()
                                         ->getResultArray();
-        if($graduated) {
-            $graduated = array_column($graduated, 'user_id');
+        if($students) {
+            echo "Ada ".count($students)." student yang 100% progress dan belum ditandai lulus <br>";
 
-            $participantModel = new ScholarshipParticipantModel();
-            $participantModel->where('program', 'RuangAI2025B1')
-                            ->whereIn('user_id', $graduated)
-                            ->set(['status' => 'lulus'])
-                            ->update();
-            $result = $participantModel->affectedRows();
-            echo "Updated: " . $result . " rows from " . count($graduated) . " rows";
+            $students = array_column($students, 'user_id');
+
+            // Count live attendance
+            $liveAttendanceModel = new \App\Models\LiveAttendance();
+            $live_attendance = $liveAttendanceModel->select('user_id, COUNT(DISTINCT live_meeting_id) as total')
+                                                ->where('course_id', 1)
+                                                ->whereIn('user_id', $students)
+                                                ->groupBy('user_id')
+                                                ->having('COUNT(DISTINCT live_meeting_id) >=', 3)
+                                                ->get()
+                                                ->getResultArray();
+
+            if($live_attendance) {
+                echo "Ada ".count($live_attendance)." student yang hadir di >= 3 live meeting <br>";
+
+                $live_attendance = array_combine(array_column($live_attendance, 'user_id'), array_column($live_attendance, 'total'));
+                $graduated = array_keys($live_attendance);
+
+                // Update graduate menjadi 1
+                $courseStudentModel->whereIn('user_id', $graduated)
+                                    ->set(['graduate' => 1])
+                                    ->update();
+
+                // Update status menjadi lulus
+                $participantModel = new ScholarshipParticipantModel();
+                $participantModel->where('program', 'RuangAI2025B1')
+                                ->whereIn('user_id', $graduated)
+                                ->set(['status' => 'lulus'])
+                                ->update();
+
+                echo "Updated: " . $courseStudentModel->affectedRows() . " rows & " . $participantModel->affectedRows() . " rows";
+            } else {   
+                echo "Belum ada yang hadir di minimal 3 live meeting";
+            }
         } else {
-            echo "No update";
+            echo "Belum ada student yang 100% progress";
         }
     }
 }
