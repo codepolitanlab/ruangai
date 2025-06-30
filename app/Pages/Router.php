@@ -26,7 +26,8 @@ class Router
         '/certificate/claim/:course_id' => [
             'handler' => '[isLoggedIn]',
         ],
-        '/certificate/:code' => [
+        '/voucher/' => [
+            'preload' => true,
             'handler' => '[isLoggedIn]',
         ],
         '/certificate/:code' => [],

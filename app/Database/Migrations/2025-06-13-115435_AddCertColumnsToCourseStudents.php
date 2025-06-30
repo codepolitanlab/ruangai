@@ -13,7 +13,7 @@ class AddCertColumnsToCourseStudents extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => 100,
                 'null'       => true,
-                'after'      => 'student_id', // atau sesuaikan posisi kolom
+                'after'      => 'user_id', // atau sesuaikan posisi kolom
             ],
             'cert_url' => [
                 'type'       => 'TEXT',
