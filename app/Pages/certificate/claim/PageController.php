@@ -45,6 +45,7 @@ class PageController extends BaseController
         return $this->respond($this->data);
     }
 
+    // Generate certificate and save feedback
     public function postIndex()
     {
         $Heroic = new \App\Libraries\Heroic();

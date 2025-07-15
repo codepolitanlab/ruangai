@@ -27,7 +27,7 @@ class CertConfig_1
             ->getRowArray();
 
         // Required variables
-        $this->code  = $user['cert_code'] ?? strtoupper(substr(sha1($user_id . '-' . $course_id), -6)) . date('dH');
+        $this->code  = ($user['cert_code'] ?? null) ? $user['cert_code'] : strtoupper(substr(sha1($user_id . '-' . $course_id), -6)) . date('dH');
         $this->numberOrder = $certNumberOrder;
         if (!$certNumberOrder) {
             $lastCertNumberOrder = model('CourseStudent')->getLastCertNumber($user_id);
