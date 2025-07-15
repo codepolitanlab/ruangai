@@ -231,13 +231,14 @@ class ScholarshipController extends ResourceController
 
         if ($programCode === 'RuangAI2025B1') {
             $scholarshipModel = new ScholarshipParticipantModel();
+            $courseStudentModel = new \App\Models\CourseStudent();
             $eventModel = new \App\Models\Events();
 
             $masterProgram = $eventModel->where('code', $programCode)->first();
             $program = $masterProgram['title'];
             $quota = $masterProgram['quota'];
             $quota_used = $scholarshipModel->where('program', $programCode)->where('deleted_at', null)->countAllResults();
-            $graduated = $scholarshipModel->where('program', $programCode)->where('deleted_at', null)->where('status', 'lulus')->countAllResults();
+            $graduated = $courseStudentModel->where('course_id', 1)->where('graduate', 1)->where('deleted_at', null)->countAllResults();
 
             $courseStudentModel = new \App\Models\CourseStudent();
             

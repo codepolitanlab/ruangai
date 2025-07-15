@@ -1,8 +1,7 @@
 <div
     id="certificate_claim"
     x-data="certificate_claim($params.course_id)"
-    x-effect="loadPage(`/certificate/claim/data/${$params.course_id}`)"
->
+    x-effect="loadPage(`/certificate/claim/data/${$params.course_id}`)">
     <?= $this->include('_appHeader'); ?>
 
     <div id="appCapsule" class="pt-0">
@@ -13,7 +12,7 @@
                     <p class="alert alert-warning" x-text="data.message"></p>
                     <a href="/" class="btn btn-link"><span class="bi bi-arrow-left"></span> Kembali</a>
                 </div>
-                
+
                 <div x-show="!data.student.cert_claim_date">
                     <!-- Show form feedback with rating star -->
                     <div class="card shadow-none rounded-4">
@@ -43,11 +42,19 @@
                                     <input type="text" class="form-control" x-model="data.student.name" required>
                                     <p class="small text-warning">Sertifikat hanya dapat digenerate satu kali</p>
                                 </div>
+                                <div class="form-group mt-3">
+                                    <p>
+                                        Isi survey AVPN berikut ini dengan memilih <br> PT CODEPOLITAN INTEGRASI INDONESIA sebagai LTP:
+                                        <a @click="isClicked = true" href="https://survey.tolunastart.com/wix/p701595502266.aspx?sname=3976045-VN&src=98&surveytype=1" target="_blank" class="btn btn-sm btn-outline-primary">
+                                            Isi Survey
+                                        </a>
+                                    </p>
+                                </div>
                                 <div class="form-group my-4">
-                                    <button 
-                                     type="submit" 
-                                     class="btn btn-primary btn-lg w-100"
-                                     :class="submitting ? 'btn-progress' : ''">Submit dan Klaim Sertifikat</button>
+                                    <button
+                                        type="submit"
+                                        class="btn btn-primary btn-lg w-100"
+                                        :class="submitting ? 'btn-progress' : ''">Submit dan Klaim Sertifikat</button>
                                 </div>
                             </form>
                         </div>

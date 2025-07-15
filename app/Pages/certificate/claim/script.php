@@ -13,6 +13,7 @@
       title: "Claim Certificate",
       errorMessage: null,
       submitting: false,
+      isClicked: false,
 
       data: {
         comment: "",
@@ -38,6 +39,11 @@
 
         if (!this.data.comment || !this.data.rating) {
           await Prompts.alert("Silahkan isi komentar dan rating terlebih dahulu.");
+          return
+        }
+
+        if(!this.isClicked) {
+          await Prompts.alert("Silahkan isi survey terlebih dahulu.");
           return
         }
 
