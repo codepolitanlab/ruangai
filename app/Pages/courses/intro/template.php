@@ -70,8 +70,8 @@
 					<div class="card-body d-flex gap-3">
 						<i class="bi bi-stopwatch-fill text-white display-3 shaky-icon"></i>
 						<div>
-							<h4 class="text-white">Waktu akses kamu untuk kelas ini telah berakhir</h4>
-							<p class="m-0 text-white">Tapi tenang aja! Silakan hubungi tim admin temanRAI via email ke <u><a class="text-white fw-bold" href="mailto:temanrai@codepolitan.com">temanrai@codepolitan.com</a></u> untuk permintaan perpanjangan kelas ini.</p>
+							<h4 class="text-white">Program Belajar Chapter 1 Telah Berakhir</h4>
+							<p class="m-0 text-white">Tapi tenang saja! Kamu tetap dapat melanjutkan belajar saat Chapter 2 dibuka.</p>
 						</div>
 					</div>
 				</div>
@@ -93,7 +93,7 @@
 							</button>
 						</p>
 						<div class="mt-3" x-show="meta.expandDesc" x-transition>
-							<p>Kelas ini merupakan kelas pertama program RuangAI dari CODEPOLITAn yang fokus membahas tentang fundamental kecerdasan artifisial dengan total durasi belajar 15 jam, terdiri dari 30 materi dan 10 sesi live bersama mentor AI.</p>
+							<p>Kelas ini merupakan kelas pertama program RuangAI dari CODEPOLITAN yang fokus membahas tentang fundamental kecerdasan artifisial dengan total durasi belajar 15 jam, terdiri dari 30 materi dan 10 sesi live bersama mentor AI.</p>
 							<p>Kelas ini merupakan bagian dari program AI Opportunity Fund: Asia Pasifik, bekerja sama dengan AVPN dan didukung oleh Google.org dan Asian Development Bank.</p>
 							<button
 								@click="meta.expandDesc = !meta.expandDesc"
