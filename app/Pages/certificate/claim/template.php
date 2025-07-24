@@ -42,14 +42,16 @@
                                     <input type="text" class="form-control" x-model="data.student.name" required>
                                     <p class="small text-warning">Sertifikat hanya dapat digenerate satu kali</p>
                                 </div>
-                                <div class="form-group mt-3">
+
+                                <!-- <div class="form-group mt-3">
                                     <p>
                                         Isi survey AVPN berikut ini dengan memilih <br> PT CODEPOLITAN INTEGRASI INDONESIA sebagai LTP:
                                         <a @click="isClicked = true" href="https://survey.tolunastart.com/wix/p701595502266.aspx?sname=3976045-VN&src=98&surveytype=1" target="_blank" class="btn btn-sm btn-outline-primary">
                                             Isi Survey
                                         </a>
                                     </p>
-                                </div>
+                                </div> -->
+
                                 <div class="form-group my-4">
                                     <button
                                         type="submit"

@@ -42,10 +42,10 @@
           return
         }
 
-        if(!this.isClicked) {
-          await Prompts.alert("Silahkan isi survey terlebih dahulu.");
-          return
-        }
+        // if(!this.isClicked) {
+        //   await Prompts.alert("Silahkan isi survey terlebih dahulu.");
+        //   return
+        // }
 
         this.submitting = true;
         $heroicHelper.post(`/certificate/claim`, {
