@@ -129,7 +129,7 @@ class ScholarshipController extends ResourceController
         if ($participant) {
             return $this->fail(['status' => 'failed', 'message' => 'Beasiswa sudah pernah terdaftar.']);
         }
-        
+
         // Insert data to scholarship_participants
         $data['semester'] = ! empty($data['semester']) ? $data['semester'] : 0;
         $data['grade'] = ! empty($data['grade']) ? $data['grade'] : 0;
@@ -229,33 +229,43 @@ class ScholarshipController extends ResourceController
     {
         $programCode = $this->request->getGet('name');
 
-        if ($programCode === 'RuangAI2025B1') {
-            $scholarshipModel = new ScholarshipParticipantModel();
-            $courseStudentModel = new \App\Models\CourseStudent();
-            $eventModel = new \App\Models\Events();
+        $scholarshipModel = new ScholarshipParticipantModel();
+        $courseStudentModel = new \App\Models\CourseStudent();
+        $eventModel = new \App\Models\Events();
 
-            $masterProgram = $eventModel->where('code', $programCode)->first();
-            $program = $masterProgram['title'];
+        $masterProgram = $eventModel->where('code', $programCode)->first();
+        $program = $masterProgram['title'];
+        $data['program'] = $program;
+
+        $count_user_progress = $courseStudentModel
+            ->where('progress >', 0)
+            ->groupStart()
+                ->where('graduate', 0)
+                ->orWhere('graduate IS NULL', null, false)
+            ->groupEnd()
+            ->countAllResults();
+
+        if ($programCode === 'RuangAI2025B1') {
+
             $quota = $masterProgram['quota'];
             $quota_used = $scholarshipModel->where('program', $programCode)->where('deleted_at', null)->countAllResults();
             $graduated = $courseStudentModel->where('course_id', 1)->where('graduate', 1)->where('deleted_at', null)->countAllResults();
 
-            $courseStudentModel = new \App\Models\CourseStudent();
-            
-            $count_user_progress = $courseStudentModel
-                        ->select('course_students.user_id')
-                        ->where('course_students.course_id', 1)
-                        ->where('course_students.progress >', 0)
-                        ->where('course_students.graduate', 0)
-                        ->countAllResults(); // Ini akan menghitung baris setelah grouping dan having
+            $data['quota'] = $quota ?? 0;
+            $data['quota_used'] = $quota_used ?? 0;
+            $data['quota_left'] = $quota - $graduated;
+            $data['graduated'] = $graduated ?? 0;
+            $data['user_progress'] = $count_user_progress;
         }
 
-        $data['program'] = $program;
-        $data['quota'] = $quota ?? 0;
-        $data['quota_used'] = $quota_used ?? 0;
-        $data['quota_left'] = $quota - $graduated;
-        $data['graduated'] = $graduated ?? 0;
-        $data['user_progress'] = $count_user_progress;
+        if ($programCode === 'RuangAI2025B2') {
+            $graduated = $courseStudentModel->where('course_id', 2)->where('graduate', 1)->where('deleted_at', null)->countAllResults();
+            $user_registered = $scholarshipModel->where('program', $programCode)->where('deleted_at', null)->countAllResults();
+
+            $data['user_registered'] = $user_registered ?? 0;
+            $data['user_progress'] = $count_user_progress;
+            $data['graduated'] = $graduated ?? 0;
+        }
 
         return $this->respond($data);
     }
@@ -278,7 +288,7 @@ class ScholarshipController extends ResourceController
         $db = \Config\Database::connect();
         $course = $db->table('courses')->where('id', 1)->get()->getRowArray();
         $data['publish_class'] = $course['status'] == 'publish' ? true : false;
-        
+
         return $this->respond($data);
     }
 
@@ -287,46 +297,46 @@ class ScholarshipController extends ResourceController
         // Get course_students yang progressnya sudah 100 tapi graduate masih 0
         $courseStudentModel = new \App\Models\CourseStudent();
         $students = $courseStudentModel->select('course_students.user_id, progress, graduate')
-                                        ->where('course_id', 1)
-                                        ->where('course_students.graduate', 0)
-                                        ->where('course_students.progress', 100)
-                                        ->get()
-                                        ->getResultArray();
-        if($students) {
-            echo "Ada ".count($students)." student yang 100% progress dan belum ditandai lulus <br>";
+            ->where('course_id', 1)
+            ->where('course_students.graduate', 0)
+            ->where('course_students.progress', 100)
+            ->get()
+            ->getResultArray();
+        if ($students) {
+            echo "Ada " . count($students) . " student yang 100% progress dan belum ditandai lulus <br>";
 
             $students = array_column($students, 'user_id');
 
             // Count live attendance
             $liveAttendanceModel = new \App\Models\LiveAttendance();
             $live_attendance = $liveAttendanceModel->select('user_id, COUNT(DISTINCT live_meeting_id) as total')
-                                                ->where('course_id', 1)
-                                                ->whereIn('user_id', $students)
-                                                ->groupBy('user_id')
-                                                ->having('COUNT(DISTINCT live_meeting_id) >=', 3)
-                                                ->get()
-                                                ->getResultArray();
+                ->where('course_id', 1)
+                ->whereIn('user_id', $students)
+                ->groupBy('user_id')
+                ->having('COUNT(DISTINCT live_meeting_id) >=', 3)
+                ->get()
+                ->getResultArray();
 
-            if($live_attendance) {
-                echo "Ada ".count($live_attendance)." student yang hadir di >= 3 live meeting <br>";
+            if ($live_attendance) {
+                echo "Ada " . count($live_attendance) . " student yang hadir di >= 3 live meeting <br>";
 
                 $live_attendance = array_combine(array_column($live_attendance, 'user_id'), array_column($live_attendance, 'total'));
                 $graduated = array_keys($live_attendance);
 
                 // Update graduate menjadi 1
                 $courseStudentModel->whereIn('user_id', $graduated)
-                                    ->set(['graduate' => 1])
-                                    ->update();
+                    ->set(['graduate' => 1])
+                    ->update();
 
                 // Update status menjadi lulus
                 $participantModel = new ScholarshipParticipantModel();
                 $participantModel->where('program', 'RuangAI2025B1')
-                                ->whereIn('user_id', $graduated)
-                                ->set(['status' => 'lulus'])
-                                ->update();
+                    ->whereIn('user_id', $graduated)
+                    ->set(['status' => 'lulus'])
+                    ->update();
 
                 echo "Updated: " . $courseStudentModel->affectedRows() . " rows & " . $participantModel->affectedRows() . " rows";
-            } else {   
+            } else {
                 echo "Belum ada yang hadir di minimal 3 live meeting";
             }
         } else {
