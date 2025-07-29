@@ -5,8 +5,10 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('test', 'Home::index');
-$routes->get('test/email', 'Home::email');
+
+// Email template preview
+$routes->get('email/preview', 'Email::preview');
+$routes->get('email/preview/(:segment)', 'Email::preview/$1');
 
 $routes->get('checkToken/(:any)', 'Home::checkToken/$1');
 $routes->get('c/(:any)', function($code) {

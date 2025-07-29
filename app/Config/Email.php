@@ -7,7 +7,7 @@ use CodeIgniter\Config\BaseConfig;
 class Email extends BaseConfig
 {
     public string $fromEmail  = 'admin@admin.com';
-    public string $fromName   = 'Administrator';
+    public string $fromName   = 'RuangAI';
     public string $recipients = 'toha.samba@gmail.com';
 
     /**
@@ -118,4 +118,9 @@ class Email extends BaseConfig
      * Enable notify message from server
      */
     public bool $DSN = false;
+
+    /**
+     * Email template path
+     */
+    public string $templatePath = 'emails/';
 }
