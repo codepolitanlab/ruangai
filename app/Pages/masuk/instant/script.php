@@ -11,7 +11,7 @@
         // Check login using axios post
         $heroicHelper
           .post("/masuk/instant", {token: this.token})
-          .then((response) => {
+          .then(async (response) => {
             if (response.data.status == 'success') {
               localStorage.setItem("heroic_token", response.data.jwt);
               Alpine.store('core').sessionToken = localStorage.getItem("heroic_token");
@@ -21,6 +21,8 @@
               }, 500);
             } else {
               this.errorMessage = "Token tidak valid";
+              await $heroicHelper.toastr(this.errorMessage, 'danger');
+              window.location.replace("https://ruangai.id/onboarding");
               setTimeout(() => (this.errorMessage = ""), 10000);
             }
           });

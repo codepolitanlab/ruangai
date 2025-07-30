@@ -49,9 +49,6 @@ $logoUrl        = 'https://www.ruangai.id/logo-ruangai.svg'; // Ganti dengan URL
                   Terima kasih telah mendaftar di aplikasi RuangAI <br>
                   Untuk melanjutkan proses pendaftaran, silahkan masukan kode registrasi berikut ini ke dalam aplikasi:
                 </p>
-                <p style="font-size:16px;line-height:1.5;">
-                    <strong><?= $otp ?? '{OTP}' ?></strong>
-                </p>
                 <p>Salam,<br>
                 <strong>Tim CODEPOLITAN</strong>
                 </p>

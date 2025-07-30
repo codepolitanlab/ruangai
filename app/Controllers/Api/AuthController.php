@@ -69,6 +69,14 @@ class AuthController extends ResourceController
             'phone' => $this->heroic->normalizePhoneNumber($data['whatsapp_number']),
         ]);
 
+        $body = [
+            'name' => 'Warrior',
+        ];
+
+        $EmailSender = new \App\Libraries\EmailSender();
+        $EmailSender->setTemplate('registration', $body);
+        $EmailSender->send($data['email'], 'Pendaftaran Akun Berhasil');
+
         return $this->respond(['status' => 'success', 'message' => 'Pengguna berhasil didaftarkan.']);
     }
 
