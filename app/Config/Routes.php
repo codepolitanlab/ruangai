@@ -9,6 +9,8 @@ use CodeIgniter\Router\RouteCollection;
 // Email template preview
 $routes->get('email/preview', 'Email::preview');
 $routes->get('email/preview/(:segment)', 'Email::preview/$1');
+$routes->get('webhook_feedback', 'Api\WebhookController::index');
+$routes->post('webhook_feedback', 'Api\WebhookController::index');
 
 $routes->get('checkToken/(:any)', 'Home::checkToken/$1');
 $routes->get('c/(:any)', function($code) {
