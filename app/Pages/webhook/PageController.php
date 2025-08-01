@@ -7,7 +7,6 @@ use App\Pages\BaseController;
 
 class PageController extends BaseController
 {
-
     public function getIndex()
     {
         return $this->respond('Unauthorized', 401);
@@ -15,18 +14,17 @@ class PageController extends BaseController
 
     public function postIndex($token = null)
     {
-        if(strcmp($_SERVER['HTTP_X_CALLBACK_TOKEN'] ?? null, config('App')->xenditCallbackToken) !== 0) {
+        if (strcmp($_SERVER['HTTP_X_CALLBACK_TOKEN'] ?? null, config('App')->xenditCallbackToken) !== 0) {
             return $this->respond('Unauthorized', 401);
         }
 
         // Handle Xendit callback
-        $payload = file_get_contents('php://input');
+        $payload          = file_get_contents('php://input');
         $invoice_callback = json_decode($payload, true);
         $this->logWebhook($invoice_callback['external_id'], $payload);
 
         // Handle paid invoice
-        if($invoice_callback['status'] == 'PAID') 
-        {    
+        if ($invoice_callback['status'] === 'PAID') {
             // Insert to transaction
             $Transaction = new Transaction();
             $Transaction->assignWebhookPayload($invoice_callback);
@@ -38,7 +36,6 @@ class PageController extends BaseController
             // TODO: Send whatsapp to member
 
             // TODO: Send email to member
-
         }
     }
 
@@ -46,11 +43,11 @@ class PageController extends BaseController
     {
         $db = \Config\Database::connect();
         $db->table('transaction_webhook_logs')->insert([
-            'code' => $code,
-            'payload' => $payload,
-            'created_at' => date('Y-m-d H:i:s')
+            'code'       => $code,
+            'payload'    => $payload,
+            'created_at' => date('Y-m-d H:i:s'),
         ]);
-    } 
+    }
 
     public function getTest()
     {
@@ -64,6 +61,4 @@ class PageController extends BaseController
         $TenantPP->syncBalance();
         dd($TenantPC, $TenantPD, $TenantPW, $TenantPP);
     }
-
 }
-

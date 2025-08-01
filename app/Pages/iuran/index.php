@@ -18,7 +18,7 @@
     <!-- AppCapsule -->
     <div id="appCapsule" class="shadow">
         <div class="appContent" style="min-height:90vh">
-            
+
             <section id="billContainer" class="section-top full pb-1" style="margin-bottom:60px;">
                 <div class="p-2 text-center rounded-bottom-4 bg-brand position-relative" style="height:100px"></div>
 
@@ -51,13 +51,13 @@
                                     </div>
                                 </div>
 
-                                <div 
-                                  x-show="!loading && data.bills.filter(bill=>bill.status == 'pending').length == 0" 
-                                  class="text-center pb-3" 
-                                  style="display: none;"> 
+                                <div
+                                  x-show="!loading && data.bills.filter(bill=>bill.status == 'pending').length == 0"
+                                  class="text-center pb-3"
+                                  style="display: none;">
                                     Tidak ada tagihan menunggu
                                 </div>
-                                
+
                                 <template x-show="!loading" x-for="bill in data.bills.filter(bill=>bill.status == 'pending')" style="">
                                     <div class="card px-3 py-2 mb-2 rounded-3" :class="bill.start_date>(new Date().toJSON().slice(0, 10)) ? 'opacity-50' : ''">
                                         <div class="d-flex align-items-center">
@@ -72,12 +72,12 @@
                                             <div class="ms-auto text-end">
                                                 <div class="btn-group dropstart">
                                                     <div class="btn-group dropstart">
-                                                        <button 
-                                                            type="button" 
-                                                            class="btn btn-sm" 
-                                                            x-on:click="setDetail(bill.id)" 
-                                                            data-bs-toggle="offcanvas" 
-                                                            data-bs-target="#offcanvasBottom" 
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-sm"
+                                                            x-on:click="setDetail(bill.id)"
+                                                            data-bs-toggle="offcanvas"
+                                                            data-bs-target="#offcanvasBottom"
                                                             aria-controls="offcanvasBottom">
                                                             <i class="bi bi-search h5 m-0"></i>
                                                         </button>
@@ -104,13 +104,13 @@
                                     </div>
                                 </div>
 
-                                <div 
-                                   x-show="!loading && data.bills.filter(bill=>bill.status != 'pending').length == 0" 
-                                   class="text-center pb-3" 
-                                   style="display: none;"> 
+                                <div
+                                   x-show="!loading && data.bills.filter(bill=>bill.status != 'pending').length == 0"
+                                   class="text-center pb-3"
+                                   style="display: none;">
                                    Belum ada tagihan
                                 </div>
-                                
+
                                 <template x-show="!loading" x-for="bill in data.bills.filter(bill=>bill.status == 'paid')" style="">
                                     <div class="card px-3 py-2 mb-2 rounded-3 bg-success bg-opacity-25">
                                         <div class="d-flex align-items-center">
@@ -124,12 +124,12 @@
                                             <div class="ms-auto text-end">
                                                 <div class="btn-group dropstart">
                                                     <div class="btn-group dropstart">
-                                                        <button 
-                                                            type="button" 
-                                                            class="btn btn-sm" 
-                                                            x-on:click="setDetail(bill.id)" 
-                                                            data-bs-toggle="offcanvas" 
-                                                            data-bs-target="#offcanvasBottom" 
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-sm"
+                                                            x-on:click="setDetail(bill.id)"
+                                                            data-bs-toggle="offcanvas"
+                                                            data-bs-target="#offcanvasBottom"
                                                             aria-controls="offcanvasBottom">
                                                             <i class="bi bi-search h5 m-0"></i>
                                                         </button>
@@ -151,11 +151,11 @@
                         <div class="d-flex align-items-center gap-2 text-white"><span>Total tagihan :</span>
                             <p class="m-0 fw-bold" x-text="'Rp ' + convertRupiah(totalBill)">Rp 0</p>
                         </div>
-                        <button 
-                            class="btn btn-warning" 
-                            :class="process ? `btn-progress` : ''" 
-                            :disabled="totalBill == 0 ? true : false" 
-                            x-on:click="checkout" 
+                        <button
+                            class="btn btn-warning"
+                            :class="process ? `btn-progress` : ''"
+                            :disabled="totalBill == 0 ? true : false"
+                            x-on:click="checkout"
                             disabled="disabled">
                             Bayar
                         </button>

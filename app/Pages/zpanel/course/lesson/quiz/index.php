@@ -142,7 +142,7 @@
                                 const editorDiv = document.getElementById('editor');
                                 editorDiv.style.height = newHeight + "px";
                                 editor.resize();
-                                
+
                                 document.getElementById("yaml_quiz").value = editor.getValue();
                             }
 

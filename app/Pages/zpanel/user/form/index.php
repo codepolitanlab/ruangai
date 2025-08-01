@@ -30,7 +30,7 @@
                 <?= session()->get('error') ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <?php endif;?>
+            <?php endif; ?>
             <!-- Session flashdata success -->
 
             <div class="row">
@@ -73,7 +73,7 @@
                                 <select name="role_id" class="form-control" required>
                                     <option value="">Select..</option>
                                     <?php foreach($roles as $role): ?>
-                                    <option value="<?= $role->id ?>" <?= (isset($user) && $user->role_id == $role->id) ? 'selected' : '' ?>><?= $role->role_name ?></option>
+                                    <option value="<?= $role->id ?>" <?= (isset($user) && $user->role_id === $role->id) ? 'selected' : '' ?>><?= $role->role_name ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>

@@ -1,18 +1,19 @@
-<?php namespace App\Pages\zpanel\course\lesson;
+<?php
+
+namespace App\Pages\zpanel\course\lesson;
 
 use App\Pages\zpanel\AdminController;
 
-class PageController extends AdminController 
+class PageController extends AdminController
 {
     public $data = [
-        'page_title' => "Daftar Materi"
+        'page_title' => 'Daftar Materi',
     ];
-
     protected $CourseModel;
 
     public function getIndex($course_id)
     {
-        $this->initBasicCourseData($course_id);        
+        $this->initBasicCourseData($course_id);
 
         return pageView('zpanel/course/lesson/index', $this->data);
     }
@@ -20,7 +21,7 @@ class PageController extends AdminController
     protected function initBasicCourseData($course_id)
     {
         // Wajib selalu dibawa untuk suplai data header dan sidebar
-        $this->CourseModel = new \App\Models\Course();
+        $this->CourseModel    = new \App\Models\Course();
         $this->data['course'] = $this->CourseModel->where('id', $course_id)->get()->getRowArray();
         $this->data['topics'] = $this->CourseModel->getTopicLessons($course_id);
     }
@@ -32,6 +33,7 @@ class PageController extends AdminController
         $LessonModel->delete($lesson_id);
 
         session()->setFlashdata('success_message', 'Material telah dihapus');
-        return redirectPage('/zpanel/course/lesson/'.$course_id);
+
+        return redirectPage('/zpanel/course/lesson/' . $course_id);
     }
 }

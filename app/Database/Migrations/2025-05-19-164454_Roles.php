@@ -13,32 +13,32 @@ class Roles extends Migration
             'id' => [
                 'type'           => 'INT',
                 'unsigned'       => true,
-                'auto_increment' => true
+                'auto_increment' => true,
             ],
             'role_name' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 50,
-                'null'       => true
+                'null'       => true,
             ],
             'role_slug' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 50,
-                'null'       => true
+                'null'       => true,
             ],
             'status' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 20,
-                'default'    => 'active'
+                'default'    => 'active',
             ],
             'created_at' => [
                 'type'    => 'TIMESTAMP',
                 'null'    => true,
-                'default' => new RawSql('CURRENT_TIMESTAMP')
+                'default' => new RawSql('CURRENT_TIMESTAMP'),
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
-                'null' => true
-            ]
+                'null' => true,
+            ],
         ]);
 
         $this->forge->addKey('id', true);

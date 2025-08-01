@@ -53,7 +53,7 @@ abstract class BaseController extends Controller
 
         // Preload any models, libraries, etc, here.
 
-        $this->data['themeURL'] = base_url('admin') .'/'; 
-        $this->data['themePath'] = 'admin/'; 
+        $this->data['themeURL']  = base_url('admin') . '/';
+        $this->data['themePath'] = 'admin/';
     }
 }

@@ -28,11 +28,11 @@ Alpine.data('register_confirm', function(){
                 }
             }, 1000);
         },
-        
+
         init(){
             document.title = this.title
             Alpine.store('core').currentPage = 'register_confirm'
-            
+
             this.data.logo = Alpine.store('core').settings.auth_logo
 
             const urlParams = new URLSearchParams(window.location.search);
@@ -87,7 +87,7 @@ Alpine.data('register_confirm', function(){
                 }
             })
         },
-    
+
         resendOTP() {
             this.resending = true
 

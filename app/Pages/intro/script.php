@@ -6,7 +6,7 @@ window.intro = function() {
         init(){
             document.title = this.title
             Alpine.store('core').currentPage = 'intro'
-            
+
             this.swiper = new Swiper(".swiper-intro", {
                 slidesPerView: 1,
                 spaceBetween: 20,

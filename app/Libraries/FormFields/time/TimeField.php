@@ -6,7 +6,7 @@ use App\Libraries\BaseField;
 
 class TimeField extends BaseField
 {
-    protected string $name = '';
+    protected string $name  = '';
     protected string $label = '';
     protected string $rules = '';
 }

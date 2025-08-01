@@ -6,19 +6,17 @@ use CodeIgniter\Model;
 
 class CourseTopic extends Model
 {
-    protected $table            = 'course_topics';
-    protected $primaryKey       = 'id';
-    protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
-    protected $protectFields    = true;
-    protected $allowedFields    = ['course_id', 'topic_title', 'topic_slug', 'topic_order', 'free', 'status'];
-
+    protected $table                  = 'course_topics';
+    protected $primaryKey             = 'id';
+    protected $useAutoIncrement       = true;
+    protected $returnType             = 'array';
+    protected $useSoftDeletes         = true;
+    protected $protectFields          = true;
+    protected $allowedFields          = ['course_id', 'topic_title', 'topic_slug', 'topic_order', 'free', 'status'];
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
-
-    protected array $casts = [];
-    protected array $castHandlers = [];
+    protected array $casts            = [];
+    protected array $castHandlers     = [];
 
     // Dates
     protected $useTimestamps = false;
@@ -47,8 +45,8 @@ class CourseTopic extends Model
     public function hasLessons($topic_id)
     {
         return $this->db->table('course_lessons')
-                        ->where('topic_id', $topic_id)
-                        ->where('deleted_at', null)
-                        ->countAllResults();
+            ->where('topic_id', $topic_id)
+            ->where('deleted_at', null)
+            ->countAllResults();
     }
 }

@@ -6,9 +6,9 @@ use App\Libraries\BaseField;
 
 class JsonField extends BaseField
 {
-    protected string $name = '';
-    protected string $label = '';
-    protected string $rules = '';
+    protected string $name   = '';
+    protected string $label  = '';
+    protected string $rules  = '';
     protected mixed $default = '{}';
 
     /**
@@ -17,6 +17,7 @@ class JsonField extends BaseField
     public function getValueForInput(mixed $value): string
     {
         $decoded = json_decode($value, true);
+
         return $decoded ? json_encode($decoded, JSON_PRETTY_PRINT) : '';
     }
 
@@ -26,6 +27,7 @@ class JsonField extends BaseField
     public function getValueForSaving(mixed $value): string
     {
         $decoded = json_decode($value, true);
+
         return json_encode($decoded ?? []);
     }
 }

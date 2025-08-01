@@ -1,6 +1,6 @@
-<div 
-	id="home" 
-	class="header-mobile-only" 
+<div
+	id="home"
+	class="header-mobile-only"
 	x-data="home()"
 	x-init="initialize">
 

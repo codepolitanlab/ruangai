@@ -10,11 +10,11 @@ class AddColumnTelegramLinkEvents extends Migration
     {
         $this->forge->addColumn('events', [
             'telegram_link' => [
-                'type' => 'VARCHAR',
+                'type'       => 'VARCHAR',
                 'constraint' => '255',
-                'default' => null,
-                'null' => true,
-                'after' => 'organizer',
+                'default'    => null,
+                'null'       => true,
+                'after'      => 'organizer',
             ],
         ]);
     }

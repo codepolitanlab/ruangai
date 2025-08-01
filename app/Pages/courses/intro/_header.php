@@ -1,5 +1,5 @@
-<section 
-    id="course-card-header" 
+<section
+    id="course-card-header"
     class="mb-4 rounded-4 bg-white">
     <div class="position-relative py-3 mt-2 mt-md-3 rounded-4"
         style="background: url(https://image.web.id/images/cover-course-min.png); background-size: cover">

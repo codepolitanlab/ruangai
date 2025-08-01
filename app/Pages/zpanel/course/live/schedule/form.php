@@ -46,9 +46,9 @@
                             <div class="mb-3">
                                 <label for="status" class="form-label">Status</label>
                                 <select name="status" id="status" class="form-control" required>
-                                    <option value="scheduled" <?= (isset($meeting['status']) && $meeting['status'] == 'scheduled') ? 'selected' : '' ?>>Scheduled</option>
-                                    <option value="ongoing" <?= (isset($meeting['status']) && $meeting['status'] == 'ongoing') ? 'selected' : '' ?>>Ongoing</option>
-                                    <option value="completed" <?= (isset($meeting['status']) && $meeting['status'] == 'completed') ? 'selected' : '' ?>>Completed</option>
+                                    <option value="scheduled" <?= (isset($meeting['status']) && $meeting['status'] === 'scheduled') ? 'selected' : '' ?>>Scheduled</option>
+                                    <option value="ongoing" <?= (isset($meeting['status']) && $meeting['status'] === 'ongoing') ? 'selected' : '' ?>>Ongoing</option>
+                                    <option value="completed" <?= (isset($meeting['status']) && $meeting['status'] === 'completed') ? 'selected' : '' ?>>Completed</option>
                                 </select>
                             </div>
                             <div class="mb-3">

@@ -10,11 +10,11 @@ class AddColumnParticipatingProgramToScholarship extends Migration
     {
         $this->forge->addColumn('scholarship_participants', [
             'is_participating_other_ai_program' => [
-                'type' => 'TINYINT',
+                'type'       => 'TINYINT',
                 'constraint' => 1,
-                'default' => null,
-                'null' => true,
-                'after' => 'accept_agreement',
+                'default'    => null,
+                'null'       => true,
+                'after'      => 'accept_agreement',
             ],
         ]);
     }

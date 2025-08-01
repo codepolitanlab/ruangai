@@ -21,7 +21,7 @@
           window.location.replace("/masuk");
         } else {
           var answer = prompt("Apa singkatan dari ToHa?");
-  
+
           // Cek jawabannya
           if (!answer) {
             window.location.replace("/masuk");

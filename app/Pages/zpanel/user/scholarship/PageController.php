@@ -8,11 +8,11 @@ class PageController extends BaseController
 {
     public function getIndex()
     {
-        $data['page_title'] = "Scholarship";
+        $data['page_title'] = 'Scholarship';
 
         // Definisikan field yang bisa difilter
         $filterFields = ['fullname' => 'fullname', 'email' => 'email', 'status' => 'status', 'program' => 'program'];
-        $filters = [];
+        $filters      = [];
 
         // Ambil semua filter dari URL secara dinamis
         foreach ($filterFields as $param => $field) {
@@ -51,7 +51,7 @@ class PageController extends BaseController
         $data['pager'] = $scholarshipModel->pager;
 
         // Jika ada query filter yang aktif, hitung total data yang sesuai
-        if (!empty($filters)) {
+        if (! empty($filters)) {
             $data['total_users'] = count($data['scholarships']);
         } else {
             // Jika tidak ada filter, hitung total data secara keseluruhan
@@ -60,7 +60,7 @@ class PageController extends BaseController
 
         // Tambahkan current_page dan per_page ke data
         $data['current_page'] = $current_page;
-        $data['per_page'] = $per_page;
+        $data['per_page']     = $per_page;
 
         return pageView('zpanel/user/scholarship/index', $data);
     }

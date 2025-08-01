@@ -2,47 +2,47 @@
 $sidebar = [
     'dashboard' => [
         'label' => 'Dashboard',
-        'icon' => 'bi bi-grid-fill',
-        'url' => '/zpanel'
+        'icon'  => 'bi bi-grid-fill',
+        'url'   => '/zpanel',
     ],
     'user' => [
-        'label' => 'User Management',
-        'icon' => 'bi bi-person',
-        'url' => '#',
+        'label'    => 'User Management',
+        'icon'     => 'bi bi-person',
+        'url'      => '#',
         'children' => [
             'list' => [
                 'label' => 'Users',
-                'icon' => 'bi bi-people',
-                'url' => '/zpanel/user',
+                'icon'  => 'bi bi-people',
+                'url'   => '/zpanel/user',
             ],
             'scholarship' => [
                 'label' => 'Scholarship',
-                'icon' => 'bi bi-people',
-                'url' => '/zpanel/user/scholarship',
+                'icon'  => 'bi bi-people',
+                'url'   => '/zpanel/user/scholarship',
             ],
             'role' => [
                 'label' => 'Roles',
-                'icon' => 'bi bi-person-gear',
-                'url' => '/zpanel/user/role',
+                'icon'  => 'bi bi-person-gear',
+                'url'   => '/zpanel/user/role',
             ],
-        ]
+        ],
     ],
     'elearning' => [
-        'label' => 'E-Learning',
-        'icon' => 'bi bi-book',
-        'url' => '#',
+        'label'    => 'E-Learning',
+        'icon'     => 'bi bi-book',
+        'url'      => '#',
         'children' => [
             'online_class' => [
                 'label' => 'Online Classes',
-                'icon' => 'bi bi-laptop',
-                'url' => '/zpanel/course',
+                'icon'  => 'bi bi-laptop',
+                'url'   => '/zpanel/course',
             ],
-        ]
+        ],
     ],
     'events' => [
         'label' => 'Events',
-        'icon' => 'bi bi-calendar',
-        'url' => '/zpanel/events'
+        'icon'  => 'bi bi-calendar',
+        'url'   => '/zpanel/events',
     ],
     // 'content' => [
     //     'label' => 'Content',
@@ -159,7 +159,8 @@ $sidebar = [
     // ],
 ];
 
-function renderMenu($menu) {
+function renderMenu($menu)
+{
     echo '<div class="sidebar-menu">';
     echo '<ul class="menu">';
 
@@ -174,6 +175,7 @@ function renderMenu($menu) {
 
         if ($hasChildren) {
             echo '<ul class="submenu">';
+
             foreach ($item['children'] as $subKey => $subItem) {
                 echo '<li class="submenu-item">';
                 echo '<a href="' . htmlspecialchars($subItem['url']) . '" class="submenu-link">';

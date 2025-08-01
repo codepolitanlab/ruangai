@@ -3,7 +3,6 @@
 namespace App\Pages\courses\intro\lessons;
 
 use App\Pages\BaseController;
-use CodeIgniter\API\ResponseTrait;
 
 class PageController extends BaseController
 {
@@ -16,19 +15,19 @@ class PageController extends BaseController
     public function getData($id)
     {
         $Heroic = new \App\Libraries\Heroic();
-        $jwt = $Heroic->checkToken();
-        
+        $jwt    = $Heroic->checkToken();
+
         $db = \Config\Database::connect();
 
         // Get course
-        if (! $course = cache('course_'.$id)) {
+        if (! $course = cache('course_' . $id)) {
             $course = $db->table('courses')
-                        ->where('id', $id)
-                        ->get()
-                        ->getRowArray();
-                        
+                ->where('id', $id)
+                ->get()
+                ->getRowArray();
+
             // Save into the cache for 5 minutes
-            cache()->save('course_'.$id, $course, 3600);
+            cache()->save('course_' . $id, $course, 3600);
         }
         $this->data['course'] = $course;
 
@@ -44,7 +43,7 @@ class PageController extends BaseController
             $completedLessonIds = array_column($completedLessons, 'lesson_id');
 
             // Get lessons for this course
-            if (! $lessons = cache('course_'.$id.'_lessons')) {
+            if (! $lessons = cache('course_' . $id . '_lessons')) {
                 $lessons = $db->table('course_lessons')
                     ->select('course_lessons.*, course_topics.*, course_lessons.id as id')
                     ->join('course_topics', 'course_topics.id = course_lessons.topic_id', 'left')
@@ -54,40 +53,43 @@ class PageController extends BaseController
                     ->orderBy('course_lessons.lesson_order', 'ASC')
                     ->get()
                     ->getResultArray();
-                
+
                 // Save into the cache for 1 hours
-                cache()->save('course_'.$id.'_lessons', $lessons, 3600);
+                cache()->save('course_' . $id . '_lessons', $lessons, 3600);
             }
 
             $lessonsCompleted = [];
-            $numCompleted = 0;
+            $numCompleted     = 0;
+
             foreach ($lessons as $key => $lesson) {
                 // Tambahkan status is_completed ke setiap lesson
                 $this->data['course']['lessons'][$lesson['topic_title']][$lesson['id']] = $lesson;
-                $lessonsCompleted[] = [
-                    'id'        => $lesson['id'], 
-                    'completed' => in_array($lesson['id'], $completedLessonIds)
+                $lessonsCompleted[]                                                     = [
+                    'id'        => $lesson['id'],
+                    'completed' => in_array($lesson['id'], $completedLessonIds, true),
                 ];
-                if(in_array($lesson['id'], $completedLessonIds)) $numCompleted++;
+                if (in_array($lesson['id'], $completedLessonIds, true)) {
+                    $numCompleted++;
+                }
             }
             $this->data['lessonsCompleted'] = $lessonsCompleted;
-            $this->data['numCompleted'] = $numCompleted;
+            $this->data['numCompleted']     = $numCompleted;
 
             // Get course_students
             $this->data['student'] = $db->table('course_students')
-                                        ->select('progress, cert_claim_date, cert_code, expire_at')
-                                        ->where('course_id', $id)
-                                        ->where('user_id', $jwt->user_id)
-                                        ->get()
-                                        ->getRowArray();
+                ->select('progress, cert_claim_date, cert_code, expire_at')
+                ->where('course_id', $id)
+                ->where('user_id', $jwt->user_id)
+                ->get()
+                ->getRowArray();
             $this->data['is_expire'] = $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
 
             return $this->respond($this->data);
-        } else {
-            return $this->respond([
-                'response_code'    => 404,
-                'response_message' => 'Not found',
-            ]);
         }
+
+        return $this->respond([
+            'response_code'    => 404,
+            'response_message' => 'Not found',
+        ]);
     }
 }

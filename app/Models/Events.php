@@ -6,19 +6,17 @@ use CodeIgniter\Model;
 
 class Events extends Model
 {
-    protected $table            = 'events';
-    protected $primaryKey       = 'id';
-    protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
-    protected $protectFields    = true;
-    protected $allowedFields    = ['title', 'slug', 'code', 'description', 'date_start', 'date_end', 'quota', 'organizer', 'telegram_link', 'status', 'banner_image', 'created_at', 'updated_at', 'deleted_at', 'is_featured'];
-
+    protected $table                  = 'events';
+    protected $primaryKey             = 'id';
+    protected $useAutoIncrement       = true;
+    protected $returnType             = 'array';
+    protected $useSoftDeletes         = true;
+    protected $protectFields          = true;
+    protected $allowedFields          = ['title', 'slug', 'code', 'description', 'date_start', 'date_end', 'quota', 'organizer', 'telegram_link', 'status', 'banner_image', 'created_at', 'updated_at', 'deleted_at', 'is_featured'];
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
-
-    protected array $casts = [];
-    protected array $castHandlers = [];
+    protected array $casts            = [];
+    protected array $castHandlers     = [];
 
     // Dates
     protected $useTimestamps = false;

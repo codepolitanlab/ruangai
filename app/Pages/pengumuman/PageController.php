@@ -1,18 +1,18 @@
-<?php namespace App\Pages\pengumuman;
+<?php
+
+namespace App\Pages\pengumuman;
 
 use App\Pages\BaseController;
-use CodeIgniter\API\ResponseTrait;
 
-class PageController extends BaseController {
-
+class PageController extends BaseController
+{
     public $data = [
         'page_title' => 'Pengumuman',
-        'module'     => 'pengumuman'
+        'module'     => 'pengumuman',
     ];
 
     public function getData()
     {
         return $this->respond($this->data);
     }
-
 }

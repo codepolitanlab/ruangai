@@ -14,9 +14,8 @@ class ScholarshipController extends ResourceController
     use ResponseTrait;
 
     protected $db;
-    protected $table = 'scholarship_participants';
-    protected $format = 'json';
-
+    protected $table            = 'scholarship_participants';
+    protected $format           = 'json';
     private $disallowed_domains = [
         'mailinator.com',
         'guerrillamail.com',
@@ -39,7 +38,7 @@ class ScholarshipController extends ResourceController
         'sharklasers.com',
         'mailcatch.com',
         'inboxbear.com',
-        'codepolitan.com'
+        'codepolitan.com',
     ];
 
     public function __construct()
@@ -50,22 +49,24 @@ class ScholarshipController extends ResourceController
     public function checkToken()
     {
         $Heroic = new \App\Libraries\Heroic();
+
         return $Heroic->checkToken();
     }
 
     public function index()
     {
         $data = 'Test Controllers';
+
         return $this->response->setJSON($data);
     }
 
     public function register()
     {
-        $data = $this->request->getPost();
+        $data   = $this->request->getPost();
         $Heroic = new \App\Libraries\Heroic();
 
         // Minimum validate
-        if (!isset($data['fullname'], $data['email'])) {
+        if (! isset($data['fullname'], $data['email'])) {
             return $this->failValidationErrors(['message' => 'Mohon untuk melengkapi data.']);
         }
 
@@ -87,7 +88,7 @@ class ScholarshipController extends ResourceController
         $number = $Heroic->normalizePhoneNumber($data['whatsapp_number']);
 
         $userModel = new UserModel();
-        $user = $userModel->groupStart()
+        $user      = $userModel->groupStart()
             ->where('LOWER(email)', strtolower($data['email']))
             ->orWhere('phone', $number)
             ->groupEnd()
@@ -101,9 +102,9 @@ class ScholarshipController extends ResourceController
         // Get username from fullname, remove space and lowercase all with sufix random
         $username = str_replace(' ', '', strtolower($data['fullname'])) . '_' . bin2hex(random_bytes(4));
 
-        $Phpass = new \App\Libraries\Phpass();
+        $Phpass   = new \App\Libraries\Phpass();
         $password = $Phpass->HashPassword($data['password']);
-        $userId = $userModel->insert([
+        $userId   = $userModel->insert([
             'name'     => $data['fullname'],
             'username' => $username,
             'email'    => strtolower($data['email']),
@@ -112,14 +113,14 @@ class ScholarshipController extends ResourceController
         ]);
 
         // if failed insert users
-        if (!$userId) {
+        if (! $userId) {
             return $this->fail(['status' => 'failed', 'message' => 'Registrasi gagal.']);
         }
 
-        $data['user_id'] = $userId;
-        $data['whatsapp'] = $number;
+        $data['user_id']       = $userId;
+        $data['whatsapp']      = $number;
         $data['referral_code'] = strtoupper(substr(uniqid(), -6));
-        $data['status'] = 'terdaftar';
+        $data['status']        = 'terdaftar';
 
         $participantModel = new ScholarshipParticipantModel();
 
@@ -131,10 +132,10 @@ class ScholarshipController extends ResourceController
         }
 
         // Insert data to scholarship_participants
-        $data['semester'] = ! empty($data['semester']) ? $data['semester'] : 0;
-        $data['grade'] = ! empty($data['grade']) ? $data['grade'] : 0;
-        $data['accept_terms'] = ! empty($data['accept_terms']) ? $data['accept_terms'] : 0;
-        $data['accept_agreement'] = ! empty($data['accept_agreement']) ? $data['accept_agreement'] : 0;
+        $data['semester']                          = ! empty($data['semester']) ? $data['semester'] : 0;
+        $data['grade']                             = ! empty($data['grade']) ? $data['grade'] : 0;
+        $data['accept_terms']                      = ! empty($data['accept_terms']) ? $data['accept_terms'] : 0;
+        $data['accept_agreement']                  = ! empty($data['accept_agreement']) ? $data['accept_agreement'] : 0;
         $data['is_participating_other_ai_program'] = ! empty($data['is_participating_other_ai_program']) ? $data['is_participating_other_ai_program'] : 0;
 
         $participantModel->insert($data);
@@ -142,30 +143,30 @@ class ScholarshipController extends ResourceController
         // Insert data to course_students
         $courseStudentModel = new \App\Models\CourseStudent();
         $courseStudentModel->insert([
-            'user_id' => $userId,
-            'course_id' => 1,
+            'user_id'    => $userId,
+            'course_id'  => 1,
             'created_at' => date('Y-m-d H:i:s'),
         ]);
 
         // Jwt only email, whatsapp_number, user_id
         $jwt = JWT::encode([
-            'email' => strtolower($data['email']),
+            'email'           => strtolower($data['email']),
             'whatsapp_number' => $number,
-            'user_id' => $userId
+            'user_id'         => $userId,
         ], config('Heroic')->jwtKey['secret'], 'HS256');
 
         return $this->respondCreated([
-            'status' => 'success',
+            'status'  => 'success',
             'message' => 'Registrasi berhasil, selamat anda telah mendapatkan Beasiswa RuangAI.',
-            'token' => $jwt
+            'token'   => $jwt,
         ]);
     }
 
     public function userReferral()
     {
-        $jwt = $this->checkToken();
+        $jwt              = $this->checkToken();
         $participantModel = new ScholarshipParticipantModel();
-        $Heroic = new \App\Libraries\Heroic();
+        $Heroic           = new \App\Libraries\Heroic();
 
         $leader = $participantModel
             ->select('scholarship_participants.*, events.title as program_title, events.telegram_link, events.date_start')
@@ -176,21 +177,21 @@ class ScholarshipController extends ResourceController
             ->orderBy('scholarship_participants.created_at', 'DESC')
             ->first();
 
-        if (!$leader) {
+        if (! $leader) {
             return $this->respond(['status' => 'failed', 'message' => 'Pengguna tidak ditemukan.']);
         }
 
         // Get data bank from user profile
         $userProfileModel = new \App\Models\UserProfile();
-        $profile = $userProfileModel->where('user_id', $leader['user_id'])->where('deleted_at', null)->first();
+        $profile          = $userProfileModel->where('user_id', $leader['user_id'])->where('deleted_at', null)->first();
 
         // Save bank on type object
         $bank = null;
         if ($profile) {
             $bank = (object) [
-                'bank_name'      => $profile['bank_name'],
-                'account_name'   => $profile['account_name'],
-                'account_number' => $profile['account_number'],
+                'bank_name'           => $profile['bank_name'],
+                'account_name'        => $profile['account_name'],
+                'account_number'      => $profile['account_number'],
                 'identity_card_image' => $profile['identity_card_image'],
             ];
         }
@@ -203,24 +204,22 @@ class ScholarshipController extends ResourceController
         $members = $memberQuery->getResultArray();
 
         // Filter member graduated by status completed
-        $graduated = count(array_filter($members, function ($member) {
-            return $member['status'] === 'lulus';
-        }));
+        $graduated = count(array_filter($members, static fn ($member) => $member['status'] === 'lulus'));
 
         $commision = 5000;
         $disbursed = 0;
 
-        $data['referral_code'] = $leader['referral_code'];
-        $data['program'] = $leader['program'];
-        $data['program_title'] = $leader['program_title'];
+        $data['referral_code']      = $leader['referral_code'];
+        $data['program']            = $leader['program'];
+        $data['program_title']      = $leader['program_title'];
         $data['program_date_start'] = $leader['date_start'];
-        $data['telegram_link'] = $leader['telegram_link'];
-        $data['bank'] = $bank;
-        $data['members'] = $members;
-        $data['total_member'] = $memberQuery->getNumRows();
-        $data['total_graduated'] = $graduated;
-        $data['total_commission'] = $commision * $graduated;
-        $data['total_disbursed'] = $disbursed;
+        $data['telegram_link']      = $leader['telegram_link'];
+        $data['bank']               = $bank;
+        $data['members']            = $members;
+        $data['total_member']       = $memberQuery->getNumRows();
+        $data['total_graduated']    = $graduated;
+        $data['total_commission']   = $commision * $graduated;
+        $data['total_disbursed']    = $disbursed;
 
         return $this->respond($data);
     }
@@ -229,42 +228,41 @@ class ScholarshipController extends ResourceController
     {
         $programCode = $this->request->getGet('name');
 
-        $scholarshipModel = new ScholarshipParticipantModel();
+        $scholarshipModel   = new ScholarshipParticipantModel();
         $courseStudentModel = new \App\Models\CourseStudent();
-        $eventModel = new \App\Models\Events();
+        $eventModel         = new \App\Models\Events();
 
-        $masterProgram = $eventModel->where('code', $programCode)->first();
-        $program = $masterProgram['title'];
+        $masterProgram   = $eventModel->where('code', $programCode)->first();
+        $program         = $masterProgram['title'];
         $data['program'] = $program;
 
         $count_user_progress = $courseStudentModel
             ->where('progress >', 0)
             ->groupStart()
-                ->where('graduate', 0)
-                ->orWhere('graduate IS NULL', null, false)
+            ->where('graduate', 0)
+            ->orWhere('graduate IS NULL', null, false)
             ->groupEnd()
             ->countAllResults();
 
         if ($programCode === 'RuangAI2025B1') {
-
-            $quota = $masterProgram['quota'];
+            $quota      = $masterProgram['quota'];
             $quota_used = $scholarshipModel->where('program', $programCode)->where('deleted_at', null)->countAllResults();
-            $graduated = $courseStudentModel->where('course_id', 1)->where('graduate', 1)->where('deleted_at', null)->countAllResults();
+            $graduated  = $courseStudentModel->where('course_id', 1)->where('graduate', 1)->where('deleted_at', null)->countAllResults();
 
-            $data['quota'] = $quota ?? 0;
-            $data['quota_used'] = $quota_used ?? 0;
-            $data['quota_left'] = $quota - $graduated;
-            $data['graduated'] = $graduated ?? 0;
+            $data['quota']         = $quota ?? 0;
+            $data['quota_used']    = $quota_used ?? 0;
+            $data['quota_left']    = $quota - $graduated;
+            $data['graduated']     = $graduated ?? 0;
             $data['user_progress'] = $count_user_progress;
         }
 
         if ($programCode === 'RuangAI2025B2') {
-            $graduated = $courseStudentModel->where('course_id', 2)->where('graduate', 1)->where('deleted_at', null)->countAllResults();
+            $graduated       = $courseStudentModel->where('course_id', 2)->where('graduate', 1)->where('deleted_at', null)->countAllResults();
             $user_registered = $scholarshipModel->where('program', $programCode)->where('deleted_at', null)->countAllResults();
 
             $data['user_registered'] = $user_registered ?? 0;
-            $data['user_progress'] = $count_user_progress;
-            $data['graduated'] = $graduated ?? 0;
+            $data['user_progress']   = $count_user_progress;
+            $data['graduated']       = $graduated ?? 0;
         }
 
         return $this->respond($data);
@@ -273,21 +271,21 @@ class ScholarshipController extends ResourceController
     public function isDisallowedDomain($email)
     {
         // Pisahkan email menjadi username dan domain
-        list($user, $domain) = explode('@', strtolower($email));
+        [$user, $domain] = explode('@', strtolower($email));
 
         // Cek apakah domain ada di dalam daftar disallowed_domains
-        if (in_array($domain, $this->disallowed_domains)) {
-            return TRUE;
-        } else {
-            return FALSE;
+        if (in_array($domain, $this->disallowed_domains, true)) {
+            return true;
         }
+
+        return false;
     }
 
     public function frontendSettings()
     {
-        $db = \Config\Database::connect();
-        $course = $db->table('courses')->where('id', 1)->get()->getRowArray();
-        $data['publish_class'] = $course['status'] == 'publish' ? true : false;
+        $db                    = \Config\Database::connect();
+        $course                = $db->table('courses')->where('id', 1)->get()->getRowArray();
+        $data['publish_class'] = $course['status'] === 'publish' ? true : false;
 
         return $this->respond($data);
     }
@@ -296,20 +294,20 @@ class ScholarshipController extends ResourceController
     {
         // Get course_students yang progressnya sudah 100 tapi graduate masih 0
         $courseStudentModel = new \App\Models\CourseStudent();
-        $students = $courseStudentModel->select('course_students.user_id, progress, graduate')
+        $students           = $courseStudentModel->select('course_students.user_id, progress, graduate')
             ->where('course_id', 1)
             ->where('course_students.graduate', 0)
             ->where('course_students.progress', 100)
             ->get()
             ->getResultArray();
         if ($students) {
-            echo "Ada " . count($students) . " student yang 100% progress dan belum ditandai lulus <br>";
+            echo 'Ada ' . count($students) . ' student yang 100% progress dan belum ditandai lulus <br>';
 
             $students = array_column($students, 'user_id');
 
             // Count live attendance
             $liveAttendanceModel = new \App\Models\LiveAttendance();
-            $live_attendance = $liveAttendanceModel->select('user_id, COUNT(DISTINCT live_meeting_id) as total')
+            $live_attendance     = $liveAttendanceModel->select('user_id, COUNT(DISTINCT live_meeting_id) as total')
                 ->where('course_id', 1)
                 ->whereIn('user_id', $students)
                 ->groupBy('user_id')
@@ -318,10 +316,10 @@ class ScholarshipController extends ResourceController
                 ->getResultArray();
 
             if ($live_attendance) {
-                echo "Ada " . count($live_attendance) . " student yang hadir di >= 3 live meeting <br>";
+                echo 'Ada ' . count($live_attendance) . ' student yang hadir di >= 3 live meeting <br>';
 
                 $live_attendance = array_combine(array_column($live_attendance, 'user_id'), array_column($live_attendance, 'total'));
-                $graduated = array_keys($live_attendance);
+                $graduated       = array_keys($live_attendance);
 
                 // Update graduate menjadi 1
                 $courseStudentModel->whereIn('user_id', $graduated)
@@ -335,12 +333,12 @@ class ScholarshipController extends ResourceController
                     ->set(['status' => 'lulus'])
                     ->update();
 
-                echo "Updated: " . $courseStudentModel->affectedRows() . " rows & " . $participantModel->affectedRows() . " rows";
+                echo 'Updated: ' . $courseStudentModel->affectedRows() . ' rows & ' . $participantModel->affectedRows() . ' rows';
             } else {
-                echo "Belum ada yang hadir di minimal 3 live meeting";
+                echo 'Belum ada yang hadir di minimal 3 live meeting';
             }
         } else {
-            echo "Belum ada student yang 100% progress";
+            echo 'Belum ada student yang 100% progress';
         }
     }
 }

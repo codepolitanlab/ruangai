@@ -1,8 +1,10 @@
-<?php namespace App\Pages\logout;
+<?php
+
+namespace App\Pages\logout;
 
 use App\Pages\BaseController;
 
-class PageController extends BaseController 
+class PageController extends BaseController
 {
     public function getIndex()
     {
@@ -13,5 +15,4 @@ class PageController extends BaseController
     {
         $_SESSION = [];
     }
-
 }

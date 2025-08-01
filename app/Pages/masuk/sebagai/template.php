@@ -48,8 +48,8 @@
     </div>
     <!-- * App Capsule -->
 
-    <div id="toast-login-error" 
-        class="toast-box toast-bottom bg-danger" 
+    <div id="toast-login-error"
+        class="toast-box toast-bottom bg-danger"
         :class="errorMessage ? 'show' : ''">
         <div class="in">
             <div class="text" x-text="errorMessage"></div>

@@ -1,13 +1,16 @@
-<?php namespace App\Pages\iuran;
+<?php
+
+namespace App\Pages\iuran;
 
 use App\Pages\BaseController;
 use Firebase\JWT\JWT;
 
-class PageController extends BaseController {
-
+class PageController extends BaseController
+{
     public function getContent()
     {
         $this->data['page_title'] = 'Iuran Anggota';
+
         return pageView('iuran/index', $this->data);
     }
 
@@ -16,7 +19,7 @@ class PageController extends BaseController {
         $db = \Config\Database::connect();
 
         $Heroic = new \App\Libraries\Heroic();
-        $user = $Heroic->checkToken();
+        $user   = $Heroic->checkToken();
 
         // Get setting
         $this->data['bills'] = $db->table('md_bills')
@@ -26,9 +29,9 @@ class PageController extends BaseController {
             ->get()
             ->getResultArray();
 
-        $this->data['total_rows'] = count($this->data['bills']);
-		$unpaid = array_filter($this->data['bills'], function($row){ return $row['status'] == 'pending' && $row['start_date'] <= date("Y-m-d"); });
-        $this->data['unpaid_rows'] = count($unpaid);
+        $this->data['total_rows']    = count($this->data['bills']);
+        $unpaid                      = array_filter($this->data['bills'], static fn ($row) => $row['status'] === 'pending' && $row['start_date'] <= date('Y-m-d'));
+        $this->data['unpaid_rows']   = count($unpaid);
         $this->data['unpaid_amount'] = array_sum(array_column($unpaid, 'amount'));
 
         return $this->respond(['found' => $this->data['bills'] ? 1 : 0, 'data' => $this->data]);
@@ -36,26 +39,26 @@ class PageController extends BaseController {
 
     public function postIndex()
     {
-        $payload = $this->request->getPost('cart');
+        $payload  = $this->request->getPost('cart');
         $cartData = json_decode($payload, true);
 
         $checkoutData = [];
-        if($cartData) {
-            foreach($cartData as $item) {
+        if ($cartData) {
+            foreach ($cartData as $item) {
                 $checkoutData[] = [
-                    'product_type'  => 'bill',
-                    'id'            => $item['id'],
-                    'qty'           => 1
+                    'product_type' => 'bill',
+                    'id'           => $item['id'],
+                    'qty'          => 1,
                 ];
             }
         }
-        if(! $checkoutData)
+        if (! $checkoutData) {
             return $this->respond(['found' => 0, 'message' => 'Invalid cart data']);
+        }
 
         $key = config('Heroic')->jwtKey['secret'];
         $jwt = JWT::encode($checkoutData, $key, 'HS256');
 
         return $this->respond(['found' => 1, 'token' => $jwt]);
     }
-
 }

@@ -30,11 +30,11 @@
                 <?= session()->get('error') ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <?php endif;?>
+            <?php endif; ?>
             <!-- Session flashdata success -->
 
             <div class="row">
-                
+
 
                 <div class="col-md-6">
                     <div class="card shadow mb-3">
@@ -62,12 +62,12 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Date Start <span class="text-danger">*</span></label>
-                                <input type="date" name="date_start" value="<?= !empty($event->date_start) ? date('Y-m-d', strtotime($event->date_start)) : '' ?>" class="form-control" required>
+                                <input type="date" name="date_start" value="<?= ! empty($event->date_start) ? date('Y-m-d', strtotime($event->date_start)) : '' ?>" class="form-control" required>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Date End <span class="text-danger">*</span></label>
-                                <input type="date" name="date_end" value="<?= !empty($event->date_end) ? date('Y-m-d', strtotime($event->date_end)) : '' ?>" class="form-control" required>
+                                <input type="date" name="date_end" value="<?= ! empty($event->date_end) ? date('Y-m-d', strtotime($event->date_end)) : '' ?>" class="form-control" required>
                             </div>
 
                             <div class="mb-3">
@@ -95,8 +95,8 @@
                                 <label class="form-label">Status <span class="text-danger">*</span></label>
                                 <select name="status" class="form-control" required>
                                     <option value="">Pilih...</option>
-                                    <option value="published" <?= (isset($event) && $event->status == 'published')?'selected' : ''?>>Published</option>
-                                    <option value="draft" <?= (isset($event) && $event->status == 'draft')?'selected' : ''?>>Draft</option>
+                                    <option value="published" <?= (isset($event) && $event->status === 'published') ? 'selected' : ''?>>Published</option>
+                                    <option value="draft" <?= (isset($event) && $event->status === 'draft') ? 'selected' : ''?>>Draft</option>
                                 </select>
                             </div>
                         </div>

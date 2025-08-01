@@ -6,19 +6,17 @@ use CodeIgniter\Model;
 
 class LiveMeetingBlueprintModel extends Model
 {
-    protected $table            = 'live_meeting_blueprints';
-    protected $primaryKey       = 'id';
-    protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
-    protected $protectFields    = true;
-    protected $allowedFields    = ['course_id', 'title', 'description', 'mentor_name', 'duration', 'order'];
-
+    protected $table                  = 'live_meeting_blueprints';
+    protected $primaryKey             = 'id';
+    protected $useAutoIncrement       = true;
+    protected $returnType             = 'array';
+    protected $useSoftDeletes         = false;
+    protected $protectFields          = true;
+    protected $allowedFields          = ['course_id', 'title', 'description', 'mentor_name', 'duration', 'order'];
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
-
-    protected array $casts = [];
-    protected array $castHandlers = [];
+    protected array $casts            = [];
+    protected array $castHandlers     = [];
 
     // Dates
     protected $useTimestamps = false;

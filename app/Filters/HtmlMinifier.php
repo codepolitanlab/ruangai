@@ -2,11 +2,10 @@
 
 namespace App\Filters;
 
+use Abordage\HtmlMin\HtmlMin;
+use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
-use CodeIgniter\Filters\FilterInterface;
-use Abordage\HtmlMin\HtmlMin;
-use MatthiasMullie\Minify\JS as JSMin;
 
 class HtmlMinifier implements FilterInterface
 {
@@ -28,12 +27,12 @@ class HtmlMinifier implements FilterInterface
 
             // Minify HTML
             $htmlMin = new HtmlMin();
-            $output = $htmlMin->minify($output);
+            $output  = $htmlMin->minify($output);
 
             // Minify inline JS di dalam <script> tag
             $output = preg_replace_callback(
                 '#<script\b[^>]*>(.*?)</script>#is',
-                function ($matches) {
+                static function ($matches) {
                     $js = $matches[1];
 
                     // Skip script kosong

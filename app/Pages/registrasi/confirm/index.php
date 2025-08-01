@@ -18,9 +18,9 @@
                 <p class="">Untuk melanjutkan pendaftaran, masukkan kode registrasi yang telah kami kirimkan ke nomor WhatsApp Anda.</p>
             </div>
             <div class="section mt-1 mb-5 px-0">
-                <div>                    
+                <div>
                     <div class="py-3">
-                        <div class="form-group px-3 py-3 text-start bg-secondary bg-opacity-25"> 
+                        <div class="form-group px-3 py-3 text-start bg-secondary bg-opacity-25">
                             <div class="d-flex justify-content-between">
                                 <label class="fw-bold mb-1">Tidak menerima Kode Registrasi?</label>
                             </div>
@@ -29,7 +29,7 @@
                                 <button type="button" x-on:click="resendOTP" class="btn bg-success text-white btn-sm" :disabled="remainingTime > 0 || resending"><span class="bi bi-whatsapp me-1"></span> <span x-text="resending ? 'Mengirim ulang...' : 'Kirim Ulang Kode ke WhatsApp'"></span></button>
                             </div>
                         </div>
-                        
+
                         <div class="form-group px-3 boxed mt-3 text-start">
                             <div class="text-start input-wrapper">
                                 <label class="fw-bold">Masukkan kode registrasi di sini</label>

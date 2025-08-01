@@ -6,7 +6,7 @@ use App\Libraries\BaseField;
 
 class UuidField extends BaseField
 {
-    protected string $name = '';
+    protected string $name  = '';
     protected string $label = '';
     protected string $rules = '';
 
@@ -15,7 +15,7 @@ class UuidField extends BaseField
      */
     public function getValueForInput(mixed $value): string
     {
-        return !empty($value) ? hex2uuid($value) : strtoupper(str_replace('-', '', generate_uuid()));
+        return ! empty($value) ? hex2uuid($value) : strtoupper(str_replace('-', '', generate_uuid()));
     }
 
     /**

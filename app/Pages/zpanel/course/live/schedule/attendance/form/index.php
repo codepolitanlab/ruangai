@@ -30,11 +30,11 @@
                 <?= session()->get('error') ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <?php endif;?>
+            <?php endif; ?>
             <!-- Session flashdata success -->
 
             <div class="row">
-                
+
 
                 <div class="col-md-6">
                     <div class="card shadow mb-3">

@@ -5,7 +5,7 @@ $idname = str_replace(['[', ']'], ['__', ''], $config['name']);
 <div>
   <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#addMultipleItemModal-<?= $idname; ?>">+ Add Item</button>
   <input type="hidden" name="<?= $config['name']; ?>[mode]" value="multiple_advanced">
-  
+
   <table class="table table-striped table-sm" id="table-<?= $idname; ?>">
     <tr>
       <th>Item</th>

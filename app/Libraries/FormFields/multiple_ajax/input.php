@@ -1,4 +1,4 @@
-<?php 
+<?php
 $idname = str_replace(['[', ']'], ['__', ''], $config['name']);
 ?>
 

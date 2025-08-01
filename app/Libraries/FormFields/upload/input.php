@@ -1,21 +1,21 @@
-<?php $idname = str_replace(['[',']'], ['__',''], $config['name']); ?>
+<?php $idname = str_replace(['[', ']'], ['__', ''], $config['name']); ?>
 <div class="input-group">
   <button type="button" id="<?= $idname; ?>Btn" class="btn btn-outline-info px-2">
       <?= $value ? 'Ganti File' : 'Upload File'; ?>
   </button>
-  <a class="btn btn-outline-secondary <?= $value ?? null ? 'px-2' : 'd-none'; ?>" 
-     id="btn-preview-<?= $idname ?>" 
-     title="Lihat gambar" 
-     data-fancybox="gallery" 
+  <a class="btn btn-outline-secondary <?= $value ?? null ? 'px-2' : 'd-none'; ?>"
+     id="btn-preview-<?= $idname ?>"
+     title="Lihat gambar"
+     data-fancybox="gallery"
      href="<?= strpos($value, 'http') !== 0 ? base_url('uploads/' . $_ENV['SITENAME'] . '/entry_files/' . ($value ?? '-')) : ($value ?? '-'); ?>">
     <img src="<?= base_url('views/admin/assets/images/card-image.svg'); ?>">
   </a>
-  <input type="text" class="form-control" 
-         name="<?= $config['name']; ?>" 
-         id="<?= $idname; ?>" 
-         value="<?= $value; ?>" 
-         data-caption="<?= $config['label']; ?>" 
-         <?= strpos($config['rules'] ?? '', 'required') !== false ? 'required' : ''; ?> 
+  <input type="text" class="form-control"
+         name="<?= $config['name']; ?>"
+         id="<?= $idname; ?>"
+         value="<?= $value; ?>"
+         data-caption="<?= $config['label']; ?>"
+         <?= strpos($config['rules'] ?? '', 'required') !== false ? 'required' : ''; ?>
          readonly>
 </div>
 

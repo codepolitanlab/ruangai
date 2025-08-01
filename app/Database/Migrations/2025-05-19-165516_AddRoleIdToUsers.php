@@ -10,11 +10,11 @@ class AddRoleIdToUsers extends Migration
     {
         $this->forge->addColumn('users', [
             'role_id' => [
-                'type'       => 'INT',
-                'null'       => true,
-                'default'    => 2,
-                'after'      => 'id' // Hanya berlaku di MySQL
-            ]
+                'type'    => 'INT',
+                'null'    => true,
+                'default' => 2,
+                'after'   => 'id', // Hanya berlaku di MySQL
+            ],
         ]);
     }
 

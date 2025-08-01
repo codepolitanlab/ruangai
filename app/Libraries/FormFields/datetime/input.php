@@ -1,26 +1,26 @@
-<?php 
-$fieldId = str_replace(['[', ']'], ['__', ''], $config['name']); 
-$date = $value['date'] ?? ''; 
-$time = $value['time'] ?? ''; 
+<?php
+$fieldId = str_replace(['[', ']'], ['__', ''], $config['name']);
+$date    = $value['date'] ?? '';
+$time    = $value['time'] ?? '';
 ?>
 
 <div class="d-flex">
-    <input type="text" 
-           id="<?= $fieldId; ?>_date" 
-           value="<?= $date; ?>" 
-           class="form-control me-1" 
-           style="max-width:150px" 
-           data-caption="<?= $config['label']; ?>" 
-           autocomplete="off" 
-           <?= strpos($config['rules'] ?? '', 'required') !== false ? 'required' : ''; ?> 
+    <input type="text"
+           id="<?= $fieldId; ?>_date"
+           value="<?= $date; ?>"
+           class="form-control me-1"
+           style="max-width:150px"
+           data-caption="<?= $config['label']; ?>"
+           autocomplete="off"
+           <?= strpos($config['rules'] ?? '', 'required') !== false ? 'required' : ''; ?>
            data-toggle="datepicker" />
 
-    <input type="time" 
-           id="<?= $fieldId; ?>_time" 
-           value="<?= $time; ?>" 
-           class="form-control" 
-           style="max-width:150px" 
-           <?= strpos($config['rules'] ?? '', 'required') !== false ? 'required' : ''; ?> 
+    <input type="time"
+           id="<?= $fieldId; ?>_time"
+           value="<?= $time; ?>"
+           class="form-control"
+           style="max-width:150px"
+           <?= strpos($config['rules'] ?? '', 'required') !== false ? 'required' : ''; ?>
            data-caption="<?= $config['label']; ?>" />
 </div>
 

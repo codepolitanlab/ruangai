@@ -1,12 +1,11 @@
-<?php namespace App\Pages\keluar;
+<?php
+
+namespace App\Pages\keluar;
 
 use App\Pages\BaseController;
-use CodeIgniter\API\ResponseTrait;
 
-class PageController extends BaseController 
+class PageController extends BaseController
 {
-    
-    
     public function getIndex()
     {
         return pageView('keluar/index', $this->data);
@@ -16,5 +15,4 @@ class PageController extends BaseController
     {
         $_SESSION = [];
     }
-
 }

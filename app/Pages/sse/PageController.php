@@ -1,16 +1,18 @@
-<?php namespace App\Pages\sse;
+<?php
+
+namespace App\Pages\sse;
 
 use App\Pages\BaseController;
 
-class PageController extends BaseController 
+class PageController extends BaseController
 {
     public $data = [
-        'page_title' => "Sse Page"
+        'page_title' => 'Sse Page',
     ];
 
     public function getData()
     {
-        $this->data['name'] = "Federico Vandervort Jr.";
+        $this->data['name'] = 'Federico Vandervort Jr.';
 
         return $this->respond($this->data);
     }
@@ -28,7 +30,7 @@ class PageController extends BaseController
         for ($i = 0; $i < 10; $i++) {
             $count++;
 
-            echo "data: " . json_encode(['counter' => $count]) . "\n\n";
+            echo 'data: ' . json_encode(['counter' => $count]) . "\n\n";
 
             ob_flush();
             flush();

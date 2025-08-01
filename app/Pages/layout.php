@@ -21,13 +21,13 @@
     let base_url = `<?= base_url() ?>`
 
     document.addEventListener('alpine:init', () => {
-        
+
         // Setup Pinecone Router
         window.PineconeRouter.settings({
 			basePath: '/',
 			targetID: 'app',
 		})
-        
+
         NProgress.configure({ showSpinner: false });
         document.addEventListener('pinecone-start', () => {
             NProgress.start();
@@ -66,7 +66,7 @@
                 }
             }
         });
-        
+
         Alpine.data('router', () => ({
             isLoggedIn(context, controller){
                 if(! localStorage.getItem('heroic_token')){
@@ -76,7 +76,7 @@
             }
         }))
     })
-    
+
 
     Fancybox.bind('[data-fancybox="gallery"]', {});
 

@@ -5,14 +5,14 @@
             data: {},
             init(){
                 window.scrollTo({top:0, behavior:'auto'});
-                
+
                 document.title = this.title;
                 Alpine.store('core').currentPage = 'profile'
-                
-    
+
+
                 if($heroicHelper.cached['profile']){
                     this.data = $heroicHelper.cached['profile']
-                } else {   
+                } else {
                     $heroicHelper.fetch('profile/data')
                     .then(response => {
                         $heroicHelper.cached['profile'] = response.data
@@ -28,6 +28,6 @@
                 }
             }
         }
-        
+
     })
 </script>

@@ -1,1 +1,1 @@
-<?= hex2uuid($result[$config['field']]); ?>
+<?= hex2uuid($result[$config['field']]);

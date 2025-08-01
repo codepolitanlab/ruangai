@@ -84,7 +84,7 @@
 
 						<!-- if data not found -->
 
-						<?php if (count($courses) == 0): ?>
+						<?php if (count($courses) === 0): ?>
 							<div class="col-12">
 								<div class="card card-hover rounded-4">
 									<div class="card-body py-4 px-2 d-flex flex-column">

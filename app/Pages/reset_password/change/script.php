@@ -12,11 +12,11 @@ Alpine.data('reset_password_confirm', function(tokens){
         showPwd: false,
         sending: false,
         error: '',
-        
+
         init(){
             document.title = this.title
             Alpine.store('core').currentPage = 'change_password'
-            
+
             this.data.logo = Alpine.store('core').settings.auth_logo
 
             const tokenRegex = /^[a-f0-9]+_[0-9]+X.+$/;

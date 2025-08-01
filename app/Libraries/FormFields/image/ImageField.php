@@ -6,10 +6,10 @@ use App\Libraries\BaseField;
 
 class ImageField extends BaseField
 {
-    protected string $name = '';
-    protected string $label = '';
-    protected string $rules = '';
-    protected mixed $default = null;
+    protected string $name       = '';
+    protected string $label      = '';
+    protected string $rules      = '';
+    protected mixed $default     = null;
     protected string $uploadPath = 'uploads/images/';
 
     /**

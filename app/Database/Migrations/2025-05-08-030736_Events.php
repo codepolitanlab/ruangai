@@ -20,7 +20,7 @@ class Events extends Migration
             'quota'             => ['type' => 'INT', 'constraint' => 5, 'default' => 0],
             'total_participant' => ['type' => 'INT', 'constraint' => 5, 'default' => 0],
             'organizer'         => ['type' => 'VARCHAR', 'constraint' => 100, 'null' => true],
-            'status'            => ['type' => 'VARCHAR', 'constraint' => 20, 'default' => 'draft'], //['draft', 'published', 'cancelled', 'completed']
+            'status'            => ['type' => 'VARCHAR', 'constraint' => 20, 'default' => 'draft'], // ['draft', 'published', 'cancelled', 'completed']
             'publish_at'        => ['type' => 'TIMESTAMP', 'null' => true],
             'is_featured'       => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 0],
             'banner_image'      => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],

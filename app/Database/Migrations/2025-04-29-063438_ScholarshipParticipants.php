@@ -17,7 +17,7 @@ class ScholarshipParticipants extends Migration
             'email'             => ['type' => 'VARCHAR', 'constraint' => 255],
             'whatsapp'          => ['type' => 'VARCHAR', 'constraint' => 20],
             'birthday'          => ['type' => 'DATE', 'null' => true],
-            'gender'            => ['type' => 'VARCHAR', 'constraint' => 10, 'DEFAULT' => 'male'], //['male', 'female']],
+            'gender'            => ['type' => 'VARCHAR', 'constraint' => 10, 'DEFAULT' => 'male'], // ['male', 'female']],
             'province'          => ['type' => 'VARCHAR', 'constraint' => 255],
             'city'              => ['type' => 'VARCHAR', 'constraint' => 255],
             'occupation'        => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
@@ -35,8 +35,8 @@ class ScholarshipParticipants extends Migration
             'last_project'      => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
             'reference'         => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
             'referral_code'     => ['type' => 'VARCHAR', 'constraint' => 20],
-            'withdrawal'        => ['type' => 'INT', 'constraint' => 5, 'null' => true,'default' => 0],
-            'status'            => ['type' => 'VARCHAR', 'constraint' => 20, 'default' => 'terdaftar'], //['terdaftar', 'lulus', 'tidak lulus']
+            'withdrawal'        => ['type' => 'INT', 'constraint' => 5, 'null' => true, 'default' => 0],
+            'status'            => ['type' => 'VARCHAR', 'constraint' => 20, 'default' => 'terdaftar'], // ['terdaftar', 'lulus', 'tidak lulus']
             'accept_terms'      => ['type' => 'INT', 'constraint' => 1, 'default' => 0],
             'accept_agreement'  => ['type' => 'INT', 'constraint' => 1, 'default' => 0],
             'created_at'        => ['type' => 'TIMESTAMP', 'null' => true, 'default' => new RawSql('CURRENT_TIMESTAMP')],

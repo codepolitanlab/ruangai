@@ -10,26 +10,27 @@ use Endroid\QrCode\Label\Font\OpenSans;
 use Endroid\QrCode\Label\LabelAlignment;
 use Endroid\QrCode\RoundBlockSizeMode;
 use Endroid\QrCode\Writer\PngWriter;
+use Exception;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class PageController extends BaseController
 {
     public $data = [
-        'page_title'  => 'Claim Certificate',
+        'page_title' => 'Claim Certificate',
     ];
-    
+
     public function getData($course_id)
     {
         $Heroic = new \App\Libraries\Heroic();
-        $jwt = $Heroic->checkToken();
+        $jwt    = $Heroic->checkToken();
 
         // Check requirement
         try {
             $this->checkRequirement($jwt->user_id, $course_id);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->respond([
-                'status' => 'error',
-                'message' => "Terjadi kesalahan saat mengecek kelengkapan data sebelum get data sertifikat."
+                'status'  => 'error',
+                'message' => 'Terjadi kesalahan saat mengecek kelengkapan data sebelum get data sertifikat.',
             ]);
         }
 
@@ -42,55 +43,56 @@ class PageController extends BaseController
             ->first();
 
         $this->data['student'] = $student;
+
         return $this->respond($this->data);
     }
 
     // Generate certificate and save feedback
     public function postIndex()
     {
-        $Heroic = new \App\Libraries\Heroic();
-        $jwt = $Heroic->checkToken();
-        $post = $this->request->getPost();
+        $Heroic    = new \App\Libraries\Heroic();
+        $jwt       = $Heroic->checkToken();
+        $post      = $this->request->getPost();
         $course_id = $post['course_id'];
 
         // Check field data
-        if (!$post['name']) {
+        if (! $post['name']) {
             return $this->respond([
-                'status' => 'error',
-                'message' => 'Name is required'
+                'status'  => 'error',
+                'message' => 'Name is required',
             ]);
         }
-        if (!$post['comment']) {
+        if (! $post['comment']) {
             return $this->respond([
-                'status' => 'error',
-                'message' => 'Comment is required'
+                'status'  => 'error',
+                'message' => 'Comment is required',
             ]);
         }
-        if (!$post['rating']) {
+        if (! $post['rating']) {
             return $this->respond([
-                'status' => 'error',
-                'message' => 'Rating is required'
+                'status'  => 'error',
+                'message' => 'Rating is required',
             ]);
         }
 
         // Check requirement
         try {
             $this->checkRequirement($jwt->user_id, $course_id);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->respond([
-                'status' => 'error',
-                'message' => "Terjadi kesalahan saat mengecek kelengkapan data sebelum generate sertifikat."
+                'status'  => 'error',
+                'message' => 'Terjadi kesalahan saat mengecek kelengkapan data sebelum generate sertifikat.',
             ]);
         }
 
         // Save feedback
         $data = [
-            'user_id' => $jwt->user_id,
-            'rate' => in_array($post['rating'], [1, 2, 3, 4]) ? $post['rating'] : 4,
-            'comment' => esc($post['comment']),
-            'object_id' => $course_id,
+            'user_id'     => $jwt->user_id,
+            'rate'        => in_array($post['rating'], [1, 2, 3, 4], true) ? $post['rating'] : 4,
+            'comment'     => esc($post['comment']),
+            'object_id'   => $course_id,
             'object_type' => 'course',
-            'created_at' => date('Y-m-d H:i:s'),
+            'created_at'  => date('Y-m-d H:i:s'),
         ];
         model('Feedback')->insert($data);
 
@@ -121,8 +123,8 @@ class PageController extends BaseController
             'status'  => 'success',
             'message' => 'Feedback berhasil disimpan',
             'data'    => [
-                'code' => $certResult->code
-            ]
+                'code' => $certResult->code,
+            ],
         ]);
     }
 
@@ -130,27 +132,27 @@ class PageController extends BaseController
     {
         $code = md5('code');
         echo $code;
-        echo "<br>";
+        echo '<br>';
         echo $cert_code = strtoupper(substr(sha1('902-1'), -6)) . date('Hi');
     }
 
     private function checkRequirement($user_id, $course_id)
     {
         // Check if user has completed the course
-        $db = \Config\Database::connect();
+        $db             = \Config\Database::connect();
         $learningStatus = $db->table('course_students')
             ->where('user_id', $user_id)
             ->where('course_id', $course_id)
             ->get()
             ->getRowArray();
 
-        if (!$learningStatus) {
-            throw new \Exception('User tidak ditemukan atau sudah pernah klaim sertifikat.');
+        if (! $learningStatus) {
+            throw new Exception('User tidak ditemukan atau sudah pernah klaim sertifikat.');
         }
 
         // Check if user has complete live session at least 3 times
         if ($learningStatus['progress'] < 100) {
-            throw new \Exception('User belum menyelesaikan belajar.');
+            throw new Exception('User belum menyelesaikan belajar.');
         }
 
         if ($learningStatus['live_attended'] < 3) {
@@ -163,7 +165,7 @@ class PageController extends BaseController
                 ->countAllResults();
 
             if ($liveIsCompleted < 3) {
-                throw new \Exception('User belum memenuhi ketentuan minimum mengikuti live session.');
+                throw new Exception('User belum memenuhi ketentuan minimum mengikuti live session.');
             }
         }
 
@@ -173,7 +175,7 @@ class PageController extends BaseController
     public function getSimulate($user_id = 37, $course_id = 1)
     {
         $certResult = $this->generateCertificate($user_id, $course_id);
-        $certURLs = $certResult->getOutputURLs();
+        $certURLs   = $certResult->getOutputURLs();
 
         // Update cert_claim_date on course_students by user_id and course_id
         $db = \Config\Database::connect();
@@ -188,15 +190,15 @@ class PageController extends BaseController
                 'cert_url'        => json_encode($certURLs),
             ]);
 
-        echo "<img src=" . $certURLs[1] . " width='3000'>";
-        echo "<img src=" . $certURLs[2] . " width='3000'>";
-        echo "<img src=" . $certURLs[3] . " width='3000'>";
+        echo '<img src=' . $certURLs[1] . " width='3000'>";
+        echo '<img src=' . $certURLs[2] . " width='3000'>";
+        echo '<img src=' . $certURLs[3] . " width='3000'>";
     }
 
     public function getRegenerate($code = null)
     {
         // Get course_students by code
-        $db = \Config\Database::connect();
+        $db   = \Config\Database::connect();
         $cert = $db->table('course_students')
             ->where('cert_code', $code)
             ->get()
@@ -218,26 +220,27 @@ class PageController extends BaseController
     private function generateCertificate($user_id, $course_id, $certNumberOrder = null)
     {
         // Ambil konfigurasi sertifikat
-        $CertConfigClassname = "\App\Pages\certificate\claim\CertConfig_" . $course_id;
-        $CertConfig = new $CertConfigClassname($user_id, $course_id, $certNumberOrder);
+        $CertConfigClassname = '\\App\\Pages\\certificate\\claim\\CertConfig_' . $course_id;
+        $CertConfig          = new $CertConfigClassname($user_id, $course_id, $certNumberOrder);
 
         // Buat folder storage jika belum ada
-        if (!file_exists($CertConfig->outputDir)) {
+        if (! file_exists($CertConfig->outputDir)) {
             mkdir($CertConfig->outputDir, 0775, true);
         }
 
         // Generate each certificate
         foreach ($CertConfig->pages as $pagenumber => $page) {
-            $certTemplate = $page['templatePath'];
+            $certTemplate   = $page['templatePath'];
             $outputFilename = $page['outputPath'];
 
             // Load template gambar
-            if (!file_exists($certTemplate)) {
-                throw new \Exception('Certificate template not found: ' . $certTemplate);
+            if (! file_exists($certTemplate)) {
+                throw new Exception('Certificate template not found: ' . $certTemplate);
             }
 
             // Generate certificate image and all texts
             $image = imagecreatefromjpeg($certTemplate);
+
             foreach ($page['texts'] as $text) {
                 $value     = $text['value'];
                 $fontSize  = $text['fontSize'];
@@ -250,7 +253,7 @@ class PageController extends BaseController
             }
 
             if ($page['qrcode'] ?? null) {
-                $qr = $this->getQR($page['qrcode']['value'], $page['qrcode']['size'], $page['qrcode']['margin'], $page['qrcode']['logo'], $page['qrcode']['logoSize']);
+                $qr  = $this->getQR($page['qrcode']['value'], $page['qrcode']['size'], $page['qrcode']['margin'], $page['qrcode']['logo'], $page['qrcode']['logoSize']);
                 $qrX = $page['qrcode']['x'];
                 $qrY = $page['qrcode']['y'];
                 imagecopy($image, $qr, $qrX, $qrY, 0, 0, $page['qrcode']['size'] + $page['qrcode']['margin'] * 2, $page['qrcode']['size'] + 60);
@@ -294,8 +297,8 @@ class PageController extends BaseController
 
         // Directly output the QR code
         $qrData = $result->getString();
-        $qrImage = imagecreatefromstring($qrData);
-        return $qrImage;
+
+        return imagecreatefromstring($qrData);
     }
 
     public function getRegenerateManual()
@@ -305,50 +308,50 @@ class PageController extends BaseController
 
         // Daftar kode yang akan di-regenerate
         $kodeList = [
-            "6C7BCC2208",
-            "8747E02209",
-            "688B3F2209",
-            "24CFC82209",
-            "6E083B2209",
-            "E151D42209",
-            "95282C2209",
-            "C2A2082209",
-            "2358FD2209",
-            "134F932209",
-            "A763272209",
-            "E627192209",
-            "AA5A232209",
-            "ED290A2209",
-            "036E772209",
-            "72FC952209",
-            "B3C91D2209",
-            "D1F23A2209",
-            "EA768A2209",
-            "D827252209",
-            "2A70522209",
-            "2732212210",
-            "98817E2210",
-            "A6732F2210",
-            "5DC9A62210",
-            "2683EF2210",
-            "9329622210",
-            "1899632210",
-            "6929E52210",
-            "F5BF4D2210",
-            "83BEA92210",
-            "4F05242210",
-            "D75E7B2210",
-            "D5E3412210",
-            "CDDBF12210",
-            "DA3CDD2210",
-            "DC750C2210",
-            "5377B62210",
-            "E57F6C2210",
-            "39980B2210",
+            '6C7BCC2208',
+            '8747E02209',
+            '688B3F2209',
+            '24CFC82209',
+            '6E083B2209',
+            'E151D42209',
+            '95282C2209',
+            'C2A2082209',
+            '2358FD2209',
+            '134F932209',
+            'A763272209',
+            'E627192209',
+            'AA5A232209',
+            'ED290A2209',
+            '036E772209',
+            '72FC952209',
+            'B3C91D2209',
+            'D1F23A2209',
+            'EA768A2209',
+            'D827252209',
+            '2A70522209',
+            '2732212210',
+            '98817E2210',
+            'A6732F2210',
+            '5DC9A62210',
+            '2683EF2210',
+            '9329622210',
+            '1899632210',
+            '6929E52210',
+            'F5BF4D2210',
+            '83BEA92210',
+            '4F05242210',
+            'D75E7B2210',
+            'D5E3412210',
+            'CDDBF12210',
+            'DA3CDD2210',
+            'DC750C2210',
+            '5377B62210',
+            'E57F6C2210',
+            '39980B2210',
         ];
 
         foreach ($kodeList as $kode) {
-            $url = "https://app.ruangai.id/certificate/claim/regenerate/" . $kode;
+            $url = 'https://app.ruangai.id/certificate/claim/regenerate/' . $kode;
 
             // Gunakan cURL untuk memanggil URL
             $ch = curl_init($url);
@@ -356,14 +359,14 @@ class PageController extends BaseController
 
             $response = curl_exec($ch);
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            $error = curl_error($ch);
+            $error    = curl_error($ch);
 
             curl_close($ch);
 
             if ($httpCode === 200) {
-                echo "Sukses regenerate untuk kode: $kode\n";
+                echo "Sukses regenerate untuk kode: {$kode}\n";
             } else {
-                echo "Gagal regenerate untuk kode: $kode | Status: $httpCode | Error: $error\n";
+                echo "Gagal regenerate untuk kode: {$kode} | Status: {$httpCode} | Error: {$error}\n";
             }
 
             // Delay opsional untuk menghindari server overload

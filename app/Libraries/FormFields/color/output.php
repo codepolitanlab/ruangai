@@ -1,3 +1,3 @@
-<div style="background-color: <?php echo $result[$config['field']]; ?>">
-    <?php echo $result[$config['field']]; ?>
+<div style="background-color: <?= $result[$config['field']]; ?>">
+    <?= $result[$config['field']]; ?>
 </div>

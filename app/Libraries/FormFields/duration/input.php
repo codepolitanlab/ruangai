@@ -1,11 +1,11 @@
-<?php 
-$fieldId = str_replace(['[', ']'], ['__', ''], $config['name']); 
-$hour = $value['hour'] ?? '00'; 
-$minute = $value['minute'] ?? '00'; 
-$second = $value['second'] ?? '00'; 
+<?php
+$fieldId = str_replace(['[', ']'], ['__', ''], $config['name']);
+$hour    = $value['hour'] ?? '00';
+$minute  = $value['minute'] ?? '00';
+$second  = $value['second'] ?? '00';
 ?>
 
-<input id="<?= $fieldId; ?>" type="hidden" name="<?= $config['name']; ?>" value="<?= "$hour:$minute:$second"; ?>">
+<input id="<?= $fieldId; ?>" type="hidden" name="<?= $config['name']; ?>" value="<?= "{$hour}:{$minute}:{$second}"; ?>">
 
 <div class="d-flex justify-content-start">
     <div class="input-group mb-2 me-2" style="max-width:150px">

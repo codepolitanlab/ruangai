@@ -1,7 +1,7 @@
 <label class="switch">
-    <input type="checkbox" <?= $value == '1' ? 'checked':''; ?>>
+    <input type="checkbox" <?= $value === '1' ? 'checked' : ''; ?>>
     <span class="slider round"></span>
-    <input type="hidden" name="<?= $config['name'];?>" value="<?= $value; ?>">
+    <input type="hidden" name="<?= $config['name']; ?>" value="<?= $value; ?>">
 </label>
 
 <script>

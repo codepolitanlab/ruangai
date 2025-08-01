@@ -41,6 +41,8 @@ class Autoload extends AutoloadConfig
      */
     public $psr4 = [
         APP_NAMESPACE => APPPATH,
+        'Heroicadmin' => ROOTPATH . 'modules/Heroicadmin',
+        'Course'      => ROOTPATH . 'modules/Course',
     ];
 
     /**

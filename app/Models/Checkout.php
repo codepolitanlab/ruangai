@@ -6,19 +6,17 @@ use CodeIgniter\Model;
 
 class Checkout extends Model
 {
-    protected $table            = 'checkouts';
-    protected $primaryKey       = 'code';
-    protected $useAutoIncrement = false;
-    protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
-    protected $protectFields    = true;
-    protected $allowedFields    = ['tenant_id','user_id','guest_name','guest_contact','guest_address','description','items','item_amount','payment_method','payment_fee'];
-
+    protected $table                  = 'checkouts';
+    protected $primaryKey             = 'code';
+    protected $useAutoIncrement       = false;
+    protected $returnType             = 'array';
+    protected $useSoftDeletes         = true;
+    protected $protectFields          = true;
+    protected $allowedFields          = ['tenant_id', 'user_id', 'guest_name', 'guest_contact', 'guest_address', 'description', 'items', 'item_amount', 'payment_method', 'payment_fee'];
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
-
-    protected array $casts = [];
-    protected array $castHandlers = [];
+    protected array $casts            = [];
+    protected array $castHandlers     = [];
 
     // Dates
     protected $useTimestamps = false;
@@ -54,15 +52,16 @@ class Checkout extends Model
     protected function prepareCheckoutData(array $data)
     {
         // Generate checkout code
-        $charset = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-        $tenantCode = $data['data']['tenant_id'] ?? substr(str_shuffle($charset), 0, 4);
-        $dateCode = strtoupper(dechex(intval(date('ymd'))));
-        $randomChars = substr(str_shuffle($charset), 0, 4);
+        $charset              = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        $tenantCode           = $data['data']['tenant_id'] ?? substr(str_shuffle($charset), 0, 4);
+        $dateCode             = strtoupper(dechex((int) (date('ymd'))));
+        $randomChars          = substr(str_shuffle($charset), 0, 4);
         $data['data']['code'] = "{$tenantCode}-{$dateCode}{$randomChars}";
 
         // Convert items to json
-        if(is_array($data['data']['items']))
+        if (is_array($data['data']['items'])) {
             $data['data']['items'] = json_encode($data['data']['items']);
+        }
 
         // Count total
         $data['data']['total'] = $data['data']['item_amount'] + $data['data']['payment_fee'];
@@ -76,8 +75,8 @@ class Checkout extends Model
         $db->table($this->table)
             ->where('code', $code)
             ->update([
-                'status' => $status,
-                'updated_at' => date('Y-m-d H:i:s')
+                'status'     => $status,
+                'updated_at' => date('Y-m-d H:i:s'),
             ]);
     }
 }

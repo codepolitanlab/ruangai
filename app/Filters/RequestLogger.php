@@ -2,9 +2,9 @@
 
 namespace App\Filters;
 
+use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
-use CodeIgniter\Filters\FilterInterface;
 
 class RequestLogger implements FilterInterface
 {
@@ -17,7 +17,7 @@ class RequestLogger implements FilterInterface
             'uri'        => current_url(),
             'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
             'headers'    => [],
-            'body'       => ''
+            'body'       => '',
         ];
 
         // Ambil headers
@@ -40,9 +40,9 @@ class RequestLogger implements FilterInterface
         // Tulis log ke file
         $logLine = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         file_put_contents(WRITEPATH . 'logs/request-log.log', $logLine . PHP_EOL . str_repeat('-', 80) . PHP_EOL, FILE_APPEND);
-
-        return;
     }
 
-    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null) {}
+    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
+    {
+    }
 }

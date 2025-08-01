@@ -1,15 +1,15 @@
 <?php
-$id = str_replace(['[', ']'], ['__', ''], $config['name']);
-$selectedYear = $value['year'] ?? date("Y");
-$selectedMonth = $value['month'] ?? date("m");
-$selectedDay = $value['day'] ?? date("d");
+$id            = str_replace(['[', ']'], ['__', ''], $config['name']);
+$selectedYear  = $value['year'] ?? date('Y');
+$selectedMonth = $value['month'] ?? date('m');
+$selectedDay   = $value['day'] ?? date('d');
 ?>
 
 <div class="d-flex">
     <!-- Select Tahun -->
     <select id="year_<?= $id; ?>" class="form-select me-2">
-        <?php for ($y = date("Y") - 50; $y <= date("Y") + 10; $y++): ?>
-            <option value="<?= $y; ?>" <?= $y == $selectedYear ? 'selected' : ''; ?>><?= $y; ?></option>
+        <?php for ($y = date('Y') - 50; $y <= date('Y') + 10; $y++): ?>
+            <option value="<?= $y; ?>" <?= $y === $selectedYear ? 'selected' : ''; ?>><?= $y; ?></option>
         <?php endfor; ?>
     </select>
 
@@ -17,13 +17,14 @@ $selectedDay = $value['day'] ?? date("d");
     <select id="month_<?= $id; ?>" class="form-select me-2">
         <?php
         $months = [
-            "01" => "Januari", "02" => "Februari", "03" => "Maret",
-            "04" => "April", "05" => "Mei", "06" => "Juni",
-            "07" => "Juli", "08" => "Agustus", "09" => "September",
-            "10" => "Oktober", "11" => "November", "12" => "Desember"
+            '01' => 'Januari', '02' => 'Februari', '03' => 'Maret',
+            '04' => 'April', '05' => 'Mei', '06' => 'Juni',
+            '07' => 'Juli', '08' => 'Agustus', '09' => 'September',
+            '10' => 'Oktober', '11' => 'November', '12' => 'Desember',
         ];
-        foreach ($months as $key => $name): ?>
-            <option value="<?= $key; ?>" <?= $key == $selectedMonth ? 'selected' : ''; ?>><?= $name; ?></option>
+
+foreach ($months as $key => $name): ?>
+            <option value="<?= $key; ?>" <?= $key === $selectedMonth ? 'selected' : ''; ?>><?= $name; ?></option>
         <?php endforeach; ?>
     </select>
 

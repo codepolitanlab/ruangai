@@ -27,14 +27,14 @@
                         <div class="swiper-button-next"></div>
                         <div class="swiper-button-prev"></div>
                     </div>
-                    
+
                     <div class="card-header px-3 pt-2 pb-1">
-                        <img src="<?= $post[0]['avatar'] ? $post[0]['avatar'] : base_url('mobilekit/assets/img/walisantri/avatar/user.png'); ?>" alt="image" class="imaged w32 rounded me-1">
+                        <img src="<?= $post[0]['avatar'] ?: base_url('mobilekit/assets/img/walisantri/avatar/user.png'); ?>" alt="image" class="imaged w32 rounded me-1">
                         <span><?= $post[0]['author_name'] ?></span>
                     </div>
                     <div class="card-body px-3 pb-3">
                         <h3 class="card-title mb-1"><?= $post[0]['title'] ?></h3>
-                        <div class="text-muted mb-3"><?= date("d M Y", strtotime($post[0]['published_at'])) ?></div>
+                        <div class="text-muted mb-3"><?= date('d M Y', strtotime($post[0]['published_at'])) ?></div>
                         <p class="card-text"><?= nl2br($post[0]['content']) ?></p>
                     </div>
                 </div>

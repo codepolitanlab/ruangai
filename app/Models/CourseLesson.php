@@ -6,19 +6,17 @@ use CodeIgniter\Model;
 
 class CourseLesson extends Model
 {
-    protected $table            = 'course_lessons';
-    protected $primaryKey       = 'id';
-    protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
-    protected $protectFields    = true;
-    protected $allowedFields    = ['course_id','topic_id','lesson_title','lesson_order','lesson_slug','text','quiz','type','status','free','video_diupload','video_bunny','duration'];
-
+    protected $table                  = 'course_lessons';
+    protected $primaryKey             = 'id';
+    protected $useAutoIncrement       = true;
+    protected $returnType             = 'array';
+    protected $useSoftDeletes         = true;
+    protected $protectFields          = true;
+    protected $allowedFields          = ['course_id', 'topic_id', 'lesson_title', 'lesson_order', 'lesson_slug', 'text', 'quiz', 'type', 'status', 'free', 'video_diupload', 'video_bunny', 'duration'];
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
-
-    protected array $casts = [];
-    protected array $castHandlers = [];
+    protected array $casts            = [];
+    protected array $castHandlers     = [];
 
     // Dates
     protected $useTimestamps = false;

@@ -35,7 +35,7 @@
           });
         }
       },
-      
+
       setTimerButtonPaham() {
         this.showButtonPaham = false;
         setTimeout(() => this.showButtonPaham = true, this.waitToShowButtonPaham)

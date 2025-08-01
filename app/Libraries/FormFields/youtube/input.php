@@ -1,14 +1,14 @@
-<input type="text" 
-       id="<?= str_replace(['[',']'], ['__',''], $config['name']);?>" 
-       name="<?= $config['name'];?>" 
-       value="<?= $value ?? ''; ?>" 
-       placeholder="<?= $config['placeholder'] ?? '';?>" 
-       class="form-control" 
-       data-caption="<?= $config['label'];?>" />
+<input type="text"
+       id="<?= str_replace(['[', ']'], ['__', ''], $config['name']); ?>"
+       name="<?= $config['name']; ?>"
+       value="<?= $value ?? ''; ?>"
+       placeholder="<?= $config['placeholder'] ?? ''; ?>"
+       class="form-control"
+       data-caption="<?= $config['label']; ?>" />
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    let youtubeInput = document.getElementById("<?= str_replace(['[',']'], ['__',''], $config['name']); ?>");
+    let youtubeInput = document.getElementById("<?= str_replace(['[', ']'], ['__', ''], $config['name']); ?>");
 
     youtubeInput.addEventListener("blur", function() {
         let url = youtubeInput.value;

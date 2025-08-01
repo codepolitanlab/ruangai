@@ -44,7 +44,7 @@
                         <div class="swiper-button-prev"></div>
                     </div>
                     </template>
-                   
+
                     <div class="card-body px-3 pt-2 pb-3">
                         <h2 class="h5" x-text="video[0]?.title"></h2>
                         <small class="text-muted" x-text="formatDate(video[0]?.published_at)"></small>

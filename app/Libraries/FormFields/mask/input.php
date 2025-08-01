@@ -1,14 +1,14 @@
-<?php $idname = str_replace(['[',']'], ['__',''], $config['name']); ?>
+<?php $idname = str_replace(['[', ']'], ['__', ''], $config['name']); ?>
 
 <div class="input-group">
-    <input type="password" 
-           id="<?= $idname; ?>" 
+    <input type="password"
+           id="<?= $idname; ?>"
            name="<?= $config['name']; ?>"
-           placeholder="<?= $config['placeholder'] ?? ''; ?>" 
-           value="<?= $value; ?>" 
-           class="form-control" 
+           placeholder="<?= $config['placeholder'] ?? ''; ?>"
+           value="<?= $value; ?>"
+           class="form-control"
            data-caption="<?= $config['label']; ?>" />
-    
+
     <div class="input-group-append">
        <button class="btn mb-0 btn-secondary" id="show_mask_<?= $idname; ?>" data-toggle="hide" type="button">
            <span class="fa fa-eye-slash"></span>

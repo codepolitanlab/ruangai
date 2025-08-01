@@ -9,101 +9,101 @@ class CreateUsersTable extends Migration
     public function up()
     {
         $this->forge->addField([
-            'id'              => [
+            'id' => [
                 'type'           => 'INT',
                 'unsigned'       => true,
-                'auto_increment' => true
+                'auto_increment' => true,
             ],
-            'name'            => [
+            'name' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
-                'null'       => true
+                'null'       => true,
             ],
-            'phone'           => [
+            'phone' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 15,
-                'null'       => true
+                'null'       => true,
             ],
-            'email'           => [
+            'email' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
-                'null'       => true
+                'null'       => true,
             ],
-            'avatar'          => [
+            'avatar' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
-                'null'       => true
+                'null'       => true,
             ],
-            'pwd'             => [
+            'pwd' => [
                 'type' => 'TEXT',
-                'null' => true
+                'null' => true,
             ],
-            'token'           => [
+            'token' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 150,
-                'null'       => true
-            ],
-            'otp'             => [
-                'type'       => 'VARCHAR',
-                'constraint' => 6,
-                'null'       => true
-            ],
-            'otp_email'       => [
-                'type'       => 'VARCHAR',
-                'constraint' => 6,
-                'null'       => true
-            ],
-            'otp_phone'       => [
-                'type'       => 'VARCHAR',
-                'constraint' => 6,
-                'null'       => true
-            ],
-            'phone_valid'   => [
-                'type'       => 'TINYINT',
                 'null'       => true,
-                'default'    => 0
             ],
-            'email_valid'   => [
-                'type'       => 'TINYINT',
+            'otp' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 6,
                 'null'       => true,
-                'default'    => 0
             ],
-            'username'        => [
+            'otp_email' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 6,
+                'null'       => true,
+            ],
+            'otp_phone' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 6,
+                'null'       => true,
+            ],
+            'phone_valid' => [
+                'type'    => 'TINYINT',
+                'null'    => true,
+                'default' => 0,
+            ],
+            'email_valid' => [
+                'type'    => 'TINYINT',
+                'null'    => true,
+                'default' => 0,
+            ],
+            'username' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 100,
-                'null'       => true
+                'null'       => true,
             ],
-            'status'          => [
+            'status' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
-                'null'       => true
+                'null'       => true,
             ],
-            'status_message'  => [
+            'status_message' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
-                'null'       => true
+                'null'       => true,
             ],
-            'active'          => [
+            'active' => [
                 'type'       => 'TINYINT',
                 'constraint' => 1,
-                'default'    => 0
+                'default'    => 0,
             ],
-            'last_active'     => [
+            'last_active' => [
                 'type' => 'DATETIME',
-                'null' => true
+                'null' => true,
             ],
-            'created_at'      => [
+            'created_at' => [
                 'type' => 'DATETIME',
-                'null' => true
+                'null' => true,
             ],
-            'updated_at'      => [
+            'updated_at' => [
                 'type' => 'DATETIME',
-                'null' => true
+                'null' => true,
             ],
-            'deleted_at'      => [
+            'deleted_at' => [
                 'type' => 'DATETIME',
-                'null' => true
-            ]
+                'null' => true,
+            ],
         ]);
 
         $this->forge->addKey('id', true); // PRIMARY KEY

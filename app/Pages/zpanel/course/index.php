@@ -40,7 +40,7 @@
                     <div class="media-body px-3 py-2">
                         <div class="row">
                             <div class="col-lg-6 pl-2 d-flex justify-content-start mb-2">
-                                <img src="<?= $course['cover'] ?>" 
+                                <img src="<?= $course['cover'] ?>"
                                     style="margin-top:10px; width:100px;height:100px;object-fit:cover;">
                                 <div class="ps-3 pt-2">
                                     <h5 class="mt-0 mb-1 d-inline-block">
@@ -69,7 +69,7 @@
                                     <div class="col-6 col-sm-4">
                                         <div class="text-nowrap"><strong>Total modul:</strong> <?= $course['total_module'] ?></div>
                                         <div><strong>Durasi:</strong> <?= convertSecondsToTime($course['total_time']) ?></div>
-                                        <div><strong class="text-nowrap">Last update:</strong> <br><?= date("d m Y, H:i", strtotime($course['last_update'] ?? $course['updated_at'])) ?></div>
+                                        <div><strong class="text-nowrap">Last update:</strong> <br><?= date('d m Y, H:i', strtotime($course['last_update'] ?? $course['updated_at'])) ?></div>
                                     </div>
                                     <div class="col-6 col-sm-4 px-2">
                                         <div class="d-flex gap-1"><span class="pe-1 bi bi-dash-circle text-muted" title="quiz enabled"></span> <span>Enable Quiz</span></div>

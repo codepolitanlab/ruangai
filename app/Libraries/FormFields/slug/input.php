@@ -1,13 +1,13 @@
-<input type="text" id="<?= str_replace(['[',']'], ['__',''], $config['name']);?>" 
-       class="form-control <?= $value ? '' : 'slugify'; ?>" 
-       name="<?= $config['name'];?>" 
-       value="<?= $value;?>" 
-       data-referer="<?= $config['referer'];?>"
-       data-caption="<?= $config['label'];?>" >
+<input type="text" id="<?= str_replace(['[', ']'], ['__', ''], $config['name']); ?>"
+       class="form-control <?= $value ? '' : 'slugify'; ?>"
+       name="<?= $config['name']; ?>"
+       value="<?= $value; ?>"
+       data-referer="<?= $config['referer']; ?>"
+       data-caption="<?= $config['label']; ?>" >
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        let slugInput = document.getElementById("<?= str_replace(['[',']'], ['__',''], $config['name']); ?>");
+        let slugInput = document.getElementById("<?= str_replace(['[', ']'], ['__', ''], $config['name']); ?>");
         let refererField = document.querySelector("[name='<?= $config['referer']; ?>']");
 
         function slugify(text) {
