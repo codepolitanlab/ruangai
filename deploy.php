@@ -15,16 +15,16 @@ add('writable_dirs', []);
 // Hosts
 // Production
 host('production')
-    ->setHostname('app.ruangai.id')
+    ->setHostname('ruangai-staging.appdata.id')
     ->setRemoteUser('root')
-    ->setDeployPath('/var/www/app.jagoansiber.com')
+    ->setDeployPath('/var/www/ruangai.codepolitan.com')
     ->set('branch', 'main');
 
 // Staging
 host('staging')
-    ->setHostname('ruangai.cloudapp.web.id')
+    ->setHostname('ruangai-staging.appdata.id')
     ->setRemoteUser('root')
-    ->setDeployPath('/var/www/jagoansiber.cloudapp.web.id')
+    ->setDeployPath('/var/www/ruangai-staging.appdata.id')
     ->set('branch', 'dev');
 
 // Tasks

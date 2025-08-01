@@ -6,7 +6,11 @@ class Sese extends \CodeIgniter\Controller
 {
     public function index()
     {
-        return view('sese');
+        $Phpass = new \App\Libraries\Phpass();
+        $password = 'bismillah';
+        $hashed = '$P$BKkZAeVzC8P3whpS47YNNRPT7S2VYW/';
+
+        dd($Phpass->CheckPassword($password, $hashed));
     }
 
     public function counter()

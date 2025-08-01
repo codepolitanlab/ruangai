@@ -6,8 +6,8 @@ use CodeIgniter\Config\BaseConfig;
 
 class Heroicadmin extends BaseConfig
 {
-    public $title        = 'Jagoansiber';
-    public $urlScope     = 'admin';
+    public $title        = 'RuangAI';
+    public $urlScope     = 'ruangpanel';
     public $rootPanelUrl = 'dashboard';
     public $sidebarMenu  = [
         10 => [

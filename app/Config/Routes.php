@@ -5,6 +5,8 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
+// Test
+$routes->get('sese', 'Sese::index');
 
 // Email template preview
 $routes->get('email/preview', 'Email::preview');
