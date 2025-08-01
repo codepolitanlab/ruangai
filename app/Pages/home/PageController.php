@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Pages\home;
 
@@ -7,69 +7,75 @@ use App\Pages\BaseController;
 class PageController extends BaseController
 {
     public $data = [
-        'page_title' => "Beranda"
+        'page_title'  => 'Homepage',
+        'module'      => 'homepage',
+        'active_page' => 'homepage',
     ];
 
-    public function getSupply()
+    public function getData($id)
     {
-        // Get database pesantren
         $Heroic = new \App\Libraries\Heroic();
+        $jwt = $Heroic->checkToken(true);
+        $this->data['name'] = $jwt->user['name'];
+
         $db = \Config\Database::connect();
 
-        /**
-         * Get post data (articles and videos)
-         **/
-		$postQuery = "SELECT `mein_microblogs`.`id`, `medias`, `title`, `content`, `youtube_url`,
-        `total_like`, `total_comment`, `author` as `author_id`, users.avatar,
-        `users`.`name` as `author_name`, `mein_microblogs`.`status` as `status`, 
-        `mein_microblogs`.`created_at` as `created_at`, 
-        `mein_microblogs`.`published_at` as `published_at`
-        FROM `mein_microblogs`
-        JOIN `users` ON `users`.`id`=`mein_microblogs`.`author`
-        WHERE `mein_microblogs`.`status` = 'publish'
-        ORDER BY `mein_microblogs`.`published_at` DESC
-        LIMIT 5";
-
-        $posts = $db->query($postQuery)->getResultArray();
-        foreach($posts as $key => $post)
-        {
-            $posts[$key]['medias'] = json_decode($posts[$key]['medias'], true);
+        // Get course
+        if (! $course = cache('course_'.$id)) {
+            $course = $db->table('courses')
+                        ->where('id', $id)
+                        ->get()
+                        ->getRowArray();
+                        
+            // Save into the cache for 5 minutes
+            cache()->save('course_'.$id, $course, 3600);
         }
-        $data['posts'] = $posts;
 
-        // /**
-        //  * Get pengumuman data
-        //  **/
-        // $newestPengumumanQuery =  "SELECT id, title, publish_date 
-        // FROM `pengumuman`
-        // WHERE status = 'publish'
-        // ORDER BY publish_date DESC 
-        // LIMIT 1";
-        // $data['pengumuman'] = $db->query($newestPengumumanQuery)->getRowArray();
+        if ($course) {
+            // Get completed lessons for current user
+            $completedLessons = $db->table('course_lessons')
+                ->select('count(course_lessons.id) as total_lessons, count(course_lesson_progress.user_id) as completed')
+                ->join('course_lesson_progress', 'course_lesson_progress.lesson_id = course_lessons.id AND user_id = '.$jwt->user_id, 'left')
+                ->where('course_lessons.course_id', $id)
+                ->get()
+                ->getRowArray();
 
-        /**
-         * Get kajian data
-         * TODO: Set category in microblog first
-         **/
-		// $kajianQuery = "SELECT `mein_microblogs`.`id`, `medias`, `title`, `content`, `youtube_url`,
-        // `total_like`, `total_comment`, `author` as `author_id`, users.avatar,
-        // `users`.`name` as `author_name`, `mein_microblogs`.`status` as `status`, 
-        // `mein_microblogs`.`created_at` as `created_at`, 
-        // `mein_microblogs`.`published_at` as `published_at`
-        // FROM `mein_microblogs`
-        // JOIN `users` ON `users`.`id`=`mein_microblogs`.`author`
-        // WHERE `mein_microblogs`.`status` = 'publish' 
-        // ORDER BY `mein_microblogs`.`published_at` DESC
-        // LIMIT 5";
+            $this->data['total_lessons'] = $completedLessons['total_lessons'] ?? 1;
+            $this->data['lesson_completed'] = $completedLessons['completed'] ?? 0;
+            $this->data['course'] = $course;
 
-        // $kajian = $db->query($kajianQuery)->getResultArray();
-        // foreach($kajian as $key => $post)
-        // {
-        //     $kajian[$key]['medias'] = json_decode($kajian[$key]['medias'], true);
-        // }
-        // $data['kajian'] = $kajian;
+            // Get count live attendance user
+            $this->data['live_attendance'] = $db->table('live_attendance')
+                ->where('user_id', $jwt->user_id)
+                ->where('course_id', $id)
+                ->where('deleted_at', null)
+                ->countAllResults();
 
-        return $this->respond($data);
+            // Get total live_meetings
+            $this->data['live_meetings'] = $db->table('live_meetings')
+                ->select('live_meetings.id')
+                ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id AND live_batch.id = '.$course['current_batch_id'])
+                ->where('course_id', $id)
+                ->countAllResults();
+
+            // Get course_students
+            $this->data['student'] = $db->table('course_students')
+                                        ->select('progress, cert_claim_date, cert_code, expire_at')
+                                        ->where('course_id', $id)
+                                        ->where('user_id', $jwt->user_id)
+                                        ->get()
+                                        ->getRowArray();
+
+            $this->data['course_completed'] = $this->data['total_lessons'] == $this->data['lesson_completed'] && $this->data['live_attendance'] >= 3 ? true : false;
+            $this->data['is_enrolled'] = $db->table('course_students')->where('course_id', $id)->where('user_id', $jwt->user_id)->countAllResults() > 0 ? true : false;
+            $this->data['is_expire'] = $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
+
+            return $this->respond($this->data);
+        } else {
+            return $this->respond([
+                'response_code'    => 404,
+                'response_message' => 'Not found',
+            ]);
+        }
     }
-
 }

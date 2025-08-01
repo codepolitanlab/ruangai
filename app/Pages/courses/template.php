@@ -1,124 +1,143 @@
-<div
-	id="courses"
-	x-data="$heroic({
-        title: `<?= $page_title ?>`,
-    })"
-	x-init="$router.navigate('/courses/intro/1/dasar-dan-penggunaan-generative-ai')">
+<div id="courses" x-data="courses()">
+
+	<style>
+		.card {
+			border: none;
+			border-radius: 1rem;
+			/* rounded-4 */
+		}
+
+		.progress {
+			height: 8px;
+			border-radius: 1rem;
+		}
+
+		.locked-btn {
+			background-color: #e9ecef;
+			/* Warna tombol locked */
+			color: #6c757d;
+			border: 1px solid #dee2e6;
+			font-size: 0.8rem;
+			padding: 0.25rem 0.75rem;
+		}
+
+		.img-course {
+			width: 100px;
+			height: 110px;
+			object-fit: cover;
+		}
+
+		@media (min-width: 768px) {
+			.img-course {
+				width: 150px;
+				height: 110px;
+				object-fit: cover;
+			}
+		}
+	</style>
 
 	<div id="appCapsule">
-		<div class="appContent" style="min-height:90vh;">
-			<style>
-				#appCapsule {
-					padding-top: 0;
-				}
 
-				.swiper-slide {
-					height: auto !important;
-				}
+		<div class="appContent py-4" style="min-height:90vh">
 
-				.card {
-					height: 100%;
-				}
+			<div class="">
 
-				.page-banner {
-					background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://madrasahdigital.id//uploads/madrasahdigital/sources/BG-MD-GD.png');
-					background-size: cover;
-					background-position: top;
-				}
-
-				.course-attr {
-					line-height: 18px;
-				}
-			</style>
-
-			<div class="p-2 p-lg-4">
-
-				<section>
-					<div class="position-relative">
-						<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%205231%20(1).png" class="w-100 position-relative" alt="">
-						<div class="position-absolute start-0 m-2" style="top: 50px;">
-							<h5 class="text-white mb-1">RuangAI</h5>
-							<div class="text-white">Belajar mandiri secara <br> online dan terarah</div>
+				<div class="bg-white p-4 rounded-4 mb-4">
+					<h5 class="fw-bold mb-3">Progres Kelas</h5>
+					<div class="card text-white bg-primary p-3">
+						<div class="d-flex align-items-center">
+							<div class="bg-white p-4 rounded-3 d-flex align-items-center justify-content-center me-3">
+								<img src="<?= base_url('mobilekit/assets/img/ruangai/book-play.svg') ?>" alt="">
+							</div>
+							<div class="flex-grow-1">
+								<div class="d-flex align-items-center">
+									<span class="fw-bold">Lanjutkan Belajar</span>
+								</div>
+								<p class="fw-bold mb-2" x-text="data.last_lesson?.title"></p>
+								<div class="d-flex align-items-center">
+									<i class="bi bi-play-fill fs-3 me-2"></i>
+									<div class="progress flex-grow-1" style="background: #BFD6E0">
+										<div class="progress-bar bg-white" role="progressbar" :style="{ width: data.last_lesson?.progress + '%' }" aria-valuenow="data.last_lesson?.progress" aria-valuemin="0" aria-valuemax="100"></div>
+									</div>
+									<span class="ms-3 fw-bold small" x-text="data.last_lesson?.progress + '%'">0%</span></span>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="d-flex gap-3 mt-3">
-						<a href="#" class="btn btn-sm btn-primary w-100 p-3 rounded-pill">
-							<div class="m-0 h6 text-white">Kelas Online</div>
-						</a>
-						<a href="/courses/tanya_jawab" class="btn btn-ultra-light-primary w-100 p-3 rounded-pill">
-							<div class="m-0 h6 text-primary">Tanya Jawab</div>
-						</a>
-					</div>
-				</section>
+				</div>
 
-				<section class="mt-4">
-					<div class="d-flex mb-2">
-						<h4 class="m-0 me-auto">Lanjutkan Belajar</h4>
-					</div>
-					<a href="/courses/lessons/1">
-						<div class="card card-hover rounded-20">
-							<div class="card-body d-flex align-items-center gap-3 p-2">
-								<div class="d-flex align-items-center justify-content-center rounded-20 bg-ultra-light" style="width: 100px;height: 100px">
-									<i class="bi bi-journal-bookmark-fill display-3 text-pink"></i>
-								</div>
-								<div>
-									<h4 class="m-0">Lesson 02 - Pengenalan</h4>
-									<h6 class="mb-1">Potensi Dan Tantangan AI</h6>
-									<div class="d-flex align-items-center gap-2">
-										<i class="bi bi-play-fill h3 m-0 text-primary"></i>
-										<div class="progress w-100" style="height: 5px;">
-											<div class="progress-bar w-75 bg-primary"></div>
-										</div>
-										<div>70%</div>
+				<div class="bg-white p-4 rounded-4 mb-4">
+					<h5 class="fw-bold mb-3">Kelas yang kamu miliki</h5>
+					<template x-for="course in data.courses">
+						<div class="card shadow-none p-3" style="background: #F2F2F2;">
+							<div class="d-flex align-items-center">
+								<img src="https://ik.imagekit.io/56xwze9cy/ruangai/course.png" class="rounded-3 img-course" alt="thumbnail kelas">
+								<div class="flex-grow-1 ms-3">
+									<p class="fw-bold" x-text="course.course_title"></p>
+									<div class="d-flex justify-content-between align-items-center">
+										<p class="mb-1"><span class="text-primary fs-4" x-text="course.total_completed"></span> dari <span x-text="course.total_module"></span> lesson selesai</p>
+										<p class="fw-bold mb-1" x-text="course.progress + '%'"></p>
+									</div>
+									<div class="progress" style="background: #BFD6E0">
+										<div class="progress-bar bg-primary" role="progressbar" :style="{ width: course.progress + '%' }" aria-valuenow="course.progress" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</a>
+					</template>
+				</div>
 
-					<div class="d-flex mt-4 mb-2">
-						<h4 class="m-0 me-auto">Materi Belajar</h4>
-					</div>
+				<div class="bg-white p-4 rounded-4 mb-4">
+					<h5 class="fw-bold mb-3">Kelas Premium</h5>
+					<div class="list-group list-group-flush">
 
-					<div class="row">
-
-						<!-- if data not found -->
-
-						<?php if (count($courses) == 0): ?>
-							<div class="col-12">
-								<div class="card card-hover rounded-4">
-									<div class="card-body py-4 px-2 d-flex flex-column">
-										<h6 class="mb-0 text-truncate text-center">Belum Ada Materi Belajar</h6>
-									</div>
-								</div>
+						<div class="list-group-item d-flex p-3 rounded-4 mb-3" style="background: #F2F2F2;">
+							<img src="https://ik.imagekit.io/56xwze9cy/ruangai/saas.png" class="rounded-3 img-course" alt="Kelas Premium">
+							<div class="d-flex flex-column justify-content-between align-items-start flex-grow-1 ms-3">
+								<p class="fw-bold mb-0">Kelas AI for SaaS Builder</p>
+								<button class="btn btn-sm locked-btn" disabled>
+									<i class="bi bi-lock-fill me-1"></i> Locked
+								</button>
 							</div>
-						<?php endif; ?>
+						</div>
 
-						<?php foreach ($courses as $course): ?>
-							<div class="col-6 mb-2">
-								<a href="/courses/intro/<?= $course['id'] ?>/<?= $course['slug'] ?>">
-									<div class="card card-hover rounded-4">
-										<div class="position-relative">
-											<img src="<?= $course['thumbnail'] ?>" class="card-img-top rounded-top-4 position-relative" style="filter: brightness(80%);" alt="Cover">
-											<small style="font-size:12px" class="badge bg-secondary rounded-0 position-absolute top-0 start-0 m-2 px-3 rounded-pill"><?= $course['level'] ?></small>
-										</div>
-										<div class="card-body py-4 px-2 d-flex flex-column">
-											<h5 class="mb-2 text-truncate"><?= $course['course_title'] ?></h5>
-											<div class="d-flex flex-column flex-lg-row gap-1 mb-auto">
-												<div class="course-attr d-flex gap-1 me-2 align-items-top"><i class="bi bi-people-fill"></i><small><?= $course['total_student'] ?> Siswa</small></div>
-												<div class="course-attr d-flex gap-1 align-items-top"><i class="bi bi-journal-bookmark-fill"></i><small><?= $course['total_module'] ?> Modul Belajar</small></div>
-											</div>
-										</div>
-									</div>
-								</a>
+						<div class="list-group-item d-flex p-3 rounded-4 mb-3" style="background: #F2F2F2;">
+							<img src="https://ik.imagekit.io/56xwze9cy/ruangai/smart-creator.png" class="rounded-3 img-course" alt="Kelas Premium">
+							<div class="d-flex flex-column justify-content-between align-items-start flex-grow-1 ms-3">
+								<p class="fw-bold mb-0">Kelas AI for Smart Creators</p>
+								<button class="btn btn-sm locked-btn" disabled>
+									<i class="bi bi-lock-fill me-1"></i> Locked
+								</button>
 							</div>
-						<?php endforeach; ?>
+						</div>
+
+						<div class="list-group-item d-flex p-3 rounded-4 mb-3" style="background: #F2F2F2;">
+							<img src="https://ik.imagekit.io/56xwze9cy/ruangai/academic.png" class="rounded-3 img-course" alt="Kelas Premium">
+							<div class="d-flex flex-column justify-content-between align-items-start flex-grow-1 ms-3">
+								<p class="fw-bold mb-0">Kelas AI for Academics</p>
+								<button class="btn btn-sm locked-btn" disabled>
+									<i class="bi bi-lock-fill me-1"></i> Locked
+								</button>
+							</div>
+						</div>
+
+						<div class="list-group-item d-flex p-3 rounded-4 mb-3" style="background: #F2F2F2;">
+							<img src="https://ik.imagekit.io/56xwze9cy/ruangai/storyteller.png" class="rounded-3 img-course" alt="Kelas Premium">
+							<div class="d-flex flex-column justify-content-between align-items-start flex-grow-1 ms-3">
+								<p class="fw-bold mb-0">Kelas AI for Digital Storyteller</p>
+								<button class="btn btn-sm locked-btn" disabled>
+									<i class="bi bi-lock-fill me-1"></i> Locked
+								</button>
+							</div>
+						</div>
 
 					</div>
-				</section>
+				</div>
 
 			</div>
+
 		</div>
 	</div>
 	<?= $this->include('_bottommenu') ?>
+	<?= $this->include('courses/script') ?>
 </div>

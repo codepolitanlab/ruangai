@@ -6,8 +6,8 @@ class Router
 {
     public static array $router = [
         '/' => [
-            'template' => '/home/template',
             'preload' => true,
+            'handler' => '[isLoggedIn]',
         ],
         'notfound' => [
             'preload' => true,
@@ -34,7 +34,10 @@ class Router
             'handler' => '[isLoggedIn]',
         ],
         '/certificate/:code' => [],
-        '/courses' => [],
+        '/courses' => [
+            'preload' => true,
+            'handler' => '[isLoggedIn]',
+        ],
         '/courses/intro/:course_id/:slug/lessons' => [
             'preload' => true,
             'handler' => '[isLoggedIn]',

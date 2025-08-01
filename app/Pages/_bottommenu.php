@@ -3,9 +3,15 @@
 $bottommenu = [
     [
         'label'  => 'Beranda',
-        'url'    => '/courses/intro/1/dasar-dan-penggunaan-generative-ai',
+        'url'    => '/',
         'icon'   => 'bi bi-house',
-        'module' => 'course_intro'
+        'module' => 'homepage'
+    ],
+    [
+        'label'  => 'Kelas',
+        'url'    => '/courses',
+        'icon'   => 'bi bi-book',
+        'module' => 'courses'
     ],
     [
         'label'  => 'Materi',
