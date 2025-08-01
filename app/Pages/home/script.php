@@ -8,7 +8,7 @@
       swiperArticle: null,
       swiperVideo: null,
       pengumumanRead: [],
-      redirectToCourse: true,
+      redirectToCourse: false,
 
       initialize() {
         // Sementara redirect ke intro course
