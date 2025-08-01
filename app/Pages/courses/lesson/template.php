@@ -48,14 +48,14 @@
 
 					<!-- Server Selection Buttons -->
 					<div class="btn-group m-3" x-show="data.lesson?.video_diupload && data.lesson?.video_bunny">
-						<button 
-							class="btn btn-sm" 
-							:class="data.lesson?.default_video_server === 'diupload' ? 'btn-primary' : 'btn-outline-primary'" 
+						<button
+							class="btn btn-sm"
+							:class="data.lesson?.default_video_server === 'diupload' ? 'btn-primary' : 'btn-outline-primary'"
 							@click="data.lesson.default_video_server ='diupload'">
 							Server 1</button>
-						<button 
-							class="btn btn-sm" 
-							:class="data.lesson?.default_video_server === 'bunny' ? 'btn-primary' : 'btn-outline-primary'" 
+						<button
+							class="btn btn-sm"
+							:class="data.lesson?.default_video_server === 'bunny' ? 'btn-primary' : 'btn-outline-primary'"
 							@click="data.lesson.default_video_server = 'bunny'">
 							Server 2</button>
 					</div>

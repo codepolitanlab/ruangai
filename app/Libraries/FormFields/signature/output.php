@@ -1,5 +1,5 @@
 <?php
-$file = $result[$config['field']];
+$file     = $result[$config['field']];
 $pathinfo = pathinfo((string) $file);
 ?>
 

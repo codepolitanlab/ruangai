@@ -1,5 +1,8 @@
 <?php
+
 namespace App\Libraries;
+
+use Exception;
 
 class Tenant
 {
@@ -20,28 +23,28 @@ class Tenant
 
     private function _loadTenant($code)
     {
-        $query = $this->db->table('tenants')->where('code', $code)->get();
+        $query  = $this->db->table('tenants')->where('code', $code)->get();
         $tenant = $query->getRow();
 
         if ($tenant) {
-            $this->code = $tenant->code;
-            $this->name = $tenant->name;
-            $this->balance = $tenant->balance;
-            $this->withdrawn = $tenant->withdrawn;
+            $this->code       = $tenant->code;
+            $this->name       = $tenant->name;
+            $this->balance    = $tenant->balance;
+            $this->withdrawn  = $tenant->withdrawn;
             $this->created_at = $tenant->created_at;
             $this->updated_at = $tenant->updated_at;
             $this->deleted_at = $tenant->deleted_at;
         } else {
-            throw new \Exception("Tenant not found");
+            throw new Exception('Tenant not found');
         }
     }
 
     public function create()
     {
         $this->db->table('tenants')->insert([
-            'code' => $this->code,
-            'name' => $this->name,
-            'balance' => 0.00,
+            'code'      => $this->code,
+            'name'      => $this->name,
+            'balance'   => 0.00,
             'withdrawn' => 0.00,
         ]);
     }
@@ -57,7 +60,7 @@ class Tenant
             ->where('checksum', $checksum)
             ->get()
             ->getRow();
-        if($rowExists) {
+        if ($rowExists) {
             return false;
         }
 
@@ -65,12 +68,12 @@ class Tenant
         $this->db->table('tenants')->where('code', $this->code)->update(['balance' => $this->balance]);
 
         $this->db->table('tenant_logs')->insert([
-            'tenant_code' => $this->code,
-            'amount' => $amount,
-            'type' => 'income',
+            'tenant_code'    => $this->code,
+            'amount'         => $amount,
+            'type'           => 'income',
             'transaction_id' => $transaction_id,
-            'note' => $note,
-            'checksum' => $checksum,
+            'note'           => $note,
+            'checksum'       => $checksum,
         ]);
 
         return true;
@@ -79,7 +82,7 @@ class Tenant
     public function withdraw($amount, $transaction_id = null, $note = null)
     {
         if ($this->balance < $amount) {
-            throw new \Exception("Insufficient balance");
+            throw new Exception('Insufficient balance');
         }
 
         $checksum = md5($note);
@@ -90,7 +93,7 @@ class Tenant
             ->where('checksum', $checksum)
             ->get()
             ->getRow();
-        if($rowExists) {
+        if ($rowExists) {
             return false;
         }
 
@@ -98,17 +101,17 @@ class Tenant
         $this->withdrawn += $amount;
 
         $this->db->table('tenants')->where('code', $this->code)->update([
-            'balance' => $this->balance,
-            'withdrawn' => $this->withdrawn
+            'balance'   => $this->balance,
+            'withdrawn' => $this->withdrawn,
         ]);
 
         $this->db->table('tenant_logs')->insert([
-            'tenant_code' => $this->code,
-            'amount' => -$amount,
-            'type' => 'withdraw',
+            'tenant_code'    => $this->code,
+            'amount'         => -$amount,
+            'type'           => 'withdraw',
             'transaction_id' => $transaction_id,
-            'note' => $note,
-            'checksum' => $checksum,
+            'note'           => $note,
+            'checksum'       => $checksum,
         ]);
     }
 
@@ -118,15 +121,15 @@ class Tenant
             ->select('SUM(CASE WHEN type = "income" THEN amount ELSE 0 END) AS total_income, SUM(CASE WHEN type = "withdraw" THEN amount ELSE 0 END) AS total_withdrawn')
             ->where('tenant_code', $this->code)
             ->get();
-        
+
         $result = $query->getRow();
-        
-        $this->balance = $result->total_income - abs($result->total_withdrawn);
+
+        $this->balance   = $result->total_income - abs($result->total_withdrawn);
         $this->withdrawn = abs($result->total_withdrawn);
 
         $this->db->table('tenants')->where('code', $this->code)->update([
-            'balance' => $this->balance,
-            'withdrawn' => $this->withdrawn
+            'balance'   => $this->balance,
+            'withdrawn' => $this->withdrawn,
         ]);
     }
 }

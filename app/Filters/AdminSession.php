@@ -18,8 +18,7 @@ class AdminSession implements FilterInterface
      * sent back to the client, allowing for error pages,
      * redirects, etc.
      *
-     * @param RequestInterface $request
-     * @param array|null       $arguments
+     * @param array|null $arguments
      *
      * @return RequestInterface|ResponseInterface|string|void
      */
@@ -34,17 +33,18 @@ class AdminSession implements FilterInterface
         $session = session();
 
         // Check if user is logged in and is admin
-        if($session->get('logged_in')) {
+        if ($session->get('logged_in')) {
             // Check if user is admin or super
-            if (! in_array($session->get('role_slug'), ['super','admin'])) {
+            if (! in_array($session->get('role_slug'), ['super', 'admin'], true)) {
                 $session->destroy();
+
                 throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
             }
         } else {
             header('Location: /zpanel/login');
+
             exit;
         }
-        
     }
 
     /**
@@ -53,14 +53,11 @@ class AdminSession implements FilterInterface
      * to stop execution of other after filters, short of
      * throwing an Exception or Error.
      *
-     * @param RequestInterface  $request
-     * @param ResponseInterface $response
-     * @param array|null        $arguments
+     * @param array|null $arguments
      *
      * @return ResponseInterface|void
      */
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-        //
     }
 }

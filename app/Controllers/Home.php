@@ -13,7 +13,7 @@ class Home extends BaseController
     {
         $Heroic = new \App\Libraries\Heroic();
 
-        $to = 'toha.samba@gmail.com';
+        $to      = 'toha.samba@gmail.com';
         $subject = 'Selamat Bergabung di Komiunitas RuangAI';
         $message = 'Terima kasih terlah bergabung. Selamat kamu telah menjadi juara di RuangAI';
 
@@ -22,7 +22,7 @@ class Home extends BaseController
 
     public function checkToken($token)
     {
-        $Auth = new \App\Libraries\Auth();
+        $Auth   = new \App\Libraries\Auth();
         $result = $Auth->validateToken('Bearer ' . $token);
 
         dd($result);

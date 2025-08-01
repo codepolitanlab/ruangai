@@ -1,8 +1,8 @@
 <div id="quiz" x-data="lesson_quiz(data.lesson?.quiz, data.lesson?.course_id, data.lesson?.id)">
 
-    
+
     <!-- 🎉 Animasi Partikel Selebrasi -->
-    
+
 
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -27,7 +27,7 @@
                                 <button
                                     class="col shadow-none border rounded me-1"
                                     style="height:10px"
-                                    :class="currentIndex === index 
+                                    :class="currentIndex === index
                                     ? (answers[key] ? 'btn-success py-2' : 'btn-warning py-2')
                                     : (answers[key] ? 'btn-success' : 'btn-outline-secondary')"
                                     @click="goTo(index)">

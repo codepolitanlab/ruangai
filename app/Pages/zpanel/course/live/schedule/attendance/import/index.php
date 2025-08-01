@@ -39,9 +39,9 @@
                 <div class="card shadow mb-3">
                     <div class="card-header bg-secondary-subtle border-bottom mb-3 px-3 py-2 h5">Data Event</div>
 
-                    <form 
-                        method="post" 
-                        enctype="multipart/form-data" 
+                    <form
+                        method="post"
+                        enctype="multipart/form-data"
                         action="<?= site_url('/zpanel/course/live/schedule/attendance/import/' . $live_meeting_id); ?>">
                         <div class="card-body">
                             <div class="mb-3">

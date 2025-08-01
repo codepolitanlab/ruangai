@@ -7,7 +7,7 @@ Alpine.data('page', function(slug) {
         page: {},
         init(){
             document.title = this.title;
-            Alpine.store('core').currentPage = 'page'          
+            Alpine.store('core').currentPage = 'page'
 
             // Get cache if exists
             let url = `page/supply/${this.slug}`;

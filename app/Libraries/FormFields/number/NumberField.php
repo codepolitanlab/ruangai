@@ -6,11 +6,11 @@ use App\Libraries\BaseField;
 
 class NumberField extends BaseField
 {
-    protected string $name = '';
-    protected string $label = '';
-    protected string $rules = '';
-    protected mixed $default = 0;
-    protected array $attributes = [];
+    protected string $name         = '';
+    protected string $label        = '';
+    protected string $rules        = '';
+    protected mixed $default       = 0;
+    protected array $attributes    = [];
     protected bool $disableSpinner = false; // Menonaktifkan tombol increase/decrease
 
     /**

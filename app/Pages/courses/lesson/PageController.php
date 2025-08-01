@@ -9,13 +9,13 @@ class PageController extends BaseController
 {
     public $data = [
         'page_title' => 'Lessons',
-        'module' => 'course_lesson'
+        'module'     => 'course_lesson',
     ];
 
     public function getData($course_id, $lesson_id)
     {
         $Heroic = new \App\Libraries\Heroic();
-        $jwt = $Heroic->checkToken();
+        $jwt    = $Heroic->checkToken();
 
         $db = \Config\Database::connect();
         // Get specific lesson
@@ -29,22 +29,22 @@ class PageController extends BaseController
             ->get()
             ->getRowArray();
 
-        if ($lesson) 
-        {
+        if ($lesson) {
             // Handle quiz format first
-            if($lesson['type'] == 'quiz' && $lesson['quiz']) {
+            if ($lesson['type'] === 'quiz' && $lesson['quiz']) {
                 [$description, $questions, $answers] = $this->prepareQuiz($lesson['quiz']);
 
                 $lesson['quiz_description'] = $description;
-                $lesson['quiz'] = $questions;
+                $lesson['quiz']             = $questions;
             }
 
             // Set default video server
             $lesson['default_video_server'] = null;
-            if($lesson['video_diupload'])
+            if ($lesson['video_diupload']) {
                 $lesson['default_video_server'] = 'diupload';
-            else if($lesson['video_bunny'])
+            } elseif ($lesson['video_bunny']) {
                 $lesson['default_video_server'] = 'bunny';
+            }
 
             // Subquery untuk mendapatkan lesson yang sudah selesai
             $completedLessons = $db->table('course_lesson_progress')
@@ -60,8 +60,8 @@ class PageController extends BaseController
             // Query utama untuk mendapatkan semua lesson dengan urutan yang benar
             $lessons = $db->table('course_lessons')
                 ->select('
-                    course_lessons.id, 
-                    course_lessons.lesson_title, 
+                    course_lessons.id,
+                    course_lessons.lesson_title,
                     course_lessons.topic_id,
                     course_topics.topic_order,
                     course_lessons.lesson_order,
@@ -77,19 +77,20 @@ class PageController extends BaseController
 
             // Menambahkan status completed ke setiap lesson
             $orderedLessons = [];
+
             foreach ($lessons as $lessonItem) {
-                $orderedLessons[$lessonItem['id']] = $lessonItem;
-                $orderedLessons[$lessonItem['id']]['is_completed'] = in_array($lessonItem['id'], $completedLessonIds);
+                $orderedLessons[$lessonItem['id']]                 = $lessonItem;
+                $orderedLessons[$lessonItem['id']]['is_completed'] = in_array($lessonItem['id'], $completedLessonIds, true);
             }
 
-            $course['lessons'] = $orderedLessons;
-            $lesson['is_completed'] = in_array($lesson['id'], $completedLessonIds);
+            $course['lessons']      = $orderedLessons;
+            $lesson['is_completed'] = in_array($lesson['id'], $completedLessonIds, true);
 
             // Get previous and next lesson
-            $IDs = array_keys($course['lessons']);
-            $currentIndexID = array_search($lesson_id, $IDs);
-            $prevLesson = $IDs[$currentIndexID - 1] ?? null;
-            $nextLesson = $IDs[$currentIndexID + 1] ?? null;
+            $IDs                   = array_keys($course['lessons']);
+            $currentIndexID        = array_search($lesson_id, $IDs, true);
+            $prevLesson            = $IDs[$currentIndexID - 1] ?? null;
+            $nextLesson            = $IDs[$currentIndexID + 1] ?? null;
             $lesson['prev_lesson'] = $prevLesson ? $course['lessons'][$prevLesson] : null;
             $lesson['next_lesson'] = $nextLesson ? $course['lessons'][$nextLesson] : null;
 
@@ -97,21 +98,21 @@ class PageController extends BaseController
             $this->data['lesson'] = $lesson;
 
             return $this->respond($this->data);
-        } else {
-            return $this->respond([
-                'response_code'    => 404,
-                'response_message' => 'Not found',
-            ]);
         }
+
+        return $this->respond([
+            'response_code'    => 404,
+            'response_message' => 'Not found',
+        ]);
     }
 
     // Submit progress learning
     public function postIndex()
     {
-        $data = $this->request->getPost();
+        $data   = $this->request->getPost();
         $Heroic = new \App\Libraries\Heroic();
 
-        $jwt = $Heroic->checkToken();
+        $jwt       = $Heroic->checkToken();
         $course_id = $data['course_id'];
         $lesson_id = $data['lesson_id'];
 
@@ -122,7 +123,7 @@ class PageController extends BaseController
 
     public function postQuiz()
     {
-        $data = $this->request->getPost();
+        $data   = $this->request->getPost();
         $Heroic = new \App\Libraries\Heroic();
 
         $jwt = $Heroic->checkToken();
@@ -130,8 +131,8 @@ class PageController extends BaseController
         $course_id    = $data['course_id'];
         $lesson_id    = $data['lesson_id'];
         $user_answers = json_decode($data['answers'], true);
-        
-        $db = \Config\Database::connect();
+
+        $db     = \Config\Database::connect();
         $lesson = $db->table('course_lessons')
             ->select('quiz')
             ->where('course_lessons.id', $lesson_id)
@@ -143,43 +144,46 @@ class PageController extends BaseController
 
         $hasil = [];
         $benar = 0;
+
         foreach ($rightAnswers as $id => $kunci) {
             $jawabanUser = $user_answers[$id] ?? null;
 
             // Normalisasi untuk tipe true_false (string 'true'/'false' ke boolean)
             if (is_bool($kunci['value'])) {
-                $jawabanUser = $jawabanUser === "true" ? true : false;
+                $jawabanUser = $jawabanUser === 'true' ? true : false;
             }
 
-            $isCorrect = $jawabanUser === $kunci['value'];
+            $isCorrect  = $jawabanUser === $kunci['value'];
             $hasil[$id] = [
                 'jawaban'    => $user_answers[$id] ?? null,
                 'benar'      => $isCorrect,
-                'penjelasan' => $isCorrect ? $kunci['explanation'] : null
+                'penjelasan' => $isCorrect ? $kunci['explanation'] : null,
             ];
 
-            if ($isCorrect) $benar++;
+            if ($isCorrect) {
+                $benar++;
+            }
         }
 
-        $score = $benar / count($rightAnswers) * 100;
+        $score        = $benar / count($rightAnswers) * 100;
         $minimumScore = 75;
-        $isPass = $score >= $minimumScore;
+        $isPass       = $score >= $minimumScore;
 
-        if($isPass) {
+        if ($isPass) {
             $this->writeProgress($jwt->user_id, $course_id, $lesson_id);
         }
 
         return $this->respond([
-            'hasil' => $hasil, 
-            'benar' => $benar, 
-            'score' => min($score, 100), // Pastikan score tidak lebih dari 100%
-            'is_pass' => $isPass,
-            'min_score' => $minimumScore
+            'hasil'     => $hasil,
+            'benar'     => $benar,
+            'score'     => min($score, 100), // Pastikan score tidak lebih dari 100%
+            'is_pass'   => $isPass,
+            'min_score' => $minimumScore,
         ]);
     }
 
     // Write progress learning
-    private function writeProgress($user_id, $course_id, $lesson_id) 
+    private function writeProgress($user_id, $course_id, $lesson_id)
     {
         $db = \Config\Database::connect();
 
@@ -191,10 +195,10 @@ class PageController extends BaseController
             ->get()
             ->getRowArray();
 
-        if (!$course) {
+        if (! $course) {
             return [
-               'status'  => 'failed',
-               'message' => 'Course tidak ditemukan',
+                'status'  => 'failed',
+                'message' => 'Course tidak ditemukan',
             ];
         }
 
@@ -206,7 +210,7 @@ class PageController extends BaseController
             ->get()
             ->getRowArray();
 
-        if (!$existingProgress) {
+        if (! $existingProgress) {
             // Insert new progress record
             $progressData = [
                 'user_id'   => $user_id,
@@ -225,12 +229,12 @@ class PageController extends BaseController
                     'message' => 'Berhasil menyelesaikan materi',
                     'course'  => $course,
                 ];
-            } else {
-                return [
-                    'status'  => 'failed',
-                    'message' => 'Gagal menyelesaikan materi',
-                ];
             }
+
+            return [
+                'status'  => 'failed',
+                'message' => 'Gagal menyelesaikan materi',
+            ];
         }
     }
 
@@ -247,9 +251,9 @@ class PageController extends BaseController
             ->get()
             ->getResultArray();
 
-        $totalLessons = count($totalQuery);
+        $totalLessons     = count($totalQuery);
         $completedLessons = 0;
-        
+
         foreach ($totalQuery as $row) {
             if ($row['lesson_id'] !== null) {
                 $completedLessons++;
@@ -267,11 +271,11 @@ class PageController extends BaseController
             ->getRowArray();
 
         $studentData = [
-            'user_id' => $user_id,
-            'course_id' => $course_id,
-            'progress' => $progress,
+            'user_id'         => $user_id,
+            'course_id'       => $course_id,
+            'progress'        => $progress,
             'progress_update' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
+            'updated_at'      => date('Y-m-d H:i:s'),
         ];
 
         if ($existingStudent) {
@@ -292,10 +296,11 @@ class PageController extends BaseController
         $arrayQuiz = Yaml::parse($yaml);
 
         $description = $arrayQuiz['description'];
-        $questions = [];
-        $answers = [];
+        $questions   = [];
+        $answers     = [];
+
         foreach ($arrayQuiz['quiz'] as $item) {
-            $hash = substr(md5($item['question']), -6);
+            $hash             = substr(md5($item['question']), -6);
             $questions[$hash] = [
                 'type'     => $item['type'],
                 'question' => $item['question'],

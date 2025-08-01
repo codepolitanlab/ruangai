@@ -1,5 +1,5 @@
-<?php 
-$fieldId = str_replace(['[', ']'], ['__', ''], $config['name']); 
+<?php
+$fieldId   = str_replace(['[', ']'], ['__', ''], $config['name']);
 $preloaded = json_encode($value);
 ?>
 

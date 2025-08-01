@@ -2,7 +2,7 @@
 
 function convertSecondsToTime($seconds)
 {
-    $jam = floor($seconds / 3600);
+    $jam   = floor($seconds / 3600);
     $menit = floor(($seconds % 3600) / 60);
 
     $result = '';

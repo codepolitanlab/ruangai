@@ -1,8 +1,9 @@
-<?php namespace App\Pages\notfound;
+<?php
+
+namespace App\Pages\notfound;
 
 use App\Pages\BaseController;
 
-class PageController extends BaseController {
-
-
+class PageController extends BaseController
+{
 }

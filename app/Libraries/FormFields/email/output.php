@@ -1,1 +1,1 @@
-<a href="mailto:<?=$result[$config['field']]; ?>"><?=$result[$config['field']]; ?></a>
+<a href="mailto:<?= $result[$config['field']]; ?>"><?= $result[$config['field']]; ?></a>

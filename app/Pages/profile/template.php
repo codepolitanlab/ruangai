@@ -1,5 +1,5 @@
 <div id="profile" x-data="profile()" class="header-mobile-only">
-    
+
     <?= $this->include('_appHeader'); ?>
 
 	<!-- App Capsule -->

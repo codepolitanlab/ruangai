@@ -33,9 +33,9 @@
                             <div class="mb-3">
                                 <label for="status" class="form-label">Status</label>
                                 <select name="status" id="status" class="form-select">
-                                    <option value="upcoming" <?= (isset($batch) && $batch['status'] == 'upcoming') ? 'selected' : '' ?>>Upcoming</option>
-                                    <option value="ongoing" <?= (isset($batch) && $batch['status'] == 'ongoing') ? 'selected' : '' ?>>Ongoing</option>
-                                    <option value="completed" <?= (isset($batch) && $batch['status'] == 'completed') ? 'selected' : '' ?>>Completed</option>
+                                    <option value="upcoming" <?= (isset($batch) && $batch['status'] === 'upcoming') ? 'selected' : '' ?>>Upcoming</option>
+                                    <option value="ongoing" <?= (isset($batch) && $batch['status'] === 'ongoing') ? 'selected' : '' ?>>Ongoing</option>
+                                    <option value="completed" <?= (isset($batch) && $batch['status'] === 'completed') ? 'selected' : '' ?>>Completed</option>
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-success">Simpan</button>

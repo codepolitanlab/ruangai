@@ -1,7 +1,7 @@
-<?php 
-$idname = str_replace(['[', ']'], ['__', ''], $config['name']); 
+<?php
+$idname  = str_replace(['[', ']'], ['__', ''], $config['name']);
 $options = $config['options'] ?? [];
-$value = $value ?? [];
+$value ??= [];
 $attributes = 'id="' . $idname . '" class="form-control" multiple data-caption="' . $config['label'] . '"';
 ?>
 

@@ -5,6 +5,8 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
+// Test
+$routes->get('sese', 'Sese::index');
 
 // Email template preview
 $routes->get('email/preview', 'Email::preview');
@@ -13,8 +15,10 @@ $routes->get('webhook_feedback', 'Api\WebhookController::index');
 $routes->post('webhook_feedback', 'Api\WebhookController::index');
 
 $routes->get('checkToken/(:any)', 'Home::checkToken/$1');
-$routes->get('c/(:any)', function($code) {
-    header('Location: /certificate/'.$code);die;
+$routes->get('c/(:any)', static function ($code) {
+    header('Location: /certificate/' . $code);
+
+    exit;
 });
 
 // Api
@@ -39,11 +43,11 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
     $routes->get('referral', 'ScholarshipController::userReferral');
     $routes->post('user/profile/update', 'UserController::saveProfile');
     $routes->get('program', 'ScholarshipController::program');
-    
+
     $routes->get('push/send', 'WebpushController::send');
     $routes->post('push/register', 'WebpushController::register');
     $routes->get('push/generate_vapid', 'WebpushController::generateVAPID');
-    
+
     $routes->get('wasender', 'WASenderController::index');
     $routes->post('wasender/incoming', 'WASenderController::incoming');
 });

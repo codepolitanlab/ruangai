@@ -6,10 +6,10 @@ use App\Libraries\BaseField;
 
 class DateManualField extends BaseField
 {
-    protected string $name = '';
-    protected string $label = '';
-    protected string $rules = '';
-    protected string $format = 'd-m-Y'; // Format tampilan
+    protected string $name     = '';
+    protected string $label    = '';
+    protected string $rules    = '';
+    protected string $format   = 'd-m-Y'; // Format tampilan
     protected string $dbFormat = 'Y-m-d'; // Format penyimpanan
 
     /**
@@ -17,13 +17,14 @@ class DateManualField extends BaseField
      */
     public function getValueForInput(mixed $value): array
     {
-        if (!empty($value)) {
+        if (! empty($value)) {
             return [
-                'year' => date('Y', strtotime($value)),
+                'year'  => date('Y', strtotime($value)),
                 'month' => date('m', strtotime($value)),
-                'day' => date('d', strtotime($value)),
+                'day'   => date('d', strtotime($value)),
             ];
         }
+
         return ['day' => '', 'month' => '', 'year' => ''];
     }
 
@@ -34,8 +35,10 @@ class DateManualField extends BaseField
     {
         if (is_array($value) && isset($value['day'], $value['month'], $value['year'])) {
             $formattedDate = "{$value['year']}-{$value['month']}-{$value['day']}";
+
             return date($this->dbFormat, strtotime($formattedDate));
         }
+
         return '';
     }
 }

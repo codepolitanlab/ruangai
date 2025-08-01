@@ -21,8 +21,8 @@
             </div>
             <div class="login-form mt-2 mx-auto pt-1 p-2 rounded glassmorph" style="background: #fffa">
                 <p>Masukkan alamat email atau nomor WhatsApp yang Anda daftarkan di aplikasi untuk kami kirimkan kode reset kata sandi</p>
-            
-                <div>                    
+
+                <div>
                     <div class="p-3">
                         <ul class="nav nav-tabs capsuled rounded-0" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
@@ -40,7 +40,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="phone-tab-pane" role="tabpanel" aria-labelledby="phone-tab" tabindex="0">        
+                            <div class="tab-pane fade" id="phone-tab-pane" role="tabpanel" aria-labelledby="phone-tab" tabindex="0">
                                 <div class="form-group px-2 boxed text-start">
                                     <div class="text-start input-wrapper">
                                         <input type="text" class="form-control" placeholder="62xxxxxx" autocomplete="new-password" x-model="model.phone" required>

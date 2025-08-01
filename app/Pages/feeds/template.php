@@ -1,4 +1,4 @@
-<div id="feeds" 
+<div id="feeds"
     x-data="$heroic({
         title: `<?= $page_title ?>`,
         url: `/feeds/data`,

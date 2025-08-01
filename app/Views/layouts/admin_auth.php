@@ -33,9 +33,9 @@
 
     <div id="auth">
         <div class="row h-100">
-        
+
             <?= $this->renderSection('main') ?>
-    
+
         </div>
     </div>
 

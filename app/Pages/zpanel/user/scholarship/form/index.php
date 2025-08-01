@@ -31,11 +31,11 @@
                 <?= session()->get('error') ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <?php endif;?>
+            <?php endif; ?>
             <!-- Session flashdata success -->
 
             <div class="row">
-                
+
 
                 <div class="col-md-6">
                     <div class="card shadow mb-3">
@@ -75,11 +75,11 @@
                             <div class="mb-3">
                                 <label class="form-label">Jenis Kelamin <span class="text-danger">*</span></label>
                                 <div class="form-check">
-                                    <input type="radio" name="gender" value="male" class="form-check-input" <?= (isset($user) && $user->gender == 'male') ? 'checked' : '' ?> required>
+                                    <input type="radio" name="gender" value="male" class="form-check-input" <?= (isset($user) && $user->gender === 'male') ? 'checked' : '' ?> required>
                                     <label class="form-check-label">Laki-laki</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="radio" name="gender" value="female" class="form-check-input" <?= (isset($user) && $user->gender == 'female') ? 'checked' : '' ?> required>
+                                    <input type="radio" name="gender" value="female" class="form-check-input" <?= (isset($user) && $user->gender === 'female') ? 'checked' : '' ?> required>
                                     <label class="form-check-label">Perempuan</label>
                                 </div>
                             </div>
@@ -146,10 +146,10 @@
                                 <label class="form-label">Jenjang Pendidikan</label>
                                 <select name="education_level" class="form-control">
                                     <option value="">Pilih...</option>
-                                    <option value="SMA" <?= (isset($user) && $user->education_level == 'SMA') ? 'selected' : '' ?>>SMA/SMK</option>
-                                    <option value="D3" <?= (isset($user) && $user->education_level == 'D3') ? 'selected' : '' ?>>D3</option>
-                                    <option value="S1" <?= (isset($user) && $user->education_level == 'S1') ? 'selected' : '' ?>>S1</option>
-                                    <option value="S2" <?= (isset($user) && $user->education_level == 'S2') ? 'selected' : '' ?>>S2</option>
+                                    <option value="SMA" <?= (isset($user) && $user->education_level === 'SMA') ? 'selected' : '' ?>>SMA/SMK</option>
+                                    <option value="D3" <?= (isset($user) && $user->education_level === 'D3') ? 'selected' : '' ?>>D3</option>
+                                    <option value="S1" <?= (isset($user) && $user->education_level === 'S1') ? 'selected' : '' ?>>S1</option>
+                                    <option value="S2" <?= (isset($user) && $user->education_level === 'S2') ? 'selected' : '' ?>>S2</option>
                                 </select>
                             </div>
 
@@ -182,8 +182,8 @@
                                 <label class="form-label">Status <span class="text-danger">*</span></label>
                                 <select name="status" class="form-control" required>
                                     <option value="">Pilih...</option>
-                                    <option value="terdaftar" <?= (isset($user) && $user->status == 'terdaftar') ? 'selected' : '' ?>>Terdaftar</option>
-                                    <option value="lulus" <?= (isset($user) && $user->status == 'lulus') ? 'selected' : '' ?>>Lulus</option>
+                                    <option value="terdaftar" <?= (isset($user) && $user->status === 'terdaftar') ? 'selected' : '' ?>>Terdaftar</option>
+                                    <option value="lulus" <?= (isset($user) && $user->status === 'lulus') ? 'selected' : '' ?>>Lulus</option>
                                 </select>
                             </div>
 

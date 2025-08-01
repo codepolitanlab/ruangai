@@ -6,19 +6,17 @@ use CodeIgniter\Model;
 
 class CourseStudent extends Model
 {
-    protected $table            = 'course_students';
-    protected $primaryKey       = 'id';
-    protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
-    protected $protectFields    = true;
-    protected $allowedFields    = ['user_id', 'course_id', 'progress', 'graduate', 'created_at', 'updated_at', 'deleted_at'];
-
+    protected $table                  = 'course_students';
+    protected $primaryKey             = 'id';
+    protected $useAutoIncrement       = true;
+    protected $returnType             = 'array';
+    protected $useSoftDeletes         = false;
+    protected $protectFields          = true;
+    protected $allowedFields          = ['user_id', 'course_id', 'progress', 'graduate', 'created_at', 'updated_at', 'deleted_at'];
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
-
-    protected array $casts = [];
-    protected array $castHandlers = [];
+    protected array $casts            = [];
+    protected array $castHandlers     = [];
 
     // Dates
     protected $useTimestamps = false;
@@ -47,11 +45,11 @@ class CourseStudent extends Model
     public function getLastCertNumber($current_user_id)
     {
         $number = $this->select('cert_number')
-                        ->where('user_id !=', $current_user_id)
-                        ->where('cert_number !=', null)
-                        ->orderBy('cert_number', 'desc')
-                        ->get()
-                        ->getRowArray();
+            ->where('user_id !=', $current_user_id)
+            ->where('cert_number !=', null)
+            ->orderBy('cert_number', 'desc')
+            ->get()
+            ->getRowArray();
 
         return $number['cert_number'] ?? 0;
     }

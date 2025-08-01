@@ -11,7 +11,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="<?= site_url('/zpanel'); ?>">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="<?= site_url('/zpanel/course'); ?>">Courses</a></li>
-                        <li class="breadcrumb-item"><a href="<?= site_url('/zpanel/course/live/'.$course['id']); ?>">Live Session</a></li>
+                        <li class="breadcrumb-item"><a href="<?= site_url('/zpanel/course/live/' . $course['id']); ?>">Live Session</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Meeting Blueprints</li>
                     </ol>
                 </nav>
@@ -32,7 +32,7 @@
                         <?= session()->getFlashdata('success') ?>
                     </div>
                 <?php endif; ?>
-            
+
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -55,14 +55,14 @@
                                 <td><?= $b['duration'] ?></td>
                                 <td><?= $b['order'] ?></td>
                                 <td>
-                                    <a href="<?= site_url('zpanel/course/live/blueprint/update/'. $b['course_id'] . '/' . $b['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
-                                    <a href="<?= site_url('zpanel/course/live/blueprint/delete/'. $b['course_id'] . '/' .$b['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                                    <a href="<?= site_url('zpanel/course/live/blueprint/update/' . $b['course_id'] . '/' . $b['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
+                                    <a href="<?= site_url('zpanel/course/live/blueprint/delete/' . $b['course_id'] . '/' . $b['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-            
+
                 <?= $pager->links('default', 'bootstrap') ?>
             </div>
         </div>

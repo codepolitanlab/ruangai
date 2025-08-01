@@ -10,30 +10,30 @@ class CreatePushSubscriptions extends Migration
     public function up()
     {
         $this->forge->addField([
-            'id'         => [
+            'id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'endpoint'   => [
-                'type'       => 'TEXT',
-                'null'       => false,
+            'endpoint' => [
+                'type' => 'TEXT',
+                'null' => false,
             ],
-            'p256dh'     => [
+            'p256dh' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
                 'null'       => false,
             ],
-            'auth'       => [
+            'auth' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
                 'null'       => false,
             ],
             'created_at' => [
-                'type' => 'TIMESTAMP', 
-                'null' => true, 
-                'default' => new RawSql('CURRENT_TIMESTAMP')
+                'type'    => 'TIMESTAMP',
+                'null'    => true,
+                'default' => new RawSql('CURRENT_TIMESTAMP'),
             ],
         ]);
 

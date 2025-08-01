@@ -1,5 +1,5 @@
-<div 
-    id="pustaka" 
+<div
+    id="pustaka"
     class=""
     x-data="$heroic({
         title: `<?= $page_title ?>`,
@@ -102,7 +102,7 @@
 
         </div>
     </div>
-    
+
     <?= $this->include('_bottommenu') ?>
 </div>
 

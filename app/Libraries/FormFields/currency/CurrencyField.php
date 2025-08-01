@@ -7,7 +7,7 @@ use App\Libraries\BaseField;
 class CurrencyField extends BaseField
 {
     protected mixed $default = 0;
-    
+
     /**
      * Konversi nilai sebelum ditampilkan di input.
      */

@@ -1,7 +1,7 @@
 <style>
     #course-features .btn .h6 {
         font-size: 16px !important;
-        line-height: 0;  
+        line-height: 0;
     }
 </style>
 

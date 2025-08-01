@@ -1,15 +1,13 @@
-<?php namespace App\Pages\masuk;
+<?php
+
+namespace App\Pages\masuk;
 
 use App\Pages\BaseController;
-use CodeIgniter\API\ResponseTrait;
-use Firebase\JWT\JWT;
 
-class PageController extends BaseController 
+class PageController extends BaseController
 {
-    
-
     public $data = [
-        'page_title' => 'Masuk'
+        'page_title' => 'Masuk',
     ];
 
     // Check login
@@ -17,19 +15,19 @@ class PageController extends BaseController
     {
         $username = strtolower($this->request->getPost('username'));
         $password = $this->request->getPost('password');
-        
+
         $Heroic = new \App\Libraries\Heroic();
-        $db = \Config\Database::connect();
-        
+        $db     = \Config\Database::connect();
+
         // Check login to database directly using $db
-        $Auth = new \App\Libraries\Auth();
+        $Auth                      = new \App\Libraries\Auth();
         [$status, $message, $user] = $Auth->login($username, $password);
 
         return $this->respond([
-            'found'   => $status == 'success' ? 1 : 0,
+            'found'   => $status === 'success' ? 1 : 0,
             'message' => $message,
             'jwt'     => $user['jwt'] ?? '',
-            'user'    => $user ?? []
+            'user'    => $user ?? [],
         ]);
     }
 

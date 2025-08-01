@@ -13,7 +13,7 @@
             <?php if ($message = session()->getFlashdata('message')) : ?>
                 <div class="alert bg-warning"><?= $message ?? '' ?></div>
             <?php endif; ?>
-            
+
             <form action="<?= site_url('zpanel/login') ?>" method="post">
                 <div class="form-group position-relative has-icon-left mb-4">
                     <input type="text" class="form-control form-control-xl" placeholder="Username" name="identity">
@@ -40,7 +40,7 @@
             </div>
         </div>
     </div>
-        
+
     <div class="col-lg-7 d-none d-lg-block">
         <div id="auth-right">
 

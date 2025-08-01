@@ -1,1 +1,1 @@
-<?= $result[$config['field']]; ?>
+<?= $result[$config['field']];

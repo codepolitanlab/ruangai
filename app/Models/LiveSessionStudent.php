@@ -6,19 +6,17 @@ use CodeIgniter\Model;
 
 class LiveSessionStudent extends Model
 {
-    protected $table            = 'live_session_students';
-    protected $primaryKey       = 'id';
-    protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
-    protected $protectFields    = true;
-    protected $allowedFields    = ['user_id', 'course_id', 'live_session_id', 'created_at', 'updated_at', 'deleted_at'];
-
+    protected $table                  = 'live_session_students';
+    protected $primaryKey             = 'id';
+    protected $useAutoIncrement       = true;
+    protected $returnType             = 'array';
+    protected $useSoftDeletes         = true;
+    protected $protectFields          = true;
+    protected $allowedFields          = ['user_id', 'course_id', 'live_session_id', 'created_at', 'updated_at', 'deleted_at'];
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
-
-    protected array $casts = [];
-    protected array $castHandlers = [];
+    protected array $casts            = [];
+    protected array $castHandlers     = [];
 
     // Dates
     protected $useTimestamps = true;

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $bottommenu = [
     [
@@ -18,20 +18,20 @@ $bottommenu = [
         'url'    => '/courses/intro/1/dasar-dan-penggunaan-generative-ai/lessons',
         'icon'   => 'bi bi-megaphone',
         'icon'   => 'bi bi-journal-check',
-        'module' => 'course_lesson'
+        'module' => 'course_lesson',
     ],
     [
         'label'  => 'Live Session',
         'url'    => '/courses/intro/1/dasar-dan-penggunaan-generative-ai/live_session',
         'icon'   => 'bi bi-camera-video',
-        'module' => 'course_live'
+        'module' => 'course_live',
     ],
     [
         'label'  => 'Keluar',
         'url'    => '/logout',
         'native' => true,
         'icon'   => 'bi bi-door-closed text-danger',
-        'module' => 'profile'
+        'module' => 'profile',
     ],
 ];
 
@@ -39,10 +39,10 @@ $bottommenu = [
 
 <div class="appBottomMenu shadow-lg px-0">
     <?php foreach($bottommenu as $menu): ?>
-    <a href="<?= $menu['url'] ?>" 
+    <a href="<?= $menu['url'] ?>"
         <?= $menu['native'] ?? null ? 'native' : '' ?>
-        id="bottommenu-member" 
-        class="item" 
+        id="bottommenu-member"
+        class="item"
         :class="data?.module == '<?= $menu['module'] ?>' ? 'active' : ''">
         <div class="col">
             <i class="<?= $menu['icon'] ?>"></i>

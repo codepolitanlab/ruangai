@@ -8,11 +8,11 @@ class PageController extends BaseController
 {
     public function getIndex()
     {
-        $data['page_title'] = "Users";
+        $data['page_title'] = 'Users';
 
         // Definisikan field yang bisa difilter
         $filterFields = ['id' => 'users.id', 'name' => 'name', 'email' => 'email', 'role' => 'role_id'];
-        $filters = [];
+        $filters      = [];
 
         // Ambil semua filter dari URL secara dinamis
         foreach ($filterFields as $param => $field) {
@@ -56,7 +56,7 @@ class PageController extends BaseController
         $data['pager'] = $userModel->pager;
 
         // Hitung total users berdasarkan filter yang aktif
-        if (!empty($filters)) {
+        if (! empty($filters)) {
             $data['total_users'] = count($data['users']);
         } else {
             $data['total_users'] = $totalQuery->countAllResults();
@@ -64,10 +64,10 @@ class PageController extends BaseController
 
         // Tambahkan current_page dan per_page ke data
         $data['current_page'] = $current_page;
-        $data['per_page'] = $per_page;
+        $data['per_page']     = $per_page;
 
         // Get roles for dropdown
-        $db = \Config\Database::connect();
+        $db            = \Config\Database::connect();
         $data['roles'] = $db->table('roles')
             ->select('id, role_name')
             ->where('status', 'active')

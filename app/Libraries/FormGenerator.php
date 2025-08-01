@@ -2,6 +2,8 @@
 
 namespace App\Libraries;
 
+use Exception;
+
 class FormGenerator
 {
     protected $fields = [];
@@ -18,7 +20,7 @@ class FormGenerator
             if (class_exists($class)) {
                 $this->fields[$fieldName] = new $class($fieldSchema);
             } else {
-                throw new \Exception("Field type '{$fieldSchema['form']}' is not supported.");
+                throw new Exception("Field type '{$fieldSchema['form']}' is not supported.");
             }
         }
     }
@@ -26,26 +28,27 @@ class FormGenerator
     public function renderFields(): string
     {
         $output = '';
+
         foreach ($this->fields as $field) {
             $output .= $field->render();
         }
+
         return $output;
     }
 
     public function renderForm(string $action, string $method = 'POST'): string
     {
         $fieldsHtml = $this->renderFields();
+
         return view('forms/form', [
-            'action' => $action,
-            'method' => $method,
+            'action'     => $action,
+            'method'     => $method,
             'fieldsHtml' => $fieldsHtml,
         ]);
     }
 
-    private function toClassName(string $str): string {
-        return preg_replace_callback('/(?:^|_)([a-z])/', function ($matches) {
-            return strtoupper($matches[1]);
-        }, $str);
+    private function toClassName(string $str): string
+    {
+        return preg_replace_callback('/(?:^|_)([a-z])/', static fn ($matches) => strtoupper($matches[1]), $str);
     }
-    
 }

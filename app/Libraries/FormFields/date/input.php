@@ -1,13 +1,13 @@
 <?php $fieldId = str_replace(['[', ']'], ['__', ''], $config['name']); ?>
 
-<input type="text" 
-       data-toggle="datepicker" 
-       id="<?= $fieldId; ?>" 
-       value="<?= $value['date']; ?>" 
-       class="form-control" 
-       data-caption="<?= $config['label']; ?>" 
-       autocomplete="off" 
-       <?= strpos($config['rules'] ?? '', 'required') !== false ? 'required' : ''; ?> 
+<input type="text"
+       data-toggle="datepicker"
+       id="<?= $fieldId; ?>"
+       value="<?= $value['date']; ?>"
+       class="form-control"
+       data-caption="<?= $config['label']; ?>"
+       autocomplete="off"
+       <?= strpos($config['rules'] ?? '', 'required') !== false ? 'required' : ''; ?>
        <?= $attributes; ?> />
 
 <input type="hidden" id="real_<?= $fieldId; ?>" name="<?= $config['name']; ?>" value="<?= $value['original']; ?>">

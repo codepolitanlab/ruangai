@@ -24,7 +24,7 @@ Alpine.data('register', function(){
         init(){
             document.title = this.title
             Alpine.store('core').currentPage = 'register'
-            
+
             this.logo = Alpine.store('core').settings.auth_logo;
             this.sitename = Alpine.store('core').settings.site_title;
 

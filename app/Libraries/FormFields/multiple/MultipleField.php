@@ -6,13 +6,13 @@ use App\Libraries\BaseField;
 
 class MultipleField extends BaseField
 {
-    protected string $name = '';
-    protected string $label = '';
-    protected string $rules = '';
-    protected array $options = [];
-    protected mixed $default = [];
+    protected string $name          = '';
+    protected string $label         = '';
+    protected string $rules         = '';
+    protected array $options        = [];
+    protected mixed $default        = [];
     protected ?string $optionSource = null;
-    protected array $relation = [];
+    protected array $relation       = [];
 
     /**
      * Konversi nilai sebelum ditampilkan di input.
@@ -22,6 +22,7 @@ class MultipleField extends BaseField
         if (is_string($value)) {
             return explode(',', $value);
         }
+
         return is_array($value) ? $value : [];
     }
 
@@ -41,6 +42,7 @@ class MultipleField extends BaseField
         if ($this->optionSource) {
             return ci()->shared['ActionClass']->{$this->optionSource}();
         }
+
         return $this->options;
     }
 }

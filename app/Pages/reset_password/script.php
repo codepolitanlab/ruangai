@@ -15,7 +15,7 @@
         init(){
             document.title = this.title
             Alpine.store('core').currentPage = 'reset_password'
-            
+
             this.logo = Alpine.store('core').settings.auth_logo
 
             // Call google recaptcha
@@ -44,7 +44,7 @@
                 this.sending = false
                 return;
             }
-            
+
             this.recaptcha = grecaptcha.getResponse(this.recaptchaWidget);
             if(this.recaptcha == '') {
                 $heroicHelper.toastr('Ceklis dulu Recaptcha.','warning')

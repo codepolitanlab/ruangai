@@ -7,7 +7,7 @@
 
     <section class="section">
         <?= $this->include('zpanel/course/lesson/_header') ?>
-        
+
         <div class="card card-block block-editor p-3">
             <div class="row">
                 <?= $this->include('zpanel/course/lesson/_sidebar') ?>
@@ -17,7 +17,7 @@
 
                     <div class="text-center mt-5">
                         <h4 class="mb-4">You can start by creating new topic</h4>
-                        <a href="<?= site_url("/zpanel/course/lesson/topic/" . $course['id']) ?>" class="btn btn-primary"><span class="bi bi-plus-circle"></span> Create Topic</a>
+                        <a href="<?= site_url('/zpanel/course/lesson/topic/' . $course['id']) ?>" class="btn btn-primary"><span class="bi bi-plus-circle"></span> Create Topic</a>
                     </div>
                 </div>
             </div>

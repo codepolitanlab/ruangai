@@ -13,9 +13,9 @@
                 <div class="row">
                     <template x-for="methodName in pMethods">
                         <div class="col-6 mb-1">
-                            <button 
-                                type="button" class="btn-method btn-block btn btn-outline-secondary btn-lg" 
-                                x-on:click="setPaymentMethod(methodName)" 
+                            <button
+                                type="button" class="btn-method btn-block btn btn-outline-secondary btn-lg"
+                                x-on:click="setPaymentMethod(methodName)"
                                 :title="paymentMethods[methodName].label">
                                 <img :src="paymentMethods[methodName]?.thumbnail" class="img-payment-method">
                             </button>

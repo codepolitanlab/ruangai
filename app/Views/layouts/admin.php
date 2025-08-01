@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-tagsinput/1.3.6/jquery.tagsinput.min.css">
     <!-- Datepicker -->
     <link rel="stylesheet" id="theme-style" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css">
-    
+
     <script src="/admin/tinymce/js/tinymce/tinymce.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
 
@@ -37,10 +37,10 @@
         <!-- Content Section -->
         <div id="main" class="layout-navbar navbar-fixed position-relative">
             <?= $this->include('partials/admin_header') ?>
-            
+
             <div id="main-content">
                 <?= $this->include('partials/admin_alerts') ?>
-                
+
                 <?= $this->renderSection('main') ?>
             </div>
 

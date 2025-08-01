@@ -66,8 +66,8 @@
                                     <td>
                                         <select class="form-control form-control-sm" name="filter_status">
                                             <option value="">- Status -</option>
-                                            <option value="terdaftar" <?= $filter_status == 'terdaftar' ? 'selected' : ''?>>Terdaftar</option>
-                                            <option value="lulus" <?= $filter_status == 'lulus'?'selected' : ''?>>Lulus</option>
+                                            <option value="terdaftar" <?= $filter_status === 'terdaftar' ? 'selected' : ''?>>Terdaftar</option>
+                                            <option value="lulus" <?= $filter_status === 'lulus' ? 'selected' : ''?>>Lulus</option>
                                         </select>
                                     </td>
                                     <td>
@@ -81,8 +81,9 @@
 
                             <?php
                             $no = ($current_page - 1) * $per_page + 1;
-                            foreach ($scholarships as $scholarship) :
-                            ?>
+
+foreach ($scholarships as $scholarship) :
+    ?>
                                 <tr>
                                     <!-- use numbering -->
                                     <td width="5%"><?= $no++ ?></td>
@@ -91,18 +92,18 @@
                                     <td><?= $scholarship->program ?? '-' ?></td>
                                     <!-- use badge status -->
                                     <td>
-                                        <?php if ($scholarship->status == 'terdaftar'): ?>
+                                        <?php if ($scholarship->status === 'terdaftar'): ?>
                                             <span class="badge bg-primary">Terdaftar</span>
-                                        <?php elseif ($scholarship->status == 'lulus'): ?>
+                                        <?php elseif ($scholarship->status === 'lulus'): ?>
                                             <span class="badge bg-success">Lulus</span>
                                         <?php endif; ?>
                                     </td>
                                     <td><?= date('Y-m-d H:i:s', strtotime($scholarship->created_at)) ?></td>
                                     <td class="text-end">
                                         <div class="btn-group">
-                                            <?php if ($scholarship->status != 'active'): ?>
-                                                <!-- <a class="btn btn-sm btn-outline-success text-nowrap" 
-                                           href="/zpanel/user/activate/<?= $scholarship->id ?>" 
+                                            <?php if ($scholarship->status !== 'active'): ?>
+                                                <!-- <a class="btn btn-sm btn-outline-success text-nowrap"
+                                           href="/zpanel/user/activate/<?= $scholarship->id ?>"
                                            onclick="return confirm('Email belum tervalidasi. Lanjutkan aktivasi?')">
                                             <span class="bi bi-star"></span> Activate
                                         </a> -->

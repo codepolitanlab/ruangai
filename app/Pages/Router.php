@@ -13,7 +13,7 @@ class Router
             'preload' => true,
         ],
         // '/intro' => [],
-        '/masuk' => [],
+        '/masuk'                => [],
         '/masuk/instant/:token' => [
             'template' => '/masuk/instant/template',
         ],
@@ -48,8 +48,8 @@ class Router
         ],
         '/courses/intro/:course_id/:slug/live_session/:live_id' => [
             'template' => '/courses/intro/live_session/detail/template',
-            'preload' => true,
-            'handler' => '[isLoggedIn]',
+            'preload'  => true,
+            'handler'  => '[isLoggedIn]',
         ],
         '/courses/intro/:course_id/:slug' => [
             'preload' => true,
@@ -57,8 +57,8 @@ class Router
         ],
         '/courses/:course_id/lesson/:lesson_id' => [
             'template' => '/courses/lesson/template',
-            'preload' => true,
-            'handler' => '[isLoggedIn]',
+            'preload'  => true,
+            'handler'  => '[isLoggedIn]',
         ],
         // '/courses/tanya_jawab' => [],
         // '/courses/tanya_jawab/:id' => [

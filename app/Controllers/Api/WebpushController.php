@@ -2,8 +2,8 @@
 
 namespace App\Controllers\Api;
 
-use App\Pages\BaseController;
 use App\Libraries\PushNotification;
+use App\Pages\BaseController;
 
 class WebpushController extends BaseController
 {
@@ -26,26 +26,27 @@ class WebpushController extends BaseController
 
         $payload = [
             'title' => 'Halo Boss Toni!',
-            'body' => 'Ini push notifikasi dari CI4.',
-            'icon' => '/icon.png',
-            'url' => '/'
+            'body'  => 'Ini push notifikasi dari CI4.',
+            'icon'  => '/icon.png',
+            'url'   => '/',
         ];
 
         $success = $this->pushLib->sendNotification($postdata, $payload);
 
         return $this->response->setJSON([
-            'status' => $success ? 'success' : 'error'
+            'status' => $success ? 'success' : 'error',
         ]);
     }
 
     public function unregister()
     {
         $endpoint = $this->request->getPost('endpoint');
-        if (!$endpoint) {
+        if (! $endpoint) {
             return $this->response->setJSON(['status' => 'error', 'reason' => 'No endpoint provided']);
         }
 
         $this->pushLib->deleteSubscription($endpoint);
+
         return $this->response->setJSON(['status' => 'unsubscribed']);
     }
 
@@ -53,14 +54,14 @@ class WebpushController extends BaseController
     {
         $payload = [
             'title' => 'Halo Boss Oriza!',
-            'body' => 'Ini contoh broadcast ke user yang terdaftar',
-            'icon' => '/icon.png',
-            'url' => '/'
+            'body'  => 'Ini contoh broadcast ke user yang terdaftar',
+            'icon'  => '/icon.png',
+            'url'   => '/',
         ];
         $success = $this->pushLib->sendToAll($payload);
 
         return $this->response->setJSON([
-            'status' => $success ? 'success' : 'error'
+            'status' => $success ? 'success' : 'error',
         ]);
     }
 }

@@ -6,8 +6,8 @@ use App\Libraries\BaseField;
 
 class SlugField extends BaseField
 {
-    protected string $name = '';
-    protected string $label = '';
-    protected string $rules = '';
+    protected string $name    = '';
+    protected string $label   = '';
+    protected string $rules   = '';
     protected string $referer = '';
 }

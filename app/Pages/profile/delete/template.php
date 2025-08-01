@@ -29,7 +29,7 @@
                         <input type="text" class="form-control" id="whatsapp" x-model="data.whatsapp" required>
                     </div>
                 </div>
-                
+
                 <div class="form-group px-3 boxed text-start">
                     <div class="text-start input-wrapper">
                         <label class="fw-bold" for="identity">Kata Sandi</label>
@@ -48,8 +48,8 @@
     </div>
     <!-- * App Capsule -->
 
-    <div id="toast-delete-error" 
-        class="toast-box toast-bottom bg-warning" 
+    <div id="toast-delete-error"
+        class="toast-box toast-bottom bg-warning"
         :class="errorMessage ? 'show' : ''"
         x-init="$watch('errorMessage', v => v ? setTimeout(() => errorMessage = false, 3000) : null)">
         <div class="in">

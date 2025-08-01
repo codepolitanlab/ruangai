@@ -6,9 +6,9 @@ use App\Libraries\BaseField;
 
 class RadioButtonField extends BaseField
 {
-    protected string $name = '';
-    protected string $label = '';
-    protected string $rules = '';
+    protected string $name   = '';
+    protected string $label  = '';
+    protected string $rules  = '';
     protected array $options = [];
     protected bool $disabled = false;
 }

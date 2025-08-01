@@ -70,7 +70,7 @@
                                         <select class="form-select form-select-sm" name="filter_role">
                                             <option value="">Semua Role</option>
                                             <?php foreach($roles as $role): ?>
-                                            <option value="<?= $role['id'] ?>" <?= ($filter_role == $role['id']) ? 'selected' : '' ?>>
+                                            <option value="<?= $role['id'] ?>" <?= ($filter_role === $role['id']) ? 'selected' : '' ?>>
                                                 <?= $role['role_name'] ?>
                                             </option>
                                             <?php endforeach; ?>
@@ -88,8 +88,9 @@
 
                             <?php
                             $no = ($current_page - 1) * $per_page + 1;
-                            foreach ($users as $user) :
-                            ?>
+
+foreach ($users as $user) :
+    ?>
                                 <tr>
                                     <!-- use numbering -->
                                     <td width="5%"><?= $user->id ?></td>
@@ -99,9 +100,9 @@
                                     <td><?= date('Y-m-d H:i:s', strtotime($user->created_at)) ?></td>
                                     <td class="text-end">
                                         <div class="btn-group">
-                                            <?php if ($user->status != 'active'): ?>
-                                                <!-- <a class="btn btn-sm btn-outline-success text-nowrap" 
-                                           href="/zpanel/user/activate/<?= $user->id ?>" 
+                                            <?php if ($user->status !== 'active'): ?>
+                                                <!-- <a class="btn btn-sm btn-outline-success text-nowrap"
+                                           href="/zpanel/user/activate/<?= $user->id ?>"
                                            onclick="return confirm('Email belum tervalidasi. Lanjutkan aktivasi?')">
                                             <span class="bi bi-star"></span> Activate
                                         </a> -->
@@ -112,7 +113,7 @@
                                                 <span class="bi bi-pencil-square"></span> Edit
                                             </a>
 
-                                            <form action="/zpanel/user/form/delete" method="post" class="d-inline" 
+                                            <form action="/zpanel/user/form/delete" method="post" class="d-inline"
                                                   onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengguna ini?')">
                                                 <input type="hidden" name="id" value="<?= $user->id ?>">
                                                 <button type="submit" class="btn btn-sm btn-outline-danger text-nowrap">

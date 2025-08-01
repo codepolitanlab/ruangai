@@ -19,7 +19,7 @@
             <div class="login-form mt-2 mx-auto pt-1 p-2 rounded glassmorph" style="background: #fffa">
                 <p>Masukkan kode reset yang telah kami kirimkan ke nomor WhatsApp Anda, lalu masukkan kata sandi yang baru untuk Anda masuk ke aplikasi.</p>
 
-                <div>                    
+                <div>
                     <div class="py-3">
                         <div class="form-group px-3 boxed text-start">
                             <div class="text-start input-wrapper">

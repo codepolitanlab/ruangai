@@ -1,7 +1,7 @@
-<div 
-    id="feeds_detail" 
+<div
+    id="feeds_detail"
     x-data="$heroic({
-        title: `<?= $page_title ?>`, 
+        title: `<?= $page_title ?>`,
         url: `/feeds/detail/data/${$params.id}`
     })">
     <div class="appHeader">
@@ -22,8 +22,8 @@
             <div class="section mt-0 p-0" x-show="data.post?.length > 0">
                 <div class="border-top pb-3" style="max-width: 640px; margin: 0 auto;">
                     <template x-if="data.post[0].medias">
-                    <div 
-                        class="swiper bg-dark feed-carousel" 
+                    <div
+                        class="swiper bg-dark feed-carousel"
                         x-init="new Swiper(`.feed-carousel`, {
                             pagination: {
                             el: `.swiper-pagination`,

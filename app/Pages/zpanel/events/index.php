@@ -66,8 +66,8 @@
                                     <td>
                                         <select name="filter_status" class="form-control form-control-sm">
                                             <option value="">All</option>
-                                            <option value="published" <?= $filter_status == 'published'?'selected':''?>>Active</option>
-                                            <option value="draft" <?= $filter_status == 'draft'?'selected':''?>>Inactive</option>
+                                            <option value="published" <?= $filter_status === 'published' ? 'selected' : ''?>>Active</option>
+                                            <option value="draft" <?= $filter_status === 'draft' ? 'selected' : ''?>>Inactive</option>
                                         </select>
                                     </td>
                                     <td>
@@ -81,8 +81,9 @@
 
                             <?php
                             $no = ($current_page - 1) * $per_page + 1;
-                            foreach ($events as $event) :
-                            ?>
+
+foreach ($events as $event) :
+    ?>
                                 <tr>
                                     <td width="5%"><?= $no++ ?></td>
                                     <td><?= $event->title ?></td>
@@ -91,8 +92,8 @@
                                     <td><?= $event->quota ?? '-' ?></td>
                                     <td><?= date('d M Y', strtotime($event->date_start)) ?> - <?= date('d M Y', strtotime($event->date_end)) ?></td>
                                     <td>
-                                        <span class="badge bg-<?= $event->status == 'published' ? 'success' : 'danger'?>">
-                                            <?= $event->status == 'published' ? 'Active' : 'Inactive'?>
+                                        <span class="badge bg-<?= $event->status === 'published' ? 'success' : 'danger'?>">
+                                            <?= $event->status === 'published' ? 'Active' : 'Inactive'?>
                                         </span>
                                     </td>
                                     <td class="text-end">

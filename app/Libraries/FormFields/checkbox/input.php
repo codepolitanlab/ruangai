@@ -1,14 +1,15 @@
-<?php foreach ($config['options'] as $key => $val): 
-    if ($value && in_array($key, $value))
+<?php foreach ($config['options'] as $key => $val):
+    if ($value && in_array($key, $value, true)) {
         $attribute = 'checked';
-    else
+    } else {
         $attribute = '';
-?>
+    }
+    ?>
 
 <div class="form-check">
-    <input name="<?php echo $config['name'] ;?>[<?php echo $key;?>]" class="form-check-input" type="checkbox" value="<?php echo $val;?>" id="<?php echo $key;?>" <?php echo $attribute;?>>
-    <label class="form-check-label" for="<?php echo $key;?>">
-        <?php echo $val;?>
+    <input name="<?= $config['name']; ?>[<?= $key; ?>]" class="form-check-input" type="checkbox" value="<?= $val; ?>" id="<?= $key; ?>" <?= $attribute; ?>>
+    <label class="form-check-label" for="<?= $key; ?>">
+        <?= $val; ?>
     </label>
 </div>
 

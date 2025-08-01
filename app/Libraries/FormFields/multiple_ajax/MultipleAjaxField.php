@@ -6,10 +6,10 @@ use App\Libraries\BaseField;
 
 class MultipleAjaxField extends BaseField
 {
-    protected string $name = '';
-    protected string $label = '';
-    protected string $rules = '';
-    protected mixed $default = '[]';
+    protected string $name    = '';
+    protected string $label   = '';
+    protected string $rules   = '';
+    protected mixed $default  = '[]';
     protected array $relation = [];
 
     /**

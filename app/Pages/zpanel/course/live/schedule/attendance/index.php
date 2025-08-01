@@ -67,8 +67,9 @@
 
                             <?php
                             $no = ($current_page - 1) * $per_page + 1;
-                            foreach ($attenders as $attender) :
-                            ?>
+
+foreach ($attenders as $attender) :
+    ?>
                                 <tr>
                                     <td width="5%"><?= $no++ ?></td>
                                     <td><?= $attender->name ?></td>

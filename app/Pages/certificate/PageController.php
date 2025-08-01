@@ -3,22 +3,23 @@
 namespace App\Pages\certificate;
 
 use App\Pages\BaseController;
+use Exception;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class PageController extends BaseController
 {
     public $data = [
-        'page_title'  => 'Certificate',
+        'page_title' => 'Certificate',
     ];
-    
+
     public function getData($code = null)
     {
         $Heroic = new \App\Libraries\Heroic();
 
         $student = model('CourseStudent')
-                        ->where('cert_code', $code)
-                        ->first();
-                        
+            ->where('cert_code', $code)
+            ->first();
+
         $this->data['student'] = [
             'cert_code'       => $student['cert_code'],
             'cert_url'        => json_decode($student['cert_url']),
@@ -37,16 +38,16 @@ class PageController extends BaseController
     public function postFeedback($id = null)
     {
         $Heroic = new \App\Libraries\Heroic();
-        $jwt = $Heroic->checkToken();
-        $post = $this->request->getPost();
+        $jwt    = $Heroic->checkToken();
+        $post   = $this->request->getPost();
 
         $data = [
-            'user_id' => $jwt->user_id,
-            'rate' => $post['rating'],
-            'comment' => $post['comment'],
-            'object_id' => 1,
+            'user_id'     => $jwt->user_id,
+            'rate'        => $post['rating'],
+            'comment'     => $post['comment'],
+            'object_id'   => 1,
             'object_type' => 'course',
-            'created_at' => date('Y-m-d H:i:s'),
+            'created_at'  => date('Y-m-d H:i:s'),
         ];
 
         model('Feedback')->insert($data);
@@ -60,7 +61,7 @@ class PageController extends BaseController
             ->update(['cert_claim_date' => date('Y-m-d H:i:s')]);
 
         return $this->respond([
-            'status' => 'success',
+            'status'  => 'success',
             'message' => 'Feedback berhasil disimpan',
         ]);
     }
@@ -69,17 +70,17 @@ class PageController extends BaseController
     {
         // TODO: Check completeness
 
-        // TODO: Generate certificate image 
+        // TODO: Generate certificate image
         $certTemplate = FCPATH . 'mobilekit/assets/img/template-certificate-min.jpg';
-        
+
         // $certName = 'Kresna Galuh D. Herlangga';
-        $certName = 'Aldiansyah Ibrahim';
-        $certNumber = 'CP-RAI/2025/V/0001';
+        $certName     = 'Aldiansyah Ibrahim';
+        $certNumber   = 'CP-RAI/2025/V/0001';
         $certFilename = $this->generateCertificate($certTemplate, $certName, $certNumber);
-        
+
         // Get filename from path
         $certFilename = basename($certFilename);
-        echo "<img src=" . base_url('certificates/'. $certFilename) . " width='3000'>";
+        echo '<img src=' . base_url('certificates/' . $certFilename) . " width='3000'>";
 
         // TODO: Save certificate image to storage
 
@@ -91,18 +92,18 @@ class PageController extends BaseController
     private function generateCertificate($certTemplate, $certName, $certNumber)
     {
         $outputDir = FCPATH . 'certificates';
-        if (!file_exists($outputDir)) {
+        if (! file_exists($outputDir)) {
             mkdir($outputDir, 0775, true);
         }
 
         // Buat folder storage jika belum ada
-        if (!file_exists($outputDir)) {
+        if (! file_exists($outputDir)) {
             mkdir($outputDir, 0777, true);
         }
 
         // Load template gambar
-        if (!file_exists($certTemplate)) {
-            throw new \Exception('Certificate template not found');
+        if (! file_exists($certTemplate)) {
+            throw new Exception('Certificate template not found');
         }
         $image = imagecreatefromjpeg($certTemplate); // atau imagecreatefromjpeg()
 
@@ -111,23 +112,23 @@ class PageController extends BaseController
 
         // Path ke font (TTF)
         $fontPath = FCPATH . 'mobilekit/assets/fonts/Ubuntu/Ubuntu-Medium.ttf'; // pastikan file ini ada
-        if (!file_exists($fontPath)) {
-            throw new \Exception('Font not found');
+        if (! file_exists($fontPath)) {
+            throw new Exception('Font not found');
         }
 
         // Koordinat posisi teks (atur sesuai kebutuhan)
-        $nameX = 160;
-        $nameY = 1100;
-        $nameFontSize = strlen($certName) <= 24 ? 130 : 120;
-        $numberX = 160;
-        $numberY = 710;
+        $nameX          = 160;
+        $nameY          = 1100;
+        $nameFontSize   = strlen($certName) <= 24 ? 130 : 120;
+        $numberX        = 160;
+        $numberY        = 710;
         $numberFontSize = 48;
 
         // Tulis nama
-        $certNameArray = $this->splitNameIfLong($certName,  28);
+        $certNameArray = $this->splitNameIfLong($certName, 28);
         if (isset($certNameArray[1])) {
-            $nameY = 1020;
-            $lineSpacing = 120;
+            $nameY        = 1020;
+            $lineSpacing  = 120;
             $nameFontSize = 95;
             imagettftext($image, $nameFontSize, 0, $nameX, $nameY, $fontColor, $fontPath, $certNameArray[0]);
             imagettftext($image, $nameFontSize, 0, $nameX, $nameY + $lineSpacing, $fontColor, $fontPath, $certNameArray[1]);
@@ -150,7 +151,7 @@ class PageController extends BaseController
         // Optimize jpeg
         $optimizerChain = OptimizerChainFactory::create();
         $optimizerChain->optimize($filename);
-        
+
         return $filename;
     }
 

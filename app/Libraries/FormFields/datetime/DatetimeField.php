@@ -6,10 +6,10 @@ use App\Libraries\BaseField;
 
 class DatetimeField extends BaseField
 {
-    protected string $name = '';
-    protected string $label = '';
-    protected string $rules = '';
-    protected string $format = 'DD-MM-YYYY'; // Moment.js Format tampilan di input
+    protected string $name     = '';
+    protected string $label    = '';
+    protected string $rules    = '';
+    protected string $format   = 'DD-MM-YYYY'; // Moment.js Format tampilan di input
     protected string $dbFormat = 'YYYY-MM-DD'; // Moment.js Format penyimpanan di database
 
     /**
@@ -17,13 +17,14 @@ class DatetimeField extends BaseField
      */
     public function getValueForInput(mixed $value): array
     {
-        if (!empty($value)) {
+        if (! empty($value)) {
             return [
-                'date' => date('d-m-Y', strtotime($value)),
-                'time' => date('H:i', strtotime($value)),
-                'original' => date("Y-m-d H:i:s", strtotime($value)),
+                'date'     => date('d-m-Y', strtotime($value)),
+                'time'     => date('H:i', strtotime($value)),
+                'original' => date('Y-m-d H:i:s', strtotime($value)),
             ];
         }
+
         return ['date' => '', 'time' => '', 'original' => ''];
     }
 
@@ -34,8 +35,10 @@ class DatetimeField extends BaseField
     {
         if (is_array($value) && isset($value['date'], $value['time'])) {
             $formattedDateTime = "{$value['date']} {$value['time']}:00";
+
             return date($this->dbFormat, strtotime($formattedDateTime));
         }
+
         return '';
     }
 }

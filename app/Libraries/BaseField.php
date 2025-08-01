@@ -2,15 +2,18 @@
 
 namespace App\Libraries;
 
+use Exception;
+use ReflectionClass;
+
 abstract class BaseField
 {
-    protected string $name = '';
-    protected string $label = '';
-    protected string $type = '';
+    protected string $name        = '';
+    protected string $label       = '';
+    protected string $type        = '';
     protected string $placeholder = '';
-    protected string $rules = '';
-    protected mixed $default = null;
-    protected array $attr = [];
+    protected string $rules       = '';
+    protected mixed $default      = null;
+    protected array $attr         = [];
     protected mixed $value;
 
     public function __construct(array $attributes, mixed $value = null)
@@ -25,7 +28,7 @@ abstract class BaseField
         // Assign nilai jika diberikan
         $this->value = $value;
     }
-    
+
     // Getter untuk mendapatkan semua properti sebagai array
     public function getProps(): array
     {
@@ -69,6 +72,7 @@ abstract class BaseField
         }
 
         $attrs = [];
+
         foreach ($this->attr as $key => $val) {
             $attrs[] = $key . '="' . htmlentities($val) . '"';
         }
@@ -78,42 +82,47 @@ abstract class BaseField
 
     /**
      * Render field form untuk input.
+     *
+     * @param mixed|null $value
      */
     public function renderInput($value = null): string
     {
-        $classPath = (new \ReflectionClass($this))->getFileName();
-        $viewPath = dirname($classPath) . DIRECTORY_SEPARATOR . 'input.php';
+        $classPath = (new ReflectionClass($this))->getFileName();
+        $viewPath  = dirname($classPath) . DIRECTORY_SEPARATOR . 'input.php';
 
-        if (!file_exists($viewPath)) {
-            throw new \Exception("Input view file not found for field: " . $this->name);
+        if (! file_exists($viewPath)) {
+            throw new Exception('Input view file not found for field: ' . $this->name);
         }
 
         ob_start();
         extract([
-            'config' => $this->getProps(),
-            'value' => esc($this->getValueForInput($value ?? $this->value ?? $this->default)),
-            'attributes' => $this->getAttributeString()
+            'config'     => $this->getProps(),
+            'value'      => esc($this->getValueForInput($value ?? $this->value ?? $this->default)),
+            'attributes' => $this->getAttributeString(),
         ]);
         include $viewPath;
+
         return ob_get_clean();
     }
 
-
     /**
      * Render field value untuk output.
+     *
+     * @param mixed $value
      */
     public function renderOutput($value): string
     {
-        $classPath = (new \ReflectionClass($this))->getFileName();
-        $viewPath = dirname($classPath) . DIRECTORY_SEPARATOR . 'output.php';
+        $classPath = (new ReflectionClass($this))->getFileName();
+        $viewPath  = dirname($classPath) . DIRECTORY_SEPARATOR . 'output.php';
 
-        if (!file_exists($viewPath)) {
-            throw new \Exception("Output view file not found for field: " . $this->name);
+        if (! file_exists($viewPath)) {
+            throw new Exception('Output view file not found for field: ' . $this->name);
         }
 
         ob_start();
         extract(['value' => esc($this->getValueForOutput($value ?? $this->value ?? $this->default))] + $this->getProps());
         include $viewPath;
+
         return ob_get_clean();
     }
 }

@@ -3,8 +3,8 @@
 $primaryColor   = '#54A3C6';     // Warna utama
 $secondaryColor = '#E7E725';     // Warna aksen
 $logoUrl        = 'https://www.ruangai.id/logo-ruangai.svg'; // Logo RuangAI
-$batchName      = $batchName ?? 'Batch Belajar AI Dasar';
-$startDate      = $startDate ?? '1 September 2025'; // Tanggal mulai batch
+$batchName ??= 'Batch Belajar AI Dasar';
+$startDate ??= '1 September 2025'; // Tanggal mulai batch
 ?>
 
 <!DOCTYPE html>

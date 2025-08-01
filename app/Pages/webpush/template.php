@@ -25,7 +25,7 @@
                 <p>Klik tombol di bawah lalu pilih <strong>“Izinkan”</strong> pada popup yang muncul.</p>
 
                 <button class="btn btn-primary" onclick="subscribeToPush()">Aktifkan</button>
-                
+
             </section>
 
             <section class="mb-5 pt-3">

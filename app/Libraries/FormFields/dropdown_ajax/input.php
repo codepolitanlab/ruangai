@@ -1,7 +1,7 @@
-<?php 
-$fieldId = str_replace(['[', ']'], ['__', ''], $config['name']); 
-$value = $value['id'] ?? ''; 
-$text = $value['text'] ?? ''; 
+<?php
+$fieldId = str_replace(['[', ']'], ['__', ''], $config['name']);
+$value   = $value['id'] ?? '';
+$text    = $value['text'] ?? '';
 ?>
 
 <select id="<?= $fieldId; ?>" name="<?= $config['name']; ?>" class="form-control" data-caption="<?= $config['label']; ?>">

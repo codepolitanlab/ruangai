@@ -38,7 +38,7 @@
                             <small class="text-danger" x-show="errors.email" x-text="errors.email"></small>
                         </div>
                     </div> -->
-                    
+
                     <div class="form-group px-3 boxed">
                         <div class="text-start input-wrapper">
                             <label class=" fs-6" for="whatsapp">No. Whatsapp</label>
@@ -58,7 +58,7 @@
                         </div>
                         <small class="text-danger" x-show="errors.password" x-text="errors.password"></small>
                     </div>
-                    
+
                     <div class="form-group px-3 boxed pb-3 text-start">
                         <div class="text-start input-wrapper">
                             <label class=" fs-6" for="identity">Ulangi Kata Sandi</label>
@@ -71,9 +71,9 @@
                     </div>
 
                     <div class="form-group px-3 mt-3">
-                        <button 
-                            type="button" 
-                            x-on:click="register" 
+                        <button
+                            type="button"
+                            x-on:click="register"
                             :disabled="registering"
                             class="btn btn-primary btn-block btn-lg rounded">
                             <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true" x-show="registering"></span>

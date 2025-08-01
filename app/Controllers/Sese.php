@@ -6,7 +6,11 @@ class Sese extends \CodeIgniter\Controller
 {
     public function index()
     {
-        return view('sese');
+        $Phpass = new \App\Libraries\Phpass();
+        $password = 'bismillah';
+        $hashed = '$P$BKkZAeVzC8P3whpS47YNNRPT7S2VYW/';
+
+        dd($Phpass->CheckPassword($password, $hashed));
     }
 
     public function counter()
@@ -15,7 +19,10 @@ class Sese extends \CodeIgniter\Controller
         ini_set('zlib.output_compression', 'Off');
         ini_set('implicit_flush', 1);
         ob_implicit_flush(1);
-        while (ob_get_level() > 0) { ob_end_flush(); }
+
+        while (ob_get_level() > 0) {
+            ob_end_flush();
+        }
 
         // // Pastikan tidak ada buffer aktif
         // while (ob_get_level() > 0) {
@@ -33,13 +40,14 @@ class Sese extends \CodeIgniter\Controller
 
         // Kirim counter secara bertahap
         for ($i = 1; $i <= 10; $i++) {
-            echo "data: " . json_encode(['counter' => $i]) . "\n\n";
+            echo 'data: ' . json_encode(['counter' => $i]) . "\n\n";
             flush(); // hanya flush, tanpa ob_flush()
             sleep(1);
         }
 
         echo "event: end\ndata: selesai\n\n";
         flush();
+
         exit;
     }
 }

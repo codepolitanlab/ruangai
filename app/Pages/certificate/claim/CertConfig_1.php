@@ -2,22 +2,23 @@
 
 namespace App\Pages\certificate\claim;
 
-use Endroid\QrCode\QrCode;
+use DateTime;
+use IntlDateFormatter;
 
 // Certificate configuration for course id 1
 class CertConfig_1
 {
-    public array  $pages;
+    public array $pages;
     public string $code;
-    public mixed  $numberOrder;
-    public int    $pageWidth = 3508;
-    public int    $pageHeight = 2481;
+    public mixed $numberOrder;
+    public int $pageWidth    = 3508;
+    public int $pageHeight   = 2481;
     public string $outputDir = 'certificates';
 
     public function __construct($user_id, $course_id, $certNumberOrder = null)
     {
         // Get user data from database
-        $db = \Config\Database::connect();
+        $db   = \Config\Database::connect();
         $user = $db->table('users')
             ->select('name, cert_code')
             ->join('course_students', 'users.id = course_students.user_id')
@@ -27,11 +28,11 @@ class CertConfig_1
             ->getRowArray();
 
         // Required variables
-        $this->code  = ($user['cert_code'] ?? null) ? $user['cert_code'] : strtoupper(substr(sha1($user_id . '-' . $course_id), -6)) . date('dH');
+        $this->code        = ($user['cert_code'] ?? null) ? $user['cert_code'] : strtoupper(substr(sha1($user_id . '-' . $course_id), -6)) . date('dH');
         $this->numberOrder = $certNumberOrder;
-        if (!$certNumberOrder) {
+        if (! $certNumberOrder) {
             $lastCertNumberOrder = model('CourseStudent')->getLastCertNumber($user_id);
-            $this->numberOrder = $lastCertNumberOrder + 1;
+            $this->numberOrder   = $lastCertNumberOrder + 1;
         }
         $certNumber = 'No: CP-RAI/' . date('Y') . '/' . date('m') . '/' . str_pad($this->numberOrder, 4, '0', STR_PAD_LEFT);
 
@@ -73,27 +74,27 @@ class CertConfig_1
                     'fontSize' => 42,
                     'fontPath' => FCPATH . 'mobilekit/assets/fonts/Ubuntu/Ubuntu-Regular.ttf',
                 ],
-            ], 
+            ],
             'qrcode' => [
-                'value' => 'https://app.ruangai.id/c/' . $this->code,
-                'x' => $this->pageWidth - 500,
-                'y' => $this->pageHeight - 700,
-                'size' => 400,
-                'margin' => 10,
-                'logo' => FCPATH . 'mobilekit/assets/img/logo-small.png',
+                'value'    => 'https://app.ruangai.id/c/' . $this->code,
+                'x'        => $this->pageWidth - 500,
+                'y'        => $this->pageHeight - 700,
+                'size'     => 400,
+                'margin'   => 10,
+                'logo'     => FCPATH . 'mobilekit/assets/img/logo-small.png',
                 'logoSize' => 84,
             ],
         ];
         $this->pages[1]['texts']['date_expired']['x'] = $this->rightAlignTextX($this->pages[1]['texts']['date_expired']['value'], $this->pages[1]['texts']['date_expired']['fontSize'], $this->pages[1]['texts']['date_expired']['fontPath'], $this->pageWidth, 50);
 
         // 2ND page frontpage certificate in english
-        $this->pages[2]                 = $this->pages[1];
-        $this->pages[2]['templatePath'] = FCPATH . 'certificates/tpl/en_1.tpl-min.jpg';
-        $this->pages[2]['outputPath']   = FCPATH . $this->outputDir . '/' . $this->code . 'en.jpg';
-        $this->pages[2]['outputURL']    = base_url($this->outputDir . '/' . $this->code . 'en.jpg');
-        $this->pages[2]['texts']['date_issued']['value'] = $this->getDate('now', 'en_EN', 'FULL');
+        $this->pages[2]                                   = $this->pages[1];
+        $this->pages[2]['templatePath']                   = FCPATH . 'certificates/tpl/en_1.tpl-min.jpg';
+        $this->pages[2]['outputPath']                     = FCPATH . $this->outputDir . '/' . $this->code . 'en.jpg';
+        $this->pages[2]['outputURL']                      = base_url($this->outputDir . '/' . $this->code . 'en.jpg');
+        $this->pages[2]['texts']['date_issued']['value']  = $this->getDate('now', 'en_EN', 'FULL');
         $this->pages[2]['texts']['date_expired']['value'] = 'Valid until: ' . $this->getDate('+3 years', 'en_EN', 'LONG');
-        $this->pages[2]['texts']['date_expired']['x'] = $this->rightAlignTextX($this->pages[2]['texts']['date_expired']['value'], $this->pages[2]['texts']['date_expired']['fontSize'], $this->pages[2]['texts']['date_expired']['fontPath'], $this->pageWidth, 50);
+        $this->pages[2]['texts']['date_expired']['x']     = $this->rightAlignTextX($this->pages[2]['texts']['date_expired']['value'], $this->pages[2]['texts']['date_expired']['fontSize'], $this->pages[2]['texts']['date_expired']['fontPath'], $this->pageWidth, 50);
 
         // 3RD page backpage certificate in bahasa
         $this->pages[3] = [
@@ -117,50 +118,48 @@ class CertConfig_1
                     'fontSize' => 52,
                     'fontPath' => FCPATH . 'mobilekit/assets/fonts/Ubuntu/Ubuntu-Medium.ttf',
                 ],
-            ]
+            ],
         ];
 
         // Set centered text position
-        $this->pages[3]['texts']['name']['x'] = $this->centerTextX($this->pages[3]['texts']['name']['value'], $this->pages[3]['texts']['name']['fontSize'], $this->pages[3]['texts']['name']['fontPath'], $this->pageWidth);
+        $this->pages[3]['texts']['name']['x']   = $this->centerTextX($this->pages[3]['texts']['name']['value'], $this->pages[3]['texts']['name']['fontSize'], $this->pages[3]['texts']['name']['fontPath'], $this->pageWidth);
         $this->pages[3]['texts']['number']['x'] = $this->centerTextX($this->pages[3]['texts']['number']['value'], $this->pages[3]['texts']['number']['fontSize'], $this->pages[3]['texts']['number']['fontPath'], $this->pageWidth);
     }
 
     public function centerTextX($text, $fontSize, $fontPath, $imageWidth, $angle = 0)
     {
-        $bbox = imagettfbbox($fontSize, $angle, $fontPath, $text);
+        $bbox      = imagettfbbox($fontSize, $angle, $fontPath, $text);
         $textWidth = abs($bbox[2] - $bbox[0]);
+
         return ($imageWidth - $textWidth) / 2;
     }
 
     public function rightAlignTextX($text, $fontSize, $fontPath, $imageWidth, $paddingRight = 0, $angle = 0)
     {
-        $bbox = imagettfbbox($fontSize, $angle, $fontPath, $text);
+        $bbox      = imagettfbbox($fontSize, $angle, $fontPath, $text);
         $textWidth = abs($bbox[2] - $bbox[0]);
+
         return $imageWidth - $textWidth - $paddingRight;
     }
 
-
     public function getOutputURLs()
     {
-        return array_map(function ($page) {
-            return $page['outputURL'];
-        }, $this->pages);
+        return array_map(static fn ($page) => $page['outputURL'], $this->pages);
     }
 
     public function getDate($when = 'now', $locale = 'id_ID', $format = 'FULL')
     {
-        if ($when == 'now') {
-            $date = new \DateTime();
+        if ($when === 'now') {
+            $date = new DateTime();
         } else {
-            $date = new \DateTime();
+            $date = new DateTime();
             $date->modify($when);
         }
 
         // Formatter tanggal lokal Indonesia
-        $formatter = new \IntlDateFormatter($locale, constant('\IntlDateFormatter::' . $format), \IntlDateFormatter::NONE);
+        $formatter = new IntlDateFormatter($locale, constant('\IntlDateFormatter::' . $format), IntlDateFormatter::NONE);
 
         // Format hasil
         return $formatter->format($date);
     }
-
 }

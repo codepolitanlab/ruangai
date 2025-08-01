@@ -6,9 +6,9 @@ use App\Libraries\BaseField;
 
 class DurationField extends BaseField
 {
-    protected string $name = '';
-    protected string $label = '';
-    protected string $rules = '';
+    protected string $name   = '';
+    protected string $label  = '';
+    protected string $rules  = '';
     protected mixed $default = '00:00:00';
 
     /**
@@ -16,14 +16,16 @@ class DurationField extends BaseField
      */
     public function getValueForInput(mixed $value): array
     {
-        if (!empty($value) && strpos($value, ':') !== false) {
-            list($h, $m, $s) = explode(':', $value);
+        if (! empty($value) && strpos($value, ':') !== false) {
+            [$h, $m, $s] = explode(':', $value);
+
             return [
-                'hour' => str_pad($h, 2, '0', STR_PAD_LEFT),
+                'hour'   => str_pad($h, 2, '0', STR_PAD_LEFT),
                 'minute' => str_pad($m, 2, '0', STR_PAD_LEFT),
-                'second' => str_pad($s, 2, '0', STR_PAD_LEFT)
+                'second' => str_pad($s, 2, '0', STR_PAD_LEFT),
             ];
         }
+
         return ['hour' => '00', 'minute' => '00', 'second' => '00'];
     }
 
@@ -35,6 +37,7 @@ class DurationField extends BaseField
         if (is_array($value) && isset($value['hour'], $value['minute'], $value['second'])) {
             return sprintf('%02d:%02d:%02d', $value['hour'], $value['minute'], $value['second']);
         }
+
         return $this->default;
     }
 }
