@@ -36,6 +36,8 @@
 		}
 	</style>
 
+	<?= $this->include('_appHeader'); ?>
+
 	<div id="appCapsule">
 
 		<div class="appContent py-4" style="min-height:90vh">
