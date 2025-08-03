@@ -219,7 +219,7 @@
 						</div>
 						<div class="flex-grow-1" :class="data.course_completed ? 'text-white' : 'opacity-50'">
 							<!-- <div class="fw-bold mb-1" style="font-size:1.2rem;">Bonus Kelas Lanjutan</div> -->
-							<div style="font-size:1rem;">Pilih salah satu dari 4 kelas lanjutan yang paling cocok buatmu</div>
+							<h5 class="h6 mb-0" style="font-size:1rem;">Pilih salah satu dari 4 kelas lanjutan yang paling cocok buatmu</h5>
 						</div>
 					</div>
 				</div>
