@@ -7,8 +7,6 @@
     })"
 	x-effect="loadPage(`/courses/intro/lessons/data/${$params.course_id}`)">
 
-	<?= $this->include('courses/intro/_menu'); ?>
-
 	<style>
 		.disabled {
 			pointer-events: none;
@@ -44,6 +42,8 @@
 	</style>
 
 	<div id="appCapsule" class="">
+		<?= $this->include('courses/intro/_menu'); ?>
+
 		<div class="appContent" style="min-height:90vh" x-data="listLesson()">
 
 			<div class="card my-4 rounded-4 shadow-none">

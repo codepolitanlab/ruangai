@@ -81,9 +81,10 @@
 		}
 	</style>
 
-	<?= $this->include('courses/intro/_menu'); ?>
 
 	<div id="appCapsule" class="">
+		<?= $this->include('courses/intro/_menu'); ?>
+
 		<div class="appContent" style="min-height:90vh">
 
 			<div class="card my-4 rounded-4 shadow-none">
