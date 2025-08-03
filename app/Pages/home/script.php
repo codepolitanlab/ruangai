@@ -51,13 +51,17 @@
           breakpoints: {
             // Untuk layar lebih kecil, jika perlu
             0: {
-              slidesPerView: 1.1,
-              spaceBetween: 15
+              slidesPerView: 1.15,
+              spaceBetween: 15,
+              slidesOffsetBefore: 15,
+              slidesOffsetAfter: 15,
             },
             // Untuk layar lebih besar, jika perlu
             640: {
               slidesPerView: 1.5,
-              spaceBetween: 20
+              spaceBetween: 15,
+              slidesOffsetBefore: 15,
+              slidesOffsetAfter: 15,
             }
           }
         }
