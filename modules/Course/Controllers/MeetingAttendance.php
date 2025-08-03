@@ -20,7 +20,7 @@ class MeetingAttendance extends AdminController
 
     public function __construct()
     {
-        $this->model = model('LiveAttendanceModel');
+        $this->model = model('Course\Models\LiveAttendanceModel');
     }
 
     public function index($meeting_id = null)
@@ -28,7 +28,7 @@ class MeetingAttendance extends AdminController
         $data['page_title'] = 'Live Session Attendance';
 
         // Get meeting
-        $data['meeting'] = model('LiveMeetingModel')
+        $data['meeting'] = model('Course\Models\LiveMeetingModel')
             ->select('live_batch.name as batch, live_batch.course_id, live_meetings.*')
             ->join('live_batch', 'live_batch.id = live_batch_id')
             ->where('live_meetings.id', $meeting_id)
@@ -36,7 +36,7 @@ class MeetingAttendance extends AdminController
             ->first();
 
         // Base query with joins and subqueries
-        $this->model->select('live_attendance.id, users.name, users.email, live_attendance.duration');
+        $this->model->select('live_attendance.id, users.name, users.email, live_attendance.duration, zoom_join_link, duration, meeting_feedback_id, live_attendance.status');
         $this->model->join('users', 'users.id = live_attendance.user_id');
         $this->model->where('live_attendance.live_meeting_id', $meeting_id);
 
@@ -68,7 +68,7 @@ class MeetingAttendance extends AdminController
         $data['filter']       = $filter;
         $data['per_page']     = $perpage;
         $data['current_page'] = $this->request->getGet('page') ?? 1;
-        $data['live_meeting'] = model('LiveMeetingModel')->where('id', $meeting_id)->first();
+        $data['live_meeting'] = model('Course\Models\LiveMeetingModel')->where('id', $meeting_id)->first();
 
         $this->data = array_merge($this->data, $data);
 
@@ -77,7 +77,7 @@ class MeetingAttendance extends AdminController
 
     public function form($live_meeting_id, $id = null)
     {
-        $LiveMeetingModel = model('LiveMeetingModel');
+        $LiveMeetingModel = model('Course\Models\LiveMeetingModel');
 
         $data['meeting'] = $LiveMeetingModel
             ->select('live_batch.name as batch, live_meetings.*')
@@ -88,7 +88,7 @@ class MeetingAttendance extends AdminController
 
         if ($id) {
             // Mode Edit: Ambil data scholarship
-            $liveAttendance     = model('LiveAttendanceModel');
+            $liveAttendance     = model('Course\Models\LiveAttendanceModel');
             $data['attendance'] = $liveAttendance
                 ->select('live_attendance.*, users.name, users.email')
                 ->join('users', 'users.id = live_attendance.user_id')
@@ -117,7 +117,7 @@ class MeetingAttendance extends AdminController
         $email = $this->request->getPost('email');
 
         // Get user_id by email from users table
-        $userModel = model('UserModel');
+        $userModel = model('Heroicadmin\Modules\Users\Models\UserModel');
         $user      = $userModel->where('email', $email)->first();
         if ($user) {
             $user_id = $user['id'];
@@ -128,7 +128,7 @@ class MeetingAttendance extends AdminController
         }
 
         // Get course_id by live_meeting_id
-        $liveMeetingModel = model('LiveMeetingModel');
+        $liveMeetingModel = model('Course\Models\LiveMeetingModel');
         $liveMeeting      = $liveMeetingModel
             ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
             ->where('live_meetings.id', $live_meeting_id)
@@ -142,7 +142,7 @@ class MeetingAttendance extends AdminController
             'duration'        => $this->request->getPost('duration'),
         ];
 
-        $liveAttendanceModel = model('LiveAttendanceModel');
+        $liveAttendanceModel = model('Course\Models\LiveAttendanceModel');
 
         try {
             if ($id) {
@@ -174,7 +174,7 @@ class MeetingAttendance extends AdminController
 
     public function delete($live_meeting_id, $id)
     {
-        $liveAttendanceModel = model('LiveAttendanceModel');
+        $liveAttendanceModel = model('Course\Models\LiveAttendanceModel');
 
         try {
             $liveAttendanceModel->update($id, ['deleted_at' => date('Y-m-d H:i:s')]);
@@ -202,10 +202,10 @@ class MeetingAttendance extends AdminController
 
     public function startSync($live_meeting_id)
     {
-        $liveAttendancModel = model('LiveAttendanceModel');
+        $liveAttendancModel = model('Course\Models\LiveAttendanceModel');
 
         // Get zoom_meeting_id from live_meeting table
-        $meeting = model('LiveMeetingModel')->select('zoom_meeting_id, course_id')
+        $meeting = model('Course\Models\LiveMeetingModel')->select('zoom_meeting_id, course_id')
             ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
             ->where('live_meetings.id', $live_meeting_id)
             ->first();
@@ -238,7 +238,7 @@ class MeetingAttendance extends AdminController
         // Update attendance table
         // while iterating, check if user minimum duration is pass and user has submit feedback
         $participantEmails = array_keys($participants);
-        $users             = model('UserModel')->select('id, email')->whereIn('email', $participantEmails)->findAll();
+        $users             = model('Heroicadmin\Modules\User\Models\UserModel')->select('id, email')->whereIn('email', $participantEmails)->findAll();
         if (! $users) {
             return $this->respond([
                 'status'  => 'success',
@@ -251,7 +251,7 @@ class MeetingAttendance extends AdminController
 
         foreach ($users as $user) {
             // TODO: Check if user has submit feedback
-            // $feedback = model('MeetingFeedbackModel')->where('user_id', $user['id'])
+            // $feedback = model('Course\Models\MeetingFeedbackModel')->where('user_id', $user['id'])
             //                                         ->where('live_meeting_id', $live_meeting_id)
             //                                         ->first();
             $validParticipant['user_id']             = $user['id'];

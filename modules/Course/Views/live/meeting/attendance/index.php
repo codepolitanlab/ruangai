@@ -17,7 +17,7 @@
                     </ol>
                 </nav>
                 <h3>Meeting Attendance</h3>
-                <h5 class="h6">Live Session: <?= $live_meeting['title']; ?></h5>
+                <h5 class="h6">Live Meeting: <?= $live_meeting['title']; ?></h5>
             </div>
             <div class="col-12 col-md-4 order-md-2 order-first text-end">
                 <a href="<?= site_url(urlScope() . '/course/live/meeting/' . $live_meeting['id'] . '/attendant/sync'); ?>" class="btn btn-outline-primary"><i class="bi bi-arrow-clockwise"></i> Sync Data</a>
@@ -44,7 +44,10 @@
                                 <th>No</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Duration</th>
+                                <th>Zoom Join Link</th>
+                                <th>Duration (s)</th>
+                                <th>Feedback</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,8 +55,10 @@
                                 <tr>
                                     <td></td>
                                     <td><input type="text" class="form-control form-control-sm" name="filter[name]" value="<?= @$filter['name'] ?>" placeholder="filter name"></td>
-                                    <td><input type="text" class="form-control form-control-sm" name="filter[email]" value="<?= @$filter['email'] ?>" placeholder="filter email"></td>
-                                    <td><input type="text" class="form-control form-control-sm" name="filter[duration]" value="<?= @$filter['duration'] ?>" placeholder="filter duration"></td>
+                                    <td><input type="text" class="form-control form-control-sm" name="filter[email]" value="<?= @$filter['email'] ?>" placeholder="filter name"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td></td>
                                     <td>
                                         <div class="btn-group">
@@ -71,9 +76,23 @@ foreach ($attenders as $attender) :
     ?>
                                 <tr>
                                     <td width="5%"><?= $no++ ?></td>
-                                    <td><?= $attender->name ?></td>
-                                    <td><?= $attender->email ?></td>
+                                    <td>
+                                        <?= $attender->name ?>
+                                    </td>
+                                    <td>
+                                        <?= $attender->email ?></td>
+                                    <td>
+                                        <span class="text-ellipsis" title="<?= $attender->zoom_join_link ?? '-' ?>">
+                                            <?= $attender->zoom_join_link ?? null ? '✅' : '❌' ?>
+                                        </span>
+                                    </td>
                                     <td><?= $attender->duration ?? '-' ?></td>
+                                    <td>
+                                        <?= ($attender->meeting_feedback_id ?? null) 
+                                            ? '✅ <a href="/zpanel/course/live/meeting/feedback/' . $attender->meeting_feedback_id . '/detail" class="btn btn-sm btn-link text-nowrap"><span class="bi bi-search"></span> Lihat</a>' 
+                                            : '❌' ?>
+                                    </td>
+                                    <td><?= ($attender->status ?? '0') === '1' ? '✅' : '❌' ?></td>
                                     <td class="text-end">
                                         <div class="btn-group">
 
@@ -82,14 +101,14 @@ foreach ($attenders as $attender) :
                                                 <span class="bi bi-pencil-square"></span> Edit
                                             </a>
 
-                                            <form action="/<?= urlScope() ?>/course/live/meeting/<?= $live_meeting['id'] ?>/attendant/<?= $attender->id ?>/delete" method="post" class="d-inline"
+                                            <!-- <form action="/<?= urlScope() ?>/course/live/meeting/<?= $live_meeting['id'] ?>/attendant/<?= $attender->id ?>/delete" method="post" class="d-inline"
                                                 onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
                                                 <input type="hidden" name="id" value="<?= $attender->id ?>">
                                                 <input type="hidden" name="live_meeting_id" value="<?= $live_meeting['id'] ?>">
                                                 <button type="submit" class="btn btn-sm btn-outline-danger text-nowrap">
                                                     <span class="bi bi-x-lg"></span> Delete
                                                 </button>
-                                            </form>
+                                            </form> -->
                                         </div>
                                     </td>
                                 </tr>
