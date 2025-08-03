@@ -36,37 +36,35 @@
 		}
 	</style>
 
-	<?= $this->include('_appHeader'); ?>
-
 	<div id="appCapsule">
 
 		<div class="appContent py-4" style="min-height:90vh">
 
-			<div class="">
+			<div class="header-large-title mb-4 ps-0">
+				<h2 class="h3 fw-normal">Daftar Kelas</h2>
+			</div>
 
-				<div class="bg-white p-4 rounded-4 mb-4">
-					<h5 class="fw-bold mb-3">Progres Kelas</h5>
-					<div class="card text-white bg-primary p-3">
-						<div class="d-flex align-items-center">
-							<div class="bg-white p-4 rounded-3 d-flex align-items-center justify-content-center me-3">
-								<img src="<?= base_url('mobilekit/assets/img/ruangai/book-play.svg') ?>" alt="">
+			<div class="">
+				<!-- <div class="card text-white bg-primary p-3 mb-4 shadow-sm">
+					<div class="d-flex align-items-center">
+						<div class="bg-white p-4 rounded-3 d-flex align-items-center justify-content-center me-3">
+							<img src="<?= base_url('mobilekit/assets/img/ruangai/book-play.svg') ?>" alt="">
+						</div>
+						<div class="flex-grow-1">
+							<div class="d-flex align-items-center">
+								<span class="fw-bold">Lanjutkan Belajar</span>
 							</div>
-							<div class="flex-grow-1">
-								<div class="d-flex align-items-center">
-									<span class="fw-bold">Lanjutkan Belajar</span>
+							<p class="fw-bold mb-2" x-text="data.last_lesson?.title"></p>
+							<div class="d-flex align-items-center">
+								<i class="bi bi-play-fill fs-3 me-2"></i>
+								<div class="progress flex-grow-1" style="background: #BFD6E0">
+									<div class="progress-bar bg-white" role="progressbar" :style="{ width: data.last_lesson?.progress + '%' }" aria-valuenow="data.last_lesson?.progress" aria-valuemin="0" aria-valuemax="100"></div>
 								</div>
-								<p class="fw-bold mb-2" x-text="data.last_lesson?.title"></p>
-								<div class="d-flex align-items-center">
-									<i class="bi bi-play-fill fs-3 me-2"></i>
-									<div class="progress flex-grow-1" style="background: #BFD6E0">
-										<div class="progress-bar bg-white" role="progressbar" :style="{ width: data.last_lesson?.progress + '%' }" aria-valuenow="data.last_lesson?.progress" aria-valuemin="0" aria-valuemax="100"></div>
-									</div>
-									<span class="ms-3 fw-bold small" x-text="data.last_lesson?.progress + '%'">0%</span></span>
-								</div>
+								<span class="ms-3 fw-bold small" x-text="data.last_lesson?.progress + '%'">0%</span></span>
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
 				<div class="bg-white p-4 rounded-4 mb-4">
 					<h5 class="fw-bold mb-3">Kelas yang kamu miliki</h5>
