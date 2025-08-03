@@ -64,7 +64,7 @@
 					</div>
 					<div>
 						<h5 class="mb-1 fw-normal">Selamat Belajar,</h5>
-						<h4 class="mb-0">Igo</h4>
+						<h4 class="mb-0">Igo El Dorado</h4>
 					</div>
 				</div>
 				<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206633.png" class="position-absolute bottom-0 end-0 w-25" alt="">
@@ -82,26 +82,22 @@
 			</div>
 		</div>
 
-		<div class="swiper swiper-notif">
+		<div class="swiper swiper-notif pb-3">
 			<div class="swiper-wrapper">
 				<template x-for="i in 3" :key="i">
 					<div class="swiper-slide">
 						<!-- Pengumuman -->
-						<div class="announcement d-flex align-items-center gap-3 border-secondary">
-							<div class="announcement-icon bg-white">
+						<div class="announcement d-flex align-items-top gap-3 shadow-sm border-secondary">
+							<div class="announcement-icon bg-white" style="min-width:64px; height:64px">
 								<img src="<?= base_url('mobilekit/assets/img/ruangai/speaker.svg') ?>" width="35" alt="">
 							</div>
 							<div>
 								<h5 class="mb-1 fw-bold">Live Session Terdekat</h5>
-								<p class="mb-1">Mencegah AI Merajalela di Muka Bumi</p>
+								<p class="mb-1 line-height">Mencegah AI Merajalela di Muka Bumi</p>
 								<div class="text-muted">
 									<div class="text-nowrap">
 										<i class="bi bi-calendar me-1"></i>
-										<span class="me-3">23 April 2025</span>
-									</d>
-									<div class="text-nowrap">
-										<i class="bi bi-clock me-1"></i>
-										<span>12.00 - 14.00</span>
+										<span class="me-3">23 April 2025, 12:00 WIB</span>
 									</d>
 								</div>
 							</div>
@@ -111,7 +107,7 @@
 			</div>
 		</div>
 
-		<div class="appContent py-4" style="min-height:90vh">
+		<div class="appContent pt-2 pb-4" style="min-height:90vh">
 			<!-- Card Kelas -->
 			<div class="rounded-4 mb-3">
 				<div class="bg-white p-4 rounded-4 g-3 mb-4">

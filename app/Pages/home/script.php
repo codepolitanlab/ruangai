@@ -53,14 +53,14 @@
             0: {
               slidesPerView: 1.15,
               spaceBetween: 15,
-              slidesOffsetBefore: 15,
+              slidesOffsetBefore: 20,
               slidesOffsetAfter: 15,
             },
             // Untuk layar lebih besar, jika perlu
             640: {
               slidesPerView: 1.5,
               spaceBetween: 15,
-              slidesOffsetBefore: 15,
+              slidesOffsetBefore: 20,
               slidesOffsetAfter: 15,
             }
           }
