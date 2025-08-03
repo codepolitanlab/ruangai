@@ -4,8 +4,6 @@
 	x-data="courseIntro($params.course_id)"
 	x-effect="loadPage(`/courses/intro/data/${$params.course_id}`)">
 
-	<?= $this->include('_appHeader'); ?>
-
 	<style>
 		.cover {
 			object-fit: cover;
@@ -50,6 +48,17 @@
 		</div> -->
 
 		<div class="appContent py-4" style="min-height:90vh">
+			<div>
+				<div class="mb-3">
+					<a href="/courses" class="btn rounded-4 px-2 btn-white bg-white text-primary">
+						<h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>
+					</a>
+				</div>
+				<div class="ms-2">
+					<h5 class="mb-1 fs-5 opacity-50">Kelas</h5>
+					<h2 class="h4 mb-3"><span x-text="data.course.course_title"></span></h2>
+				</div>
+			</div>
 
 			<!-- Show Expire Alert -->
 			<template x-if="data.is_expire">
@@ -69,8 +78,7 @@
 				<div class="card border-0 shadow-none overflow-hidden">
 					<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206751%20(2).png" class="card-img-top cover rounded-4" style="height: 200px;" alt="AI Course">
 					<div class="card-body p-2">
-						<h2 class="h3 mt-2 mb-3">Kelas - <span x-text="data.course.course_title"></span></h2>
-						<p class="card-text p-0 mb-0">
+						<p class="card-text p-0 mt-2 mb-0">
 							Pelajari dasar-dasar Artificial Intelligence (AI), bagaimana cara kerjanya, serta perannya dalam kehidupan sehari-hari.
 							<button
 								x-show="!meta.expandDesc" x-transition
