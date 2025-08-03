@@ -214,12 +214,12 @@
 					@click="claimReward()"
 					:class="data.course_completed ? '' : 'bg-dark bg-opacity-10'">
 					<div class="card-body d-flex align-items-center gap-3 p-4">
-						<div class="rounded-3 d-flex align-items-center justify-content-center" style="width:64px;height:64px;background:#fff;">
-							<i class="bi bi-gift" :class="data.course_completed ? '' : 'text-dark opacity-50'" style="font-size:2.5rem; color:#e91e95;"></i>
+						<div class="rounded-3 d-flex align-items-center justify-content-center px-3" style="min-width:64px;height:64px;background:#fff;">
+							<i class="bi bi-gift fs-2" :class="data.course_completed ? '' : 'text-dark opacity-50'" style="font-size:2.5rem; color:#e91e95;"></i>
 						</div>
 						<div class="flex-grow-1" :class="data.course_completed ? 'text-white' : 'opacity-50'">
-							<div class="fw-bold mb-1" style="font-size:1.2rem;">Bonus Kelas Lanjutan</div>
-							<div style="font-size:1rem;">Pilih salah satu dari 4 kelas lanjutan yang paling cocok dengan kebutuhanmu</div>
+							<!-- <div class="fw-bold mb-1" style="font-size:1.2rem;">Bonus Kelas Lanjutan</div> -->
+							<div style="font-size:1rem;">Pilih salah satu dari 4 kelas lanjutan yang paling cocok buatmu</div>
 						</div>
 					</div>
 				</div>
