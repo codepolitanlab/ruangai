@@ -96,10 +96,10 @@ foreach ($attenders as $attender) :
                                     <td class="text-end">
                                         <div class="btn-group">
 
-                                            <a class="btn btn-sm btn-outline-secondary text-nowrap"
+                                            <!-- <a class="btn btn-sm btn-outline-secondary text-nowrap"
                                                 href="/<?= urlScope() ?>/course/live/meeting/<?= $live_meeting['id'] ?>/attendant/<?= $attender->id ?>/edit">
                                                 <span class="bi bi-pencil-square"></span> Edit
-                                            </a>
+                                            </a> -->
 
                                             <!-- <form action="/<?= urlScope() ?>/course/live/meeting/<?= $live_meeting['id'] ?>/attendant/<?= $attender->id ?>/delete" method="post" class="d-inline"
                                                 onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
