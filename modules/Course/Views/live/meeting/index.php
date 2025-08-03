@@ -38,16 +38,15 @@
                     <table class="table table-bordered" style="table-layout: fixed;min-width: 1300px;">
                         <thead>
                             <tr>
-                                <th width="10%">ID</th>
-                                <th width="15%">Status</th>
-                                <th width="20%">Title & Sub</th>
+                                <th width="18%">ID &amp; Code</th>
+                                <th width="30%">Title & Sub</th>
                                 <th width="30%">Description</th>
                                 <th width="20%">Mentor</th>
                                 <th width="25%" class="text-nowrap">Meeting Time</th>
                                 <th width="20%">Zoom Meeting ID/Link</th>
-                                <th width="20%">Zoom Link</th>
-                                <th width="20%">Recording</th>
-                                <th width="20%">Feedback</th>
+                                <th width="20%">Recording URL</th>
+                                <th width="20%">Feedback URL</th>
+                                <th width="20%">Module URL</th>
                                 <th width="150xp">Actions</th>
                             </tr>
                         </thead>
@@ -56,11 +55,9 @@
                         <tbody>
                             <?php foreach ($meetings as $meeting): ?>
                                 <tr>
-                                    <td><?= $meeting['id'] ?></td>
                                     <td>
-                                        <small class="badge rounded-pill bg-<?= $meeting['status'] === 'completed' ? 'success' : ($meeting['status'] === 'ongoing' ? 'warning' : 'secondary') ?>">
-                                            <?= ucfirst($meeting['status']) ?>
-                                        </small>
+                                        <?= $meeting['id'] ?><br>
+                                        <span class="badge text-bg-light"><?= $meeting['meeting_code'] ?></span>
                                     </td>
                                     <td>
                                         <div class="h6 mb-1"><?= $meeting['title'] ?></div>
@@ -77,16 +74,18 @@
                                         <?= $meeting['zoom_meeting_id'] ?>
                                         <div>
                                             <?php if ($meeting['zoom_link'] || $meeting['zoom_meeting_id']): ?>
+                                                <?php if($meeting['meeting_code']): ?>
                                                 <a href="<?= site_url('zoom/' . $meeting['meeting_code']) ?>" 
                                                     target="_blank" 
                                                     class="btn btn-sm btn-outline-primary">
                                                     <i class="bi bi-camera-video"></i> Zoom Link</a>
+                                                <?php else: ?>
+                                                    <span class="text-muted">Meeting code not set</span>
+                                                <?php endif; ?>
                                             <?php else: ?>
                                                 <span class="text-muted">ID/link not set</span>
                                             <?php endif; ?>
                                         </div>
-                                    </td>
-                                    <td>
                                     </td>
                                     <td>
                                         <?php if ($meeting['recording_link']): ?>
@@ -95,9 +94,25 @@
                                             <span class="text-muted">Not available</span>
                                         <?php endif; ?>
                                     </td>
-                                    <td> <a href="<?= $meeting['form_feedback_url'] ?>" target="_blank"><?= $meeting['form_feedback_url'] ?></a></td>
+                                    <td>
+                                        <?php if ($meeting['form_feedback_url']): ?>
+                                            <a href="<?= $meeting['form_feedback_url'] ?>" target="_blank"><?= $meeting['form_feedback_url'] ?></a>
+                                        <?php else: ?>
+                                            <span class="text-muted">Not available</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <?php if ($meeting['module_url']): ?>
+                                            <a href="<?= $meeting['module_url'] ?>" target="_blank"><?= $meeting['module_url'] ?></a>
+                                        <?php else: ?>
+                                            <span class="text-muted">Not available</span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td class="text-center">
-                                        <a href="<?= site_url(urlScope() . '/course/live/meeting/' . $meeting['id'] . '/attendant') ?>" class="btn btn-sm btn-primary mb-1"><i class="bi bi-people"></i> Partisipan</a>
+                                        <small class="mb-3 badge rounded-pill bg-<?= $meeting['status'] === 'completed' ? 'success' : ($meeting['status'] === 'ongoing' ? 'warning' : 'secondary') ?>">
+                                            <?= $meeting['status'] ?>
+                                        </small><br>
+                                        <a href="<?= site_url(urlScope() . '/course/live/meeting/' . $meeting['id'] . '/attendant') ?>" class="btn btn-sm btn-outline-primary mb-1"><i class="bi bi-people"></i> Partisipan</a>
                                         <a href="<?= site_url(urlScope() . '/course/live/' . $batch['id'] . '/meeting/' . $meeting['id'] . '/edit') ?>" class="btn btn-sm btn-warning mb-1"><i class="bi bi-pencil"></i></a>
                                         <a href="<?= site_url(urlScope() . '/course/live/' . $batch['id'] . '/meeting/' . $meeting['id'] . '/delete') ?>" class="btn btn-sm btn-danger mb-1" onclick="return confirm('Are you sure?')"><i class="bi bi-trash"></i></a>
                                     </td>

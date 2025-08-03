@@ -20,6 +20,10 @@
                                 <input type="hidden" name="id" value="<?= $meeting['id'] ?? '' ?>">
                             </div>
                             <div class="mb-3">
+                                <label for="title" class="form-label">Kode Meeting</label>
+                                <input type="text" name="meeting_code" id="meeting_code" class="form-control" value="<?= $meeting['meeting_code'] ?? '' ?>" required>
+                            </div>
+                            <div class="mb-3">
                                 <label for="title" class="form-label">Judul Meeting</label>
                                 <input type="text" name="title" id="title" class="form-control" value="<?= $meeting['title'] ?? '' ?>" required>
                             </div>
@@ -52,7 +56,17 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="zoom_link" class="form-label">Link Zoom</label>
+                                <label for="zoom_meeting_id" class="form-label">
+                                    Zoom Meeting ID <br>
+                                    <small>Ceklis "Registration: Required" di Zoom meeting</small>
+                                </label>
+                                <input type="url" name="zoom_meeting_id" id="zoom_meeting_id" class="form-control" value="<?= $meeting['zoom_meeting_id'] ?? '' ?>">
+                            </div>
+                            <div class="mb-3">
+                                <label for="zoom_link" class="form-label">
+                                    Link Zoom <br>
+                                    <small>Isi ini kalau ga pakai autoregister dengan Zoom meeting ID</small>
+                                </label>
                                 <input type="url" name="zoom_link" id="zoom_link" class="form-control" value="<?= $meeting['zoom_link'] ?? '' ?>">
                             </div>
                             <div class="mb-3">

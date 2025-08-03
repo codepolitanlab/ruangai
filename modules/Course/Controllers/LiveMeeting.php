@@ -16,8 +16,8 @@ class LiveMeeting extends AdminController
 
     public function __construct()
     {
-        $this->model      = model('LiveMeetingModel');
-        $this->batchModel = model('LiveBatchModel');
+        $this->model      = model('Course\Models\LiveMeetingModel');
+        $this->batchModel = model('Course\Models\LiveBatchModel');
 
         helper('course');
     }

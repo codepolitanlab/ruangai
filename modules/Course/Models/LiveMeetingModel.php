@@ -12,7 +12,7 @@ class LiveMeetingModel extends Model
     protected $returnType             = 'array';
     protected $useSoftDeletes         = true;
     protected $protectFields          = true;
-    protected $allowedFields          = ['live_batch_id', 'status', 'title', 'subtitle', 'description', 'mentor_name', 'meeting_date', 'meeting_time', 'zoom_link', 'zoom_meeting_id', 'zoom_autoregister', 'recording_link', 'module_url', 'form_feedback_url', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allowedFields          = ['live_batch_id', 'meeting_code', 'status', 'title', 'subtitle', 'description', 'mentor_name', 'meeting_date', 'meeting_time', 'zoom_link', 'zoom_meeting_id', 'zoom_autoregister', 'recording_link', 'module_url', 'form_feedback_url', 'created_at', 'updated_at', 'deleted_at'];
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
     protected array $casts            = [];
