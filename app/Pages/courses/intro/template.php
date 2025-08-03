@@ -50,19 +50,6 @@
 		</div> -->
 
 		<div class="appContent py-4" style="min-height:90vh">
-			<!-- Header -->
-			<div class="section p-4 px-3 bg-white rounded-4 mb-3 position-relative overflow-hidden">
-				<div class="d-flex align-items-center gap-3 position-relative" style="z-index: 99;">
-					<div class="avatar">
-						<img src="https://cdn-icons-png.flaticon.com/512/219/219983.png" alt="avatar" class="imaged w64 rounded-circle">
-					</div>
-					<div>
-						<h5 class="mb-0 fw-normal">Selamat Belajar,</h5>
-						<h4 class="mb-0" x-text="data.name"></h4>
-					</div>
-				</div>
-				<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206633.png" class="position-absolute bottom-0 end-0 w-25" alt="">
-			</div>
 
 			<!-- Show Expire Alert -->
 			<template x-if="data.is_expire">
@@ -82,7 +69,7 @@
 				<div class="card border-0 shadow-none overflow-hidden">
 					<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206751%20(2).png" class="card-img-top cover rounded-4" style="height: 200px;" alt="AI Course">
 					<div class="card-body p-2">
-						<h2 class=" mt-2">Kelas - <span x-text="data.course.course_title"></span></h2>
+						<h2 class="h3 mt-2 mb-3">Kelas - <span x-text="data.course.course_title"></span></h2>
 						<p class="card-text p-0 mb-0">
 							Pelajari dasar-dasar Artificial Intelligence (AI), bagaimana cara kerjanya, serta perannya dalam kehidupan sehari-hari.
 							<button

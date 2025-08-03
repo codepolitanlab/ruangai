@@ -7,7 +7,7 @@
     })"
 	x-effect="loadPage(`/courses/intro/lessons/data/${$params.course_id}`)">
 
-	<?= $this->include('_appHeader'); ?>
+	<?= $this->include('courses/intro/_menu'); ?>
 
 	<style>
 		.disabled {

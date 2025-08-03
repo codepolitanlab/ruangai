@@ -14,17 +14,11 @@ $bottommenu = [
         'module' => 'courses'
     ],
     [
-        'label'  => 'Materi',
-        'url'    => '/courses/intro/1/dasar-dan-penggunaan-generative-ai/lessons',
+        'label'  => 'Belajar',
+        'url'    => '/courses/intro/1/dasar-dan-penggunaan-generative-ai',
         'icon'   => 'bi bi-megaphone',
         'icon'   => 'bi bi-journal-check',
-        'module' => 'course_lesson',
-    ],
-    [
-        'label'  => 'Live Session',
-        'url'    => '/courses/intro/1/dasar-dan-penggunaan-generative-ai/live_session',
-        'icon'   => 'bi bi-camera-video',
-        'module' => 'course_live',
+        'module' => 'learn',
     ],
     [
         'label'  => 'Keluar',

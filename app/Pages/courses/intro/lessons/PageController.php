@@ -8,7 +8,7 @@ class PageController extends BaseController
 {
     public $data = [
         'page_title'  => 'Daftar Materi',
-        'module'      => 'course_lesson',
+        'module'      => 'learn',
         'active_page' => 'materi',
     ];
 

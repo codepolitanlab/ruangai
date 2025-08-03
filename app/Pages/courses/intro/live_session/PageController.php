@@ -8,7 +8,7 @@ class PageController extends BaseController
 {
     public $data = [
         'page_title'  => 'Live Session',
-        'module'      => 'course_live',
+        'module'      => 'learn',
         'active_page' => 'live',
     ];
 
