@@ -193,7 +193,7 @@
 			</div> -->
 
 			<!-- Certificate -->
-			<div class="section p-3 pb-4 bg-white rounded-4">
+			<div class="section p-3 mb-3 pb-4 bg-white rounded-4">
 				<h4 class="fw-bold mb-3" style="color: #222;">Klaim Sertifikat</h4>
 
 				<div class="card border-0 rounded-4 bg-dark bg-opacity-10 cursor-pointer"
@@ -213,6 +213,26 @@
 									x-text="data.student.cert_code ? `Unduh Sertifikat` : `Klaim Sertifikat`"></h3>
 								<p class="text-white mb-1" x-show="!data.student.cert_code">Klik untuk mengklaim dan mengunduh sertifikat</p>
 							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Klaim Reward -->
+			<div class="section p-3 mb-3 bg-white rounded-4">
+				<h4 class="fw-bold mb-3" style="color: #222;">Klaim Reward</h4>
+
+				<div class="card border-0 rounded-4 cursor-pointer" 
+					style="background: #e91e95;"
+					@click="claimReward()"
+					:class="data.course_completed ? '' : 'bg-dark bg-opacity-10'">
+					<div class="card-body d-flex align-items-center gap-3 p-4">
+						<div class="rounded-3 d-flex align-items-center justify-content-center" style="width:64px;height:64px;background:#fff;">
+							<i class="bi bi-gift" :class="data.course_completed ? '' : 'text-dark opacity-50'" style="font-size:2.5rem; color:#e91e95;"></i>
+						</div>
+						<div class="flex-grow-1" :class="data.course_completed ? 'text-white' : 'opacity-50'">
+							<div class="fw-bold mb-1" style="font-size:1.2rem;">Bonus Kelas Lanjutan</div>
+							<div style="font-size:1rem;">Pilih salah satu dari 4 kelas lanjutan yang paling cocok dengan kebutuhanmu</div>
 						</div>
 					</div>
 				</div>

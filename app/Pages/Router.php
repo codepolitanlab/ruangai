@@ -60,6 +60,10 @@ class Router
             'preload'  => true,
             'handler'  => '[isLoggedIn]',
         ],
+        '/courses/:course_id/reward' => [
+            'template' => '/courses/reward/template',
+            'handler'  => '[isLoggedIn]',
+        ],
         // '/courses/tanya_jawab' => [],
         // '/courses/tanya_jawab/:id' => [
         //     'template' => '/courses/tanya_jawab/detail/template',

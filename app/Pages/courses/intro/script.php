@@ -31,7 +31,13 @@
           } else {
             this.$router.navigate(`/certificate/${this.data.student.cert_code}`)
           }
+        } else {
+          $heroicHelper.toastr("Kamu belum menyelesaikan kelas ini. Silahkan selesaikan kelas terlebih dahulu.", "warning", "bottom");
         }
+      },
+
+      claimReward() {
+        this.$router.navigate(`/courses/${this.data.course.id}/reward`)
       }
     };
   });
