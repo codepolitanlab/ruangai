@@ -116,7 +116,7 @@
 
 						<div class="col-md-6 mb-3">
 							<a href="/courses">
-								<div class="class-card p-3 d-flex flex-column justify-content-end position-relative" style="min-height: 200px">
+								<div class="class-card p-3 d-flex flex-column justify-content-between position-relative" style="min-height: 200px">
 									<div class="me-3 bg-white text-dark rounded p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
 										<img src="<?= base_url('mobilekit/assets/img/ruangai/module.svg') ?>" width="20" alt="">
 									</div>
