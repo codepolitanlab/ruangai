@@ -8,7 +8,7 @@ require 'recipe/codeigniter4.php';
 
 set('repository', 'git@github.com:codepolitanlab/ruangai.git');
 
-add('shared_files', []);
+add('shared_files', ['Caddyfile','php.ini']);
 add('shared_dirs', []);
 add('writable_dirs', []);
 
