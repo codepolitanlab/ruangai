@@ -82,7 +82,7 @@
 							class="rounded-top-4 w-100 h-100 object-fit-cover"
 							alt="AI Course" />
 						<!-- Fade gradient -->
-						<div class="position-absolute bottom-0 start-0 end-0" style="height: 100px; background: linear-gradient(to top, white, transparent); pointer-events: none;"></div>
+						<div class="position-absolute bottom-0 start-0 end-0" style="height: 100%; background: linear-gradient(to top, white, transparent); pointer-events: none;"></div>
 					</div>
 
 					<div class="card-body p-3 py-4">
