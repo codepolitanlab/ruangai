@@ -54,10 +54,10 @@
 						<h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>
 					</a>
 				</div>
-				<div class="ms-2">
+				<!-- <div class="ms-2">
 					<h5 class="mb-1 fs-5 opacity-50">Kelas</h5>
 					<h2 class="h4 mb-3"><span x-text="data.course.course_title"></span></h2>
-				</div>
+				</div> -->
 			</div>
 
 			<!-- Show Expire Alert -->
@@ -74,10 +74,23 @@
 			</template>
 
 			<!-- Card Kelas -->
-			<div class="section p-3 bg-white rounded-4 mb-3">
-				<div class="card border-0 shadow-none overflow-hidden">
-					<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206751%20(2).png" class="card-img-top cover rounded-4" style="height: 200px;" alt="AI Course">
-					<div class="card-body p-2">
+			<div class="bg-white rounded-4 mb-3 overflow-hidden">
+				<div class="card border-0 rounded-4 shadow-none position-relative">
+					<div class="position-relative" style="height: 200px;">
+						<img
+							src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206751%20(2).png"
+							class="rounded-top-4 w-100 h-100 object-fit-cover"
+							alt="AI Course" />
+						<!-- Fade gradient -->
+						<div class="position-absolute bottom-0 start-0 end-0" style="height: 100px; background: linear-gradient(to top, white, transparent); pointer-events: none;"></div>
+					</div>
+
+					<div class="card-body p-3 py-4">
+						<div class="h5 mb-3">
+							Kelas - <span x-text="data.course.course_title"></span>
+						</div>
+
+						<!-- Deskripsi pendek -->
 						<p class="card-text p-0 mt-2 mb-0">
 							Pelajari dasar-dasar Artificial Intelligence (AI), bagaimana cara kerjanya, serta perannya dalam kehidupan sehari-hari.
 							<button
@@ -100,73 +113,52 @@
 				</div>
 			</div>
 
+
 			<!-- Progress Stats -->
 			<div class="p-3 pb-4 bg-white rounded-4 mb-3">
 				<h4 class="mb-4">Progres Belajar</h4>
 
-				<!-- Modul Selesai -->
-				<a :native="data.is_expire" :href="data.is_expire ? `javascript:void()` : `/courses/intro/1/dasar-dan-penggunaan-generative-ai/lessons`">
-					<div class="card border-0 rounded-4 mb-4"
-						:class="{'bg-dark bg-opacity-25': data.is_expire, 'bg-success bg-opacity-50': data.total_lessons == data.lesson_completed && !data.is_expire, 'bg-primary': data.total_lessons != data.lesson_completed && !data.is_expire}">
-						<div class="card-body d-flex align-items-center gap-3 p-4">
-
-							<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
-								style="width: 64px; height: 64px;">
-								<i class="bi display-5"
-									:class="data.total_lessons == data.lesson_completed ? 'bi-check text-success' : 'bi-journal-bookmark-fill text-primary'"></i>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="card border-0 shadow-none rounded-4 bg-light-primary p-3 d-flex flex-column justify-content-between position-relative">
+							<div class="me-3 bg-white text-dark rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
+								<img src="<?= base_url('mobilekit/assets/img/ruangai/module.svg') ?>" width="20" alt="">
 							</div>
-							<div class="flex-grow-1">
-								<div class="d-flex align-items-end gap-2">
-									<h2 class="mb-0 fw-bold text-white" x-text="data.lesson_completed">0</h2>
-									<span class="mb-1 text-white">Materi Selesai</span>
+							<div class="d-flex align-items-end gap-2 mt-3 text-dark">
+								<h1 class="mb-0 display-6 fw-bold" x-text="data?.lesson_completed "></h1>
+								<p class="mb-1">dari <span x-text="data?.total_lessons"></span> Modul terselesaikan</p>
+							</div>
+							<div class="d-flex align-items-center">
+								<div class="progress flex-grow-1 me-2 " style="height: 5px;">
+									<div class="progress-bar bg-primary" role="progressbar" :style="`width: ${data?.student?.progress}%`"></div>
 								</div>
-								<div class="d-flex align-items-center">
-									<div class="flex-grow-1">
-										<div class="progress bg-dark bg-opacity-25" style="height: 7px;">
-											<div class="progress-bar bg-white"
-												role="progressbar"
-												:style="{width: Math.round(data.lesson_completed/data.total_lessons*100) + '%'}"
-												:aria-valuenow="Math.round(data.lesson_completed/data.total_lessons*100)" aria-valuemin="0" aria-valuemax="100"></div>
-										</div>
-									</div>
-									<span x-show="data?.total_lessons" class="ms-3 fw-bold text-white" style="font-size: 1rem;" x-text="Math.round(data.lesson_completed/data.total_lessons*100) + '%'">0%</span>
-									<span x-show="!data?.total_lessons" class="ms-3 fw-bold text-white" style="font-size: 1rem;">0%</span>
+								<span class="fw-bold" x-text="`${data?.student?.progress}%`"></span>
+							</div>
+							<a href="/courses" class="btn btn-primary hover rounded-pill p-1">Lihat modul belajar</a>
+							<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .1;" width="70" alt="">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="card border-0 shadow-none rounded-4 bg-light-secondary p-3 d-flex flex-column justify-content-between position-relative">
+							<div x-show="!data?.course_completed">
+								<div class="position-absolute d-flex align-items-center justify-content-center rounded-4 top-0 start-0 end-0 bottom-0" style="z-index: 100;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.5);">
+									<i class="bi bi-lock-fill text-white display-3"></i>
 								</div>
-								<div class="text-white text-end small"><span x-text="data.total_lessons"></span> total materi dan kuis</div>
+							</div>
+							<div class="position-relative">
+								<div class="me-3 bg-white text-dark rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
+									<i class="bi bi-camera-video h3 m-0 text-secondary"></i>
+								</div>
+								<div class="d-flex align-items-end gap-2 mt-3 mb-4 text-dark">
+									<h1 class="mb-0 display-6 fw-bold" x-text="data?.live_attendance"></h1>
+									<p class="mb-1">Live session diikuti</p>
+								</div>
+								<a :href="`/courses/intro/${data?.course?.id}/${data?.course?.slug}/live_session`" class="btn btn-secondary hover rounded-pill p-1 w-100">Lihat jadwal live session</a>
+								<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .1;" width="70" alt="">
 							</div>
 						</div>
 					</div>
-				</a>
-
-				<!-- Live Session Wajib -->
-				<a :native="data.is_expire" :href="data.is_expire ? `javascript:void()` : `/courses/intro/1/dasar-dan-penggunaan-generative-ai/live_session`">
-					<div class="card border-0 rounded-4 bg-warning-2"
-						:class="{'bg-dark bg-opacity-25': data.is_expire, 'bg-success bg-opacity-50': data.live_attendance >= 3 && !data.is_expire, 'bg-warning-2': data.live_attendance < 3 && !data.is_expire}">
-						<div class="card-body d-flex align-items-center gap-3 p-4">
-
-							<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
-								style="width: 64px; height: 64px;">
-								<i class="bi display-5"
-									:class="data.live_attendance >= 3 ? 'bi-check text-success' : 'bi-camera-video text-warning'"></i>
-							</div>
-							<div class="flex-grow-1">
-								<div class="d-flex align-items-end gap-2">
-									<h2 class="mb-0 fw-bold text-white" x-text="data.live_attendance"></h2>
-									<span class="mb-1 text-white">Sesi Live Diikuti</span>
-								</div>
-								<div class="d-flex align-items-center gap-2 mt-2 mb-1">
-									<template x-for="i in data.live_meetings">
-										<div
-											class="flex-fill rounded-pill"
-											:class="data.live_attendance >= i ? 'bg-white' : 'bg-dark bg-opacity-25'"
-											style="height:7px;">&nbsp;</div>
-									</template>
-								</div>
-								<div class="text-white text-end small">Minimal 3 dari <span x-text="data.live_meetings"></span> sesi</div>
-							</div>
-						</div>
-					</div>
-				</a>
+				</div>
 
 			</div>
 
@@ -217,7 +209,7 @@
 			<div class="section p-3 mb-3 bg-white rounded-4">
 				<h4 class="fw-bold mb-3" style="color: #222;">Klaim Reward</h4>
 
-				<div class="card border-0 rounded-4 cursor-pointer" 
+				<div class="card border-0 rounded-4 cursor-pointer"
 					style="background: #e91e95;"
 					@click="claimReward()"
 					:class="data.course_completed ? '' : 'bg-dark bg-opacity-10'">

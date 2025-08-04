@@ -24,16 +24,11 @@
 			color: #000;
 		}
 
-		.class-card,
-		.continue-card {
+		.class-card {
 			border-radius: 20px;
 			padding: 20px;
 			color: white;
 			background: #EAF8FF;
-		}
-
-		.continue-card {
-			color: #063548;
 		}
 
 		.btn-voucher {
@@ -60,26 +55,16 @@
 			<div class="p-4 px-3 bg-white rounded-4 position-relative overflow-hidden">
 				<div class="d-flex align-items-center gap-3 position-relative" style="z-index: 99;">
 					<div class="avatar">
-						<img :src="data?.user?.avatar && data?.user?.avatar != '' ? data?.user?.avatar : `https://ui-avatars.com/api/?name=${data?.user?.name ?? 'El'}&background=E7E725&color=174556`" alt="avatar" class="imaged w64 rounded-circle">
+						<img :src="data?.user?.avatar && data?.user?.avatar != '' ? data?.user?.avatar : `https://ui-avatars.com/api/?name=${data?.name ?? 'El'}&background=79B2CD&color=FFF`" alt="avatar" class="imaged w64 rounded-circle">
 					</div>
 					<div>
 						<h5 class="mb-1 fw-normal">Selamat Belajar,</h5>
-						<h4 class="mb-0">Igo El Dorado</h4>
+						<h4 class="mb-0" x-text="data?.name"></h4>
 					</div>
 				</div>
 				<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206633.png" class="position-absolute bottom-0 end-0 w-25" alt="">
 			</div>
 
-			<div x-show="data?.courses == 0" class="rounded-20 p-3 py-4 text-center bg-white my-3">
-				<div class="row justify-content-center">
-					<div class="col-lg-10">
-						<h3>Kamu belum memiliki kelas di JagoanSiber</h3>
-						<img src="<?= base_url('mobilekit/assets/img/jagoansiber/no-class.svg') ?>" class="my-3" alt="">
-						<p style="font-size: large;">Yuk mulai belajar dengan bergabung dalam kelas JagoanSiber, dan mulai karirmu sebagai ahli keamanan siber.</p>
-						<a href="https://jagoansiber.com" target="_blank" class="btn btn-secondary rounded-pill px-4 my-3 fw-bold">Gabung Kelas Sekarang</a>
-					</div>
-				</div>
-			</div>
 		</div>
 
 		<div class="swiper swiper-notif pb-3">
@@ -109,22 +94,22 @@
 
 		<div class="appContent pt-2 pb-4" style="min-height:90vh">
 			<!-- Card Kelas -->
-			<div class="rounded-4 mb-3">
+			<div class="mb-3">
 				<div class="bg-white p-4 rounded-4 g-3 mb-4">
 					<h5 class="fw-semibold">Progres Belajar</h5>
 					<div class="row">
 
-						<div class="col-md-6 mb-3">
+						<div class="col-md-6">
 							<a href="/courses">
-								<div class="class-card p-3 d-flex flex-column justify-content-between position-relative" style="min-height: 200px">
+								<div class="class-card h-100 p-3 d-flex flex-column justify-content-between position-relative">
 									<div class="me-3 bg-white text-dark rounded p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
 										<img src="<?= base_url('mobilekit/assets/img/ruangai/module.svg') ?>" width="20" alt="">
 									</div>
-									<div class="d-flex align-items-end gap-2 mt-2 mb-2 text-dark">
-										<h1 class="mb-0 display-6 fw-bold">1</h1>
+									<div class="d-flex align-items-end gap-2 mt-4 mb-2 text-dark">
+										<h1 class="mb-0 display-6 fw-bold" x-text="data?.courses ?? 0"></h1>
 										<p class="mb-1">kelas yang kamu miliki</p>
 									</div>
-									<a href="/courses" class="btn bg-white rounded-pill p-1">Lihat kelas saya</a>
+									<a href="/courses" class="btn btn-primary hover rounded-pill p-1">Lihat kelas saya</a>
 									<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .1;" width="70" alt="">
 								</div>
 							</a>
@@ -132,22 +117,20 @@
 
 						<!-- Lanjutkan Belajar -->
 						<div class="col-md-6">
-							<div class="card text-white position-relative" style="min-height: 200px; border-radius: 18px; overflow: hidden;">
-								<img src="https://plus.unsplash.com/premium_photo-1676637656166-cb7b3a43b81a?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YWl8ZW58MHx8MHx8fDA%3D" class="card-img" alt="Kelas AI" style="filter: brightness(0.6); object-fit: cover; height: 200px;">
-								<div class="card-img-overlay p-3 d-flex flex-column justify-content-end"
-									style="background: linear-gradient(180deg, rgba(49,122,199,0.28) 0%, rgba(30, 184, 201, 0.72) 100%);">
-									<h5 class="card-title mb-3" style="font-size: 1.1rem; font-weight: 500;">Kelas Dasar dan Pengenalan Generatif AI</h5>
+							<div class="card text-white bg-primary position-relative" style="min-height: 200px; border-radius: 18px; overflow: hidden;">
+								<img src="https://ik.imagekit.io/56xwze9cy/ruangai/card%20class.png" class="w-100 position-relative" alt="Kelas AI" style="z-index: 1">
+								<div class="p-3 d-flex flex-column justify-content-end position-relative" style="background: linear-gradient(to top, #79B2CD 50%, rgba(255, 255, 255, 0));height: 100%;margin-top: -50px;z-index: 1000">
+									<h5 class="card-title text-white mb-1 mt-3" style="font-size: 1.1rem; font-weight: 500;" x-text="data?.last_lesson.course_title"></h5>
 									<div class="d-flex align-items-center mb-2">
 										<i class="bi bi-play-fill fs-3 me-2"></i>
 										<div class="progress flex-grow-1 me-2" style="height: 5px;">
-											<div class="progress-bar bg-warning" role="progressbar" :style="`width: ${78}%`"></div>
+											<div class="progress-bar bg-warning" role="progressbar" :style="`width: ${data?.last_lesson.progress}%`"></div>
 										</div>
-										<span>78</span>%
+										<span x-text="data?.last_lesson.progress"></span>%
 									</div>
-									<a href="" class="btn bg-white rounded-pill p-1 text-secondary">Mulai Belajar</a>
+									<a :href="`/courses/intro/${data?.last_lesson.course_id}/${data?.last_lesson?.slug}`" class="btn bg-white rounded-pill p-1 text-secondary hover">Mulai Belajar</a>
 								</div>
 							</div>
-
 						</div>
 					</div>
 				</div>

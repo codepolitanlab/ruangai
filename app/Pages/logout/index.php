@@ -1,4 +1,4 @@
 <script>
     localStorage.removeItem('heroic_token')
-    window.location.href = 'https://www.ruangai.id/onboarding'
+    window.location.href = '<?= base_url() ?>masuk'
 </script>

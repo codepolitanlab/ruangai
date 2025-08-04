@@ -12,7 +12,7 @@ class PageController extends BaseController
         'active_page' => 'homepage',
     ];
 
-    public function getData($id)
+    public function getData()
     {
         $Heroic = new \App\Libraries\Heroic();
         $jwt = $Heroic->checkToken(true);
@@ -20,62 +20,45 @@ class PageController extends BaseController
 
         $db = \Config\Database::connect();
 
-        // Get course
-        if (! $course = cache('course_'.$id)) {
-            $course = $db->table('courses')
-                        ->where('id', $id)
-                        ->get()
-                        ->getRowArray();
-                        
-            // Save into the cache for 5 minutes
-            cache()->save('course_'.$id, $course, 3600);
-        }
+        $this->data['courses'] = $db->table('course_students')
+                                    ->where('user_id', $jwt->user_id)
+                                    ->countAllResults();
 
-        if ($course) {
-            // Get completed lessons for current user
-            $completedLessons = $db->table('course_lessons')
-                ->select('count(course_lessons.id) as total_lessons, count(course_lesson_progress.user_id) as completed')
-                ->join('course_lesson_progress', 'course_lesson_progress.lesson_id = course_lessons.id AND user_id = '.$jwt->user_id, 'left')
-                ->where('course_lessons.course_id', $id)
-                ->get()
-                ->getRowArray();
-
-            $this->data['total_lessons'] = $completedLessons['total_lessons'] ?? 1;
-            $this->data['lesson_completed'] = $completedLessons['completed'] ?? 0;
-            $this->data['course'] = $course;
-
-            // Get count live attendance user
-            $this->data['live_attendance'] = $db->table('live_attendance')
-                ->where('user_id', $jwt->user_id)
-                ->where('course_id', $id)
-                ->where('deleted_at', null)
-                ->countAllResults();
-
-            // Get total live_meetings
-            $this->data['live_meetings'] = $db->table('live_meetings')
-                ->select('live_meetings.id')
-                ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id AND live_batch.id = '.$course['current_batch_id'])
-                ->where('course_id', $id)
-                ->countAllResults();
-
-            // Get course_students
-            $this->data['student'] = $db->table('course_students')
-                                        ->select('progress, cert_claim_date, cert_code, expire_at')
-                                        ->where('course_id', $id)
-                                        ->where('user_id', $jwt->user_id)
+        $last_lesson = $db->table('course_lesson_progress')
+                                        ->select('
+                                            course_lessons.lesson_title as title, 
+                                            course_lessons.id as lesson_id, 
+                                            course_lessons.course_id,
+                                            course_lesson_progress.created_at as last_progress_time,
+                                            course_students.progress,
+                                            courses.course_title,
+                                            courses.slug
+                                        ')
+                                        ->join('course_lessons', 'course_lessons.id = course_lesson_progress.lesson_id')
+                                        ->join('course_students', 'course_students.user_id = course_lesson_progress.user_id AND course_students.course_id = course_lesson_progress.course_id')
+                                        ->join('courses', 'courses.id = course_lesson_progress.course_id')
+                                        ->where('course_lesson_progress.user_id', $jwt->user_id)
+                                        ->orderBy('course_lesson_progress.created_at', 'DESC')
+                                        ->groupBy('course_lessons.id')
+                                        ->limit(1)
                                         ->get()
                                         ->getRowArray();
 
-            $this->data['course_completed'] = $this->data['total_lessons'] == $this->data['lesson_completed'] && $this->data['live_attendance'] >= 3 ? true : false;
-            $this->data['is_enrolled'] = $db->table('course_students')->where('course_id', $id)->where('user_id', $jwt->user_id)->countAllResults() > 0 ? true : false;
-            $this->data['is_expire'] = $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
-
-            return $this->respond($this->data);
+        if ($last_lesson) {
+            $this->data['last_lesson'] = $last_lesson;
         } else {
-            return $this->respond([
-                'response_code'    => 404,
-                'response_message' => 'Not found',
-            ]);
+            $this->data['last_lesson'] = (object) [
+                'title' => 'Belum ada kelas',
+                'lesson_id' => 1,
+                'course_id' => 1,
+                'last_progress_time' => 0,
+                'progress' => 0,
+                'course_title' => 'Dasar dan Penggunaan Generative AI',
+                'slug' => 'dasar-dan-penggunaan-generative-ai',
+            ];
         }
+
+        return $this->respond($this->data);
+
     }
 }

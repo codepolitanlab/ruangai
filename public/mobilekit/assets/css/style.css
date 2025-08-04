@@ -28,6 +28,7 @@ body {
   --secondary: #F96E2B;
   --light-secondary: #FFE4D7;
   --dark-secondary: #c05c2a;
+  --white: #FFF
 }
 
 ::-webkit-scrollbar {
@@ -38,6 +39,20 @@ body {
   background: rgba(30, 116, 253, 0.3);
 }
 
+.img-course {
+  width: 100px;
+  height: 170px;
+  object-fit: cover;
+}
+
+@media (min-width: 768px) {
+  .img-course {
+    width: 200px;
+    height: 190px;
+    object-fit: cover;
+  }
+}
+
 .nav-link {
   background: var(--ultra-light-primary) !important;
   color: var(--primary) !important;
@@ -46,6 +61,17 @@ body {
 .nav-link.active {
   background: var(--primary) !important;
   color: #FFF !important;
+}
+
+.hover {
+  cursor: pointer;
+  display: inline-block; /* supaya efek transform lebih halus */
+  transition: transform 0.3s ease !important;
+}
+
+.hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* efek timbul */
 }
 
 a {
@@ -2505,6 +2531,33 @@ a.badge-dark {
 .btn-light.disabled, .btn-light:disabled {
   background: rgba(255, 255, 255, 0.5);
   border-color: rgba(255, 255, 255, 0.5);
+  opacity: 0.5;
+}
+
+.btn-outline-white {
+  background: transparent;
+  border-color: var(--white);
+  border-width: 1px !important;
+  color: var(--white);
+  transition: none;
+}
+
+.btn-outline-white:hover, .btn-outline-white:active {
+  background: rgba(30, 116, 253, 0.15) !important;
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+}
+
+.btn-outline-white.active {
+  background: var(--primary) !important;
+  color: #fff !important;
+  border-color: var(--primary) !important;
+}
+
+.btn-outline-white.disabled, .btn-outline-white:disabled {
+  color: var(--primary) !important;
+  border-color: var(--primary) !important;
+  background: transparent !important;
   opacity: 0.5;
 }
 

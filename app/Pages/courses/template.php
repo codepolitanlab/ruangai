@@ -21,19 +21,6 @@
 			padding: 0.25rem 0.75rem;
 		}
 
-		.img-course {
-			width: 100px;
-			height: 110px;
-			object-fit: cover;
-		}
-
-		@media (min-width: 768px) {
-			.img-course {
-				width: 150px;
-				height: 110px;
-				object-fit: cover;
-			}
-		}
 	</style>
 
 	<div id="appCapsule">
@@ -69,17 +56,19 @@
 				<div class="bg-white p-4 rounded-4 mb-4">
 					<h5 class="fw-bold mb-3">Kelas yang kamu miliki</h5>
 					<template x-for="course in data.courses">
-						<div class="card shadow-none p-3" style="background: #F2F2F2;">
-							<div class="d-flex align-items-center">
-								<img src="https://ik.imagekit.io/56xwze9cy/ruangai/course.png" class="rounded-3 img-course" alt="thumbnail kelas">
-								<div class="flex-grow-1 ms-3">
-									<p class="fw-bold" x-text="course.course_title"></p>
-									<div class="d-flex justify-content-between align-items-center">
-										<p class="mb-1"><span class="text-primary fs-4" x-text="course.total_completed"></span> dari <span x-text="course.total_module"></span> lesson selesai</p>
+						<div class="card shadow-none bg-black overflow-hidden">
+							<div class="d-flex align-items-center overflow-hidden">
+								<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Mask%20group%20(6).png?updatedAt=1754293150119" class="rounded-3 img-course" alt="thumbnail kelas">
+								<div class="flex-grow-1 ms-3 p-3">
+									<a :href="`/courses/intro/${course.id}/${course.slug}/lessons`" class="link">
+										<p class="fw-bold h5" x-text="course.course_title"></p>
+									</a>
+									<div class="d-flex justify-content-between align-items-center text-white">
+										<p class="mb-1"><span class="fs-4" style="color: #7BD5FF" x-text="course.total_completed"></span> dari <span x-text="course.total_module"></span> lesson selesai</p>
 										<p class="fw-bold mb-1" x-text="course.progress + '%'"></p>
 									</div>
-									<div class="progress" style="background: #BFD6E0">
-										<div class="progress-bar bg-primary" role="progressbar" :style="{ width: course.progress + '%' }" aria-valuenow="course.progress" aria-valuemin="0" aria-valuemax="100"></div>
+									<div class="progress" style="background: #343434">
+										<div class="progress-bar" role="progressbar" :style="{ width: course.progress + '%', background: '#7BD5FF' }" aria-valuenow="course.progress" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
 								</div>
 							</div>
@@ -89,49 +78,9 @@
 
 				<div class="bg-white p-4 rounded-4 mb-4">
 					<h5 class="fw-bold mb-3">Kelas Premium</h5>
-					<div class="list-group list-group-flush">
-
-						<div class="list-group-item d-flex p-3 rounded-4 mb-3" style="background: #F2F2F2;">
-							<img src="https://ik.imagekit.io/56xwze9cy/ruangai/saas.png" class="rounded-3 img-course" alt="Kelas Premium">
-							<div class="d-flex flex-column justify-content-between align-items-start flex-grow-1 ms-3">
-								<p class="fw-bold mb-0">Kelas AI for SaaS Builder</p>
-								<button class="btn btn-sm locked-btn" disabled>
-									<i class="bi bi-lock-fill me-1"></i> Locked
-								</button>
-							</div>
-						</div>
-
-						<div class="list-group-item d-flex p-3 rounded-4 mb-3" style="background: #F2F2F2;">
-							<img src="https://ik.imagekit.io/56xwze9cy/ruangai/smart-creator.png" class="rounded-3 img-course" alt="Kelas Premium">
-							<div class="d-flex flex-column justify-content-between align-items-start flex-grow-1 ms-3">
-								<p class="fw-bold mb-0">Kelas AI for Smart Creators</p>
-								<button class="btn btn-sm locked-btn" disabled>
-									<i class="bi bi-lock-fill me-1"></i> Locked
-								</button>
-							</div>
-						</div>
-
-						<div class="list-group-item d-flex p-3 rounded-4 mb-3" style="background: #F2F2F2;">
-							<img src="https://ik.imagekit.io/56xwze9cy/ruangai/academic.png" class="rounded-3 img-course" alt="Kelas Premium">
-							<div class="d-flex flex-column justify-content-between align-items-start flex-grow-1 ms-3">
-								<p class="fw-bold mb-0">Kelas AI for Academics</p>
-								<button class="btn btn-sm locked-btn" disabled>
-									<i class="bi bi-lock-fill me-1"></i> Locked
-								</button>
-							</div>
-						</div>
-
-						<div class="list-group-item d-flex p-3 rounded-4 mb-3" style="background: #F2F2F2;">
-							<img src="https://ik.imagekit.io/56xwze9cy/ruangai/storyteller.png" class="rounded-3 img-course" alt="Kelas Premium">
-							<div class="d-flex flex-column justify-content-between align-items-start flex-grow-1 ms-3">
-								<p class="fw-bold mb-0">Kelas AI for Digital Storyteller</p>
-								<button class="btn btn-sm locked-btn" disabled>
-									<i class="bi bi-lock-fill me-1"></i> Locked
-								</button>
-							</div>
-						</div>
-
-					</div>
+					<template x-for="course in data.premium_courses">
+						<?= $this->include('_components/card/CardPremiumCourse') ?>
+					</template>
 				</div>
 
 			</div>

@@ -40,19 +40,6 @@
 			background-color: #fe9500;
 		}
 
-		.img-course {
-			width: 100px;
-			height: 110px;
-			object-fit: cover;
-		}
-
-		@media (min-width: 768px) {
-			.img-course {
-				width: 150px;
-				height: 110px;
-				object-fit: cover;
-			}
-		}
 	</style>
 
 	<div id="app-header" class="appHeader main border-0 bg-transparent">
@@ -101,57 +88,13 @@
 				</div>
 			</template>
 
-			<div class="card rounded-4 shadow-none">
-				<div class="card-body">
-					<div class="list-group list-group-flush">
-
-						<div class="list-group-item d-flex p-3 rounded-4 mb-3" style="background: #F2F2F2;">
-							<img src="https://ik.imagekit.io/56xwze9cy/ruangai/saas.png" class="rounded-3 img-course" alt="Kelas Premium">
-							<div class="d-flex flex-column justify-content-between align-items-start flex-grow-1 ms-3">
-								<h4 class="fw-bold mb-1 opacity-75">Kelas AI for SaaS Builder</h4>
-								<p class="text-dark opacity-50">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil natus deserunt, vel illo animi totam enim temporibus inventore, eos dolor non modi commodi.</p>
-								<button class="btn btn-sm btn-outline-primary">
-									<i class="bi bi-play-btn me-1"></i> Lihat Teaser
-								</button>
-							</div>
-						</div>
-
-						<div class="list-group-item d-flex p-3 rounded-4 mb-3" style="background: #F2F2F2;">
-							<img src="https://ik.imagekit.io/56xwze9cy/ruangai/smart-creator.png" class="rounded-3 img-course" alt="Kelas Premium">
-							<div class="d-flex flex-column justify-content-between align-items-start flex-grow-1 ms-3">
-								<h4 class="fw-bold mb-1 opacity-75">Kelas AI for Smart Creators</h4>
-								<p class="text-dark opacity-50">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil natus deserunt, vel illo animi totam enim temporibus inventore, eos dolor non modi commodi.</p>
-								<button class="btn btn-sm btn-outline-primary">
-									<i class="bi bi-play-btn me-1"></i> Lihat Teaser
-								</button>
-							</div>
-						</div>
-
-						<div class="list-group-item d-flex p-3 rounded-4 mb-3" style="background: #F2F2F2;">
-							<img src="https://ik.imagekit.io/56xwze9cy/ruangai/academic.png" class="rounded-3 img-course" alt="Kelas Premium">
-							<div class="d-flex flex-column justify-content-between align-items-start flex-grow-1 ms-3">
-								<h4 class="fw-bold mb-1 opacity-75">Kelas AI for Academics</h4>
-								<p class="text-dark opacity-50">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil natus deserunt, vel illo animi totam enim temporibus inventore, eos dolor non modi commodi.</p>
-								<button class="btn btn-sm btn-outline-primary">
-									<i class="bi bi-play-btn me-1"></i> Lihat Teaser
-								</button>
-							</div>
-						</div>
-
-						<div class="list-group-item d-flex p-3 rounded-4 mb-3" style="background: #F2F2F2;">
-							<img src="https://ik.imagekit.io/56xwze9cy/ruangai/storyteller.png" class="rounded-3 img-course" alt="Kelas Premium">
-							<div class="d-flex flex-column justify-content-between align-items-start flex-grow-1 ms-3">
-								<h4 class="fw-bold mb-1 opacity-75">Kelas AI for Digital Storyteller</h4>
-								<p class="text-dark opacity-50">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil natus deserunt, vel illo animi totam enim temporibus inventore, eos dolor non modi commodi.</p>
-								<button class="btn btn-sm btn-outline-primary">
-									<i class="bi bi-play-btn me-1"></i> Lihat Teaser
-								</button>
-							</div>
-						</div>
-					</div>
-
-				</div>
+			<div class="bg-white p-4 rounded-4 mb-4">
+				<h5 class="fw-bold mb-3">Kelas Premium</h5>
+				<template x-for="course in data.premium_courses">
+					<?= $this->include('_components/card/CardPremiumCourse') ?>
+				</template>
 			</div>
+
 		</div>
 	</div>
 

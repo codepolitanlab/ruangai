@@ -33,7 +33,7 @@ class PageController extends BaseController
                             AS total_completed";
 
         $this->data['courses'] = $db->table('course_students')
-            ->select('courses.thumbnail,  courses.course_title, course_students.progress')
+            ->select('courses.thumbnail,  courses.course_title, course_students.progress, courses.slug, courses.id')
             ->select($totalModuleSubquery)
             ->select($totalCompletedSubquery)
             ->join('courses', 'courses.id = course_students.course_id')
@@ -58,7 +58,34 @@ class PageController extends BaseController
             ->get()
             ->getRowArray() ?? [];
 
-        // Get course
+        // Premium Class Data Static
+        $this->data['premium_courses'] = [
+                (object)[
+                    'title' => 'Kelas AI for SaaS Builder',
+                    'description' => 'Bangun Web AI Pertamamu dan Pelajari Cara Monetisasinya.',
+                    'teaser_url' => 'https://ruangai.com/premium-class/ai',
+                    'cover' => 'https://ik.imagekit.io/56xwze9cy/ruangai/mentor-adel.png',
+                ],
+                (object)[
+                    'title' => 'Kelas AI for Academics',
+                    'description' => 'Tulis karya ilmiah lebih cepat dan etis dengan AI.',
+                    'teaser_url' => 'https://ruangai.com/premium-class/data-science',
+                    'cover' => 'https://ik.imagekit.io/56xwze9cy/ruangai/mentor-felisha.png',
+                ],
+                (object)[
+                    'title' => 'Kelas AI for Smart Creators',
+                    'description' => 'Lebih kreatif dan bikin kontenmu naik level dengan AI.',
+                    'teaser_url' => 'https://ruangai.com/premium-class/web-development',
+                    'cover' => 'https://ik.imagekit.io/56xwze9cy/ruangai/mentor-vira.png',
+                ],
+                (object)[
+                    'title' => 'Kelas AI for DIgital Storyteller',
+                    'description' => 'Kuasai storytelling dan ubah jadi karya digital dengan AI.',
+                    'teaser_url' => 'https://ruangai.com/premium-class/web-development',
+                    'cover' => 'https://ik.imagekit.io/56xwze9cy/ruangai/mentor-aji.png',
+                ],
+            ];
+
         return $this->respond($this->data);
     }
 }

@@ -66,7 +66,7 @@ class PageController extends BaseController
                 ->get()
                 ->getRowArray();
 
-            $this->data['course_completed'] = $this->data['total_lessons'] === $this->data['lesson_completed'] && $this->data['live_attendance'] >= 3 ? true : false;
+            $this->data['course_completed'] = $this->data['total_lessons'] === $this->data['lesson_completed'] ? true : false;
             $this->data['is_enrolled']      = $db->table('course_students')->where('course_id', $id)->where('user_id', $jwt->user_id)->countAllResults() > 0 ? true : false;
             $this->data['is_expire']        = $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
 
