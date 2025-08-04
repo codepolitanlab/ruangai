@@ -121,11 +121,11 @@
 										<img src="<?= base_url('mobilekit/assets/img/ruangai/module.svg') ?>" width="20" alt="">
 									</div>
 									<div class="d-flex align-items-end gap-2 mt-2 mb-2 text-dark">
-										<h1 class="mb-0 display-6 fw-bold">1</h1>
+										<h1 class="mb-0 fs-1 fw-bold">1</h1>
 										<p class="mb-1">kelas yang kamu miliki</p>
 									</div>
 									<a href="/courses" class="btn bg-white rounded-pill p-1">Lihat kelas saya</a>
-									<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .1;" width="70" alt="">
+									<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .8;" width="70" alt="">
 								</div>
 							</a>
 						</div>
