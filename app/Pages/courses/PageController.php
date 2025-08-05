@@ -85,10 +85,16 @@ class PageController extends BaseController
                     'cover' => 'https://ik.imagekit.io/56xwze9cy/ruangai/mentor-vira.png',
                 ],
                 (object)[
-                    'title' => 'Kelas AI for DIgital Storyteller',
+                    'title' => 'Kelas AI for Digital Storyteller',
                     'description' => 'Kuasai storytelling dan ubah jadi karya digital dengan AI.',
                     'teaser_url' => 'https://ruangai.com/premium-class/web-development',
                     'cover' => 'https://ik.imagekit.io/56xwze9cy/ruangai/mentor-aji.png',
+                ],
+                (object)[
+                    'title' => 'Kelas AI for Coding Assist',
+                    'description' => 'Bangun aplikasi lebih cepat dan efisien dengan bantuan AI.',
+                    'teaser_url' => 'https://ruangai.com/premium-class/web-development',
+                    'cover' => 'https://image.web.id/images/clipboard-image-1754379412.png',
                 ],
             ];
 
