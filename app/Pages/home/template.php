@@ -69,26 +69,31 @@
 
 		<div class="swiper swiper-notif pb-3">
 			<div class="swiper-wrapper">
-				<template x-for="i in 3" :key="i">
-					<div class="swiper-slide">
-						<!-- Pengumuman -->
-						<div class="announcement d-flex align-items-top gap-3 shadow-sm border-secondary">
-							<div class="announcement-icon bg-white" style="min-width:64px; height:64px">
-								<img src="<?= base_url('mobilekit/assets/img/ruangai/speaker.svg') ?>" width="35" alt="">
-							</div>
-							<div>
-								<h5 class="mb-1 fw-bold">Live Session Terdekat</h5>
-								<p class="mb-1 line-height">Mencegah AI Merajalela di Muka Bumi</p>
-								<div class="text-muted">
-									<div class="text-nowrap">
-										<i class="bi bi-calendar me-1"></i>
-										<span class="me-3">23 April 2025, 12:00 WIB</span>
-									</d>
-								</div>
-							</div>
+				<!-- List Pengumuman -->
+				
+				<div class="swiper-slide">
+					<div class="announcement d-flex align-items-top gap-3 shadow-sm border-secondary">
+						<div class="announcement-icon bg-white" style="min-width:64px; height:64px">
+							<img src="<?= base_url('mobilekit/assets/img/ruangai/speaker.svg') ?>" width="35" alt="">
+						</div>
+						<div>
+							<h5 class="mb-1 fw-bold">Chapter 2 Dibuka!</h5>
+							<p class="mb-1 text-muted line-height" style="line-height:16px">Buat kamu yang belum menyelesaikan chapter 1, lanjutkan belajar di Chapter 2.</p>
 						</div>
 					</div>
-				</template>
+				</div>
+				<div class="swiper-slide">
+					<div class="announcement d-flex align-items-top gap-3 shadow-sm border-secondary">
+						<div class="announcement-icon bg-white" style="min-width:64px; height:64px">
+							<img src="<?= base_url('mobilekit/assets/img/ruangai/speaker.svg') ?>" width="35" alt="">
+						</div>
+						<div>
+							<h5 class="mb-1 fw-bold">Live Session Terdekat</h5>
+							<p class="mb-1 text-muted line-height" style="line-height:16px">Buat kamu yang belum menyelesaikan chapter 1, kamu bisa langsung mendaftar di Chapter 2.</p>
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</div>
 

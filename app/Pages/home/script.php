@@ -43,10 +43,10 @@
           slidesOffsetAfter: 15,
 
           // Non-aktifkan autoplay jika tidak diperlukan, atau sesuaikan
-          autoplay: {
-            delay: 5000,
-            pauseOnMouseEnter: true,
-          },
+          // autoplay: {
+          //   delay: 5000,
+          //   pauseOnMouseEnter: true,
+          // },
 
           breakpoints: {
             // Untuk layar lebih kecil, jika perlu

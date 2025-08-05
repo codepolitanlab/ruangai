@@ -9,7 +9,7 @@
 			<a class="headerButton" :href="`/courses/intro/${data.lesson?.course_id}/${data.lesson?.course_slug}/lessons`"><i class="bi bi-chevron-left"></i></a>
 		</div>
 		<div class="">
-			<span x-text="data.lesson?.course_title + ' - ' + data.lesson?.topic_title"></span>
+			<span x-text="data.lesson?.course_title"></span>
 		</div>
 	</div>
 
@@ -65,7 +65,8 @@
 
 					<div id="lesson_text_container"
 						class="card border-0 shadow-none rounded-4 p-3 mb-3">
-						<h2 class="h2 mb-5" x-text="data.lesson?.lesson_title"></h2>
+						<h4 class="fw-normal text-dark opacity-75 mb-1" x-text="data.lesson?.topic_title"></h4>
+						<h2 class="h2 mb-4" x-text="data.lesson?.lesson_title"></h2>
 
 						<template x-if="data.lesson?.text">
 							<p class="" x-html="data.lesson?.text" x-init="$nextTick(() => setNativeLinks())"></p>

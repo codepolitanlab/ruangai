@@ -142,7 +142,7 @@
 
 
 			<!-- Progress Stats -->
-			<div class="p-3 pb-4 bg-white rounded-4 mb-3 position-relative"
+			<div class="p-3 pb-2 bg-white rounded-4 mb-3 position-relative"
 				:class="{'lesson-not-complete': data.student.progress < 100}">
 				<h4 class="mb-3">Progres Belajar</h4>
 				
@@ -153,7 +153,7 @@
 				</div>
 
 				<div class="row">
-					<div class="col-md-6">
+					<div class="col-md-6 mb-3">
 						<div id="card-progress-lesson" 
 							class="card border-0 shadow-none rounded-4 p-3 d-flex flex-column justify-content-between position-relative"
 							:class="{'lesson-completed bg-success bg-opacity-50': data.student.progress == 100, 
@@ -179,7 +179,7 @@
 						</div>
 					</div>
 
-					<div class="col-md-6">
+					<div class="col-md-6 mb-3">
 						<div id="card-progress-live" 
 							class="card border-0 shadow-none rounded-4  p-3 d-flex flex-column justify-content-between position-relative"
 							style="min-height: 210px"
