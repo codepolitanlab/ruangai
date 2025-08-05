@@ -29,15 +29,16 @@ class PageController extends BaseController
         // Update password
         $Phpass   = new \App\Libraries\Phpass();
         $password = $Phpass->HashPassword($password);
-        $query    = "UPDATE users SET status = 'active', token = NULL, otp = NULL, pwd = :password: WHERE id = :id:";
+        $query    = "UPDATE users SET status = 'active', valid_email = 1, token = NULL, otp = NULL, pwd = :password: WHERE id = :id:";
         $db->query($query, ['id' => $id, 'password' => $password]);
 
         // Create JWT
         $userSession = [
-            'logged_in' => true,
-            'user_id'   => $id,
-            'email'     => $user->email,
-            'timestamp' => time(),
+            'user_id'      => $id,
+            'email'        => $user->email,
+            'isValidEmail' => 1,
+            'exp'          => time() + 7 * 24 * 60 * 60,
+            'timestamp'    => time(),
         ];
         $key = config('Heroic')->jwtKey['secret'];
         $jwt = JWT::encode($userSession, $key, 'HS256');
