@@ -163,13 +163,13 @@
 				<!-- Join Grup -->
 				<div class="p-3 mb-3 rounded-4 bg-white d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
 					<span>Belum gabung Komunitas RuangAI?</span>
-					<a href="/voucher" class="btn btn-primary rounded-pill"><i class="bi bi-telegram"></i> Gabung Grup</a>
+					<a href="https://t.me/codepolitan/102492" target="_blank" class="btn btn-primary rounded-pill"><i class="bi bi-telegram"></i> Gabung Grup</a>
 				</div>
 
 				<!-- Referral -->
 				<div class="p-3 rounded-4 bg-white d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
 					<span>Pengen dapet hadiah menarik?</span>
-					<a href="/voucher" class="btn btn-success rounded-pill"><i class="bi bi-coin"></i> Program Referral</a>
+					<a href="https://ruangai-scholarship-git-dev-codepolitan.vercel.app/referral" target="_blank" class="btn btn-success rounded-pill"><i class="bi bi-coin"></i> Program Referral</a>
 				</div>
 			</div>
 		</div>
