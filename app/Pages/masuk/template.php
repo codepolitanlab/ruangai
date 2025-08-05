@@ -29,11 +29,15 @@
                         </div>
                     </div>
 
-                    <div class="text-start mt-2">
+                    <div class="text-start mt-3">
                         <button type="button" x-on:click="login" class="btn btn-primary btn-block btn-lg rounded" :disabled="buttonSubmitting">
                             <span class="spinner-border spinner-border-sm me-1" x-show="buttonSubmitting" aria-hidden="true"></span>
                             MASUK
                         </button>
+
+                        <div class="text-end mt-2">
+                            <a href="/reset_password" class="btn btn-link text-primary pe-0 fs-6">Lupa kata sandi?</a>
+                        </div>
                     </div>
                 </div>
             </div>

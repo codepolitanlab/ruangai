@@ -9,12 +9,10 @@ class PageController extends BaseController
 {
     public function postIndex()
     {
-        $request = service('request');
-
-        $token    = $request->getPost('token');
-        $otp      = trim($request->getPost('otp'));
-        $id       = $request->getPost('id');
-        $password = trim($request->getPost('password'));
+        $token    = $this->request->getPost('token');
+        $otp      = trim($this->request->getPost('otp'));
+        $id       = $this->request->getPost('id');
+        $password = trim($this->request->getPost('password'));
 
         // Get database pesantren
         $Heroic = new \App\Libraries\Heroic();
@@ -31,7 +29,7 @@ class PageController extends BaseController
         // Update password
         $Phpass   = new \App\Libraries\Phpass();
         $password = $Phpass->HashPassword($password);
-        $query    = "UPDATE users SET status = 'active', token = NULL, otp = NULL, password = :password: WHERE id = :id:";
+        $query    = "UPDATE users SET status = 'active', token = NULL, otp = NULL, pwd = :password: WHERE id = :id:";
         $db->query($query, ['id' => $id, 'password' => $password]);
 
         // Create JWT

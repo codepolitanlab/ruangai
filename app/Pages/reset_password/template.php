@@ -1,6 +1,4 @@
-<div id="member-reset-password" x-data="reset_password(`<?= config('App')->recaptcha['siteKey'] ?>`)">
-
-    <div class="bg-image" style="background-image: url('<?= $themeURL ?>assets/img/masagi/bg-min.png'); background-repeat: no-repeat; background-size: cover; width: 100%; background-position: center; background-color: #add7cb; height: 100%; position: fixed;"></div>
+<div id="member-reset-password" x-data="reset_password(`<?= config('Heroic')->recaptcha['siteKey'] ?>`)">
 
     <div class="appHeader">
         <div class="left">
@@ -14,24 +12,24 @@
     </div>
 
     <!-- App Capsule -->
-    <div id="appCapsule" class="shadow pt-5 mt-5 pb-2">
+    <div id="appCapsule" class="shadow pt-5 pb-2">
         <div class="login-form mt-1">
             <div class="section">
-                <img src="<?= base_url('mobilekit/assets/img/masagi/logo-masagi-min.png') ?>" alt="image" style="width:200px">
+                <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-logo-transparan.png" width="150" alt="">
             </div>
-            <div class="login-form mt-2 mx-auto pt-1 p-2 rounded glassmorph" style="background: #fffa">
-                <p>Masukkan alamat email atau nomor WhatsApp yang Anda daftarkan di aplikasi untuk kami kirimkan kode reset kata sandi</p>
+            <div class="login-form mt-2 mx-auto pt-1 px-2 rounded glassmorph" style="background: #fffa">
+                <p>Masukkan alamat email yang Anda daftarkan di aplikasi untuk kami kirimkan kode reset kata sandi</p>
 
                 <div>
                     <div class="p-3">
-                        <ul class="nav nav-tabs capsuled rounded-0" id="myTab" role="tablist">
+                        <!-- <ul class="nav nav-tabs capsuled rounded-0" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button x-on:click="sendTo(`email`)" class="nav-link active" id="email-tab" data-bs-toggle="tab" data-bs-target="#email-tab-pane" type="button" role="tab" aria-controls="email-tab-pane" aria-selected="true">Email</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button x-on:click="sendTo(`phone`)" class="nav-link" id="phone-tab" data-bs-toggle="tab" data-bs-target="#phone-tab-pane" type="button" role="tab" aria-controls="phone-tab-pane" aria-selected="false">WhatsApp</button>
                             </li>
-                        </ul>
+                        </ul> -->
                         <div class="tab-content bg-white bg-opacity-25 rounded-bottom py-1 border-top-0 mb-2" id="myTabContent">
                             <div class="tab-pane fade show active" id="email-tab-pane" role="tabpanel" aria-labelledby="email-tab" tabindex="0">
                                 <div class="form-group px-2 boxed text-start">
@@ -40,13 +38,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="phone-tab-pane" role="tabpanel" aria-labelledby="phone-tab" tabindex="0">
+                            <!-- <div class="tab-pane fade" id="phone-tab-pane" role="tabpanel" aria-labelledby="phone-tab" tabindex="0">
                                 <div class="form-group px-2 boxed text-start">
                                     <div class="text-start input-wrapper">
                                         <input type="text" class="form-control" placeholder="62xxxxxx" autocomplete="new-password" x-model="model.phone" required>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="d-flex justify-content-center" id="grecaptcha"></div>

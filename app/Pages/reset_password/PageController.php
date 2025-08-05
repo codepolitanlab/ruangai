@@ -25,7 +25,7 @@ class PageController extends BaseController
         $db = \Config\Database::connect();
 
         // Check google recaptcha response
-        $recaptchaSecretKey = config('App')->recaptcha['secretKey'];
+        $recaptchaSecretKey = config('Heroic')->recaptcha['secretKey'];
         $Recaptcha          = new \ReCaptcha\ReCaptcha($recaptchaSecretKey);
         $resp               = $Recaptcha->setExpectedHostname($_SERVER['HTTP_HOST'])
             ->verify($recaptchaResponse, $_SERVER['REMOTE_ADDR']);
@@ -55,7 +55,7 @@ class PageController extends BaseController
             // Update token and otp
             helper('text');
             $otp   = random_string('numeric', 6);
-            $token = sha1($otp);
+            $token = substr(sha1($otp), -6);
             $db->table('users')->where('id', $user['id'])->update([
                 'token' => $token,
                 'otp'   => $otp,
@@ -65,7 +65,7 @@ class PageController extends BaseController
             $response = $this->sendOTP($user, $otp);
 
             return $this->respond([
-                'success' => 1, 'token' => $token, 'id' => $user['id'],
+                'success' => $response['success'], 'token' => $token, 'id' => $user['id'],
             ]);
         }
 
@@ -74,39 +74,41 @@ class PageController extends BaseController
         ]);
     }
 
-    public function sendOTP($user, $otp)
+    private function sendOTP($user, $otp)
     {
         // Get database pesantren
         $Heroic = new \App\Libraries\Heroic();
         $db     = \Config\Database::connect();
 
         // Send OTP
-        $appSetting = $db->table('mein_options')
-            ->where('option_name', 'app_title')
-            ->where('option_group', 'masagi')
-            ->get()->getRowArray();
-        $namaAplikasi = $appSetting['option_value'] ?? null;
+        $namaAplikasi = setting()->get('Heroicadmin.title');
 
         if (isset($user['email'])) {
-            $message = "Halo {$user['name']},<br><br>";
-            $message .= "Kami menerima permintaan penggantian kata sandi untuk akun Anda di aplikasi <b>{$namaAplikasi}</b><br>";
-            $message .= 'Untuk melanjutkan, silahkan masukan kode reset kata sandi berikut ini ke dalam aplikasi:<br><br>';
-            $message .= "<b>{$otp}</b><br><br>";
-            $message .= 'Salam,';
-
-            return $Heroic->sendEmail($user['email'], 'Kode Reset Kata Sandi', $message);
+            $EmailSender = new \App\Libraries\EmailSender();
+            $body        = [
+                'name'     => $user['name'],
+                'aplikasi' => $namaAplikasi,
+                'otp'      => $otp,
+            ];
+            $EmailSender->setTemplate('reset_password_otp', $body);
+            return $EmailSender->send($user['email'], 'Permintaan Reset Password');
         }
-        $message = <<<EOD
-            Halo {$user['name']},
 
-            Kami menerima permintaan penggantian kata sandi untuk akun Anda di aplikasi *{$namaAplikasi}*.
-            Untuk melanjutkan, silahkan masukan kode reset kata sandi berikut ini ke dalam aplikasi:
+        return [
+            'status' => false,
+            'message' => 'Alamat email tidak valid.'
+        ];
+    }
 
-            *{$otp}*
-
-            Salam,
-            EOD;
-
-        return $Heroic->sendWhatsapp($user['phone'], $message);
+    public function getTest()
+    {
+        $EmailSender = new \App\Libraries\EmailSender();
+            $body        = [
+                'name'     => 'xxx',
+                'aplikasi' => 'yyy',
+                'otp'      => 'zzz',
+            ];
+            $EmailSender->setTemplate('reset_password_otp', $body);
+            return $EmailSender->send('test@gmail.com', 'Permintaan Reset Password', null, true);
     }
 }

@@ -60,8 +60,9 @@ class Heroic extends BaseConfig
 
     // ReCAPTCHA
     public $recaptcha = [
-        'siteKey'   => '6LcDLbAqAAAAAMgwHkDRBfDU6NMPC2Kmt6dKw1g5',
-        'secretKey' => '6LcDLbAqAAAAAJQpyWXfTvXJXJctF3F6wBijnAjX',
+        'recaptchaLabel' => 'RuangAI',
+        'siteKey'        => '6LcBlpsrAAAAAD8ar_ALNgvFq_1O00DtpIK2Lll7',
+        'secretKey'      => '6LcBlpsrAAAAALTayxF003EJc8xtAXHFdrn5PwIT',
     ];
 
     // Xendit Keys

@@ -11,13 +11,13 @@
     </div>
 
     <!-- App Capsule -->
-    <div id="appCapsule" class="shadow pt-5 mt-5 pb-2">
+    <div id="appCapsule" class="shadow pt-5 pb-2">
         <div class="login-form mt-1">
             <div class="section">
-                <img src="<?= base_url('mobilekit/assets/img/masagi/logo-masagi-min.png') ?>" alt="image" style="width:200px">
+                <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-logo-transparan.png" width="150" alt="">
             </div>
             <div class="login-form mt-2 mx-auto pt-1 p-2 rounded glassmorph" style="background: #fffa">
-                <p>Masukkan kode reset yang telah kami kirimkan ke nomor WhatsApp Anda, lalu masukkan kata sandi yang baru untuk Anda masuk ke aplikasi.</p>
+                <p>Masukkan kode reset yang telah kami kirimkan ke alamat email Kamu, lalu masukkan kata sandi yang baru untuk masuk ke aplikasi.</p>
 
                 <div>
                     <div class="py-3">
@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="form-group px-3 mt-3">
-                        <button type="button" x-on:click="confirm" class="btn btn-primary btn-block btn-lg">Ganti Kata Sandi</button>
+                        <button type="button" x-on:click="confirm" class="btn btn-primary rounded-pill btn-block btn-lg">Ganti Kata Sandi</button>
                     </div>
                 </div>
             </div>
