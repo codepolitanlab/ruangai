@@ -6,7 +6,7 @@
         <div class="flex-grow-1 text-white px-3 py-3">
             <p class="fw-bold h5" x-text="course?.title"></p>
             <p x-text="course?.description"></p>
-            <a href="/courses" class="btn btn-sm btn-outline-white mb-2 mb-lg-0"><i class="bi bi-stack fs-6"></i> Lihat Materi</a>
+            <!-- <a href="/courses" class="btn btn-sm btn-outline-white mb-2 mb-lg-0"><i class="bi bi-stack fs-6"></i> Lihat Materi</a> -->
             <button type="button" class="btn btn-sm btn-outline-white mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#teaserModal"><i class="bi bi-play-circle-fill fs-6"></i> Lihat Teaser</button>
         </div>
     </div>

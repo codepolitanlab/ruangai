@@ -63,15 +63,15 @@
 					</div>
 				</div>
 				<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206633.png" class="position-absolute bottom-0 end-0 w-25" alt="">
+				<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%208476.png" class="position-absolute end-0 me-2" width="45%" style="top: 35%;right: 10%" alt="">
 			</div>
 
 		</div>
 
-		<div class="swiper swiper-notif pb-3">
+		<!-- <div class="swiper swiper-notif pb-3">
 			<div class="swiper-wrapper">
 				<template x-for="i in 3" :key="i">
 					<div class="swiper-slide">
-						<!-- Pengumuman -->
 						<div class="announcement d-flex align-items-top gap-3 shadow-sm border-secondary">
 							<div class="announcement-icon bg-white" style="min-width:64px; height:64px">
 								<img src="<?= base_url('mobilekit/assets/img/ruangai/speaker.svg') ?>" width="35" alt="">
@@ -90,9 +90,21 @@
 					</div>
 				</template>
 			</div>
-		</div>
+		</div> -->
 
+		
 		<div class="appContent pt-2 pb-4" style="min-height:90vh">
+
+			<!-- <div class="p-3 mb-3 rounded-4 bg-primary text-white d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
+				<span class="fw-bold">Lanjutkan progress belajarmu dari Chapter 1 </span>
+				<a href="/voucher" class="btn bg-white rounded-pill"><i class="bi bi-telegram"></i> Lanjutkan Belajar</a>
+			</div> -->
+
+			<!-- <div class="p-3 mb-3 rounded-4 bg-secondary text-white d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
+				<span class="fw-bold">Sudah siap untuk belajar lagi?</span>
+				<a href="/voucher" class="btn bg-white rounded-pill"><i class="bi bi-telegram"></i> Saya Siap!</a>
+			</div> -->
+			
 			<!-- Card Kelas -->
 			<div class="mb-3">
 				<div class="bg-white p-4 rounded-4 g-3 mb-4">
