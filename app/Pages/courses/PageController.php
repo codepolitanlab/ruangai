@@ -74,7 +74,7 @@ class PageController extends BaseController
                 ],
                 (object)[
                     'title' => 'Kelas AI for Academics',
-                    'description' => 'Tulis karya ilmiah lebih cepat dan etis dengan AI.',
+                    'description' => 'Tulis karya ilmiah lebih cepat dan etis dengan memanfaatkan alat AI.',
                     'teaser_url' => 'https://ruangai.com/premium-class/data-science',
                     'cover' => 'https://ik.imagekit.io/56xwze9cy/ruangai/mentor-felisha.png',
                 ],
