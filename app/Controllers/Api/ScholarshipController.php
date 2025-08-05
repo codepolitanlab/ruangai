@@ -242,6 +242,7 @@ class ScholarshipController extends ResourceController
             ->where('graduate', 0)
             ->orWhere('graduate IS NULL', null, false)
             ->groupEnd()
+            ->where('expire_at >', date('Y-m-d H:i:s'))   // only active
             ->countAllResults();
 
         if ($programCode === 'RuangAI2025B1') {
@@ -258,12 +259,14 @@ class ScholarshipController extends ResourceController
 
         if ($programCode === 'RuangAI2025B2') {
             $graduated       = $courseStudentModel->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id')
-                                                  ->where('scholarship_participants.program', $programCode)
-                                                  ->where('graduate', 1)
-                                                  ->where('deleted_at', null)
-                                                  ->countAllResults();
+                ->where('scholarship_participants.program', $programCode)
+                ->where('course_students.graduate', 1)
+                ->where('course_students.deleted_at', null)
+                ->countAllResults();
 
-            $user_registered = $scholarshipModel->where('program', $programCode)->where('deleted_at', null)->countAllResults();
+            $user_registered = $scholarshipModel->where('program', $programCode)
+                ->where('deleted_at', null)
+                ->countAllResults();
 
             $data['user_registered'] = $user_registered ?? 0;
             $data['user_progress']   = $count_user_progress;
