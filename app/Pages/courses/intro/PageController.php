@@ -48,6 +48,7 @@ class PageController extends BaseController
             $this->data['live_attendance'] = $db->table('live_attendance')
                 ->where('user_id', $jwt->user_id)
                 ->where('course_id', $id)
+                ->where('status', 1)
                 ->where('deleted_at', null)
                 ->countAllResults();
 
