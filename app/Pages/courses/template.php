@@ -20,7 +20,6 @@
 			font-size: 0.8rem;
 			padding: 0.25rem 0.75rem;
 		}
-
 	</style>
 
 	<div id="appCapsule">
@@ -53,30 +52,32 @@
 					</div>
 				</div> -->
 
-				<div class="bg-white p-4 rounded-4 mb-4">
-					<h5 class="fw-bold mb-3">Kelas yang kamu miliki</h5>
-					<template x-for="course in data.courses">
-						<div class="card shadow-none bg-black overflow-hidden">
-							<div class="d-flex align-items-center overflow-hidden">
-								<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Mask%20group%20(6).png?updatedAt=1754293150119" class="rounded-3 img-course" alt="thumbnail kelas">
-								<div class="flex-grow-1 ms-3 p-3">
-									<a :href="`/courses/intro/${course.id}/${course.slug}/lessons`" class="link">
-										<p class="fw-bold h5" x-text="course.course_title"></p>
-									</a>
-									<div class="d-flex justify-content-between align-items-center text-white">
-										<p class="mb-1"><span class="fs-4" style="color: #7BD5FF" x-text="course.total_completed"></span> dari <span x-text="course.total_module"></span> lesson selesai</p>
-										<p class="fw-bold mb-1" x-text="course.progress + '%'"></p>
-									</div>
-									<div class="progress" style="background: #343434">
-										<div class="progress-bar" role="progressbar" :style="{ width: course.progress + '%', background: '#7BD5FF' }" aria-valuenow="course.progress" aria-valuemin="0" aria-valuemax="100"></div>
+				<template x-if="data.courses.length > 0">
+					<div class="bg-white px-3 py-4 rounded-4 mb-4">
+						<h5 class="fw-bold mb-3">Kelas yang kamu miliki</h5>
+						<template x-for="course in data.courses">
+							<a :href="`/courses/intro/${course.id}/${course.slug}/lessons`" class="link">
+								<div class="card shadow-none overflow-hidden" style="background:#112f3d">
+									<div class="d-flex align-items-center overflow-hidden">
+										<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Mask%20group%20(6).png?updatedAt=1754293150119" class="rounded-3 img-course" alt="thumbnail kelas">
+										<div class="flex-grow-1 ms-3 p-3">
+											<p class="fw-bold h5 text-white" x-text="course.course_title"></p>
+											<div class="d-flex justify-content-between align-items-center text-white">
+												<p class="mb-1"><span class="fs-4" style="color: #7BD5FF" x-text="course.total_completed"></span> dari <span x-text="course.total_module"></span> materi selesai</p>
+												<p class="fw-bold mb-1" x-text="course.progress + '%'"></p>
+											</div>
+											<div class="progress" style="background: #343434">
+												<div class="progress-bar" role="progressbar" :style="{ width: course.progress + '%', background: '#7BD5FF' }" aria-valuenow="course.progress" aria-valuemin="0" aria-valuemax="100"></div>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-					</template>
-				</div>
+							</a>
+						</template>
+					</div>
+				</template>
 
-				<div class="bg-white p-4 rounded-4 mb-4">
+				<div class="bg-white px-3 py-4 rounded-4 mb-4">
 					<h5 class="fw-bold mb-3">Kelas Premium</h5>
 					<template x-for="course in data.premium_courses">
 						<?= $this->include('_components/card/CardPremiumCourse') ?>

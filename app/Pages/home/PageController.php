@@ -39,7 +39,15 @@ class PageController extends BaseController
                                         ->join('courses', 'courses.id = course_lesson_progress.course_id')
                                         ->where('course_lesson_progress.user_id', $jwt->user_id)
                                         ->orderBy('course_lesson_progress.created_at', 'DESC')
-                                        ->groupBy('course_lessons.id')
+                                        ->groupBy('
+                                            course_lessons.id, 
+                                            course_lessons.lesson_title, 
+                                            course_lessons.id, 
+                                            course_lessons.course_id,
+                                            course_lesson_progress.created_at,
+                                            course_students.progress,
+                                            courses.course_title,
+                                            courses.slug')
                                         ->limit(1)
                                         ->get()
                                         ->getRowArray();

@@ -1,4 +1,4 @@
-<div class="card shadow-none bg-black mb-3 overflow-hidden rounded-4">
+<div class="card shadow-none mb-3 overflow-hidden rounded-4" style="background:#112f3d">
     <div class="d-flex align-items-center">
         <div>
             <img :src="course?.cover" class="rounded-3 img-course" alt="thumbnail kelas">

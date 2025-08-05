@@ -71,7 +71,7 @@
             isLoggedIn(context, controller){
                 if(! localStorage.getItem('heroic_token')){
                     // this.$router.navigate('/masuk')
-                    // window.location.replace('https://ruangai.id/signin')
+                    window.location.replace('https://ruangai.id/signin')
                 }
             }
         }))

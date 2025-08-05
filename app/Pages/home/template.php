@@ -149,14 +149,14 @@
 
 				<!-- Join Grup -->
 				<div class="p-3 mb-3 rounded-4 bg-white d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
-					<span>Belum Gabung Komunitas RuangAI?</span>
-					<a href="/voucher" class="btn btn-primary rounded-pill"><i class="bi bi-telegram"></i> Gabung Sekarang</a>
+					<span>Belum gabung Komunitas RuangAI?</span>
+					<a href="/voucher" class="btn btn-primary rounded-pill"><i class="bi bi-telegram"></i> Gabung Grup</a>
 				</div>
 
 				<!-- Referral -->
 				<div class="p-3 rounded-4 bg-white d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
-					<span>Pengen Dapet Hadiah Menarik?</span>
-					<a href="/voucher" class="btn btn-success rounded-pill">Ikuti Program Referral</a>
+					<span>Pengen dapet hadiah menarik?</span>
+					<a href="/voucher" class="btn btn-success rounded-pill"><i class="bi bi-coin"></i> Program Referral</a>
 				</div>
 			</div>
 		</div>
