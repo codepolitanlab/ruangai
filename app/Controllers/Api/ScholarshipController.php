@@ -204,7 +204,7 @@ class ScholarshipController extends ResourceController
         $members = $memberQuery->getResultArray();
 
         // Filter member graduated by status completed
-        $graduated = count(array_filter($members, static fn ($member) => $member['status'] === 'lulus'));
+        $graduated = count(array_filter($members, static fn($member) => $member['status'] === 'lulus'));
 
         $commision = 5000;
         $disbursed = 0;
@@ -257,7 +257,12 @@ class ScholarshipController extends ResourceController
         }
 
         if ($programCode === 'RuangAI2025B2') {
-            $graduated       = $courseStudentModel->where('course_id', 2)->where('graduate', 1)->where('deleted_at', null)->countAllResults();
+            $graduated       = $courseStudentModel->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id')
+                                                  ->where('scholarship_participants.program', $programCode)
+                                                  ->where('graduate', 1)
+                                                  ->where('deleted_at', null)
+                                                  ->countAllResults();
+
             $user_registered = $scholarshipModel->where('program', $programCode)->where('deleted_at', null)->countAllResults();
 
             $data['user_registered'] = $user_registered ?? 0;
