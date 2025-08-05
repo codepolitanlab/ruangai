@@ -110,6 +110,12 @@ class PageController extends BaseController
                     'teaser_url' => 'https://ruangai.com/premium-class/web-development',
                     'cover' => 'https://ik.imagekit.io/56xwze9cy/ruangai/mentor-aji.png',
                 ],
+                (object)[
+                    'title' => 'Kelas AI for Coding Assist',
+                    'description' => 'Bangun aplikasi lebih cepat dan efisien dengan bantuan AI.',
+                    'teaser_url' => 'https://ruangai.com/premium-class/web-development',
+                    'cover' => 'https://image.web.id/images/clipboard-image-1754379412.png',
+                ],
             ];
 
             return $this->respond($this->data);
