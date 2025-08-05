@@ -21,9 +21,9 @@ class PageController extends BaseController
 
         // Subquery untuk menghitung total modul per course
         $totalModuleSubquery = "(SELECT COUNT(id) 
-                         FROM course_lessons 
-                         WHERE course_lessons.course_id = courses.id) 
-                         AS total_module";
+                        FROM course_lessons 
+                        WHERE course_lessons.course_id = courses.id) 
+                        AS total_module";
 
         // Subquery untuk menghitung modul yang sudah selesai oleh user per course
         $totalCompletedSubquery = "(SELECT COUNT(clp.id) 
@@ -53,7 +53,13 @@ class PageController extends BaseController
             ->join('course_students', 'course_students.user_id = course_lesson_progress.user_id AND course_students.course_id = course_lesson_progress.course_id')
             ->where('course_lesson_progress.user_id', $jwt->user_id)
             ->orderBy('course_lesson_progress.created_at', 'DESC')
-            ->groupBy('course_lessons.id')
+            ->groupBy('
+                course_lessons.lesson_title, 
+                course_lessons.id, 
+                course_lessons.course_id,
+                course_lesson_progress.created_at,
+                course_students.progress
+            ')
             ->limit(1)
             ->get()
             ->getRowArray() ?? [];
