@@ -66,8 +66,9 @@
 					<div class="card-body d-flex gap-3">
 						<i class="bi bi-stopwatch-fill text-white display-3 shaky-icon"></i>
 						<div>
-							<h4 class="text-white">Program Belajar Chapter 1 Telah Berakhir</h4>
-							<p class="m-0 text-white">Tapi tenang saja! Kamu tetap dapat melanjutkan belajar saat Chapter 2 dibuka.</p>
+							<h4 class="text-white">Program Belajar Chapter 2 Sudah Dibuka!</h4>
+							<p class="mb-3 text-white">Kamu dapat melanjutkan belajar dengan bergabung di Chapter 2 dengan mengklik tombol di bawah ini untuk mendaftar ulang.</p>
+							<button class="btn btn-light" @click="heregister"><i class="bi bi-file-earmark-arrow-up"></i> Daftar Ulang ke Chapter 2</button>
 						</div>
 					</div>
 				</div>
@@ -126,7 +127,7 @@
 							</div>
 							<div class="d-flex align-items-end gap-2 mt-3 text-dark">
 								<h1 class="mb-0 display-6 fw-bold" x-text="data?.lesson_completed "></h1>
-								<p class="mb-1">dari <span x-text="data?.total_lessons"></span> Modul terselesaikan</p>
+								<p class="mb-1">dari <span x-text="data?.total_lessons"></span> modul selesai</p>
 							</div>
 							<div class="d-flex align-items-center">
 								<div class="progress flex-grow-1 me-2 " style="height: 5px;">

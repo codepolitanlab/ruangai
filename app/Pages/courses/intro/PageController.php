@@ -78,4 +78,39 @@ class PageController extends BaseController
             'response_message' => 'Not found',
         ]);
     }
+
+    public function postHeregister()
+    {
+        $Heroic = new \App\Libraries\Heroic();
+        $jwt    = $Heroic->checkToken();
+
+        // Update expire_at to null
+        $db = \Config\Database::connect();
+        $db->table('course_students')
+            ->where('user_id', $jwt->user_id)
+            ->where('course_id', $this->request->getPost('course_id'))
+            ->update([
+                'expire_at' => null
+            ]);
+
+        $courseStudent = $db->table('course_students')
+            ->where('user_id', $jwt->user_id)
+            ->where('course_id', $this->request->getPost('course_id'))
+            ->get()
+            ->getRowArray();
+
+        if($courseStudent['graduate'] !== '1') {
+            // Update field program in scholarship_participants to 'RuangAI2025B2'
+            $db->table('scholarship_participants')
+            ->where('user_id', $jwt->user_id)
+            ->update([
+                'program' => 'RuangAI2025B2'
+            ]);
+        }
+        
+        return $this->respond([
+            'response_code'    => 200,
+            'response_message' => 'Success',
+        ]);
+    }
 }

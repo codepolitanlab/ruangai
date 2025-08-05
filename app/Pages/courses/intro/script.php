@@ -38,6 +38,17 @@
 
       claimReward() {
         this.$router.navigate(`/courses/${this.data.course.id}/reward`)
+      },
+
+      heregister() {
+        $heroicHelper.post(`/courses/intro/heregister`, {
+          course_id: this.data.course.id
+        }).then((response) => {
+          if(response.data.response_code == 200) {
+            $heroicHelper.toastr("Anda telah terdaftar di program Chapter 2! Selamat melanjukan belajar.", 'success', 'bottom')
+            this.data.is_expire = false
+          }
+        })
       }
     };
   });
