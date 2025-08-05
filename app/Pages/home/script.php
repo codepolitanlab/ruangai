@@ -43,10 +43,10 @@
           slidesOffsetAfter: 15,
 
           // Non-aktifkan autoplay jika tidak diperlukan, atau sesuaikan
-          autoplay: {
-            delay: 5000,
-            pauseOnMouseEnter: true,
-          },
+          // autoplay: {
+          //   delay: 5000,
+          //   pauseOnMouseEnter: true,
+          // },
 
           breakpoints: {
             // Untuk layar lebih kecil, jika perlu
@@ -67,6 +67,17 @@
         }
         this.swiperNotif = new Swiper(".swiper-notif", config);
       },
+
+      heregister() {
+        $heroicHelper.post(`/courses/intro/heregister`, {
+          course_id: 1
+        }).then((response) => {
+          if(response.data.response_code == 200) {
+            $heroicHelper.toastr("Anda telah terdaftar di program Chapter 2! Selamat melanjukan belajar.", 'success', 'bottom')
+            this.data.is_expire = false
+          }
+        })
+      }
     };
   });
 </script>
