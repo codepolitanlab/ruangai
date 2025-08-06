@@ -79,20 +79,19 @@ class PageController extends BaseController
             $orderedLessons = [];
 
             foreach ($lessons as $lessonItem) {
-                $orderedLessons[$lessonItem['id']]                 = $lessonItem;
-                $orderedLessons[$lessonItem['id']]['is_completed'] = in_array($lessonItem['id'], $completedLessonIds, true);
+                $orderedLessons[] = array_merge($lessonItem, ['is_completed' => in_array($lessonItem['id'], $completedLessonIds, true)]);
             }
 
             $course['lessons']      = $orderedLessons;
             $lesson['is_completed'] = in_array($lesson['id'], $completedLessonIds, true);
 
             // Get previous and next lesson
-            $IDs                   = array_keys($course['lessons']);
+            $IDs                   = array_column($course['lessons'], 'id');
             $currentIndexID        = array_search($lesson_id, $IDs, true);
-            $prevLesson            = $IDs[$currentIndexID - 1] ?? null;
-            $nextLesson            = $IDs[$currentIndexID + 1] ?? null;
-            $lesson['prev_lesson'] = $prevLesson ? $course['lessons'][$prevLesson] : null;
-            $lesson['next_lesson'] = $nextLesson ? $course['lessons'][$nextLesson] : null;
+            $prevLessonIndex       = $currentIndexID - 1;
+            $nextLessonIndex       = $currentIndexID + 1;
+            $lesson['prev_lesson'] = $prevLessonIndex ? $course['lessons'][$prevLessonIndex] : null;
+            $lesson['next_lesson'] = $nextLessonIndex ? $course['lessons'][$nextLessonIndex] : null;
 
             $this->data['course'] = $course;
             $this->data['lesson'] = $lesson;
