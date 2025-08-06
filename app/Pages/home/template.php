@@ -162,7 +162,7 @@
 										</div>
 										<span x-text="data?.last_lesson.progress"></span>%
 									</div>
-									<a :href="`/courses/intro/${data?.last_lesson.course_id}/${data?.last_lesson?.slug}`" class="btn bg-white rounded-pill p-1 text-secondary hover">Mulai Belajar</a>
+									<a :href="`/courses/intro/${data?.last_lesson.course_id}/${data?.last_lesson?.slug}/lessons`" class="btn bg-white rounded-pill p-1 text-secondary hover">Mulai Belajar</a>
 								</div>
 							</div>
 						</div>
