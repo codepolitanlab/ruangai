@@ -2,7 +2,7 @@
 // Variabel tema
 $primaryColor   = '#164252';     // Warna utama
 $secondaryColor = '#E7E725';   // Warna aksen
-$logoUrl        = 'https://www.ruangai.id/logo-ruangai.svg'; // Ganti dengan URL logo milik Boss Toni
+$logoUrl        = 'https://www.ruangai.id/logo-ruangai.svg';
 ?>
 
 <!DOCTYPE html>

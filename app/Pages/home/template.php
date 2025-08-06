@@ -53,25 +53,6 @@
 	</style>
 
 	<div id="appCapsule">
-
-		<div class="appContent py-4">
-			<!-- Header -->
-			<div class="p-4 px-3 bg-white rounded-4 position-relative overflow-hidden" style="min-height:110px">
-				<div class="d-flex align-items-center gap-3 position-relative" style="z-index: 99; position: absolute !important; bottom: 10px;">
-					<div class="avatar">
-						<img :src="data?.user?.avatar && data?.user?.avatar != '' ? data?.user?.avatar : `https://ui-avatars.com/api/?name=${data?.name ?? 'El'}&background=79B2CD&color=FFF`" alt="avatar" class="imaged w48 rounded-circle">
-					</div>
-					<div>
-						<h4 class="mb-0 text-muted fw-normal">Selamat Belajar,</h4>
-						<h5 class="mb-0" x-text="data?.name"></h5>
-					</div>
-				</div>
-				<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206633.png" class="position-absolute bottom-0 end-0 w-25" alt="">
-				<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%208476.png" class="position-absolute me-2" width="45%" style="top: 10px;right: 10px" alt="">
-			</div>
-
-		</div>
-
 		<!-- <div class="swiper swiper-notif pb-3">
 			<div class="swiper-wrapper">
 				
@@ -101,8 +82,36 @@
 			</div>
 		</div> -->
 
-		
+
 		<div class="appContent pt-2 pb-4" style="min-height:90vh">
+
+			<!-- Header -->
+			<div class="p-4 px-3 mb-3 bg-white rounded-4 position-relative overflow-hidden" style="min-height:110px">
+				<div class="d-flex align-items-center gap-3 position-relative" style="z-index: 99; position: absolute !important; bottom: 10px;">
+					<div class="avatar">
+						<img :src="data?.user?.avatar && data?.user?.avatar != '' ? data?.user?.avatar : `https://ui-avatars.com/api/?name=${data?.name ?? 'El'}&background=79B2CD&color=FFF`" alt="avatar" class="imaged w48 rounded-circle">
+					</div>
+					<div>
+						<h4 class="mb-0 text-muted fw-normal">Selamat Belajar,</h4>
+						<h5 class="mb-0" x-text="data?.name"></h5>
+					</div>
+				</div>
+				<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206633.png" class="position-absolute bottom-0 end-0 w-25" alt="">
+				<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%208476.png" class="position-absolute me-2" width="45%" style="top: 10px;right: 10px" alt="">
+			</div>
+
+			<div x-show="!meta.isValidEmail" class="rounded-20 p-3 py-4 bg-white my-4">
+				<div class="row justify-content-center">
+					<div class="col-lg-10">
+						<h5 class="m-0">Kamu belum melakukan verifikasi email nih, silahkan lakukan verifikasi email terlebih dahulu.</h5>
+						<button x-show="!meta.loading" type="button" x-on:click="sendEmailVerification()" class="btn btn-primary rounded-pill px-4 my-3 fw-bold">Verifikasi Email Sekarang</button>
+						<button x-show="meta.loading" type="button" disabled class="btn btn-primary rounded-pill px-4 my-3 fw-bold">
+							<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+							Sedang mengirim OTP...
+						</button>
+					</div>
+				</div>
+			</div>
 
 			<!-- Show Expire Alert -->
 			<template x-if="data.is_expire">
@@ -117,7 +126,7 @@
 					</div>
 				</div>
 			</template>
-			
+
 			<!-- Card Kelas -->
 			<div class="mb-3">
 				<div class="bg-white p-4 rounded-4 g-3 mb-4">

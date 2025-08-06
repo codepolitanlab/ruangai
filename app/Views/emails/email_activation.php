@@ -2,7 +2,7 @@
 // Variabel tema
 $primaryColor   = '#164252';     // Warna utama
 $secondaryColor = '#E7E725';   // Warna aksen
-$logoUrl        = 'https://image.web.id/images/imageff1ca974457fdac4.png'; // Ganti dengan URL logo milik Boss Toni
+$logoUrl        = 'https://www.ruangai.id/logo-ruangai.svg'; // Ganti dengan URL logo milik Boss Toni
 ?>
 
 <!DOCTYPE html>
@@ -46,7 +46,7 @@ $logoUrl        = 'https://image.web.id/images/imageff1ca974457fdac4.png'; // Ga
               <td style="padding:20px;font-family:sans-serif;color:#333;">
                 <p style="margin-top:0;font-size:16px;line-height:1.5;">
                   Halo <?= $name ?? '{NAME}' ?>,<br><br>
-                  Terima kasih telah mendaftar di aplikasi JagoanSiber <br>
+                  Terima kasih telah mendaftar di RuangAI <br>
                   Untuk mengaktifkan akun Anda, silakan gunakan kode OTP berikut ke dalam aplikasi:
                 </p>
                 <p style="font-size:16px;line-height:1.5;">

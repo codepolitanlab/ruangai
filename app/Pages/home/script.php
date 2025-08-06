@@ -5,7 +5,9 @@
       url: `/home/data/`,
       meta: {
         expandDesc: false,
-        graduate: false
+        graduate: false,
+        isValidEmail: false,
+        loading: false
       }
     })
 
@@ -14,21 +16,35 @@
       title: "Homepage",
       errorMessage: null,
       swiperNotif: null,
+      isVerifying: false,
+
+      otp: ['', '', '', '', '', ''], // 6 digit OTP
+      modalInstance: null,
+
+      resendCooldown: 0,
+      resendTimer: null,
+      emailSent: false,
 
       init() {
         base.init.call(this);
         this.initSwiperNotif();
-        this.$watch('data', (value) => {
-          // if (!value.is_enrolled) {
-          //   alert("Kamu belum terdaftar di kelas. Silahkan daftar terlebih dahulu.")
-          //   window.location.replace(`https://www.ruangai.id/registration`)
-          // }
-        });
+
+        const token = localStorage.getItem('heroic_token');
+        if (token) {
+          try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            this.meta.isValidEmail = +payload.isValidEmail === 1 ? true : false;
+          } catch (e) {
+            console.error("Failed to parse JWT payload", e);
+          }
+        }
+
+        this.modalInstance = new bootstrap.Modal(this.$refs.modalVerify);
       },
 
       claimCertificate() {
-        if(this.data.course_completed) {
-          if(!this.data.student.cert_code || !this.data.student.cert_code == '') {
+        if (this.data.course_completed) {
+          if (!this.data.student.cert_code || !this.data.student.cert_code == '') {
             this.$router.navigate(`/certificate/claim/${this.data.course.id}`)
           } else {
             this.$router.navigate(`/certificate/${this.data.student.cert_code}`)
@@ -72,11 +88,141 @@
         $heroicHelper.post(`/courses/intro/heregister`, {
           course_id: 1
         }).then((response) => {
-          if(response.data.response_code == 200) {
+          if (response.data.response_code == 200) {
             $heroicHelper.toastr("Anda telah terdaftar di program Chapter 2! Selamat melanjukan belajar.", 'success', 'bottom')
             this.data.is_expire = false
           }
         })
+      },
+
+      startResendCooldown() {
+        this.resendCooldown = 60; // Mulai dari 60 detik
+        this.resendTimer = setInterval(() => {
+          this.resendCooldown--;
+          if (this.resendCooldown <= 0) {
+            clearInterval(this.resendTimer);
+          }
+        }, 1000);
+      },
+
+      handleOtpInput(event, index) {
+        this.errorMessage = null;
+        const value = event.target.value;
+
+        if (/^[0-9]$/.test(value)) {
+          this.otp[index] = value;
+          if (index < 5) {
+            this.$nextTick(() => {
+              this.$refs[`otp${index + 1}`].focus();
+            });
+          }
+        } else {
+          this.otp[index] = '';
+        }
+      },
+
+      handleBackspace(event, index) {
+        if (index > 0 && event.target.value === '') {
+          this.$nextTick(() => {
+            this.$refs[`otp${index - 1}`].focus();
+          });
+        }
+      },
+
+      resetOtp() {
+        this.otp = ['', '', '', '', '', ''];
+        this.errorMessage = null;
+      },
+
+      async sendEmailVerification(resend = false) {
+        const token = localStorage.getItem('heroic_token');
+
+        // Check if email verification has been sent, only show modal
+        if (this.emailSent && !resend) {
+          this.modalInstance.show();
+          setTimeout(() => {
+            if (this.$refs.otp0) {
+              this.$refs.otp0.focus();
+            }
+          }, 600);
+          return;
+        }
+
+        this.meta.loading = true;
+        setTimeout(() => {
+          $heroicHelper
+            .post("/home/sendEmailVerification", {
+              token
+            })
+            .then(async (response) => {
+              if (response.data.status == 'success') {
+                this.startResendCooldown();
+                if (!resend) {
+                  this.modalInstance.show();
+                  setTimeout(() => {
+                    if (this.$refs.otp0) {
+                      this.$refs.otp0.focus();
+                    }
+                  }, 600);
+                }
+                this.emailSent = true;
+              } else {
+                await Prompts.alert(response.data.message || "Gagal mengirim email verifikasi.");
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+              Prompts.alert("Terjadi kesalahan saat mengirim email.");
+            })
+            .finally(() => {
+              this.meta.loading = false;
+            });
+        }, 1300)
+      },
+
+      async resendOtp() {
+        if (this.resendCooldown > 0) return;
+        this.resetOtp();
+        this.sendEmailVerification(true);
+      },
+
+      async verifyEmail() {
+        if (this.otp.join('').length !== 6) {
+          this.errorMessage = "OTP harus terdiri dari 6 digit.";
+          return;
+        }
+
+        this.isVerifying = true;
+        this.errorMessage = null;
+
+        const token = localStorage.getItem('heroic_token');
+        const otpCode = this.otp.join('');
+
+        $heroicHelper
+          .post("/home/verifyEmail", {
+            token,
+            otp: otpCode
+          }) // Kirim OTP ke backend
+          .then(async (response) => {
+            if (response.data.status == 'success') {
+              this.meta.isValidEmail = true;
+
+              localStorage.setItem('heroic_token', response.data.jwt);
+              await Prompts.alert(response.data.message);
+              this.modalInstance.hide();
+              this.resetOtp();
+            } else {
+              // Tampilkan error dari backend
+              this.errorMessage = response.data.message || "Kode OTP tidak valid.";
+            }
+          })
+          .catch((error) => {
+            this.errorMessage = "Terjadi kesalahan pada server.";
+            console.error(error);
+          })
+          .finally(() => {
+            this.isVerifying = false;
+          });
       }
     };
   });

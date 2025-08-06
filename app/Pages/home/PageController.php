@@ -3,6 +3,7 @@
 namespace App\Pages\home;
 
 use App\Pages\BaseController;
+use Firebase\JWT\JWT;
 
 class PageController extends BaseController
 {
@@ -77,5 +78,102 @@ class PageController extends BaseController
         $this->data['is_expire'] = $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
 
         return $this->respond($this->data);
+    }
+
+    public function postSendEmailVerification()
+    {
+        $Heroic = new \App\Libraries\Heroic();
+        $jwt    = $Heroic->checkToken(true);
+
+        $db = \Config\Database::connect();
+
+        $user = $db->table('users')
+            ->where('id', $jwt->user_id)
+            ->get()
+            ->getRowArray();
+
+        if (! $user) {
+            return $this->respond([
+                'status'  => 'failed',
+                'message' => 'User not found',
+            ]);
+        }
+
+        // set update otp_email on users
+        helper('text');
+        $otp    = random_string('numeric', 6);
+        $update = $db->table('users')
+            ->where('id', $jwt->user_id)
+            ->update([
+                'otp_email' => $otp,
+            ]);
+
+        if (! $update) {
+            return $this->respond([
+                'status'  => 'failed',
+                'message' => 'Failed to update OTP',
+            ]);
+        }
+
+        $body = [
+            'name' => $user['name'],
+            'otp'  => $otp,
+        ];
+
+        $EmailSender = new \App\Libraries\EmailSender();
+        $EmailSender->setTemplate('email_activation', $body);
+        $EmailSender->send($user['email'], 'Email Verification');
+
+        return $this->respond([
+            'status'  => 'success',
+            'message' => 'OTP has been sent to your email',
+        ]);
+    }
+
+    public function postVerifyEmail()
+    {
+        $Heroic = new \App\Libraries\Heroic();
+        $jwt    = $Heroic->checkToken(true);
+
+        $db = \Config\Database::connect();
+
+        $user = $db->table('users')
+            ->where('id', $jwt->user_id)
+            ->get()
+            ->getRowArray();
+
+        if (! $user) {
+            return $this->respond([
+                'status'  => 'failed',
+                'message' => 'User not found',
+            ]);
+        }
+
+        if ($user['otp_email'] !== $this->request->getPost('otp')) {
+            return $this->respond([
+                'status'  => 'failed',
+                'message' => 'Invalid OTP',
+            ]);
+        }
+
+        $update = $db->table('users')
+            ->where('id', $jwt->user_id)
+            ->update([
+                'email_valid' => 1,
+                'otp_email'   => null,
+            ]);
+
+        $newJwt = JWT::encode([
+            'email'        => strtolower($user['email']),
+            'user_id'      => $user['id'],
+            'isValidEmail' => 1,
+            'exp'          => time() + 7 * 24 * 60 * 60,
+        ], config('Heroic')->jwtKey['secret'], 'HS256');
+
+        return $this->respond([
+            'status'  => 'success',
+            'message' => 'Email has been verified',
+            'jwt'     => $newJwt,
+        ]);
     }
 }
