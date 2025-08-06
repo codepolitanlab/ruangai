@@ -18,7 +18,7 @@ $bottommenu = [
         'label'  => 'Kelas Saya',
         'url'    => '/courses',
         'icon'   => 'bi bi-book',
-        'module' => 'courses'
+        'module' => 'course_list'
     ],
     [
         'label'  => 'Keluar',

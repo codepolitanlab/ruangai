@@ -1,4 +1,5 @@
 <div id="courses" x-data="courses()">
+	<?= $this->include('_bottommenu') ?>
 
 	<style>
 		.card {
@@ -87,7 +88,8 @@
 			</div>
 
 		</div>
+
 	</div>
-	<?= $this->include('_bottommenu') ?>
+
 	<?= $this->include('courses/script') ?>
 </div>

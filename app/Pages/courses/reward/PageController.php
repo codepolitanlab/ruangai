@@ -7,9 +7,9 @@ use App\Pages\BaseController;
 class PageController extends BaseController
 {
     public $data = [
-        'page_title'  => 'Daftar Materi',
-        'module'      => 'course_lesson',
-        'active_page' => 'materi',
+        'page_title'  => 'Reward',
+        'module'      => 'learn',
+        'active_page' => 'reward',
     ];
 
     public function getData($id)
