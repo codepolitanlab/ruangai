@@ -78,7 +78,7 @@
 				</template>
 
 				<div class="bg-white px-3 py-4 rounded-4 mb-4">
-					<h5 class="fw-bold mb-3">Kelas Premium</h5>
+					<h5 class="fw-bold mb-3">Kelas Khusus</h5>
 					<template x-for="course in data.premium_courses">
 						<?= $this->include('_components/card/CardPremiumCourse') ?>
 					</template>
