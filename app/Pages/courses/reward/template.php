@@ -73,7 +73,7 @@
 					<i class="bi bi-megaphone text-white display-3"></i>
 					<div>
 						<h4 class="opacity-75 mb-1">Info Klaim Reward</h4>
-						<p class="m-0 opacity-75">Reward kelas lanjutan akan tersedia di akhir program Chapter 2. Pastikan kamu sudah menuntaskan belajar sebelum program berakhir.</p>
+						<p class="m-0 opacity-75">Kelas Khusus ini dapat kamu klaim setelah lulus di Chapter 2, silahkan klik 'Lihat Teaser' untuk membantu kamu memilih kelas mana yang sesuai. Kamu hanya dapat klaim salah satu saja.</p>
 					</div>
 				</div>
 			</div>

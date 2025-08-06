@@ -128,8 +128,8 @@
 							</button>
 						</p>
 						<div class="mt-3" x-show="meta.expandDesc" x-transition>
-							<p>Kelas ini merupakan kelas pertama program RuangAI dari CODEPOLITAN yang fokus membahas tentang fundamental kecerdasan artifisial dengan total durasi belajar 15 jam, terdiri dari 30 materi dan 10 sesi live bersama mentor AI.</p>
-							<p>Kelas ini merupakan bagian dari program AI Opportunity Fund: Asia Pasifik, bekerja sama dengan AVPN dan didukung oleh Google.org dan Asian Development Bank.</p>
+							<p>Kelas ini sebagai pengantar kamu untuk dapat memahami apa itu Generative AI dan bagaimana tata cara penggunaannya untuk keperluan sehari hari.</p>
+							<p>Kelas ini wajib kamu tuntaskan terlebih dahulu sebelum dapat mengikuti live session bersama mentor RuangAI dan juga program RuangAI berhadiah di Chapter 2.</p>
 							<button
 								@click="meta.expandDesc = !meta.expandDesc"
 								class="border-0 bg-transparent text-primary text-decoration-none p-0">
@@ -223,7 +223,7 @@
 			</div> -->
 
 			<!-- Certificate -->
-			<div class="section p-3 mb-3 pb-4 bg-white rounded-4">
+			<div class="section p-3 mb-5 pb-4 bg-white rounded-4">
 				<h4 class="fw-bold mb-3" style="color: #222;">Klaim Sertifikat</h4>
 
 				<div class="card border-0 rounded-4 bg-dark bg-opacity-10 cursor-pointer"
@@ -250,19 +250,19 @@
 
 			<!-- Klaim Reward -->
 			<div class="section p-3 mb-3 bg-white rounded-4">
-				<h4 class="fw-bold mb-3" style="color: #222;">Klaim Reward</h4>
+				<h4 class="fw-bold mb-3" style="color: #222;">Reward Chapter 2</h4>
 
-				<div class="card border-0 rounded-4 cursor-pointer"
-					style="background: #e91e95;"
-					@click="claimReward()"
-					:class="data.course_completed ? '' : 'bg-dark bg-opacity-10'">
+				<div class="card bg-secondary bg-opacity-50 border-0 rounded-4 cursor-pointer"
+					@click="claimReward()">
 					<div class="card-body d-flex align-items-center gap-3 p-4">
 						<div class="rounded-3 d-flex align-items-center justify-content-center px-3" style="min-width:64px;height:64px;background:#fff;">
 							<i class="bi bi-gift fs-2" :class="data.course_completed ? '' : 'text-dark opacity-50'" style="font-size:2.5rem; color:#e91e95;"></i>
 						</div>
 						<div class="flex-grow-1" :class="data.course_completed ? 'text-white' : 'opacity-50'">
 							<!-- <div class="fw-bold mb-1" style="font-size:1.2rem;">Bonus Kelas Lanjutan</div> -->
-							<h5 class="h6 mb-0" style="font-size:1rem;">Pilih salah satu dari 4 kelas lanjutan yang paling cocok buatmu</h5>
+							<h5 class="h6 mb-0" style="font-size:1rem;">
+								Pilih salah satu dari 5 kelas lanjutan yang paling cocok buatmu
+							</h5>
 						</div>
 					</div>
 				</div>
