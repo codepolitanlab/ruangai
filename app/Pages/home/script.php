@@ -78,7 +78,7 @@
             640: {
               slidesPerView: 1.5,
               spaceBetween: 15,
-              slidesOffsetBefore: 20,
+              slidesOffsetBefore: 0,
               slidesOffsetAfter: 15,
             }
           }

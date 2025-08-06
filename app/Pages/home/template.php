@@ -53,36 +53,6 @@
 	</style>
 
 	<div id="appCapsule">
-		<!-- <div class="swiper swiper-notif pb-3">
-			<div class="swiper-wrapper">
-				
-				<div class="swiper-slide">
-					<div class="announcement d-flex align-items-top gap-3 shadow-sm border-secondary">
-						<div class="announcement-icon bg-white" style="min-width:64px; height:64px">
-							<img src="<?= base_url('mobilekit/assets/img/ruangai/speaker.svg') ?>" width="35" alt="">
-						</div>
-						<div>
-							<h5 class="mb-1 fw-bold">Chapter 2 Dibuka!</h5>
-							<p class="mb-1 text-muted line-height" style="line-height:16px">Buat kamu yang belum menyelesaikan chapter 1, lanjutkan belajar di Chapter 2.</p>
-						</div>
-					</div>
-				</div>
-				<div class="swiper-slide">
-					<div class="announcement d-flex align-items-top gap-3 shadow-sm border-secondary">
-						<div class="announcement-icon bg-white" style="min-width:64px; height:64px">
-							<img src="<?= base_url('mobilekit/assets/img/ruangai/speaker.svg') ?>" width="35" alt="">
-						</div>
-						<div>
-							<h5 class="mb-1 fw-bold">Live Session Terdekat</h5>
-							<p class="mb-1 text-muted line-height" style="line-height:16px">Buat kamu yang belum menyelesaikan chapter 1, kamu bisa langsung mendaftar di Chapter 2.</p>
-						</div>
-					</div>
-				</div>
-
-			</div>
-		</div> -->
-
-
 		<div class="appContent pt-2 pb-4" style="min-height:90vh">
 
 			<!-- Header -->
@@ -99,6 +69,35 @@
 				<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206633.png" class="position-absolute bottom-0 end-0 w-25" alt="">
 				<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%208476.png" class="position-absolute me-2" width="45%" style="top: 10px;right: 10px" alt="">
 			</div>
+
+			<!-- <div class="swiper swiper-notif pb-3">
+				<div class="swiper-wrapper">
+
+					<div class="swiper-slide">
+						<div class="announcement d-flex align-items-top gap-3 shadow-sm border-secondary">
+							<div class="announcement-icon bg-white" style="min-width:64px; height:64px">
+								<img src="<?= base_url('mobilekit/assets/img/ruangai/speaker.svg') ?>" width="35" alt="">
+							</div>
+							<div>
+								<h5 class="mb-1 fw-bold">Chapter 2 Dibuka!</h5>
+								<p class="mb-1 text-muted line-height" style="line-height:16px">Buat kamu yang belum menyelesaikan chapter 1, lanjutkan belajar di Chapter 2.</p>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="announcement d-flex align-items-top gap-3 shadow-sm border-secondary">
+							<div class="announcement-icon bg-white" style="min-width:64px; height:64px">
+								<img src="<?= base_url('mobilekit/assets/img/ruangai/speaker.svg') ?>" width="35" alt="">
+							</div>
+							<div>
+								<h5 class="mb-1 fw-bold">Live Session Terdekat</h5>
+								<p class="mb-1 text-muted line-height" style="line-height:16px">Buat kamu yang belum menyelesaikan chapter 1, kamu bisa langsung mendaftar di Chapter 2.</p>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div> -->
 
 			<div x-show="!meta.isValidEmail" class="rounded-20 p-3 py-4 bg-white my-4">
 				<div class="row justify-content-center">
@@ -275,7 +274,7 @@
 								autocomplete="off">
 						</div>
 						<div x-show="errorMessage" class="text-danger mb-3" x-text="errorMessage"></div>
-	
+
 						<p class="mb-0">
 							<span x-show="resendCooldown <= 0">
 								Tidak menerima kode?
