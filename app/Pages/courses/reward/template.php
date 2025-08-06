@@ -3,7 +3,10 @@
 	id="course_reward"
 	x-data="$heroic({
         title: `<?= $page_title ?>`,
-        url: `/courses/reward/data/${$params.course_id}`
+        url: `/courses/reward/data/${$params.course_id}`,
+		meta: {
+			videoTeaser: null,
+		}
     })">
 
 	<style>
@@ -90,7 +93,7 @@
 
 			<div class="bg-white p-4 rounded-4 mb-4">
 				<h5 class="fw-bold mb-3">Kelas Premium</h5>
-				<template x-for="course in data.premium_courses">
+				<template x-for="premium in data?.premium_courses">
 					<?= $this->include('_components/card/CardPremiumCourse') ?>
 				</template>
 			</div>
@@ -100,4 +103,4 @@
 
 	<?= $this->include('_bottommenu') ?>
 </div>
-<?= $this->include('courses/intro/lessons/script') ?>
+<?= $this->include('courses/reward/script') ?>

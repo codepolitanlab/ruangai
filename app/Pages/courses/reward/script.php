@@ -1,5 +1,8 @@
 <script>
     Alpine.data('listLesson', () => ({
+        setVideoTeaser(url) {
+            this.meta.videoTeaser = url;
+        },
         // Method untuk mengecek apakah semua lesson dalam topic sudah selesai
         isTopicCompleted(topicTitle, lessons) {
             const topicLessons = Object.values(lessons[topicTitle]);
