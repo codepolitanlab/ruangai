@@ -70,7 +70,7 @@ class AuthController extends ResourceController
         ]);
 
         $body = [
-            'name' => 'Warrior',
+            'name' => 'Teman RAI',
         ];
 
         $EmailSender = new \App\Libraries\EmailSender();
