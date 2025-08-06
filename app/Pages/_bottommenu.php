@@ -8,17 +8,17 @@ $bottommenu = [
         'module' => 'homepage'
     ],
     [
-        'label'  => 'Kelas',
-        'url'    => '/courses',
-        'icon'   => 'bi bi-book',
-        'module' => 'courses'
-    ],
-    [
-        'label'  => 'Belajar',
+        'label'  => 'Kelas Dasar',
         'url'    => '/courses/intro/1/dasar-dan-penggunaan-generative-ai',
         'icon'   => 'bi bi-megaphone',
         'icon'   => 'bi bi-journal-check',
         'module' => 'learn',
+    ],
+    [
+        'label'  => 'Kelas Khusus',
+        'url'    => '/courses',
+        'icon'   => 'bi bi-book',
+        'module' => 'courses'
     ],
     [
         'label'  => 'Keluar',
