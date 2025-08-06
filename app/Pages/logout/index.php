@@ -1,4 +1,4 @@
 <script>
     localStorage.removeItem('heroic_token')
-    window.location.href = 'https://ruangai.id/'
+    window.location.href = 'https://www.ruangai.id/logout'
 </script>

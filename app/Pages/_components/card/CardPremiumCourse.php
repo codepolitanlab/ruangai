@@ -15,8 +15,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-body p-0">
-                    <div class="ratio ratio-16x9">
-                        <div x-html="meta?.videoTeaser"></div>
+                    <div class="ratio ratio-16x9" x-html="meta?.videoTeaser">
                     </div>
                 </div>
             </div>
