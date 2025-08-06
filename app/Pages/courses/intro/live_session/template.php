@@ -90,12 +90,12 @@
 
 			<div class="card my-4 rounded-4 shadow-none">
 				<div class="card-body">
-					<h4 class="h5 mb-3"
+					<h4 class="h5"
 						x-show="data.course?.course_title"
 						x-transition
-						x-text="`Live Session - ` + data.course?.course_title + `: ` + data.course?.name"></h4>
+						x-text="`Live Session - ` + data.course?.course_title"></h4>
 
-					<div class="card bg-light-secondary pe-3 p-2 rounded-4 border shadow-none">
+					<!-- <div class="card bg-light-secondary pe-3 p-2 rounded-4 border shadow-none">
 						<div class="d-flex gap-2 align-items-center">
 							<div class="py-1">
 								<div class="d-flex align-items-center justify-content-center rounded-4" style="background-color: #F5CEBB; height: 48px; min-width: 48px">
@@ -107,7 +107,7 @@
 								<p class="mb-1 text-muted small" style="line-height:16px">Untuk menyelesaikan program ini, kamu wajib mengikuti min. 3 sesi live</p>
 							</div>
 						</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
 
