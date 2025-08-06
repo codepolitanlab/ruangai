@@ -104,7 +104,7 @@
 				<div class="row justify-content-center">
 					<div class="col-lg-10">
 						<h5 class="m-0">Kamu belum melakukan verifikasi email nih, silahkan lakukan verifikasi email terlebih dahulu.</h5>
-						<button x-show="!meta.loading" type="button" x-on:click="sendEmailVerification()" class="btn btn-primary rounded-pill px-4 my-3 fw-bold">Verifikasi Email Sekarang</button>
+						<button x-show="!meta.loading" type="button" x-on:click="showPopupVerification()" class="btn btn-primary rounded-pill px-4 my-3 fw-bold">Verifikasi Email Sekarang</button>
 						<button x-show="meta.loading" type="button" disabled class="btn btn-primary rounded-pill px-4 my-3 fw-bold">
 							<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
 							Sedang mengirim OTP...
@@ -191,90 +191,101 @@
 					<h1 class="modal-title fs-5" id="modalVerifyEmailLabel">Verifikasi Email Anda</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<div class="modal-body text-center">
-					<p>Kami telah mengirimkan kode OTP ke email Anda. Silakan masukkan 6 digit kode di bawah ini.</p>
-
-					<div id="otp-container" class="d-flex justify-content-center gap-2 mb-3">
-						<input
-							type="tel"
-							class="form-control text-center fs-4"
-							style="width: 45px; height: 50px;"
-							maxlength="1"
-							x-model="otp[0]"
-							x-ref="otp0"
-							x-init="$el.focus()"
-							@input="handleOtpInput($event, 0)"
-							@keydown.backspace="handleBackspace($event, 0)"
-							:disabled="isVerifying"
-							autocomplete="off">
-						<input
-							type="tel"
-							class="form-control text-center fs-4"
-							style="width: 45px; height: 50px;"
-							maxlength="1"
-							x-model="otp[1]"
-							x-ref="otp1"
-							@input="handleOtpInput($event, 1)"
-							@keydown.backspace="handleBackspace($event, 1)"
-							:disabled="isVerifying"
-							autocomplete="off">
-						<input
-							type="tel"
-							class="form-control text-center fs-4"
-							style="width: 45px; height: 50px;"
-							maxlength="1"
-							x-model="otp[2]"
-							x-ref="otp2"
-							@input="handleOtpInput($event, 2)"
-							@keydown.backspace="handleBackspace($event, 2)"
-							:disabled="isVerifying"
-							autocomplete="off">
-						<input
-							type="tel"
-							class="form-control text-center fs-4"
-							style="width: 45px; height: 50px;"
-							maxlength="1"
-							x-model="otp[3]"
-							x-ref="otp3"
-							@input="handleOtpInput($event, 3)"
-							@keydown.backspace="handleBackspace($event, 3)"
-							:disabled="isVerifying"
-							autocomplete="off">
-						<input
-							type="tel"
-							class="form-control text-center fs-4"
-							style="width: 45px; height: 50px;"
-							maxlength="1"
-							x-model="otp[4]"
-							x-ref="otp4"
-							@input="handleOtpInput($event, 4)"
-							@keydown.backspace="handleBackspace($event, 4)"
-							:disabled="isVerifying"
-							autocomplete="off">
-						<input
-							type="tel"
-							class="form-control text-center fs-4"
-							style="width: 45px; height: 50px;"
-							maxlength="1"
-							x-model="otp[5]"
-							x-ref="otp5"
-							@input="handleOtpInput($event, 5)"
-							@keydown.backspace="handleBackspace($event, 5)"
-							:disabled="isVerifying"
-							autocomplete="off">
+				<div class="modal-body">
+					<p>Mohon cek kembali email berikut, pastikan sudah benar supaya OTP dapat diterima untuk aktivasi.</p>
+					<div class="form-group">
+						<div class="input-group">
+							<input type="text" class="form-control" x-model="meta.email" :disabled="emailSent">
+							<button type="button" class="btn btn-primary" x-on:click="sendEmailVerification()" :disabled="meta.loading || emailSent">
+								<span x-show="meta.loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+								<span x-show="!meta.loading">Kirim OTP</span>
+							</button>
+						</div>
 					</div>
-					<div x-show="errorMessage" class="text-danger mb-3" x-text="errorMessage"></div>
-
-					<p class="mb-0">
-						<span x-show="resendCooldown <= 0">
-							Tidak menerima kode?
-							<a x-show="!meta.loading" href="#" @click.prevent="resendOtp()">Kirim Ulang</a>
-							<span x-show="meta.loading" class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
-						</span>
-						<span x-show="resendCooldown > 0" class="text-muted">
-							Kirim ulang dalam <strong x-text="resendCooldown"></strong> detik...
-						</span>
-					</p>
+					<div x-show="emailSent">
+						<hr>
+						<p>Cek email anda (inbox/spam), dan masukkan kode OTP yang anda terima di bawah ini.</p>
+						<div id="otp-container" class="d-flex justify-content-center gap-2 mb-3">
+							<input
+								type="tel"
+								class="form-control text-center fs-4"
+								style="width: 45px; height: 50px;"
+								maxlength="1"
+								x-model="otp[0]"
+								x-ref="otp0"
+								x-init="$el.focus()"
+								@input="handleOtpInput($event, 0)"
+								@keydown.backspace="handleBackspace($event, 0)"
+								:disabled="isVerifying"
+								autocomplete="off">
+							<input
+								type="tel"
+								class="form-control text-center fs-4"
+								style="width: 45px; height: 50px;"
+								maxlength="1"
+								x-model="otp[1]"
+								x-ref="otp1"
+								@input="handleOtpInput($event, 1)"
+								@keydown.backspace="handleBackspace($event, 1)"
+								:disabled="isVerifying"
+								autocomplete="off">
+							<input
+								type="tel"
+								class="form-control text-center fs-4"
+								style="width: 45px; height: 50px;"
+								maxlength="1"
+								x-model="otp[2]"
+								x-ref="otp2"
+								@input="handleOtpInput($event, 2)"
+								@keydown.backspace="handleBackspace($event, 2)"
+								:disabled="isVerifying"
+								autocomplete="off">
+							<input
+								type="tel"
+								class="form-control text-center fs-4"
+								style="width: 45px; height: 50px;"
+								maxlength="1"
+								x-model="otp[3]"
+								x-ref="otp3"
+								@input="handleOtpInput($event, 3)"
+								@keydown.backspace="handleBackspace($event, 3)"
+								:disabled="isVerifying"
+								autocomplete="off">
+							<input
+								type="tel"
+								class="form-control text-center fs-4"
+								style="width: 45px; height: 50px;"
+								maxlength="1"
+								x-model="otp[4]"
+								x-ref="otp4"
+								@input="handleOtpInput($event, 4)"
+								@keydown.backspace="handleBackspace($event, 4)"
+								:disabled="isVerifying"
+								autocomplete="off">
+							<input
+								type="tel"
+								class="form-control text-center fs-4"
+								style="width: 45px; height: 50px;"
+								maxlength="1"
+								x-model="otp[5]"
+								x-ref="otp5"
+								@input="handleOtpInput($event, 5)"
+								@keydown.backspace="handleBackspace($event, 5)"
+								:disabled="isVerifying"
+								autocomplete="off">
+						</div>
+						<div x-show="errorMessage" class="text-danger mb-3" x-text="errorMessage"></div>
+	
+						<p class="mb-0">
+							<span x-show="resendCooldown <= 0">
+								Tidak menerima kode?
+								<a href="#" @click.prevent="resendOtp()">Kirim Ulang</a>
+							</span>
+							<span x-show="resendCooldown > 0" class="text-muted">
+								Kirim ulang dalam <strong x-text="resendCooldown"></strong> detik...
+							</span>
+						</p>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
@@ -283,7 +294,6 @@
 						class="btn btn-primary"
 						@click="verifyEmail()"
 						:disabled="isVerifying || otp.join('').length !== 6">
-						<span x-show="isVerifying" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
 						<span x-text="isVerifying ? 'Memverifikasi...' : 'Verifikasi'"></span>
 					</button>
 				</div>

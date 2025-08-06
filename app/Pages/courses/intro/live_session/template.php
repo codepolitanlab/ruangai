@@ -76,13 +76,14 @@
 		.accordion-item.ongoing .accordion-button .text-muted {
 			color: white !important;
 		}
+
 		.bg-warning-2 {
 			background-color: #fe9500;
 		}
 	</style>
 
 
-	<div id="appCapsule" class="">
+	<div id="appCapsule" class="" x-data="liveSession()">
 		<?= $this->include('courses/intro/_menu'); ?>
 
 		<div class="appContent" style="min-height:90vh">
@@ -194,13 +195,14 @@
 													</dl>
 													<div class="d-flex gap-2 mt-4">
 														<template x-if="!data.attendedCode.includes(live_session.theme_code) && !data.is_expire">
-															<a :href="live_session.zoom_link"
+															<a href="#"
 																target="_blank"
 																class="btn btn-primary rounded-3"
+																@click.prevent="checkEmailIsVerified(live_session.zoom_link)"
 																x-show="['ongoing', 'upcoming'].includes(live_session.status_date)"
 																:class="! live_session.zoom_link ? 'disabled' : ''">
 																<i class="bi bi-camera-video"></i>
-																<span x-text="! live_session.zoom_link ? 'Zoom link belum tersedia' : 'Gabung Zoom'">Gabung Zoom</span>
+																<span x-text="! live_session.zoom_link ? 'Zoom link belum tersedia' : 'Gabung Zoom'"></span>
 															</a>
 														</template>
 														<p class="px-3 py-2 bg-info bg-opacity-50 rounded-2"
@@ -275,5 +277,8 @@
 				</div>
 				<div class="offcanvas-body small"></div>
 			</div>
+			<?= $this->include('courses/intro/live_session/script') ?>
 			<?= $this->include('_bottommenu') ?>
 		</div>
+	</div>
+</div>

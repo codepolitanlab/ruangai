@@ -5,7 +5,8 @@
       url: `/courses/intro/data/${course_id}`,
       meta: {
         expandDesc: false,
-        graduate: false
+        graduate: false,
+        isValidEmail: false
       }
     })
 
@@ -22,11 +23,26 @@
             window.location.replace(`https://www.ruangai.id/registration`)
           }
         });
+
+        const token = localStorage.getItem('heroic_token');
+        if (token) {
+          try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            this.meta.isValidEmail = +payload.isValidEmail === 1 ? true : false;
+          } catch (e) {
+            console.error("Failed to parse JWT payload", e);
+          }
+        }
       },
 
       claimCertificate() {
-        if(this.data.course_completed) {
-          if(!this.data.student.cert_code || !this.data.student.cert_code == '') {
+        if (!this.meta.isValidEmail) {
+          $heroicHelper.toastr("Kamu belum melakukan verifikasi email nih, silahkan lakukan verifikasi email terlebih dahulu untuk klaim sertifikat.", "warning", "bottom");
+          return
+        }
+
+        if (this.data.course_completed) {
+          if (!this.data.student.cert_code || !this.data.student.cert_code == '') {
             this.$router.navigate(`/certificate/claim/${this.data.course.id}`)
           } else {
             this.$router.navigate(`/certificate/${this.data.student.cert_code}`)
@@ -44,7 +60,7 @@
         $heroicHelper.post(`/courses/intro/heregister`, {
           course_id: this.data.course.id
         }).then((response) => {
-          if(response.data.response_code == 200) {
+          if (response.data.response_code == 200) {
             $heroicHelper.toastr("Anda telah terdaftar di program Chapter 2! Selamat melanjukan belajar.", 'success', 'bottom')
             this.data.is_expire = false
           }

@@ -84,8 +84,28 @@ class PageController extends BaseController
     {
         $Heroic = new \App\Libraries\Heroic();
         $jwt    = $Heroic->checkToken(true);
-
         $db = \Config\Database::connect();
+
+        $email = $this->request->getPost('email');
+        if (! $email) {
+            return $this->respond([
+                'status'  => 'failed',
+                'message' => 'Email is required',
+            ]);
+        }
+
+        $exists = $db->table('users')
+            ->where('email', $email)
+            ->where('id !=', $jwt->user_id)
+            ->get()
+            ->getRowArray();
+
+        if ($exists) {
+            return $this->respond([
+                'status'  => 'failed',
+                'message' => 'Email sudah digunakan',
+            ]);
+        }
 
         $user = $db->table('users')
             ->where('id', $jwt->user_id)
@@ -122,7 +142,7 @@ class PageController extends BaseController
 
         $EmailSender = new \App\Libraries\EmailSender();
         $EmailSender->setTemplate('email_activation', $body);
-        $EmailSender->send($user['email'], 'Email Verification');
+        $EmailSender->send($email, 'Email Verification');
 
         return $this->respond([
             'status'  => 'success',
@@ -136,18 +156,25 @@ class PageController extends BaseController
         $jwt    = $Heroic->checkToken(true);
 
         $db = \Config\Database::connect();
+        $email = $this->request->getPost('email');
+
+        $exists = $db->table('users')
+            ->where('email', $email)
+            ->where('id !=', $jwt->user_id)
+            ->get()
+            ->getRowArray();
+
+        if ($exists) {
+            return $this->respond([
+                'status'  => 'failed',
+                'message' => 'Email sudah digunakan',
+            ]);
+        }
 
         $user = $db->table('users')
             ->where('id', $jwt->user_id)
             ->get()
             ->getRowArray();
-
-        if (! $user) {
-            return $this->respond([
-                'status'  => 'failed',
-                'message' => 'User not found',
-            ]);
-        }
 
         if ($user['otp_email'] !== $this->request->getPost('otp')) {
             return $this->respond([
@@ -156,11 +183,18 @@ class PageController extends BaseController
             ]);
         }
 
-        $update = $db->table('users')
+        $db->table('users')
             ->where('id', $jwt->user_id)
             ->update([
                 'email_valid' => 1,
                 'otp_email'   => null,
+                'email'       => $email,
+            ]);
+        
+        $db->table('scholarship_participants')
+            ->where('user_id', $jwt->user_id)
+            ->update([
+                'email' => $email,
             ]);
 
         $newJwt = JWT::encode([

@@ -1,7 +1,6 @@
 <script>
-    Alpine.data("live_session", () => ({
+    Alpine.data("liveSession", () => ({
         title: `<?= $page_title ?>`,
-        url: `courses/intro/live_session/data/${$params.course_id}`,
 
         // Method untuk mendapatkan status sesi
         getSessionStatus(live_session) {
@@ -29,11 +28,20 @@
             today.setHours(0, 0, 0, 0);
 
             if (sessionDate.getTime() > today.getTime()) {
-                return { text: 'Akan Datang', class: 'bg-warning text-dark' };
+                return {
+                    text: 'Akan Datang',
+                    class: 'bg-warning text-dark'
+                };
             } else if (sessionDate.getTime() === today.getTime()) {
-                return { text: 'Sedang Berlangsung', class: 'bg-primary' };
+                return {
+                    text: 'Sedang Berlangsung',
+                    class: 'bg-primary'
+                };
             } else {
-                return { text: 'Selesai', class: 'bg-success' };
+                return {
+                    text: 'Selesai',
+                    class: 'bg-success'
+                };
             }
         },
 
@@ -44,6 +52,34 @@
             sessionDate.setHours(0, 0, 0, 0);
             today.setHours(0, 0, 0, 0);
             return sessionDate.getTime() === today.getTime();
-        }
+        },
+
+        checkEmailIsVerified(zoomLink) {
+            const token = localStorage.getItem('heroic_token');
+            let emailVerified = false;
+
+            if (!zoomLink) return; // jika link kosong, jangan lanjutkan
+
+            if (token) {
+                try {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    emailVerified = +payload.isValidEmail === 1;
+
+                    if (emailVerified) {
+                        // Email terverifikasi, redirect ke zoomLink
+                        window.open(zoomLink, '_blank');
+                    } else {
+                        // Tampilkan toast jika email belum diverifikasi
+                        $heroicHelper.toastr('Silakan verifikasi email Anda terlebih dahulu.', 'warning', 'bottom');
+                    }
+                } catch (e) {
+                    console.error("Gagal mem-parsing token JWT", e);
+                    $heroicHelper.toastr('Terjadi kesalahan autentikasi.', 'error', 'bottom');
+                }
+            } else {
+                $heroicHelper.toastr('Anda belum login.', 'error', 'bottom');
+            }
+        },
+
     }));
 </script>

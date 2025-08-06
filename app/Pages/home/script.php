@@ -6,6 +6,7 @@
       meta: {
         expandDesc: false,
         graduate: false,
+        email: '',
         isValidEmail: false,
         loading: false
       }
@@ -34,6 +35,7 @@
           try {
             const payload = JSON.parse(atob(token.split('.')[1]));
             this.meta.isValidEmail = +payload.isValidEmail === 1 ? true : false;
+            this.meta.email = payload.email;
           } catch (e) {
             console.error("Failed to parse JWT payload", e);
           }
@@ -96,7 +98,7 @@
       },
 
       startResendCooldown() {
-        this.resendCooldown = 60; // Mulai dari 60 detik
+        this.resendCooldown = 5; // Mulai dari 60 detik
         this.resendTimer = setInterval(() => {
           this.resendCooldown--;
           if (this.resendCooldown <= 0) {
@@ -134,12 +136,15 @@
         this.errorMessage = null;
       },
 
+      showPopupVerification() {
+        this.modalInstance.show();
+      },
+
       async sendEmailVerification(resend = false) {
         const token = localStorage.getItem('heroic_token');
 
         // Check if email verification has been sent, only show modal
         if (this.emailSent && !resend) {
-          this.modalInstance.show();
           setTimeout(() => {
             if (this.$refs.otp0) {
               this.$refs.otp0.focus();
@@ -152,7 +157,7 @@
         setTimeout(() => {
           $heroicHelper
             .post("/home/sendEmailVerification", {
-              token
+              email: this.meta.email
             })
             .then(async (response) => {
               if (response.data.status == 'success') {
@@ -167,7 +172,7 @@
                 }
                 this.emailSent = true;
               } else {
-                await Prompts.alert(response.data.message || "Gagal mengirim email verifikasi.");
+                await $heroicHelper.toastr(response.data.message || "Gagal mengirim email verifikasi.", 'danger', 'bottom');
               }
             })
             .catch((error) => {
@@ -183,7 +188,7 @@
       async resendOtp() {
         if (this.resendCooldown > 0) return;
         this.resetOtp();
-        this.sendEmailVerification(true);
+        this.emailSent = false;
       },
 
       async verifyEmail() {
@@ -200,11 +205,12 @@
 
         $heroicHelper
           .post("/home/verifyEmail", {
-            token,
+            email: this.meta.email,
             otp: otpCode
           }) // Kirim OTP ke backend
           .then(async (response) => {
             if (response.data.status == 'success') {
+              this.isVerifying = false;
               this.meta.isValidEmail = true;
 
               localStorage.setItem('heroic_token', response.data.jwt);
