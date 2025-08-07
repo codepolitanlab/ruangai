@@ -207,7 +207,7 @@ class ScholarshipController extends ResourceController
         $graduated = count(array_filter($members, static fn($member) => $member['status'] === 'lulus'));
 
         $commision = 5000;
-        $disbursed = 0;
+        $disbursed = $leader['withdrawal'];
 
         $data['referral_code']      = $leader['referral_code'];
         $data['program']            = $leader['program'];
@@ -218,7 +218,7 @@ class ScholarshipController extends ResourceController
         $data['members']            = $members;
         $data['total_member']       = $memberQuery->getNumRows();
         $data['total_graduated']    = $graduated;
-        $data['total_commission']   = $commision * $graduated;
+        $data['total_commission']   = ($commision * $graduated) - $disbursed;
         $data['total_disbursed']    = $disbursed;
 
         return $this->respond($data);
