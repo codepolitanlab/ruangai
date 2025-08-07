@@ -84,7 +84,7 @@ class Auth
         }
 
         // 2. Periksa hak akses admin
-        if ($admin_user['role_id'] !== 1) {
+        if ($admin_user['role_id'] !== '1') {
             return ['failed', 'Anda tidak memiliki hak akses untuk melakukan tindakan ini.', []];
         }
 
