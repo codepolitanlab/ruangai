@@ -30,7 +30,7 @@ class PageController extends BaseController
         } catch (Exception $e) {
             return $this->respond([
                 'status'  => 'error',
-                'message' => 'Terjadi kesalahan saat mengecek kelengkapan data sebelum get data sertifikat.',
+                'message' => 'Terjadi kesalahan saat mengecek kelengkapan data sebelum mengambil data sertifikat: ' . $e->getMessage(),
             ]);
         }
 
@@ -81,7 +81,7 @@ class PageController extends BaseController
         } catch (Exception $e) {
             return $this->respond([
                 'status'  => 'error',
-                'message' => 'Terjadi kesalahan saat mengecek kelengkapan data sebelum generate sertifikat.',
+                'message' => 'Terjadi kesalahan saat mengecek kelengkapan data sebelum generate sertifikat: ' . $e->getMessage(),
             ]);
         }
 
@@ -155,7 +155,7 @@ class PageController extends BaseController
             throw new Exception('User belum menyelesaikan belajar.');
         }
 
-        if ($learningStatus['live_attended'] < 3) {
+        if ($learningStatus['live_attended'] < 1) {
             $liveIsCompleted = $db->table('live_attendance')
                 ->select('live_meeting_id')
                 ->where('user_id', $user_id)
@@ -164,7 +164,7 @@ class PageController extends BaseController
                 ->groupBy('live_meeting_id')
                 ->countAllResults();
 
-            if ($liveIsCompleted < 3) {
+            if ($liveIsCompleted < 1) {
                 throw new Exception('User belum memenuhi ketentuan minimum mengikuti live session.');
             }
         }
