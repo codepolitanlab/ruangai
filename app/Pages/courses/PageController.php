@@ -8,8 +8,8 @@ class PageController extends BaseController
 {
     public $data = [
         'page_title'  => 'Courses',
-        'module'      => 'courses',
-        'active_page' => 'courses',
+        'module'      => 'course_list',
+        'active_page' => 'my_courses',
     ];
 
     public function getData()

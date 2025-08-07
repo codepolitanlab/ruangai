@@ -7,9 +7,9 @@ use App\Pages\BaseController;
 class PageController extends BaseController
 {
     public $data = [
-        'page_title'  => 'Daftar Materi',
-        'module'      => 'course_lesson',
-        'active_page' => 'materi',
+        'page_title'  => 'Reward',
+        'module'      => 'learn',
+        'active_page' => 'reward',
     ];
 
     public function getData($id)
@@ -91,28 +91,28 @@ class PageController extends BaseController
                     'description' => 'Bangun Web AI Pertamamu dan Pelajari Cara Monetisasinya.',
                     'teaser_url' => 'https://ruangai.com/premium-class/ai',
                     'cover' => 'https://ik.imagekit.io/56xwze9cy/ruangai/mentor-adel.png',
-                    'embed' => '<iframe src="https://1drv.ms/v/c/d1ed896f6a378b33/IQSgTjY8-6FCSaMz98yTMguVAf--SpKFf7LNd7C7wJ5kw0s" class="w-100 h-100" frameborder="0" scrolling="no" allowfullscreen></iframe>'
+                    'embed' => '<iframe width="560" height="315" src="https://www.youtube.com/embed/dZ2mQA9BP2w?si=zv-TsPRrtY8zGybH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>'
                 ],
                 (object)[
                     'title' => 'Kelas AI for Academics',
                     'description' => 'Tulis karya ilmiah lebih cepat dan etis dengan memanfaatkan alat AI.',
                     'teaser_url' => 'https://ruangai.com/premium-class/data-science',
                     'cover' => 'https://ik.imagekit.io/56xwze9cy/ruangai/mentor-felisha.png',
-                    'embed' => '<iframe src="https://1drv.ms/v/c/d1ed896f6a378b33/IQRRUTdDz5SKSoN0vhVEs6zDAeE9DxXWJeWVenMioqbAyrM" class="w-100 h-100" frameborder="0" scrolling="no" allowfullscreen></iframe>'
+                    'embed' => '<iframe width="560" height="315" src="https://www.youtube.com/embed/iy4OvBoCjzo?si=Zk4xUv2G14mezBem" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>'
                 ],
                 (object)[
                     'title' => 'Kelas AI for Smart Creators',
                     'description' => 'Lebih kreatif dan bikin kontenmu naik level dengan AI.',
                     'teaser_url' => 'https://ruangai.com/premium-class/web-development',
                     'cover' => 'https://ik.imagekit.io/56xwze9cy/ruangai/mentor-vira.png',
-                    'embed' => '<iframe src="https://1drv.ms/v/c/d1ed896f6a378b33/IQSAi7mWIki_SKc-_2fmsMtsAVKxxNrbTapO3MbMJYJufA0" class="w-100 h-100" frameborder="0" scrolling="no" allowfullscreen></iframe>'
+                    'embed' => '<iframe width="560" height="315" src="https://www.youtube.com/embed/nIKyQXcOoiY?si=fE9tw29czQaTsKFi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>'
                 ],
                 (object)[
                     'title' => 'Kelas AI for Digital Storyteller',
                     'description' => 'Kuasai storytelling dan ubah jadi karya digital dengan AI.',
                     'teaser_url' => 'https://ruangai.com/premium-class/web-development',
                     'cover' => 'https://ik.imagekit.io/56xwze9cy/ruangai/mentor-aji.png',
-                    'embed' => '<iframe src="https://1drv.ms/v/c/d1ed896f6a378b33/IQTQJtgrJdd6S7Z5wLzXaViAAXUHzb7zVrvzxHEBEIMYpQo" class="w-100 h-100" frameborder="0" scrolling="no" allowfullscreen></iframe>'
+                    'embed' => '<iframe width="560" height="315" src="https://www.youtube.com/embed/cBp_4SJK2pQ?si=Lt37b4iKx8jqvSKA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>'
                 ],
                 (object)[
                     'title' => 'Kelas AI for Coding Assist',

@@ -252,13 +252,13 @@
 			<div class="section p-3 mb-3 bg-white rounded-4">
 				<h4 class="fw-bold mb-3" style="color: #222;">Reward Chapter 2</h4>
 
-				<div class="card bg-secondary bg-opacity-50 border-0 rounded-4 cursor-pointer"
+				<div class="card bg-primary border-0 rounded-4 cursor-pointer"
 					@click="claimReward()">
 					<div class="card-body d-flex align-items-center gap-3 p-4">
 						<div class="rounded-3 d-flex align-items-center justify-content-center px-3" style="min-width:64px;height:64px;background:#fff;">
-							<i class="bi bi-gift fs-2" :class="data.course_completed ? '' : 'text-dark opacity-50'" style="font-size:2.5rem; color:#e91e95;"></i>
+							<i class="bi bi-gift fs-2" style="font-size:2.5rem; color:#e91e95;"></i>
 						</div>
-						<div class="flex-grow-1" :class="data.course_completed ? 'text-white' : 'opacity-50'">
+						<div class="flex-grow-1 text-white">
 							<!-- <div class="fw-bold mb-1" style="font-size:1.2rem;">Bonus Kelas Lanjutan</div> -->
 							<h5 class="h6 mb-0" style="font-size:1rem;">
 								Pilih salah satu dari 5 kelas lanjutan yang paling cocok buatmu
