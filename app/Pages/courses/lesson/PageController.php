@@ -88,22 +88,12 @@ class PageController extends BaseController
             $lesson['is_completed'] = in_array($lesson['id'], $completedLessonIds, true);
 
             // Get previous and next lesson
-<<<<<<< HEAD
-            $IDs                   = array_keys($course['lessons']);
-            $currentIndexID        = array_search((int) $lesson_id, $IDs, true);
-
-            $prevLesson            = ($currentIndexID > 0) ? $IDs[$currentIndexID - 1] : null;
-            $nextLesson            = ($currentIndexID !== false && $currentIndexID < count($IDs) - 1) ? $IDs[$currentIndexID + 1] : null;
-            $lesson['prev_lesson'] = $prevLesson ? $course['lessons'][$prevLesson] : null;
-            $lesson['next_lesson'] = $nextLesson ? $course['lessons'][$nextLesson] : null;
-=======
             $IDs                   = array_column($course['lessons'], 'id');
             $currentIndexID        = array_search($lesson_id, $IDs, true);
             $prevLessonIndex       = $currentIndexID - 1;
             $nextLessonIndex       = $currentIndexID + 1;
             $lesson['prev_lesson'] = $course['lessons'][$prevLessonIndex] ?? null;
             $lesson['next_lesson'] = $course['lessons'][$nextLessonIndex] ?? null;
->>>>>>> cd5551ee (Fix undefined next course)
 
             $this->data['course'] = $course;
             $this->data['lesson'] = $lesson;
