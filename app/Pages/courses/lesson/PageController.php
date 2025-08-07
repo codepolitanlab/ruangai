@@ -90,8 +90,8 @@ class PageController extends BaseController
             $currentIndexID        = array_search($lesson_id, $IDs, true);
             $prevLessonIndex       = $currentIndexID - 1;
             $nextLessonIndex       = $currentIndexID + 1;
-            $lesson['prev_lesson'] = $prevLessonIndex ? $course['lessons'][$prevLessonIndex] : null;
-            $lesson['next_lesson'] = $nextLessonIndex ? $course['lessons'][$nextLessonIndex] : null;
+            $lesson['prev_lesson'] = $course['lessons'][$prevLessonIndex] ?? null;
+            $lesson['next_lesson'] = $course['lessons'][$nextLessonIndex] ?? null;
 
             $this->data['course'] = $course;
             $this->data['lesson'] = $lesson;
