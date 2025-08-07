@@ -2,7 +2,8 @@
 	class="container-large"
 	id="lesson_detail"
 	x-data="lesson_detail_script($params.course_id, $params.lesson_id, <?= service('settings')->get('Course.waitToEnableButtonUnderstand'); ?>)"
-	x-effect="loadPage(`courses/lesson/data/${$params.course_id}/${$params.lesson_id}`); setTimerButtonPaham()">
+	x-effect="loadPage(`courses/lesson/data/${$params.course_id}/${$params.lesson_id}?t=${Date.now()}`); setTimerButtonPaham()"
+>
 
 	<div id="app-header" class="appHeader main border-0">
 		<div class="left">
@@ -32,12 +33,12 @@
 					</div> -->
 
 					<!-- Video Player -->
-					<div x-show="data.lesson?.default_video_server" class="ratio ratio-16x9">
+					<div x-show="data?.lesson?.default_video_server" class="ratio ratio-16x9">
 						<iframe
-							:id="data.lesson?.default_video_server + `-player`"
+							:id="data?.lesson?.default_video_server + `-player`"
 							width="560"
 							height="315"
-							:src="getVideoUrl(data.lesson?.default_video_server, data.lesson['video_' + data.lesson?.default_video_server])"
+							:src="getVideoUrl(data?.lesson?.default_video_server, data?.lesson['video_' + data.lesson?.default_video_server])"
 							title="Video player"
 							frameborder="0"
 							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -106,7 +107,7 @@
 
 						<template x-if="data.lesson?.is_completed && data.lesson?.next_lesson">
 							<div class="d-flex flex-column align-items-end gap-2 ms-auto">
-								<a :href="`/courses/${data.lesson.course_id}/lesson/${data.lesson?.next_lesson.id}`"
+								<a :href="`/courses/${data?.lesson?.course_id}/lesson/${data?.lesson?.next_lesson.id}`"
 									class="btn btn-outline-secondary rounded-5 ps-4 pe-3" style="height:auto">
 									<div class="text-end me-3 mt-2">
 										<span class="">Selanjutnya</span><br>

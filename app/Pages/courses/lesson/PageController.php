@@ -88,9 +88,10 @@ class PageController extends BaseController
 
             // Get previous and next lesson
             $IDs                   = array_keys($course['lessons']);
-            $currentIndexID        = array_search($lesson_id, $IDs, true);
-            $prevLesson            = $IDs[$currentIndexID - 1] ?? null;
-            $nextLesson            = $IDs[$currentIndexID + 1] ?? null;
+            $currentIndexID        = array_search((int) $lesson_id, $IDs, true);
+
+            $prevLesson            = ($currentIndexID > 0) ? $IDs[$currentIndexID - 1] : null;
+            $nextLesson            = ($currentIndexID !== false && $currentIndexID < count($IDs) - 1) ? $IDs[$currentIndexID + 1] : null;
             $lesson['prev_lesson'] = $prevLesson ? $course['lessons'][$prevLesson] : null;
             $lesson['next_lesson'] = $nextLesson ? $course['lessons'][$nextLesson] : null;
 
