@@ -11,9 +11,12 @@
             <!-- <button type="button" class="btn btn-sm btn-outline-white mb-2 mb-lg-0 disabled"><i class="bi bi-play-circle-fill fs-6"></i> Lihat Teaser</button> -->
         </div>
     </div>
-    <div class="modal fade" id="teaserModal" tabindex="-1" aria-labelledby="teaserModalLabel" aria-hidden="true">
+    <div class="modal fade" id="teaserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="teaserModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
+            <div class="modal-content bg-transparent border-0">
+                <div class="modal-header bg-transparent border-0 pe-0">
+                    <button type="button" @click="setVideoTeaser(null)" class="btn-close btn-close-white fs-5" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
                 <div class="modal-body p-0">
                     <div class="ratio ratio-16x9" x-html="meta?.videoTeaser">
                     </div>
