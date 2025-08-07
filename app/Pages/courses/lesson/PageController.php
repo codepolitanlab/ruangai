@@ -79,8 +79,9 @@ class PageController extends BaseController
             $orderedLessons = [];
 
             foreach ($lessons as $lessonItem) {
-                $orderedLessons[$lessonItem['id']]                 = $lessonItem;
-                $orderedLessons[$lessonItem['id']]['is_completed'] = in_array($lessonItem['id'], $completedLessonIds, true);
+                $orderedLessons[] = array_merge($lessonItem, [
+                    'is_completed' => in_array($lessonItem['id'], $completedLessonIds, true),
+                ]);
             }
 
             $course['lessons']      = $orderedLessons;
