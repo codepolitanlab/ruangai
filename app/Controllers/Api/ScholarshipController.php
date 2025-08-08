@@ -264,7 +264,7 @@ class ScholarshipController extends ResourceController
                 ->where('course_students.deleted_at', null)
                 ->countAllResults();
 
-            $user_registered = $scholarshipModel->where('program', $programCode)
+            $user_registered = $scholarshipModel
                 ->where('deleted_at', null)
                 ->countAllResults();
 
