@@ -39,7 +39,7 @@ class Course extends AdminController
 
         $id = $this->request->getGet('id');
         if ($id) {
-            $courseModel    = model('CourseModel');
+            $courseModel    = model('Course\Models\CourseModel');
             $data['course'] = $courseModel->asObject()->find($id);
 
             if (! $data['course']) {
@@ -92,7 +92,7 @@ class Course extends AdminController
             'has_live_sessions'   => $this->request->getPost('has_live_sessions') ? 1 : 0,
         ];
 
-        $courseModel = model('CourseModel');
+        $courseModel = model('Course\Models\CourseModel');
 
         try {
             if ($id) {
@@ -120,7 +120,7 @@ class Course extends AdminController
     public function delete()
     {
         $id          = $this->request->getPost('id');
-        $courseModel = model('CourseModel');
+        $courseModel = model('Course\Models\CourseModel');
         $courseModel->delete($id);
 
         session()->setFlashdata('success', 'Data berhasil dihapus');

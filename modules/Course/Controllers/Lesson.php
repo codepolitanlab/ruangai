@@ -23,14 +23,14 @@ class Lesson extends AdminController
     protected function initBasicCourseData($course_id)
     {
         // Wajib selalu dibawa untuk suplai data header dan sidebar
-        $this->CourseModel    = model('CourseModel');
+        $this->CourseModel    = model('Course\Models\CourseModel');
         $this->data['course'] = $this->CourseModel->where('id', $course_id)->get()->getRowArray();
         $this->data['topics'] = $this->CourseModel->getTopicLessons($course_id);
     }
 
     public function delete($course_id, $lesson_id)
     {
-        $LessonModel = model('CourseLessonModel');
+        $LessonModel = model('Course\Models\CourseLessonModel');
 
         $LessonModel->delete($lesson_id);
 

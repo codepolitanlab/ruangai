@@ -14,13 +14,13 @@ class LiveBatch extends AdminController
 
     public function index($course_id)
     {
-        $CourseModel          = model('CourseModel');
+        $CourseModel          = model('Course\Models\CourseModel');
         $this->data['course'] = $CourseModel->table('courses')
             ->where('id', $course_id)
             ->get()
             ->getRowArray();
 
-        $LiveBatchModel        = model('LiveBatchModel');
+        $LiveBatchModel        = model('Course\Models\LiveBatchModel');
         $this->data['batches'] = $LiveBatchModel->orderBy('id', 'desc')->paginate(10);
         $this->data['pager']   = $LiveBatchModel->pager;
 
@@ -29,7 +29,7 @@ class LiveBatch extends AdminController
 
     public function create($course_id)
     {
-        $CourseModel          = model('CourseModel');
+        $CourseModel          = model('Course\Models\CourseModel');
         $this->data['course'] = $CourseModel->table('courses')
             ->where('id', $course_id)
             ->get()
@@ -42,7 +42,7 @@ class LiveBatch extends AdminController
     {
         $postData = $this->request->getPost();
 
-        $LiveBatchModel = model('LiveBatchModel');
+        $LiveBatchModel = model('Course\Models\LiveBatchModel');
         $LiveBatchModel->save($postData);
         session()->set('successMsg', 'Batch created successfully.');
 
@@ -51,13 +51,13 @@ class LiveBatch extends AdminController
 
     public function edit($course_id, $id)
     {
-        $CourseModel          = model('CourseModel');
+        $CourseModel          = model('Course\Models\CourseModel');
         $this->data['course'] = $CourseModel->table('courses')
             ->where('id', $course_id)
             ->get()
             ->getRowArray();
 
-        $LiveBatchModel      = model('LiveBatchModel');
+        $LiveBatchModel      = model('Course\Models\LiveBatchModel');
         $this->data['batch'] = $LiveBatchModel->where('id', $id)->where('course_id', $course_id)->first();
 
         return view('Course\Views\live\form', $this->data);
@@ -69,7 +69,7 @@ class LiveBatch extends AdminController
         $id       = $postData['id'] ?? $id;
         unset($postData['id']);
 
-        $LiveBatchModel = model('LiveBatchModel');
+        $LiveBatchModel = model('Course\Models\LiveBatchModel');
         $LiveBatchModel->update($id, $postData);
         session()->set('successMsg', 'Batch updated successfully.');
 
@@ -78,7 +78,7 @@ class LiveBatch extends AdminController
 
     public function delete($course_id, $id)
     {
-        $LiveBatchModel = model('LiveBatchModel');
+        $LiveBatchModel = model('Course\Models\LiveBatchModel');
         $LiveBatchModel->where('id', $id)->where('course_id', $course_id)->delete();
         session()->set('successMsg', 'Batch deleted successfully.');
 

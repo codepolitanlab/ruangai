@@ -31,7 +31,7 @@ class Topic extends Lesson
     {
         $postData = $this->request->getPost();
 
-        $TopicModel = model('CourseTopicModel');
+        $TopicModel = model('Course\Models\CourseTopicModel');
 
         // Update
         if ($topic_id) {
@@ -79,7 +79,7 @@ class Topic extends Lesson
 
     public function delete($course_id, $topic_id)
     {
-        $TopicModel = model('CourseTopicModel');
+        $TopicModel = model('Course\Models\CourseTopicModel');
 
         $hasLessons = $TopicModel->hasLessons($topic_id);
         if ($hasLessons) {
