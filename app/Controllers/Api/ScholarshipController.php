@@ -240,9 +240,9 @@ class ScholarshipController extends ResourceController
             ->where('progress >', 0)
             ->groupStart()
             ->where('graduate', 0)
-            ->orWhere('graduate IS NULL', null, false)
+            ->orWhere('graduate', null)
             ->groupEnd()
-            ->where('expire_at >', date('Y-m-d H:i:s'))   // only active
+            ->where('expire_at', null)   // only active
             ->countAllResults();
 
         if ($programCode === 'RuangAI2025B1') {
