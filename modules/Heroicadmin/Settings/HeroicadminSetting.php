@@ -18,15 +18,6 @@ class HeroicadminSetting extends SettingAbstract
         ],
         [
             'type'        => 'text',
-            'name'        => 'Heroicadmin.urlScope',
-            'label'       => 'URL Scope',
-            'description' => 'First segment of URL  for admin panel',
-            'attributes'  => [
-                'class' => 'form-control',
-            ],
-        ],
-        [
-            'type'        => 'text',
             'name'        => 'Heroicadmin.rootPanelUrl',
             'label'       => 'Root Panel URL',
             'description' => 'URL of default module for root panel',

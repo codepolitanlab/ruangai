@@ -1,8 +1,8 @@
 <?php
 
-helper('heroicsetting');
-$scope        = setting_item('Heroicadmin.urlScope');
-$rootPanelUrl = setting_item('Heroicadmin.rootPanelUrl');
+$HeroicadminConfig = config('Heroicadmin');
+$scope             = $HeroicadminConfig->urlScope;
+$rootPanelUrl      = $HeroicadminConfig->rootPanelUrl;
 
 /** ========================================================/
  * Dashboard Module
