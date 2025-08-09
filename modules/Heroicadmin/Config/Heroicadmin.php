@@ -59,8 +59,8 @@ class Heroicadmin extends BaseConfig
                 'course' => [
                     'label'     => 'Course',
                     'icon'      => 'bi bi-book',
-                    'url'       => '/zpanel/products/course',
-                    'submodule' => 'course',
+                    'url'       => 'course/product',
+                    'submodule' => 'course_product',
                 ],
             ],
         ],
