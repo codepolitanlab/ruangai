@@ -21,7 +21,7 @@
 
         <div class="row justify-content-center" x-data="registerLiveSession()">
 
-            <div class="col-md-4" x-show="!data.zoom_join_link">
+            <div class="col-md-5" x-show="!data.zoom_join_link">
                 <div class="card">
                     <div class="card-body">
                         <p class="text-center">Anda akan mendaftar ke live session dengan akun di bawah ini:</p>
@@ -47,7 +47,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4 text-center" x-show="data.zoom_join_link">
+            <div class="col-md-5 text-center" x-show="data.zoom_join_link">
                 <div class="card shadow-none">
                     <div class="card-body">
                         <p class="mb-4"><i class="bi bi-bookmark-check-fill text-success fs-3 me-1"></i> Kamu telah terdaftar di live session ini.</p>

@@ -19,8 +19,6 @@ class PageController extends BaseController
 
         $db                   = \Config\Database::connect();
         $this->data['course'] = $db->table('courses')
-            ->select('courses.*, courses.id, live_batch.*, live_batch.id as batch_id')
-            ->join('live_batch', 'live_batch.id = courses.current_batch_id', 'left')
             ->where('courses.id', $course_id)
             ->get()
             ->getRowArray();
@@ -38,8 +36,10 @@ class PageController extends BaseController
         }
 
         $live_sessions = $db->table('live_meetings')
-            ->where('live_batch_id', $this->data['course']['current_batch_id'])
-            ->where('deleted_at', null)
+            ->select('live_meetings.*')
+            ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
+            ->where('live_batch.status', 'ongoing')
+            ->where('live_meetings.deleted_at', null)
             ->orderBy('meeting_date', 'ASC')
             ->orderBy('meeting_time', 'ASC')
             ->get()

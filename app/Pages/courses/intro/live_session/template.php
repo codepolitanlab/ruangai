@@ -140,15 +140,16 @@
 						<div class="card-body">
 
 							<!-- Check if no live session -->
-							<template x-show="data.live_sessions?.length == 0" x-transition>
-								<div class="card card-hover rounded-20 shadow-none border p-3 mb-2">
-									<div class="row g-3">
-										<div class="col">
-											<div class="d-flex justify-content-between align-items-start">
-												<div>
-													<div class="d-flex gap-3 align-items-center">
-														<h5 class="text-pink m-0">Belum ada live session</h5>
-													</div>
+							<template x-if="data.live_sessions.length < 1" x-transition>
+								<div class="row g-3">
+									<div class="col">
+										<div class="d-flex justify-content-between align-items-start">
+											<div>
+												<div class="d-flex gap-3 align-items-center">
+													<h5 class="text-dark fst-italic opacity-50 m-0">
+														<i class="bi bi-cup-straw"></i>
+														Belum ada jadwal live session terbaru
+													</h5>
 												</div>
 											</div>
 										</div>
@@ -159,7 +160,7 @@
 							<div x-show="data.live_sessions?.length > 0" x-transition>
 								<div class="accordion bg-transparent border-0" id="accordion-livesession">
 
-									<template x-for="live_session in data.live_sessions">
+									<template x-for="(live_session, meetingIndex) in data.live_sessions">
 										<div class="accordion-item p-2 rounded-4 mb-1" :class="live_session.status_date">
 											<div class="accordion-header rounded-4 py-2">
 												<button class="accordion-button d-flex flex-column flex-md-row gap-3 align-items-md-center" type="button" data-bs-toggle="collapse" :data-bs-target="`#live_`+live_session.id" aria-expanded="true" :aria-controls="`live_`+live_session.id">
@@ -195,15 +196,14 @@
 													</dl>
 													<div class="d-flex gap-2 mt-4">
 														<template x-if="!data.attendedCode.includes(live_session.theme_code) && !data.is_expire">
-															<a href="#"
-																target="_blank"
+															<button
 																class="btn btn-primary rounded-3"
-																@click.prevent="checkEmailIsVerified(live_session.zoom_link)"
+																@click.prevent="checkEmailIsVerified(meetingIndex)"
 																x-show="['ongoing', 'upcoming'].includes(live_session.status_date)"
-																:class="! live_session.zoom_link ? 'disabled' : ''">
+																:class="!live_session.zoom_link && !live_session.zoom_meeting_id ? 'disabled' : ''">
 																<i class="bi bi-camera-video"></i>
-																<span x-text="! live_session.zoom_link ? 'Zoom link belum tersedia' : 'Gabung Zoom'"></span>
-															</a>
+																<span x-text="!live_session.zoom_link && !live_session.zoom_meeting_id ? 'Zoom link belum tersedia' : 'Daftar Live Session'"></span>
+															</button>
 														</template>
 														<p class="px-3 py-2 bg-info bg-opacity-50 rounded-2"
 															x-show="data.attendedCode.includes(live_session.theme_code)">

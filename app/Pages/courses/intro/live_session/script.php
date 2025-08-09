@@ -54,11 +54,11 @@
             return sessionDate.getTime() === today.getTime();
         },
 
-        checkEmailIsVerified(zoomLink) {
+        checkEmailIsVerified(meetingIndex) {
             const token = localStorage.getItem('heroic_token');
             let emailVerified = false;
 
-            if (!zoomLink) return; // jika link kosong, jangan lanjutkan
+            if (!this.data.live_sessions[meetingIndex].meeting_code) return; // jika link kosong, jangan lanjutkan
 
             if (token) {
                 try {
@@ -66,8 +66,8 @@
                     emailVerified = +payload.isValidEmail === 1;
 
                     if (emailVerified) {
-                        // Email terverifikasi, redirect ke zoomLink
-                        window.open(zoomLink, '_blank');
+                        // Email terverifikasi, redirect ke pendaftaran
+                        this.$router.navigate(`/courses/zoom/${this.data.live_sessions[meetingIndex].meeting_code}`)
                     } else {
                         // Tampilkan toast jika email belum diverifikasi
                         $heroicHelper.toastr('Silakan verifikasi email Anda terlebih dahulu.', 'warning', 'bottom');
