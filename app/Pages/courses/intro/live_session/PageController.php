@@ -29,6 +29,7 @@ class PageController extends BaseController
             ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
             ->where('live_attendance.course_id', $course_id)
             ->where('user_id', $jwt->user_id)
+            ->where('live_attendance.status', 1)
             ->get()
             ->getResultArray();
         if ($attended) {

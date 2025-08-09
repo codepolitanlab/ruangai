@@ -57,7 +57,7 @@
                                 <i class="bi bi-camera-video"></i>
                                 Gabung Zoom
                             </a>
-                            <a href="/courses" class="btn btn-outline-dark opacity-50 fs-6">Kembali</a>
+                            <a :href="`/courses/intro/${data.course.id}/${data.course.slug}/live_session`" class="btn btn-outline-dark opacity-50 fs-6">Kembali</a>
                         </div>
                     </div>
                 </div>

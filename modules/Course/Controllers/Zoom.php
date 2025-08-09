@@ -41,7 +41,6 @@ class Zoom extends BaseController
 
             // Register user to Zoom Meeting
             if($zoom_meeting_id) {
-                // TODO: Replace dummy link with real one in Zoom::registerToMeeting()
                 $Zoom = new \Course\Libraries\Zoom();
                 $joinLink = $Zoom->registerToMeeting($user['email'], $user['name'], $zoom_meeting_id);
                 

@@ -219,7 +219,6 @@ class MeetingAttendance extends AdminController
         $participants = $cache->get('zoom_participants_' . $live_meeting_id);
         if ($participants === null) {
             // Get participant list from Zoom participant API
-            $Zoom->getAccessToken();
             $Zoom->getParticipantList($zoom_meeting_id);
             $participants = $Zoom->participants;
 

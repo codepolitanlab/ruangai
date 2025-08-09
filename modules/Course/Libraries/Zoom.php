@@ -15,9 +15,9 @@ class Zoom
 
     public function __construct()
     {
-        $this->accountID    = config('Course.zoomAccountID');
-        $this->clientID     = config('Course.zoomClientID');
-        $this->clientSecret = config('Course.zoomClientSecret');
+        $this->accountID    = config('Course')->zoomAccountID;
+        $this->clientID     = config('Course')->zoomClientID;
+        $this->clientSecret = config('Course')->zoomClientSecret;
     }
 
     public function getAccessToken()
@@ -120,6 +120,28 @@ class Zoom
 
     public function registerToMeeting($email, $name, $zoom_meeting_id)
     {
-        return 'https://zoom.us/j/' . $zoom_meeting_id . '?name=' . urlencode($name) . '&email=' . urlencode($email);
+        $url = 'https://api.zoom.us/v2/meetings/' . $zoom_meeting_id . '/registrants';
+
+        // CURL using guzzleHTTP with Bearer access token to post participant
+        $client   = new \GuzzleHttp\Client();
+        $response = $client->request('POST', $url, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . $this->getAccessToken(),
+            ],
+            'json' => [
+                'email' => $email,
+                'first_name' => $name,
+            ],
+        ]);
+
+        // Check if response valid
+        if ($response->getStatusCode() !== 201) {
+            throw new Exception('Failed to register to meeting. Status code: ' . $response->getStatusCode());
+        }
+
+        // Get registrant_id
+        $body = json_decode($response->getBody()->getContents(), true);
+        return $body['join_url'];
     }
 }
