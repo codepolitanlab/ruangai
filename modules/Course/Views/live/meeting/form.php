@@ -60,7 +60,7 @@
                                     Zoom Meeting ID <br>
                                     <small>Ceklis "Registration: Required" di Zoom meeting</small>
                                 </label>
-                                <input type="url" name="zoom_meeting_id" id="zoom_meeting_id" class="form-control" value="<?= $meeting['zoom_meeting_id'] ?? '' ?>">
+                                <input type="text" name="zoom_meeting_id" id="zoom_meeting_id" class="form-control" value="<?= $meeting['zoom_meeting_id'] ?? '' ?>">
                             </div>
                             <div class="mb-3">
                                 <label for="zoom_link" class="form-label">

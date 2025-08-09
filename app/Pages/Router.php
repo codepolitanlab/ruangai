@@ -57,6 +57,10 @@ class Router
             'template' => '/courses/reward/template',
             'handler' => '[isLoggedIn]',
         ],
+        '/courses/zoom/:meeting_code' => [
+            'handler' => '[isLoggedIn]',
+        ],
+
         '/reset_password' => [],
         '/reset_password/change/:token' => [],
     ];

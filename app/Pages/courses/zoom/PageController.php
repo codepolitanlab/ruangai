@@ -18,10 +18,16 @@ class PageController extends BaseController
         $this->data['name']         = $jwt->user['name'];
         $this->data['meeting_code'] = $meeting_code;
 
-        // TODO: Get meeting detail
+        // Get meeting detail
+        $MeetingModel = model('Course\Models\LiveMeetingModel');
+        $meeting      = $MeetingModel->select('id,title,meeting_date,meeting_time')->where('meeting_code', $meeting_code)->first();
         
-        // TODO: Check if user already registered and has a zoom join link 
-
+        // Check if user already registered and has a zoom join link
+        $AttendanceModel = model('Course\Models\LiveAttendanceModel');
+        $attendance      = $AttendanceModel->where('live_meeting_id', $meeting['id'])->where('user_id', $jwt->user_id)->first();
+        
+        $this->data['meeting'] = $meeting;
+        $this->data['zoom_join_link'] = $attendance ? $attendance['zoom_join_link'] : null;
         return $this->respond($this->data);
     }
 }

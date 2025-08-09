@@ -79,36 +79,6 @@ button.vanilla-calendar-day__btn.alpa, .presensi-status-container.alpa { backgro
     color: #eee;
 }
 
-.btn-progress {
-    box-shadow: none;
-    color: transparent !important;
-    pointer-events: none;
-    background-color: var(--bs-btn-disabled-bg);
-    border-color: var(--bs-btn-disabled-border-color);
-    opacity: var(--bs-btn-disabled-opacity);
-    position: relative;
-}
-.btn-progress:after {
-    content: "";
-    --bs-spinner-width: 1rem;
-    --bs-spinner-height: 1rem;
-    --bs-spinner-border-width: .2em;
-    --bs-spinner-animation-speed: .75s;
-    --bs-spinner-animation-name: spinner-border;
-    border: var(--bs-spinner-border-width) solid currentcolor;
-    border-right-color: transparent;
-
-    display: inline-block;
-    width: var(--bs-spinner-width);
-    height: var(--bs-spinner-height);
-    vertical-align: var(--bs-spinner-vertical-align);
-    border-radius: 50%;
-    animation: var(--bs-spinner-animation-speed) linear infinite var(--bs-spinner-animation-name);
-    color: white;
-    left: calc(50% - .6em);
-    position: absolute;
-    top: calc(50% - .6em);
-}
 .toastify {
     margin: auto;
     left: 0;
@@ -288,4 +258,46 @@ div#lesson_text_container img {
   display: inline-block;
   animation: shaky 0.8s infinite;
   transform-origin: center;
+}
+
+.btn-progress {
+  box-shadow: none;
+  color: transparent !important;
+  pointer-events: none;
+  background-color: var(--bs-btn-disabled-bg);
+  border-color: var(--bs-btn-disabled-border-color);
+  opacity: var(--bs-btn-disabled-opacity);
+  position: relative;
+}
+.btn-progress>.btn-label {
+  display: none;
+}
+.btn-progress-spinner {
+  display: none;
+}
+.btn-progress .btn-progress-spinner {
+  display: block;
+  color: white;
+}
+
+.btn-progress-spinner:before {
+  content: "";
+  --bs-spinner-width: 1rem;
+  --bs-spinner-height: 1rem;
+  --bs-spinner-border-width: 0.2em;
+  --bs-spinner-animation-speed: 0.75s;
+  --bs-spinner-animation-name: spinner-border;
+  border: var(--bs-spinner-border-width) solid currentcolor;
+  border-right-color: transparent;
+
+  display: inline-block;
+  width: var(--bs-spinner-width);
+  height: var(--bs-spinner-height);
+  vertical-align: var(--bs-spinner-vertical-align);
+  border-radius: 50%;
+  animation: var(--bs-spinner-animation-speed) linear infinite
+    var(--bs-spinner-animation-name);
+  color: white;
+  margin-right: 6px;
+    vertical-align: middle;
 }

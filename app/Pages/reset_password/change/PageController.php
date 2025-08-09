@@ -29,7 +29,7 @@ class PageController extends BaseController
         // Update password
         $Phpass   = new \App\Libraries\Phpass();
         $password = $Phpass->HashPassword($password);
-        $query    = "UPDATE users SET status = 'active', valid_email = 1, token = NULL, otp = NULL, pwd = :password: WHERE id = :id:";
+        $query    = "UPDATE users SET status = 'active', email_valid = 1, token = NULL, otp = NULL, pwd = :password: WHERE id = :id:";
         $db->query($query, ['id' => $id, 'password' => $password]);
 
         // Create JWT
