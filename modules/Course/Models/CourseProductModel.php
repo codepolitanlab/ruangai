@@ -12,14 +12,14 @@ class CourseProductModel extends Model
     protected $returnType             = 'array';
     protected $useSoftDeletes         = true;
     protected $protectFields          = true;
-    protected $allowedFields          = ['course_id', 'title', 'subtitle', 'duration', 'join_intensive', 'normal_price', 'price', 'discount', 'description', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allowedFields          = ['course_id', 'title', 'subtitle', 'duration', 'exp_duration', 'normal_price', 'price', 'discount', 'description'];
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
     protected array $casts            = [];
     protected array $castHandlers     = [];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';

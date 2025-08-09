@@ -32,7 +32,7 @@
     <section class="section">
         <div class="card rounded-xl shadow pb-4">
             <div class="card-body table-responsive">
-                <form method="GET" action="/zpanel/course/student/<?= $course->id ?>">
+                <form method="GET" action="#">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <p class="mb-0">Total Student: <b><?= $total_student ?></b></p>
                         <div class="d-flex align-items-center gap-2">

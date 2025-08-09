@@ -21,12 +21,22 @@ class Course extends AdminController
         $this->data['search'] = $search;
 
         $db                    = \Config\Database::connect();
+
+        // Subquery dengan window function
+        $sub = $db->table('course_products')
+            ->select("
+                course_id, id, normal_price, price, duration,
+                ROW_NUMBER() OVER (
+                    PARTITION BY course_id
+                    ORDER BY normal_price DESC, id DESC
+                ) AS rn
+            ", false);
+
         $this->data['courses'] = $db->table('courses')
-            ->select('courses.*, course_products.normal_price, course_products.price, course_products.duration')
-            ->join('course_products', 'course_products.course_id = courses.id', 'left')
+            ->select('courses.*, cp.normal_price, cp.price, cp.duration')
+            ->join("({$sub->getCompiledSelect()}) cp", 'cp.course_id = courses.id AND cp.rn = 1', 'left')
             ->where('courses.deleted_at', null)
             ->like('courses.course_title', $search)
-            ->groupBy('courses.id, course_products.normal_price, course_products.price, course_products.duration')
             ->get()
             ->getResultArray();
 

@@ -11,8 +11,9 @@ $routes->group(
         $routes->get('form', 'Course::form'); // Form
         $routes->post('form', 'Course::save'); // Create/Update
         $routes->post('delete', 'Course::delete'); // Delete
-
+        
         $routes->get('(:num)', 'Lesson::index/$1'); // Lesson list landing
+        $routes->get('(:num)/student', 'Student::index/$1'); // Lesson list student
 
         // Course Topic
         $routes->get('(:num)/topic', 'Topic::index/$1'); // Add
@@ -59,6 +60,15 @@ $routes->group(
         $routes->post('live/meeting/(:num)/attendant/(:num)/delete', 'MeetingAttendance::delete/$1/$2'); // Delete
         $routes->get('live/meeting/(:num)/attendant/sync', 'MeetingAttendance::sync/$1'); // Add
         $routes->get('live/meeting/(:num)/attendant/startSync', 'MeetingAttendance::startSync/$1'); // Add
+
+        // Live attendance
+        $routes->get('product', 'Product::index'); // List
+        $routes->get('product/add', 'Product::form'); // Add
+        $routes->post('product/add', 'Product::save'); // Insert
+        $routes->get('product/(:num)/edit', 'Product::form/$1'); // Edit
+        $routes->post('product/(:num)/edit', 'Product::save/$1'); // Update
+        $routes->post('product/delete', 'Product::delete'); // Delete
+        $routes->get('product/checkout/(:num)', 'Product::checkout/$1'); // Generate checkout link
     }
 );
 

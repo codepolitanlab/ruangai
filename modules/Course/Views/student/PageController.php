@@ -16,7 +16,7 @@ class PageController extends AdminController
     {
         $course_id = $this->request->getUri()->getSegment(4);
 
-        $students = new \Course\Models\CourseStudent();
+        $students = new \Course\Models\CourseStudentModel();
 
         // Base query with joins and subqueries
         $students->select('course_students.*, users.name, users.email, users.last_active, vouchers.phone');
