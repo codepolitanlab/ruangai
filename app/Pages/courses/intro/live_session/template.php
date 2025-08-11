@@ -191,43 +191,50 @@
 														<dt>Mentor</dt>
 														<dd x-text="live_session.mentor_name"></dd>
 													</dl>
-													<div class="d-flex gap-2 mt-4">
-														<template x-if="!data.attendedCode.includes(live_session.theme_code) && !data.is_expire">
-															<button
-																class="btn btn-primary rounded-3"
-																@click.prevent="checkEmailIsVerified(meetingIndex)"
-																x-show="['ongoing', 'upcoming'].includes(live_session.status_date)"
-																:class="!live_session.zoom_link && !live_session.zoom_meeting_id ? 'disabled' : ''">
-																<i class="bi bi-camera-video"></i>
-																<span x-text="!live_session.zoom_link && !live_session.zoom_meeting_id ? 'Zoom link belum tersedia' : 'Daftar Live Session'"></span>
-															</button>
-														</template>
-
-														<button x-show="live_session.status_date == 'ongoing' && !live_session.feedback_submitted" type="button" class="btn btn-primary rounded-3" data-bs-toggle="modal" data-bs-target="#feedbackModal">Isi Feedback-mu</button>
-														<button x-show="live_session.status_date == 'ongoing' && live_session.feedback_submitted" type="button" class="btn btn-outline-primary rounded-3">Isi Feedback-mu <i class="bi bi-check-circle text-success"></i></button>
-
-														<button x-show="live_session.status_date == 'completed' && !live_session.feedback_submitted" type="button" class="btn bg-secondary-subtle border-secondary-subtle rounded-3" disabled>Isi Feedback-mu</button>
-														<button x-show="live_session.status_date == 'completed' && live_session.feedback_submitted" type="button" class="btn bg-secondary-subtle border-secondary-subtle rounded-3" disabled>Isi Feedback-mu <i class="bi bi-check-circle text-success bg-white rounded-circle ms-2"></i></button>
-
-														<p class="px-3 py-2 bg-info bg-opacity-50 rounded-2"
-															x-show="data.attendedCode.includes(live_session.theme_code)">
-															<i class="bi bi-hand-thumbs-up"></i>
-															Kamu sudah pernah mengikuti sesi dengan judul ini
-														</p>
-
-														<template x-if="data.enable_live_recording">
-															<a
-																:href="live_session.recording_link"
-																target="_blank"
-																class="btn btn-danger rounded-3"
-																x-show="['attended','completed'].includes(live_session.status_date)"
-																:class="! live_session.recording_link ? 'disabled' : ''">
-																<i class="bi bi-play-circle-fill"></i>
-																<span x-text="! live_session.recording_link ? 'Rekaman belum tersedia' : 'Rekaman Video'"></span>
-															</a>
-														</template>
-														<!-- <button class="btn btn-outline-secondary rounded-3"> <i class="bi bi-person-check-fill"></i> Isi Presensi</button> -->
-													</div>
+													<template x-if="data?.student?.completed">
+														<div class="d-flex gap-2 mt-4">
+															<template x-if="!data.attendedCode.includes(live_session.theme_code) && !data.is_expire">
+																<button
+																	class="btn btn-primary rounded-3"
+																	@click.prevent="checkEmailIsVerified(meetingIndex)"
+																	x-show="['ongoing', 'upcoming'].includes(live_session.status_date)"
+																	:class="!live_session.zoom_link && !live_session.zoom_meeting_id ? 'disabled' : ''">
+																	<i class="bi bi-camera-video"></i>
+																	<span x-text="!live_session.zoom_link && !live_session.zoom_meeting_id ? 'Zoom link belum tersedia' : 'Daftar Live Session'"></span>
+																</button>
+															</template>
+	
+															<button x-show="live_session.status_date == 'ongoing' && !live_session.feedback_submitted" type="button" class="btn btn-primary rounded-3" data-bs-toggle="modal" data-bs-target="#feedbackModal">Isi Feedback-mu</button>
+															<button x-show="live_session.status_date == 'ongoing' && live_session.feedback_submitted" type="button" class="btn btn-outline-primary rounded-3">Isi Feedback-mu <i class="bi bi-check-circle text-success"></i></button>
+	
+															<button x-show="live_session.status_date == 'completed' && !live_session.feedback_submitted" type="button" class="btn bg-secondary-subtle border-secondary-subtle rounded-3" disabled>Isi Feedback-mu</button>
+															<button x-show="live_session.status_date == 'completed' && live_session.feedback_submitted" type="button" class="btn bg-secondary-subtle border-secondary-subtle rounded-3" disabled>Isi Feedback-mu <i class="bi bi-check-circle text-success bg-white rounded-circle ms-2"></i></button>
+	
+															<p class="px-3 py-2 bg-info bg-opacity-50 rounded-2"
+																x-show="data.attendedCode.includes(live_session.theme_code)">
+																<i class="bi bi-hand-thumbs-up"></i>
+																Kamu sudah pernah mengikuti sesi dengan judul ini
+															</p>
+	
+															<template x-if="data.enable_live_recording">
+																<a
+																	:href="live_session.recording_link"
+																	target="_blank"
+																	class="btn btn-danger rounded-3"
+																	x-show="['attended','completed'].includes(live_session.status_date)"
+																	:class="! live_session.recording_link ? 'disabled' : ''">
+																	<i class="bi bi-play-circle-fill"></i>
+																	<span x-text="! live_session.recording_link ? 'Rekaman belum tersedia' : 'Rekaman Video'"></span>
+																</a>
+															</template>
+															<!-- <button class="btn btn-outline-secondary rounded-3"> <i class="bi bi-person-check-fill"></i> Isi Presensi</button> -->
+														</div>
+													</template>
+													<template x-if="!data?.student?.completed">
+														<div class="alert alert-warning">
+															Harap bereskan kursus sebelum mengikuti live session
+														</div>
+													</template>
 												</div>
 											</div>
 										</div>

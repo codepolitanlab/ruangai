@@ -100,6 +100,7 @@ class PageController extends BaseController
             ->where('user_id', $jwt->user_id)
             ->get()
             ->getRowArray();
+        $this->data['student']['completed'] = (int) $this->data['student']['progress'] < 100 ? false : true;
         $this->data['is_expire'] = $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
 
         $this->data['user'] = $db->table('users')
