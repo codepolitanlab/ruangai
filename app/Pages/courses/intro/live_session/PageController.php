@@ -47,9 +47,18 @@ class PageController extends BaseController
             ->getResultArray();
 
         $this->data['live_sessions'] = [];
+        $this->data['live_session_ongoing'] = [];
+
         if ($live_sessions) {
             foreach ($live_sessions as $key => $live_session) {
                 $this->data['live_sessions'][$key] = $live_session;
+
+                $feedbackExists = $db->table('live_meeting_feedback')
+                    ->where('user_id', $jwt->user_id)
+                    ->where('live_meeting_id', $live_session['id'])
+                    ->countAllResults() > 0;
+
+                $this->data['live_sessions'][$key]['feedback_submitted'] = $feedbackExists;
 
                 // Cek jika tanggal sudah lewat
                 if (date('Y-m-d') === $live_session['meeting_date']) {
@@ -64,6 +73,8 @@ class PageController extends BaseController
                         $this->data['live_sessions'][$key]['status_date'] = 'upcoming';
                     } else {
                         $this->data['live_sessions'][$key]['status_date'] = 'ongoing';
+                        $this->data['live_session_ongoing']['id'] = $live_session['id'];
+                        $this->data['live_session_ongoing']['title'] = $live_session['title'];
                     }
                 } elseif (date('Y-m-d') > $live_session['meeting_date']) {
                     if (in_array($live_session['id'], $attended, true)) {
@@ -90,6 +101,12 @@ class PageController extends BaseController
             ->get()
             ->getRowArray();
         $this->data['is_expire'] = $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
+
+        $this->data['user'] = $db->table('users')
+            ->select('id, name')
+            ->where('id', $jwt->user_id)
+            ->get()
+            ->getRowArray();
 
         return $this->respond($this->data);
     }

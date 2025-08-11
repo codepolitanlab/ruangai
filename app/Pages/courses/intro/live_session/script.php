@@ -1,7 +1,6 @@
 <script>
-    Alpine.data("liveSession", () => ({
-        title: `<?= $page_title ?>`,
-
+    Alpine.data('sesiLive', () => ({
+        feedbackForm: '',
         // Method untuk mendapatkan status sesi
         getSessionStatus(live_session) {
             const sessionDate = new Date(live_session.date);
@@ -79,6 +78,13 @@
             } else {
                 $heroicHelper.toastr('Anda belum login.', 'error', 'bottom');
             }
+        },
+
+        showFeedbackButton(meetingTimeStr, sessionStatus) {
+            const meetingDate = new Date(meetingTimeStr.replace(' ', 'T'));
+            const now = new Date();
+            const diffMinutes = (now - meetingDate) / (1000 * 60);
+            return diffMinutes >= 1 && ['ongoing', 'upcoming'].includes(sessionStatus);
         },
 
     }));
