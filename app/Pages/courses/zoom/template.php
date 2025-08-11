@@ -8,7 +8,8 @@
     <div class="container" x-show="data?.status == 'error'" x-transition>
         <div class="row justify-content-center text-center mt-5">
             <h2>404</h2>
-            <p>Link live session tidak valid.</p>
+            <p>Form pendaftaran live session belum tersedia atau link live session tidak valid.</p>
+            <a href="/courses"><i class="bi bi-arrow-left"></i> Kembali</a>
         </div>
     </div>
 
