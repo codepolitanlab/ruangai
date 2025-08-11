@@ -39,10 +39,6 @@
 			font-size: 11px;
 		}
 
-		.accordion-item {
-			background-color: #f8f8f8;
-		}
-
 		.accordion-item .accordion-header {
 			background-color: white;
 		}
@@ -137,7 +133,7 @@
 			<div class="tab-content" id="pills-tabContent">
 				<!-- List Upcoming -->
 				<div class="tab-pane fade show active" id="upcoming" role="tabpanel" aria-labelledby="upcoming-tab" tabindex="0">
-					<div class="card my-4 rounded-4 shadow-none">
+					<div class="my-4 rounded-4 shadow-none">
 						<div class="card-body">
 
 							<!-- Check if no live session -->
@@ -162,7 +158,7 @@
 								<div class="accordion bg-transparent border-0" id="accordion-livesession">
 
 									<template x-for="(live_session, meetingIndex) in data.live_sessions">
-										<div class="accordion-item p-2 rounded-4 mb-1" :class="live_session.status_date">
+										<div class="accordion-item p-2 rounded-4 mb-3" :class="live_session.status_date">
 											<div class="accordion-header rounded-4 py-2">
 												<button class="accordion-button d-flex flex-column flex-md-row gap-3 align-items-md-center" type="button" data-bs-toggle="collapse" :data-bs-target="`#live_`+live_session.id" aria-expanded="true" :aria-controls="`live_`+live_session.id">
 													<div>
@@ -185,7 +181,7 @@
 													<div class="badge bg-secondary-subtle border border-secondary-subtle ms-auto px-2 py-3 text-dark opacity-75" x-show="live_session.status_date == 'completed'"> Sesi selesai</div>
 												</button>
 											</div>
-											<div :id="`live_`+live_session.id" class="bg-white rounded-4 mt-1 accordion-collapse collapse" data-bs-parent="#accordion-livesession">
+											<div :id="`live_`+live_session.id" class="bg-light rounded-4 mt-1 accordion-collapse collapse" data-bs-parent="#accordion-livesession">
 												<div class="accordion-body py-3">
 													<dl>
 														<dt>Deskripsi</dt>
