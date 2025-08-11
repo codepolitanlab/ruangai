@@ -5,66 +5,78 @@
         url: `courses/zoom/data/${$params.meeting_code}`
         })">
 
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="text-center">
-                    <h2 class="h3 text-secondary">Registrasi Live Session</h2>
-                    <h1 x-text="data.meeting.title"></h1>
-                    <p class="text-dark opacity-75">
-                        Tanggal event: <span x-text="$heroicHelper.formatDate(data.meeting.meeting_date)"></span><br>
-                        pukul <span x-text="data.meeting.meeting_time"></span> WIB
-                    </p>
-                </div>
+    <template x-if="data?.status == 'error'">
+        <div class="container">
+            <div class="row justify-content-center text-center mt-5">
+                <h2>404</h2>
+                <p>Link live session tidak valid.</p>
             </div>
         </div>
+        </template>
 
-        <div class="row justify-content-center" x-data="registerLiveSession()">
-
-            <div class="col-md-5" x-show="!data.zoom_join_link">
-                <div class="card">
-                    <div class="card-body">
-                        <p class="text-center">Anda akan mendaftar ke live session dengan akun di bawah ini:</p>
-                        <div class="form-group mb-3">
-                            <label class="form-label" for="name">Nama Lengkap</label>
-                            <input type="text" class="form-control" x-model="data.name" disabled>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label class="form-label" for="email">Email</label>
-                            <input type="email" class="form-control" x-model="data.email" disabled>
-                        </div>
-
-                        <div class="text-center mt-4">
-                            <button
-                                class="btn btn-secondary fs-6"
-                                :class="registering ? 'btn-progress' : ''"
-                                @click="register">
-                                <div class="btn-progress-spinner">Mendaftarkan..</div>
-                                <span class="btn-label">Lanjutkan Daftar</span>
-                            </button>
-                        </div>
+    <template x-if="data?.status != 'error'">
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="text-center">
+                        <h2 class="h3 text-secondary">Registrasi Live Session</h2>
+                        <h1 x-text="data.meeting.title"></h1>
+                        <p class="text-dark opacity-75">
+                            Tanggal event: <span x-text="$heroicHelper.formatDate(data.meeting.meeting_date)"></span><br>
+                            pukul <span x-text="data.meeting.meeting_time"></span> WIB
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-5 text-center" x-show="data.zoom_join_link">
-                <div class="card shadow-none">
-                    <div class="card-body">
-                        <p class="mb-4"><i class="bi bi-bookmark-check-fill text-success fs-3 me-1"></i> Kamu telah terdaftar di live session ini.</p>
+            <div class="row justify-content-center" x-data="registerLiveSession()">
 
-                        <div class="d-flex justify-content-between">
-                            <a :href="data.zoom_join_link" class="btn btn-primary fs-6" target="_blank" native>
-                                <i class="bi bi-camera-video"></i>
-                                Gabung Zoom
-                            </a>
-                            <a :href="`/courses/intro/${data.course.id}/${data.course.slug}/live_session`" class="btn btn-outline-dark opacity-50 fs-6">Kembali</a>
+                <div class="col-md-5" x-show="!data.zoom_join_link">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="text-center">Anda akan mendaftar ke live session dengan akun di bawah ini:</p>
+                            <div class="form-group mb-3">
+                                <label class="form-label" for="name">Nama Lengkap</label>
+                                <input type="text" class="form-control" x-model="data.name" disabled>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label" for="email">Email</label>
+                                <input type="email" class="form-control" x-model="data.email" disabled>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <button
+                                    class="btn btn-secondary fs-6"
+                                    :class="registering ? 'btn-progress' : ''"
+                                    @click="register">
+                                    <div class="btn-progress-spinner">Mendaftarkan..</div>
+                                    <span class="btn-label">Lanjutkan Daftar</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
+                <div class="col-md-5 text-center" x-show="data.zoom_join_link">
+                    <div class="card shadow-none">
+                        <div class="card-body">
+                            <p class="mb-4"><i class="bi bi-bookmark-check-fill text-success fs-3 me-1"></i> Kamu telah terdaftar di live session ini.</p>
+
+                            <div class="d-flex justify-content-between">
+                                <a :href="data.zoom_join_link" class="btn btn-primary fs-6" target="_blank" native>
+                                    <i class="bi bi-camera-video"></i>
+                                    Gabung Zoom
+                                </a>
+                                <a :href="`/courses/intro/${data.course.id}/${data.course.slug}/live_session`" class="btn btn-outline-dark opacity-50 fs-6">Kembali</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
-    </div>
+    </template>
+
 
 </div>
 

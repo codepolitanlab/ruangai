@@ -22,6 +22,13 @@ class PageController extends BaseController
         $MeetingModel = model('Course\Models\LiveMeetingModel');
         $meeting      = $MeetingModel->select('id,title,meeting_date,meeting_time,live_batch_id')->where('meeting_code', $meeting_code)->first();
         
+        if(! $meeting) {
+            return $this->respond([
+                'status'  => 'error',
+                'message' => 'Meeting not found'
+            ]);
+        }
+        
         // Get course detail
         $CourseModel = model('Course\Models\CourseModel');
         $course      = $CourseModel

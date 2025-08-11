@@ -2,6 +2,7 @@
     function registerLiveSession() {
         return {
             registering: false,
+
             register() {
                 this.registering = true;
                 $heroicHelper.post('/courses/zoom/register', {
