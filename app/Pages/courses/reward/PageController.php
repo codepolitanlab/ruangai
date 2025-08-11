@@ -119,6 +119,7 @@ class PageController extends BaseController
                     'description' => 'Bangun aplikasi lebih cepat dan efisien dengan bantuan AI.',
                     'teaser_url' => 'https://ruangai.com/premium-class/web-development',
                     'cover' => 'https://image.web.id/images/clipboard-image-1754379412.png',
+                    'embed' => '<iframe width="560" height="315" src="https://www.youtube.com/embed/86vN07z1f6c?si=9LuuO-gbL34Qs0xR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>'
                 ],
             ];
 
