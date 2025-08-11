@@ -5,17 +5,15 @@
         url: `courses/zoom/data/${$params.meeting_code}`
         })">
 
-    <template x-if="data?.status == 'error'">
-        <div class="container">
-            <div class="row justify-content-center text-center mt-5">
-                <h2>404</h2>
-                <p>Link live session tidak valid.</p>
-            </div>
+    <div class="container" x-show="data?.status == 'error'" x-transition>
+        <div class="row justify-content-center text-center mt-5">
+            <h2>404</h2>
+            <p>Link live session tidak valid.</p>
         </div>
-        </template>
+    </div>
 
     <template x-if="data?.status != 'error'">
-        <div class="container mt-5">
+        <div class="container mt-5" x-show="data?.meeting?.id" x-transition>
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <div class="text-center">
