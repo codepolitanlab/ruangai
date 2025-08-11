@@ -29,7 +29,9 @@
                                 <span class="btn-label">
                                     <i class="bi bi-arrow-clockwise"></i> Start Sync
                                 </span>
-                            </button>
+                        </button>
+
+                        <div class="alert alert-info mt-3 p-3" x-show="data.message" x-text="data.message"></div>
 
                         <div class="mt-4">
                             <h4>Summary:</h4>
@@ -55,6 +57,7 @@
             syncing: false,
 
             startSync() {
+                this.data = []
                 this.syncing = true
                 axios.get('/<?= urlScope() ?>/course/live/meeting/<?= $live_meeting_id ?>/attendant/startSync')
                 .then(res => {

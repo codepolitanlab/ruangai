@@ -221,9 +221,12 @@ class MeetingAttendance extends AdminController
             // Get participant list from Zoom participant API
             $Zoom->getParticipantList($zoom_meeting_id);
             $participants = $Zoom->participants;
+            print_r($participants);die;
 
             // Save participants to cache file
-            $cache->save('zoom_participants_' . $live_meeting_id, $participants);
+            if(!empty($participants)) {
+                $cache->save('zoom_participants_' . $live_meeting_id, $participants, 300);
+            }
         }
 
         $participants = $Zoom->accumulateDurations($participants);
