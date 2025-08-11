@@ -153,15 +153,18 @@
 							<div class="card text-white bg-primary position-relative" style="min-height: 200px; border-radius: 18px; overflow: hidden; z-index: 1">
 								<img src="https://ik.imagekit.io/56xwze9cy/ruangai/card%20class.png" class="w-100 position-relative" alt="Kelas AI" style="z-index: 1">
 								<div class="p-3 d-flex flex-column justify-content-end position-relative" style="background: linear-gradient(to top, #79B2CD 50%, rgba(255, 255, 255, 0));height: 100%;margin-top: -50px;z-index: 1000">
-									<h5 class="card-title text-white mb-1 mt-3" style="font-size: 1.1rem; font-weight: 500;" x-text="data?.last_lesson.course_title"></h5>
+									<h5 
+										class="card-title text-white mb-1 mt-3" 
+										style="font-size: 1.1rem; font-weight: 500;" 
+										x-text="data?.last_course.title"></h5>
 									<div class="d-flex align-items-center mb-2">
 										<i class="bi bi-play-fill fs-3 me-2"></i>
 										<div class="progress flex-grow-1 me-2" style="height: 5px;">
-											<div class="progress-bar bg-warning" role="progressbar" :style="`width: ${data?.last_lesson.progress}%`"></div>
+											<div class="progress-bar bg-warning" role="progressbar" :style="`width: ${Math.round(data?.last_course.lesson_completed/data?.last_course.total_lessons*100)}%`"></div>
 										</div>
-										<span x-text="data?.last_lesson.progress"></span>%
+										<span x-text="Math.round(data?.last_course.lesson_completed/data?.last_course.total_lessons*100)"></span>%
 									</div>
-									<a :href="`/courses/intro/${data?.last_lesson.course_id}/${data?.last_lesson?.slug}/lessons`" class="btn bg-white rounded-pill p-1 text-secondary hover">Mulai Belajar</a>
+									<a :href="`/courses/intro/${data?.last_course.id}/${data?.last_course?.slug}/lessons`" class="btn bg-white rounded-pill p-1 text-secondary hover">Mulai Belajar</a>
 								</div>
 							</div>
 						</div>
