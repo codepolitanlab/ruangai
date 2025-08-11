@@ -207,7 +207,7 @@
 															</button>
 														</template>
 
-														<button x-show="live_session.status_date == 'ongoing' && !live_session.feedback_submitted" type="button" class="btn btn-primary rounded-3" data-bs-toggle="modal" data-bs-target="#feedbackModal">Isi Feedback-mu <i class="bi bi-check-circle-fill text-success bg-white rounded-circle ms-2"></i></button>
+														<button x-show="live_session.status_date == 'ongoing' && !live_session.feedback_submitted" type="button" class="btn btn-primary rounded-3" data-bs-toggle="modal" data-bs-target="#feedbackModal">Isi Feedback-mu</button>
 														<button x-show="live_session.status_date == 'ongoing' && live_session.feedback_submitted" type="button" class="btn btn-outline-primary rounded-3">Isi Feedback-mu <i class="bi bi-check-circle text-success"></i></button>
 
 														<button x-show="live_session.status_date == 'completed' && !live_session.feedback_submitted" type="button" class="btn bg-secondary-subtle border-secondary-subtle rounded-3" disabled>Isi Feedback-mu</button>
