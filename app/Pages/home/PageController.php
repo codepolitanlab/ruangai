@@ -25,47 +25,33 @@ class PageController extends BaseController
             ->where('user_id', $jwt->user_id)
             ->countAllResults();
 
-        $last_lesson = $db->table('course_lesson_progress')
-            ->select('
-                course_lessons.lesson_title as title, 
-                course_lessons.id as lesson_id, 
-                course_lessons.course_id,
-                course_lesson_progress.created_at as last_progress_time,
-                course_students.progress,
-                courses.course_title,
-                courses.slug
-            ')
-            ->join('course_lessons', 'course_lessons.id = course_lesson_progress.lesson_id')
-            ->join('course_students', 'course_students.user_id = course_lesson_progress.user_id AND course_students.course_id = course_lesson_progress.course_id')
+        $last_course = $db->table('course_lesson_progress')
+            ->select('course_id as id, courses.course_title as title, courses.slug')
             ->join('courses', 'courses.id = course_lesson_progress.course_id')
             ->where('course_lesson_progress.user_id', $jwt->user_id)
             ->orderBy('course_lesson_progress.created_at', 'DESC')
-            ->groupBy('
-                course_lessons.id, 
-                course_lessons.lesson_title, 
-                course_lessons.id, 
-                course_lessons.course_id,
-                course_lesson_progress.created_at,
-                course_students.progress,
-                courses.course_title,
-                courses.slug')
-            ->limit(1)
             ->get()
             ->getRowArray();
 
-        if ($last_lesson) {
-            $this->data['last_lesson'] = $last_lesson;
-        } else {
-            $this->data['last_lesson'] = (object) [
-                'title' => 'Belum ada kelas',
-                'lesson_id' => 1,
-                'course_id' => 1,
-                'last_progress_time' => 0,
-                'progress' => 0,
-                'course_title' => 'Dasar dan Penggunaan Generative AI',
-                'slug' => 'dasar-dan-penggunaan-generative-ai',
-            ];
+        if(!$last_course) {
+            $last_course = $db->table('courses')
+                ->select('id, course_title as title, slug')
+                ->where('id', 1)
+                ->get()
+                ->getRowArray();
         }
+
+        // Get completed lessons for current user
+        $completedLessons = $db->table('course_lessons')
+            ->select('count(course_lessons.id) as total_lessons, count(course_lesson_progress.user_id) as completed')
+            ->join('course_lesson_progress', 'course_lesson_progress.lesson_id = course_lessons.id AND user_id = ' . $jwt->user_id, 'left')
+            ->where('course_lessons.course_id', $last_course['id'])
+            ->get()
+            ->getRowArray();
+
+        $this->data['last_course']                     = $last_course;
+        $this->data['last_course']['total_lessons']    = $completedLessons['total_lessons'] ?? 1;
+        $this->data['last_course']['lesson_completed'] = $completedLessons['completed'] ?? 0;
 
         // Get course_students
         $this->data['student'] = $db->table('course_students')

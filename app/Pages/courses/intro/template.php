@@ -143,7 +143,7 @@
 
 			<!-- Progress Stats -->
 			<div class="p-3 pb-2 bg-white rounded-4 mb-3 position-relative"
-				:class="{'lesson-not-complete': data.student.progress < 100}">
+				:class="{'lesson-not-complete': Math.round(data.lesson_completed/data.total_lessons*100) < 100}">
 				<h4 class="mb-3">Progres Belajar</h4>
 				
 				<div x-show="data?.is_expire">
@@ -156,11 +156,11 @@
 					<div class="col-md-6 mb-3">
 						<div id="card-progress-lesson" 
 							class="card border-0 shadow-none rounded-4 p-3 d-flex flex-column justify-content-between position-relative"
-							:class="{'lesson-completed bg-success bg-opacity-50': data.student.progress == 100, 
-							'bg-light-primary': data.student.progress < 100}"
+							:class="{'lesson-completed bg-success bg-opacity-50': Math.round(data.lesson_completed/data.total_lessons*100) == 100, 
+							'bg-light-primary': Math.round(data.lesson_completed/data.total_lessons*100) < 100}"
 							style="min-height: 210px">
 							<div class="me-3 bg-white text-dark rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
-								<i class="bi h3 m-0" :class="data.student.progress == 100 ? 'bi-check-circle text-success' : 'bi-journal-text'"></i>
+								<i class="bi h3 m-0" :class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'bi-check-circle text-success' : 'bi-journal-text'"></i>
 							</div>
 							<div class="d-flex align-items-end gap-2 mt-3 text-dark">
 								<h1 class="mb-0 display-6 fw-bold" x-text="data?.lesson_completed "></h1>
@@ -168,9 +168,9 @@
 							</div>
 							<div class="d-flex align-items-center">
 								<div class="progress flex-grow-1 me-2 " style="height: 5px;">
-									<div class="progress-bar" role="progressbar" :style="`width: ${data?.student?.progress}%`"></div>
+									<div class="progress-bar" role="progressbar" :style="`width: ${Math.round(data.lesson_completed/data.total_lessons*100)}%`"></div>
 								</div>
-								<span class="fw-bold" x-text="`${data?.student?.progress}%`"></span>
+								<span class="fw-bold" x-text="`${Math.round(data.lesson_completed/data.total_lessons*100)}%`"></span>
 							</div>
 							<a 
 								:href="`/courses/intro/${data.course.id}/${data.course.slug}/lessons`" 
@@ -189,12 +189,12 @@
 								<i class="bi h3 m-0" :class="data.live_attendance > 0 ? 'bi-check-circle text-success' : 'bi-camera-video text-secondary'"></i>
 							</div>
 							<div 
-								:class="data.student.progress == 100 ? 'd-flex' : 'd-none'"
+								:class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'd-flex' : 'd-none'"
 								class="d-flex align-items-end gap-2 mt-3 mb-4">
 								<h1 class="mb-0 display-6 fw-bold" x-text="data?.live_attendance"></h1>
 								<p class="mb-1">Live session diikuti</p>
 							</div>
-							<div x-show="data.student.progress < 100">
+							<div x-show="Math.round(data.lesson_completed/data.total_lessons*100) < 100">
 								<div class="mb-1 position-relative">Selesaikan materi untuk dapat mengikuti sesi live</div>
 							</div>
 							<a :href="`/courses/intro/${data?.course?.id}/${data?.course?.slug}/live_session`" class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6">Lihat Jadwal</a>
