@@ -2,8 +2,6 @@
 
 namespace App\Pages\zpanel\course\live\schedule;
 
-use App\Models\LiveBatchModel;
-use App\Models\LiveMeetingModel;
 use App\Pages\zpanel\AdminController;
 
 class PageController extends AdminController
@@ -16,8 +14,8 @@ class PageController extends AdminController
 
     public function __construct()
     {
-        $this->model      = new LiveMeetingModel();
-        $this->batchModel = new LiveBatchModel();
+        $this->model      = new \Course\Models\LiveMeetingModel();
+        $this->batchModel = new \Course\Models\LiveBatchModel();
     }
 
     public function getIndex($batch_id)
