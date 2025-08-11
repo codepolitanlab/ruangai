@@ -4,7 +4,8 @@
 	x-data="$heroic({
         title: `<?= $page_title ?>`,
         url: `courses/intro/live_session/data/${$params.course_id}`
-    })">
+    })"
+	x-effect="loadPage(`courses/intro/live_session/data/${$params.course_id}`)">
 
 	<style>
 		.date-box {
@@ -83,10 +84,10 @@
 	</style>
 
 
-	<div id="appCapsule" class="" x-data="liveSession()">
+	<div id="appCapsule" class="">
 		<?= $this->include('courses/intro/_menu'); ?>
 
-		<div class="appContent" style="min-height:90vh">
+		<div class="appContent" style="min-height:90vh" x-data="sesiLive()">
 
 			<div class="card my-4 rounded-4 shadow-none">
 				<div class="card-body">
@@ -205,6 +206,13 @@
 																<span x-text="!live_session.zoom_link && !live_session.zoom_meeting_id ? 'Zoom link belum tersedia' : 'Daftar Live Session'"></span>
 															</button>
 														</template>
+
+														<button x-show="live_session.status_date == 'ongoing' && !live_session.feedback_submitted" type="button" class="btn btn-primary rounded-3" data-bs-toggle="modal" data-bs-target="#feedbackModal">Isi Feedback-mu <i class="bi bi-check-circle-fill text-success bg-white rounded-circle ms-2"></i></button>
+														<button x-show="live_session.status_date == 'ongoing' && live_session.feedback_submitted" type="button" class="btn btn-outline-primary rounded-3">Isi Feedback-mu <i class="bi bi-check-circle text-success"></i></button>
+
+														<button x-show="live_session.status_date == 'completed' && !live_session.feedback_submitted" type="button" class="btn bg-secondary-subtle border-secondary-subtle rounded-3" disabled>Isi Feedback-mu</button>
+														<button x-show="live_session.status_date == 'completed' && live_session.feedback_submitted" type="button" class="btn bg-secondary-subtle border-secondary-subtle rounded-3" disabled>Isi Feedback-mu <i class="bi bi-check-circle text-success bg-white rounded-circle ms-2"></i></button>
+
 														<p class="px-3 py-2 bg-info bg-opacity-50 rounded-2"
 															x-show="data.attendedCode.includes(live_session.theme_code)">
 															<i class="bi bi-hand-thumbs-up"></i>
@@ -277,8 +285,27 @@
 				</div>
 				<div class="offcanvas-body small"></div>
 			</div>
-			<?= $this->include('courses/intro/live_session/script') ?>
-			<?= $this->include('_bottommenu') ?>
+
+			<!-- Modal -->
+			<div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="feedbackModalLabel">Feedback</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body" id="iframe_feedback">
+							<iframe onload="javascript:parent.scrollTo(0,0);" height="1002" allowTransparency="true" scrolling="no" frameborder="0" sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation allow-top-navigation-by-user-activation" style="width:100%;border:none" :src="`https://form.tarbiyya.id/embed.php?id=14575&element_1=${data.user.name}&element_8=${data.live_session_ongoing.id}&element_9=${data.live_session_ongoing.title}&element_7=${data.user.id}`" title="RuangaAI Feedback Chapter 2">
+								<a href="https://form.tarbiyya.id/view.php?id=14575" title="RuangaAI Feedback Chapter 2">RuangaAI Feedback Chapter 2</a>
+							</iframe>
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</div>
 	</div>
+	<?= $this->include('_bottommenu') ?>
 </div>
+
+<?= $this->include('courses/intro/live_session/script') ?>
