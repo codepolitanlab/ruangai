@@ -5,8 +5,16 @@
         url: `courses/zoom/data/${$params.meeting_code}`
         })">
 
+    <div id="course-features" class="d-flex gap-2 px-3 pt-4 pb-1">
+		<a :href="`/courses/intro/${data.course.id}/${data.course.slug}/live_session`"
+			class="btn rounded-4 px-2"
+			:class="data.active_page == 'intro' ? `btn-primary` : `btn-white bg-white text-primary`">
+			<h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>
+		</a>
+	</div>
+
     <div class="container" x-show="data?.status == 'error'" x-transition>
-        <div class="row justify-content-center text-center mt-5">
+        <div class="row justify-content-center text-center mt-2">
             <h2>404</h2>
             <p>Form pendaftaran live session belum tersedia atau link live session tidak valid.</p>
             <a href="/courses"><i class="bi bi-arrow-left"></i> Kembali</a>
@@ -14,7 +22,7 @@
     </div>
 
     <template x-if="data?.status != 'error'">
-        <div class="container mt-5" x-show="data?.meeting?.id" x-transition>
+        <div class="container mt-2" x-show="data?.meeting?.id" x-transition>
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <div class="text-center">

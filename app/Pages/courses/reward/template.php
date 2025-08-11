@@ -45,19 +45,18 @@
 
 	</style>
 
-	<div id="app-header" class="appHeader main border-0 bg-transparent">
-		<div class="left">
-			<a class="headerButton" :href="`/courses/intro/${data.lesson?.course_id}/${data.lesson?.course_slug}/lessons`"><i class="bi bi-chevron-left"></i></a>
-		</div>
-		<div class="">
-			<!-- <span x-text="data.lesson?.course_title + ' - ' + data.lesson?.topic_title"></span> -->
-		</div>
+	<div id="course-features" class="d-flex gap-2 px-3 pt-4 pb-1">
+		<a :href="`/courses/intro/${$params.course_id}/${$params.slug}`"
+			class="btn rounded-4 px-2"
+			:class="data.active_page == 'intro' ? `btn-primary` : `btn-white bg-white text-primary`">
+			<h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>
+		</a>
 	</div>
 
 	<div id="appCapsule" class="">
 		<div class="appContent" style="min-height:90vh" x-data="listLesson()">
 
-			<div class="card my-4 rounded-4 shadow-none">
+			<div class="card mt-2 mb-4 rounded-4 shadow-none">
 				<div class="card-body d-flex justify-content-start align-items-center gap-2 p-3">
 					<img src="https://image.web.id/images/icon-gift-min.png" alt="">
 					<div>
