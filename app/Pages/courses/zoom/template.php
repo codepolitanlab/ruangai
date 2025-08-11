@@ -42,14 +42,21 @@
                                 <input type="email" class="form-control" x-model="data.email" disabled>
                             </div>
 
-                            <div class="text-center mt-4">
+                            <div class="text-center mt-4" x-show="data.completed == 100">
                                 <button
-                                    class="btn btn-secondary fs-6"
+                                    class="btn btn-success fs-6"
                                     :class="registering ? 'btn-progress' : ''"
                                     @click="register">
                                     <div class="btn-progress-spinner">Mendaftarkan..</div>
-                                    <span class="btn-label">Lanjutkan Daftar</span>
+                                    <span class="btn-label">Daftar Live Session</span>
                                 </button>
+                            </div>
+
+                            <div class="alert alert-warning mt-4" x-show="data.completed < 100">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-exclamation-triangle fs-3"></i>
+                                    <p class="mb-0 py-2 text-white fs-6">Silakan selesaikan dahulu materi belajar mandiri untuk dapat mengikuti sesi live ini.</p>
+                                </div>
                             </div>
                         </div>
                     </div>

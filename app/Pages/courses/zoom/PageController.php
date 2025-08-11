@@ -28,7 +28,7 @@ class PageController extends BaseController
                 'message' => 'Meeting not found'
             ]);
         }
-        
+
         // Get course detail
         $CourseModel = model('Course\Models\CourseModel');
         $course      = $CourseModel
@@ -37,6 +37,11 @@ class PageController extends BaseController
                         ->where('live_batch.id', $meeting['live_batch_id'])
                         ->first();
         $this->data['course'] = $course;
+
+        // Check if user has already completed the course
+        $CourseStudent = model('Course\Models\CourseStudentModel');
+        $completed = $CourseStudent->select('progress')->where('user_id', $jwt->user_id)->where('course_id', $course['id'])->first();
+        $this->data['completed'] = $completed['progress'] ?? 0;
         
         // Check if user already registered and has a zoom join link
         $AttendanceModel = model('Course\Models\LiveAttendanceModel');
