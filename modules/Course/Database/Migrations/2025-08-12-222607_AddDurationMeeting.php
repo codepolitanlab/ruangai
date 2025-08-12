@@ -9,7 +9,7 @@ class AddDurationMeeting extends Migration
     public function up()
     {
         $fields = [
-            'duration' => [
+            'meeting_duration' => [
                 'type'       => 'INT',
                 'default'    => 120,
                 'null'       => true,
@@ -22,6 +22,6 @@ class AddDurationMeeting extends Migration
 
     public function down()
     {
-        $this->forge->dropColumn('live_meetings', 'duration');
+        $this->forge->dropColumn('live_meetings', 'meeting_duration');
     }
 }

@@ -72,7 +72,7 @@
                                     <td>
                                         <?= date('d M Y', strtotime($meeting['meeting_date'])) ?><br>
                                         <?= date('H:i', strtotime($meeting['meeting_time'])) ?> WIB <br>
-                                        <?= $meeting['duration'] ?? '' ?> menit
+                                        <?= $meeting['meeting_duration'] ?? '' ?> menit
                                     </td>
                                     <td>
                                         <?= $meeting['zoom_meeting_id'] ?? '' ?>
