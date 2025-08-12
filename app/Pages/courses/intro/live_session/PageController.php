@@ -24,12 +24,11 @@ class PageController extends BaseController
             ->getRowArray();
 
         $attended = $db->table('live_attendance')
-            ->select('live_meeting_id, live_meetings.title, live_meetings.subtitle, live_meetings.theme_code, live_meetings.meeting_date, live_meetings.meeting_time, live_batch.name as batch_title, live_attendance.status')
+            ->select('live_meeting_id, live_meetings.title, live_meetings.subtitle, live_meetings.theme_code, duration, meeting_feedback_id, live_meetings.meeting_date, live_meetings.meeting_time, live_batch.name as batch_title, live_attendance.status')
             ->join('live_meetings', 'live_meetings.id = live_attendance.live_meeting_id')
             ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
             ->where('live_attendance.course_id', $course_id)
             ->where('user_id', $jwt->user_id)
-            ->where('live_attendance.status', '1')
             ->get()
             ->getResultArray();
         if ($attended) {
@@ -101,8 +100,18 @@ class PageController extends BaseController
             ->where('user_id', $jwt->user_id)
             ->get()
             ->getRowArray();
-        $this->data['student']['completed'] = (int) $this->data['student']['progress'] < 100 ? false : true;
         $this->data['is_expire'] = $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
+
+        // Check if user has already completed the course
+        $completedLessons = $db->table('course_lessons')
+            ->select('count(course_lessons.id) as total_lessons, count(course_lesson_progress.user_id) as completed')
+            ->join('course_lesson_progress', 'course_lesson_progress.lesson_id = course_lessons.id AND user_id = ' . $jwt->user_id, 'left')
+            ->where('course_lessons.course_id', $course_id)
+            ->get()
+            ->getRowArray();
+        $this->data['total_lessons']    = $completedLessons['total_lessons'] ?? 1;
+        $this->data['lesson_completed'] = $completedLessons['completed'] ?? 0;
+        $this->data['completed']        = round($completedLessons['completed'] / $completedLessons['total_lessons'] * 100);
 
         $this->data['user'] = $db->table('users')
             ->select('id, name')
