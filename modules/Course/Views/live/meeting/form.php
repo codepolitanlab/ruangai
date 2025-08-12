@@ -48,6 +48,10 @@
                                 <input type="time" name="meeting_time" id="meeting_time" class="form-control" value="<?= isset($meeting['meeting_time']) ? date('H:i', strtotime($meeting['meeting_time'])) : '' ?>" required>
                             </div>
                             <div class="mb-3">
+                                <label for="duration" class="form-label">Durasi Meeting (menit)</label>
+                                <input type="number" name="duration" id="duration" class="form-control" value="<?= $meeting['duration'] ?? '' ?>" required>
+                            </div>
+                            <div class="mb-3">
                                 <label for="status" class="form-label">Status</label>
                                 <select name="status" id="status" class="form-control" required>
                                     <option value="scheduled" <?= (isset($meeting['status']) && $meeting['status'] === 'scheduled') ? 'selected' : '' ?>>Scheduled</option>
