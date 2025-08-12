@@ -43,9 +43,16 @@ class PageController extends BaseController
         $this->data['course'] = $course;
 
         // Check if user has already completed the course
-        $CourseStudent = model('Course\Models\CourseStudentModel');
-        $completed = $CourseStudent->select('progress')->where('user_id', $jwt->user_id)->where('course_id', $course['id'])->first();
-        $this->data['completed'] = $completed['progress'] ?? 0;
+        $db = \Config\Database::connect();
+        $completedLessons = $db->table('course_lessons')
+            ->select('count(course_lessons.id) as total_lessons, count(course_lesson_progress.user_id) as completed')
+            ->join('course_lesson_progress', 'course_lesson_progress.lesson_id = course_lessons.id AND user_id = ' . $jwt->user_id, 'left')
+            ->where('course_lessons.course_id', $course['id'])
+            ->get()
+            ->getRowArray();
+        $this->data['total_lessons']    = $completedLessons['total_lessons'] ?? 1;
+        $this->data['lesson_completed'] = $completedLessons['completed'] ?? 0;
+        $this->data['completed']        = round($completedLessons['completed'] / $completedLessons['total_lessons'] * 100);
         
         // Check if user already registered and has a zoom join link
         $AttendanceModel = model('Course\Models\LiveAttendanceModel');

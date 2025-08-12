@@ -24,12 +24,12 @@ class PageController extends BaseController
             ->getRowArray();
 
         $attended = $db->table('live_attendance')
-            ->select('live_meeting_id, live_meetings.title, live_meetings.subtitle, live_meetings.theme_code, live_meetings.meeting_date, live_meetings.meeting_time, live_batch.name as batch_title')
+            ->select('live_meeting_id, live_meetings.title, live_meetings.subtitle, live_meetings.theme_code, live_meetings.meeting_date, live_meetings.meeting_time, live_batch.name as batch_title, live_attendance.status')
             ->join('live_meetings', 'live_meetings.id = live_attendance.live_meeting_id')
             ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
             ->where('live_attendance.course_id', $course_id)
             ->where('user_id', $jwt->user_id)
-            ->where('live_attendance.status', 1)
+            ->where('live_attendance.status', '1')
             ->get()
             ->getResultArray();
         if ($attended) {
@@ -47,7 +47,6 @@ class PageController extends BaseController
             ->getResultArray();
 
         $this->data['live_sessions'] = [];
-        $this->data['live_session_ongoing'] = [];
 
         if ($live_sessions) {
             foreach ($live_sessions as $key => $live_session) {
@@ -73,8 +72,6 @@ class PageController extends BaseController
                         $this->data['live_sessions'][$key]['status_date'] = 'upcoming';
                     } else {
                         $this->data['live_sessions'][$key]['status_date'] = 'ongoing';
-                        $this->data['live_session_ongoing']['id'] = $live_session['id'];
-                        $this->data['live_session_ongoing']['title'] = $live_session['title'];
                     }
                 } elseif (date('Y-m-d') > $live_session['meeting_date']) {
                     if (in_array($live_session['id'], $attended, true)) {

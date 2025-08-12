@@ -1,6 +1,10 @@
 <script>
     Alpine.data('sesiLive', () => ({
-        feedbackForm: '',
+        currentFeedbackMeeting: {
+            id: '',
+            title: ''
+        },
+
         // Method untuk mendapatkan status sesi
         getSessionStatus(live_session) {
             const sessionDate = new Date(live_session.date);
@@ -80,11 +84,9 @@
             }
         },
 
-        showFeedbackButton(meetingTimeStr, sessionStatus) {
-            const meetingDate = new Date(meetingTimeStr.replace(' ', 'T'));
-            const now = new Date();
-            const diffMinutes = (now - meetingDate) / (1000 * 60);
-            return diffMinutes >= 1 && ['ongoing', 'upcoming'].includes(sessionStatus);
+        setCurrentFeedbackMeeting(meetingIndex) {
+            this.currentFeedbackMeeting.id = this.data.live_sessions[meetingIndex].id;
+            this.currentFeedbackMeeting.title = this.data.live_sessions[meetingIndex].subtitle;
         },
 
     }));
