@@ -37,7 +37,7 @@ $bottommenu = [
         <?= $menu['native'] ?? null ? 'native' : '' ?>
         id="bottommenu-member"
         class="item"
-        :class="data?.module == '<?= $menu['module'] ?>' ? 'active' : ''">
+        :class="(data?.module ?? '') == '<?= $menu['module'] ?>' ? 'active' : ''">
         <div class="col">
             <i class="<?= $menu['icon'] ?>"></i>
             <strong class=""><?= $menu['label'] ?></strong>
@@ -58,7 +58,7 @@ $bottommenu = [
             <a href="<?= $menu['url'] ?>"
                 <?= $menu['native'] ?? null ? 'native' : '' ?>
                 class="item"
-                :class="data?.module == '<?= $menu['module'] ?>' ? 'active' : ''">
+                :class="(data?.module ?? '') == '<?= $menu['module'] ?>' ? 'active' : ''">
                 <div class="icon-box icon-box-transparent">
                     <i class="<?= $menu['icon'] ?>"></i>
                 </div>

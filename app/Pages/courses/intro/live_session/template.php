@@ -137,7 +137,7 @@
 						<div class="card-body">
 
 							<!-- Check if no live session -->
-							<template x-if="data.live_sessions.length < 1" x-transition>
+							<template x-if="data.live_sessions?.scheduled.length < 1" x-transition>
 								<div class="row g-3">
 									<div class="col">
 										<div class="d-flex justify-content-between align-items-start">
@@ -215,32 +215,6 @@
 					<h5 class="offcanvas-title" id="shareCanvasLabel">Bagikan Tautan</h5><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body small"></div>
-			</div>
-
-			<!-- Modal -->
-			<div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered modal-lg">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="feedbackModalLabel">Feedback</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body" id="iframe_feedback">
-							<iframe 
-								onload="javascript:parent.scrollTo(0,0);" 
-								height="1002" 
-								allowTransparency="true" 
-								scrolling="no" 
-								frameborder="0" 
-								sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation allow-top-navigation-by-user-activation" 
-								style="width:100%;border:none" 
-								:src="`https://form.tarbiyya.id/embed.php?id=14575&element_1=${data.user.name}&element_8=${currentFeedbackMeeting.id}&element_9=${currentFeedbackMeeting.title}&element_7=${data.user.id}`" 
-								title="RuangaAI Feedback Chapter 2">
-								<a href="https://form.tarbiyya.id/view.php?id=14575" title="RuangaAI Feedback Chapter 2">RuangaAI Feedback Chapter 2</a>
-							</iframe>
-						</div>
-					</div>
-				</div>
 			</div>
 
 		</div>

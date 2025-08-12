@@ -85,8 +85,8 @@
         },
 
         setCurrentFeedbackMeeting(meetingIndex) {
-            this.currentFeedbackMeeting.id = this.data.live_sessions[meetingIndex].id;
-            this.currentFeedbackMeeting.title = this.data.live_sessions[meetingIndex].subtitle;
+            this.currentFeedbackMeeting.id = this.data.live_sessions.ongoing[meetingIndex].id;
+            this.currentFeedbackMeeting.title = this.data.live_sessions.ongoing[meetingIndex].subtitle;
         },
 
     }));

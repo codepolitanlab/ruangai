@@ -1,5 +1,5 @@
 <div class="accordion bg-transparent border-0" id="accordion-livesession-ongoing">
-    <template x-for="(live_session, meetingIndex) in data.live_sessions.ongoing">
+    <template x-for="(live_session, meetingIndex) in data.live_sessions?.ongoing">
         <div class="accordion-item p-2 rounded-4 mb-3" :class="live_session.status_date">
             <div class="accordion-header rounded-4 py-2">
                 <button class="accordion-button d-flex flex-column flex-md-row gap-3 align-items-md-center" type="button" data-bs-toggle="collapse" :data-bs-target="`#live_`+live_session.id" aria-expanded="true" :aria-controls="`live_`+live_session.id">
@@ -47,6 +47,14 @@
                             </template>
 
                             <button
+                                x-show="live_session.status_date == 'ongoing' && !live_session.feedback_submitted"
+                                type="button" class="btn btn-success rounded-3"
+                                title="Isi feedback setelah selesai mengikuti event"
+                                @click="$heroicHelper.toastr('Isi feedback setelah selesai mengikuti event', 'info', 'bottom')">
+                                Isi Feedback
+                            </button>
+
+                            <button
                                 x-show="live_session.status_date == 'completed' && !live_session.feedback_submitted"
                                 type="button" class="btn btn-success rounded-3"
                                 data-bs-toggle="modal"
@@ -91,4 +99,30 @@
             </div>
         </div>
     </template>
+
+    <!-- Modal -->
+    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="feedbackModalLabel">Feedback</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="iframe_feedback">
+                    <iframe
+                        onload="javascript:parent.scrollTo(0,0);"
+                        height="1002"
+                        allowTransparency="true"
+                        scrolling="no"
+                        frameborder="0"
+                        sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation allow-top-navigation-by-user-activation"
+                        style="width:100%;border:none"
+                        :src="`https://form.tarbiyya.id/embed.php?id=14575&element_1=${data.user.name}&element_8=${currentFeedbackMeeting.id}&element_9=${currentFeedbackMeeting.title}&element_7=${data.user.id}`"
+                        title="RuangaAI Feedback Chapter 2">
+                        <a href="https://form.tarbiyya.id/view.php?id=14575" title="RuangaAI Feedback Chapter 2">RuangaAI Feedback Chapter 2</a>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
