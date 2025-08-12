@@ -60,6 +60,13 @@ class MeetingAttendance extends AdminController
             if (! empty($filter['email'])) {
                 $this->model->like('users.email', $filter['email']);
             }
+            if (isset($filter['feedback'])) {
+                if($filter['feedback'] === '1') {
+                    $this->model->where('live_attendance.meeting_feedback_id !=', null);
+                } else {
+                    $this->model->where('live_attendance.meeting_feedback_id', null);
+                }
+            }
             if (isset($filter['status'])) {
                 $this->model->where('live_attendance.status', $filter['status']);
             }

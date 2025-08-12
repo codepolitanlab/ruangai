@@ -79,7 +79,13 @@
                                     <td><input type="text" class="form-control form-control-sm" name="filter[email]" value="<?= @$filter['email'] ?>" placeholder="filter name"></td>
                                     <td></td>
                                     <td></td>
-                                    <td></td>
+                                    <td>
+                                        <select name="filter[feedback]" class="form-select form-select-sm" >
+                                            <option value="">All</option>
+                                            <option value="1" <?= @$filter['feedback'] === '1' ? 'selected' : '' ?>>Mengisi</option>
+                                            <option value="0" <?= @$filter['feedback'] === '0' ? 'selected' : '' ?>>Belum Mengisi</option>
+                                        </select>
+                                    </td>
                                     <td>
                                         <select name="filter[status]" class="form-select form-select-sm" >
                                             <option value="">All</option>
