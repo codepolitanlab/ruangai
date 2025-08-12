@@ -47,28 +47,20 @@
                             </template>
 
                             <button
-                                x-show="live_session.status_date == 'ongoing' && !live_session.feedback_submitted"
-                                type="button" class="btn btn-primary rounded-3"
+                                x-show="live_session.status_date == 'completed' && !live_session.feedback_submitted"
+                                type="button" class="btn btn-success rounded-3"
                                 data-bs-toggle="modal"
                                 data-bs-target="#feedbackModal"
                                 @click="setCurrentFeedbackMeeting(meetingIndex)">
-                                Isi Feedback-mu
-                            </button>
-                            <button
-                                x-show="live_session.status_date == 'ongoing' && live_session.feedback_submitted"
-                                type="button"
-                                class="btn btn-outline-success bg-white rounded-3 disabled">
-                                <i class="bi bi-check-circle text-success"></i>
-                                Isi Feedback-mu
+                                Isi Feedback
                             </button>
 
-                            <button
+                            <p
                                 x-show="live_session.status_date == 'completed' && live_session.feedback_submitted"
-                                type="button"
-                                class="btn bg-secondary-subtle border-secondary-subtle rounded-3" disabled>
-                                <i class="bi bi-check-circle text-success bg-white rounded-circle ms-2"></i>
-                                Isi Feedback-mu
-                            </button>
+                                class="border border-success bg-white rounded-3 py-2 px-3">
+                                <i class="bi bi-check-circle text-success"></i>
+                                Terima kasih sudah mengisi feedback
+                            </p>
 
                             <p class="px-3 py-2 bg-info bg-opacity-50 rounded-2"
                                 x-show="data.attendedCode.includes(live_session.theme_code)">
