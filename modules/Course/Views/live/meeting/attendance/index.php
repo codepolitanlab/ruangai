@@ -51,7 +51,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <form method="GET" action="/zpanel/course/live/schedule/attendant/<?= $live_meeting['id'] ?>">
+                            <form method="GET">
                                 <tr>
                                     <td></td>
                                     <td><input type="text" class="form-control form-control-sm" name="filter[name]" value="<?= @$filter['name'] ?>" placeholder="filter name"></td>

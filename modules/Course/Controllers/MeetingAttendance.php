@@ -215,19 +215,20 @@ class MeetingAttendance extends AdminController
         $Zoom = new \Course\Libraries\Zoom();
 
         // Get participant list from cache file or Zoom participant API
-        $cache        = \Config\Services::cache();
-        $participants = $cache->get('zoom_participants_' . $live_meeting_id);
-        if ($participants === null) {
+        $cachePath = WRITEPATH . 'cache/zoom_participants_' . $live_meeting_id.'.json';
+        if(file_exists($cachePath)) {
+            $cache     = file_get_contents($cachePath);
+            $participants = json_decode($cache, true);
+        } else {
             // Get participant list from Zoom participant API
             $Zoom->getParticipantList($zoom_meeting_id);
             $participants = $Zoom->participants;
-            print_r($participants);die;
-
+    
             // Save participants to cache file
             if(!empty($participants)) {
-                $cache->save('zoom_participants_' . $live_meeting_id, $participants, 300);
-            }
-        }
+                file_put_contents($cachePath, json_encode($participants));
+            }            
+        }        
 
         $participants = $Zoom->accumulateDurations($participants);
         if (! $participants) {
@@ -251,15 +252,18 @@ class MeetingAttendance extends AdminController
         $inserted = 0;
         $updated  = 0;
 
+        $db = \Config\Database::connect();
         foreach ($users as $user) {
-            // TODO: Check if user has submit feedback
-            // $feedback = model('Course\Models\MeetingFeedbackModel')->where('user_id', $user['id'])
-            //                                         ->where('live_meeting_id', $live_meeting_id)
-            //                                         ->first();
+            // Check if user has submit feedback
+            $feedback = $db->table('live_meeting_feedback')->where('user_id', $user['id'])
+                                                    ->where('live_meeting_id', $live_meeting_id)
+                                                    ->get()
+                                                    ->getRowArray();
+
             $validParticipant['user_id']             = $user['id'];
             $validParticipant['course_id']           = $course_id;
             $validParticipant['live_meeting_id']     = $live_meeting_id;
-            $validParticipant['duration']            = $participants[$user['email']];
+            $validParticipant['duration']            = $participants[$user['email']] ?? 0;
             $validParticipant['meeting_feedback_id'] = $feedback['id'] ?? null;
             $validParticipant['status']              = ($validParticipant['duration'] >= 600) && null !== $validParticipant['meeting_feedback_id'] ? '1' : '0';
 
