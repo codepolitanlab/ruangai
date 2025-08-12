@@ -38,8 +38,8 @@
                             <template x-if="!data.attendedCode.includes(live_session.theme_code) && !data.is_expire">
                                 <button
                                     class="btn btn-primary rounded-3"
-                                    @click.prevent="checkEmailIsVerified(meetingIndex)"
-                                    x-show="['ongoing', 'upcoming'].includes(live_session.status_date)"
+                                    @click.prevent="checkEmailIsVerified(meetingIndex, 'ongoing')"
+                                    x-show="['ongoing','upcoming'].includes(live_session.status_date)"
                                     :class="!live_session.zoom_link && !live_session.zoom_meeting_id ? 'disabled' : ''">
                                     <i class="bi bi-camera-video"></i>
                                     <span x-text="!live_session.zoom_link && !live_session.zoom_meeting_id ? 'Zoom link belum tersedia' : 'Daftar Live Session'"></span>
