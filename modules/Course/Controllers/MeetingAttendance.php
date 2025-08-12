@@ -265,7 +265,7 @@ class MeetingAttendance extends AdminController
             $validParticipant['live_meeting_id']     = $live_meeting_id;
             $validParticipant['duration']            = $participants[$user['email']] ?? 0;
             $validParticipant['meeting_feedback_id'] = $feedback['id'] ?? null;
-            $validParticipant['status']              = ($validParticipant['duration'] >= 600) && null !== $validParticipant['meeting_feedback_id'] ? '1' : '0';
+            $validParticipant['status']              = ($validParticipant['duration'] >= 1800) && null !== $validParticipant['meeting_feedback_id'] ? '1' : '0';
 
             // Check if user is already in attendance table
             $exist = $liveAttendancModel->where('user_id', $user['id'])

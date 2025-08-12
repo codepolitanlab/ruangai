@@ -86,7 +86,7 @@ foreach ($attenders as $attender) :
                                             <?= $attender->zoom_join_link ?? null ? '✅' : '❌' ?>
                                         </span>
                                     </td>
-                                    <td class="<?= $attender->duration >= 600 ? 'text-success' : 'text-danger' ?>"><?= $attender->duration ?? '-' ?></td>
+                                    <td class="<?= $attender->duration >= 1800 ? 'text-success' : 'text-danger' ?>"><?= $attender->duration ?? '-' ?></td>
                                     <td>
                                         <?= ($attender->meeting_feedback_id ?? null) 
                                             ? '✅ <a href="/zpanel/course/live/meeting/feedback/' . $attender->meeting_feedback_id . '/detail" class="btn btn-sm btn-link text-nowrap"><span class="bi bi-search"></span> Lihat</a>' 
