@@ -46,7 +46,7 @@ class MeetingAttendance extends AdminController
             WHERE live_meeting_id = ' . $meeting_id)->getRowArray();
 
         // Base query with joins and subqueries
-        $this->model->select('live_attendance.id, users.name, users.email, live_attendance.duration, zoom_join_link, duration, meeting_feedback_id, live_attendance.status');
+        $this->model->select('live_attendance.id, users.name, users.email, users.phone, live_attendance.duration, zoom_join_link, duration, meeting_feedback_id, live_attendance.status');
         $this->model->join('users', 'users.id = live_attendance.user_id');
         $this->model->where('live_attendance.live_meeting_id', $meeting_id);
 

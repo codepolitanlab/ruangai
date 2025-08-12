@@ -81,14 +81,14 @@
                                     <td></td>
                                     <td>
                                         <select name="filter[feedback]" class="form-select form-select-sm" >
-                                            <option value="">All</option>
+                                            <option value="">Semua</option>
                                             <option value="1" <?= @$filter['feedback'] === '1' ? 'selected' : '' ?>>Mengisi</option>
                                             <option value="0" <?= @$filter['feedback'] === '0' ? 'selected' : '' ?>>Belum Mengisi</option>
                                         </select>
                                     </td>
                                     <td>
                                         <select name="filter[status]" class="form-select form-select-sm" >
-                                            <option value="">All</option>
+                                            <option value="">Semua</option>
                                             <option value="1" <?= @$filter['status'] === '1' ? 'selected' : '' ?>>Valid</option>
                                             <option value="0" <?= @$filter['status'] === '0' ? 'selected' : '' ?>>Tidak Valid</option>
                                         </select>
@@ -110,7 +110,8 @@ foreach ($attenders as $attender) :
                                 <tr>
                                     <td width="5%"><?= $no++ ?></td>
                                     <td>
-                                        <?= $attender->name ?>
+                                        <h6 class="m-0"><?= $attender->name ?></h6>
+                                        <small class="text-muted"><?= $attender->phone ?></small>
                                     </td>
                                     <td>
                                         <?= $attender->email ?></td>
