@@ -33,7 +33,7 @@
                         <dt>Mentor</dt>
                         <dd x-text="live_session.mentor_name"></dd>
                     </dl>
-                    <template x-if="data?.student?.completed">
+                    <template x-if="data?.completed">
                         <div class="d-flex gap-2 mt-4">
                             <template x-if="!data.attendedCode.includes(live_session.theme_code) && !data.is_expire">
                                 <button
@@ -90,7 +90,7 @@
                             <!-- <button class="btn btn-outline-secondary rounded-3"> <i class="bi bi-person-check-fill"></i> Isi Presensi</button> -->
                         </div>
                     </template>
-                    <template x-if="!data?.student?.completed">
+                    <template x-if="!data?.completed">
                         <div class="alert alert-warning">
                             Harap bereskan kursus sebelum mengikuti live session
                         </div>

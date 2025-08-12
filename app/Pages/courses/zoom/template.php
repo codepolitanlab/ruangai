@@ -40,7 +40,13 @@
 
                 <div class="row justify-content-center" x-data="registerLiveSession()">
 
-                    <div class="col-md-5" x-show="!data.zoom_join_link">
+                    <div class="col-md-5" x-show="data.meeting.status == 'completed'">
+                        <div class="card py-3 text-center">
+                            <p>Event live session sudah berakhir.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5" x-show="!data.zoom_join_link && data.meeting.status != 'completed'">
                         <div class="card">
                             <div class="card-body">
                                 <p class="text-center">Anda akan mendaftar ke live session dengan akun di bawah ini:</p>

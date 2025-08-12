@@ -21,7 +21,7 @@ class PageController extends BaseController
         // Get meeting detail
         $MeetingModel = model('Course\Models\LiveMeetingModel');
         $meeting      = $MeetingModel
-            ->select('id,title,meeting_date,meeting_time,live_batch_id')
+            ->select('id,title,meeting_date,meeting_time,live_batch_id,status')
             ->where('meeting_code', $meeting_code)
             ->where('zoom_meeting_id !=', null)
             ->first();
