@@ -46,16 +46,16 @@
                                 </button>
                             </template>
 
-                            <button
+                            <!-- <button
                                 x-show="live_session.status_date == 'ongoing' && !live_session.feedback_submitted"
                                 type="button" class="btn btn-success rounded-3"
                                 title="Isi feedback setelah selesai mengikuti event"
                                 @click="$heroicHelper.toastr('Form feedback akan tampil setelah event selesai', 'info', 'bottom')">
                                 Isi Feedback
-                            </button>
+                            </button> -->
 
                             <button
-                                x-show="live_session.status_date == 'completed' && !live_session.feedback_submitted"
+                                x-show="!live_session.feedback_submitted"
                                 type="button" class="btn btn-success rounded-3"
                                 data-bs-toggle="modal"
                                 data-bs-target="#feedbackModal"
