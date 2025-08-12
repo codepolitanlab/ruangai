@@ -49,39 +49,43 @@ class PageController extends BaseController
         $this->data['live_sessions'] = [];
 
         if ($live_sessions) {
+            $readyLiveSessions = [];
             foreach ($live_sessions as $key => $live_session) {
-                $this->data['live_sessions'][$key] = $live_session;
+                $readyLiveSessions[$key] = $live_session;
 
                 $feedbackExists = $db->table('live_meeting_feedback')
                     ->where('user_id', $jwt->user_id)
                     ->where('live_meeting_id', $live_session['id'])
                     ->countAllResults() > 0;
 
-                $this->data['live_sessions'][$key]['feedback_submitted'] = $feedbackExists;
+                $readyLiveSessions[$key]['feedback_submitted'] = $feedbackExists;
 
                 // Cek jika tanggal sudah lewat
                 if (date('Y-m-d') === $live_session['meeting_date']) {
                     // Cek jika waktu sudah lewat 2 jam
                     if (date('H:i:s') > date('H:i:s', strtotime('+2 hours', strtotime($live_session['meeting_time'])))) {
                         if (in_array($live_session['id'], $attended, true)) {
-                            $this->data['live_sessions'][$key]['status_date'] = 'attended';
+                            $readyLiveSessions[$key]['status_date'] = 'attended';
                         } else {
-                            $this->data['live_sessions'][$key]['status_date'] = 'completed';
+                            $readyLiveSessions[$key]['status_date'] = 'completed';
                         }
                     } elseif (date('H:i:s') < $live_session['meeting_time']) {
-                        $this->data['live_sessions'][$key]['status_date'] = 'upcoming';
+                        $readyLiveSessions[$key]['status_date'] = 'upcoming';
                     } else {
-                        $this->data['live_sessions'][$key]['status_date'] = 'ongoing';
+                        $readyLiveSessions[$key]['status_date'] = 'ongoing';
                     }
                 } elseif (date('Y-m-d') > $live_session['meeting_date']) {
                     if (in_array($live_session['id'], $attended, true)) {
-                        $this->data['live_sessions'][$key]['status_date'] = 'attended';
+                        $readyLiveSessions[$key]['status_date'] = 'attended';
                     } else {
-                        $this->data['live_sessions'][$key]['status_date'] = 'completed';
+                        $readyLiveSessions[$key]['status_date'] = 'completed';
                     }
                 } else {
-                    $this->data['live_sessions'][$key]['status_date'] = 'upcoming';
+                    $readyLiveSessions[$key]['status_date'] = 'upcoming';
                 }
+
+                // Pack live meeting by status
+                $this->data['live_sessions'][$live_session['status']][] = $readyLiveSessions[$key];
             }
         }
 
