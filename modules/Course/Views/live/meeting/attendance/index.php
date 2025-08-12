@@ -24,6 +24,27 @@
                 <a href="<?= site_url(urlScope() . '/course/live/meeting/' . $live_meeting['id'] . '/attendant/add'); ?>" class="btn btn-primary"><i class="bi bi-plus"></i> Add Attendance</a>
             </div>
         </div>
+
+        <div class="card">
+            <div class="card-body d-flex gap-5">
+                <div class="m-0">
+                    <label>Hadir Min. 30 Menit:</label>
+                    <h4 class="text-info"><?= $stats['users_durasi_gt_1800']; ?></h4>
+                </div>
+                <div class="m-0">
+                    <label>Mengisi Feedback:</label>
+                    <h4 class="text-info"><?= $stats['users_isi_feedback']; ?></h4>
+                </div>
+                <div class="m-0">
+                    <label>Total Partisipan Valid:</label>
+                    <h4 class="text-success"><?= $stats['users_valid']; ?></h4>
+                </div>
+                <div class="m-0">
+                    <label>Total Partisipan Tidak Valid:</label>
+                    <h4 class="text-secondary opacity-50"><?= $stats['users_tidak_valid']; ?></h4>
+                </div>
+            </div>
+        </div>
     </div>
 
     <section class="section">
@@ -59,7 +80,13 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td></td>
+                                    <td>
+                                        <select name="filter[status]" class="form-select form-select-sm" >
+                                            <option value="">All</option>
+                                            <option value="1" <?= @$filter['status'] === '1' ? 'selected' : '' ?>>Valid</option>
+                                            <option value="0" <?= @$filter['status'] === '0' ? 'selected' : '' ?>>Tidak Valid</option>
+                                        </select>
+                                    </td>
                                     <td>
                                         <div class="btn-group">
                                             <button type="submit" class="btn btn-primary">Filter</button>

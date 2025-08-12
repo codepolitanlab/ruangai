@@ -35,6 +35,16 @@ class MeetingAttendance extends AdminController
             ->where('live_meetings.deleted_at', null)
             ->first();
 
+        // Get all attendance stats
+        $db = \Config\Database::connect();
+        $data['stats'] = $db->query('SELECT
+            COUNT(DISTINCT IF(duration > 1800, user_id, NULL)) AS users_durasi_gt_1800,
+            COUNT(DISTINCT IF(meeting_feedback_id IS NOT NULL, user_id, NULL)) AS users_isi_feedback,
+            COUNT(DISTINCT IF(status = 1, user_id, NULL))  AS users_valid,
+            COUNT(DISTINCT IF(status = 0, user_id, NULL))  AS users_tidak_valid
+            FROM live_attendance
+            WHERE live_meeting_id = ' . $meeting_id)->getRowArray();
+
         // Base query with joins and subqueries
         $this->model->select('live_attendance.id, users.name, users.email, live_attendance.duration, zoom_join_link, duration, meeting_feedback_id, live_attendance.status');
         $this->model->join('users', 'users.id = live_attendance.user_id');
@@ -50,8 +60,8 @@ class MeetingAttendance extends AdminController
             if (! empty($filter['email'])) {
                 $this->model->like('users.email', $filter['email']);
             }
-            if (! empty($filter['duration'])) {
-                $this->model->like('live_attendance.duration', $filter['duration']);
+            if (isset($filter['status'])) {
+                $this->model->where('live_attendance.status', $filter['status']);
             }
         } else {
             $this->model->orderBy('live_attendance.created_at', 'desc');
