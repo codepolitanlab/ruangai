@@ -203,18 +203,26 @@
 													<span x-text="attended.meeting_time.substring(0, 5) + ` WIB`"></span>
 												</span>
 											</p>
-											<p 
-												class="bg-white bg-opacity-50 py-1 px-2 rounded-4 mt-3 mb-0"
-												x-show="attended.status == 0 && !attended.meeting_feedback_id">
-												<i class="bi bi-exclamation-triangle"></i>
-												Kamu belum mengisi feedback
-											</p>
-											<p 
-												class="bg-white bg-opacity-50 py-1 px-2 rounded-4 mt-3 mb-0"
-												x-show="attended.status == 0 && attended.duration < 1800">
+											<div x-show="attended.status == 0 || attended.status == null">
+												<p 
+													class="bg-white bg-opacity-50 py-1 px-2 rounded-4 mt-3 mb-0"
+													x-show="attended.duration < 1">
+													<i class="bi bi-exclamation-triangle"></i>
+													Kamu tidak mengikuti sesi
+												</p>
+												<p 
+													class="bg-white bg-opacity-50 py-1 px-2 rounded-4 mt-3 mb-0"
+													x-show="attended.duration > 0 && attended.duration < 1800">
 													<i class="bi bi-exclamation-triangle"></i>
 													Durasi kamu mengikuti sesi kurang dari yang dipersyaratkan
 												</p>
+												<p 
+												class="bg-white bg-opacity-50 py-1 px-2 rounded-4 mt-3 mb-0"
+												x-show="attended.duration > 0 && attended.meeting_feedback_id == null">
+													<i class="bi bi-exclamation-triangle"></i>
+													Kamu belum mengisi feedback
+												</p>
+										</div>
 										</div>
 									</div>
 								</div>
