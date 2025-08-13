@@ -39,8 +39,7 @@
                     class="bg-white bg-opacity-50 py-1 px-2 rounded-4 mt-3 mb-0"
                     x-show="attended.duration > 0 && attended.meeting_feedback_id == null">
                         <i class="bi bi-exclamation-triangle"></i>
-                        Kamu belum mengisi feedback. 
-                        <a :href="`/courses/feedback/${attended.meeting_code}`" class="fw-bold ms-2 btn btn-sm btn-outline-primary">Isi Feedback</a>
+                        Kamu sudah mengisi feedback? 
                         <button 
                             class="fw-bold ms-2 btn btn-sm btn-outline-success" 
                             @click="checkAttendedStatus(attendedIndex)"
@@ -48,6 +47,7 @@
                             <div class="btn-progress-spinner text-primary">Mengecek..</div>
                             <span class="btn-label">Cek Status</span>
                         </button>
+                        <a :href="`/courses/feedback/${attended.meeting_code}`" class="fw-bold ms-2 btn btn-sm btn-outline-primary">Isi Feedback</a>
                     </p>
             </div>
             </div>

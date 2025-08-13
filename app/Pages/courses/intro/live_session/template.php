@@ -155,7 +155,7 @@
 							</template>
 
 							<div class="mb-5" x-show="data.live_sessions?.ongoing.length > 0" x-transition>
-								<h4 class="border-bottom pb-2 opacity-75">Sedang Berlangsung</h4>
+								<h4 class="border-bottom pb-2 opacity-75">Event Hari Ini</h4>
 								<?= $this->include('courses/intro/live_session/meeting_ongoing') ?>
 							</div>
 							
