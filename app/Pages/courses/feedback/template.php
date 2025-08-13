@@ -57,7 +57,7 @@
 
 		<div class="appContent" style="min-height:90vh" x-data="feedback()">
 
-			<template x-if="!data.meeting">
+			<template x-if="!data.meeting || !isMeetingOver30Min(data.meeting.meeting_date + ` ` + data.meeting.meeting_time)">
 				<div class="card mt-5 mb-4 rounded-4 shadow-none">
 					<div class="card-body text-center">
 						<p>Form feedback belum tersedia atau tautan salah.</p>
@@ -66,7 +66,7 @@
 				</div>
 			</template>
 
-			<template x-if="data.meeting">
+			<template x-if="data.meeting && isMeetingOver30Min(data.meeting.meeting_date + ` ` + data.meeting.meeting_time)">
 				<div class="card mt-2 mb-4 rounded-4 shadow-none">
 					<div class="card-body d-flex justify-content-start align-items-center gap-2 px-4 py-3">
 						<div>
@@ -77,7 +77,7 @@
 				</div>
 			</template>
 
-			<template x-if="data.user?.name">
+			<template x-if="data.user?.name && isMeetingOver30Min(data.meeting.meeting_date + ` ` + data.meeting.meeting_time)">
 				<div class="card shadow-none">
 					<div class="card-body">
 						<iframe
