@@ -47,7 +47,9 @@
                             </template>
 
                             <button
-                                x-show="!live_session.feedback_submitted && isMeetingOver30Min(live_session.meeting_date + ` ` + live_session.meeting_time)"
+                                x-show="!live_session.feedback_submitted 
+                                    && isMeetingOver30Min(live_session.meeting_date + ` ` + live_session.meeting_time)
+                                    && !data.attendedCode.includes(live_session.theme_code)"
                                 type="button" class="btn btn-success rounded-3"
                                 data-bs-toggle="modal"
                                 data-bs-target="#feedbackModal"
