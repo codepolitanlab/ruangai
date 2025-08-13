@@ -1,7 +1,8 @@
 <template x-for="(attended, attendedIndex) in data.attended">
     <div 
         class="card pe-3 p-2 rounded-4 shadow-sm mb-3 bg-opacity-10 border"
-        :class="attended.status == 1 ? 'bg-success border-success' : 'bg-warning border-warning'">
+        :class="attended.status == 1 ? 'bg-success border-success' : 'bg-warning border-warning'"
+        x-show="moment().isAfter(moment(attended.meeting_date + ' ' + attended.meeting_end, 'YYYY-MM-DD HH:mm:ss'))">
         <div class="d-flex gap-2 align-items-top">
             <div class="py-2 ps-1 pe-2">
                 <div class="d-flex align-items-center justify-content-center rounded-4 bg-white">
