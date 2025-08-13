@@ -30,5 +30,12 @@ class AdminController extends BaseController
         if (! user_id()) {
             header('Location: /' . urlScope() . '/user/login');
         }
+
+        // Check role
+        if (session()->get('role_slug') == 'member') {
+            session()->destroy();
+            session()->setFlashdata('warning_message', 'You do not have permission to access this page');
+            return redirect()->to('/' . urlScope() . '/user/login');
+        }
     }
 }
