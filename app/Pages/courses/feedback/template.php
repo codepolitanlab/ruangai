@@ -42,32 +42,44 @@
 		.bg-warning-2 {
 			background-color: #fe9500;
 		}
-
 	</style>
 
 	<div id="appCapsule" class="">
-		<div id="course-features" class="d-flex gap-2 px-3 pt-4 pb-1">
-			<a :href="`/courses/intro/${data.course?.id}/${data.course?.slug}/live_session`"
-				class="btn rounded-4 px-2"
-				:class="data.active_page == 'intro' ? `btn-primary` : `btn-white bg-white text-primary`">
-				<h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>
-			</a>
-		</div>
+		<template x-if="data.meeting">
+			<div id="course-features" class="d-flex gap-2 px-3 pt-4 pb-1">
+				<a :href="`/courses/intro/${data.course?.id}/${data.course?.slug}/live_session`"
+					class="btn rounded-4 px-2"
+					:class="data.active_page == 'intro' ? `btn-primary` : `btn-white bg-white text-primary`">
+					<h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>
+				</a>
+			</div>
+		</template>
 
 		<div class="appContent" style="min-height:90vh" x-data="feedback()">
 
-			<div class="card mt-2 mb-4 rounded-4 shadow-none">
-				<div class="card-body d-flex justify-content-start align-items-center gap-2 px-4 py-3">
-					<div>
-						<h4 class="h4 fw-normal">Live Session Feedback</h4>
-						<p class="text-dark opacity-50 mb-0">Isi form feedback di bawah ini untuk mengonfirmasi kehadiranmu</p>
+			<template x-if="!data.meeting">
+				<div class="card mt-5 mb-4 rounded-4 shadow-none">
+					<div class="card-body text-center">
+						<p>Form feedback belum tersedia atau tautan salah.</p>
+						<a href="/"><i class="bi bi-arrow-left"></i> Kembali</a>
 					</div>
 				</div>
-			</div>
+			</template>
 
-			<div class="card shadow-none">
-				<div class="card-body">
-					<template x-if="data.user?.name">
+			<template x-if="data.meeting">
+				<div class="card mt-2 mb-4 rounded-4 shadow-none">
+					<div class="card-body d-flex justify-content-start align-items-center gap-2 px-4 py-3">
+						<div>
+							<h4 class="h4 fw-normal">Live Session Feedback</h4>
+							<p class="text-dark opacity-50 mb-0">Isi form feedback di bawah ini untuk mengonfirmasi kehadiranmu</p>
+						</div>
+					</div>
+				</div>
+			</template>
+
+			<template x-if="data.user?.name">
+				<div class="card shadow-none">
+					<div class="card-body">
 						<iframe
 							onload="javascript:parent.scrollTo(0,0);"
 							height="1002"
@@ -80,9 +92,9 @@
 							title="RuangaAI Feedback Chapter 2">
 							<a href="https://form.tarbiyya.id/view.php?id=14575" title="RuangaAI Feedback Chapter 2">RuangaAI Feedback Chapter 2</a>
 						</iframe>
-					</template>
+					</div>
 				</div>
-			</div>
+			</template>
 
 		</div>
 	</div>
