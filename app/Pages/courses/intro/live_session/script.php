@@ -5,6 +5,8 @@
             title: ''
         },
 
+        checkingStatus: false,
+
         // Method untuk mendapatkan status sesi
         getSessionStatus(live_session) {
             const sessionDate = new Date(live_session.date);
@@ -87,6 +89,21 @@
         setCurrentFeedbackMeeting(meetingIndex) {
             this.currentFeedbackMeeting.id = this.data.live_sessions.ongoing[meetingIndex].id;
             this.currentFeedbackMeeting.title = this.data.live_sessions.ongoing[meetingIndex].subtitle;
+        },
+
+        checkAttendedStatus(meetingIndex) {
+            let meetingID = this.data.attended[meetingIndex].live_meeting_id;
+            console.log(meetingID, meetingIndex, this.data.attended);
+            $heroicHelper.post(`/courses/intro/live_session/checkAttendedStatus`, {meeting_id: meetingID})
+            .then((response) => {
+                if(response.data.status == 'success') {
+                    this.data.attended[meetingIndex].status = 1;
+                    $heroicHelper.toastr(`Anda telah mengikuti sesi ${this.data.attended[meetingIndex].title}`, 'success', 'bottom');
+                    return;
+                }
+                
+                $heroicHelper.toastr(`Feedback untuk sesi ${this.data.attended[meetingIndex].title} belum terkirim`, 'warning', 'bottom');
+            })
         },
 
     }));

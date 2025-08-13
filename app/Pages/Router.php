@@ -60,6 +60,9 @@ class Router
         '/courses/zoom/:meeting_code' => [
             'handler' => '[isLoggedIn]',
         ],
+        '/courses/feedback/:meeting_code' => [
+            'handler' => '[isLoggedIn]',
+        ],
 
         '/reset_password' => [],
         '/reset_password/change/:token' => [],

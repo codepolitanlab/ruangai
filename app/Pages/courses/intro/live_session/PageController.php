@@ -23,12 +23,14 @@ class PageController extends BaseController
             ->get()
             ->getRowArray();
 
+        // Get attended events
         $attended = $db->table('live_attendance')
-            ->select('live_meeting_id, live_meetings.title, live_meetings.subtitle, live_meetings.theme_code, duration, meeting_feedback_id, live_meetings.meeting_date, live_meetings.meeting_time, live_batch.name as batch_title, live_attendance.status')
+            ->select('live_meeting_id, live_meetings.meeting_code, live_meetings.title, live_meetings.subtitle, live_meetings.theme_code, duration, meeting_feedback_id, live_meetings.meeting_date, live_meetings.meeting_time, live_batch.name as batch_title, live_attendance.status')
             ->join('live_meetings', 'live_meetings.id = live_attendance.live_meeting_id')
             ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
             ->where('live_attendance.course_id', $course_id)
             ->where('user_id', $jwt->user_id)
+            ->orderBy('live_meetings.meeting_date', 'asc')
             ->get()
             ->getResultArray();
         if ($attended) {
@@ -120,5 +122,40 @@ class PageController extends BaseController
             ->getRowArray();
 
         return $this->respond($this->data);
+    }
+
+    public function postCheckAttendedStatus()
+    {
+        $Heroic = new \App\Libraries\Heroic();
+        $jwt    = $Heroic->checkToken();
+        $meeting_id = $this->request->getPost('meeting_id');
+
+        // Get meeting_feedback_id by user_id and live_meeting_id
+        $db = \Config\Database::connect();
+        $meeting_feedback_id = $db->table('live_meeting_feedback')
+            ->select('id')
+            ->where('user_id', $jwt->user_id)
+            ->where('live_meeting_id', $meeting_id)
+            ->get()
+            ->getRowArray()['id'] ?? null;
+
+        if($meeting_feedback_id) {
+            // Update live_attendance
+            $db->table('live_attendance')
+                ->where('user_id', $jwt->user_id)
+                ->where('live_meeting_id', $meeting_id)
+                ->update([
+                    'meeting_feedback_id' => $meeting_feedback_id,
+                    'status' => 1
+                ]);
+
+            return $this->respond([
+                'status' => 'success'
+            ]);
+        }
+
+        return $this->respond([
+            'status' => 'failed'
+        ]);
     }
 }

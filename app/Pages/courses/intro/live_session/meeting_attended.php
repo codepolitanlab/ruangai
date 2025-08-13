@@ -1,18 +1,18 @@
-<template x-for="attended in data.attended">
+<template x-for="(attended, attendedIndex) in data.attended">
     <div 
-        class="card pe-3 p-2 rounded-4 border shadow-none mb-2"
-        :class="attended.status == 1 ? 'bg-success' : 'bg-warning'">
-        <div class="d-flex gap-2 align-items-center">
+        class="card pe-3 p-2 rounded-4 shadow-sm mb-3 bg-opacity-10 border"
+        :class="attended.status == 1 ? 'bg-success border-success' : 'bg-warning border-warning'">
+        <div class="d-flex gap-2 align-items-top">
             <div class="py-2 ps-1 pe-2">
                 <div class="d-flex align-items-center justify-content-center rounded-4 bg-white">
                     <i class="bi bi-check fs-2"
                         :class="attended.status == 1 ? 'bi-check text-success' : 'bi-x text-danger'"></i>
                 </div>
             </div>
-            <div>
-                <p class="text-white mb-1" x-text="attended.batch_title + ', ' + attended.subtitle"></p>
-                <div class="fw-bold text-white mb-1" x-text="attended.title"></div>
-                <p class="m-0 d-flex gap-3 text-white small">
+            <div class="py-2">
+                <h5 class="text-muted mb-1" x-text="attended.batch_title + ', ' + attended.subtitle"></h5>
+                <h4 class="fw-bold mb-1" x-text="attended.title"></h4>
+                <p class="m-0 d-flex gap-3 small">
                     <span class="d-flex">
                         <i class="bi bi-calendar me-1 fs-6"></i>
                         <span x-text="$heroicHelper.formatDate(attended.meeting_date)"></span>
@@ -39,7 +39,15 @@
                     class="bg-white bg-opacity-50 py-1 px-2 rounded-4 mt-3 mb-0"
                     x-show="attended.duration > 0 && attended.meeting_feedback_id == null">
                         <i class="bi bi-exclamation-triangle"></i>
-                        Kamu belum mengisi feedback
+                        Kamu belum mengisi feedback. 
+                        <a :href="`/courses/feedback/${attended.meeting_code}`" class="fw-bold ms-2 btn btn-sm btn-outline-primary">Isi Feedback</a>
+                        <button 
+                            class="fw-bold ms-2 btn btn-sm btn-outline-success" 
+                            @click="checkAttendedStatus(attendedIndex)"
+                            :class="checkingStatus ? 'btn-progress' : ''">
+                            <div class="btn-progress-spinner text-primary">Mengecek..</div>
+                            <span class="btn-label">Cek Status</span>
+                        </button>
                     </p>
             </div>
             </div>
