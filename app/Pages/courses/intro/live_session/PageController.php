@@ -34,7 +34,11 @@ class PageController extends BaseController
             ->get()
             ->getResultArray();
         if ($attended) {
-            $attendedCode = array_column($attended, 'theme_code');
+            $attendedCode = [];
+            foreach ($attended as $key => $value) {
+                if($value['status'] === '1')
+                    $attendedCode[] = $value['theme_code'];
+            }
         }
 
         $live_sessions = $db->table('live_meetings')
