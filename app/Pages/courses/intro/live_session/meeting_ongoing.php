@@ -1,4 +1,28 @@
 <div class="accordion bg-transparent border-0" id="accordion-livesession-ongoing">
+    <style>
+        @keyframes pulseFade {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.3);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+         .icon-broadcast-animated {
+            display: inline-block;
+            animation: pulseFade 1.5s ease-in-out infinite;
+        }
+    </style>
+
     <template x-for="(live_session, meetingIndex) in data.live_sessions?.ongoing">
         <div class="accordion-item p-2 rounded-4 mb-3" :class="live_session.status_date">
             <div class="accordion-header rounded-4 py-2">
@@ -18,7 +42,7 @@
                         </p>
                     </div>
                     <div class="badge bg-primary-subtle ms-auto px-2 py-3 text-dark opacity-50" x-show="live_session.status_date == 'upcoming'">Akan datang</div>
-                    <div class="badge bg-white ms-auto px-2 py-3 text-warning" x-show="live_session.status_date == 'ongoing'"><i class="bi bi-broadcast"></i> Sedang berlangsung</div>
+                    <div class="badge bg-white ms-auto px-2 py-3 text-warning" x-show="live_session.status_date == 'ongoing'"><i class="bi bi-broadcast icon-broadcast-animated text-secondary"></i> Sedang berlangsung</div>
                     <div class="badge bg-white border border-success ms-auto px-2 py-3 text-success" x-show="live_session.status_date == 'attended'"><i class="bi bi-check-circle"></i> Sudah mengikuti</div>
                     <div class="badge bg-secondary-subtle border border-secondary-subtle ms-auto px-2 py-3 text-dark opacity-75" x-show="live_session.status_date == 'completed'"> Sesi selesai</div>
                 </button>
