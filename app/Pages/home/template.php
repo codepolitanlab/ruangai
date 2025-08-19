@@ -138,7 +138,8 @@
 										</div>
 										<span x-text="Math.round(data?.last_course.lesson_completed/data?.last_course.total_lessons*100)"></span>%
 									</div>
-									<a :href="`/courses/intro/${data?.last_course.id}/${data?.last_course?.slug}/lessons`" class="btn bg-white rounded-pill p-1 text-secondary hover">Mulai Belajar</a>
+									<a x-show="Math.round(data?.last_course.lesson_completed/data?.last_course.total_lessons*100) < 100" :href="`/courses/intro/${data?.last_course.id}/${data?.last_course?.slug}/lessons`" class="btn bg-white rounded-pill p-1 text-secondary hover">Mulai Belajar</a>
+									<a x-show="Math.round(data?.last_course.lesson_completed/data?.last_course.total_lessons*100) >= 100" :href="`/certificate/claim/${data?.last_course.id}`" class="btn bg-white rounded-pill p-1 text-success hover">Klaim Sertifikat</a>
 								</div>
 							</div>
 						</div>
