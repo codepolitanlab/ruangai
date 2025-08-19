@@ -65,10 +65,10 @@
 											<p class="fw-bold h5 text-white" x-text="course.course_title"></p>
 											<div class="d-flex justify-content-between align-items-center text-white">
 												<p class="mb-1"><span class="fs-4" style="color: #7BD5FF" x-text="course.total_completed"></span> dari <span x-text="course.total_module"></span> materi selesai</p>
-												<p class="fw-bold mb-1" x-text="course.progress + '%'"></p>
+												<p class="fw-bold mb-1" x-text="Math.round(course?.total_completed/course?.total_module*100) + '%'"></p>
 											</div>
 											<div class="progress" style="background: #343434">
-												<div class="progress-bar" role="progressbar" :style="{ width: course.progress + '%', background: '#7BD5FF' }" aria-valuenow="course.progress" aria-valuemin="0" aria-valuemax="100"></div>
+												<div class="progress-bar" role="progressbar" :style="`width: ${Math.round(course.total_completed/course.total_module*100)}%; background: #7BD5FF`" aria-valuenow="Math.round(course?.total_completed/course?.total_module*100)" aria-valuemin="0" aria-valuemax="100"></div>
 											</div>
 										</div>
 									</div>
