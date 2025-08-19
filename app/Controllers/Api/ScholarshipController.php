@@ -196,12 +196,17 @@ class ScholarshipController extends ResourceController
             ];
         }
 
-        $memberQuery = $participantModel->select('fullname, status, created_at as joined_at')
-            ->where('reference', $leader['referral_code'])
-            ->where('deleted_at', null)
+        $memberQuery = $participantModel->select('fullname, status, scholarship_participants.created_at as joined_at, course_students.graduate')
+            ->join('course_students', 'course_students.user_id = scholarship_participants.user_id')
+            ->where('scholarship_participants.reference', $leader['referral_code'])
+            ->where('scholarship_participants.deleted_at', null)
             ->get();
 
         $members = $memberQuery->getResultArray();
+
+        foreach ($members as $key => $member) {
+            $members[$key]['status'] = $member['graduate'] == 1 ? 'lulus' : 'terdaftar';
+        }
 
         // Filter member graduated by status completed
         $graduated = count(array_filter($members, static fn($member) => $member['status'] === 'lulus'));
