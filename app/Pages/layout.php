@@ -8,9 +8,11 @@
 <div id="app" x-data></div>
 
 <!-- Pinecone Routers -->
-<div id="router" x-data="router()">
+<div id="router" x-data="router()" x-handler.global="[globalHandler]">
     <?= ltrim(renderRouter(App\Pages\Router::$router)) ?>
 </div>
+
+<?= $this->include('partials/reload_alert') ?>
 
 <?php $this->endSection() ?>
 
@@ -43,6 +45,7 @@
             showBottomMenu: true,
             sessionToken: null,
             settings: {},
+            showReloadAlert: false,
             user: {},
             async getSiteSettings() {
                 if(Object.keys(Alpine.store('core').settings).length < 1){
@@ -68,10 +71,24 @@
         });
 
         Alpine.data('router', () => ({
+            pageWithReloadAlert: [
+                "/",
+                "/courses/intro/1/dasar-dan-penggunaan-generative-ai",
+                "/courses/intro/1/dasar-dan-penggunaan-generative-ai/live_session"
+            ],
+
             isLoggedIn(context, controller){
                 if(! localStorage.getItem('heroic_token')){
                     // this.$router.navigate('/masuk')
                     window.location.replace('https://ruangai.id/signin')
+                }
+            },
+            globalHandler(ctx) {
+                // Show reload alert if the page is in the list
+                if(this.pageWithReloadAlert.includes(ctx.path)){
+                    Alpine.store('core').showReloadAlert = true;
+                } else {
+                    Alpine.store('core').showReloadAlert = false;
                 }
             }
         }))
