@@ -25,6 +25,10 @@ class PageController extends BaseController
             ->where('user_id', $jwt->user_id)
             ->countAllResults();
 
+        $this->data['total_live_session'] = $db->table('live_attendance')
+            ->where('user_id', $jwt->user_id)
+            ->countAllResults();
+
         $last_course = $db->table('course_lesson_progress')
             ->select('course_id as id, courses.course_title as title, courses.slug')
             ->join('courses', 'courses.id = course_lesson_progress.course_id')
