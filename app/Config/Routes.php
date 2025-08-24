@@ -50,4 +50,10 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
 
     $routes->get('wasender', 'WASenderController::index');
     $routes->post('wasender/incoming', 'WASenderController::incoming');
+
+    // Regions API
+    $routes->get('regions/provinces', 'RegionController::province');
+    $routes->get('regions/cities/(:any)', 'RegionController::city/$1');
+    $routes->get('regions/districts/(:any)', 'RegionController::district/$1');
+    $routes->get('regions/villages/(:any)', 'RegionController::village/$1');
 });

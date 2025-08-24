@@ -9,7 +9,7 @@ require 'recipe/codeigniter4.php';
 set('repository', 'git@github.com:codepolitanlab/ruangai.git');
 
 add('shared_files', ['Caddyfile','php.ini']);
-add('shared_dirs', []);
+add('shared_dirs', ['public/certificates']);
 add('writable_dirs', []);
 
 // Hosts
