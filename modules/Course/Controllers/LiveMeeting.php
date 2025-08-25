@@ -45,6 +45,14 @@ class LiveMeeting extends AdminController
     public function insert($batch_id)
     {
         $postData = $this->request->getPost();
+
+        // meeting_code tidak boleh ada yang sama
+        $existing = $this->model->where('meeting_code', $postData['meeting_code'])->first();
+        if ($existing) {
+            session()->setFlashdata('error_message', 'Meeting code sudah digunakan di meeting lain');
+            return redirect()->back()->withInput();
+        }
+
         $this->model->save($postData);
         session()->setFlashdata('success_message', 'Meeting created successfully');
 
@@ -67,6 +75,14 @@ class LiveMeeting extends AdminController
         $postData = $this->request->getPost();
         $id       = $postData['id'] ?? $id;
         unset($postData['id']);
+
+        // meeting_code tidak boleh ada yang sama
+        $existing = $this->model->where('meeting_code', $postData['meeting_code'])->first();
+        if ($existing) {
+            session()->setFlashdata('error_message', 'Meeting code sudah digunakan di meeting lain');
+            return redirect()->back()->withInput();
+        }
+
         $this->model->update($id, $postData);
         session()->setFlashdata('success_message', 'Meeting updated successfully');
 
