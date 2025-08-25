@@ -77,7 +77,10 @@ class LiveMeeting extends AdminController
         unset($postData['id']);
 
         // meeting_code tidak boleh ada yang sama
-        $existing = $this->model->where('meeting_code', $postData['meeting_code'])->first();
+        $existing = $this->model
+            ->where('meeting_code', $postData['meeting_code'])
+            ->where('id !=', $id)
+            ->first();
         if ($existing) {
             session()->setFlashdata('error_message', 'Meeting code sudah digunakan di meeting lain');
             return redirect()->back()->withInput();
