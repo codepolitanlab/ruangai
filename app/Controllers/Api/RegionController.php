@@ -24,11 +24,7 @@ class RegionController extends ResourceController
         $builder = $this->db->table('reg_provinces');
         $query = $builder->get();
 
-        return $this->response
-            ->setHeader('Access-Control-Allow-Origin', '*')
-            ->setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE')
-            ->setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
-            ->setJSON($query->getResult());
+        return $this->respond($query->getResult());
     }
 
     public function city($province_id = null)
