@@ -34,7 +34,7 @@ class Cors extends BaseConfig
          *   - ['http://localhost:8080']
          *   - ['https://www.example.com']
          */
-        'allowedOrigins' => [],
+        'allowedOrigins' => ['*'],
 
         /**
          * Origin regex patterns for the `Access-Control-Allow-Origin` header.
