@@ -27,11 +27,11 @@
                     <p 
                         class="bg-white bg-opacity-50 py-1 px-2 rounded-4 mt-3 mb-0"
                         x-show="attended.duration < 1">
-                        <span x-show="attended.status == null">
+                        <span x-show="attended.duration == null">
                             <i class="bi bi-arrow-repeat"></i>
                             Data kehadiran sedang diproses
                         </span>
-                        <span x-show="attended.status == 0">
+                        <span x-show="attended.duration == 0">
                             <i class="bi bi-exclamation-triangle"></i>
                             Kamu tidak mengikuti sesi
                         </span>
@@ -44,8 +44,8 @@
                     </p>
                     <p 
                     class="bg-white bg-opacity-50 py-1 px-2 rounded-4 mt-3 mb-0"
-                    x-show="attended.duration > 0 && attended.meeting_feedback_id == null">
-                        <i class="bi bi-exclamation-triangle"></i>
+                    x-show="attended.duration >= 1800 && attended.meeting_feedback_id == null">
+                    <i class="bi bi-exclamation-triangle"></i>
                         Kamu sudah mengisi feedback? 
                         <button 
                             class="fw-bold ms-2 btn btn-sm btn-outline-success" 
