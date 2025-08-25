@@ -24,7 +24,11 @@ class RegionController extends ResourceController
         $builder = $this->db->table('reg_provinces');
         $query = $builder->get();
 
-        return $this->respond($query->getResult());
+        return $this->response
+            ->setHeader('Access-Control-Allow-Origin', '*')
+            ->setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE')
+            ->setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
+            ->setJSON($query->getResult());
     }
 
     public function city($province_id = null)
@@ -37,7 +41,11 @@ class RegionController extends ResourceController
         $builder->where('province_id', $province_id);
         $query = $builder->get();
 
-        return $this->respond($query->getResult());
+        return $this->response
+            ->setHeader('Access-Control-Allow-Origin', '*')
+            ->setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE')
+            ->setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
+            ->setJSON($query->getResult());
     }
 
     public function district($regency_id = null)
@@ -50,7 +58,11 @@ class RegionController extends ResourceController
         $builder->where('regency_id', $regency_id);
         $query = $builder->get();
 
-        return $this->respond($query->getResult());
+        return $this->response
+            ->setHeader('Access-Control-Allow-Origin', '*')
+            ->setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE')
+            ->setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
+            ->setJSON($query->getResult());
     }
 
     public function village($district_id = null)
@@ -63,6 +75,10 @@ class RegionController extends ResourceController
         $builder->where('district_id', $district_id);
         $query = $builder->get();
 
-        return $this->respond($query->getResult());
+        return $this->response
+            ->setHeader('Access-Control-Allow-Origin', '*')
+            ->setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE')
+            ->setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
+            ->setJSON($query->getResult());
     }
 }
