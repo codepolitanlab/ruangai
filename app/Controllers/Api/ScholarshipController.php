@@ -196,8 +196,9 @@ class ScholarshipController extends ResourceController
             ];
         }
 
-        $memberQuery = $participantModel->select('fullname, status, scholarship_participants.created_at as joined_at, course_students.graduate, course_student.progress')
+        $memberQuery = $participantModel->select('fullname, status, scholarship_participants.created_at as joined_at, course_students.graduate, course_students.progress, COUNT(live_attendance.id) as total_live_session')
             ->join('course_students', 'course_students.user_id = scholarship_participants.user_id', 'left')
+            ->join('live_attendance', 'live_attendance.user_id = scholarship_participants.user_id', 'left')
             ->where('scholarship_participants.reference', $leader['referral_code'])
             ->where('scholarship_participants.deleted_at', null)
             ->get();
