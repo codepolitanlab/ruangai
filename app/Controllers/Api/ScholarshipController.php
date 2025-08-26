@@ -201,7 +201,13 @@ class ScholarshipController extends ResourceController
             ->join('live_attendance', 'live_attendance.user_id = scholarship_participants.user_id', 'left')
             ->where('scholarship_participants.reference', $leader['referral_code'])
             ->where('scholarship_participants.deleted_at', null)
-            ->groupBy('scholarship_participants.user_id')
+            ->groupBy([
+                'scholarship_participants.user_id',
+                'scholarship_participants.fullname',
+                'scholarship_participants.created_at',
+                'course_students.graduate',
+                'course_students.progress'
+            ])
             ->get();
 
         $members = $memberQuery->getResultArray();
