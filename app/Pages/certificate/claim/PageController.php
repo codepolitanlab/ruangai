@@ -111,13 +111,15 @@ class PageController extends BaseController
             ->where('user_id', $jwt->user_id)
             ->where('course_id', $course_id)
             ->update([
-                'graduate'        => 1,
+                'graduate'        => 1, // Set lulus saat klaim sertifikat
                 'cert_claim_date' => date('Y-m-d H:i:s'),
                 'cert_code'       => $certResult->code,
                 'cert_number'     => $certResult->numberOrder,
                 'cert_url'        => json_encode($certResult->getOutputURLs()),
                 'expire_at'       => null,
             ]);
+
+        // TODO: Generate token reward lulus
 
         return $this->respond([
             'status'  => 'success',
