@@ -160,6 +160,7 @@ class PageController extends BaseController
                 ->select('live_meeting_id')
                 ->where('user_id', $user_id)
                 ->where('course_id', $course_id)
+                ->where('status', 1)
                 ->where('deleted_at', null)
                 ->groupBy('live_meeting_id')
                 ->countAllResults();
