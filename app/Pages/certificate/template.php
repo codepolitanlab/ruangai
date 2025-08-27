@@ -16,7 +16,13 @@
                 <div x-show="data.student.cert_claim_date">
                     <div class="text-center">
                         <div id="print-area" class="position-relative table-responsive shadow">
-                            <img :src="data.student.cert_url[1] + '?' + (Math.floor(new Date(data.student.updated_at.replace(' ', 'T')).getTime() / 1000))" id="img-cert" class="position-relative">
+                            <template x-if="data.student.cert_url[1]">
+                                <img 
+                                    :src="data.student.cert_url[1] + '?' + (Math.floor(new Date(data.student.updated_at.replace(' ', 'T')).getTime() / 1000))" 
+                                    id="img-cert" 
+                                    class="position-relative"
+                                    @error="window.location.replace(`/certificate/claim/regenerate/${$params.code}`)">
+                            </template>
                         </div>
                     </div>
                     <div class="mt-4 px-3 text-center">
