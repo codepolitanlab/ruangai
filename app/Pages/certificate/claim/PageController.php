@@ -42,6 +42,13 @@ class PageController extends BaseController
             ->where('progress', 100)
             ->first();
 
+        if (! $student) {
+            return $this->respond([
+                'status'  => 'error',
+                'message' => 'Terjadi kesalahan saat mengecek kelengkapan data sebelum mengambil data sertifikat',
+            ]);
+        }
+
         $this->data['student'] = $student;
 
         return $this->respond($this->data);
@@ -120,6 +127,10 @@ class PageController extends BaseController
             ]);
 
         // TODO: Generate token reward lulus
+        $tokenFromGraduate = model('UserToken')->checkTokenUser($jwt->user_id, 'graduate');
+        if (! $tokenFromGraduate) {
+            model('UserToken')->generateTokenUser($jwt->user_id, 'graduate');
+        }
 
         return $this->respond([
             'status'  => 'success',
