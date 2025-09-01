@@ -18,10 +18,10 @@
       init() {
         base.init.call(this);
         this.$watch('data', (value) => {
-          if (!value.is_enrolled) {
-            alert("Kamu belum terdaftar di kelas. Silahkan daftar terlebih dahulu.")
-            window.location.replace(`https://www.ruangai.id/registration`)
-          }
+          // if (!value.is_enrolled) {
+          //   alert("Kamu belum terdaftar di kelas. Silahkan daftar terlebih dahulu.")
+          //   window.location.replace(`https://www.ruangai.id/registration`)
+          // }
         });
 
         const token = localStorage.getItem('heroic_token');
