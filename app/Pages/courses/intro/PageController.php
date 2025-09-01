@@ -55,7 +55,7 @@ class PageController extends BaseController
             // Get total live_meetings
             $this->data['live_meetings'] = $db->table('live_meetings')
                 ->select('live_meetings.id')
-                ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id AND live_batch.id = ' . $course['current_batch_id'])
+                ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
                 ->where('course_id', $id)
                 ->countAllResults();
 
