@@ -58,9 +58,9 @@
 						<h5 class="fw-bold mb-3">Kelas yang kamu miliki</h5>
 						<template x-for="course in data.courses">
 							<a :href="`/courses/intro/${course.id}/${course.slug}/lessons`" class="link">
-								<div class="card shadow-none overflow-hidden" style="background:#112f3d">
+								<div class="card shadow-none overflow-hidden mb-3" style="background:#112f3d">
 									<div class="d-flex align-items-center overflow-hidden">
-										<img src="https://ik.imagekit.io/56xwze9cy/ruangai/Mask%20group%20(6).png?updatedAt=1754293150119" class="rounded-3 img-course" alt="thumbnail kelas">
+										<img :src="course.cover" class="rounded-3 img-course" alt="thumbnail kelas">
 										<div class="flex-grow-1 ms-3 p-3">
 											<p class="fw-bold h5 text-white" x-text="course.course_title"></p>
 											<div class="d-flex justify-content-between align-items-center text-white">

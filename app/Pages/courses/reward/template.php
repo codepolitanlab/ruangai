@@ -56,9 +56,9 @@
 
 		<div class="appContent" style="min-height:90vh" x-data="listLesson()">
 
-			<div class="card mt-2 mb-4 rounded-4 shadow-none">
+			<div class="card mt-2 mb-3 rounded-4 shadow-none">
 				<div class="card-body d-flex justify-content-start align-items-center gap-2 p-3">
-					<img src="https://image.web.id/images/icon-gift-min.png" alt="">
+					<img src="https://image.web.id/images/icon-gift-min.png" width="100" height="100" alt="">
 					<div>
 						<h4 class="h4 fw-normal">Klaim Reward</h4>
 						<p class="text-dark opacity-50 mb-0">Pilih reward kelas lanjutan yang cocok buatmu</p>
@@ -66,16 +66,30 @@
 				</div>
 			</div>
 
-			<!-- Show alert not yet complete course -->
-			<div class="card bg-info bg-opacity-50 rounded-4 mb-3 shadow-none">
-				<div class="card-body d-flex gap-3">
-					<i class="bi bi-megaphone text-white display-3"></i>
-					<div>
-						<h4 class="opacity-75 mb-1">Info Klaim Reward</h4>
-						<p class="m-0 opacity-75">Kelas Khusus ini dapat kamu klaim setelah lulus di Chapter 2, silahkan klik 'Lihat Teaser' untuk membantu kamu memilih kelas mana yang sesuai. Kamu hanya dapat klaim salah satu saja.</p>
+			<template x-if="!data.user_token">
+				<div class="card bg-info bg-opacity-50 rounded-4 mb-3 shadow-none">
+					<div class="card-body d-flex gap-3">
+						<i class="bi bi-megaphone text-white display-3"></i>
+						<div>
+							<h4 class="opacity-75 mb-1">Info Klaim Reward</h4>
+							<p class="m-0 opacity-75">Kelas Khusus ini dapat kamu klaim setelah lulus di Chapter 2, silahkan klik 'Lihat Teaser' untuk membantu kamu memilih kelas mana yang sesuai. Kamu hanya dapat klaim salah satu saja.</p>
+						</div>
 					</div>
 				</div>
-			</div>
+			</template>
+
+			<template x-if="data.user_token">
+				<div class="card rounded-4 mb-3 shadow-none">
+					<div class="card-body d-flex gap-3">
+						<img src="<?= base_url('mobilekit/assets/img/ruangai/token-coin.png') ?>" width="100" height="100" alt="">
+						<div>
+							<h4 class="opacity-75 mb-1">Token Coin Kamu</h4>
+							<p class="m-0 opacity-75">Kamu memiliki <span x-text="data.user_token"></span> token coin, gunakan untuk membeli Kelas Spesial.</p>
+							<a href="/courses/reward/claim" class="btn btn-sm btn-primary mt-3">Klaim Kelas Spesial</a>
+						</div>
+					</div>
+				</div>
+			</template>
 
 			<!-- Show Expire Alert -->
 			<template x-if="data.is_expire">
@@ -90,7 +104,7 @@
 				</div>
 			</template>
 
-			<div class="bg-white p-4 rounded-4 mb-4">
+			<div class="bg-white p-4 rounded-4 my-5">
 				<h5 class="fw-bold mb-3">Kelas Premium</h5>
 				<template x-for="premium in data?.premium_courses">
 					<?= $this->include('_components/card/CardPremiumCourse') ?>

@@ -33,7 +33,7 @@ class PageController extends BaseController
                             AS total_completed";
 
         $this->data['courses'] = $db->table('course_students')
-            ->select('courses.thumbnail,  courses.course_title, course_students.progress, courses.slug, courses.id')
+            ->select('courses.thumbnail, courses.cover, courses.course_title, course_students.progress, courses.slug, courses.id')
             ->select($totalModuleSubquery)
             ->select($totalCompletedSubquery)
             ->join('courses', 'courses.id = course_students.course_id')

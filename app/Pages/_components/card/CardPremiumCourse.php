@@ -7,7 +7,7 @@
             <p class="fw-bold h5" x-text="premium?.course_title"></p>
             <p x-text="premium?.description.slice(0, 100) + '...'"></p>
             <a :href="`/courses/intro/${premium?.id}/${premium?.slug}`" class="btn btn-sm btn-outline-white mb-2 mb-lg-0"><i class="bi bi-stack fs-6"></i> Lihat Materi</a>
-            <button :disabled="!premium?.embed" type="button" class="btn btn-sm btn-outline-white mb-2 mb-lg-0" @click="setVideoTeaser(premium?.embed)" data-bs-toggle="modal" data-bs-target="#teaserModal"><i class="bi bi-play-circle-fill fs-6"></i> Lihat Teaser</button>
+            <button :disabled="!premium?.preview" type="button" class="btn btn-sm btn-outline-white mb-2 mb-lg-0" @click="setVideoTeaser(premium?.preview)" data-bs-toggle="modal" data-bs-target="#teaserModal"><i class="bi bi-play-circle-fill fs-6"></i> Lihat Teaser</button>
             <!-- <button type="button" class="btn btn-sm btn-outline-white mb-2 mb-lg-0 disabled"><i class="bi bi-play-circle-fill fs-6"></i> Lihat Teaser</button> -->
         </div>
     </div>

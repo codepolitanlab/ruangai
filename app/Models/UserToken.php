@@ -70,4 +70,21 @@ class UserToken extends Model
             'created_at'   => date('Y-m-d H:i:s'),
         ]);
     }
+
+    public function claimToken($user_id, $token_id, $object_id, $object_type)
+    {
+        return $this->where('id', $token_id)
+            ->where('user_id', $user_id)
+            ->set([
+                'claimed_at'  => date('Y-m-d H:i:s'),
+                'object_id'   => $object_id,
+                'object_type' => $object_type,
+            ])
+            ->update();
+    }
+
+    public function getAllTokenActive($user_id)
+    {
+        return $this->where('user_id', $user_id)->where('claimed_at', null)->where('deleted_at', null)->asObject()->findAll();
+    }
 }

@@ -53,7 +53,7 @@
       },
 
       claimReward() {
-        this.$router.navigate(`/courses/${this.data.course.id}/reward`)
+        this.$router.navigate(`/courses/reward`)
       },
 
       heregister() {

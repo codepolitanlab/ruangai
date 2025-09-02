@@ -53,8 +53,12 @@ class Router
             'preload' => true,
             'handler' => '[isLoggedIn]',
         ],
-        '/courses/:course_id/reward' => [
+        '/courses/reward' => [
             'template' => '/courses/reward/template',
+            'handler' => '[isLoggedIn]',
+        ],
+        '/courses/reward/claim' => [
+            'template' => '/courses/reward/claim/template',
             'handler' => '[isLoggedIn]',
         ],
         '/courses/zoom/:meeting_code' => [

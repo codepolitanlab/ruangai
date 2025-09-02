@@ -25,6 +25,8 @@ class PageController extends BaseController
             ->get()
             ->getResult();
 
+        $this->data['user_token'] = count(model('UserToken')->getAllTokenActive($jwt->user_id));
+
         return $this->respond($this->data);
     }
 }
