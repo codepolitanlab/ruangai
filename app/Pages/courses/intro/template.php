@@ -122,9 +122,9 @@
 
 						<!-- Deskripsi pendek -->
 						<!-- Ringkasan (hanya tampil kalau belum expand) -->
-						<p class="card-text p-0 mt-2 mb-0" x-show="!meta.expandDesc" x-transition>
+						<p class="card-text p-0 mt-2 mb-0" x-show="!meta.expandDesc" x-transition.opacity>
 							<span
-								x-text="data.course.description.substring(0, 100) + (data.course.description.length > 100 ? '...' : '')">
+								x-html="data.course.description.substring(0, 100) + (data.course.description.length > 100 ? '...' : '')">
 							</span>
 							<button
 								x-show="data.course.description.length > 100"
@@ -135,8 +135,8 @@
 						</p>
 
 						<!-- Full text (hanya tampil kalau expand) -->
-						<div class="mt-3" x-show="meta.expandDesc" x-transition>
-							<p x-text="data.course.description"></p>
+						<div class="mt-3" x-show="meta.expandDesc" x-transition.opacity>
+							<p x-html="data.course.description"></p>
 							<button
 								@click="meta.expandDesc = false"
 								class="border-0 bg-transparent text-primary text-decoration-none p-0">
@@ -198,73 +198,74 @@
 			</template>
 
 			<template x-if="data.is_enrolled">
-				<!-- Progress Stats -->
-				<div class="p-3 pb-2 bg-white rounded-4 mb-3 position-relative"
-					:class="{'lesson-not-complete': Math.round(data.lesson_completed/data.total_lessons*100) < 100}">
-					<h4 class="mb-3">Progres Belajar</h4>
+				<div>
+					<!-- Progress Stats -->
+					<div class="p-3 pb-2 bg-white rounded-4 mb-3 position-relative"
+						:class="{'lesson-not-complete': Math.round(data.lesson_completed/data.total_lessons*100) < 100}">
+						<h4 class="mb-3">Progres Belajar</h4>
 
-					<div x-show="data?.is_expire">
-						<div class="position-absolute d-flex align-items-center justify-content-center rounded-4 top-0 start-0 end-0 bottom-0" style="z-index: 100;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.5);">
-							<i class="bi bi-lock-fill text-white display-3"></i>
+						<div x-show="data?.is_expire">
+							<div class="position-absolute d-flex align-items-center justify-content-center rounded-4 top-0 start-0 end-0 bottom-0" style="z-index: 100;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.5);">
+								<i class="bi bi-lock-fill text-white display-3"></i>
+							</div>
 						</div>
-					</div>
 
-					<div class="row">
-						<div class="col-md-6 mb-3">
-							<div id="card-progress-lesson"
-								class="card border-0 shadow-none rounded-4 p-3 d-flex flex-column justify-content-between position-relative"
-								:class="{'lesson-completed bg-success bg-opacity-50': Math.round(data.lesson_completed/data.total_lessons*100) == 100, 
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<div id="card-progress-lesson"
+									class="card border-0 shadow-none rounded-4 p-3 d-flex flex-column justify-content-between position-relative"
+									:class="{'lesson-completed bg-success bg-opacity-50': Math.round(data.lesson_completed/data.total_lessons*100) == 100, 
 								'bg-light-primary': Math.round(data.lesson_completed/data.total_lessons*100) < 100}"
-								style="min-height: 210px">
-								<div class="me-3 bg-white text-dark rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
-									<i class="bi h3 m-0" :class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'bi-check-circle text-success' : 'bi-journal-text'"></i>
-								</div>
-								<div class="d-flex align-items-end gap-2 mt-3 text-dark">
-									<h1 class="mb-0 display-6 fw-bold" x-text="data?.lesson_completed "></h1>
-									<p class="mb-1">dari <span x-text="data?.total_lessons"></span> modul selesai</p>
-								</div>
-								<div class="d-flex align-items-center">
-									<div class="progress flex-grow-1 me-2 " style="height: 5px;">
-										<div class="progress-bar" role="progressbar" :style="`width: ${Math.round(data.lesson_completed/data.total_lessons*100)}%`"></div>
+									style="min-height: 210px">
+									<div class="me-3 bg-white text-dark rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
+										<i class="bi h3 m-0" :class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'bi-check-circle text-success' : 'bi-journal-text'"></i>
 									</div>
-									<span class="fw-bold" x-text="`${Math.round(data.lesson_completed/data.total_lessons*100)}%`"></span>
+									<div class="d-flex align-items-end gap-2 mt-3 text-dark">
+										<h1 class="mb-0 display-6 fw-bold" x-text="data?.lesson_completed "></h1>
+										<p class="mb-1">dari <span x-text="data?.total_lessons"></span> modul selesai</p>
+									</div>
+									<div class="d-flex align-items-center">
+										<div class="progress flex-grow-1 me-2 " style="height: 5px;">
+											<div class="progress-bar" role="progressbar" :style="`width: ${Math.round(data.lesson_completed/data.total_lessons*100)}%`"></div>
+										</div>
+										<span class="fw-bold" x-text="`${Math.round(data.lesson_completed/data.total_lessons*100)}%`"></span>
+									</div>
+									<a
+										:href="`/courses/intro/${data.course.id}/${data.course.slug}/lessons`"
+										class="btn btn-primary hover rounded-pill p-1 fs-6">Lihat Materi</a>
+									<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
 								</div>
-								<a
-									:href="`/courses/intro/${data.course.id}/${data.course.slug}/lessons`"
-									class="btn btn-primary hover rounded-pill p-1 fs-6">Lihat Materi</a>
-								<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
+							</div>
+
+							<div class="col-md-6 mb-3">
+								<div id="card-progress-live"
+									class="card border-0 shadow-none rounded-4  p-3 d-flex flex-column justify-content-between position-relative"
+									style="min-height: 210px"
+									:class="{'live-completed bg-success bg-opacity-50': data.live_attendance > 0, 
+								'bg-light-secondary': data.live_attendance == 0}">
+									<div class="me-3 bg-white rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
+										<i class="bi h3 m-0" :class="data.live_attendance > 0 ? 'bi-check-circle text-success' : 'bi-camera-video text-secondary'"></i>
+									</div>
+									<div
+										:class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'd-flex' : 'd-none'"
+										class="d-flex align-items-end gap-2 mt-3 mb-4">
+										<h1 class="mb-0 display-6 fw-bold" x-text="data?.live_attendance"></h1>
+										<p class="mb-1">Live session diikuti</p>
+									</div>
+									<div x-show="Math.round(data.lesson_completed/data.total_lessons*100) < 100">
+										<div class="mb-1 position-relative">Selesaikan materi untuk dapat mengikuti sesi live</div>
+									</div>
+									<a :href="`/courses/intro/${data?.course?.id}/${data?.course?.slug}/live_session`" class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6">Lihat Jadwal</a>
+									<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
+								</div>
 							</div>
 						</div>
 
-						<div class="col-md-6 mb-3">
-							<div id="card-progress-live"
-								class="card border-0 shadow-none rounded-4  p-3 d-flex flex-column justify-content-between position-relative"
-								style="min-height: 210px"
-								:class="{'live-completed bg-success bg-opacity-50': data.live_attendance > 0, 
-								'bg-light-secondary': data.live_attendance == 0}">
-								<div class="me-3 bg-white rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
-									<i class="bi h3 m-0" :class="data.live_attendance > 0 ? 'bi-check-circle text-success' : 'bi-camera-video text-secondary'"></i>
-								</div>
-								<div
-									:class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'd-flex' : 'd-none'"
-									class="d-flex align-items-end gap-2 mt-3 mb-4">
-									<h1 class="mb-0 display-6 fw-bold" x-text="data?.live_attendance"></h1>
-									<p class="mb-1">Live session diikuti</p>
-								</div>
-								<div x-show="Math.round(data.lesson_completed/data.total_lessons*100) < 100">
-									<div class="mb-1 position-relative">Selesaikan materi untuk dapat mengikuti sesi live</div>
-								</div>
-								<a :href="`/courses/intro/${data?.course?.id}/${data?.course?.slug}/live_session`" class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6">Lihat Jadwal</a>
-								<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
-							</div>
-						</div>
 					</div>
 
-				</div>
 
-
-				<!-- Final Task -->
-				<!-- <div class="section p-3 mb-3 bg-white rounded-4">
+					<!-- Final Task -->
+					<!-- <div class="section p-3 mb-3 bg-white rounded-4">
 					<h4 class="fw-bold mb-3" style="color: #222;">Tugas Akhir</h4>
 					<div class="card border-0 rounded-4" style="background: #7db9d2;">
 						<div class="card-body d-flex align-items-center gap-3 p-4">
@@ -279,26 +280,27 @@
 					</div>
 				</div> -->
 
-				<!-- Certificate -->
-				<div class="section p-3 mb-5 pb-4 bg-white rounded-4">
-					<h4 class="fw-bold mb-3" style="color: #222;">Klaim Sertifikat</h4>
+					<!-- Certificate -->
+					<div class="section p-3 mb-5 pb-4 bg-white rounded-4">
+						<h4 class="fw-bold mb-3" style="color: #222;">Klaim Sertifikat</h4>
 
-					<div class="card border-0 rounded-4 bg-dark bg-opacity-10 cursor-pointer"
-						@click="claimCertificate()"
-						:class="data.course_completed ? 'bg-secondary' : 'bg-dark bg-opacity-10'">
-						<div class="card-body d-flex align-items-center gap-3 p-4">
-							<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
-								style="min-width: 64px; height: 64px;">
-								<i class="bi bi-award text-dark opacity-50 display-5"></i>
-							</div>
-							<div class="flex-grow-1">
-								<h5 x-show="!data.course_completed" class="h6 opacity-50 mb-0">Selesaikan materi dan sesi live wajib untuk mendapatkan sertifikat.</h5>
-								<div x-show="data.course_completed">
-									<h3
-										class="fw-bold mb-1"
-										style="font-size:1.2rem; color:#fff;"
-										x-text="data.student.cert_code ? `Unduh Sertifikat` : `Klaim Sertifikat`"></h3>
-									<p class="text-white mb-1" x-show="!data.student.cert_code">Klik untuk mengklaim dan mengunduh sertifikat</p>
+						<div class="card border-0 rounded-4 bg-dark bg-opacity-10 cursor-pointer"
+							@click="claimCertificate()"
+							:class="data.course_completed ? 'bg-secondary' : 'bg-dark bg-opacity-10'">
+							<div class="card-body d-flex align-items-center gap-3 p-4">
+								<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
+									style="min-width: 64px; height: 64px;">
+									<i class="bi bi-award text-dark opacity-50 display-5"></i>
+								</div>
+								<div class="flex-grow-1">
+									<h5 x-show="!data.course_completed" class="h6 opacity-50 mb-0">Selesaikan materi dan sesi live wajib untuk mendapatkan sertifikat.</h5>
+									<div x-show="data.course_completed">
+										<h3
+											class="fw-bold mb-1"
+											style="font-size:1.2rem; color:#fff;"
+											x-text="data.student.cert_code ? `Unduh Sertifikat` : `Klaim Sertifikat`"></h3>
+										<p class="text-white mb-1" x-show="!data.student.cert_code">Klik untuk mengklaim dan mengunduh sertifikat</p>
+									</div>
 								</div>
 							</div>
 						</div>
