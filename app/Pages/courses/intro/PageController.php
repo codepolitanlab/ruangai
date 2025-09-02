@@ -67,9 +67,57 @@ class PageController extends BaseController
                 ->get()
                 ->getRowArray();
 
-            $this->data['course_completed'] = $this->data['total_lessons'] === $this->data['lesson_completed'] && $this->data['live_attendance'] > 0 ? true : false;
-            $this->data['is_enrolled']      = $db->table('course_students')->where('course_id', $id)->where('user_id', $jwt->user_id)->countAllResults() > 0 ? true : false;
-            $this->data['is_expire']        = $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
+            if ($this->data['student']) {
+                $this->data['course_completed'] = $this->data['total_lessons'] === $this->data['lesson_completed'] && $this->data['live_attendance'] > 0 ? true : false;
+                $this->data['is_enrolled']      = $db->table('course_students')->where('course_id', $id)->where('user_id', $jwt->user_id)->countAllResults() > 0 ? true : false;
+                $this->data['is_expire']        = $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
+            } else {
+                $this->data['course_completed'] = false;
+                $this->data['is_enrolled']      = false;
+                $this->data['is_expire']        = false;
+            }
+
+
+            // Get completed lessons for current user
+            $completed = $db->table('course_lesson_progress')
+                ->select('lesson_id')
+                ->where('user_id', $jwt->user_id)
+                ->where('course_id', $id)
+                ->get()
+                ->getResultArray();
+
+            $completedLessonIds = array_column($completed, 'lesson_id');
+
+            // Get lessons for this course
+            if (! $lessons = cache('course_' . $id . '_lessons')) {
+                $lessons = $db->table('course_lessons')
+                    ->select('course_lessons.*, course_topics.*, course_lessons.id as id')
+                    ->join('course_topics', 'course_topics.id = course_lessons.topic_id', 'left')
+                    ->where('course_lessons.course_id', $id)
+                    ->where('course_lessons.deleted_at', null)
+                    ->orderBy('course_topics.topic_order', 'ASC')
+                    ->orderBy('course_lessons.lesson_order', 'ASC')
+                    ->get()
+                    ->getResultArray();
+
+                // Save into the cache for 1 hours
+                cache()->save('course_' . $id . '_lessons', $lessons, 3600);
+            }
+
+            $lessonsCompleted = [];
+            $numCompleted     = 0;
+
+            foreach ($lessons as $key => $lesson) {
+                // Tambahkan status is_completed ke setiap lesson
+                $this->data['course']['lessons'][$lesson['topic_title']][] = $lesson;
+                $lessonsCompleted[] = [
+                    'id'        => $lesson['id'],
+                    'completed' => in_array($lesson['id'], $completedLessonIds, true),
+                ];
+                if (in_array($lesson['id'], $completedLessonIds, true)) {
+                    $numCompleted++;
+                }
+            }
 
             return $this->respond($this->data);
         }
@@ -100,15 +148,15 @@ class PageController extends BaseController
             ->get()
             ->getRowArray();
 
-        if($courseStudent['graduate'] !== '1') {
+        if ($courseStudent['graduate'] !== '1') {
             // Update field program in scholarship_participants to 'RuangAI2025B2'
             $db->table('scholarship_participants')
-            ->where('user_id', $jwt->user_id)
-            ->update([
-                'program' => 'RuangAI2025B2'
-            ]);
+                ->where('user_id', $jwt->user_id)
+                ->update([
+                    'program' => 'RuangAI2025B2'
+                ]);
         }
-        
+
         return $this->respond([
             'response_code'    => 200,
             'response_message' => 'Success',

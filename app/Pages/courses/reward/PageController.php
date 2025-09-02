@@ -12,123 +12,19 @@ class PageController extends BaseController
         'active_page' => 'reward',
     ];
 
-    public function getData($id)
+    public function getData()
     {
         $Heroic = new \App\Libraries\Heroic();
         $jwt    = $Heroic->checkToken();
 
         $db = \Config\Database::connect();
 
-        // Get course
-        if (! $course = cache('course_' . $id)) {
-            $course = $db->table('courses')
-                ->where('id', $id)
-                ->get()
-                ->getRowArray();
+        $this->data['premium_courses'] = $db->table('courses')
+            ->where('id !=', 1)
+            ->where('deleted_at', null)
+            ->get()
+            ->getResult();
 
-            // Save into the cache for 5 minutes
-            cache()->save('course_' . $id, $course, 3600);
-        }
-        $this->data['course'] = $course;
-
-        if ($course) {
-            // Get completed lessons for current user
-            $completedLessons = $db->table('course_lesson_progress')
-                ->select('lesson_id')
-                ->where('user_id', $jwt->user_id)
-                ->where('course_id', $id)
-                ->get()
-                ->getResultArray();
-
-            $completedLessonIds = array_column($completedLessons, 'lesson_id');
-
-            // Get lessons for this course
-            if (! $lessons = cache('course_' . $id . '_lessons')) {
-                $lessons = $db->table('course_lessons')
-                    ->select('course_lessons.*, course_topics.*, course_lessons.id as id')
-                    ->join('course_topics', 'course_topics.id = course_lessons.topic_id', 'left')
-                    ->where('course_lessons.course_id', $id)
-                    ->where('course_lessons.deleted_at', null)
-                    ->orderBy('course_topics.topic_order', 'ASC')
-                    ->orderBy('course_lessons.lesson_order', 'ASC')
-                    ->get()
-                    ->getResultArray();
-
-                // Save into the cache for 1 hours
-                cache()->save('course_' . $id . '_lessons', $lessons, 3600);
-            }
-
-            $lessonsCompleted = [];
-            $numCompleted     = 0;
-
-            foreach ($lessons as $key => $lesson) {
-                // Tambahkan status is_completed ke setiap lesson
-                $this->data['course']['lessons'][$lesson['topic_title']][$lesson['id']] = $lesson;
-                $lessonsCompleted[]                                                     = [
-                    'id'        => $lesson['id'],
-                    'completed' => in_array($lesson['id'], $completedLessonIds, true),
-                ];
-                if (in_array($lesson['id'], $completedLessonIds, true)) {
-                    $numCompleted++;
-                }
-            }
-            $this->data['lessonsCompleted'] = $lessonsCompleted;
-            $this->data['numCompleted']     = $numCompleted;
-
-            // Get course_students
-            $this->data['student'] = $db->table('course_students')
-                ->select('progress, cert_claim_date, cert_code, expire_at')
-                ->where('course_id', $id)
-                ->where('user_id', $jwt->user_id)
-                ->get()
-                ->getRowArray();
-            $this->data['is_expire'] = $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
-
-            // Premium Class Data Static
-        $this->data['premium_courses'] = [
-                (object)[
-                    'title' => 'Kelas AI for SaaS Builder',
-                    'description' => 'Bangun Web AI Pertamamu dan Pelajari Cara Monetisasinya.',
-                    'teaser_url' => 'https://ruangai.com/premium-class/ai',
-                    'cover' => 'https://ik.imagekit.io/56xwze9cy/ruangai/mentor-adel.png',
-                    'embed' => '<iframe width="560" height="315" src="https://www.youtube.com/embed/dZ2mQA9BP2w?si=zv-TsPRrtY8zGybH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>'
-                ],
-                (object)[
-                    'title' => 'Kelas AI for Academics',
-                    'description' => 'Tulis karya ilmiah lebih cepat dan etis dengan memanfaatkan alat AI.',
-                    'teaser_url' => 'https://ruangai.com/premium-class/data-science',
-                    'cover' => 'https://ik.imagekit.io/56xwze9cy/ruangai/mentor-felisha.png',
-                    'embed' => '<iframe width="560" height="315" src="https://www.youtube.com/embed/iy4OvBoCjzo?si=Zk4xUv2G14mezBem" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>'
-                ],
-                (object)[
-                    'title' => 'Kelas AI for Smart Creators',
-                    'description' => 'Lebih kreatif dan bikin kontenmu naik level dengan AI.',
-                    'teaser_url' => 'https://ruangai.com/premium-class/web-development',
-                    'cover' => 'https://ik.imagekit.io/56xwze9cy/ruangai/mentor-vira.png',
-                    'embed' => '<iframe width="560" height="315" src="https://www.youtube.com/embed/nIKyQXcOoiY?si=fE9tw29czQaTsKFi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>'
-                ],
-                (object)[
-                    'title' => 'Kelas AI for Digital Storyteller',
-                    'description' => 'Kuasai storytelling dan ubah jadi karya digital dengan AI.',
-                    'teaser_url' => 'https://ruangai.com/premium-class/web-development',
-                    'cover' => 'https://ik.imagekit.io/56xwze9cy/ruangai/mentor-aji.png',
-                    'embed' => '<iframe width="560" height="315" src="https://www.youtube.com/embed/cBp_4SJK2pQ?si=Lt37b4iKx8jqvSKA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>'
-                ],
-                (object)[
-                    'title' => 'Kelas AI for Coding Assist',
-                    'description' => 'Bangun aplikasi lebih cepat dan efisien dengan bantuan AI.',
-                    'teaser_url' => 'https://ruangai.com/premium-class/web-development',
-                    'cover' => 'https://image.web.id/images/clipboard-image-1754379412.png',
-                    'embed' => '<iframe width="560" height="315" src="https://www.youtube.com/embed/86vN07z1f6c?si=9LuuO-gbL34Qs0xR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>'
-                ],
-            ];
-
-            return $this->respond($this->data);
-        }
-
-        return $this->respond([
-            'response_code'    => 404,
-            'response_message' => 'Not found',
-        ]);
+        return $this->respond($this->data);
     }
 }

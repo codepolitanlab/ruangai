@@ -3,7 +3,7 @@
 	id="course_reward"
 	x-data="$heroic({
         title: `<?= $page_title ?>`,
-        url: `/courses/reward/data/${$params.course_id}`,
+        url: `/courses/reward/data`,
 		meta: {
 			videoTeaser: null,
 		}
