@@ -99,17 +99,17 @@
                             </div>
 
                             <div class="mb-3 form-check form-switch">
-                                <input class="form-check-input" type="checkbox" name="premium" id="premium" value="1" <?= old('premium', $course->premium ?? 0) === 1 ? 'checked' : '' ?>>
+                                <input class="form-check-input" type="checkbox" name="premium" id="premium" value="1" <?= old('premium', $course->premium ?? 0) === '1' ? 'checked' : '' ?>>
                                 <label class="form-check-label" for="premium">Course Premium</label>
                             </div>
 
                             <div class="mb-3 form-check form-switch">
-                                <input class="form-check-input" type="checkbox" name="has_modules" id="has_modules" value="1" <?= old('has_modules', $course->has_modules ?? 0) === 1 ? 'checked' : '' ?>>
+                                <input class="form-check-input" type="checkbox" name="has_modules" id="has_modules" value="1" <?= old('has_modules', $course->has_modules ?? 0) === '1' ? 'checked' : '' ?>>
                                 <label class="form-check-label" for="has_modules">Memiliki Modul</label>
                             </div>
 
                             <div class="mb-3 form-check form-switch">
-                                <input class="form-check-input" type="checkbox" name="has_live_sessions" id="has_live_sessions" value="1" <?= old('has_live_sessions', $course->has_live_sessions ?? 0) === 1 ? 'checked' : '' ?>>
+                                <input class="form-check-input" type="checkbox" name="has_live_sessions" id="has_live_sessions" value="1" <?= old('has_live_sessions', $course->has_live_sessions ?? 0) === '1' ? 'checked' : '' ?>>
                                 <label class="form-check-label" for="has_live_sessions">Ada Sesi Live</label>
                             </div>
                         </div>
