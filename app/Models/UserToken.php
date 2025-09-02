@@ -61,7 +61,7 @@ class UserToken extends Model
         // Generate token 5 characters string and numeric and capitalize
         helper('text');
 
-        $code = strtoupper(random_string('alnum', 5));
+        $code = strtoupper(random_string('alpha', 3)) . $user_id . strtoupper(random_string('alpha', 2));
 
         return $this->insert([
             'user_id'      => $user_id,

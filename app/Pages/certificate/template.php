@@ -5,7 +5,7 @@
 
     <div id="app-header" class="appHeader main border-0">
         <div class="left">
-            <a class="headerButton" :href="`/courses/intro/${data.course?.id}/${data.course?.slug}`"><i class="bi bi-chevron-left"></i></a>
+            <a native class="headerButton" :href="`/courses/intro/${data.course?.id}/${data.course?.slug}`"><i class="bi bi-chevron-left"></i></a>
         </div>
         <div class="">Sertifikat</div>
     </div>
