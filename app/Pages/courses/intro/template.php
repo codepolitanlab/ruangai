@@ -281,7 +281,7 @@
 				</div> -->
 
 					<!-- Certificate -->
-					<div class="section p-3 mb-5 pb-4 bg-white rounded-4">
+					<div class="section p-3 mb-3 pb-4 bg-white rounded-4">
 						<h4 class="fw-bold mb-3" style="color: #222;">Klaim Sertifikat</h4>
 
 						<div class="card border-0 rounded-4 bg-dark bg-opacity-10 cursor-pointer"

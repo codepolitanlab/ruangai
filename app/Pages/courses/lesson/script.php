@@ -1,8 +1,8 @@
 <script>
   Alpine.data("lesson_detail_script", function(course_id, lesson_id, waitToShowButtonPaham = 30000) {
     let base = $heroic({
-        title: `<?= $page_title ?>`,
-        url: `courses/lesson/data/${course_id}/${lesson_id}`
+      title: `<?= $page_title ?>`,
+      url: `courses/lesson/data/${course_id}/${lesson_id}`
     });
 
     return {
@@ -55,6 +55,15 @@
       },
 
       markAsComplete(course_id, lesson_id, next_lesson_id) {
+        if (!this.showButtonPaham) {
+          $heroicHelper.toastr(
+            `Tunggu dulu sampai tombol "Saya Sudah Paham" muncul.`,
+            "warning",
+            "bottom"
+          );
+          return;
+        }
+
         this.buttonSubmitting = true;
         $heroicHelper
           .post(`/courses/lesson`, {
