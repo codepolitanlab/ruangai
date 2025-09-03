@@ -368,4 +368,28 @@ class ScholarshipController extends ResourceController
             echo 'Belum ada student yang 100% progress';
         }
     }
+
+    public function generateTokenUserGraduate()
+    {
+        $program = $this->request->getVar('program');
+        $course_id = $this->request->getVar('course_id');
+
+        $programExists = ['RuangAI2025B2'];
+        if (!in_array($program, $programExists)) {
+            return $this->respond([
+                'status'  => 'failed',
+                'message' => 'Program tidak ditemukan'
+            ]);
+        }
+
+        $bulkGenerate = model('UserToken')->generateTokenUserByGraduate($program, $course_id);
+
+        if($bulkGenerate['status'] == 'success') {
+            $course = model('Course')->find($course_id);
+            return $this->respond([
+                'status' => 'success',
+                'message' => $bulkGenerate['total_generated'] . ' peserta ' .  $program . ' Course ' . $course['course_title'] . ' berhasil mendapatkan token dari kelulusan'
+            ]);
+        }
+    }
 }

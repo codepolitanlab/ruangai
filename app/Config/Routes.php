@@ -40,6 +40,9 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
     $routes->get('scholarship/settings', 'ScholarshipController::frontendSettings');
     $routes->get('scholarship/syncGraduatedB1', 'ScholarshipController::syncGraduatedB1');
 
+    // Bulk generate user token has been graduated
+    $routes->get('generateTokenUserGraduate', 'ScholarshipController::generateTokenUserGraduate');
+
     $routes->get('referral', 'ScholarshipController::userReferral');
     $routes->post('user/profile/update', 'UserController::saveProfile');
     $routes->get('program', 'ScholarshipController::program');
