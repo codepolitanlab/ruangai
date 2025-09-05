@@ -8,7 +8,8 @@
         graduate: false,
         email: '',
         isValidEmail: false,
-        loading: false
+        loading: false,
+        videoTutorial: null
       }
     })
 
@@ -18,6 +19,8 @@
       errorMessage: null,
       swiperNotif: null,
       isVerifying: false,
+
+      videoTutorial: '<iframe width="560" height="315" src="https://www.youtube.com/embed/w53uuuglK-c?si=MOkoAMdF3sALJMmr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
 
       otp: ['', '', '', '', '', ''], // 6 digit OTP
       modalInstance: null,
@@ -76,7 +79,7 @@
             },
             // Untuk layar lebih besar, jika perlu
             640: {
-              slidesPerView: 1.5,
+              slidesPerView: 1.1,
               spaceBetween: 15,
               slidesOffsetBefore: 0,
               slidesOffsetAfter: 15,
@@ -229,6 +232,9 @@
           .finally(() => {
             this.isVerifying = false;
           });
+      },
+      setVideoTutorial(url) {
+        this.meta.videoTutorial = url;
       }
     };
   });
