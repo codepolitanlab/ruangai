@@ -305,6 +305,27 @@
 							</div>
 						</div>
 					</div>
+
+					<!-- <template x-if="data?.student.cert_code">
+						<a href="https://www.ruangai.id/lenterai" target="_blank">
+							<div class="section p-3 mb-3 pb-4 bg-white rounded-4">
+								<h4 class="fw-bold mb-3" style="color: #222;">Daftar CO-Mentor</h4>
+		
+								<div class="card border-0 rounded-4 bg-secondary cursor-pointer">
+									<div class="card-body d-flex align-items-center gap-3 p-4">
+										<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
+											style="min-width: 64px; height: 64px;">
+											<i class="bi bi-person-workspace text-dark opacity-50 display-5"></i>
+										</div>
+										<div class="flex-grow-1">
+											<h5 class="h6 opacity-50 mb-0">Daftar CO-Mentor untuk mendapatkan benefit khusus untuk kamu</h5>
+										</div>
+									</div>
+								</div>
+							</div>
+						</a>
+					</template> -->
+
 				</div>
 			</template>
 
