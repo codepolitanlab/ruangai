@@ -329,6 +329,10 @@
 				</div>
 			</template>
 
+			<template x-if="!data.is_enrolled && $params.course_id == 1">
+				<a href="/courses/reward" class="btn btn-secondary rounded-pill p-1 w-100 fs-6 mb-3">Klaim Kelas</a>
+			</template>
+			
 			<!-- Klaim Reward -->
 			<div class="section p-3 mb-3 bg-white rounded-4">
 				<h4 class="fw-bold mb-3" style="color: #222;">Reward Chapter 2</h4>
