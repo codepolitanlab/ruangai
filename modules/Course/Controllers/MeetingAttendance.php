@@ -329,7 +329,7 @@ class MeetingAttendance extends AdminController
         ]);
     }
 
-    public function export($meeting_id = null)
+    public function exports($meeting_id = null)
     {
         // Get meeting
         $meeting = model('Course\Models\LiveMeetingModel')
