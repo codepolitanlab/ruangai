@@ -20,6 +20,7 @@
                 <h5 class="h6">Live Session: <?= $live_session['title']; ?></h5>
             </div>
             <div class="col-12 col-md-4 order-md-2 order-first text-end">
+                <a href="<?= site_url('/zpanel/course/live/schedule/attendance/export/' . $live_session['id']); ?>" class="btn btn-outline-primary"><i class="bi bi-download"></i> Export</a>
                 <a href="<?= site_url('/zpanel/course/live/schedule/attendance/import/' . $live_session['id']); ?>" class="btn btn-outline-primary"><i class="bi bi-upload"></i> Import</a>
                 <a href="<?= site_url('/zpanel/course/live/schedule/attendance/form?live_meeting_id=' . $live_session['id']); ?>" class="btn btn-primary"><i class="bi bi-plus"></i> Add Attendance</a>
             </div>

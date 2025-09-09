@@ -73,6 +73,12 @@
 			<!-- Pengumuman -->
 			<?= $this->include('home/pengumuman'); ?>
 
+			<!-- Tutorial -->
+			<div class="p-3 mb-3 rounded-4 bg-primary d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
+				<span class="text-white">Tutorial Belajar dan misi Beasiswa Ruang AI</span>
+				<button @click="setVideoTutorial(videoTutorial)" type="button" class="btn bg-white rounded-pill" data-bs-toggle="modal" data-bs-target="#modalTutorial">Lihat Tutorial <i class="bi bi-camera-video ms-2"></i></button>
+			</div>
+
 			<div x-show="!meta.isValidEmail" class="rounded-20 p-3 py-4 bg-white my-4">
 				<div class="row justify-content-center">
 					<div class="col-lg-10">
@@ -127,9 +133,9 @@
 							<div class="card text-white bg-primary position-relative" style="min-height: 200px; border-radius: 18px; overflow: hidden; z-index: 1">
 								<img src="https://ik.imagekit.io/56xwze9cy/ruangai/card%20class.png" class="w-100 position-relative" alt="Kelas AI" style="z-index: 1">
 								<div class="p-3 d-flex flex-column justify-content-end position-relative" style="background: linear-gradient(to top, #79B2CD 50%, rgba(255, 255, 255, 0));height: 100%;margin-top: -50px;z-index: 1000">
-									<h5 
-										class="card-title text-white mb-1 mt-3" 
-										style="font-size: 1.1rem; font-weight: 500;" 
+									<h5
+										class="card-title text-white mb-1 mt-3"
+										style="font-size: 1.1rem; font-weight: 500;"
 										x-text="data?.last_course.title"></h5>
 									<div class="d-flex align-items-center mb-2">
 										<i class="bi bi-play-fill fs-3 me-2"></i>
@@ -273,6 +279,19 @@
 						:disabled="isVerifying || otp.join('').length !== 6">
 						<span x-text="isVerifying ? 'Memverifikasi...' : 'Verifikasi'"></span>
 					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="modalTutorial" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalTutorialLabel" aria-hidden="true" x-ref="modalTutorial">
+		<div class="modal-dialog modal-dialog-centered mod modal-lg">
+			<div class="modal-content bg-transparent border-0">
+				<div class="modal-header bg-transparent border-0 pe-0">
+					<button type="button" @click="setVideoTutorial(null)" class="btn-close btn-close-white fs-5" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body p-0">
+					<div class="ratio ratio-16x9" x-html="meta?.videoTutorial">
+					</div>
 				</div>
 			</div>
 		</div>

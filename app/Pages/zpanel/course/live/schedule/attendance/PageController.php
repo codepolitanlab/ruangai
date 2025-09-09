@@ -113,4 +113,39 @@ class PageController extends AdminController
 
         return redirect()->to('/zpanel/events');
     }
+
+    public function getExport($meeting_id = null)
+    {
+        $liveAttendanceModel = new \App\Models\LiveAttendance();
+
+        //Get all data live attendance by meeting id
+        $liveAttendanceModel->select('live_meetings.meeting_code, live_meetings.title, users.name, users.phone, users.email, live_attendance.duration, live_attendance.status, live_attendance.created_at');
+        $liveAttendanceModel->join('users', 'users.id = live_attendance.user_id');
+        $liveAttendanceModel->join('live_meetings', 'live_meetings.id = live_attendance.live_meeting_id');
+        $liveAttendanceModel->where('live_meetings.id', $meeting_id);
+        $participants = $liveAttendanceModel->findAll();
+
+        // Name file export
+        $filename = "LiveSessionAttendance_" . $meeting_id . "_" . date('Y-m-d_His') . ".csv";
+
+        // Header untuk download
+        header("Content-Description: File Transfer");
+        header("Content-Disposition: attachment; filename=$filename");
+        header("Content-Type: application/csv; charset=utf-8");
+
+        $file = fopen('php://output', 'w');
+
+        if (!empty($participants)) {
+            // Tulis header (nama kolom otomatis dari array keys)
+            fputcsv($file, array_keys($participants[0]));
+
+            // Tulis data
+            foreach ($participants as $row) {
+                fputcsv($file, $row);
+            }
+        }
+
+        fclose($file);
+        exit;
+    }
 }
