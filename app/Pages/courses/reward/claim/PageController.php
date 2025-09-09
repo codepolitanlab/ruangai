@@ -50,7 +50,7 @@ class PageController extends BaseController
         if (count($tokenActive) == 0) {
             return $this->respond([
                 'status'  => 'failed',
-                'message' => 'Kamu belum memiliki token active.'
+                'message' => 'Kamu tidak memiliki token reward.'
             ]);
         }
 

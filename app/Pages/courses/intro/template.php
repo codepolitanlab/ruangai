@@ -159,38 +159,21 @@
 				</div>
 			</template>
 
+			<!-- List lesson for non enrolled user -->
 			<template x-if="data.course?.lessons && Object.keys(data.course?.lessons).length > 0 && !data.is_enrolled">
 				<template x-for="(topicLessons,topic) of data.course?.lessons">
 					<section class="card shadow-none rounded-4 p-3 py-0 mb-3">
 						<!-- <div class="h5 m-0" x-text="topic"></div> -->
-						<div class="card-body d-flex flex-column align-items-center gap-3 py-3 px-0">
+						<div class="card-body d-flex flex-column align-items-center gap-1 py-3 px-0">
+							<h4 class="w-100 mb-3">List Materi</h4>
 							<template x-for="lesson of topicLessons">
-								<a :native="data.is_expire"
-									:class="{'disabled': !canAccessLesson(lesson.id, data.lessonsCompleted)}"
-									class="d-block w-100">
-									<div
-										class="lesson-item rounded-20 p-3 py-2 w-100 d-flex align-items-center justify-content-between"
-										:class="{ 'completed': isLessonCompleted(lesson.id, data.lessonsCompleted),
-												  'active': canAccessLesson(lesson.id, data.lessonsCompleted),
-												  'disabled': data.is_expire }">
-										<div class="d-flex w-100 align-items-center">
-
-											<h4 class="fw-normal m-0" x-text="lesson.lesson_title"></h4>
-											<h5 class="m-0 ms-auto text-muted" x-text="lesson.duration"></h5>
-										</div>
-										<div>
-											<template x-if="isLessonCompleted(lesson.id, data.lessonsCompleted)">
-												<i class="bi bi-check-circle-fill text-success h4 m-0"></i>
-											</template>
-											<template x-if="!isLessonCompleted(lesson.id, data.lessonsCompleted) && canAccessLesson(lesson.id, data.lessonsCompleted)">
-												<i class="bi bi-play-circle-fill text-primary h4 m-0"></i>
-											</template>
-											<template x-if="!isLessonCompleted(lesson.id, data.lessonsCompleted) && !canAccessLesson(lesson.id, data.lessonsCompleted)">
-												<i class="bi bi-lock-fill text-dark opacity-50 h4 m-0"></i>
-											</template>
-										</div>
-									</div>
-								</a>
+								<div class="lesson-item rounded-20 pe-3 py-2 w-100 d-flex align-items-center justify-content-between">
+									<div class="d-flex align-items-center gap-2">
+										<i class="bi bi-file-play fs-4 text-primary"></i>
+										<h4 class="fw-normal m-0" x-text="lesson.lesson_title"></h4>
+									</div>	
+									<h5 class="m-0 ms-auto text-muted" x-text="lesson.duration"></h5>
+								</div>
 							</template>
 						</div>
 					</section>
@@ -263,22 +246,21 @@
 
 					</div>
 
-
 					<!-- Final Task -->
 					<!-- <div class="section p-3 mb-3 bg-white rounded-4">
-					<h4 class="fw-bold mb-3" style="color: #222;">Tugas Akhir</h4>
-					<div class="card border-0 rounded-4" style="background: #7db9d2;">
-						<div class="card-body d-flex align-items-center gap-3 p-4">
-							<div class="rounded-3 d-flex align-items-center justify-content-center" style="width:64px;height:64px;background:#fff;">
-								<i class="bi bi-clipboard" style="font-size:2.5rem; color:#7db9d2;"></i>
-							</div>
-							<div class="flex-grow-1">
-								<div class="fw-bold mb-1" style="font-size:1.2rem; color:#fff;">Tugas Akhir - Berkenalan Dengan AI</div>
-								<div style="font-size:1rem; color:#eaf6fa;">30 Soal pilihan ganda</div>
+						<h4 class="fw-bold mb-3" style="color: #222;">Tugas Akhir</h4>
+						<div class="card border-0 rounded-4" style="background: #7db9d2;">
+							<div class="card-body d-flex align-items-center gap-3 p-4">
+								<div class="rounded-3 d-flex align-items-center justify-content-center" style="width:64px;height:64px;background:#fff;">
+									<i class="bi bi-clipboard" style="font-size:2.5rem; color:#7db9d2;"></i>
+								</div>
+								<div class="flex-grow-1">
+									<div class="fw-bold mb-1" style="font-size:1.2rem; color:#fff;">Tugas Akhir - Berkenalan Dengan AI</div>
+									<div style="font-size:1rem; color:#eaf6fa;">30 Soal pilihan ganda</div>
+								</div>
 							</div>
 						</div>
-					</div>
-				</div> -->
+					</div> -->
 
 					<!-- Certificate -->
 					<div class="section p-3 mb-3 pb-4 bg-white rounded-4">

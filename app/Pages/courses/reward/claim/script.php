@@ -43,7 +43,7 @@
                             window.location.replace(`/courses/intro/${course_id}/${this.courseSlug}`)
                         }, 2000)
                     } else {
-                        $heroicHelper.toastr(response.data.message, "error", "bottom");
+                        $heroicHelper.toastr(response.data.message, "danger", "bottom");
                     }
                     this.loading = false
                 })
