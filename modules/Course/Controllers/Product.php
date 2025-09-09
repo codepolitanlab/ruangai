@@ -2,6 +2,7 @@
 
 namespace Course\Controllers;
 
+use Course\Models\CourseProductModel;
 use Heroicadmin\Controllers\AdminController;
 
 class Product extends AdminController
@@ -34,7 +35,7 @@ class Product extends AdminController
             $data['filter_' . $param] = $filterValue;
         }
 
-        $courseProductsModel = new \App\Models\CourseProducts();
+        $courseProductsModel = new CourseProductModel();
         $per_page            = 10;
         $current_page        = $this->request->getGet('page') ?? 1;
 

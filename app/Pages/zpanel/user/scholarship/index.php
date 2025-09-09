@@ -17,7 +17,7 @@
                 </nav>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first text-end">
-                <!-- <a href="/zpanel/course/form" class="btn btn-primary me-2"><i class="bi bi-download"></i> Ekspor</a> -->
+                <a href="/zpanel/user/scholarship/export" class="btn btn-primary me-2"><i class="bi bi-download"></i> Ekspor</a>
                 <a href="/zpanel/user/scholarship/form" class="btn btn-primary"><i class="bi bi-plus"></i> Tambah Pengguna</a>
             </div>
         </div>
@@ -80,10 +80,9 @@
                             </form>
 
                             <?php
-                            $no = ($current_page - 1) * $per_page + 1;
-
-foreach ($scholarships as $scholarship) :
-    ?>
+                                $no = ($current_page - 1) * $per_page + 1;
+                                foreach ($scholarships as $scholarship) :
+                            ?>
                                 <tr>
                                     <!-- use numbering -->
                                     <td width="5%"><?= $no++ ?></td>
