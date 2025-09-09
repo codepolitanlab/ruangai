@@ -64,4 +64,35 @@ class PageController extends BaseController
 
         return pageView('zpanel/user/scholarship/index', $data);
     }
+
+    public function getExport()
+    {
+        $participantModel = new \App\Models\ParticipantViewModel();
+
+        // Ambil semua data dari view
+        $participants = $participantModel->findAll();
+
+        // Nama file export
+        $filename = "Participants_" . date('Y-m-d_His') . ".csv";
+
+        // Header untuk download
+        header("Content-Description: File Transfer");
+        header("Content-Disposition: attachment; filename=$filename");
+        header("Content-Type: application/csv; charset=utf-8");
+
+        $file = fopen('php://output', 'w');
+
+        if (!empty($participants)) {
+            // Tulis header (nama kolom otomatis dari array keys)
+            fputcsv($file, array_keys($participants[0]));
+
+            // Tulis data
+            foreach ($participants as $row) {
+                fputcsv($file, $row);
+            }
+        }
+
+        fclose($file);
+        exit;
+    }
 }
