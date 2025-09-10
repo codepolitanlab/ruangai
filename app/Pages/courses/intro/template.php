@@ -64,29 +64,11 @@
 	</style>
 
 	<div id="appCapsule">
-		<!-- Fullscreen Alert Overlay -->
-		<!-- <div x-show="!data.is_enrolled" class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background: rgba(0,0,0,0.9); z-index: 9999;">
-			<div class="text-center p-4">
-				<div class="alert alert-warning mb-4" role="alert">
-					<i class="bi bi-exclamation-triangle fs-1 d-block"></i>
-					<h4 class="text-warning mb-2">Akses Terbatas</h4>
-					<p class="mb-4">Anda belum terdaftar di kelas ini. Silakan daftar terlebih dahulu untuk mengakses materi.</p>
-					<a target="_blank" href="https://ruangai.id/registration" class="btn btn-warning">Daftar Sekarang</a>
-				</div>
-			</div>
-		</div> -->
-
-		<div class="appContent py-4" style="min-height:90vh">
-			<div>
-				<div class="mb-3">
-					<a href="/courses" class="btn rounded-4 px-2 btn-white bg-white text-primary">
-						<h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>
-					</a>
-				</div>
-				<!-- <div class="ms-2">
-					<h5 class="mb-1 fs-5 opacity-50">Kelas</h5>
-					<h2 class="h4 mb-3"><span x-text="data.course.course_title"></span></h2>
-				</div> -->
+		<div class="appContent py-4">
+			<div class="mb-3">
+				<a href="/courses" class="btn rounded-4 px-2 btn-white bg-white text-primary">
+					<h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>
+				</a>
 			</div>
 
 			<!-- Show Expire Alert -->
@@ -148,7 +130,6 @@
 				</div>
 			</div>
 
-
 			<template x-if="!data.course?.lessons || Object.keys(data.course?.lessons).length === 0">
 				<div class="card shadow-none rounded-4 p-3 mb-3 text-center">
 					<div class="mb-3">
@@ -180,6 +161,7 @@
 				</template>
 			</template>
 
+			<!-- Section for enrolled user -->
 			<template x-if="data.is_enrolled">
 				<div>
 					<!-- Progress Stats -->
@@ -246,52 +228,37 @@
 									</div>
 								</div>
 							</template>
-
 						</div>
-
 					</div>
 
-					<!-- Final Task -->
-					<!-- <div class="section p-3 mb-3 bg-white rounded-4">
-						<h4 class="fw-bold mb-3" style="color: #222;">Tugas Akhir</h4>
-						<div class="card border-0 rounded-4" style="background: #7db9d2;">
-							<div class="card-body d-flex align-items-center gap-3 p-4">
-								<div class="rounded-3 d-flex align-items-center justify-content-center" style="width:64px;height:64px;background:#fff;">
-									<i class="bi bi-clipboard" style="font-size:2.5rem; color:#7db9d2;"></i>
-								</div>
-								<div class="flex-grow-1">
-									<div class="fw-bold mb-1" style="font-size:1.2rem; color:#fff;">Tugas Akhir - Berkenalan Dengan AI</div>
-									<div style="font-size:1rem; color:#eaf6fa;">30 Soal pilihan ganda</div>
-								</div>
-							</div>
-						</div>
-					</div> -->
-
 					<!-- Certificate -->
-					<div class="section p-3 mb-3 pb-4 bg-white rounded-4">
-						<h4 class="fw-bold mb-3" style="color: #222;">Klaim Sertifikat</h4>
+					<template x-if="data.course?.has_certificate === '1'">
+						<div class="section p-3 mb-3 pb-4 bg-white rounded-4">
+							<h4 class="fw-bold mb-3" style="color: #222;">Klaim Sertifikat</h4>
 
-						<div class="card border-0 rounded-4 bg-dark bg-opacity-10 cursor-pointer"
-							@click="claimCertificate()"
-							:class="data.course_completed ? 'bg-secondary' : 'bg-dark bg-opacity-10'">
-							<div class="card-body d-flex align-items-center gap-3 p-4">
-								<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
-									style="min-width: 64px; height: 64px;">
-									<i class="bi bi-award text-dark opacity-50 display-5"></i>
-								</div>
-								<div class="flex-grow-1">
-									<h5 x-show="!data.course_completed" class="h6 opacity-50 mb-0">Selesaikan materi dan sesi live wajib untuk mendapatkan sertifikat.</h5>
-									<div x-show="data.course_completed">
-										<h3
-											class="fw-bold mb-1"
-											style="font-size:1.2rem; color:#fff;"
-											x-text="data.student.cert_code ? `Unduh Sertifikat` : `Klaim Sertifikat`"></h3>
-										<p class="text-white mb-1" x-show="!data.student.cert_code">Klik untuk mengklaim dan mengunduh sertifikat</p>
+							<div class="card border-0 rounded-4 bg-dark bg-opacity-10 cursor-pointer"
+								@click="claimCertificate()"
+								:class="data.course_completed ? 'bg-secondary' : 'bg-dark bg-opacity-10'">
+								<div class="card-body d-flex align-items-center gap-3 p-4">
+									<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
+										style="min-width: 64px; height: 64px;">
+										<i class="bi bi-award text-dark opacity-50 display-5"></i>
+									</div>
+									<div class="flex-grow-1">
+										<h5 x-show="!data.course_completed" class="h6 opacity-50 mb-0">Selesaikan materi dan sesi live wajib untuk mendapatkan sertifikat.</h5>
+										<div x-show="data.course_completed">
+											<h3
+												class="fw-bold mb-1"
+												style="font-size:1.2rem; color:#fff;"
+												x-text="data.student.cert_code ? `Unduh Sertifikat` : `Klaim Sertifikat`"></h3>
+											<p class="text-white mb-1" x-show="!data.student.cert_code">Klik untuk mengklaim dan mengunduh sertifikat</p>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+					</template>
+				</div>
 			</template>
 
 			<!-- <template x-if="data?.student.cert_code">
@@ -315,31 +282,32 @@
 					</template> -->
 
 		</div>
-		</template>
 
 		<template x-if="!data.is_enrolled && $params.course_id == 1">
 			<a href="/courses/reward" class="btn btn-secondary rounded-pill p-1 w-100 fs-6 mb-3">Klaim Kelas</a>
 		</template>
 
-		<!-- Klaim Reward -->
-		<div class="section p-3 mb-3 bg-white rounded-4">
-			<h4 class="fw-bold mb-3" style="color: #222;">Reward Chapter 2</h4>
+		<!-- Klaim Reward, khusus untuk course campaign -->
+		<template x-if="data.course?.id === '1'">
+			<div class="section p-3 mb-3 bg-white rounded-4">
+				<h4 class="fw-bold mb-3" style="color: #222;">Reward Chapter 2</h4>
 
-			<div class="card bg-primary border-0 rounded-4 cursor-pointer"
-				@click="claimReward()">
-				<div class="card-body d-flex align-items-center gap-3 p-4">
-					<div class="rounded-3 d-flex align-items-center justify-content-center px-3" style="min-width:64px;height:64px;background:#fff;">
-						<i class="bi bi-gift fs-2" style="font-size:2.5rem; color:#e91e95;"></i>
-					</div>
-					<div class="flex-grow-1 text-white">
-						<!-- <div class="fw-bold mb-1" style="font-size:1.2rem;">Bonus Kelas Lanjutan</div> -->
-						<h5 class="h6 mb-0" style="font-size:1rem;">
-							Pilih salah satu dari 5 kelas lanjutan yang paling cocok buatmu
-						</h5>
+				<div class="card bg-primary border-0 rounded-4 cursor-pointer"
+					@click="claimReward()">
+					<div class="card-body d-flex align-items-center gap-3 p-4">
+						<div class="rounded-3 d-flex align-items-center justify-content-center px-3" style="min-width:64px;height:64px;background:#fff;">
+							<i class="bi bi-gift fs-2" style="font-size:2.5rem; color:#e91e95;"></i>
+						</div>
+						<div class="flex-grow-1 text-white">
+							<!-- <div class="fw-bold mb-1" style="font-size:1.2rem;">Bonus Kelas Lanjutan</div> -->
+							<h5 class="h6 mb-0" style="font-size:1rem;">
+								Pilih salah satu dari 5 kelas lanjutan yang paling cocok buatmu
+							</h5>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</template>
 	</div>
 
 	<?= $this->include('_bottommenu') ?>
