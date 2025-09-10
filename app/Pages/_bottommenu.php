@@ -12,13 +12,13 @@ $bottommenu = [
         'url'    => '/courses/intro/1/dasar-dan-penggunaan-generative-ai',
         'icon'   => 'bi bi-megaphone',
         'icon'   => 'bi bi-journal-check',
-        'module' => 'learn',
+        'module' => 'misi_beasiswa',
     ],
     [
         'label'  => 'Kelas Saya',
         'url'    => '/courses',
         'icon'   => 'bi bi-book',
-        'module' => 'course_list'
+        'module' => 'courses'
     ],
     [
         'label'  => 'Reward',

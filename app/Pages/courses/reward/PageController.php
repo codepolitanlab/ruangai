@@ -8,7 +8,7 @@ class PageController extends BaseController
 {
     public $data = [
         'page_title'  => 'Reward',
-        'module'      => 'learn',
+        'module'      => 'reward',
         'active_page' => 'reward',
     ];
 

@@ -158,40 +158,39 @@
 								<h4 class="border-bottom pb-2 opacity-75">Event Hari Ini</h4>
 								<?= $this->include('courses/intro/live_session/meeting_ongoing') ?>
 							</div>
-							
+
 							<div class="mb-5" x-show="data.live_sessions?.scheduled.length > 0" x-transition>
 								<h4 class="border-bottom pb-2 opacity-75">Event Mendatang</h4>
 								<?= $this->include('courses/intro/live_session/meeting_scheduled') ?>
 							</div>
-							
+
 							<div x-show="data.live_sessions?.completed.length > 0" x-transition>
 								<h4 class="border-bottom pb-2 opacity-75">Sudah Selesai</h4>
 								<?= $this->include('courses/intro/live_session/meeting_completed') ?>
 							</div>
 
-							</div>
 						</div>
 					</div>
 				</div>
-
-				<!-- List Attended -->
-				<div class="tab-pane fade" id="ongoing" role="tabpanel" aria-labelledby="ongoing-tab" tabindex="0">
-					<div class="my-4 rounded-4 shadow-none">
-
-						<?= $this->include('courses/intro/live_session/meeting_attended') ?>
-
-					</div>
-				</div>
 			</div>
 
-			<div class="offcanvas offcanvas-bottom" tabindex="-1" id="shareCanvas" aria-labelledby="shareCanvasLabel" style="max-width:768px;margin:0 auto;" aria-modal="true" role="dialog">
-				<div class="offcanvas-header">
-					<h5 class="offcanvas-title" id="shareCanvasLabel">Bagikan Tautan</h5><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-				</div>
-				<div class="offcanvas-body small"></div>
-			</div>
+			<!-- List Attended -->
+			<div class="tab-pane fade" id="ongoing" role="tabpanel" aria-labelledby="ongoing-tab" tabindex="0">
+				<div class="my-4 rounded-4 shadow-none">
 
+					<?= $this->include('courses/intro/live_session/meeting_attended') ?>
+
+				</div>
+			</div>
 		</div>
+
+		<div class="offcanvas offcanvas-bottom" tabindex="-1" id="shareCanvas" aria-labelledby="shareCanvasLabel" style="max-width:768px;margin:0 auto;" aria-modal="true" role="dialog">
+			<div class="offcanvas-header">
+				<h5 class="offcanvas-title" id="shareCanvasLabel">Bagikan Tautan</h5><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+			</div>
+			<div class="offcanvas-body small"></div>
+		</div>
+
 	</div>
 	<?= $this->include('_bottommenu') ?>
 </div>

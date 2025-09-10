@@ -341,8 +341,8 @@
 			</div>
 		</div>
 	</div>
+
+	<?= $this->include('_bottommenu') ?>
 </div>
 
-<?= $this->include('_bottommenu') ?>
 <?= $this->include('courses/intro/script') ?>
-</div>

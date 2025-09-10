@@ -8,7 +8,7 @@ class PageController extends BaseController
 {
     public $data = [
         'page_title'  => 'Live Session',
-        'module'      => 'learn',
+        'module'      => 'courses',
         'active_page' => 'live',
     ];
 
@@ -22,6 +22,10 @@ class PageController extends BaseController
             ->where('courses.id', $course_id)
             ->get()
             ->getRowArray();
+
+        if($course_id == 1) {
+            $this->data['module'] = 'misi_beasiswa';
+        }
 
         // Get attended events
         $attended = $db->table('live_attendance')
@@ -48,6 +52,7 @@ class PageController extends BaseController
             ->select('live_meetings.*')
             ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
             ->where('live_batch.status', 'ongoing')
+            ->where('live_batch.course_id', $course_id)
             ->where('live_meetings.deleted_at', null)
             ->orderBy('meeting_date', 'ASC')
             ->orderBy('meeting_time', 'ASC')

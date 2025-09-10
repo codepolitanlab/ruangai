@@ -8,7 +8,7 @@ class PageController extends BaseController
 {
     public $data = [
         'page_title'  => 'Daftar Materi',
-        'module'      => 'learn',
+        'module'      => 'courses',
         'active_page' => 'materi',
     ];
 
@@ -32,6 +32,10 @@ class PageController extends BaseController
         $this->data['course'] = $course;
 
         if ($course) {
+            if($course['id'] == 1) {
+                $this->data['module'] = 'misi_beasiswa';
+            }
+            
             // Get completed lessons for current user
             $completedLessons = $db->table('course_lesson_progress')
                 ->select('lesson_id')
