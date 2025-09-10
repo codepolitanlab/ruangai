@@ -21,6 +21,7 @@
             </div>
             <div class="col-12 col-md-4 order-md-2 order-first text-end">
                 <a href="<?= site_url(urlScope() . '/course/live/meeting/' . $live_meeting['id'] . '/attendant/sync'); ?>" class="btn btn-outline-primary"><i class="bi bi-arrow-clockwise"></i> Sync Data</a>
+                <a href="<?= site_url(urlScope() . '/course/live/meeting/' . $live_meeting['id'] . '/attendant/export'); ?>" class="btn btn-outline-primary"><i class="bi bi-download"></i> Export Data</a>
                 <a href="<?= site_url(urlScope() . '/course/live/meeting/' . $live_meeting['id'] . '/attendant/add'); ?>" class="btn btn-primary"><i class="bi bi-plus"></i> Add Attendance</a>
             </div>
         </div>
@@ -34,6 +35,10 @@
                 <div class="m-0">
                     <label>Mengisi Feedback:</label>
                     <h4 class="text-info"><?= $stats['users_isi_feedback']; ?></h4>
+                </div>
+                <div class="m-0">
+                    <label>Belum Isi Feedback:</label>
+                    <h4 class="text-warning"><?= $stats['belum_isi_feedback']; ?></h4>
                 </div>
                 <div class="m-0">
                     <label>Total Partisipan Valid:</label>
@@ -69,6 +74,7 @@
                                 <th>Duration (s)</th>
                                 <th>Feedback</th>
                                 <th>Status</th>
+                                <th>Graduate</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -78,7 +84,13 @@
                                     <td><input type="text" class="form-control form-control-sm" name="filter[name]" value="<?= @$filter['name'] ?>" placeholder="filter name"></td>
                                     <td><input type="text" class="form-control form-control-sm" name="filter[email]" value="<?= @$filter['email'] ?>" placeholder="filter name"></td>
                                     <td></td>
-                                    <td></td>
+                                    <td>
+                                        <select name="filter[durasi]" class="form-select form-select-sm" >
+                                            <option value="">Semua</option>
+                                            <option value="1" <?= @$filter['durasi'] === '1' ? 'selected' : '' ?>>Valid (30+)</option>
+                                            <option value="0" <?= @$filter['durasi'] === '0' ? 'selected' : '' ?>>Tidak Valid (30-)</option>
+                                        </select>
+                                    </td>
                                     <td>
                                         <select name="filter[feedback]" class="form-select form-select-sm" >
                                             <option value="">Semua</option>
@@ -94,6 +106,13 @@
                                         </select>
                                     </td>
                                     <td>
+                                        <select name="filter[graduate]" class="form-select form-select-sm" >
+                                            <option value="">Semua</option>
+                                            <option value="1" <?= @$filter['graduate'] === '1' ? 'selected' : '' ?>>Lulus</option>
+                                            <option value="0" <?= @$filter['graduate'] === '0' ? 'selected' : '' ?>>Belum Lulus</option>
+                                        </select>
+                                    </td>
+                                    <td>
                                         <div class="btn-group">
                                             <button type="submit" class="btn btn-primary">Filter</button>
                                             <a href="/zpanel/events" class="btn btn-secondary">Reset</a>
@@ -105,8 +124,8 @@
                             <?php
                             $no = ($current_page - 1) * $per_page + 1;
 
-foreach ($attenders as $attender) :
-    ?>
+                            foreach ($attenders as $attender) :
+                            ?>
                                 <tr>
                                     <td width="5%"><?= $no++ ?></td>
                                     <td>
@@ -127,6 +146,7 @@ foreach ($attenders as $attender) :
                                             : '❌' ?>
                                     </td>
                                     <td><?= ($attender->status ?? '0') === '1' ? '✅' : '❌' ?></td>
+                                    <td><?= ($attender->graduate ?? '0') === '1' ? '✅' : '❌' ?></td>
                                     <td class="text-end">
                                         <div class="btn-group">
 

@@ -119,8 +119,9 @@ class PageController extends AdminController
         $liveAttendanceModel = new \App\Models\LiveAttendance();
 
         //Get all data live attendance by meeting id
-        $liveAttendanceModel->select('live_meetings.meeting_code, live_meetings.title, users.name, users.phone, users.email, live_attendance.duration, live_attendance.status, live_attendance.created_at');
+        $liveAttendanceModel->select('live_meetings.meeting_code, live_meetings.title, users.name, users.phone, users.email, live_attendance.duration, course_students.graduate, live_attendance.status, live_attendance.created_at');
         $liveAttendanceModel->join('users', 'users.id = live_attendance.user_id');
+        $liveAttendanceModel->join('course_students', 'course_students.user_id = users.id');
         $liveAttendanceModel->join('live_meetings', 'live_meetings.id = live_attendance.live_meeting_id');
         $liveAttendanceModel->where('live_meetings.id', $meeting_id);
         $participants = $liveAttendanceModel->findAll();

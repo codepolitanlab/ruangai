@@ -21,6 +21,12 @@ $bottommenu = [
         'module' => 'course_list'
     ],
     [
+        'label'  => 'Reward',
+        'url'    => '/courses/reward',
+        'icon'   => 'bi bi-gift',
+        'module' => 'reward'
+    ],
+    [
         'label'  => 'Keluar',
         'url'    => '/logout',
         'native' => true,

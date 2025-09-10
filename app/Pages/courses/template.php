@@ -57,7 +57,7 @@
 					<div class="bg-white px-3 py-4 rounded-4 mb-4">
 						<h5 class="fw-bold mb-3">Kelas yang kamu miliki</h5>
 						<template x-for="course in data.courses">
-							<a :href="`/courses/intro/${course.id}/${course.slug}/lessons`" class="link">
+							<a :href="`/courses/intro/${course.id}/${course.slug}`" class="link">
 								<div class="card shadow-none overflow-hidden mb-3" style="background:#112f3d">
 									<div class="d-flex align-items-center overflow-hidden">
 										<img :src="course.cover" class="rounded-3 img-course" alt="thumbnail kelas">

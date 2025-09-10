@@ -40,14 +40,16 @@ class MeetingAttendance extends AdminController
         $data['stats'] = $db->query('SELECT
             COUNT(DISTINCT IF(duration > 1800, user_id, NULL)) AS users_durasi_gt_1800,
             COUNT(DISTINCT IF(meeting_feedback_id IS NOT NULL, user_id, NULL)) AS users_isi_feedback,
+            COUNT(DISTINCT IF(duration > 1800 AND meeting_feedback_id IS NULL, user_id, NULL))  AS belum_isi_feedback,
             COUNT(DISTINCT IF(status = 1, user_id, NULL))  AS users_valid,
             COUNT(DISTINCT IF(status = 0, user_id, NULL))  AS users_tidak_valid
             FROM live_attendance
             WHERE live_meeting_id = ' . $meeting_id)->getRowArray();
 
         // Base query with joins and subqueries
-        $this->model->select('live_attendance.id, users.name, users.email, users.phone, live_attendance.duration, zoom_join_link, duration, meeting_feedback_id, live_attendance.status');
+        $this->model->select('live_attendance.id, users.name, users.email, users.phone, live_attendance.duration, zoom_join_link, duration, meeting_feedback_id, live_attendance.status, course_students.graduate');
         $this->model->join('users', 'users.id = live_attendance.user_id');
+        $this->model->join('course_students', 'course_students.user_id = live_attendance.user_id AND course_students.course_id = live_attendance.course_id');
         $this->model->where('live_attendance.live_meeting_id', $meeting_id);
 
         // Apply filters
@@ -59,6 +61,13 @@ class MeetingAttendance extends AdminController
             }
             if (! empty($filter['email'])) {
                 $this->model->like('users.email', $filter['email']);
+            }
+            if (isset($filter['durasi'])) {
+                if($filter['durasi'] === '1') {
+                    $this->model->where('live_attendance.duration >=', 1800);
+                } else if($filter['durasi'] === '0') {
+                    $this->model->where('live_attendance.duration <', 1800);
+                }
             }
             if (isset($filter['feedback'])) {
                 if($filter['feedback'] === '1') {
@@ -72,6 +81,13 @@ class MeetingAttendance extends AdminController
                     $this->model->where('live_attendance.status', '1');
                 } else if($filter['status'] === '0') {
                     $this->model->where('live_attendance.status', '0');
+                }
+            }
+            if (isset($filter['graduate'])) {
+                if($filter['graduate'] === '1') {
+                    $this->model->where('course_students.graduate', '1');
+                } else if($filter['graduate'] === '0') {
+                    $this->model->where('course_students.graduate', '0');
                 }
             }
         } else {
@@ -311,5 +327,50 @@ class MeetingAttendance extends AdminController
             'inserted'           => $inserted,
             'updated'            => $updated,
         ]);
+    }
+
+    public function export($meeting_id = null)
+    {
+        // Get meeting
+        $meeting = model('Course\Models\LiveMeetingModel')
+            ->select('live_batch.name as batch, live_batch.course_id, live_meetings.*')
+            ->join('live_batch', 'live_batch.id = live_batch_id')
+            ->where('live_meetings.id', $meeting_id)
+            ->where('live_meetings.deleted_at', null)
+            ->first();
+
+        $liveAttendanceModel = new \App\Models\LiveAttendance();
+
+        //Get all data live attendance by meeting id
+        $liveAttendanceModel->select('users.name, users.phone, users.email, live_attendance.duration, IF(live_attendance.duration > 1800, live_attendance.user_id, NULL) AS duration_valid, live_attendance.meeting_feedback_id, live_attendance.status as attendance_valid, course_students.graduate, live_attendance.created_at');
+        $liveAttendanceModel->join('users', 'users.id = live_attendance.user_id');
+        $liveAttendanceModel->join('course_students', 'course_students.user_id = users.id  AND live_attendance.course_id = course_students.course_id');
+        $liveAttendanceModel->join('live_meetings', 'live_meetings.id = live_attendance.live_meeting_id');
+        $liveAttendanceModel->where('live_meetings.id', $meeting_id);
+        $liveAttendanceModel->groupBy('live_attendance.id, users.name, users.phone, users.email, live_attendance.duration, course_students.graduate, live_attendance.status, live_attendance.created_at, live_attendance.meeting_feedback_id');
+        $participants = $liveAttendanceModel->findAll();
+
+        // Name file export
+        $filename = "Live Session Attendance - " . $meeting['batch'] . " - " . $meeting['subtitle'] . ".csv";
+
+        // Header untuk download
+        header("Content-Description: File Transfer");
+        header("Content-Disposition: attachment; filename=$filename");
+        header("Content-Type: application/csv; charset=utf-8");
+
+        $file = fopen('php://output', 'w');
+
+        if (!empty($participants)) {
+            // Tulis header (nama kolom otomatis dari array keys)
+            fputcsv($file, array_keys($participants[0]));
+
+            // Tulis data
+            foreach ($participants as $row) {
+                fputcsv($file, $row);
+            }
+        }
+
+        fclose($file);
+        exit;
     }
 }

@@ -108,7 +108,7 @@
 				<div class="card border-0 rounded-4 shadow-none position-relative">
 					<div class="position-relative" style="height: 200px;">
 						<img
-							src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206751%20(2).png"
+							:src="data.course?.cover"
 							class="rounded-top-4 w-100 h-100 object-fit-cover"
 							alt="AI Course" />
 						<!-- Fade gradient -->
@@ -171,7 +171,7 @@
 									<div class="d-flex align-items-center gap-2">
 										<i class="bi bi-file-play fs-4 text-primary"></i>
 										<h4 class="fw-normal m-0" x-text="lesson.lesson_title"></h4>
-									</div>	
+									</div>
 									<h5 class="m-0 ms-auto text-muted" x-text="lesson.duration"></h5>
 								</div>
 							</template>
@@ -194,54 +194,59 @@
 						</div>
 
 						<div class="row">
-							<div class="col-md-6 mb-3">
-								<div id="card-progress-lesson"
-									class="card border-0 shadow-none rounded-4 p-3 d-flex flex-column justify-content-between position-relative"
-									:class="{'lesson-completed bg-success bg-opacity-50': Math.round(data.lesson_completed/data.total_lessons*100) == 100, 
+							<template x-if="data.course?.has_modules === '1'">
+								<div class="col-md-6 mb-3">
+									<div id="card-progress-lesson"
+										class="card border-0 shadow-none rounded-4 p-3 d-flex flex-column justify-content-between position-relative"
+										:class="{'lesson-completed bg-success bg-opacity-50': Math.round(data.lesson_completed/data.total_lessons*100) == 100, 
 								'bg-light-primary': Math.round(data.lesson_completed/data.total_lessons*100) < 100}"
-									style="min-height: 210px">
-									<div class="me-3 bg-white text-dark rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
-										<i class="bi h3 m-0" :class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'bi-check-circle text-success' : 'bi-journal-text'"></i>
-									</div>
-									<div class="d-flex align-items-end gap-2 mt-3 text-dark">
-										<h1 class="mb-0 display-6 fw-bold" x-text="data?.lesson_completed "></h1>
-										<p class="mb-1">dari <span x-text="data?.total_lessons"></span> modul selesai</p>
-									</div>
-									<div class="d-flex align-items-center">
-										<div class="progress flex-grow-1 me-2 " style="height: 5px;">
-											<div class="progress-bar" role="progressbar" :style="`width: ${Math.round(data.lesson_completed/data.total_lessons*100)}%`"></div>
+										style="min-height: 210px">
+										<div class="me-3 bg-white text-dark rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
+											<i class="bi h3 m-0" :class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'bi-check-circle text-success' : 'bi-journal-text'"></i>
 										</div>
-										<span class="fw-bold" x-text="`${Math.round(data.lesson_completed/data.total_lessons*100)}%`"></span>
+										<div class="d-flex align-items-end gap-2 mt-3 text-dark">
+											<h1 class="mb-0 display-6 fw-bold" x-text="data?.lesson_completed "></h1>
+											<p class="mb-1">dari <span x-text="data?.total_lessons"></span> modul selesai</p>
+										</div>
+										<div class="d-flex align-items-center">
+											<div class="progress flex-grow-1 me-2 " style="height: 5px;">
+												<div class="progress-bar" role="progressbar" :style="`width: ${Math.round(data.lesson_completed/data.total_lessons*100)}%`"></div>
+											</div>
+											<span class="fw-bold" x-text="`${Math.round(data.lesson_completed/data.total_lessons*100)}%`"></span>
+										</div>
+										<a
+											:href="`/courses/intro/${data.course.id}/${data.course.slug}/lessons`"
+											class="btn btn-primary hover rounded-pill p-1 fs-6">Lihat Materi</a>
+										<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
 									</div>
-									<a
-										:href="`/courses/intro/${data.course.id}/${data.course.slug}/lessons`"
-										class="btn btn-primary hover rounded-pill p-1 fs-6">Lihat Materi</a>
-									<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
 								</div>
-							</div>
+							</template>
 
-							<div class="col-md-6 mb-3">
-								<div id="card-progress-live"
-									class="card border-0 shadow-none rounded-4  p-3 d-flex flex-column justify-content-between position-relative"
-									style="min-height: 210px"
-									:class="{'live-completed bg-success bg-opacity-50': data.live_attendance > 0, 
+							<template x-if="data.course?.has_live_sessions === '1'">
+								<div class="col-md-6 mb-3">
+									<div id="card-progress-live"
+										class="card border-0 shadow-none rounded-4  p-3 d-flex flex-column justify-content-between position-relative"
+										style="min-height: 210px"
+										:class="{'live-completed bg-success bg-opacity-50': data.live_attendance > 0, 
 								'bg-light-secondary': data.live_attendance == 0}">
-									<div class="me-3 bg-white rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
-										<i class="bi h3 m-0" :class="data.live_attendance > 0 ? 'bi-check-circle text-success' : 'bi-camera-video text-secondary'"></i>
+										<div class="me-3 bg-white rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
+											<i class="bi h3 m-0" :class="data.live_attendance > 0 ? 'bi-check-circle text-success' : 'bi-camera-video text-secondary'"></i>
+										</div>
+										<div
+											:class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'd-flex' : 'd-none'"
+											class="d-flex align-items-end gap-2 mt-3 mb-4">
+											<h1 class="mb-0 display-6 fw-bold" x-text="data?.live_attendance"></h1>
+											<p class="mb-1">Live session diikuti</p>
+										</div>
+										<div x-show="Math.round(data.lesson_completed/data.total_lessons*100) < 100">
+											<div class="mb-1 position-relative">Selesaikan materi untuk dapat mengikuti sesi live</div>
+										</div>
+										<a :href="`/courses/intro/${data?.course?.id}/${data?.course?.slug}/live_session`" class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6">Lihat Jadwal</a>
+										<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
 									</div>
-									<div
-										:class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'd-flex' : 'd-none'"
-										class="d-flex align-items-end gap-2 mt-3 mb-4">
-										<h1 class="mb-0 display-6 fw-bold" x-text="data?.live_attendance"></h1>
-										<p class="mb-1">Live session diikuti</p>
-									</div>
-									<div x-show="Math.round(data.lesson_completed/data.total_lessons*100) < 100">
-										<div class="mb-1 position-relative">Selesaikan materi untuk dapat mengikuti sesi live</div>
-									</div>
-									<a :href="`/courses/intro/${data?.course?.id}/${data?.course?.slug}/live_session`" class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6">Lihat Jadwal</a>
-									<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
 								</div>
-							</div>
+							</template>
+
 						</div>
 
 					</div>
@@ -287,8 +292,9 @@
 							</div>
 						</div>
 					</div>
+			</template>
 
-					<!-- <template x-if="data?.student.cert_code">
+			<!-- <template x-if="data?.student.cert_code">
 						<a href="https://www.ruangai.id/lenterai" target="_blank">
 							<div class="section p-3 mb-3 pb-4 bg-white rounded-4">
 								<h4 class="fw-bold mb-3" style="color: #222;">Daftar CO-Mentor</h4>
@@ -308,35 +314,35 @@
 						</a>
 					</template> -->
 
-				</div>
-			</template>
+		</div>
+		</template>
 
-			<template x-if="!data.is_enrolled && $params.course_id == 1">
-				<a href="/courses/reward" class="btn btn-secondary rounded-pill p-1 w-100 fs-6 mb-3">Klaim Kelas</a>
-			</template>
-			
-			<!-- Klaim Reward -->
-			<div class="section p-3 mb-3 bg-white rounded-4">
-				<h4 class="fw-bold mb-3" style="color: #222;">Reward Chapter 2</h4>
+		<template x-if="!data.is_enrolled && $params.course_id == 1">
+			<a href="/courses/reward" class="btn btn-secondary rounded-pill p-1 w-100 fs-6 mb-3">Klaim Kelas</a>
+		</template>
 
-				<div class="card bg-primary border-0 rounded-4 cursor-pointer"
-					@click="claimReward()">
-					<div class="card-body d-flex align-items-center gap-3 p-4">
-						<div class="rounded-3 d-flex align-items-center justify-content-center px-3" style="min-width:64px;height:64px;background:#fff;">
-							<i class="bi bi-gift fs-2" style="font-size:2.5rem; color:#e91e95;"></i>
-						</div>
-						<div class="flex-grow-1 text-white">
-							<!-- <div class="fw-bold mb-1" style="font-size:1.2rem;">Bonus Kelas Lanjutan</div> -->
-							<h5 class="h6 mb-0" style="font-size:1rem;">
-								Pilih salah satu dari 5 kelas lanjutan yang paling cocok buatmu
-							</h5>
-						</div>
+		<!-- Klaim Reward -->
+		<div class="section p-3 mb-3 bg-white rounded-4">
+			<h4 class="fw-bold mb-3" style="color: #222;">Reward Chapter 2</h4>
+
+			<div class="card bg-primary border-0 rounded-4 cursor-pointer"
+				@click="claimReward()">
+				<div class="card-body d-flex align-items-center gap-3 p-4">
+					<div class="rounded-3 d-flex align-items-center justify-content-center px-3" style="min-width:64px;height:64px;background:#fff;">
+						<i class="bi bi-gift fs-2" style="font-size:2.5rem; color:#e91e95;"></i>
+					</div>
+					<div class="flex-grow-1 text-white">
+						<!-- <div class="fw-bold mb-1" style="font-size:1.2rem;">Bonus Kelas Lanjutan</div> -->
+						<h5 class="h6 mb-0" style="font-size:1rem;">
+							Pilih salah satu dari 5 kelas lanjutan yang paling cocok buatmu
+						</h5>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
 
-	<?= $this->include('_bottommenu') ?>
-	<?= $this->include('courses/intro/script') ?>
+<?= $this->include('_bottommenu') ?>
+<?= $this->include('courses/intro/script') ?>
 </div>
