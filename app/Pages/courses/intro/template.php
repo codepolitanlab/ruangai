@@ -36,11 +36,13 @@
 		.lesson-not-complete #card-progress-live {
 			background-color: #ddd !important;
 		}
+
 		.lesson-not-complete #card-progress-live .bi,
 		.lesson-not-complete #card-progress-live p,
 		.lesson-not-complete #card-progress-live h1 {
 			color: #777 !important;
 		}
+
 		#card-progress-lesson.lesson-completed h1,
 		#card-progress-lesson.lesson-completed span,
 		#card-progress-lesson.lesson-completed p,
@@ -49,6 +51,7 @@
 		#card-progress-live.live-completed p {
 			color: white;
 		}
+
 		#card-progress-live.live-completed .bi,
 		#card-progress-live.live-completed .btn-secondary,
 		#card-progress-lesson.lesson-completed .bi,
@@ -105,7 +108,7 @@
 				<div class="card border-0 rounded-4 shadow-none position-relative">
 					<div class="position-relative" style="height: 200px;">
 						<img
-							src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206751%20(2).png"
+							:src="data.course?.cover"
 							class="rounded-top-4 w-100 h-100 object-fit-cover"
 							alt="AI Course" />
 						<!-- Fade gradient -->
@@ -145,7 +148,7 @@
 			<div class="p-3 pb-2 bg-white rounded-4 mb-3 position-relative"
 				:class="{'lesson-not-complete': Math.round(data.lesson_completed/data.total_lessons*100) < 100}">
 				<h4 class="mb-3">Progres Belajar</h4>
-				
+
 				<div x-show="data?.is_expire">
 					<div class="position-absolute d-flex align-items-center justify-content-center rounded-4 top-0 start-0 end-0 bottom-0" style="z-index: 100;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.5);">
 						<i class="bi bi-lock-fill text-white display-3"></i>
@@ -153,8 +156,9 @@
 				</div>
 
 				<div class="row">
+					<template x-if="data.course?.has_modules === '1'">
 					<div class="col-md-6 mb-3">
-						<div id="card-progress-lesson" 
+						<div id="card-progress-lesson"
 							class="card border-0 shadow-none rounded-4 p-3 d-flex flex-column justify-content-between position-relative"
 							:class="{'lesson-completed bg-success bg-opacity-50': Math.round(data.lesson_completed/data.total_lessons*100) == 100, 
 							'bg-light-primary': Math.round(data.lesson_completed/data.total_lessons*100) < 100}"
@@ -172,35 +176,38 @@
 								</div>
 								<span class="fw-bold" x-text="`${Math.round(data.lesson_completed/data.total_lessons*100)}%`"></span>
 							</div>
-							<a 
-								:href="`/courses/intro/${data.course.id}/${data.course.slug}/lessons`" 
+							<a
+								:href="`/courses/intro/${data.course.id}/${data.course.slug}/lessons`"
 								class="btn btn-primary hover rounded-pill p-1 fs-6">Lihat Materi</a>
 							<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
 						</div>
 					</div>
+					</template>
 
-					<div class="col-md-6 mb-3">
-						<div id="card-progress-live" 
-							class="card border-0 shadow-none rounded-4  p-3 d-flex flex-column justify-content-between position-relative"
-							style="min-height: 210px"
-							:class="{'live-completed bg-success bg-opacity-50': data.live_attendance > 0, 
+					<template x-if="data.course?.has_live_sessions === '1'">
+						<div class="col-md-6 mb-3">
+							<div id="card-progress-live"
+								class="card border-0 shadow-none rounded-4  p-3 d-flex flex-column justify-content-between position-relative"
+								style="min-height: 210px"
+								:class="{'live-completed bg-success bg-opacity-50': data.live_attendance > 0, 
 							'bg-light-secondary': data.live_attendance == 0}">
-							<div class="me-3 bg-white rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
-								<i class="bi h3 m-0" :class="data.live_attendance > 0 ? 'bi-check-circle text-success' : 'bi-camera-video text-secondary'"></i>
+								<div class="me-3 bg-white rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
+									<i class="bi h3 m-0" :class="data.live_attendance > 0 ? 'bi-check-circle text-success' : 'bi-camera-video text-secondary'"></i>
+								</div>
+								<div
+									:class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'd-flex' : 'd-none'"
+									class="d-flex align-items-end gap-2 mt-3 mb-4">
+									<h1 class="mb-0 display-6 fw-bold" x-text="data?.live_attendance"></h1>
+									<p class="mb-1">Live session diikuti</p>
+								</div>
+								<div x-show="Math.round(data.lesson_completed/data.total_lessons*100) < 100">
+									<div class="mb-1 position-relative">Selesaikan materi untuk dapat mengikuti sesi live</div>
+								</div>
+								<a :href="`/courses/intro/${data?.course?.id}/${data?.course?.slug}/live_session`" class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6">Lihat Jadwal</a>
+								<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
 							</div>
-							<div 
-								:class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'd-flex' : 'd-none'"
-								class="d-flex align-items-end gap-2 mt-3 mb-4">
-								<h1 class="mb-0 display-6 fw-bold" x-text="data?.live_attendance"></h1>
-								<p class="mb-1">Live session diikuti</p>
-							</div>
-							<div x-show="Math.round(data.lesson_completed/data.total_lessons*100) < 100">
-								<div class="mb-1 position-relative">Selesaikan materi untuk dapat mengikuti sesi live</div>
-							</div>
-							<a :href="`/courses/intro/${data?.course?.id}/${data?.course?.slug}/live_session`" class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6">Lihat Jadwal</a>
-							<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
 						</div>
-					</div>
+					</template>
 				</div>
 
 			</div>
