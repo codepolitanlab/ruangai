@@ -6,7 +6,8 @@
       meta: {
         expandDesc: false,
         graduate: false,
-        isValidEmail: false
+        isValidEmail: false,
+        videoTeaser: null
       }
     })
 
@@ -65,7 +66,11 @@
             this.data.is_expire = false
           }
         })
-      }
+      },
+
+      setVideoTeaser(url) {
+        this.meta.videoTeaser = url;
+      },
     };
   });
 </script>

@@ -66,9 +66,9 @@
 	<div id="appCapsule">
 		<div class="appContent py-4">
 			<div class="mb-3">
-				<a href="/courses" class="btn rounded-4 px-2 btn-white bg-white text-primary">
+				<button @click="history.back()" class="btn rounded-4 px-2 btn-white bg-white text-primary">
 					<h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>
-				</a>
+				</button>
 			</div>
 
 			<!-- Show Expire Alert -->
@@ -126,11 +126,36 @@
 							</button>
 						</div>
 
-						<!-- Tombol enrol -->
+						<!-- Tombol teaser & enrol -->
 						<template x-if="! data.is_enrolled">
-							<div class="text-end mt-4">
-								<a href="/courses/reward/claim" class="btn btn-warning">
-									<i class="bi bi-circle-fill" style="color:#ffeb3b"></i> KLAIM KELAS</a>
+							<div>
+								<div class="text-end mt-4">
+									<button 
+										:disabled="!data.course?.teaser" 
+										type="button" 
+										class="btn btn-outline-primary mb-2 mb-lg-0" 
+										@click="setVideoTeaser(data.course?.teaser)" 
+										data-bs-toggle="modal" 
+										data-bs-target="#teaserModal">
+										<i class="bi bi-play-circle-fill"></i> SIMAK TEASER</button>
+
+									<a href="/courses/reward/claim" class="btn btn-warning">
+										<i class="bi bi-circle-fill" style="color:#ffeb3b"></i> KLAIM KELAS</a>
+								</div>
+
+								<div class="modal fade" id="teaserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="teaserModalLabel" aria-hidden="true">
+									<div class="modal-dialog modal-dialog-centered modal-lg">
+										<div class="modal-content bg-transparent border-0">
+											<div class="modal-header bg-transparent border-0 pe-0">
+												<button type="button" @click="setVideoTeaser(null)" class="btn-close btn-close-white fs-5" data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+											<div class="modal-body p-0">
+												<div class="ratio ratio-16x9" x-html="meta?.videoTeaser">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</template>
 
