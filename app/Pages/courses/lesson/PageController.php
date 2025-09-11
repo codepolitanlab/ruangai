@@ -9,13 +9,18 @@ class PageController extends BaseController
 {
     public $data = [
         'page_title' => 'Lessons',
-        'module'     => 'course_lesson',
+        'module'     => 'courses',
+        'submodule'  => 'course_lesson',
     ];
 
     public function getData($course_id, $lesson_id)
     {
         $Heroic = new \App\Libraries\Heroic();
         $jwt    = $Heroic->checkToken();
+
+        if($course_id === "1") {
+            $this->data['module'] = 'misi_beasiswa';
+        }
 
         $db = \Config\Database::connect();
         // Get specific lesson

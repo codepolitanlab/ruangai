@@ -67,8 +67,8 @@ class Router
         '/courses/feedback/:meeting_code' => [
             'handler' => '[isLoggedIn]',
         ],
-
         '/reset_password' => [],
         '/reset_password/change/:token' => [],
+        '/courses/reward/howto' => [],
     ];
 }

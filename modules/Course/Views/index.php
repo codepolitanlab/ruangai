@@ -40,7 +40,7 @@
                     <div class="media-body px-3 py-2">
                         <div class="row">
                             <div class="col-lg-6 pl-2 d-flex justify-content-start mb-2">
-                                <img src="<?= $course['cover'] ?>"
+                                <img src="<?= $course['thumbnail'] ?>"
                                     style="margin-top:10px; width:100px;height:100px;object-fit:cover;">
                                 <div class="ps-3 pt-2">
                                     <h5 class="mt-0 mb-1 d-inline-block">

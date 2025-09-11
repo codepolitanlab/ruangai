@@ -126,6 +126,14 @@
 							</button>
 						</div>
 
+						<!-- Tombol enrol -->
+						<template x-if="! data.is_enrolled">
+							<div class="text-end mt-4">
+								<a href="/courses/reward/claim" class="btn btn-warning">
+									<i class="bi bi-circle-fill" style="color:#ffeb3b"></i> KLAIM KELAS</a>
+							</div>
+						</template>
+
 					</div>
 				</div>
 			</div>

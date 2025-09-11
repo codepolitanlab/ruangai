@@ -44,13 +44,11 @@
 		filter: grayscale(100%);
 		opacity: 0.6;
 	}
-	
+
 	.grayscale-0 {
 		filter: grayscale(0%);
 		opacity: 1;
 	}
-
-
 </style>
 
 <div
@@ -67,15 +65,33 @@
 		<div class="appContent" style="min-height:90vh">
 			<div class="bg-white p-4 rounded-4 my-3">
 				<h5 class="fw-bold">Klaim Kelas Khusus</h5>
-				<p class="mb-1">Pilih kelas khusus di bawah ini yang cocok buatmu. Setiap kelas bernilai 1 token.</p>
-				<p class="mb-4">Saat ini kamu memiliki <b x-text="data.user_token"></b> token yang belum digunakan.</p>
+
+				<template x-if="data.user_token < 1">
+					<div class="mb-4">
+						<p class="fs-6 mb-2 alert bg-warning bg-opacity-50">
+							Kamu belum punya token reward untuk dapat mengklaim kelas khusus. <br><br>
+							<a href="/courses/reward/howto">Cara Mendapatkan Token Reward <i class="bi bi-box-arrow-up-right ms-1"></i></a>
+						</p>
+					</div>
+				</template>
+
+				<!-- If user has token, show message -->
+				<template x-if="data.user_token > 0">
+					<div class="mb-4">
+						<p class="fs-6 mb-2 alert alert-primary">
+							Kamu memiliki <b x-text="data.user_token"></b> token yang belum digunakan.
+						</p>
+						<p class="mb-1">Pilih kelas khusus di bawah ini yang cocok buatmu. Setiap kelas bernilai 1 token.</p>
+					</div>
+				</template>
 
 				<template x-for="premium in data?.premium_courses" :key="premium.id">
 					<div
 						class="card shadow-sm mb-3 rounded-4 position-relative selectable-card"
 						:class="{'shadow-lg scale-selected grayscale-0': selected === premium.id}"
 						style="background:#0d2535; cursor: pointer; transition: all 0.2s ease-in-out;"
-						@click="selected = premium.id; courseSlug = premium.slug">
+						@click="if(data.user_token > 0){ selected = premium.id; courseSlug = premium.slug }">
+
 						<!-- Badge checklist -->
 						<template x-if="selected === premium.id">
 							<div
@@ -85,10 +101,19 @@
 							</div>
 						</template>
 
+						<!-- Unchecked -->
+						<template x-if="selected !== premium.id">
+							<div
+								class="position-absolute text-white fs-4 bg-warning rounded-circle d-flex align-items-center justify-content-center"
+								style="width: 28px; height: 28px; left: -10px; top: 25px;">
+								<i class="bi bi-circle-fill"></i>
+							</div>
+						</template>
+
 						<div class="row g-0 align-items-stretch">
 							<!-- Thumbnail -->
 							<div class="col-3">
-								<img :src="premium?.cover"
+								<img :src="premium?.thumbnail"
 									class="object-fit-cover rounded-start-5"
 									alt="thumbnail kelas"
 									style="height: 80px; width: 80px; object-fit: cover;">
@@ -110,7 +135,7 @@
 					<button
 						class="btn btn-primary btn-lg btn-block rounded-4 mt-3 py-2 d-flex align-items-center justify-content-center gap-2"
 						@click="claim"
-						:class="{'disabled': !selected || loading}">
+						:class="{'disabled': !selected || loading || data.user_token < 1}">
 						<!-- spinner -->
 						<template x-if="loading">
 							<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>

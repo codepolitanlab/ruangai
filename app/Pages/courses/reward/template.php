@@ -76,7 +76,7 @@
 							<h4 class="opacity-75 mb-1">Token Reward</h4>
 							<p class="mb-2 opacity-75">Kamu dapat mengklaim akses kelas khusus menggunakan <b class="text-nowrap fw-bold">token reward</b>.
 							<br>Token yang kamu miliki saat ini: <span class="fw-bold">0</span></p>
-							<a href="#">Cara Mendapatkan Token Reward <i class="bi bi-box-arrow-up-right ms-1"></i></a>
+							<a href="/courses/reward/howto">Cara Mendapatkan Token Reward <i class="bi bi-box-arrow-up-right ms-1"></i></a>
 						</div>
 					</div>
 				</div>
