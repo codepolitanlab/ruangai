@@ -113,7 +113,7 @@
 						<div class="row g-0 align-items-stretch">
 							<!-- Thumbnail -->
 							<div class="col-3">
-								<img :src="premium?.thumbnail"
+								<img :src="premium?.thumbnail || premium?.cover"
 									class="object-fit-cover rounded-start-5"
 									alt="thumbnail kelas"
 									style="height: 80px; width: 80px; object-fit: cover;">

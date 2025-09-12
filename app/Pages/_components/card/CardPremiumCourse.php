@@ -1,7 +1,7 @@
 <div class="card shadow-none mb-3 overflow-hidden rounded-4" style="background:#112f3d">
     <div class="d-flex align-items-center">
         <div>
-            <img :src="premium?.thumbnail" class="rounded-3 img-course" alt="thumbnail kelas">
+            <img :src="premium?.thumbnail || premium?.cover" class="rounded-3 img-course" alt="thumbnail kelas">
         </div>
         <div class="flex-grow-1 text-white px-3 py-3">
             <p class="fw-bold h5" x-text="premium?.course_title"></p>
