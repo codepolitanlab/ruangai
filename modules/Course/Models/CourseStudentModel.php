@@ -64,4 +64,20 @@ class CourseStudentModel extends Model
         $data['created_at'] = date('Y-m-d H:i:s');
         return $this->insert($data);
     }
+
+    // di CourseStudentModel.php
+    public function getStudent($userId, $courseId)
+    {
+        return $this->where('user_id', $userId)
+            ->where('course_id', $courseId)
+            ->first();
+    }
+
+    public function markAsGraduate($userId, $courseId)
+    {
+        return $this->where('user_id', $userId)
+            ->where('course_id', $courseId)
+            ->set(['graduate' => 1])
+            ->update();
+    }
 }
