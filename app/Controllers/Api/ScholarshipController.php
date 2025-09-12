@@ -382,7 +382,7 @@ class ScholarshipController extends ResourceController
             ]);
         }
 
-        $bulkGenerate = model('UserToken')->generateTokenUserByGraduate($program, $course_id);
+        $bulkGenerate = model('UserToken')->generateByGraduate($program, $course_id);
 
         if($bulkGenerate['status'] == 'success') {
             $course = model('Course')->find($course_id);

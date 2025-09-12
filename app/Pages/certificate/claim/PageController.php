@@ -129,7 +129,7 @@ class PageController extends BaseController
         // Generate token reward lulus
         $tokenFromGraduate = model('UserToken')->isExists($jwt->user_id, 'graduate');
         if (! $tokenFromGraduate) {
-            model('UserToken')->generateTokenUser($jwt->user_id, 'graduate');
+            model('UserToken')->generate($jwt->user_id, 'graduate');
         }
 
         return $this->respond([

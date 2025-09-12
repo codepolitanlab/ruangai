@@ -56,7 +56,7 @@ class UserToken extends Model
         return $query->first();
     }
 
-    public function generateTokenUser($user_id, $reward_from)
+    public function generate($user_id, $reward_from)
     {
         helper('text');
 
@@ -70,7 +70,7 @@ class UserToken extends Model
         ]);
     }
 
-    public function generateTokenUserByGraduate($program, $course_id)
+    public function generateByGraduate($program, $course_id)
     {
         $db = \Config\Database::connect();
         helper('text');
@@ -80,9 +80,9 @@ class UserToken extends Model
             ->select('cs.user_id')
             ->join('scholarship_participants sp', 'sp.user_id = cs.user_id', 'inner')
             ->join('user_reward_tokens urt', 'urt.user_id = cs.user_id AND urt.reward_from = "graduate"', 'left')
+            ->where('sp.program', $program)
             ->where('cs.course_id', $course_id)
             ->where('cs.graduate', 1)
-            ->where('sp.program', $program)
             ->where('urt.id IS NULL') // pastikan belum punya token graduate
             ->get()
             ->getResultArray();
@@ -94,8 +94,8 @@ class UserToken extends Model
                 $code = strtoupper(random_string('alpha', 3)) . $student['user_id'] . strtoupper(random_string('alpha', 2));
                 $dataInsert[] = [
                     'user_id'     => $student['user_id'],
-                    'reward_from' => 'graduate',
                     'code'        => $code,
+                    'reward_from' => 'graduate',
                     'created_at'  => date('Y-m-d H:i:s'),
                 ];
             }
