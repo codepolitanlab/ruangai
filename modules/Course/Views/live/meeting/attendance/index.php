@@ -21,7 +21,7 @@
             </div>
             <div class="col-12 col-md-4 order-md-2 order-first text-end">
                 <a href="<?= site_url(urlScope() . '/course/live/meeting/' . $live_meeting['id'] . '/attendant/sync'); ?>" class="btn btn-outline-primary"><i class="bi bi-arrow-clockwise"></i> Sync Data</a>
-                <a href="<?= site_url(urlScope() . '/course/live/meeting/' . $live_meeting['id'] . '/attendant/export'); ?>" class="btn btn-outline-primary"><i class="bi bi-download"></i> Export Data</a>
+                <a href="<?= site_url(urlScope() . '/course/live/meeting/' . $live_meeting['id'] . '/attendant/exports'); ?>" class="btn btn-outline-primary"><i class="bi bi-download"></i> Export Data</a>
                 <a href="<?= site_url(urlScope() . '/course/live/meeting/' . $live_meeting['id'] . '/attendant/add'); ?>" class="btn btn-primary"><i class="bi bi-plus"></i> Add Attendance</a>
             </div>
         </div>
