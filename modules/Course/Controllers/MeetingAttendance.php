@@ -63,30 +63,30 @@ class MeetingAttendance extends AdminController
                 $this->model->like('users.email', $filter['email']);
             }
             if (isset($filter['durasi'])) {
-                if($filter['durasi'] === '1') {
+                if ($filter['durasi'] === '1') {
                     $this->model->where('live_attendance.duration >=', 1800);
-                } else if($filter['durasi'] === '0') {
+                } else if ($filter['durasi'] === '0') {
                     $this->model->where('live_attendance.duration <', 1800);
                 }
             }
             if (isset($filter['feedback'])) {
-                if($filter['feedback'] === '1') {
+                if ($filter['feedback'] === '1') {
                     $this->model->where('live_attendance.meeting_feedback_id !=', null);
-                } else if($filter['feedback'] === '0') {
+                } else if ($filter['feedback'] === '0') {
                     $this->model->where('live_attendance.meeting_feedback_id', null);
                 }
             }
             if (isset($filter['status'])) {
-                if($filter['status'] === '1') {
+                if ($filter['status'] === '1') {
                     $this->model->where('live_attendance.status', '1');
-                } else if($filter['status'] === '0') {
+                } else if ($filter['status'] === '0') {
                     $this->model->where('live_attendance.status', '0');
                 }
             }
             if (isset($filter['graduate'])) {
-                if($filter['graduate'] === '1') {
+                if ($filter['graduate'] === '1') {
                     $this->model->where('course_students.graduate', '1');
-                } else if($filter['graduate'] === '0') {
+                } else if ($filter['graduate'] === '0') {
                     $this->model->where('course_students.graduate', '0');
                 }
             }
@@ -240,6 +240,7 @@ class MeetingAttendance extends AdminController
     public function startSync($live_meeting_id)
     {
         $liveAttendancModel = model('Course\Models\LiveAttendanceModel');
+        $courseStudentModel = model('Course\Models\CourseStudentModel');
 
         // Get zoom_meeting_id from live_meeting table
         $meeting = model('Course\Models\LiveMeetingModel')->select('zoom_meeting_id, course_id')
@@ -252,20 +253,20 @@ class MeetingAttendance extends AdminController
         $Zoom = new \Course\Libraries\Zoom();
 
         // Get participant list from cache file or Zoom participant API
-        $cachePath = WRITEPATH . 'cache/zoom_participants_' . $live_meeting_id.'.json';
-        if(file_exists($cachePath)) {
+        $cachePath = WRITEPATH . 'cache/zoom_participants_' . $live_meeting_id . '.json';
+        if (file_exists($cachePath)) {
             $cache     = file_get_contents($cachePath);
             $participants = json_decode($cache, true);
         } else {
             // Get participant list from Zoom participant API
             $Zoom->getParticipantList($zoom_meeting_id);
             $participants = $Zoom->participants;
-    
+
             // Save participants to cache file
-            if(!empty($participants)) {
+            if (!empty($participants)) {
                 file_put_contents($cachePath, json_encode($participants));
-            }            
-        }        
+            }
+        }
 
         $participants = $Zoom->accumulateDurations($participants);
         if (! $participants) {
@@ -293,9 +294,9 @@ class MeetingAttendance extends AdminController
         foreach ($users as $user) {
             // Check if user has submit feedback
             $feedback = $db->table('live_meeting_feedback')->where('user_id', $user['id'])
-                                                    ->where('live_meeting_id', $live_meeting_id)
-                                                    ->get()
-                                                    ->getRowArray();
+                ->where('live_meeting_id', $live_meeting_id)
+                ->get()
+                ->getRowArray();
 
             $validParticipant['user_id']             = $user['id'];
             $validParticipant['course_id']           = $course_id;
@@ -317,6 +318,20 @@ class MeetingAttendance extends AdminController
 
             $liveAttendancModel->insert($validParticipant);
             $inserted++;
+
+            // Check if user eligible to graduate and set graduate to 1
+            $student = $courseStudentModel->getStudent($user['id'], $course_id);
+
+            $hasValidDuration   = $validParticipant['duration'] >= 1800;
+            $hasFeedback        = !is_null($validParticipant['meeting_feedback_id']);
+            $notGraduated       = $student['graduate'] == 0;
+            $progressCompleted  = (int) $student['progress'] == 100;
+
+            $isEligibleToGraduate = $hasValidDuration && $hasFeedback && $notGraduated && $progressCompleted;
+
+            if ($isEligibleToGraduate) {
+                $courseStudentModel->markAsGraduate($user['id'], $course_id);
+            }
         }
 
         // TODO: Return sync result
