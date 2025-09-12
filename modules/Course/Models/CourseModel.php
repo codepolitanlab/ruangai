@@ -59,9 +59,9 @@ class CourseModel extends Model
     // Callbacks
     protected $allowCallbacks = true;
     protected $beforeInsert   = [];
-    protected $afterInsert    = [];
+    protected $afterInsert    = ['afterSave'];
     protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
+    protected $afterUpdate    = ['afterSave'];
     protected $beforeFind     = [];
     protected $afterFind      = [];
     protected $beforeDelete   = [];
@@ -105,5 +105,12 @@ class CourseModel extends Model
         }
 
         return $structured;
+    }
+
+    // Set clear cache 'course_'.$id after insert
+    public function afterSave(array $data)
+    {
+        $courseCacheName = 'course_' . $data['id'][0];
+        cache()->delete($courseCacheName);
     }
 }
