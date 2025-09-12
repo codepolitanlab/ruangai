@@ -16,7 +16,7 @@
                 <h4>Menyelesaikan Program Beasiswa RuangAI</h4>
                 <p>Setiap peserta yang berhasil menyelesaikan program beasiswa akan mendapatkan token reward sebagai apresiasi.</p>
 
-                <h4>Menjadi 200 Orang Pertama di Setiap Chapter</h4>
+                <h4><em>Race to be brave grads</em></h4>
                 <p>Bagi kamu yang bergerak cepat, ada kesempatan khusus untuk menjadi 200 orang pertama yang menyelesaikan setiap chapter program beasiswa. Jika berhasil, kamu akan langsung mendapatkan token reward tambahan.</p>
 
                 <h4>Terpilih Sebagai Co-Mentor</h4>
