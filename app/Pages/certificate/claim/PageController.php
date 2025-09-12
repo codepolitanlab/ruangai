@@ -34,7 +34,7 @@ class PageController extends BaseController
             ]);
         }
 
-        $student = model('CourseStudent')
+        $student = model('CourseStudentModel')
             ->select('course_students.*, users.name')
             ->join('users', 'users.id = course_students.user_id')
             ->where('user_id', $jwt->user_id)
@@ -126,8 +126,8 @@ class PageController extends BaseController
                 'expire_at'       => null,
             ]);
 
-        // TODO: Generate token reward lulus
-        $tokenFromGraduate = model('UserToken')->checkTokenUser($jwt->user_id, 'graduate');
+        // Generate token reward lulus
+        $tokenFromGraduate = model('UserToken')->isExists($jwt->user_id, 'graduate');
         if (! $tokenFromGraduate) {
             model('UserToken')->generateTokenUser($jwt->user_id, 'graduate');
         }

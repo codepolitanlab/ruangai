@@ -31,7 +31,7 @@ class CertConfig_1
         $this->code        = ($user['cert_code'] ?? null) ? $user['cert_code'] : strtoupper(substr(sha1($user_id . '-' . $course_id), -6)) . date('dH');
         $this->numberOrder = $certNumberOrder;
         if (! $certNumberOrder) {
-            $lastCertNumberOrder = model('CourseStudent')->getLastCertNumber($user_id);
+            $lastCertNumberOrder = model('CourseStudentModel')->getLastCertNumber($user_id);
             $this->numberOrder   = $lastCertNumberOrder + 1;
         }
         $certNumber = 'No: CP-RAI/' . date('Y') . '/' . date('m') . '/' . str_pad($this->numberOrder, 4, '0', STR_PAD_LEFT);

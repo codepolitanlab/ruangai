@@ -19,7 +19,7 @@ class PageController extends BaseController
 
         $db = \Config\Database::connect();
 
-        $user_courses = model('CourseStudent')->getUserCourses($jwt->user_id);
+        $user_courses = model('CourseStudentModel')->getUserCourses($jwt->user_id);
 
         $idS = [];
         foreach ($user_courses as $uc) {
@@ -45,31 +45,23 @@ class PageController extends BaseController
 
         $course_id = $this->request->getPost('course_id');
 
-        $tokenActive = model('UserToken')->getAllTokenActive($jwt->user_id);
+        $tokenActive = model('UserToken')->getActiveToken($jwt->user_id);
 
-        if (count($tokenActive) == 0) {
+        if (count($tokenActive ?? []) < 1) {
             return $this->respond([
                 'status'  => 'failed',
                 'message' => 'Kamu tidak memiliki token reward.'
             ]);
         }
 
-        $checkIfClaimed = model('UserToken')->checkTokenUser($jwt->user_id, 'reward', $course_id);
-        if ($checkIfClaimed) {
-            return $this->respond([
-                'status'  => 'failed',
-                'message' => 'Kamu sudah pernah klaim token reward ini.'
-            ]);
-        }
-
-        // Insert to course_students
-        model('CourseStudent')->insertStudent([
+        // Set claimed token
+        model('UserToken')->claimToken($jwt->user_id, $tokenActive['id'], $course_id, 'course');
+        
+        // Enroll student to course
+        model('CourseStudentModel')->enrollStudent([
             'user_id'   => $jwt->user_id,
             'course_id' => $course_id,
         ]);
-
-        // Set claimed token
-        model('UserToken')->claimToken($jwt->user_id, $tokenActive[0]->id, $course_id, 'course');
 
         return $this->respond([
             'status'  => 'success',

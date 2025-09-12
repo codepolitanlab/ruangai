@@ -16,7 +16,7 @@ class PageController extends BaseController
     {
         $Heroic = new \App\Libraries\Heroic();
 
-        $student = model('CourseStudent')
+        $student = model('CourseStudentModel')
             ->where('cert_code', $code)
             ->first();
 

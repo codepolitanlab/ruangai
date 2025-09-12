@@ -141,7 +141,7 @@ class ScholarshipController extends ResourceController
         $participantModel->insert($data);
 
         // Insert data to course_students
-        $courseStudentModel = new \App\Models\CourseStudent();
+        $courseStudentModel = new \Course\Models\CourseStudentModel();
         $courseStudentModel->insert([
             'user_id'    => $userId,
             'course_id'  => 1,
@@ -248,7 +248,7 @@ class ScholarshipController extends ResourceController
         $programCode = $this->request->getGet('name');
 
         $scholarshipModel   = new ScholarshipParticipantModel();
-        $courseStudentModel = new \App\Models\CourseStudent();
+        $courseStudentModel = new \Course\Models\CourseStudentModel();
         $eventModel         = new \App\Models\Events();
 
         $masterProgram   = $eventModel->where('code', $programCode)->first();
@@ -320,7 +320,7 @@ class ScholarshipController extends ResourceController
     public function syncGraduatedB1()
     {
         // Get course_students yang progressnya sudah 100 tapi graduate masih 0
-        $courseStudentModel = new \App\Models\CourseStudent();
+        $courseStudentModel = new \Course\Models\CourseStudentModel();
         $students           = $courseStudentModel->select('course_students.user_id, progress, graduate')
             ->where('course_id', 1)
             ->where('course_students.graduate', 0)

@@ -45,7 +45,7 @@ class UserToken extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function checkTokenUser($user_id, $reward_from, $code = null)
+    public function isExists($user_id, $reward_from, $code = null)
     {
         $query = $this->where('user_id', $user_id)->where('reward_from', $reward_from);
 
@@ -119,8 +119,14 @@ class UserToken extends Model
                 'claimed_at'  => date('Y-m-d H:i:s'),
                 'object_id'   => $object_id,
                 'object_type' => $object_type,
+                'updated_at'  => date('Y-m-d H:i:s'),
             ])
             ->update();
+    }
+
+    public function getActiveToken($user_id)
+    {
+        return $this->where('user_id', $user_id)->where('claimed_at', null)->where('deleted_at', null)->first();
     }
 
     public function getAllTokenActive($user_id)

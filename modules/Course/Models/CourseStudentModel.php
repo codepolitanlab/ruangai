@@ -53,4 +53,15 @@ class CourseStudentModel extends Model
 
         return $number['cert_number'] ?? 0;
     }
+
+    public function getUserCourses($user_id)
+    {
+        return $this->where('user_id', $user_id)->get()->getResult();
+    }
+
+    public function enrollStudent($data)
+    {
+        $data['created_at'] = date('Y-m-d H:i:s');
+        return $this->insert($data);
+    }
 }
