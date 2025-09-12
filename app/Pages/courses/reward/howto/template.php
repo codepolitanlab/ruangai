@@ -22,6 +22,9 @@
                 <h4>Mengikuti Lucky Draw</h4>
                 <p>Ikuti program undian berhadiah (lucky draw) yang diselenggarakan. Jika beruntung, kamu bisa mendapatkan token reward tanpa perlu menunggu sampai akhir program.</p>
 
+                <h4>Terpilih Sebagai Co-Mentor</h4>
+                <p>Bila kamu mengikuti program Co-Mentor di RuangAI dan terpilih, kamu akan mendapatkan token tambahan untuk mengakses semua kelas khusus.</p>
+
                 <h4>Event Kuis Insidental</h4>
                 <p>Selama program beasiswa berjalan, akan ada event kuis insidental yang bisa kamu ikuti. Pemenang kuis berhak atas token reward yang bisa dipakai untuk mengakses kelas lanjutan.</p>
 
