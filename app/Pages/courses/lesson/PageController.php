@@ -28,7 +28,6 @@ class PageController extends BaseController
             ->select('course_lessons.*, courses.course_title, courses.slug as course_slug, course_topics.topic_title')
             ->join('courses', 'courses.id = course_lessons.course_id')
             ->join('course_topics', 'course_topics.id = course_lessons.topic_id')
-            ->join('course_students', 'course_students.course_id = course_lessons.course_id')
             ->where('course_lessons.course_id', $course_id)
             ->where('course_lessons.id', $lesson_id)
             ->where('course_lessons.deleted_at', null)
