@@ -17,6 +17,26 @@
 	<div id="appCapsule" class="appCapsule-lg">
 		<div class="appContent px-0 bg-white rounded-bottom-4" style="min-height:95vh">
 
+			<template x-if="data?.response_code == 403">
+				<div class="card shadow-none rounded-4 p-3 mb-3 text-center">
+					<div class="mb-3">
+						<i class="bi bi-journal-x display-4"></i>
+					</div>
+					<h3 class="text-muted mb-2">Kelas Terkunci</h3>
+					<p class="text-muted">Anda belum memiliki akses ke kelas ini.</p>
+				</div>
+			</template>
+			
+			<template x-if="data?.response_code == 404">
+				<div class="card shadow-none rounded-4 p-3 mb-3 text-center">
+					<div class="mb-3">
+						<i class="bi bi-sign-dead-end display-4"></i>
+					</div>
+					<h3 class="text-muted mb-2">Konten tidak ditemukan</h3>
+					<!-- <p class="text-muted">Anda belum memiliki akses ke kelas ini.</p> -->
+				</div>
+			</template>
+
 			<section>
 				<div id="video_player">
 

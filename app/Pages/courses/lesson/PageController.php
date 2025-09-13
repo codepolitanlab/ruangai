@@ -18,11 +18,23 @@ class PageController extends BaseController
         $Heroic = new \App\Libraries\Heroic();
         $jwt    = $Heroic->checkToken();
 
-        if($course_id === "1") {
+        if ($course_id === "1") {
             $this->data['module'] = 'misi_beasiswa';
         }
 
         $db = \Config\Database::connect();
+
+        // Jika hanya ingin memastikan user terdaftar di course:
+        // (a) Cara paling bersih: validasi di query terpisah sebelum ambil lesson
+        $isEnrolled = $db->table('course_students')
+            ->where('course_id', $course_id)
+            ->where('user_id', $jwt->user_id)
+            ->select('1', false)->limit(1)->get()->getRowArray();
+
+        if (!$isEnrolled) {
+            return $this->respond(['response_code' => 403, 'response_message' => 'Not enrolled']);
+        }
+        
         // Get specific lesson
         $lesson = $db->table('course_lessons')
             ->select('course_lessons.*, courses.course_title, courses.slug as course_slug, course_topics.topic_title')
