@@ -31,8 +31,10 @@ class PageController extends BaseController
             ->where('course_lessons.course_id', $course_id)
             ->where('course_lessons.id', $lesson_id)
             ->where('course_lessons.deleted_at', null)
+            ->limit(1)
             ->get()
             ->getRowArray();
+        dd($db->getLastQuery());
 
         if ($lesson) {
             // Handle quiz format first
