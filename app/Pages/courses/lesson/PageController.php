@@ -34,7 +34,6 @@ class PageController extends BaseController
             ->limit(1)
             ->get()
             ->getRowArray();
-        dd($db->getLastQuery());
 
         if ($lesson) {
             // Handle quiz format first
