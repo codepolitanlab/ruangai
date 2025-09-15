@@ -60,7 +60,7 @@ $routes->group(
         $routes->post('live/meeting/(:num)/attendant/(:num)/delete', 'MeetingAttendance::delete/$1/$2'); // Delete
         $routes->get('live/meeting/(:num)/attendant/sync', 'MeetingAttendance::sync/$1'); // Add
         $routes->get('live/meeting/(:num)/attendant/startSync', 'MeetingAttendance::startSync/$1'); // Add
-        $routes->get('live/meeting/(:num)/attendant/export', 'MeetingAttendance::export/$1'); // Add
+        $routes->get('live/meeting/(:num)/attendant/exports', 'MeetingAttendance::exports/$1'); // Add
 
         // Live attendance
         $routes->get('product', 'Product::index'); // List

@@ -88,7 +88,17 @@
 				</div>
 			</template>
 
-			<template x-if="!data.course?.lessons || Object.keys(data.course?.lessons).length === 0">
+			<template x-if="data?.response_code == 403">
+				<div class="card shadow-none rounded-4 p-3 mb-3 text-center">
+					<div class="mb-3">
+						<i class="bi bi-journal-x display-4"></i>
+					</div>
+					<h3 class="text-muted mb-2">Kelas Terkunci</h3>
+					<p class="text-muted">Anda belum memiliki akses ke kelas ini.</p>
+				</div>
+			</template>
+			
+			<template x-if="data?.response_code != 403 && (!data.course?.lessons || Object.keys(data.course?.lessons).length === 0)">
 				<div class="card shadow-none rounded-4 p-3 mb-3 text-center">
 					<div class="mb-3">
 						<i class="bi bi-journal-x display-4"></i>

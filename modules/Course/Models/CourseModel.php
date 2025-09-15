@@ -61,7 +61,7 @@ class CourseModel extends Model
     protected $beforeInsert   = [];
     protected $afterInsert    = [];
     protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
+    protected $afterUpdate    = ['clearCacheCourse'];
     protected $beforeFind     = [];
     protected $afterFind      = [];
     protected $beforeDelete   = [];
@@ -105,5 +105,12 @@ class CourseModel extends Model
         }
 
         return $structured;
+    }
+
+    // Set clear cache 'course_'.$id after insert
+    public function clearCacheCourse(array $data)
+    {
+        $courseCacheName = 'course_' . $data['id'][0];
+        cache()->delete($courseCacheName);
     }
 }

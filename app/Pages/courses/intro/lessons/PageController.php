@@ -32,10 +32,21 @@ class PageController extends BaseController
         $this->data['course'] = $course;
 
         if ($course) {
-            if($course['id'] == 1) {
+            if ($course['id'] == 1) {
                 $this->data['module'] = 'misi_beasiswa';
             }
-            
+
+            // Jika hanya ingin memastikan user terdaftar di course:
+            // (a) Cara paling bersih: validasi di query terpisah sebelum ambil lesson
+            $isEnrolled = $db->table('course_students')
+                ->where('course_id', $course['id'])
+                ->where('user_id', $jwt->user_id)
+                ->select('1', false)->limit(1)->get()->getRowArray();
+
+            if (!$isEnrolled) {
+                return $this->respond(['response_code' => 403, 'response_message' => 'Not enrolled']);
+            }
+
             // Get completed lessons for current user
             $completedLessons = $db->table('course_lesson_progress')
                 ->select('lesson_id')

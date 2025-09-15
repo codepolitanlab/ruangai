@@ -36,7 +36,7 @@ class CourseLessonModel extends Model
     protected $beforeInsert   = [];
     protected $afterInsert    = [];
     protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
+    protected $afterUpdate    = ['clearCacheLesson'];
     protected $beforeFind     = [];
     protected $afterFind      = [];
     protected $beforeDelete   = [];
@@ -45,5 +45,12 @@ class CourseLessonModel extends Model
     public function syncSequence()
     {
         $this->db->query("SELECT setval('course_lessons_id_seq', (SELECT MAX(id) FROM course_lessons));");
+    }
+
+    // Set clear cache 'course_'.$id after insert
+    public function clearCacheLesson(array $data)
+    {
+        $courseCacheName = 'course_' . $data['id'][0] . '_lessons';
+        cache()->delete($courseCacheName);
     }
 }
