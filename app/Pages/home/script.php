@@ -50,12 +50,18 @@
 
         this.modalInstance = new bootstrap.Modal(this.$refs.modalVerify);
 
+        const savedDate = localStorage.getItem("event_date_end");
+        if (savedDate) {
+          this.startCountdown(savedDate);
+        }
+
         // Jalankan countdown kalau ada event
         this.$watch('data', (value) => {
           // if (!value.is_enrolled) {
           //   alert("Kamu belum terdaftar di kelas. Silahkan daftar terlebih dahulu.")
           //   window.location.replace(`https://www.ruangai.id/registration`)
           // }
+          localStorage.setItem("event_date_end", value.event.date_end);
           if (value?.event?.date_end) {
             this.startCountdown(value.event.date_end);
           }
