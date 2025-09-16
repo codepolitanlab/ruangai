@@ -21,15 +21,15 @@ class PageController extends BaseController
         $db = \Config\Database::connect();
 
         // Get course
-        if (! $course = cache('course_' . $id)) {
+        // if (! $course = cache('course_' . $id)) {
             $course = $db->table('courses')
                 ->where('id', $id)
                 ->get()
                 ->getRowArray();
 
             // Save into the cache for 5 minutes
-            cache()->save('course_' . $id, $course, 300);
-        }
+            // cache()->save('course_' . $id, $course, 300);
+        // }
 
         if ($course) {
             if($course['id'] == 1) {
