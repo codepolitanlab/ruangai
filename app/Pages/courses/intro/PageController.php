@@ -28,7 +28,7 @@ class PageController extends BaseController
                 ->getRowArray();
 
             // Save into the cache for 5 minutes
-            cache()->save('course_' . $id, $course, 3600);
+            cache()->save('course_' . $id, $course, 300);
         }
 
         if ($course) {

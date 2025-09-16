@@ -90,7 +90,7 @@
 				<div class="card border-0 rounded-4 shadow-none position-relative">
 					<div class="position-relative" style="height: 200px;">
 						<img
-							:src="data.course?.cover"
+							:src="data?.course?.cover || data?.course?.thumbnail"
 							class="rounded-top-4 w-100 h-100 object-fit-cover"
 							alt="AI Course" />
 						<!-- Fade gradient -->
@@ -195,7 +195,7 @@
 			</template>
 
 			<!-- Section for enrolled user -->
-			<template x-if="data.is_enrolled">
+			<template x-if="data?.is_enrolled">
 				<div>
 					<!-- Progress Stats -->
 					<div class="p-3 pb-2 bg-white rounded-4 mb-3 position-relative"
