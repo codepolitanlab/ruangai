@@ -249,6 +249,11 @@
         this.emailSent = false;
       },
 
+      copyToClipboard(text) {
+        navigator.clipboard.writeText(`https://ruangai.id/cmref/${text}`);
+        $heroicHelper.toastr('Link disalin ke clipboard', 'success', 'bottom');
+      },
+
       async verifyEmail() {
         if (this.otp.join('').length !== 6) {
           this.errorMessage = "OTP harus terdiri dari 6 digit.";

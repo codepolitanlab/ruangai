@@ -50,6 +50,34 @@
 		.progress-bar {
 			background-color: #063548;
 		}
+
+
+		/* kasih prioritas ke tabel custom */
+		.custom-table thead tr {
+			background-color: #6bb1ce !important;
+			/* biru header */
+			color: #fff !important;
+		}
+
+		.custom-table tbody tr:nth-child(odd) {
+			background-color: #e6f1f6 !important;
+			/* biru muda */
+		}
+
+		.custom-table tbody tr:nth-child(even) {
+			background-color: #f9f9f9 !important;
+			/* abu muda */
+		}
+
+		.custom-table th,
+		.custom-table td {
+			vertical-align: middle;
+		}
+
+		.custom-table {
+			border-radius: 12px;
+			overflow: hidden;
+		}
 	</style>
 
 	<div id="appCapsule">
@@ -186,10 +214,16 @@
 				</div>
 
 				<!-- Referral -->
-				<div class="p-3 rounded-4 bg-white d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
+				<div class="p-3 mb-3 rounded-4 bg-white d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
 					<span>Pengen dapet hadiah menarik?</span>
 					<a href="https://ruangai.id/referral" target="_blank" class="btn btn-success rounded-pill"><i class="bi bi-coin"></i> Program Referral</a>
 				</div>
+
+				<div class="p-3 mb-3 rounded-4 bg-white d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
+					<span>Halaman Referral CO-Mentor</span>
+					<a href="/comentor" class="btn btn-secondary rounded-pill"><i class="bi bi-coin"></i> Program Referral</a>
+				</div>
+
 			</div>
 		</div>
 	</div>
