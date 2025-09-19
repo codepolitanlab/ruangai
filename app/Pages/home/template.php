@@ -219,10 +219,12 @@
 					<a href="https://ruangai.id/referral" target="_blank" class="btn btn-success rounded-pill"><i class="bi bi-coin"></i> Program Referral</a>
 				</div>
 
-				<div class="p-3 mb-3 rounded-4 bg-white d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
-					<span>Halaman Referral CO-Mentor</span>
-					<a href="/comentor" class="btn btn-secondary rounded-pill"><i class="bi bi-coin"></i> Program Referral</a>
-				</div>
+				<template x-if="data?.is_comentor">
+					<div class="p-3 mb-3 rounded-4 bg-white d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
+						<span>Halaman Referral CO-Mentor</span>
+						<a href="/comentor" class="btn btn-secondary rounded-pill"><i class="bi bi-coin"></i> Program Referral</a>
+					</div>
+				</template>
 
 			</div>
 		</div>
