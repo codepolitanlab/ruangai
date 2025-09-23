@@ -56,5 +56,9 @@ $routes->group(
         $routes->get('role/form/(:num)', 'Role::form/$1');
         $routes->post('role/form', 'Role::save');
         $routes->get('role/delete/(:num)', 'Role::delete/$1');
+
+        $routes->get('token', 'Token::index'); // List
+        $routes->get('token/import', 'Token::import'); // List
+        $routes->post('token/generate', 'Token::generate'); // Insert
     }
 );

@@ -34,6 +34,12 @@ class Heroicadmin extends BaseConfig
                     'url'       => 'user/role',
                     'submodule' => 'role',
                 ],
+                'token' => [
+                    'label'     => 'Reward Token',
+                    'icon'      => 'bi bi-tag-fill',
+                    'url'       => 'user/token',
+                    'submodule' => 'token',
+                ],
             ],
         ],
         30 => [
@@ -64,20 +70,20 @@ class Heroicadmin extends BaseConfig
                 ],
             ],
         ],
-        60 => [
-            'label'    => 'Vouchers',
-            'icon'     => 'bi bi-bag-fill',
-            'url'      => '#',
-            'module'   => 'voucher',
-            'children' => [
-                'sales' => [
-                    'label'     => 'Penjualan Voucher',
-                    'icon'      => 'bi bi-tag-fill',
-                    'url'       => '/zpanel/vouchers/sales',
-                    'submodule' => 'sales',
-                ],
-            ],
-        ],
+        // 60 => [
+        //     'label'    => 'Vouchers',
+        //     'icon'     => 'bi bi-bag-fill',
+        //     'url'      => '#',
+        //     'module'   => 'voucher',
+        //     'children' => [
+        //         'sales' => [
+        //             'label'     => 'Penjualan Voucher',
+        //             'icon'      => 'bi bi-tag-fill',
+        //             'url'       => '/zpanel/vouchers/sales',
+        //             'submodule' => 'sales',
+        //         ],
+        //     ],
+        // ],
         40 => [
             'label'    => 'Configuration',
             'icon'     => 'bi bi-house-gear-fill',
