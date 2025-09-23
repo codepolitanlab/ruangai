@@ -18,7 +18,8 @@ class Token extends AdminController
         $this->data['userRewardTokens'] = $userRewardTokens->select('user_reward_tokens.*, users.name')
             ->join('users', 'users.id = user_reward_tokens.user_id')
             ->asObject()
-            ->paginate(10);
+            ->orderBy('created_at', 'DESC')
+            ->paginate(50);
         $this->data['pager'] = $userRewardTokens->pager;
         $this->data['total_token'] = $userRewardTokens->countAllResults();
 
