@@ -78,6 +78,22 @@
 			border-radius: 12px;
 			overflow: hidden;
 		}
+
+		.custom-table th,
+		.custom-table td {
+			padding: 12px 16px;
+			/* atas-bawah 12px, kiri-kanan 16px */
+		}
+
+		@media (min-width: 992px) {
+			#appCapsule {
+				max-width: 1100px;
+			}
+
+			.appContent {
+				margin-left: 200px;
+			}
+		}
 	</style>
 
 	<div id="appCapsule">
@@ -113,37 +129,53 @@
 					</div>
 
 					<div class="p-3 rounded-4 bg-white d-flex flex-column gap-2 justify-content-between">
-						<h5 class="fw-bold">List Referral</h5>
+						<h5 class="fw-bold">Daftar Peserta</h5>
+						<div class="mb-3">
+							<input
+								type="text"
+								class="form-control"
+								placeholder="Cari peserta..."
+								x-model="search">
+						</div>
+
 						<div class="table-responsive">
-							<table class="w-100 mb-0 text-center align-middle custom-table">
+							<table class="w-100 mb-0 align-middle custom-table">
 								<thead>
 									<tr>
 										<th>Nama</th>
-										<!-- <th>Email</th> -->
+										<th class="d-none d-lg-table-cell">Email</th>
 										<th>Whatsapp</th>
-										<th>Graduate</th>
-										<th>Progres</th>
-										<th>Join Live Session</th>
+										<th class="d-none d-lg-table-cell">Progres</th>
+										<th class="d-none d-lg-table-cell">Join Live Session</th>
 										<th>Status</th>
 									</tr>
 								</thead>
 								<tbody>
-									<template x-for="member in data?.members" :key="member.id">
+									<template x-for="member in filteredMembers" :key="member.user_id">
 										<tr>
 											<td x-text="member.fullname"></td>
-											<!-- <td x-text="member.email"></td> -->
+											<td class="d-none d-lg-table-cell" x-text="member.email"></td>
 											<td>
 												<a :href="`https://wa.me/${member.whatsapp}`" target="_blank" x-text="member.whatsapp"></a>
 											</td>
-											<td x-text="member.graduate"></td>
-											<td x-text="member.progress + '%'"></td>
-											<td x-text="member.total_live_session + 'x'"></td>
+											<td class="d-none d-lg-table-cell" x-text="member.progress + '%'"></td>
+											<td class="d-none d-lg-table-cell" x-text="member.total_live_session + 'x'"></td>
 											<td>
-												<template x-if="member.status === 'Lulus'">
-													<span class="text-success fw-semibold">✔ Lulus</span>
+												<!-- badge status -->
+												<template x-if="member.graduate == 1">
+													<span class="badge bg-success fw-semibold">Tuntas</span>
 												</template>
-												<template x-if="member.status !== 'Lulus'">
-													<span class="text-secondary">✔ Terdaftar</span>
+												<template x-if="member.progress == 100 && member.total_live_session >= 1 && member.graduate != 1">
+													<span class="badge bg-secondary fw-semibold">Lulus</span>
+												</template>
+												<template x-if="member.progress == 100 && member.total_live_session == 0">
+													<span class="badge bg-warning fw-semibold">Belum Live</span>
+												</template>
+												<template x-if="member.progress != 100 && member.total_live_session >= 1">
+													<span class="badge bg-warning fw-semibold">Belum Course</span>
+												</template>
+												<template x-if="member.progress < 100 && member.total_live_session == 0">
+													<span class="badge bg-secondary-subtle text-dark fw-semibold">Masih Belajar</span>
 												</template>
 											</td>
 										</tr>
@@ -151,6 +183,7 @@
 								</tbody>
 							</table>
 						</div>
+
 					</div>
 				</div>
 			</template>

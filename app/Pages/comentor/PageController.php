@@ -30,27 +30,29 @@ class PageController extends BaseController
             ->first();
 
         $memberQuery = $participantModel->select("
+                scholarship_participants.user_id,
                 scholarship_participants.fullname,
                 scholarship_participants.whatsapp,
                 scholarship_participants.email,
                 scholarship_participants.created_at as joined_at, 
                 course_students.graduate, 
                 course_students.progress, 
+                course_students.cert_claim_date, 
                 COUNT(CASE WHEN live_attendance.status = 1 THEN 1 END) as total_live_session
             ")
-            ->join('course_students', 'course_students.user_id = scholarship_participants.user_id')
-            ->join('live_attendance', 'live_attendance.user_id = scholarship_participants.user_id')
+            ->join('course_students', 'course_students.user_id = scholarship_participants.user_id', 'left')
+            ->join('live_attendance', 'live_attendance.user_id = scholarship_participants.user_id', 'left')
             ->where('scholarship_participants.reference', $leader['referral_code_comentor'])
             ->where('scholarship_participants.deleted_at', null)
-            ->groupBy([
-                'scholarship_participants.user_id'
-            ])
+            ->groupBy('scholarship_participants.user_id')
             ->get();
 
         $members = $memberQuery->getResultArray();
 
         foreach ($members as $key => $member) {
             $members[$key]['status'] = $member['graduate'] == 1 ? 'lulus' : 'terdaftar';
+            $members[$key]['progress'] = (int) $member['progress'];
+            $members[$key]['total_live_session'] = (int) $member['total_live_session'];
         }
 
         // Filter member graduated by status completed
