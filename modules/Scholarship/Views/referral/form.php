@@ -10,8 +10,7 @@
             <nav aria-label="breadcrumb" class="breadcrumb-header">
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="/<?= urlScope() ?>"><i class="bi bi-house-fill"></i></a></li>
-                    <li class="breadcrumb-item"><a href="/<?= urlScope() ?>/referensi/participants">Participants</a>
-                    </li>
+                    <li class="breadcrumb-item"><a href="/<?= urlScope() ?>/referensi/referral">Referral</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Form</li>
                 </ol>
             </nav>

@@ -19,5 +19,12 @@ $routes->group(
         $routes->get('participants/(:num)/edit', 'Participants::edit/$1');
         $routes->post('participants/(:num)/edit', 'Participants::edit/$1');
         $routes->get('participants/(:num)/delete', 'Participants::delete/$1');
+
+        $routes->get('referral', 'Referral::index');
+        $routes->get('referral/add', 'Referral::add');
+        $routes->post('referral/add', 'Referral::add');
+        $routes->get('referral/(:num)/edit', 'Referral::edit/$1');
+        $routes->post('referral/(:num)/edit', 'Referral::edit/$1');
+        $routes->get('referral/(:num)/delete', 'Referral::delete/$1');
     }
 );
