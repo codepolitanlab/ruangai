@@ -31,13 +31,13 @@ class PageController extends BaseController
 
         $memberQuery = $participantModel->select("
                 scholarship_participants.user_id,
-                scholarship_participants.fullname,
-                scholarship_participants.whatsapp,
-                scholarship_participants.email,
-                scholarship_participants.created_at as joined_at, 
-                course_students.graduate, 
-                course_students.progress, 
-                course_students.cert_claim_date, 
+                MAX(scholarship_participants.fullname) as fullname,
+                MAX(scholarship_participants.whatsapp) as whatsapp,
+                MAX(scholarship_participants.email) as email,
+                MAX(scholarship_participants.created_at) as joined_at, 
+                MAX(course_students.graduate) as graduate, 
+                MAX(course_students.progress) as progress, 
+                MAX(course_students.cert_claim_date) as cert_claim_date, 
                 COUNT(CASE WHEN live_attendance.status = 1 THEN 1 END) as total_live_session
             ")
             ->join('course_students', 'course_students.user_id = scholarship_participants.user_id', 'left')

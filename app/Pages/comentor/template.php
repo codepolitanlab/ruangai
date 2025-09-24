@@ -168,13 +168,13 @@
 												<template x-if="member.progress == 100 && member.total_live_session >= 1 && member.graduate != 1">
 													<span class="badge bg-secondary fw-semibold">Lulus</span>
 												</template>
-												<template x-if="member.progress == 100 && member.total_live_session == 0">
+												<template x-if="member.progress == 100 && member.total_live_session == 0 && member.graduate != 1">
 													<span class="badge bg-warning fw-semibold">Belum Live</span>
 												</template>
-												<template x-if="member.progress != 100 && member.total_live_session >= 1">
+												<template x-if="member.progress != 100 && member.total_live_session >= 1 && member.graduate != 1">
 													<span class="badge bg-warning fw-semibold">Belum Course</span>
 												</template>
-												<template x-if="member.progress < 100 && member.total_live_session == 0">
+												<template x-if="member.progress < 100 && member.total_live_session == 0 && member.graduate != 1">
 													<span class="badge bg-secondary-subtle text-dark fw-semibold">Masih Belajar</span>
 												</template>
 											</td>
