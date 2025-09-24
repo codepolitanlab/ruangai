@@ -81,7 +81,7 @@ class ScholarshipController extends ResourceController
             $participantCM      = $participantModel->where('referral_code_comentor', $data['referral_code_comentor'])->where('deleted_at', null)->first();
 
             if (! $participantCM) {
-                return $this->respond(['status' => 'failed', 'message' => 'Referral code tidak valid. Periksa kembali link co-mentor']);
+                return $this->fail(['status' => 'failed', 'message' => 'Referral code tidak valid. Periksa kembali link co-mentor']);
             }
         }
 
