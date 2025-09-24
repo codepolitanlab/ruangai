@@ -43,6 +43,7 @@ class Autoload extends AutoloadConfig
         APP_NAMESPACE => APPPATH,
         'Heroicadmin' => ROOTPATH . 'modules/Heroicadmin',
         'Course'      => ROOTPATH . 'modules/Course',
+        'Scholarship' => ROOTPATH . 'modules/Scholarship',
     ];
 
     /**

@@ -42,6 +42,32 @@ class Heroicadmin extends BaseConfig
                 ],
             ],
         ],
+        25 => [
+            'label'    => 'Scholarship',
+            'icon'     => 'bi bi-lock-fill',
+            'url'      => '#',
+            'module'   => 'scholarship',
+            'children' => [
+                'scholarship' => [
+                    'label'     => 'Events',
+                    'icon'      => 'bi bi-people',
+                    'url'       => 'scholarship/events',
+                    'submodule' => 'event',
+                ],
+                'participants' => [
+                    'label'     => 'Participants',
+                    'icon'      => 'bi bi-people',
+                    'url'       => 'scholarship/participants',
+                    'submodule' => 'participants',
+                ],
+                'referral' => [
+                    'label'     => 'Referral',
+                    'icon'      => 'bi bi-person-gear',
+                    'url'       => 'scholarship/referral',
+                    'submodule' => 'referral',
+                ],
+            ],
+        ],
         30 => [
             'label'    => 'E-Learning',
             'icon'     => 'bi bi-book-fill',
