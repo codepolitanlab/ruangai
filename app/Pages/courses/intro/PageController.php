@@ -123,6 +123,7 @@ class PageController extends BaseController
                 }
             }
 
+            $this->data['is_comentor'] = $jwt->user['role_id'] == 4 ? true : false;
             return $this->respond($this->data);
         }
 

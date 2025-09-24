@@ -29,6 +29,10 @@
       resendTimer: null,
       emailSent: false,
 
+      // Tambahan countdown
+      countdown: '',
+      countdownTimer: null,
+
       init() {
         base.init.call(this);
         this.initSwiperNotif();
@@ -45,6 +49,66 @@
         }
 
         this.modalInstance = new bootstrap.Modal(this.$refs.modalVerify);
+
+        const savedDate = localStorage.getItem("event_date_end");
+        if (savedDate) {
+          this.startCountdown(savedDate);
+        }
+
+        // Jalankan countdown kalau ada event
+        this.$watch('data', (value) => {
+          // if (!value.is_enrolled) {
+          //   alert("Kamu belum terdaftar di kelas. Silahkan daftar terlebih dahulu.")
+          //   window.location.replace(`https://www.ruangai.id/registration`)
+          // }
+          localStorage.setItem("event_date_end", value.event.date_end);
+          if (value?.event?.date_end) {
+            this.startCountdown(value.event.date_end);
+          }
+        });
+      },
+
+      countdownParts: {
+        days: "00",
+        hours: "00",
+        minutes: "00",
+        seconds: "00",
+      },
+
+      startCountdown(dateEnd) {
+        this.updateCountdown(dateEnd);
+        this.countdownTimer = setInterval(() => {
+          this.updateCountdown(dateEnd);
+        }, 1000);
+      },
+
+      updateCountdown(dateEnd) {
+        const now = new Date().getTime();
+        const endDate = new Date(dateEnd).getTime();
+        const distance = endDate - now;
+
+        if (distance <= 0) {
+          this.countdownParts = {
+            days: "00",
+            hours: "00",
+            minutes: "00",
+            seconds: "00"
+          };
+          clearInterval(this.countdownTimer);
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        this.countdownParts = {
+          days: String(days).padStart(2, "0"),
+          hours: String(hours).padStart(2, "0"),
+          minutes: String(minutes).padStart(2, "0"),
+          seconds: String(seconds).padStart(2, "0"),
+        };
       },
 
       claimCertificate() {
@@ -63,21 +127,13 @@
           spaceBetween: 15,
           slidesOffsetAfter: 15,
 
-          // Non-aktifkan autoplay jika tidak diperlukan, atau sesuaikan
-          // autoplay: {
-          //   delay: 5000,
-          //   pauseOnMouseEnter: true,
-          // },
-
           breakpoints: {
-            // Untuk layar lebih kecil, jika perlu
             0: {
               slidesPerView: 1.15,
               spaceBetween: 15,
               slidesOffsetBefore: 20,
               slidesOffsetAfter: 15,
             },
-            // Untuk layar lebih besar, jika perlu
             640: {
               slidesPerView: 1.1,
               spaceBetween: 15,
@@ -101,7 +157,7 @@
       },
 
       startResendCooldown() {
-        this.resendCooldown = 5; // Mulai dari 60 detik
+        this.resendCooldown = 5;
         this.resendTimer = setInterval(() => {
           this.resendCooldown--;
           if (this.resendCooldown <= 0) {
@@ -146,7 +202,6 @@
       async sendEmailVerification(resend = false) {
         const token = localStorage.getItem('heroic_token');
 
-        // Check if email verification has been sent, only show modal
         if (this.emailSent && !resend) {
           setTimeout(() => {
             if (this.$refs.otp0) {
@@ -194,6 +249,11 @@
         this.emailSent = false;
       },
 
+      copyToClipboard(text) {
+        navigator.clipboard.writeText(`https://ruangai.id/cmref/${text}`);
+        $heroicHelper.toastr('Link disalin ke clipboard', 'success', 'bottom');
+      },
+
       async verifyEmail() {
         if (this.otp.join('').length !== 6) {
           this.errorMessage = "OTP harus terdiri dari 6 digit.";
@@ -210,7 +270,7 @@
           .post("/home/verifyEmail", {
             email: this.meta.email,
             otp: otpCode
-          }) // Kirim OTP ke backend
+          })
           .then(async (response) => {
             if (response.data.status == 'success') {
               this.isVerifying = false;
@@ -221,7 +281,6 @@
               this.modalInstance.hide();
               this.resetOtp();
             } else {
-              // Tampilkan error dari backend
               this.errorMessage = response.data.message || "Kode OTP tidak valid.";
             }
           })
