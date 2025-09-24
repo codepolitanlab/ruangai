@@ -77,8 +77,8 @@ class ScholarshipController extends ResourceController
         // Check valid referral
         $participantModel = new ScholarshipParticipantModel();
 
-        if (isset($data['referral_code_comentor']) && $data['program'] === 'RuangAI2025CM') {
-            $participantCM      = $participantModel->where('referral_code_comentor', $data['referral_code_comentor'])->where('deleted_at', null)->first();
+        if (isset($data['reference']) && $data['program'] === 'RuangAI2025CM') {
+            $participantCM      = $participantModel->where('referral_code_comentor', $data['reference'])->where('deleted_at', null)->first();
 
             if (! $participantCM) {
                 return $this->fail(['status' => 'failed', 'message' => 'Referral code tidak valid. Periksa kembali link co-mentor']);
