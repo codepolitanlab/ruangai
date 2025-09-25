@@ -216,7 +216,7 @@
 						</div>
 
 						<div class="row">
-							<template x-if="data.course?.has_modules === '1' && !data.is_comentor">
+							<template x-if="data.course?.has_modules === '1'">
 								<div class="col-md-6 mb-3">
 									<div id="card-progress-lesson"
 										class="card border-0 shadow-none rounded-4 p-3 d-flex flex-column justify-content-between position-relative"
@@ -244,7 +244,7 @@
 								</div>
 							</template>
 
-							<template x-if="data.is_comentor">
+							<!-- <template x-if="data.is_comentor">
 								<div class="col-md-6 mb-3">
 									<a href="/comentor">
 										<div class="class-card h-100 p-3 d-flex flex-column justify-content-between position-relative" style="min-height: 220px;">
@@ -259,7 +259,7 @@
 										</div>
 									</a>
 								</div>
-							</template>
+							</template> -->
 
 							<div class="col-md-6 mb-3">
 								<div id="card-progress-live"
