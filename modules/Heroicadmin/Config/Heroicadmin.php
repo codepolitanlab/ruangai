@@ -34,6 +34,38 @@ class Heroicadmin extends BaseConfig
                     'url'       => 'user/role',
                     'submodule' => 'role',
                 ],
+                'token' => [
+                    'label'     => 'Reward Token',
+                    'icon'      => 'bi bi-tag-fill',
+                    'url'       => 'user/token',
+                    'submodule' => 'token',
+                ],
+            ],
+        ],
+        25 => [
+            'label'    => 'Scholarship',
+            'icon'     => 'bi bi-lock-fill',
+            'url'      => '#',
+            'module'   => 'scholarship',
+            'children' => [
+                'scholarship' => [
+                    'label'     => 'Events',
+                    'icon'      => 'bi bi-people',
+                    'url'       => 'scholarship/events',
+                    'submodule' => 'event',
+                ],
+                'participants' => [
+                    'label'     => 'Participants',
+                    'icon'      => 'bi bi-people',
+                    'url'       => 'scholarship/participants',
+                    'submodule' => 'participants',
+                ],
+                'referral' => [
+                    'label'     => 'Referral',
+                    'icon'      => 'bi bi-person-gear',
+                    'url'       => 'scholarship/referral',
+                    'submodule' => 'referral',
+                ],
             ],
         ],
         30 => [
@@ -64,20 +96,20 @@ class Heroicadmin extends BaseConfig
                 ],
             ],
         ],
-        60 => [
-            'label'    => 'Vouchers',
-            'icon'     => 'bi bi-bag-fill',
-            'url'      => '#',
-            'module'   => 'voucher',
-            'children' => [
-                'sales' => [
-                    'label'     => 'Penjualan Voucher',
-                    'icon'      => 'bi bi-tag-fill',
-                    'url'       => '/zpanel/vouchers/sales',
-                    'submodule' => 'sales',
-                ],
-            ],
-        ],
+        // 60 => [
+        //     'label'    => 'Vouchers',
+        //     'icon'     => 'bi bi-bag-fill',
+        //     'url'      => '#',
+        //     'module'   => 'voucher',
+        //     'children' => [
+        //         'sales' => [
+        //             'label'     => 'Penjualan Voucher',
+        //             'icon'      => 'bi bi-tag-fill',
+        //             'url'       => '/zpanel/vouchers/sales',
+        //             'submodule' => 'sales',
+        //         ],
+        //     ],
+        // ],
         40 => [
             'label'    => 'Configuration',
             'icon'     => 'bi bi-house-gear-fill',

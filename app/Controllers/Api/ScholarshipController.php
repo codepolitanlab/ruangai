@@ -74,6 +74,17 @@ class ScholarshipController extends ResourceController
             return $this->fail(['status' => 'failed', 'message' => 'Domain email tidak diizinkan.']);
         }
 
+        // Check valid referral
+        $participantModel = new ScholarshipParticipantModel();
+
+        if (isset($data['reference']) && $data['program'] === 'RuangAI2025CM') {
+            $participantCM      = $participantModel->where('referral_code_comentor', $data['reference'])->where('deleted_at', null)->first();
+
+            if (! $participantCM) {
+                return $this->fail(['status' => 'failed', 'message' => 'Referral code tidak valid. Periksa kembali link co-mentor']);
+            }
+        }
+
         // Get JWT from headers
         // $jwt = $this->checkToken();
 
@@ -122,8 +133,6 @@ class ScholarshipController extends ResourceController
         $data['referral_code'] = strtoupper(substr(uniqid(), -6));
         $data['status']        = 'terdaftar';
 
-        $participantModel = new ScholarshipParticipantModel();
-
         // Check existing by user_id before insert
         $participant = $participantModel->where('user_id', $userId)->where('deleted_at', null)->first();
 
@@ -138,6 +147,7 @@ class ScholarshipController extends ResourceController
         $data['accept_agreement']                  = ! empty($data['accept_agreement']) ? $data['accept_agreement'] : 0;
         $data['is_participating_other_ai_program'] = ! empty($data['is_participating_other_ai_program']) ? $data['is_participating_other_ai_program'] : 0;
 
+        $data['reference'] = strtolower($data['reference']);
         $participantModel->insert($data);
 
         // Insert data to course_students

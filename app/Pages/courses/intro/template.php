@@ -61,6 +61,13 @@
 			color: #74bb8bff !important;
 			border: 0;
 		}
+
+		.class-card {
+			border-radius: 20px;
+			padding: 20px;
+			color: white;
+			background: #EAF8FF;
+		}
 	</style>
 
 	<div id="appCapsule">
@@ -90,7 +97,7 @@
 				<div class="card border-0 rounded-4 shadow-none position-relative">
 					<div class="position-relative" style="height: 200px;">
 						<img
-							:src="data.course?.cover"
+							:src="data?.course?.cover || data?.course?.thumbnail"
 							class="rounded-top-4 w-100 h-100 object-fit-cover"
 							alt="AI Course" />
 						<!-- Fade gradient -->
@@ -130,12 +137,12 @@
 						<template x-if="! data.is_enrolled">
 							<div>
 								<div class="text-end mt-4">
-									<button 
-										:disabled="!data.course?.teaser" 
-										type="button" 
-										class="btn btn-outline-primary mb-2 mb-lg-0" 
-										@click="setVideoTeaser(data.course?.teaser)" 
-										data-bs-toggle="modal" 
+									<button
+										:disabled="!data.course?.teaser"
+										type="button"
+										class="btn btn-outline-primary mb-2 mb-lg-0"
+										@click="setVideoTeaser(data.course?.teaser)"
+										data-bs-toggle="modal"
 										data-bs-target="#teaserModal">
 										<i class="bi bi-play-circle-fill"></i> SIMAK TEASER</button>
 
@@ -195,7 +202,7 @@
 			</template>
 
 			<!-- Section for enrolled user -->
-			<template x-if="data.is_enrolled">
+			<template x-if="data?.is_enrolled">
 				<div>
 					<!-- Progress Stats -->
 					<div class="p-3 pb-2 bg-white rounded-4 mb-3 position-relative"
@@ -237,7 +244,46 @@
 								</div>
 							</template>
 
-							<template x-if="data.course?.has_live_sessions === '1'">
+							<!-- <template x-if="data.is_comentor">
+								<div class="col-md-6 mb-3">
+									<a href="/comentor">
+										<div class="class-card h-100 p-3 d-flex flex-column justify-content-between position-relative" style="min-height: 220px;">
+											<div class="me-3 bg-white text-dark rounded p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
+												<img src="<?= base_url('mobilekit/assets/img/ruangai/module.svg') ?>" width="20" alt="">
+											</div>
+											<div class="d-flex align-items-end gap-2 mt-5 mb-2 text-dark">
+												<h4 class="mb-1"><i class="bi bi-people-fill"></i> Lihat Mentee Kamu</h4>
+											</div>
+											<a href="/comentor" class="btn btn-primary hover rounded-pill p-1">Lihat Daftar Mentee</a>
+											<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .1;" width="70" alt="">
+										</div>
+									</a>
+								</div>
+							</template> -->
+
+							<div class="col-md-6 mb-3">
+								<div id="card-progress-live"
+									class="card border-0 shadow-none rounded-4  p-3 d-flex flex-column justify-content-between position-relative"
+									style="min-height: 210px"
+									:class="{'live-completed bg-success bg-opacity-50': data.live_attendance > 0, 
+								'bg-light-secondary': data.live_attendance == 0}">
+									<div class="me-3 bg-white rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
+										<i class="bi h3 m-0" :class="data.live_attendance > 0 ? 'bi-check-circle text-success' : 'bi-camera-video text-secondary'"></i>
+									</div>
+									<div
+										:class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'd-flex' : 'd-none'"
+										class="d-flex align-items-end gap-2 mt-3 mb-4">
+										<h1 class="mb-0 display-6 fw-bold" x-text="data?.live_attendance"></h1>
+										<p class="mb-1">Live session diikuti</p>
+									</div>
+									<div x-show="Math.round(data.lesson_completed/data.total_lessons*100) < 100">
+										<div class="mb-1 position-relative">Selesaikan misimu dengan mentoring langsung</div>
+									</div>
+									<a href="#" class="btn disabled btn-success hover rounded-pill p-1 w-100">Gabung grup whatsapp dengan <br> co-mentor</a>
+									<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
+								</div>
+							</div>
+							<!-- <template x-if="data.course?.has_live_sessions === '1'">
 								<div class="col-md-6 mb-3">
 									<div id="card-progress-live"
 										class="card border-0 shadow-none rounded-4  p-3 d-flex flex-column justify-content-between position-relative"
@@ -260,7 +306,7 @@
 										<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
 									</div>
 								</div>
-							</template>
+							</template> -->
 						</div>
 					</div>
 
@@ -323,7 +369,7 @@
 		<!-- Klaim Reward, khusus untuk course campaign -->
 		<template x-if="data.course?.id === '1'">
 			<div class="section p-3 mb-3 bg-white rounded-4">
-				<h4 class="fw-bold mb-3" style="color: #222;">Reward Chapter 2</h4>
+				<h4 class="fw-bold mb-3" style="color: #222;">Reward Beasiswa</h4>
 
 				<div class="card bg-primary border-0 rounded-4 cursor-pointer"
 					@click="claimReward()">
@@ -332,7 +378,6 @@
 							<i class="bi bi-gift fs-2" style="font-size:2.5rem; color:#e91e95;"></i>
 						</div>
 						<div class="flex-grow-1 text-white">
-							<!-- <div class="fw-bold mb-1" style="font-size:1.2rem;">Bonus Kelas Lanjutan</div> -->
 							<h5 class="h6 mb-0" style="font-size:1rem;">
 								Pilih salah satu dari 5 kelas lanjutan yang paling cocok buatmu
 							</h5>

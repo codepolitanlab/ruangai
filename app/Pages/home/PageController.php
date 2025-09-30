@@ -66,7 +66,14 @@ class PageController extends BaseController
             ->get()
             ->getRowArray();
 
+        $this->data['event'] = $db->table('events')->select('date_start, date_end')->where('code', 'RuangAI2025B2')->get()->getRowArray();
+
         $this->data['is_expire'] = $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
+
+        $participantModel = new \App\Models\ScholarshipParticipantModel();
+       
+        
+        $this->data['is_comentor'] = $jwt->user['role_id'] == 4 ? true : false;
 
         return $this->respond($this->data);
     }
