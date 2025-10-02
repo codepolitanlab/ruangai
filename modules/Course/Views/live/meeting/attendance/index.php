@@ -85,28 +85,28 @@
                                     <td><input type="text" class="form-control form-control-sm" name="filter[email]" value="<?= @$filter['email'] ?>" placeholder="filter name"></td>
                                     <td></td>
                                     <td>
-                                        <select name="filter[durasi]" class="form-select form-select-sm" >
+                                        <select name="filter[durasi]" class="form-select form-select-sm">
                                             <option value="">Semua</option>
                                             <option value="1" <?= @$filter['durasi'] === '1' ? 'selected' : '' ?>>Valid (30+)</option>
                                             <option value="0" <?= @$filter['durasi'] === '0' ? 'selected' : '' ?>>Tidak Valid (30-)</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <select name="filter[feedback]" class="form-select form-select-sm" >
+                                        <select name="filter[feedback]" class="form-select form-select-sm">
                                             <option value="">Semua</option>
                                             <option value="1" <?= @$filter['feedback'] === '1' ? 'selected' : '' ?>>Mengisi</option>
                                             <option value="0" <?= @$filter['feedback'] === '0' ? 'selected' : '' ?>>Belum Mengisi</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <select name="filter[status]" class="form-select form-select-sm" >
+                                        <select name="filter[status]" class="form-select form-select-sm">
                                             <option value="">Semua</option>
                                             <option value="1" <?= @$filter['status'] === '1' ? 'selected' : '' ?>>Valid</option>
                                             <option value="0" <?= @$filter['status'] === '0' ? 'selected' : '' ?>>Tidak Valid</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <select name="filter[graduate]" class="form-select form-select-sm" >
+                                        <select name="filter[graduate]" class="form-select form-select-sm">
                                             <option value="">Semua</option>
                                             <option value="1" <?= @$filter['graduate'] === '1' ? 'selected' : '' ?>>Lulus</option>
                                             <option value="0" <?= @$filter['graduate'] === '0' ? 'selected' : '' ?>>Belum Lulus</option>
@@ -141,29 +141,25 @@
                                     </td>
                                     <td class="<?= $attender->duration >= 1800 ? 'text-success' : 'text-danger' ?>"><?= $attender->duration ?? '-' ?></td>
                                     <td>
-                                        <?= ($attender->meeting_feedback_id ?? null) 
-                                            ? '✅ <a href="/zpanel/course/live/meeting/feedback/' . $attender->meeting_feedback_id . '/detail" class="btn btn-sm btn-link text-nowrap"><span class="bi bi-search"></span> Lihat</a>' 
-                                            : '❌' ?>
+                                        <?php if ($attender->meeting_feedback_id ?? null): ?>
+                                            ✅
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-link text-nowrap"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#feedbackModal"
+                                                data-feedback='<?= json_encode($attender->feedback_content, JSON_HEX_APOS | JSON_HEX_QUOT) ?>'>
+                                                <span class="bi bi-search"></span> Lihat
+                                            </button>
+                                        <?php else: ?>
+                                            ❌
+                                        <?php endif ?>
                                     </td>
+
                                     <td><?= ($attender->status ?? '0') === '1' ? '✅' : '❌' ?></td>
                                     <td><?= ($attender->graduate ?? '0') === '1' ? '✅' : '❌' ?></td>
                                     <td class="text-end">
-                                        <div class="btn-group">
 
-                                            <!-- <a class="btn btn-sm btn-outline-secondary text-nowrap"
-                                                href="/<?= urlScope() ?>/course/live/meeting/<?= $live_meeting['id'] ?>/attendant/<?= $attender->id ?>/edit">
-                                                <span class="bi bi-pencil-square"></span> Edit
-                                            </a> -->
-
-                                            <!-- <form action="/<?= urlScope() ?>/course/live/meeting/<?= $live_meeting['id'] ?>/attendant/<?= $attender->id ?>/delete" method="post" class="d-inline"
-                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
-                                                <input type="hidden" name="id" value="<?= $attender->id ?>">
-                                                <input type="hidden" name="live_meeting_id" value="<?= $live_meeting['id'] ?>">
-                                                <button type="submit" class="btn btn-sm btn-outline-danger text-nowrap">
-                                                    <span class="bi bi-x-lg"></span> Delete
-                                                </button>
-                                            </form> -->
-                                        </div>
                                     </td>
                                 </tr>
                             <?php endforeach ?>
@@ -178,5 +174,50 @@
 
 </div>
 
+<!-- Modal Feedback -->
+<div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="feedbackModalLabel">Detail Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-sm">
+                    <tbody id="feedbackDetail"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var feedbackModal = document.getElementById('feedbackModal');
+        feedbackModal.addEventListener('show.bs.modal', function(event) {
+            var button = event.relatedTarget;
+            var feedback = button.getAttribute('data-feedback');
+
+            try {
+                var data = JSON.parse(feedback);
+            } catch (e) {
+                var data = {};
+            }
+            console.log(data);
+            var tbody = feedbackModal.querySelector('#feedbackDetail');
+            tbody.innerHTML = '';
+
+            for (const key in data) {
+                tbody.innerHTML += `
+                <tr>
+                    <th style="width:200px">${key}</th>
+                    <td>${data[key]}</td>
+                </tr>
+            `;
+            }
+        });
+    });
+</script>
 <?php $this->endSection() ?>
 <!-- END Content Section -->
