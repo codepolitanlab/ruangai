@@ -47,11 +47,28 @@ class MeetingAttendance extends AdminController
             WHERE live_meeting_id = ' . $meeting_id)->getRowArray();
 
         // Base query with joins and subqueries
-        $this->model->select('live_attendance.id, users.name, users.email, users.phone, live_attendance.duration, zoom_join_link, meeting_feedback_id, live_attendance.status, course_students.graduate, live_meeting_feedback.content as feedback_content');
+        $this->model->select('
+            live_attendance.id,
+            users.name,
+            users.email,
+            users.phone,
+            live_attendance.duration,
+            zoom_join_link,
+            meeting_feedback_id,
+            live_attendance.status,
+            (
+                SELECT cs.graduate 
+                FROM course_students cs
+                WHERE cs.user_id = live_attendance.user_id
+                AND cs.course_id = live_attendance.course_id
+                LIMIT 1
+            ) as graduate,
+            live_meeting_feedback.content as feedback_content
+        ');
         $this->model->join('users', 'users.id = live_attendance.user_id');
-        $this->model->join('course_students', 'course_students.user_id = live_attendance.user_id AND course_students.course_id = live_attendance.course_id', 'left');
         $this->model->join('live_meeting_feedback', 'live_meeting_feedback.user_id = live_attendance.user_id', 'left');
         $this->model->where('live_attendance.live_meeting_id', $meeting_id);
+
 
         // Apply filters
         $filter = $this->request->getGet('filter');
@@ -98,7 +115,6 @@ class MeetingAttendance extends AdminController
         // Get perpage value from request, default to 10
         $perpage = (int) $this->request->getGet('perpage') ?: 10;
 
-        $this->model->groupBy('live_attendance.id');
         // Paginate results
         $data['attenders'] = $this->model->asObject()->paginate($perpage);
         $data['pager']     = $this->model->pager;
