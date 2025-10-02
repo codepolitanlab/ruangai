@@ -98,6 +98,7 @@ class MeetingAttendance extends AdminController
         // Get perpage value from request, default to 10
         $perpage = (int) $this->request->getGet('perpage') ?: 10;
 
+        $this->model->groupBy('live_attendance.id');
         // Paginate results
         $data['attenders'] = $this->model->asObject()->paginate($perpage);
         $data['pager']     = $this->model->pager;
