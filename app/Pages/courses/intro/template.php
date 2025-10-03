@@ -279,7 +279,7 @@
 									<div x-show="Math.round(data.lesson_completed/data.total_lessons*100) < 100">
 										<div class="mb-1 position-relative">Selesaikan misimu dengan mentoring langsung</div>
 									</div>
-									<a href="#" class="btn disabled btn-success hover rounded-pill p-1 w-100">Gabung grup whatsapp dengan <br> co-mentor</a>
+									<a :href="`${data.group_comentor?.code ? '/r/' + data.group_comentor?.code : '#'}`" class="btn btn-success hover rounded-pill p-1 w-100" :class="{'disabled': !data.group_comentor?.code}" :target="data.group_comentor?.code ? '_blank' : ''">Gabung grup whatsapp dengan <br> co-mentor</a>
 									<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
 								</div>
 							</div>

@@ -16,6 +16,12 @@ class Heroicadmin extends BaseConfig
             'module' => 'dashboard',
             'url'    => '',
         ],
+        15 => [
+            'label'  => 'Shortener',
+            'icon'   => 'bi bi-link',
+            'module' => 'shortener',
+            'url'    => 'shortener',
+        ],
         20 => [
             'label'    => 'User Management',
             'icon'     => 'bi bi-lock-fill',

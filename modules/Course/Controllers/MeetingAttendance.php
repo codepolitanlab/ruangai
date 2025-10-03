@@ -47,9 +47,10 @@ class MeetingAttendance extends AdminController
             WHERE live_meeting_id = ' . $meeting_id)->getRowArray();
 
         // Base query with joins and subqueries
-        $this->model->select('live_attendance.id, users.name, users.email, users.phone, live_attendance.duration, zoom_join_link, duration, meeting_feedback_id, live_attendance.status, course_students.graduate');
+        $this->model->select('live_attendance.id, users.name, users.email, users.phone, live_attendance.duration, zoom_join_link, meeting_feedback_id, live_attendance.status, course_students.graduate, live_meeting_feedback.content as feedback_content');
         $this->model->join('users', 'users.id = live_attendance.user_id');
-        $this->model->join('course_students', 'course_students.user_id = live_attendance.user_id AND course_students.course_id = live_attendance.course_id');
+        $this->model->join('course_students', 'course_students.user_id = live_attendance.user_id AND course_students.course_id = live_attendance.course_id', 'left');
+        $this->model->join('live_meeting_feedback', 'live_meeting_feedback.user_id = live_attendance.user_id', 'left');
         $this->model->where('live_attendance.live_meeting_id', $meeting_id);
 
         // Apply filters
@@ -100,6 +101,13 @@ class MeetingAttendance extends AdminController
         // Paginate results
         $data['attenders'] = $this->model->asObject()->paginate($perpage);
         $data['pager']     = $this->model->pager;
+
+        // Decode kolom feedback_content jika ada
+        foreach ($data['attenders'] as &$row) {
+            if (!empty($row->feedback_content)) {
+                $row->feedback_content = json_decode($row->feedback_content);
+            }
+        }
 
         // Pass filter values and perpage to view
         $data['filter']       = $filter;

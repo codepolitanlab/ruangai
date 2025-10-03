@@ -8,6 +8,8 @@ use CodeIgniter\Router\RouteCollection;
 // Test
 $routes->get('sese', 'Sese::index');
 
+$routes->get('r/(:any)', 'Redirect::index/$1');
+
 // Email template preview
 $routes->get('email/preview', 'Email::preview');
 $routes->get('email/preview/(:segment)', 'Email::preview/$1');
