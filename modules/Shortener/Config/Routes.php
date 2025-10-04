@@ -6,7 +6,6 @@ $routes->group(
     setting_item('Heroicadmin.urlScope') . '/shortener',
     ['namespace' => 'Shortener\Controllers'],
     static function ($routes) {
-
         $routes->get('/', 'Shortener::index');
         $routes->get('add', 'Shortener::add');
         $routes->post('add', 'Shortener::add');

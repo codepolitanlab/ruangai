@@ -44,7 +44,7 @@ class Autoload extends AutoloadConfig
         'Heroicadmin' => ROOTPATH . 'modules/Heroicadmin',
         'Course'      => ROOTPATH . 'modules/Course',
         'Scholarship' => ROOTPATH . 'modules/Scholarship',
-        'Shortener' => ROOTPATH . 'modules/Shortener',
+        'Shortener'   => ROOTPATH . 'modules/Shortener',
     ];
 
     /**
