@@ -107,8 +107,37 @@
 
 			<template x-if="data?.leader?.role_id == 4">
 				<div>
+
+
 					<!-- Referral Co-Mentor -->
 					<div class="p-3 mb-3 rounded-4 bg-white d-flex flex-column gap-2 justify-content-between">
+						<div class="d-flex flex-column flex-md-row gap-2 mb-3">
+							<!-- Card Total Invite -->
+							<div class="flex-fill p-3 rounded-4 d-flex align-items-center justify-content-between" style="background-color: #FFE8E1;">
+								<div class="d-flex align-items-center gap-2">
+									<div class="p-3 rounded-3 d-flex align-items-center justify-content-center" style="background-color: #FDD6C9; width:60px; height:60px;">
+										<i class="bi bi-people-fill fs-3 text-secondary"></i>
+									</div>
+									<div>
+										<div>Total Peserta</div>
+										<div class="fw-bold fs-5 text-secondary" x-text="data?.total_member ?? 0">0</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- Card Total Lulus -->
+							<div class="flex-fill p-3 rounded-4 d-flex align-items-center justify-content-between" style="background-color: #DCFCE6;">
+								<div class="d-flex align-items-center gap-2">
+									<div class="p-3 rounded-3 d-flex align-items-center justify-content-center" style="background-color: #B9F8CF; width:60px; height:60px;">
+										<i class="bi bi-person-check-fill fs-3 text-success"></i>
+									</div>
+									<div>
+										<div>Total Lulus Peserta</div>
+										<div class="fw-bold fs-5 text-success" x-text="data?.total_graduated ?? 0">0</div>
+									</div>
+								</div>
+							</div>
+						</div>
 						<span>Kode Referral kamu</span>
 						<div class="p-2 bg-light rounded-3 d-flex align-items-center">
 							<!-- Input link -->
@@ -125,7 +154,6 @@
 								<i class="bi bi-clipboard"></i> Copy Link
 							</button>
 						</div>
-						<!-- <input type="text" class="form-control rounded-3" :value="data?.leader?.referral_code_comentor" placeholder="Kode referral kamu" disabled> -->
 					</div>
 
 					<div class="p-3 rounded-4 bg-white d-flex flex-column gap-2 justify-content-between">
