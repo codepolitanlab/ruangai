@@ -171,46 +171,56 @@
 								<thead>
 									<tr>
 										<th>Nama</th>
-										<th class="d-none d-lg-table-cell">Email</th>
-										<th>Whatsapp</th>
-										<th class="d-none d-lg-table-cell">Progres</th>
-										<th class="d-none d-lg-table-cell">Join Live Session</th>
-										<th>Status</th>
+										<th class="d-none d-md-table-cell">Email</th>
+										<th>Status & Progres</th>
 									</tr>
 								</thead>
 								<tbody>
 									<template x-for="member in filteredMembers" :key="member.user_id">
 										<tr>
-											<td x-text="member.fullname"></td>
-											<td class="d-none d-lg-table-cell" x-text="member.email"></td>
 											<td>
-												<a :href="`https://wa.me/${member.whatsapp}`" target="_blank" x-text="member.whatsapp"></a>
+												<div class="fw-semibold" x-text="member.fullname"></div>
+												<a :href="`https://wa.me/${member.whatsapp}`"
+												target="_blank"
+												class="small"
+												x-text="member.whatsapp"></a>
+												<div class="d-block d-md-none" x-text="member.email"></div>
 											</td>
-											<td class="d-none d-lg-table-cell" x-text="member.progress + '%'"></td>
-											<td class="d-none d-lg-table-cell" x-text="member.total_live_session + 'x'"></td>
+											<td class="d-none d-md-table-cell">
+												<span x-text="member.email"></span>
+											</td>
 											<td>
 												<!-- badge status -->
-												<template x-if="member.graduate == 1">
-													<span class="badge bg-success fw-semibold">Tuntas</span>
-												</template>
-												<template x-if="member.progress == 100 && member.total_live_session >= 1 && member.graduate != 1">
-													<span class="badge bg-secondary fw-semibold">Lulus</span>
-												</template>
-												<template x-if="member.progress == 100 && member.total_live_session == 0 && member.graduate != 1">
-													<span class="badge bg-warning fw-semibold">Belum Live</span>
-												</template>
-												<template x-if="member.progress != 100 && member.total_live_session >= 1 && member.graduate != 1">
-													<span class="badge bg-warning fw-semibold">Belum Course</span>
-												</template>
-												<template x-if="member.progress < 100 && member.total_live_session == 0 && member.graduate != 1">
-													<span class="badge bg-secondary-subtle text-dark fw-semibold">Masih Belajar</span>
-												</template>
+												<div class="mb-1">
+													<template x-if="member.graduate == 1">
+														<span class="badge bg-success fw-semibold">Tuntas</span>
+													</template>
+													<template x-if="member.progress == 100 && member.total_live_session >= 1 && member.graduate != 1">
+														<span class="badge bg-secondary fw-semibold">Lulus</span>
+													</template>
+													<template x-if="member.progress == 100 && member.total_live_session == 0 && member.graduate != 1">
+														<span class="badge bg-warning fw-semibold">Belum Live</span>
+													</template>
+													<template x-if="member.progress != 100 && member.total_live_session >= 1 && member.graduate != 1">
+														<span class="badge bg-warning fw-semibold">Belum Course</span>
+													</template>
+													<template x-if="member.progress < 100 && member.total_live_session == 0 && member.graduate != 1">
+														<span class="badge bg-secondary-subtle text-dark fw-semibold">Masih Belajar</span>
+													</template>
+												</div>
+
+												<!-- statistik progres -->
+												<div class="d-flex align-items-center gap-2 text-muted small">
+													<span><i class="bi bi-journal-bookmark text-success"></i> <span x-text="member.progress + '%'"></span></span>
+													<span><i class="bi bi-broadcast text-danger"></i> <span x-text="member.total_live_session + 'x'"></span></span>
+												</div>
 											</td>
 										</tr>
 									</template>
 								</tbody>
 							</table>
 						</div>
+
 
 					</div>
 				</div>
