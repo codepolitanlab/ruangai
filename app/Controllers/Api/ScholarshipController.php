@@ -261,17 +261,23 @@ class ScholarshipController extends ResourceController
         $courseStudentModel = new \Course\Models\CourseStudentModel();
         $eventModel         = new \App\Models\Events();
 
-        $masterProgram   = $eventModel->where('code', $programCode)->first();
-        $program         = $masterProgram['title'];
-        $data['program'] = $program;
-
+        if ($programCode && ! in_array($programCode, ['RuangAI2025B1', 'RuangAI2025B2'])) {
+            $masterProgram   = $eventModel->where('code', $programCode)->first();
+            $program         = $masterProgram['title'];
+            $data['program'] = $program;
+        }
+        
+        $user_registered = $scholarshipModel
+                ->where('deleted_at', null)
+                ->countAllResults();
+                
         $count_user_progress = $courseStudentModel
             ->where('progress >', 0)
             ->groupStart()
             ->where('graduate', 0)
             ->orWhere('graduate', null)
             ->groupEnd()
-            ->where('expire_at', null)   // only active
+            ->where('expire_at', null)
             ->countAllResults();
 
         if ($programCode === 'RuangAI2025B1') {
@@ -293,13 +299,37 @@ class ScholarshipController extends ResourceController
                 ->where('course_students.deleted_at', null)
                 ->countAllResults();
 
-            $user_registered = $scholarshipModel
-                ->where('deleted_at', null)
+            $data['user_registered'] = $user_registered ?? 0;
+            $data['user_progress']   = $count_user_progress;
+            $data['graduated']       = $graduated ?? 0;
+        }
+
+        if (!$programCode) {
+            $graduatedB1       = $courseStudentModel->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id')
+                ->where('scholarship_participants.program', 'RuangAI2025B1')
+                ->where('course_students.graduate', 1)
+                ->where('course_students.deleted_at', null)
+                ->countAllResults();
+
+            $graduatedB2       = $courseStudentModel->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id')
+                ->where('scholarship_participants.program', 'RuangAI2025B2')
+                ->where('course_students.graduate', 1)
+                ->where('course_students.deleted_at', null)
+                ->countAllResults();
+
+            $graduatedB3       = $courseStudentModel->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id')
+                ->where('scholarship_participants.program', 'RuangAI2025B3')
+                ->where('course_students.graduate', 1)
+                ->where('course_students.deleted_at', null)
                 ->countAllResults();
 
             $data['user_registered'] = $user_registered ?? 0;
             $data['user_progress']   = $count_user_progress;
-            $data['graduated']       = $graduated ?? 0;
+            $data['graduated']       = (object) [
+                'RuangAI2025B1' => $graduatedB1 ?? 0,
+                'RuangAI2025B2' => $graduatedB2 ?? 0,
+                'RuangAI2025B3' => $graduatedB3 ?? 0,
+            ];
         }
 
         return $this->respond($data);
