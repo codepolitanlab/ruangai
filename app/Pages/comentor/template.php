@@ -25,7 +25,11 @@
 		}
 
 		.bg-warning-2 {
-			background-color: #fe9500;
+			background-color: #ecba73ff;
+		}
+
+		.bg-primary-2 {
+			background-color: #e6f1f6;
 		}
 
 		.class-card {
@@ -55,19 +59,16 @@
 		/* kasih prioritas ke tabel custom */
 		.custom-table thead tr {
 			background-color: #6bb1ce !important;
-			/* biru header */
 			color: #fff !important;
 		}
 
-		.custom-table tbody tr:nth-child(odd) {
+		/* .custom-table tbody tr:nth-child(odd) {
 			background-color: #e6f1f6 !important;
-			/* biru muda */
-		}
+		} */
 
-		.custom-table tbody tr:nth-child(even) {
+		/* .custom-table tbody tr:nth-child(even) {
 			background-color: #f9f9f9 !important;
-			/* abu muda */
-		}
+		} */
 
 		.custom-table th,
 		.custom-table td {
@@ -132,7 +133,7 @@
 										<i class="bi bi-person-check-fill fs-3 text-success"></i>
 									</div>
 									<div>
-										<div>Total Lulus Peserta</div>
+										<div>Total Peserta Tuntas</div>
 										<div class="fw-bold fs-5 text-success" x-text="data?.total_graduated ?? 0">0</div>
 									</div>
 								</div>
@@ -158,7 +159,7 @@
 
 					<div class="p-3 rounded-4 bg-white d-flex flex-column gap-2 justify-content-between">
 						<h5 class="fw-bold">Daftar Peserta</h5>
-						<div class="mb-3">
+						<div class="mb-2">
 							<input
 								type="text"
 								class="form-control"
@@ -167,6 +168,16 @@
 						</div>
 
 						<div class="table-responsive">
+							<div class="d-flex gap-3 mb-3">
+								<div class="d-flex align-items-center gap-2">
+									<div style="width: 20px;height: 13px;background-color: #ecba73ff;"></div>
+									<span>Peserta Lama</span>
+								</div>
+								<div class="d-flex align-items-center gap-2">
+									<div style="width: 20px;height: 13px;background-color: #e6f1f6;"></div>
+									<span>Peserta Baru</span>
+								</div>
+							</div>
 							<table class="w-100 mb-0 align-middle custom-table">
 								<thead>
 									<tr>
@@ -177,7 +188,7 @@
 								</thead>
 								<tbody>
 									<template x-for="member in filteredMembers" :key="member.user_id">
-										<tr>
+										<tr :class="member.from == 'mapping' ? 'bg-warning-2' : 'bg-primary-2'">
 											<td>
 												<div class="fw-semibold" x-text="member.fullname"></div>
 												<a :href="`https://wa.me/${member.whatsapp}`"
@@ -196,7 +207,7 @@
 														<span class="badge bg-success fw-semibold">Tuntas</span>
 													</template>
 													<template x-if="member.progress == 100 && member.total_live_session >= 1 && member.graduate != 1">
-														<span class="badge bg-secondary fw-semibold">Lulus</span>
+														<span class="badge bg-secondary fw-semibold">Belum Klaim Sertifikat</span>
 													</template>
 													<template x-if="member.progress == 100 && member.total_live_session == 0 && member.graduate != 1">
 														<span class="badge bg-warning fw-semibold">Belum Live</span>

@@ -17,7 +17,7 @@
       ...base,
       title: "Co-Mentor",
       errorMessage: null,
-      search: "",          // keyword pencarian
+      search: "", // keyword pencarian
       filteredMembers: [], // hasil filter
 
       init() {
@@ -26,8 +26,12 @@
         // awalnya tampilkan semua data
         this.$watch("data", (val) => {
           if (val?.members) {
-            console.log(val.members)
-            this.filteredMembers = val.members;
+            // sort by "from"
+            this.filteredMembers = [...val.members].sort((a, b) => {
+              if (a.from === 'mapping' && b.from !== 'mapping') return -1;
+              if (a.from !== 'mapping' && b.from === 'mapping') return 1;
+              return 0;
+            });
           }
         });
 
@@ -49,6 +53,12 @@
             (m.whatsapp || "").toLowerCase().includes(lower)
           ) ?? [];
         }
+
+        this.filteredMembers.sort((a, b) => {
+          if (a.from === 'mapping' && b.from !== 'mapping') return -1;
+          if (a.from !== 'mapping' && b.from === 'mapping') return 1;
+          return 0;
+        });
       },
 
       copyToClipboard(text) {
