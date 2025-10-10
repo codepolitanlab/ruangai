@@ -177,6 +177,9 @@
 									<div style="width: 20px;height: 13px;background-color: #e6f1f6;"></div>
 									<span>Peserta Baru</span>
 								</div>
+								<button @click="downloadCSV" class="btn btn-sm btn-outline-primary ms-auto">
+									<i class="bi bi-download"></i> Unduh Data
+								</button>
 							</div>
 							<table class="w-100 mb-0 align-middle custom-table">
 								<thead>
