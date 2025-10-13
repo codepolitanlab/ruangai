@@ -135,12 +135,21 @@ class MeetingAttendance extends AdminController
             // Mode Edit: Ambil data scholarship
             $liveAttendance     = model('Course\Models\LiveAttendanceModel');
             $data['attendance'] = $liveAttendance
-                ->select('live_attendance.*, users.name, users.email')
+                ->select('live_attendance.*, users.name, users.email, live_meeting_feedback.content as feedback_content')
                 ->join('users', 'users.id = live_attendance.user_id')
+                ->join('live_meeting_feedback', 'live_meeting_feedback.user_id = live_attendance.user_id', 'left')
                 ->where('live_attendance.deleted_at', null)
                 ->where('live_attendance.id', $id)
                 ->asObject()
                 ->first();
+
+            // Pisahkan rate dan feedback dari JSON
+            if (!empty($data['attendance']->feedback_content)) {
+                $feedbackData = json_decode($data['attendance']->feedback_content);
+                $data['attendance']->rate = $feedbackData->rate ?? null;
+                $data['attendance']->feedback = $feedbackData->content ?? null;
+                unset($data['attendance']->feedback_content); // opsional: hapus kolom JSON mentah
+            }
 
             if (! $data['attendance']) {
                 session()->setFlashdata('error_message', 'Data tidak ditemukan');
@@ -161,17 +170,21 @@ class MeetingAttendance extends AdminController
         $id    = $this->request->getPost('id');
         $email = $this->request->getPost('email');
 
+        // basic validation
+        if (empty($email)) {
+            session()->setFlashdata('error_message', 'Email wajib diisi');
+            return redirect()->back()->withInput();
+        }
+
         // Get user_id by email from users table
         $userModel = model('UserModel');
         $user      = $userModel->where('email', $email)->first();
-        
-        if ($user) {
-            $user_id = $user['id'];
-        } else {
-            session()->setFlashdata('error_message', 'Email tidak ditemukan');
 
+        if (!$user) {
+            session()->setFlashdata('error_message', 'Email tidak ditemukan');
             return redirect()->to(urlScope() . '/course/live/meeting/' . $live_meeting_id . '/attendant/add');
         }
+        $user_id = $user['id'];
 
         // Get course_id by live_meeting_id
         $liveMeetingModel = model('Course\Models\LiveMeetingModel');
@@ -179,41 +192,107 @@ class MeetingAttendance extends AdminController
             ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
             ->where('live_meetings.id', $live_meeting_id)
             ->first();
+
+        if (!$liveMeeting) {
+            session()->setFlashdata('error_message', 'Live meeting tidak ditemukan');
+            return redirect()->back()->withInput();
+        }
+
         $course_id = $liveMeeting['course_id'];
+
+        // Ambil semua input yang diperlukan
+        $duration = $this->request->getPost('duration');
+        $status   = $this->request->getPost('status');
+
+        // normalisasi status: kalau kosong -> null, else cast ke int (0/1)
+        $status = $status === '' ? null : (int)$status;
 
         $data = [
             'user_id'         => $user_id,
             'course_id'       => $course_id,
             'live_meeting_id' => $live_meeting_id,
-            'duration'        => $this->request->getPost('duration'),
+            'duration'        => $duration,
+            'status'          => $status,
         ];
 
         $liveAttendanceModel = model('Course\Models\LiveAttendanceModel');
+        $liveMeetingFeedbackModel = model('Course\Models\LiveMeetingFeedbackModel');
 
         try {
             if ($id) {
-                // Update data
+                // Update existing row
                 $data['updated_at'] = date('Y-m-d H:i:s');
                 $liveAttendanceModel->update($id, $data);
+
+                // Update existing feedback row
+                $content = (object) [
+                    'rate'    => $this->request->getPost('rate'),
+                    'content' => $this->request->getPost('feedback'),
+                ];
+
+                $feedback = [
+                    'user_id'         => $user_id,
+                    'live_meeting_id' => $live_meeting_id,
+                    'content'         => json_encode($content),
+                    'updated_at'      => date('Y-m-d H:i:s'),
+                ];
+
+                $meeting_feedback_id = (int) $this->request->getPost('meeting_feedback_id');
+                $liveMeetingFeedbackModel->update($meeting_feedback_id, $feedback);
+
+                // Check if duration >= 5400 , status = 1 and if content is not empty
+                $courseStudentModel = model('Course\Models\CourseStudentModel');
+                if ($duration >= 5400 && $status == 1 && !empty($content->content)) {
+                    $courseStudentModel->markAsGraduate($user_id, $course_id);
+                } else {
+                    $courseStudentModel->markAsNotGraduate($user_id, $course_id);
+                }
+                session()->setFlashdata('success_message', 'Data berhasil diperbarui');
             } else {
-                // Check if row with same user_id and live_meeting_id already exists
-                $existing = $this->model->where('user_id', $user_id)->where('live_meeting_id', $live_meeting_id)->first();
+                // Check if row with same user_id and live_meeting_id already exists (not deleted)
+                $existing = $liveAttendanceModel
+                    ->where('user_id', $user_id)
+                    ->where('live_meeting_id', $live_meeting_id)
+                    ->where('deleted_at', null)
+                    ->first();
+
                 if ($existing) {
                     session()->setFlashdata('error_message', 'Data sudah ada');
-
                     return redirect()->to(urlScope() . '/course/live/meeting/' . $live_meeting_id . '/attendant/add');
                 }
-                // Insert data baru
+
+                // Insert feedback
+                $content = (object) [
+                    'rate'    => $this->request->getPost('rate'),
+                    'content' => $this->request->getPost('feedback'),
+                ];
+
+                $feedback = [
+                    'user_id'         => $user_id,
+                    'live_meeting_id' => $live_meeting_id,
+                    'content'         => json_encode($content),
+                    'created_at'      => date('Y-m-d H:i:s'),
+                ];
+
+                $live_meeting_feedback_id = $liveMeetingFeedbackModel->insert($feedback);
+
+                // Insert
+                $data['meeting_feedback_id'] = $live_meeting_feedback_id;
                 $data['created_at'] = date('Y-m-d H:i:s');
                 $liveAttendanceModel->insert($data);
+
+                // Check if duration >= 5400 , status = 1 and if content is not empty
+                if ($duration >= 5400 && $status == 1 && !empty($content->content)) {
+                    $courseStudentModel = model('Course\Models\CourseStudentModel');
+                    $courseStudentModel->markAsGraduate($user_id, $course_id);
+                }
+
+                session()->setFlashdata('success_message', 'Data berhasil ditambahkan');
             }
 
-            session()->setFlashdata('success_message', 'Data berhasil disimpan');
-
-            return redirect()->to(urlScope() . '/course/live/meeting/' . $data['live_meeting_id'] . '/attendant');
-        } catch (Exception $e) {
+            return redirect()->to(urlScope() . '/course/live/meeting/' . $live_meeting_id . '/attendant');
+        } catch (\Exception $e) {
             session()->setFlashdata('error_message', 'Gagal menyimpan data: ' . $e->getMessage());
-
             return redirect()->back()->withInput();
         }
     }
@@ -223,9 +302,10 @@ class MeetingAttendance extends AdminController
         $liveAttendanceModel = model('Course\Models\LiveAttendanceModel');
 
         try {
+            // Soft delete: set deleted_at
             $liveAttendanceModel->update($id, ['deleted_at' => date('Y-m-d H:i:s')]);
             session()->setFlashdata('success_message', 'Data berhasil dihapus');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             session()->setFlashdata('error_message', 'Gagal menghapus data: ' . $e->getMessage());
         }
 
