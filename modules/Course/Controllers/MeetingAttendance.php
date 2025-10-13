@@ -290,6 +290,14 @@ class MeetingAttendance extends AdminController
                 session()->setFlashdata('success_message', 'Data berhasil ditambahkan');
             }
 
+            // Generate token reward if not exist
+            $userTokenModel = model('UserToken');
+            $isExist = $userTokenModel->isExists($user_id, 'graduate');
+
+            if (!$isExist) {
+                $userTokenModel->generateToken($user_id, 'graduate');
+            }
+
             return redirect()->to(urlScope() . '/course/live/meeting/' . $live_meeting_id . '/attendant');
         } catch (\Exception $e) {
             session()->setFlashdata('error_message', 'Gagal menyimpan data: ' . $e->getMessage());
