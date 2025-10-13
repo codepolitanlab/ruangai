@@ -80,4 +80,12 @@ class CourseStudentModel extends Model
             ->set(['graduate' => 1])
             ->update();
     }
+
+    public function markAsNotGraduate($userId, $courseId)
+    {
+        return $this->where('user_id', $userId)
+            ->where('course_id', $courseId)
+            ->set(['graduate' => 0])
+            ->update();
+    }
 }
