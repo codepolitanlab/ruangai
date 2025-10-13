@@ -162,8 +162,9 @@ class MeetingAttendance extends AdminController
         $email = $this->request->getPost('email');
 
         // Get user_id by email from users table
-        $userModel = model('Heroicadmin\Modules\Users\Models\UserModel');
+        $userModel = model('UserModel');
         $user      = $userModel->where('email', $email)->first();
+        
         if ($user) {
             $user_id = $user['id'];
         } else {
