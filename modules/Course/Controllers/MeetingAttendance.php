@@ -295,7 +295,7 @@ class MeetingAttendance extends AdminController
             $isExist = $userTokenModel->isExists($user_id, 'graduate');
 
             if (!$isExist) {
-                $userTokenModel->generateToken($user_id, 'graduate');
+                $userTokenModel->generate($user_id, 'graduate');
             }
 
             return redirect()->to(urlScope() . '/course/live/meeting/' . $live_meeting_id . '/attendant');
