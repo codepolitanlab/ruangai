@@ -15,7 +15,7 @@
         <div
             class="d-flex justify-content-between align-items-start position-absolute px-3"
             style="top: 10px; left: 0; right: 0;">
-            <template x-if="data?.student?.program == 'RuangAI2025B2'">
+            <template x-if="data?.student?.program == 'RuangAI2025B2' && !data?.group_comentor">
                 <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%208476.png" width="35%" alt="">
             </template>
             <template x-if="data?.student?.program == 'RuangAI2025B3'">

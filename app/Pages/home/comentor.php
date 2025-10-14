@@ -2,7 +2,7 @@
 
     <!-- Header -->
     <div class="p-4 px-3 mb-3 bg-white rounded-4 position-relative" style="min-height:110px">
-        <div class="d-flex align-items-center gap-3 position-relative" style="z-index: 99; position: absolute !important; bottom: 10px;">
+        <div class="d-flex align-items-center gap-3 position-relative" style="z-index: 99; position: absolute !important; top: 30px;">
             <div class="avatar">
                 <img :src="data?.user?.avatar && data?.user?.avatar != '' ? data?.user?.avatar : `https://ui-avatars.com/api/?name=${data?.name ?? 'El'}&background=79B2CD&color=FFF`" alt="avatar" class="imaged w48 rounded-circle">
             </div>
@@ -12,11 +12,11 @@
             </div>
         </div>
         <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206633.png" class="position-absolute bottom-0 end-0 w-25" alt="">
-        <div
+        <!-- <div
             class="d-flex justify-content-between align-items-start position-absolute px-3"
             style="top: 10px; left: 0; right: 0;">
             <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%208476.png" width="35%" alt="">
-        </div>
+        </div> -->
 
     </div>
 
