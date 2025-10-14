@@ -237,7 +237,7 @@ class ScholarshipController extends ResourceController
         // Filter member graduated by status completed
         $graduated = count(array_filter($members, static fn($member) => $member['status'] === 'lulus'));
 
-        $commision = 5000;
+        $commision = $leader['commission_per_graduate'];
         $disbursed = $leader['withdrawal'];
 
         $data['referral_code']      = $leader['referral_code'];
