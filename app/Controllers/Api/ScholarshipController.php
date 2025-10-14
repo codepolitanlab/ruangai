@@ -207,7 +207,8 @@ class ScholarshipController extends ResourceController
         }
 
         $memberQuery = $participantModel->select("
-                scholarship_participants.fullname, 
+                scholarship_participants.fullname,
+                scholarship_participants.program,
                 scholarship_participants.created_at as joined_at, 
                 course_students.graduate, 
                 course_students.progress, 
