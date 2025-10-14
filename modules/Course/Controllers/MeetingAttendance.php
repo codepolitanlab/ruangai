@@ -246,6 +246,14 @@ class MeetingAttendance extends AdminController
                     $student = $courseStudentModel->where('user_id', $user_id)->where('course_id', $course_id)->first();
                     if ($student['progress'] == 100) {
                         $courseStudentModel->markAsGraduate($user_id, $course_id);
+
+                        // Generate token reward if not exist
+                        $userTokenModel = model('UserToken');
+                        $isExist = $userTokenModel->isExists($user_id, 'graduate');
+
+                        if (!$isExist) {
+                            $userTokenModel->generate($user_id, 'graduate');
+                        }
                     }
                 } else {
                     $courseStudentModel->markAsNotGraduate($user_id, $course_id);
@@ -287,22 +295,23 @@ class MeetingAttendance extends AdminController
                 // Check if duration >= 5400 , status = 1 and if content is not empty
                 if ($duration >= 5400 && $status == 1 && !empty($content->content)) {
                     $courseStudentModel = model('Course\Models\CourseStudentModel');
+                    
                     // Check progress if 100 on course_students
                     $student = $courseStudentModel->where('user_id', $user_id)->where('course_id', $course_id)->first();
                     if ($student['progress'] == 100) {
                         $courseStudentModel->markAsGraduate($user_id, $course_id);
+
+                        // Generate token reward if not exist
+                        $userTokenModel = model('UserToken');
+                        $isExist = $userTokenModel->isExists($user_id, 'graduate');
+
+                        if (!$isExist) {
+                            $userTokenModel->generate($user_id, 'graduate');
+                        }
                     }
                 }
 
                 session()->setFlashdata('success_message', 'Data berhasil ditambahkan');
-            }
-
-            // Generate token reward if not exist
-            $userTokenModel = model('UserToken');
-            $isExist = $userTokenModel->isExists($user_id, 'graduate');
-
-            if (!$isExist) {
-                $userTokenModel->generate($user_id, 'graduate');
             }
 
             return redirect()->to(urlScope() . '/course/live/meeting/' . $live_meeting_id . '/attendant');
