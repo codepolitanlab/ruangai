@@ -150,7 +150,7 @@
           course_id: 1
         }).then((response) => {
           if (response.data.response_code == 200) {
-            $heroicHelper.toastr("Anda telah terdaftar di program Chapter 2! Selamat melanjukan belajar.", 'success', 'bottom')
+            $heroicHelper.toastr("Anda telah terdaftar di program Chapter 3! Selamat melanjukan belajar.", 'success', 'bottom')
             this.data.is_expire = false
           }
         })
