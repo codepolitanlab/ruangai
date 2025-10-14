@@ -21,7 +21,7 @@
     </div>
 
     <!-- Pengumuman -->
-    <?= $this->include('home/pengumuman'); ?>
+    
 
     <!-- Tutorial -->
     <div class="p-3 mb-3 rounded-4 bg-primary d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
