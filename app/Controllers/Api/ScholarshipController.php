@@ -220,6 +220,7 @@ class ScholarshipController extends ResourceController
             ->where('scholarship_participants.deleted_at', null)
             ->groupBy([
                 'scholarship_participants.user_id',
+                'scholarship_participants.program',
                 'scholarship_participants.fullname',
                 'scholarship_participants.created_at',
                 'course_students.graduate',
@@ -267,18 +268,32 @@ class ScholarshipController extends ResourceController
             $program         = $masterProgram['title'];
             $data['program'] = $program;
         }
-        
+
         $user_registered = $scholarshipModel
-                ->where('deleted_at', null)
-                ->countAllResults();
-                
+            ->where('deleted_at', null)
+            ->countAllResults();
+
         $count_user_progress = $courseStudentModel
-            ->where('progress >', 0)
+            ->select('scholarship_participants.program, scholarship_participants.reference')
+            ->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id')
+            ->where('course_students.progress >', 0)
             ->groupStart()
-            ->where('graduate', 0)
-            ->orWhere('graduate', null)
+                ->where('course_students.graduate', 0)
+                ->orWhere('course_students.graduate', null)
             ->groupEnd()
-            ->where('expire_at', null)
+            ->where('course_students.expire_at', null)
+            ->groupStart() // Mulai blok logika utama B3 dan B2
+                // Ambil semua dari RuangAI2025B3
+                ->where('scholarship_participants.program', 'RuangAI2025B3')
+                // ATAU ambil dari RuangAI2025B2 jika reference mengandung CO-/co-
+                ->orGroupStart()
+                    ->where('scholarship_participants.program', 'RuangAI2025B2')
+                    ->groupStart()
+                        ->like('scholarship_participants.reference', 'CO-', 'both')
+                        ->orLike('scholarship_participants.reference', 'co-', 'both')
+                    ->groupEnd()
+                ->groupEnd()
+            ->groupEnd() // Tutup blok B3 dan B2
             ->countAllResults();
 
         if ($programCode === 'RuangAI2025B1') {
