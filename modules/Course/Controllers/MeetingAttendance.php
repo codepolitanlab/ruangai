@@ -243,7 +243,10 @@ class MeetingAttendance extends AdminController
                 // Check if duration >= 5400 , status = 1 and if content is not empty
                 $courseStudentModel = model('Course\Models\CourseStudentModel');
                 if ($duration >= 5400 && $status == 1 && !empty($content->content)) {
-                    $courseStudentModel->markAsGraduate($user_id, $course_id);
+                    $student = $courseStudentModel->where('user_id', $user_id)->where('course_id', $course_id)->first();
+                    if ($student['progress'] == 100) {
+                        $courseStudentModel->markAsGraduate($user_id, $course_id);
+                    }
                 } else {
                     $courseStudentModel->markAsNotGraduate($user_id, $course_id);
                 }
@@ -284,7 +287,11 @@ class MeetingAttendance extends AdminController
                 // Check if duration >= 5400 , status = 1 and if content is not empty
                 if ($duration >= 5400 && $status == 1 && !empty($content->content)) {
                     $courseStudentModel = model('Course\Models\CourseStudentModel');
-                    $courseStudentModel->markAsGraduate($user_id, $course_id);
+                    // Check progress if 100 on course_students
+                    $student = $courseStudentModel->where('user_id', $user_id)->where('course_id', $course_id)->first();
+                    if ($student['progress'] == 100) {
+                        $courseStudentModel->markAsGraduate($user_id, $course_id);
+                    }
                 }
 
                 session()->setFlashdata('success_message', 'Data berhasil ditambahkan');
