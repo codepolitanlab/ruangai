@@ -25,7 +25,11 @@
 		}
 
 		.bg-warning-2 {
-			background-color: #fe9500;
+			background-color: #ecba73ff;
+		}
+
+		.bg-primary-2 {
+			background-color: #e6f1f6;
 		}
 
 		.class-card {
@@ -55,19 +59,16 @@
 		/* kasih prioritas ke tabel custom */
 		.custom-table thead tr {
 			background-color: #6bb1ce !important;
-			/* biru header */
 			color: #fff !important;
 		}
 
-		.custom-table tbody tr:nth-child(odd) {
+		/* .custom-table tbody tr:nth-child(odd) {
 			background-color: #e6f1f6 !important;
-			/* biru muda */
-		}
+		} */
 
-		.custom-table tbody tr:nth-child(even) {
+		/* .custom-table tbody tr:nth-child(even) {
 			background-color: #f9f9f9 !important;
-			/* abu muda */
-		}
+		} */
 
 		.custom-table th,
 		.custom-table td {
@@ -107,8 +108,37 @@
 
 			<template x-if="data?.leader?.role_id == 4">
 				<div>
+
+
 					<!-- Referral Co-Mentor -->
 					<div class="p-3 mb-3 rounded-4 bg-white d-flex flex-column gap-2 justify-content-between">
+						<div class="d-flex flex-column flex-md-row gap-2 mb-3">
+							<!-- Card Total Invite -->
+							<div class="flex-fill p-3 rounded-4 d-flex align-items-center justify-content-between" style="background-color: #FFE8E1;">
+								<div class="d-flex align-items-center gap-2">
+									<div class="p-3 rounded-3 d-flex align-items-center justify-content-center" style="background-color: #FDD6C9; width:60px; height:60px;">
+										<i class="bi bi-people-fill fs-3 text-secondary"></i>
+									</div>
+									<div>
+										<div>Total Peserta</div>
+										<div class="fw-bold fs-5 text-secondary" x-text="data?.total_member ?? 0">0</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- Card Total Lulus -->
+							<div class="flex-fill p-3 rounded-4 d-flex align-items-center justify-content-between" style="background-color: #DCFCE6;">
+								<div class="d-flex align-items-center gap-2">
+									<div class="p-3 rounded-3 d-flex align-items-center justify-content-center" style="background-color: #B9F8CF; width:60px; height:60px;">
+										<i class="bi bi-person-check-fill fs-3 text-success"></i>
+									</div>
+									<div>
+										<div>Total Peserta Tuntas</div>
+										<div class="fw-bold fs-5 text-success" x-text="data?.total_graduated ?? 0">0</div>
+									</div>
+								</div>
+							</div>
+						</div>
 						<span>Kode Referral kamu</span>
 						<div class="p-2 bg-light rounded-3 d-flex align-items-center">
 							<!-- Input link -->
@@ -125,12 +155,11 @@
 								<i class="bi bi-clipboard"></i> Copy Link
 							</button>
 						</div>
-						<!-- <input type="text" class="form-control rounded-3" :value="data?.leader?.referral_code_comentor" placeholder="Kode referral kamu" disabled> -->
 					</div>
 
 					<div class="p-3 rounded-4 bg-white d-flex flex-column gap-2 justify-content-between">
 						<h5 class="fw-bold">Daftar Peserta</h5>
-						<div class="mb-3">
+						<div class="mb-2">
 							<input
 								type="text"
 								class="form-control"
@@ -139,50 +168,73 @@
 						</div>
 
 						<div class="table-responsive">
+							<div class="d-flex gap-3 mb-3">
+								<div class="d-flex align-items-center gap-2">
+									<div style="width: 20px;height: 13px;background-color: #ecba73ff;"></div>
+									<span>Peserta Lama</span>
+								</div>
+								<div class="d-flex align-items-center gap-2">
+									<div style="width: 20px;height: 13px;background-color: #e6f1f6;"></div>
+									<span>Peserta Baru</span>
+								</div>
+								<button @click="downloadCSV" class="btn btn-sm btn-outline-primary ms-auto">
+									<i class="bi bi-download"></i> Unduh Data
+								</button>
+							</div>
 							<table class="w-100 mb-0 align-middle custom-table">
 								<thead>
 									<tr>
 										<th>Nama</th>
-										<th class="d-none d-lg-table-cell">Email</th>
-										<th>Whatsapp</th>
-										<th class="d-none d-lg-table-cell">Progres</th>
-										<th class="d-none d-lg-table-cell">Join Live Session</th>
-										<th>Status</th>
+										<th class="d-none d-md-table-cell">Email</th>
+										<th>Status & Progres</th>
 									</tr>
 								</thead>
 								<tbody>
 									<template x-for="member in filteredMembers" :key="member.user_id">
-										<tr>
-											<td x-text="member.fullname"></td>
-											<td class="d-none d-lg-table-cell" x-text="member.email"></td>
+										<tr :class="member.from == 'mapping' ? 'bg-warning-2' : 'bg-primary-2'">
 											<td>
-												<a :href="`https://wa.me/${member.whatsapp}`" target="_blank" x-text="member.whatsapp"></a>
+												<div class="fw-semibold" x-text="member.fullname"></div>
+												<a :href="`https://wa.me/${member.whatsapp}`"
+												target="_blank"
+												class="small"
+												x-text="member.whatsapp"></a>
+												<div class="d-block d-md-none" x-text="member.email"></div>
 											</td>
-											<td class="d-none d-lg-table-cell" x-text="member.progress + '%'"></td>
-											<td class="d-none d-lg-table-cell" x-text="member.total_live_session + 'x'"></td>
+											<td class="d-none d-md-table-cell">
+												<span x-text="member.email"></span>
+											</td>
 											<td>
 												<!-- badge status -->
-												<template x-if="member.graduate == 1">
-													<span class="badge bg-success fw-semibold">Tuntas</span>
-												</template>
-												<template x-if="member.progress == 100 && member.total_live_session >= 1 && member.graduate != 1">
-													<span class="badge bg-secondary fw-semibold">Lulus</span>
-												</template>
-												<template x-if="member.progress == 100 && member.total_live_session == 0 && member.graduate != 1">
-													<span class="badge bg-warning fw-semibold">Belum Live</span>
-												</template>
-												<template x-if="member.progress != 100 && member.total_live_session >= 1 && member.graduate != 1">
-													<span class="badge bg-warning fw-semibold">Belum Course</span>
-												</template>
-												<template x-if="member.progress < 100 && member.total_live_session == 0 && member.graduate != 1">
-													<span class="badge bg-secondary-subtle text-dark fw-semibold">Masih Belajar</span>
-												</template>
+												<div class="mb-1">
+													<template x-if="member.graduate == 1">
+														<span class="badge bg-success fw-semibold">Tuntas</span>
+													</template>
+													<template x-if="member.progress == 100 && member.total_live_session >= 1 && member.graduate != 1">
+														<span class="badge bg-secondary fw-semibold">Belum Klaim Sertifikat</span>
+													</template>
+													<template x-if="member.progress == 100 && member.total_live_session == 0 && member.graduate != 1">
+														<span class="badge bg-warning fw-semibold">Belum Live</span>
+													</template>
+													<template x-if="member.progress != 100 && member.total_live_session >= 1 && member.graduate != 1">
+														<span class="badge bg-warning fw-semibold">Belum Course</span>
+													</template>
+													<template x-if="member.progress < 100 && member.total_live_session == 0 && member.graduate != 1">
+														<span class="badge bg-secondary-subtle text-dark fw-semibold">Masih Belajar</span>
+													</template>
+												</div>
+
+												<!-- statistik progres -->
+												<div class="d-flex align-items-center gap-2 text-muted small">
+													<span><i class="bi bi-journal-bookmark text-success"></i> <span x-text="member.progress + '%'"></span></span>
+													<span><i class="bi bi-broadcast text-danger"></i> <span x-text="member.total_live_session + 'x'"></span></span>
+												</div>
 											</td>
 										</tr>
 									</template>
 								</tbody>
 							</table>
 						</div>
+
 
 					</div>
 				</div>

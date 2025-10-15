@@ -60,19 +60,22 @@ class PageController extends BaseController
 
         // Get course_students
         $this->data['student'] = $db->table('course_students')
-            ->select('progress, cert_claim_date, cert_code, expire_at')
-            ->where('course_id', 1)
-            ->where('user_id', $jwt->user_id)
+            ->select('progress, cert_claim_date, cert_code, expire_at, scholarship_participants.program, scholarship_participants.reference')
+            ->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id', 'left')
+            ->where('course_students.course_id', 1)
+            ->where('course_students.user_id', $jwt->user_id)
             ->get()
             ->getRowArray();
 
-        $this->data['event'] = $db->table('events')->select('date_start, date_end')->where('code', 'RuangAI2025B2')->get()->getRowArray();
+        $this->data['event'] = $db->table('events')->select('date_start, date_end, code')->where('code', $this->data['student']['program'])->get()->getRowArray();
 
         $this->data['is_expire'] = $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
 
-        $participantModel = new \App\Models\ScholarshipParticipantModel();
-       
-        
+        $this->data['group_comentor'] = $db->table('shorteners')
+                ->where('code', $this->data['student']['reference'])
+                ->get()
+                ->getRowArray();
+
         $this->data['is_comentor'] = $jwt->user['role_id'] == 4 ? true : false;
 
         return $this->respond($this->data);

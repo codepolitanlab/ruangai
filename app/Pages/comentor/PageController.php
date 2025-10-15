@@ -38,7 +38,8 @@ class PageController extends BaseController
                 MAX(course_students.graduate) as graduate, 
                 MAX(course_students.progress) as progress, 
                 MAX(course_students.cert_claim_date) as cert_claim_date, 
-                COUNT(CASE WHEN live_attendance.status = 1 THEN 1 END) as total_live_session
+                COUNT(CASE WHEN live_attendance.status = 1 THEN 1 END) as total_live_session,
+                scholarship_participants.reference
             ")
             ->join('course_students', 'course_students.user_id = scholarship_participants.user_id', 'left')
             ->join('live_attendance', 'live_attendance.user_id = scholarship_participants.user_id', 'left')
@@ -53,7 +54,20 @@ class PageController extends BaseController
             $members[$key]['status'] = $member['graduate'] == 1 ? 'lulus' : 'terdaftar';
             $members[$key]['progress'] = (int) $member['progress'];
             $members[$key]['total_live_session'] = (int) $member['total_live_session'];
+
+            // Tambahan flagging berdasarkan format reference
+            if (preg_match('/^CO-[A-Za-z0-9]+$/', $member['reference'])) {
+                // Format: CO-User → mapping
+                $members[$key]['from'] = 'mapping';
+            } elseif (preg_match('/^co-[A-Za-z0-9]+$/', $member['reference'])) {
+                // Format: co-user → register
+                $members[$key]['from'] = 'register';
+            } else {
+                // Default jika tidak cocok format
+                $members[$key]['from'] = 'unknown';
+            }
         }
+
 
         // Filter member graduated by status completed
         $graduated = count(array_filter($members, static fn($member) => $member['status'] === 'lulus'));

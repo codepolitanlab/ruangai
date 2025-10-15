@@ -22,20 +22,20 @@ class PageController extends BaseController
 
         // Get course
         // if (! $course = cache('course_' . $id)) {
-            $course = $db->table('courses')
-                ->where('id', $id)
-                ->get()
-                ->getRowArray();
+        $course = $db->table('courses')
+            ->where('id', $id)
+            ->get()
+            ->getRowArray();
 
-            // Save into the cache for 5 minutes
-            // cache()->save('course_' . $id, $course, 300);
+        // Save into the cache for 5 minutes
+        // cache()->save('course_' . $id, $course, 300);
         // }
 
         if ($course) {
-            if($course['id'] == 1) {
+            if ($course['id'] == 1) {
                 $this->data['module'] = 'misi_beasiswa';
             }
-            
+
             // Get completed lessons for current user
             $completedLessons = $db->table('course_lessons')
                 ->select('count(course_lessons.id) as total_lessons, count(course_lesson_progress.user_id) as completed')
@@ -125,10 +125,13 @@ class PageController extends BaseController
             }
 
             $this->data['is_comentor'] = $jwt->user['role_id'] == 4 ? true : false;
-            $this->data['group_comentor'] = $db->table('shorteners')
-                ->where('code', $this->data['student']['reference'])
-                ->get()
-                ->getRowArray();
+            $this->data['group_comentor'] = null;
+            if ($this->data['student']['reference'] ?? null) {
+                $this->data['group_comentor'] = $db->table('shorteners')
+                    ->where('code', $this->data['student']['reference'])
+                    ->get()
+                    ->getRowArray();
+            }
 
             return $this->respond($this->data);
         }
@@ -160,11 +163,11 @@ class PageController extends BaseController
             ->getRowArray();
 
         if ($courseStudent['graduate'] !== '1') {
-            // Update field program in scholarship_participants to 'RuangAI2025B2'
+            // Update field program in scholarship_participants to 'RuangAI2025B3'
             $db->table('scholarship_participants')
                 ->where('user_id', $jwt->user_id)
                 ->update([
-                    'program' => 'RuangAI2025B2'
+                    'program' => 'RuangAI2025B3'
                 ]);
         }
 

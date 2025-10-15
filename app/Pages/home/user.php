@@ -15,7 +15,12 @@
         <div
             class="d-flex justify-content-between align-items-start position-absolute px-3"
             style="top: 10px; left: 0; right: 0;">
-            <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%208476.png" width="35%" alt="">
+            <template x-if="data?.student?.program == 'RuangAI2025B2' && !data?.group_comentor">
+                <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%208476.png" width="35%" alt="">
+            </template>
+            <template x-if="data?.student?.program == 'RuangAI2025B3'">
+                <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%209476.png?updatedAt=1760359599371" width="35%" alt="">
+            </template>
             <!-- <div class="d-flex flex-column ms-2">
 						<div class="mb-2">Berakhir dalam</div>
 						<div class="d-flex gap-4 justify-content-center text-center">
@@ -43,7 +48,7 @@
     </div>
 
     <!-- Pengumuman -->
-    <?= $this->include('home/pengumuman'); ?>
+    
 
     <!-- Tutorial -->
     <div class="p-3 mb-3 rounded-4 bg-primary d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
@@ -70,9 +75,9 @@
             <div class="card-body d-flex gap-3">
                 <i class="bi bi-stopwatch-fill text-white display-3 shaky-icon"></i>
                 <div>
-                    <h4 class="text-white">Program Belajar Chapter 2 Sudah Dibuka!</h4>
-                    <p class="mb-3 text-white">Kamu dapat melanjutkan belajar dengan bergabung di Chapter 2 dengan mengklik tombol di bawah ini untuk mendaftar ulang.</p>
-                    <button class="btn btn-light" @click="heregister"><i class="bi bi-file-earmark-arrow-up"></i> Daftar Ulang ke Chapter 2</button>
+                    <h4 class="text-white">Program Belajar Chapter 3 Sudah Dibuka!</h4>
+                    <p class="mb-3 text-white">Kamu dapat melanjutkan belajar dengan bergabung di Chapter 3 dengan mengklik tombol di bawah ini untuk mendaftar ulang.</p>
+                    <button class="btn btn-light" @click="heregister"><i class="bi bi-file-earmark-arrow-up"></i> Daftar Ulang ke Chapter 3</button>
                 </div>
             </div>
         </div>
