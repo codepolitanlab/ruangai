@@ -130,5 +130,19 @@ class Heroicadmin extends BaseConfig
                 ],
             ],
         ],
+        60 => [
+            'label'    => 'Development',
+            'icon'     => 'bi bi-hammer',
+            'url'      => '#',
+            'module'   => 'development',
+            'children' => [
+                'logviewer' => [
+                    'label'     => 'Log Viewer',
+                    'icon'      => 'bi bi-file-earmark-text',
+                    'url'       => 'logviewer',
+                    'submodule' => 'logviewer',
+                ],
+            ],
+        ],
     ];
 }
