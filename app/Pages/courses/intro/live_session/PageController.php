@@ -23,7 +23,7 @@ class PageController extends BaseController
             ->get()
             ->getRowArray();
 
-        if($course_id == 1) {
+        if ($course_id == 1) {
             $this->data['module'] = 'misi_beasiswa';
         }
 
@@ -43,7 +43,7 @@ class PageController extends BaseController
         if ($attended) {
             $attendedCode = [];
             foreach ($attended as $key => $value) {
-                if($value['status'] === '1')
+                if ($value['status'] === '1')
                     $attendedCode[] = $value['theme_code'];
             }
         }
@@ -133,6 +133,31 @@ class PageController extends BaseController
             ->get()
             ->getRowArray();
 
+        // Ambil data participant berdasarkan user_id
+        $participant = $db->table('scholarship_participants')
+            ->select('reference, program')
+            ->where('user_id', $jwt->user_id)
+            ->get()
+            ->getRow();
+
+        $this->data['is_mentee_comentor'] = false;
+        $this->data['comentor'] = null;
+        $this->data['program'] = $participant ? $participant->program : null;
+        
+        if ($participant) {
+            // Cek apakah reference mengandung "CO-" atau "co-"
+            if (preg_match('/co\-/i', $participant->reference)) {
+                $this->data['is_mentee_comentor'] = true;
+                $this->data['comentor'] = $db->table('scholarship_participants')
+                    ->select('fullname')
+                    ->where('scholarship_participants.referral_code_comentor', $participant->reference)
+                    ->get()
+                    ->getRow()
+                    ->fullname;
+            }
+        }
+
+        // Jika tidak mengandung "CO-" atau "co-", lanjutkan proses
         return $this->respond($this->data);
     }
 
@@ -151,7 +176,7 @@ class PageController extends BaseController
             ->get()
             ->getRowArray()['id'] ?? null;
 
-        if($meeting_feedback_id) {
+        if ($meeting_feedback_id) {
             // Update live_attendance
             $db->table('live_attendance')
                 ->where('user_id', $jwt->user_id)
