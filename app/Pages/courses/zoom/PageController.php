@@ -68,6 +68,7 @@ class PageController extends BaseController
             ->get()
             ->getRow();
 
+        $this->data['is_comentor'] = $jwt->user['role_id'] == 4 ? true : false;
         $this->data['is_mentee_comentor'] = false;
         $this->data['comentor'] = null;
         $this->data['program'] = $participant ? $participant->program : null;

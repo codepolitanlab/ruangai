@@ -15,7 +15,7 @@ class PageController extends BaseController
     public function getData($course_id)
     {
         $Heroic = new \App\Libraries\Heroic();
-        $jwt    = $Heroic->checkToken();
+        $jwt    = $Heroic->checkToken(true);
 
         $db                   = \Config\Database::connect();
         $this->data['course'] = $db->table('courses')
@@ -140,6 +140,7 @@ class PageController extends BaseController
             ->get()
             ->getRow();
 
+        $this->data['is_comentor'] = $jwt->user['role_id'] == 4 ? true : false;
         $this->data['is_mentee_comentor'] = false;
         $this->data['comentor'] = null;
         $this->data['program'] = $participant ? $participant->program : null;
