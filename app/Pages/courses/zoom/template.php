@@ -1,9 +1,6 @@
 <div
     id="courses_zoom"
-    x-data="$heroic({
-        title: `<?= $page_title ?>`,
-        url: `courses/zoom/data/${$params.meeting_code}`
-        })">
+    x-data="registerLiveSession(`${$params.meeting_code}`)">
 
 
     <div class="container" x-show="data?.status == 'error'" x-transition>
@@ -38,7 +35,7 @@
                     </div>
                 </div>
 
-                <div class="row justify-content-center" x-data="registerLiveSession()">
+                <div class="row justify-content-center">
 
                     <div class="col-md-5" x-show="data.meeting.status == 'completed'">
                         <div class="card py-3 text-center">
