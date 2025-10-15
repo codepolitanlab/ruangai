@@ -45,6 +45,7 @@ class Autoload extends AutoloadConfig
         'Course'      => ROOTPATH . 'modules/Course',
         'Scholarship' => ROOTPATH . 'modules/Scholarship',
         'Shortener'   => ROOTPATH . 'modules/Shortener',
+        'Certificate' => ROOTPATH . 'modules/Certificate',
     ];
 
     /**
