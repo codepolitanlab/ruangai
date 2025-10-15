@@ -50,7 +50,7 @@ class MeetingAttendance extends AdminController
         $this->model->select('live_attendance.id, users.name, users.email, users.phone, live_attendance.duration, zoom_join_link, meeting_feedback_id, live_attendance.status, course_students.graduate, live_meeting_feedback.content as feedback_content');
         $this->model->join('users', 'users.id = live_attendance.user_id');
         $this->model->join('course_students', 'course_students.user_id = live_attendance.user_id AND course_students.course_id = live_attendance.course_id', 'left');
-        $this->model->join('live_meeting_feedback', 'live_meeting_feedback.user_id = live_attendance.user_id', 'left');
+        $this->model->join('live_meeting_feedback', 'live_meeting_feedback.id = live_attendance.meeting_feedback_id', 'left');
         $this->model->where('live_attendance.live_meeting_id', $meeting_id);
 
         // Apply filters
