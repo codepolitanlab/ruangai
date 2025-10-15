@@ -1,10 +1,7 @@
 <div
 	class="header-mobile-only"
 	id="live_session"
-	x-data="$heroic({
-        title: `<?= $page_title ?>`,
-        url: `courses/intro/live_session/data/${$params.course_id}`
-    })"
+	x-data="sesiLive(`${$params.course_id}`)"
 	x-effect="loadPage(`courses/intro/live_session/data/${$params.course_id}`)">
 
 	<style>
@@ -83,7 +80,7 @@
 	<div id="appCapsule" class="">
 		<?= $this->include('courses/intro/_menu'); ?>
 
-		<div class="appContent" style="min-height:90vh" x-data="sesiLive()">
+		<div class="appContent" style="min-height:90vh">
 
 			<div class="card my-4 rounded-4 shadow-none">
 				<div class="card-body">

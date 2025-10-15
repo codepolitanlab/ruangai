@@ -157,7 +157,7 @@
       },
 
       startResendCooldown() {
-        this.resendCooldown = 5;
+        this.resendCooldown = 60;
         this.resendTimer = setInterval(() => {
           this.resendCooldown--;
           if (this.resendCooldown <= 0) {

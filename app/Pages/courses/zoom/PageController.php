@@ -60,6 +60,31 @@ class PageController extends BaseController
         
         $this->data['meeting'] = $meeting;
         $this->data['zoom_join_link'] = $attendance ? $attendance['zoom_join_link'] : null;
+
+        // Ambil data participant berdasarkan user_id
+        $participant = $db->table('scholarship_participants')
+            ->select('reference, program')
+            ->where('user_id', $jwt->user_id)
+            ->get()
+            ->getRow();
+
+        $this->data['is_comentor'] = $jwt->user['role_id'] == 4 ? true : false;
+        $this->data['is_mentee_comentor'] = false;
+        $this->data['comentor'] = null;
+        $this->data['program'] = $participant ? $participant->program : null;
+        
+        if ($participant) {
+            // Cek apakah reference mengandung "CO-" atau "co-"
+            if (preg_match('/co\-/i', $participant->reference)) {
+                $this->data['is_mentee_comentor'] = true;
+                $this->data['comentor'] = $db->table('scholarship_participants')
+                    ->select('fullname')
+                    ->where('scholarship_participants.referral_code_comentor', $participant->reference)
+                    ->get()
+                    ->getRow()
+                    ->fullname;
+            }
+        }
         return $this->respond($this->data);
     }
 
