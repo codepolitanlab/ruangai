@@ -1,0 +1,12 @@
+# Cara Konversi ttf font ke js
+
+- Ambil file TTF/OTF Ubuntu dari Google Fonts (misalnya Ubuntu-Regular.ttf, Ubuntu-Bold.ttf).
+- Link Google Fonts Anda tadi bisa dipakai di browser, tapi untuk jsPDF, download font aslinya.
+- Ada tombol “Download family” di Google Fonts.
+- Convert font ke jsPDF format. Gunakan fontconverter resmi jsPDF https://rawgit.com/MrRio/jsPDF/master/fontconverter/fontconverter.html
+
+- Upload Ubuntu-Regular.ttf → hasilkan file JS misalnya ubuntu-normal.js.
+- Upload Ubuntu-Bold.ttf → hasilkan ubuntu-bold.js.
+- Gunakan module format UMD
+- File JS ini berisi addFileToVFS() dan addFont().
+- Sertakan font JS hasil konversi setelah jsPDF

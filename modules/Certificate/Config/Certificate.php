@@ -17,7 +17,8 @@ class Certificate extends BaseConfig
 
     // Available templates
     public $availableTemplates = [
-        'default' => \Certificate\Libraries\DefaultCertificateTemplate::class,
+        'default'  => \Certificate\Libraries\DefaultCertificateTemplate::class,
+        'comentor' => \Certificate\Libraries\ComentorCertificateTemplate::class,
         // Add more templates here as needed
     ];
 }
