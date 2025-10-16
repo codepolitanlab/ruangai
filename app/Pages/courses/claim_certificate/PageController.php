@@ -116,6 +116,12 @@ class PageController extends BaseController
         ];
 
         $certificateId = $certificateModel->createCourseCertificate($certificateData);
+
+        // Generate token reward lulus
+        $tokenFromGraduate = model('UserToken')->isExists($jwt->user_id, 'graduate');
+        if (! $tokenFromGraduate) {
+            model('UserToken')->generate($jwt->user_id, 'graduate');
+        }
         
         if (!$certificateId) {
             return $this->respond([
