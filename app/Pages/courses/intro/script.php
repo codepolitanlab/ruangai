@@ -43,10 +43,10 @@
         }
 
         if (this.data.course_completed) {
-          if (!this.data.student.cert_code || !this.data.student.cert_code == '') {
-            this.$router.navigate(`/certificate/claim/${this.data.course.id}`)
+          if (!this.data.student.certificate_id) {
+            this.$router.navigate(`/courses/claim_certificate/${this.data.course.id}`)
           } else {
-            this.$router.navigate(`/certificate/${this.data.student.cert_code}`)
+            window.location.href = `/certificate/show/${this.data.student.certificate_id}`;
           }
         } else {
           $heroicHelper.toastr("Kamu belum menyelesaikan kelas ini. Silahkan selesaikan kelas terlebih dahulu.", "warning", "bottom");

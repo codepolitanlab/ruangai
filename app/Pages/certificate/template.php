@@ -1,48 +1,55 @@
 <div
-    id="certificate"
-    x-data="certificate($params.code)"
-    x-effect="loadPage(`/certificate/data/${$params.code}`)">
+    id="certificate_print"
+    x-data="$heroic({
+        title: `<?= $page_title ?>`,
+        url: `certificate/data/${$params.code}`
+        })">
 
-    <div id="app-header" class="appHeader main border-0">
-        <div class="left">
-            <a native class="headerButton" :href="`/courses/intro/${data.course?.id}/${data.course?.slug}`"><i class="bi bi-chevron-left"></i></a>
-        </div>
-        <div class="">Sertifikat</div>
-    </div>
+    <div id="appCapsule" class="mt-4" x-data="render_certificate()">
 
-    <div id="appCapsule" class="pt-0 bg-white">
-        <div class="appContent px-0" style="min-height:90vh;">
-            <div class="container px-0">
-                <div x-show="data.student.cert_claim_date">
-                    <div class="text-center">
-                        <div id="print-area" class="position-relative table-responsive shadow">
-                            <template x-if="data.student.cert_url[1]">
-                                <img 
-                                    :src="data.student.cert_url[1] + '?' + (Math.floor(new Date(data.student.updated_at.replace(' ', 'T')).getTime() / 1000))" 
-                                    id="img-cert" 
-                                    class="position-relative"
-                                    @error="window.location.replace(`/certificate/claim/regenerate/${$params.code}`)">
-                            </template>
-                        </div>
-                    </div>
-                    <div class="mt-4 px-3 text-center">
-                        <div>Sertifikat ini adalah dokumen resmi dan valid dirilis oleh CODEPOLITAN</div>
-                        <template x-if="localStorage.getItem('heroic_token')">
-                            <div class="d-flex gap-2 justify-content-center mt-3">
-                                <button @click="downloadImagesAsZip()" class="btn btn-primary rounded-pill"><i class="bi bi-download"></i> Unduh</button>
-                            </div>
-                        </template>
-                    </div>
+        <template x-if="data?.status !== 'failed'">
+            <div class="appContent" style="min-height:90vh;">
+                <a href="/courses" class="mb-4 d-flex align-items-center gap-2">
+                    <i class="bi bi-arrow-left-circle-fill fs-2 text-secondary"></i>
+                    <h4 class="m-0">Kembali</h4>
+                </a>
+
+                <div class="mt-3 text-center">
+                    <p>
+                        Sertifikat ini valid diterbitkan oleh PT CODEPOLITAN INTEGRASI INDONESIA
+                        untuk peserta atas nama <strong x-text="data.claimer?.name"></strong>.</p>
+
+                    <p>
+                        Program: <strong x-text="data.claimer?.course"></strong> <br>
+                        Tanggal Terbit: <strong x-text="data.claimer?.publishDate"></strong> <br>
+                        Nomor Sertifikat: <strong x-text="data.claimer?.number"></strong></p>
+
+                        <button
+                            x-show="localStorage.getItem('heroic_token')"
+                            @click="downloadPDF()"
+                            class="btn btn-secondary mb-3">Unduh PDF Sertifikat</button>
                 </div>
 
+                <!-- Wadah preview -->
+                <div id="pdf-container" style="width:100%; max-width:900px; margin:0 auto; position:relative">
 
-                <div class="text-center" x-show="!data.student">
-                    <h4>404</h4>
-                    <p>Kode sertifikat tidak valid</p>
+                    <!-- Container multi halaman -->
+                    <div id="pdf-pages" style="width:100%; border-radius:8px; position:relative; background:#f8f8f8"></div>
+
+                    <p @click="window.location.reload()"
+                        style="position: absolute; top: 1%; right: 1%; cursor: pointer; font-size: 12px; background: #eee; padding: 11px 20px; border-radius: 50px; font-style: italic; opacity: .5">
+                        Klik untuk refresh preview
+                    </p>
+
+                    <template x-if="data.claimer?.number">
+                        <div x-init="previewPDF()"></div>
+                    </template>
                 </div>
+
             </div>
-        </div>
+        </template>
+
     </div>
 </div>
 
-<?= $this->include('certificate/script') ?>
+<?= $this->include('certificate/script'); ?>

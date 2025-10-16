@@ -67,6 +67,9 @@ class Router
         '/courses/feedback/:meeting_code' => [
             'handler' => '[isLoggedIn]',
         ],
+        '/courses/claim_certificate/:course_id' => [
+            'handler' => '[isLoggedIn]',
+        ],
         '/comentor' => [
             'handler' => '[isLoggedIn]',
         ],

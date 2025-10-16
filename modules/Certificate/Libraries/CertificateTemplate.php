@@ -55,7 +55,8 @@ abstract class CertificateTemplate
         string $weight = 'normal',
         string $align = 'left',
         string $color = '#000000',
-        bool $autoshrink = false
+        bool $autoshrink = false,
+        string $prefix = ''
     ): array {
         return [
             'xPct'        => $xPct,
@@ -67,17 +68,19 @@ abstract class CertificateTemplate
             'align'       => $align,
             'color'       => $color,
             'autoshrink'  => $autoshrink,
+            'prefix'      => $prefix,
         ];
     }
 
     /**
      * Helper method to create page configuration
      */
-    protected function createPage(string $backgroundUrl, array $positions): array
+    protected function createPage(string $backgroundUrl, array $positions, bool $showQr = true): array
     {
         return [
             'bg'        => $backgroundUrl,
             'positions' => $positions,
+            'show_qr'   => $showQr,
         ];
     }
 
