@@ -48,7 +48,7 @@ class ComentorCertificateTemplate extends CertificateTemplate
                             xPct: 28,
                             yPct: 38,
                             maxWidthPct: 70,
-                            fontMm: 12,
+                            fontMm: 10,
                             minFontMm: 5.5,
                             weight: 'bold',
                             align: 'left',
