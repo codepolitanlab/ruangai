@@ -236,12 +236,29 @@ class ScholarshipController extends ResourceController
         }
 
         // Filter member graduated by status completed
-        $graduated = count(array_filter($members, static fn($member) => $member['status'] === 'lulus'));
+        $totalGraduated = count(array_filter($members, static fn($member) => $member['status'] === 'lulus'));
+
+        // Get graduated per program
+        $graduatedPerProgram = array_reduce($members, function ($carry, $member) {
+            $program = $member['program'];
+            $status  = $member['status'];
+
+            if (! isset($carry[$program])) {
+                $carry[$program] = 0;
+            }
+
+            if ($status === 'lulus') {
+                $carry[$program]++;
+            }
+
+            return $carry;
+        }, []);
 
         $commision = $leader['commission_per_graduate'];
         $disbursed = $leader['withdrawal'];
 
         $data['referral_code']      = $leader['referral_code'];
+        $data['is_sponsorship']     = $leader['is_sponsorship'] === 1 ? true : false;
         $data['program']            = $leader['program'];
         $data['program_title']      = $leader['program_title'];
         $data['program_date_start'] = $leader['date_start'];
@@ -249,9 +266,10 @@ class ScholarshipController extends ResourceController
         $data['bank']               = $bank;
         $data['members']            = $members;
         $data['total_member']       = $memberQuery->getNumRows();
-        $data['total_graduated']    = $graduated;
-        $data['total_commission']   = ($commision * $graduated) - $disbursed;
+        $data['total_graduated']    = $totalGraduated;
+        $data['total_commission']   = ($commision * $totalGraduated) - $disbursed;
         $data['total_disbursed']    = $disbursed;
+        $data['graduated']          = $graduatedPerProgram;
 
         return $this->respond($data);
     }
