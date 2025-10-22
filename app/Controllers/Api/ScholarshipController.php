@@ -317,6 +317,7 @@ class ScholarshipController extends ResourceController
                 ->orWhere('course_students.graduate', null)
             ->groupEnd()
             ->where('course_students.expire_at', null)
+            ->where('course_students.course_id', 1)
             ->where('scholarship_participants.program', $activeProgram)
             ->countAllResults();
 
