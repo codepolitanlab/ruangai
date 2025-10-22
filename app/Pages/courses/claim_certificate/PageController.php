@@ -138,7 +138,10 @@ class PageController extends BaseController
         $db->table('course_students')
             ->where('user_id', $jwt->user_id)
             ->where('course_id', $course_id)
-            ->update(['certificate_id'  => $certificateId]);
+            ->update([
+                'certificate_id'  => $certificateId, 
+                'graduate' => 1
+            ]);
 
         return $this->respond([
             'status'  => 'success',
