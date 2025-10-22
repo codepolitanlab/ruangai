@@ -392,7 +392,12 @@ class MeetingAttendance extends AdminController
         // Update attendance table
         // while iterating, check if user minimum duration is pass and user has submit feedback
         $participantEmails = array_keys($participants);
-        $users             = model('Heroicadmin\Modules\User\Models\UserModel')->select('id, email')->whereIn('email', $participantEmails)->findAll();
+        $UserModel = model('Heroicadmin\Modules\User\Models\UserModel');
+        $users = $UserModel
+            ->select('users.id, email, progress, graduate')
+            ->join('course_students', 'course_students.user_id = users.id AND course_students.course_id = ' . $course_id)
+            ->whereIn('email', $participantEmails)
+            ->findAll();
         if (! $users) {
             return $this->respond([
                 'status'  => 'success',
@@ -422,27 +427,21 @@ class MeetingAttendance extends AdminController
             $exist = $liveAttendancModel->where('user_id', $user['id'])
                 ->where('live_meeting_id', $live_meeting_id)
                 ->first();
+
             if ($exist) {
                 $liveAttendancModel->where('id', $exist['id'])->set($validParticipant)->update();
                 $updated++;
-
-                continue;
+            } else {
+                $liveAttendancModel->insert($validParticipant);
+                $inserted++;
             }
 
-            $liveAttendancModel->insert($validParticipant);
-            $inserted++;
-
             // Check if user eligible to graduate and set graduate to 1
-            $student = $courseStudentModel->getStudent($user['id'], $course_id);
+            $validAttendance    = $validParticipant['status'] == 1;
+            $progressCompleted  = (int) $user['progress'] == 100;
+            $notGraduated       = (int) $user['graduate'] == 0;
 
-            $hasValidDuration   = $validParticipant['duration'] >= 1800;
-            $hasFeedback        = !is_null($validParticipant['meeting_feedback_id']);
-            $notGraduated       = $student['graduate'] == 0;
-            $progressCompleted  = (int) $student['progress'] == 100;
-
-            $isEligibleToGraduate = $hasValidDuration && $hasFeedback && $notGraduated && $progressCompleted;
-
-            if ($isEligibleToGraduate) {
+            if ($validAttendance && $progressCompleted && $notGraduated) {
                 $courseStudentModel->markAsGraduate($user['id'], $course_id);
             }
         }
