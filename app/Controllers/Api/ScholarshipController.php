@@ -77,12 +77,22 @@ class ScholarshipController extends ResourceController
         // Check valid referral
         $participantModel = new ScholarshipParticipantModel();
 
+        // Process mentee of co-mentor registration
+        $data['prev_chapter'] = $data['program'];
         if (isset($data['reference']) && $data['program'] === 'RuangAI2025CM') {
             $participantCM      = $participantModel->where('referral_code_comentor', $data['reference'])->where('deleted_at', null)->first();
 
             if (! $participantCM) {
                 return $this->fail(['status' => 'failed', 'message' => 'Referral code tidak valid. Periksa kembali link co-mentor']);
             }
+
+            // Add this user to active program
+            $activeProgram = $this->db->table('events')
+                ->select('code')
+                ->where('status', 'ongoing')
+                ->get()
+                ->getRowArray()['code'] ?? null;
+            $data['program'] = $activeProgram;
         }
 
         // Get JWT from headers
@@ -141,7 +151,6 @@ class ScholarshipController extends ResourceController
         }
 
         // Insert data to scholarship_participants
-        $data['prev_chapter']                      = $data['program'];
         $data['semester']                          = ! empty($data['semester']) ? $data['semester'] : 0;
         $data['grade']                             = ! empty($data['grade']) ? $data['grade'] : 0;
         $data['accept_terms']                      = ! empty($data['accept_terms']) ? $data['accept_terms'] : 0;
