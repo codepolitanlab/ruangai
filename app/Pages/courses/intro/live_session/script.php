@@ -27,10 +27,12 @@
                         alert(`Maaf, kamu tidak terdaftar sebagai peserta Chapter ini. Silakan ikuti live session dari Co-Mentor ${value.comentor}.`);
                         const base_url = window.location.origin;
                         window.location.replace(`${base_url}/courses/intro/1/dasar-dan-penggunaan-generative-ai/`);
-                    }
-
-                    if (value?.program != Alpine.store('core').activeProgram && !value?.is_comentor && !value?.is_mentor) {
+                    } else if (value?.program != Alpine.store('core').activeProgram && !value?.is_comentor && !value?.is_mentor) {
                         alert('Maaf, kamu belum terdaftar sebagai peserta program RuangAI Chapter ini. Silakan daftar ulang ya!');
+                        const base_url = window.location.origin;
+                        window.location.replace(`${base_url}`);
+                    } else if(value?.is_participating_other_ai_program && value?.student.graduate == 1) {
+                        alert('Anda sudah dinyatakan lulus program ini. Anda tetap dapat mengakses materi pembelajaran lainnya di RuangAI.');
                         const base_url = window.location.origin;
                         window.location.replace(`${base_url}`);
                     }

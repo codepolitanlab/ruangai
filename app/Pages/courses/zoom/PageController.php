@@ -71,7 +71,7 @@ class PageController extends BaseController
 
         // Ambil data participant berdasarkan user_id
         $participant = $db->table('scholarship_participants')
-            ->select('reference, program')
+            ->select('reference, program, is_participating_other_ai_program')
             ->where('user_id', $jwt->user_id)
             ->get()
             ->getRow();
@@ -79,6 +79,7 @@ class PageController extends BaseController
         $this->data['is_mentor'] = $jwt->user['role_id'] == 5 ? true : false;
         $this->data['is_comentor'] = $jwt->user['role_id'] == 4 ? true : false;
         $this->data['is_mentee_comentor'] = false;
+        $this->data['is_participating_other_ai_program'] = $participant->is_participating_other_ai_program == 1 ? true : false;
         $this->data['comentor'] = null;
         $this->data['program'] = $participant ? $participant->program : null;
         
