@@ -84,8 +84,8 @@
 					<div class="card-body d-flex gap-3">
 						<i class="bi bi-stopwatch-fill text-white display-3 shaky-icon"></i>
 						<div>
-							<h4 class="text-white">Program Belajar Chapter 2 Sudah Dibuka!</h4>
-							<p class="mb-3 text-white">Kamu dapat melanjutkan belajar dengan bergabung di Chapter 2 dengan mengklik tombol di bawah ini untuk mendaftar ulang.</p>
+							<h4 class="text-white">Program Belajar Chapter 3 Sudah Dibuka!</h4>
+							<p class="mb-3 text-white">Kamu dapat melanjutkan belajar dengan bergabung di Chapter 3 dengan mengklik tombol di bawah ini untuk mendaftar ulang.</p>
 							<button class="btn btn-light" @click="heregister"><i class="bi bi-file-earmark-arrow-up"></i> Daftar Ulang ke Chapter 2</button>
 						</div>
 					</div>
