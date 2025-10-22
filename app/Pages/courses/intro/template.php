@@ -86,7 +86,7 @@
 						<div>
 							<h4 class="text-white">Program Belajar Chapter 3 Sudah Dibuka!</h4>
 							<p class="mb-3 text-white">Kamu dapat melanjutkan belajar dengan bergabung di Chapter 3 dengan mengklik tombol di bawah ini untuk mendaftar ulang.</p>
-							<button class="btn btn-light" @click="heregister"><i class="bi bi-file-earmark-arrow-up"></i> Daftar Ulang ke Chapter 2</button>
+							<button class="btn btn-light" @click="heregister"><i class="bi bi-file-earmark-arrow-up"></i> Daftar Ulang ke Chapter 3</button>
 						</div>
 					</div>
 				</div>
