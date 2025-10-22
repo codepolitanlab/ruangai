@@ -302,7 +302,6 @@ class ScholarshipController extends ResourceController
             ->countAllResults();
 
         $db = \Config\Database::connect();
-
         $activeProgram = $db->table('events')
                 ->select('code')
                 ->where('status', 'ongoing')
@@ -346,22 +345,25 @@ class ScholarshipController extends ResourceController
         }
 
         if (!$programCode) {
-            $graduatedB1       = $courseStudentModel->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id')
-                ->where('scholarship_participants.program', 'RuangAI2025B1')
-                ->where('course_students.graduate', 1)
-                ->where('course_students.deleted_at', null)
+            $graduatedB1 = $db->table('view_participants')
+                ->where('program', 'RuangAI2025B1')
+                ->where('graduate', 1)
+                ->where('prev_chapter !=', 'RuangAI2025CM')
+                ->where('deleted_at', null)
                 ->countAllResults();
 
-            $graduatedB2       = $courseStudentModel->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id')
-                ->where('scholarship_participants.program', 'RuangAI2025B2')
-                ->where('course_students.graduate', 1)
-                ->where('course_students.deleted_at', null)
+            $graduatedB2 = $db->table('view_participants')
+                ->where('program', 'RuangAI2025B2')
+                ->where('graduate', 1)
+                ->where('prev_chapter !=', 'RuangAI2025CM')
+                ->where('deleted_at', null)
                 ->countAllResults();
 
-            $graduatedB3       = $courseStudentModel->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id')
-                ->where('scholarship_participants.program', 'RuangAI2025B3')
-                ->where('course_students.graduate', 1)
-                ->where('course_students.deleted_at', null)
+            $graduatedB3 = $db->table('view_participants')
+                ->where('program', 'RuangAI2025B3')
+                ->where('graduate', 1)
+                ->where('prev_chapter !=', 'RuangAI2025CM')
+                ->where('deleted_at', null)
                 ->countAllResults();
 
             $data['user_registered'] = $user_registered ?? 0;
