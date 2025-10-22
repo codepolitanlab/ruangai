@@ -75,6 +75,13 @@ class CourseStudentModel extends Model
 
     public function markAsGraduate($userId, $courseId)
     {
+        // Generate user token for graduate if not exists
+        $userTokenModel = model('UserToken');
+        $isExist = $userTokenModel->isExists($userId, 'graduate');
+        if (! $isExist) {
+            $userTokenModel->generate($userId, 'graduate');
+        }
+
         return $this->where('user_id', $userId)
             ->where('course_id', $courseId)
             ->set(['graduate' => 1])

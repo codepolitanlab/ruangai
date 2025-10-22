@@ -300,14 +300,6 @@ class MeetingAttendance extends AdminController
                     $student = $courseStudentModel->where('user_id', $user_id)->where('course_id', $course_id)->first();
                     if ($student['progress'] == 100) {
                         $courseStudentModel->markAsGraduate($user_id, $course_id);
-
-                        // Generate token reward if not exist
-                        $userTokenModel = model('UserToken');
-                        $isExist = $userTokenModel->isExists($user_id, 'graduate');
-
-                        if (!$isExist) {
-                            $userTokenModel->generate($user_id, 'graduate');
-                        }
                     }
                 }
 
