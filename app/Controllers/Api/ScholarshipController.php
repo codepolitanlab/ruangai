@@ -349,21 +349,18 @@ class ScholarshipController extends ResourceController
                 ->where('program', 'RuangAI2025B1')
                 ->where('graduate', 1)
                 ->where('prev_chapter !=', 'RuangAI2025CM')
-                ->where('deleted_at', null)
                 ->countAllResults();
 
             $graduatedB2 = $db->table('view_participants')
                 ->where('program', 'RuangAI2025B2')
                 ->where('graduate', 1)
                 ->where('prev_chapter !=', 'RuangAI2025CM')
-                ->where('deleted_at', null)
                 ->countAllResults();
 
             $graduatedB3 = $db->table('view_participants')
                 ->where('program', 'RuangAI2025B3')
                 ->where('graduate', 1)
                 ->where('prev_chapter !=', 'RuangAI2025CM')
-                ->where('deleted_at', null)
                 ->countAllResults();
 
             $data['user_registered'] = $user_registered ?? 0;
