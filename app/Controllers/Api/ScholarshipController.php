@@ -301,6 +301,8 @@ class ScholarshipController extends ResourceController
             ->where('deleted_at', null)
             ->countAllResults();
 
+        $db = \Config\Database::connect();
+
         $activeProgram = $db->table('events')
                 ->select('code')
                 ->where('status', 'ongoing')
