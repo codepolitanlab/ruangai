@@ -2,7 +2,7 @@
 
 namespace App\Pages\_components\common;
 
-use App\Controllers\BaseController;
+use App\Pages\BaseController;
 
 class PageController extends BaseController
 {
@@ -30,6 +30,17 @@ class PageController extends BaseController
             ];
         }
 
-        return $this->respond(['settings' => $settingQuery, 'user' => $user ?? []]);
+        // Get active program from table events
+        $activeProgram = $db->table('events')
+            ->select('code')
+            ->where('status', 'ongoing')
+            ->get()
+            ->getRowArray()['code'] ?? null;
+
+        return $this->respond([
+            'settings' => $settingQuery, 
+            'user' => $user ?? [], 
+            'activeProgram' => $activeProgram ?? []
+        ]);
     }
 }

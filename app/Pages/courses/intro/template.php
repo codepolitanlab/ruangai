@@ -261,13 +261,13 @@
 								</div>
 							</template> -->
 
-							<template x-if="data?.group_comentor">
+							<!-- Card Live Session Khusus Co-Mentor -->
+							<template x-if="data?.group_comentor && ! data.course_completed">
 								<div class="col-md-6 mb-3">
 									<div id="card-progress-live"
 										class="card border-0 shadow-none rounded-4  p-3 d-flex flex-column justify-content-between position-relative"
 										style="min-height: 210px"
-										:class="{'live-completed bg-success bg-opacity-50': data.live_attendance > 0, 
-									'bg-light-secondary': data.live_attendance == 0}">
+										:class="{'live-completed bg-success bg-opacity-50': data.live_attendance > 0, 'bg-light-secondary': data.live_attendance == 0}">
 										<div class="me-3 bg-white rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
 											<i class="bi h3 m-0" :class="data.live_attendance > 0 ? 'bi-check-circle text-success' : 'bi-camera-video text-secondary'"></i>
 										</div>
@@ -277,15 +277,17 @@
 											<h1 class="mb-0 display-6 fw-bold" x-text="data?.live_attendance"></h1>
 											<p class="mb-1">Live session diikuti</p>
 										</div>
-										<div x-show="Math.round(data.lesson_completed/data.total_lessons*100) < 100">
-											<div class="mb-1 position-relative">Selesaikan misimu dengan mentoring langsung</div>
+										<div x-show="data.live_attendance < 1">
+											<div class="mb-1 position-relative p-2 bg-white mb-2 rounded-3" style="line-height:1.2rem">Selesaikan misimu dengan mentoring bersama Co-Mentor</div>
 										</div>
-										<a :href="`${data.group_comentor?.code ? '/r/' + data.group_comentor?.code : '#'}`" class="btn btn-success hover rounded-pill p-1 w-100" :class="{'disabled': !data.group_comentor?.code}" :target="data.group_comentor?.code ? '_blank' : ''">Gabung grup whatsapp dengan <br> co-mentor</a>
+										<a :href="`${data.group_comentor?.code ? '/r/' + data.group_comentor?.code : '#'}`" class="btn btn-primary hover rounded-pill py-4 fs-6" :class="{'disabled': !data.group_comentor?.code}" :target="data.group_comentor?.code ? '_blank' : ''">Gabung Grup WhatsApp <br> Co-Mentor</a>
 										<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
 									</div>
 								</div>
 							</template>
-							<template x-if="data.course?.has_live_sessions === '1' && !data?.group_comentor">
+							
+							<!-- Card Live Session Program Reguler -->
+							<template x-if="data.course?.has_live_sessions === '1' && (	!data?.group_comentor || data.course_completed)">
 								<div class="col-md-6 mb-3">
 									<div id="card-progress-live"
 										class="card border-0 shadow-none rounded-4  p-3 d-flex flex-column justify-content-between position-relative"

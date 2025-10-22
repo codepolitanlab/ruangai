@@ -46,6 +46,7 @@
             sessionToken: null,
             settings: {},
             showReloadAlert: false,
+            activeProgram: null,
             user: {},
             async getSiteSettings() {
                 if(Object.keys(Alpine.store('core').settings).length < 1){
@@ -58,6 +59,7 @@
                         .then(response => {
                             Alpine.store('core').settings = response.data.settings
                             Alpine.store('core').user = response.data.user
+                            Alpine.store('core').activeProgram = response.data.activeProgram
                         })
                         .catch(error => {
                             console.log(error);
@@ -67,10 +69,14 @@
                         console.error('Error fetching site settings:', error);
                     }
                 }
-            }
+            },
         });
 
         Alpine.data('router', () => ({
+            init() {
+                Alpine.store('core').getSiteSettings();
+            },
+
             pageWithReloadAlert: [
                 "/",
                 "/courses/intro/1/dasar-dan-penggunaan-generative-ai",

@@ -292,6 +292,12 @@ class ScholarshipController extends ResourceController
             ->where('deleted_at', null)
             ->countAllResults();
 
+        $activeProgram = $db->table('events')
+                ->select('code')
+                ->where('status', 'ongoing')
+                ->get()
+                ->getRowArray()['code'] ?? null;
+
         $count_user_progress = $courseStudentModel
             ->select('scholarship_participants.program, scholarship_participants.reference')
             ->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id')
@@ -301,18 +307,7 @@ class ScholarshipController extends ResourceController
                 ->orWhere('course_students.graduate', null)
             ->groupEnd()
             ->where('course_students.expire_at', null)
-            ->groupStart() // Mulai blok logika utama B3 dan B2
-                // Ambil semua dari RuangAI2025B3
-                ->where('scholarship_participants.program', 'RuangAI2025B3')
-                // ATAU ambil dari RuangAI2025B2 jika reference mengandung CO-/co-
-                ->orGroupStart()
-                    ->where('scholarship_participants.program', 'RuangAI2025B2')
-                    ->groupStart()
-                        ->like('scholarship_participants.reference', 'CO-', 'both')
-                        ->orLike('scholarship_participants.reference', 'co-', 'both')
-                    ->groupEnd()
-                ->groupEnd()
-            ->groupEnd() // Tutup blok B3 dan B2
+            ->where('scholarship_participants.program', $activeProgram)
             ->countAllResults();
 
         if ($programCode === 'RuangAI2025B1') {

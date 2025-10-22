@@ -109,7 +109,7 @@ class PageController extends BaseController
 
         // Get course_students
         $this->data['student'] = $db->table('course_students')
-            ->select('progress, cert_claim_date, cert_code, expire_at')
+            ->select('progress, graduate, cert_claim_date, cert_code, expire_at')
             ->where('course_id', $course_id)
             ->where('user_id', $jwt->user_id)
             ->get()

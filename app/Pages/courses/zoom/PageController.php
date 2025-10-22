@@ -54,6 +54,14 @@ class PageController extends BaseController
         $this->data['lesson_completed'] = $completedLessons['completed'] ?? 0;
         $this->data['completed']        = round($completedLessons['completed'] / $completedLessons['total_lessons'] * 100);
         
+        // Get course_students
+        $this->data['student'] = $db->table('course_students')
+            ->select('progress, graduate, cert_claim_date, cert_code, expire_at')
+            ->where('course_id', $course['id'])
+            ->where('user_id', $jwt->user_id)
+            ->get()
+            ->getRowArray();
+
         // Check if user already registered and has a zoom join link
         $AttendanceModel = model('Course\Models\LiveAttendanceModel');
         $attendance      = $AttendanceModel->where('live_meeting_id', $meeting['id'])->where('user_id', $jwt->user_id)->first();

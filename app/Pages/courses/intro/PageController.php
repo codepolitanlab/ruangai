@@ -163,11 +163,17 @@ class PageController extends BaseController
             ->getRowArray();
 
         if ($courseStudent['graduate'] !== '1') {
-            // Update field program in scholarship_participants to 'RuangAI2025B3'
+            // Update field program in scholarship_participants to Active program
+            $activeProgram = $db->table('events')
+                ->select('code')
+                ->where('status', 'ongoing')
+                ->get()
+                ->getRowArray()['code'] ?? null;
+
             $db->table('scholarship_participants')
                 ->where('user_id', $jwt->user_id)
                 ->update([
-                    'program' => 'RuangAI2025B3'
+                    'program' => $activeProgram
                 ]);
         }
 
