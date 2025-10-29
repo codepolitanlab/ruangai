@@ -177,9 +177,16 @@
 									<div style="width: 20px;height: 13px;background-color: #e6f1f6;"></div>
 									<span>Peserta Baru</span>
 								</div>
-								<button @click="downloadCSV" class="btn btn-sm btn-outline-primary ms-auto">
-									<i class="bi bi-download"></i> Unduh Data
-								</button>
+								<div class="ms-auto d-flex align-items-center gap-2">
+									<label for="sort" class="mb-0">Urutkan:</label>
+									<select id="sort" class="form-select form-select-sm w-auto" x-model="sortOrder" @change="sortMembers">
+										<option value="desc">Terbaru</option>
+										<option value="asc">Terlama</option>
+									</select>
+									<button @click="downloadCSV" class="btn btn-sm btn-outline-primary">
+										<i class="bi bi-download"></i> Unduh Data
+									</button>
+								</div>
 							</div>
 							<table class="w-100 mb-0 align-middle custom-table">
 								<thead>
@@ -195,9 +202,9 @@
 											<td>
 												<div class="fw-semibold" x-text="member.fullname"></div>
 												<a :href="`https://wa.me/${member.whatsapp}`"
-												target="_blank"
-												class="small"
-												x-text="member.whatsapp"></a>
+													target="_blank"
+													class="small"
+													x-text="member.whatsapp"></a>
 												<div class="d-block d-md-none" x-text="member.email"></div>
 											</td>
 											<td class="d-none d-md-table-cell">

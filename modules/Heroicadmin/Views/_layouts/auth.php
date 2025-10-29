@@ -38,7 +38,7 @@
                 <div id="auth-left">
 
                     <div class="mb-5">
-                        <a href="/"><img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Group%206911%20(1).png" style="width: 200px; height: auto;"></a>
+                        <a href="/"><img src="https://image.web.id/images/clipboard-image-1753328088.png" style="width: 200px; height: auto;"></a>
                     </div>
                     <p class="auth-subtitle mb-5">Admin Login</p>
 

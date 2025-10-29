@@ -20,6 +20,7 @@
       errorMessage: null,
       search: "", // keyword pencarian
       filteredMembers: [], // hasil filter
+      sortOrder: "asc",
 
       init() {
         base.init.call(this);
@@ -27,12 +28,7 @@
         // awalnya tampilkan semua data
         this.$watch("data", (val) => {
           if (val?.members) {
-            // sort by "from"
-            this.filteredMembers = [...val.members].sort((a, b) => {
-              if (a.from === 'mapping' && b.from !== 'mapping') return -1;
-              if (a.from !== 'mapping' && b.from === 'mapping') return 1;
-              return 0;
-            });
+            this.filteredMembers = [...val.members].sort((a, b) => new Date(a.joined_at) - new Date(b.joined_at));
           }
         });
 
@@ -55,10 +51,22 @@
           ) ?? [];
         }
 
+        this.filteredMembers = members.sort((a, b) => {
+          if (this.sortOrder === "asc") {
+            return new Date(a.joined_at) - new Date(b.joined_at);
+          } else {
+            return new Date(b.joined_at) - new Date(a.joined_at);
+          }
+        });
+      },
+
+      sortMembers() {
         this.filteredMembers.sort((a, b) => {
-          if (a.from === 'mapping' && b.from !== 'mapping') return -1;
-          if (a.from !== 'mapping' && b.from === 'mapping') return 1;
-          return 0;
+          if (this.sortOrder === "asc") {
+            return new Date(a.joined_at) - new Date(b.joined_at);
+          } else {
+            return new Date(b.joined_at) - new Date(a.joined_at);
+          }
         });
       },
 
@@ -68,6 +76,8 @@
       },
 
       downloadCSV() {
+        if (!confirm("Apakah Anda yakin ingin mengunduh data peserta?")) return;
+
         if (!this.filteredMembers.length) {
           $heroicHelper.toastr("Tidak ada data untuk diunduh", "warning");
           return;
