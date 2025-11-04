@@ -27,8 +27,6 @@ class LiveMeeting extends AdminController
         $this->data['meetings'] = $this->model
             ->where('live_batch_id', $batch_id)
             ->orderBy('meeting_date', 'asc')
-            ->orderBy('meeting_time', 'asc')
-            ->groupBy('id')
             ->paginate(10);
         $this->data['pager'] = $this->model->pager;
         $this->data['batch'] = $this->batchModel->find($batch_id);
