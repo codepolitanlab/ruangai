@@ -20,12 +20,12 @@
                             <div class="text-center">
                                 <h2 class="mb-4">Klaim Sertifikat</h2>
                             </div>
-                            <p>Tulis testimoni kamu selama belajar di JagoanSiber </p>
+                            <p>Tulis testimoni kamu selama belajar di RuangAI </p>
                             <form @submit.prevent="submitFeedback">
                                 <div class="form-group mb-3">
                                     <textarea minlength="15" cols="30" rows="5" class="form-control" placeholder="Tulis testimoni di sini" x-model="data.comment" required></textarea>
                                 </div>
-                                <div class="mt-4">Berikan <em>rating</em> kepuasan kamu belajar di JagoanSiber</div>
+                                <div class="mt-4">Berikan <em>rating</em> kepuasan kamu belajar di RuangAI</div>
                                 <div x-data="{ localRating: data.rating || 0 }" class="d-flex mt-2">
                                     <template x-for="i in 4" :key="i">
                                         <svg @click="localRating = i; data.rating = i"

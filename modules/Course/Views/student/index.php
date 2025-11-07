@@ -132,7 +132,7 @@
 <script>
     /**
      * Fungsi untuk membuat nama file dinamis.
-     * Format: JagoanSiber - Student - YYYY-MM-DD HH_MM_SS.ext
+     * Format: RuangAI - Student - YYYY-MM-DD HH_MM_SS.ext
      * @param {string} extension - Tipe file ('xlsx' atau 'csv')
      * @returns {string} - Nama file lengkap
      */
@@ -151,7 +151,7 @@
         const seconds = String(today.getSeconds()).padStart(2, '0');
         const timeString = `${hours}:${minutes}:${seconds}`;
 
-        return `JagoanSiber - Member - ${dateString} ${timeString}.${extension}`;
+        return `RuangAI - Member - ${dateString} ${timeString}.${extension}`;
     }
 
     /**

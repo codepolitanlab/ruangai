@@ -7,9 +7,9 @@ use Certificate\Libraries\CertificateTemplateFactory;
 
 class PageController extends BaseController
 {
-    private $certPrefix = 'CPJS'; // Certificate prefix, e.g., CPJS for "Certificate"
+    private $certPrefix = 'CPRAI'; // Certificate prefix, e.g., CPJS for "Certificate"
     public $data = [
-        'page_title' => "Sertifikat JagoanSiber"
+        'page_title' => "Sertifikat RuangAI"
     ];
 
     public function getData($code = null)
