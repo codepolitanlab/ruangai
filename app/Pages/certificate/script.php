@@ -55,6 +55,10 @@
                     if (newData?.status === 'failed') {
                         this.$router.navigate('/notfound');
                     }
+
+                    if (!newData?.is_feedback) {
+                        this.$router.navigate(`/certificate/claim/${newData?.claimer?.entity_id}/${newData?.claimer?.code}`);
+                    }
                 });
                 
                 // Preload fonts saat init
