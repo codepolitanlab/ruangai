@@ -43,10 +43,10 @@
         }
 
         if (this.data.course_completed) {
-          if (!this.data.student.certificate_id) {
+          if (!this.data.certificate_id) {
             this.$router.navigate(`/courses/claim_certificate/${this.data.course.id}`)
           } else {
-            window.location.href = `/certificate/show/${this.data.student.certificate_id}`;
+            window.location.href = `/certificate/show/${this.data.certificate_id}`;
           }
         } else {
           $heroicHelper.toastr("Kamu belum menyelesaikan kelas ini. Silahkan selesaikan kelas terlebih dahulu.", "warning", "bottom");

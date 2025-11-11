@@ -57,7 +57,7 @@
                     }
 
                     if (!newData?.is_feedback) {
-                        this.$router.navigate(`/certificate/claim/${newData?.claimer?.entity_id}/${newData?.claimer?.code}`);
+                        this.$router.navigate(`/courses/claim_certificate/${newData?.claimer?.entity_id}`);
                     }
                 });
                 

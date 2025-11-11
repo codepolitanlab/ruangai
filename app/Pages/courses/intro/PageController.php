@@ -65,12 +65,20 @@ class PageController extends BaseController
 
             // Get course_students
             $this->data['student'] = $db->table('course_students')
-                ->select('progress, certificate_id, expire_at, scholarship_participants.reference')
+                ->select('progress, expire_at, scholarship_participants.reference')
                 ->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id', 'left')
                 ->where('course_students.course_id', $id)
                 ->where('course_students.user_id', $jwt->user_id)
                 ->get()
                 ->getRowArray();
+
+            $certificate = $db->table('certificates')
+                ->where('user_id', $jwt->user_id)
+                ->where('entity_id', $id)
+                ->get()
+                ->getRowArray();
+
+            $this->data['certificate_id'] = $certificate ? $certificate['id'] : false;
 
             if ($this->data['student']) {
                 $this->data['course_completed'] = $this->data['total_lessons'] === $this->data['lesson_completed'] && $this->data['live_attendance'] > 0 ? true : false;
