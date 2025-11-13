@@ -62,6 +62,10 @@ $routes->group(
         $routes->get('live/meeting/(:num)/attendant/startSync', 'MeetingAttendance::startSync/$1'); // Add
         $routes->get('live/meeting/(:num)/attendant/exports', 'MeetingAttendance::exports/$1'); // Add
 
+        // Import attendance via CSV using meeting_code as slug
+        $routes->get('live/meeting/(:segment)/attendant/import', 'MeetingAttendance::import/$1'); // Show upload form (slug)
+        $routes->post('live/meeting/(:segment)/attendant/import', 'MeetingAttendance::importUpload/$1'); // Handle upload (slug)
+
         // Live attendance
         $routes->get('product', 'Product::index'); // List
         $routes->get('product/add', 'Product::form'); // Add

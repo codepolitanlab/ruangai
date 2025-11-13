@@ -492,4 +492,211 @@ class MeetingAttendance extends AdminController
         fclose($file);
         exit;
     }
+
+    /**
+     * Show import CSV form using meeting_code (slug)
+     */
+    public function import($slug)
+    {
+        $LiveMeetingModel = model('Course\Models\LiveMeetingModel');
+
+        // Get meeting by meeting_code (slug), along with batch & course_id
+        $meeting = $LiveMeetingModel
+            ->select('live_batch.name as batch, live_batch.course_id, live_meetings.*')
+            ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
+            ->where('live_meetings.meeting_code', $slug)
+            ->where('live_meetings.deleted_at', null)
+            ->first();
+
+        if (! $meeting) {
+            session()->setFlashdata('error_message', 'Live meeting tidak ditemukan untuk slug: ' . esc($slug));
+            return redirect()->back();
+        }
+
+        $data = [
+            'page_title'   => 'Import Attendance CSV',
+            'meeting'      => $meeting,
+            'live_meeting' => $meeting,
+            'slug'         => $slug,
+        ];
+
+        $this->data = array_merge($this->data, $data);
+
+        return view('Course\\Views\\live\\meeting\\attendance\\import', $this->data);
+    }
+
+    /**
+     * Handle CSV upload and import rows. Columns: email,rating,duration,comment
+     */
+    public function importUpload($slug)
+    {
+        $LiveMeetingModel         = model('Course\Models\LiveMeetingModel');
+        $LiveAttendanceModel      = model('Course\Models\LiveAttendanceModel');
+        $LiveMeetingFeedbackModel = model('Course\Models\LiveMeetingFeedbackModel');
+        $CourseStudentModel       = model('Course\Models\CourseStudentModel');
+        $UserModel                = model('App\Models\UserModel');
+
+        // Resolve meeting by slug
+        $meeting = $LiveMeetingModel
+            ->select('live_batch.name as batch, live_batch.course_id, live_meetings.*')
+            ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
+            ->where('live_meetings.meeting_code', $slug)
+            ->where('live_meetings.deleted_at', null)
+            ->first();
+
+        if (! $meeting) {
+            session()->setFlashdata('error_message', 'Live meeting tidak ditemukan untuk slug: ' . esc($slug));
+            return redirect()->back();
+        }
+
+        $file = $this->request->getFile('csv_file');
+        if (! $file || ! $file->isValid()) {
+            session()->setFlashdata('error_message', 'File CSV tidak valid atau tidak terunggah.');
+            return redirect()->to(site_url(urlScope() . '/course/live/meeting/' . $slug . '/attendant/import'));
+        }
+
+        // Basic CSV validation
+        $ext = strtolower($file->getClientExtension());
+        if ($ext !== 'csv') {
+            session()->setFlashdata('error_message', 'Format file harus CSV.');
+            return redirect()->to(site_url(urlScope() . '/course/live/meeting/' . $slug . '/attendant/import'));
+        }
+
+        $tmpPath = $file->getTempName();
+        if (! is_file($tmpPath)) {
+            session()->setFlashdata('error_message', 'Gagal mengakses file CSV.');
+            return redirect()->to(site_url(urlScope() . '/course/live/meeting/' . $slug . '/attendant/import'));
+        }
+
+        $inserted = 0;
+        $updated  = 0;
+        $skipped  = 0;
+        $errors   = [];
+
+        // Open and parse CSV safely
+        if (($handle = fopen($tmpPath, 'r')) !== false) {
+            $header = fgetcsv($handle);
+            if (! $header || count($header) < 4) {
+                fclose($handle);
+                session()->setFlashdata('error_message', 'CSV kosong atau header tidak lengkap. Butuh kolom: email,rating,duration,comment');
+                return redirect()->to(site_url(urlScope() . '/course/live/meeting/' . $slug . '/attendant/import'));
+            }
+
+            // Normalise header keys
+            $map = [];
+            foreach ($header as $idx => $col) {
+                $key       = strtolower(trim($col));
+                $map[$key] = $idx;
+            }
+
+            $required = ['email', 'rating', 'duration', 'comment'];
+            foreach ($required as $req) {
+                if (! isset($map[$req])) {
+                    fclose($handle);
+                    session()->setFlashdata('error_message', 'Header CSV tidak sesuai. Wajib ada: email,rating,duration,comment');
+                    return redirect()->to(site_url(urlScope() . '/course/live/meeting/' . $slug . '/attendant/import'));
+                }
+            }
+
+            // Process each row
+            while (($row = fgetcsv($handle)) !== false) {
+                // Skip empty lines
+                $emailRaw = $row[$map['email']] ?? '';
+                $email    = strtolower(trim((string) $emailRaw));
+                if ($email === '') { $skipped++; continue; }
+
+                $ratingRaw   = $row[$map['rating']] ?? '';
+                $durationRaw = $row[$map['duration']] ?? '';
+                $commentRaw  = $row[$map['comment']] ?? '';
+
+                $rating   = is_numeric($ratingRaw) ? (int) $ratingRaw : null;
+                $duration = is_numeric($durationRaw) ? (int) $durationRaw : 0;
+                $comment  = trim((string) $commentRaw);
+
+                // Find user by email
+                $user = $UserModel->where('LOWER(email)', $email)->where('deleted_at', null)->first();
+                if (! $user) {
+                    $skipped++;
+                    $errors[] = 'User tidak ditemukan: ' . $email;
+                    continue;
+                }
+
+                $user_id         = (int) $user['id'];
+                $live_meeting_id = (int) $meeting['id'];
+                $course_id       = (int) $meeting['course_id'];
+
+                // Upsert feedback
+                $existingFeedback = $LiveMeetingFeedbackModel
+                    ->where('user_id', $user_id)
+                    ->where('live_meeting_id', $live_meeting_id)
+                    ->where('deleted_at', null)
+                    ->first();
+
+                $contentObj = (object) [
+                    'rate'    => $rating,
+                    'content' => $comment,
+                ];
+
+                if ($existingFeedback) {
+                    $LiveMeetingFeedbackModel->update($existingFeedback['id'], [
+                        'content'    => json_encode($contentObj),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+                    $meeting_feedback_id = (int) $existingFeedback['id'];
+                } else {
+                    $meeting_feedback_id = (int) $LiveMeetingFeedbackModel->insert([
+                        'user_id'         => $user_id,
+                        'live_meeting_id' => $live_meeting_id,
+                        'content'         => json_encode($contentObj),
+                        'created_at'      => date('Y-m-d H:i:s'),
+                    ]);
+                }
+
+                // Upsert attendance
+                $existingAttendance = $LiveAttendanceModel
+                    ->where('user_id', $user_id)
+                    ->where('live_meeting_id', $live_meeting_id)
+                    ->where('deleted_at', null)
+                    ->first();
+
+                $attendanceData = [
+                    'user_id'             => $user_id,
+                    'course_id'           => $course_id,
+                    'live_meeting_id'     => $live_meeting_id,
+                    'duration'            => $duration,
+                    'meeting_feedback_id' => $meeting_feedback_id,
+                    'status'              => 1,
+                ];
+
+                if ($existingAttendance) {
+                    $attendanceData['updated_at'] = date('Y-m-d H:i:s');
+                    $LiveAttendanceModel->update($existingAttendance['id'], $attendanceData);
+                    $updated++;
+                } else {
+                    $attendanceData['created_at'] = date('Y-m-d H:i:s');
+                    $LiveAttendanceModel->insert($attendanceData);
+                    $inserted++;
+                }
+
+                // Graduation check: progress = 100, attendance status = 1, feedback exists
+                $student = $CourseStudentModel->where('user_id', $user_id)->where('course_id', $course_id)->first();
+                if ($student && (int) ($student['progress'] ?? 0) === 100) {
+                    $CourseStudentModel->markAsGraduate($user_id, $course_id);
+                }
+            }
+
+            fclose($handle);
+        } else {
+            session()->setFlashdata('error_message', 'Gagal membuka file CSV.');
+            return redirect()->to(site_url(urlScope() . '/course/live/meeting/' . $slug . '/attendant/import'));
+        }
+
+        $message = sprintf('Import selesai. Ditambahkan: %d, Diperbarui: %d, Dilewati: %d', $inserted, $updated, $skipped);
+        if (! empty($errors)) {
+            $message .= '. Catatan: ' . implode('; ', $errors);
+        }
+
+        session()->setFlashdata('success_message', $message);
+        return redirect()->to(site_url(urlScope() . '/course/live/meeting/' . $slug . '/attendant/import'));
+    }
 }
