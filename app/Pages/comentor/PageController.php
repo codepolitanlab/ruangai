@@ -39,7 +39,7 @@ class PageController extends BaseController
                 MAX(course_students.progress) as progress, 
                 MAX(course_students.cert_claim_date) as cert_claim_date, 
                 COUNT(CASE WHEN live_attendance.status = 1 THEN 1 END) as total_live_session,
-                scholarship_participants.reference
+                scholarship_participants.reference_comentor
             ")
             ->join('course_students', 'course_students.user_id = scholarship_participants.user_id', 'left')
             ->join('live_attendance', 'live_attendance.user_id = scholarship_participants.user_id', 'left')
@@ -55,11 +55,11 @@ class PageController extends BaseController
             $members[$key]['progress'] = (int) $member['progress'];
             $members[$key]['total_live_session'] = (int) $member['total_live_session'];
 
-            // Tambahan flagging berdasarkan format reference
-            if (preg_match('/^CO-[A-Za-z0-9]+$/', $member['reference'])) {
+            // Tambahan flagging berdasarkan format reference_comentor
+            if (preg_match('/^CO-[A-Za-z0-9]+$/', $member['reference_comentor'])) {
                 // Format: CO-User → mapping
                 $members[$key]['from'] = 'mapping';
-            } elseif (preg_match('/^co-[A-Za-z0-9]+$/', $member['reference'])) {
+            } elseif (preg_match('/^co-[A-Za-z0-9]+$/', $member['reference_comentor'])) {
                 // Format: co-user → register
                 $members[$key]['from'] = 'register';
             } else {
