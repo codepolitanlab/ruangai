@@ -43,7 +43,7 @@ class PageController extends BaseController
             ")
             ->join('course_students', 'course_students.user_id = scholarship_participants.user_id', 'left')
             ->join('live_attendance', 'live_attendance.user_id = scholarship_participants.user_id', 'left')
-            ->where('scholarship_participants.reference', $leader['referral_code_comentor'])
+            ->where('scholarship_participants.reference_comentor', $leader['referral_code_comentor'])
             ->where('scholarship_participants.deleted_at', null)
             ->groupBy('scholarship_participants.user_id')
             ->get();

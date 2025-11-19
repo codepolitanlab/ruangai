@@ -94,6 +94,7 @@ class ScholarshipController extends ResourceController
                 ->getRowArray()['code'] ?? null;
             $data['program'] = $activeProgram;
             $data['reference_comentor'] = $data['reference'];
+            $data['reference'] = null;
         }
 
         // Get JWT from headers
