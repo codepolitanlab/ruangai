@@ -93,7 +93,7 @@ class ScholarshipController extends ResourceController
                 ->get()
                 ->getRowArray()['code'] ?? null;
             $data['program'] = $activeProgram;
-            $data['reference_comentor'] = $data['reference'];
+            $data['reference_comentor'] = strtolower($data['reference']);
             $data['reference'] = null;
         }
 
