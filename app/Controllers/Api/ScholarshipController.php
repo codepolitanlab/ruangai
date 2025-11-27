@@ -279,9 +279,9 @@ class ScholarshipController extends ResourceController
         $data['bank']               = $bank;
         $data['members']            = $members;
         $data['total_member']       = $memberQuery->getNumRows();
-        $data['total_graduated']    = (int) $referral['total_referral_graduate'] || 0;
-        $data['total_commission']   = (int) $referral['balance'] || 0;
-        $data['total_disbursed']    = (int) $referral['withdrawal'] || 0;
+        $data['total_graduated']    = $referral ? (int) $referral['total_referral_graduate'] : 0;
+        $data['total_commission']   = $referral ? (int) $referral['balance'] : 0;
+        $data['total_disbursed']    = $referral ? (int) $referral['withdrawal'] : 0;
         $data['graduated']          = $graduatedPerProgram;
 
         return $this->respond($data);
