@@ -2,20 +2,27 @@
 
 namespace App\Pages\certificate;
 
+use App\Models\Feedback;
 use App\Pages\BaseController;
 use Certificate\Libraries\CertificateTemplateFactory;
 
 class PageController extends BaseController
 {
-    private $certPrefix = 'CPJS'; // Certificate prefix, e.g., CPJS for "Certificate"
+    private $certPrefix = 'CPRAI'; // Certificate prefix, e.g., CPJS for "Certificate"
     public $data = [
-        'page_title' => "Sertifikat JagoanSiber"
+        'page_title' => "Sertifikat RuangAI"
     ];
 
     public function getData($code = null)
     {
+        $Heroic = new \App\Libraries\Heroic();
+        $jwt = $Heroic->checkToken(true);
+
         $vars = $this->certVariables($code);
         $this->data = array_merge($this->data, $vars);
+
+        $Feedback = new Feedback();
+        $this->data['is_feedback'] = $Feedback->getFeedback($jwt->user_id, $this->data['claimer']['entity_id'], $this->data['claimer']['entity_type']) ? true : false;
         return $this->respond($this->data);
     }
 
@@ -58,6 +65,7 @@ class PageController extends BaseController
         // Prepare certificate data from certificate
         $certificateData = [
             'url'         => site_url() . "c/" . $certificate['cert_code'],
+            'code'        => $certificate['cert_code'],
             'number'      => $certificate['cert_number'],
             'name'        => $certificate['participant_name'],
             'code'        => $certificate['cert_code'],

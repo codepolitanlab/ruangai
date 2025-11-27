@@ -93,6 +93,8 @@ class ScholarshipController extends ResourceController
                 ->get()
                 ->getRowArray()['code'] ?? null;
             $data['program'] = $activeProgram;
+            $data['reference_comentor'] = strtolower($data['reference']);
+            $data['reference'] = null;
         }
 
         // Get JWT from headers
@@ -317,6 +319,7 @@ class ScholarshipController extends ResourceController
                 ->orWhere('course_students.graduate', null)
             ->groupEnd()
             ->where('course_students.expire_at', null)
+            ->where('course_students.course_id', 1)
             ->where('scholarship_participants.program', $activeProgram)
             ->countAllResults();
 

@@ -41,4 +41,9 @@ class Feedback extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getFeedback($user_id, $object_id, $object_type)
+    {
+        return $this->where(['user_id' => $user_id, 'object_id' => $object_id, 'object_type' => $object_type, 'deleted_at' => null])->first();
+    }
 }

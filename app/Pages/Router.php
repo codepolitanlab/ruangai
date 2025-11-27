@@ -19,7 +19,7 @@ class Router
         '/masuk/sebagai/:key' => [
             'template' => '/masuk/sebagai/template',
         ],
-        '/certificate/claim/:course_id' => [
+        '/certificate/claim/:course_id/:cert_code' => [
             'handler' => '[isLoggedIn]',
         ],
         '/voucher/' => [

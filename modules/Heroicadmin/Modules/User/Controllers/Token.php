@@ -40,6 +40,8 @@ class Token extends AdminController
         }
 
         $reward_from = $this->request->getPost('reward_from');
+        $token_amount = (int) $this->request->getPost('token_amount') ?: 1;
+        $peruntukan = $this->request->getPost('peruntukan') ?: 'umum';
 
         $userTokenModel = model('UserToken');
         $userModel      = model('UserModel');
@@ -66,16 +68,20 @@ class Token extends AdminController
                 continue;
             }
 
-            // Cek apakah sudah ada data reward token untuk user ini
-            $exists = $userTokenModel->isExists($user['id'], $reward_from);
+            // Cek apakah sudah ada data reward token untuk user umum
+            if ($peruntukan === 'umum') {
+                $exists = $userTokenModel->isExists($user['id'], $reward_from);
 
-            if ($exists) {
-                $skipped++;
-                continue;
+                if ($exists) {
+                    $skipped++;
+                    continue;
+                }
             }
 
-            // Insert reward token
-            $userTokenModel->generate($user['id'], $reward_from);
+            // Insert reward token sesuai jumlah yang ditentukan
+            for ($i = 0; $i < $token_amount; $i++) {
+                $userTokenModel->generate($user['id'], $reward_from);
+            }
 
             $imported++;
         }
@@ -88,6 +94,46 @@ class Token extends AdminController
         if ($notFound > 0) {
             $message .= " {$notFound} email tidak ditemukan di tabel user.";
         }
+
+        return redirect()->back()->with('success', $message);
+    }
+
+    public function generateByEmail()
+    {
+        $email = strtolower(trim($this->request->getPost('email')));
+        $reward_from = $this->request->getPost('reward_from');
+        $token_amount = (int) $this->request->getPost('token_amount') ?: 1;
+        $peruntukan = $this->request->getPost('peruntukan') ?: 'umum';
+
+        if (empty($email) || empty($reward_from)) {
+            return redirect()->back()->with('error', 'Email dan Reward From harus diisi.');
+        }
+
+        $userTokenModel = model('UserToken');
+        $userModel      = model('UserModel');
+
+        // Cari user berdasarkan email
+        $user = $userModel->where('email', $email)->first();
+
+        if (! $user) {
+            return redirect()->back()->with('error', 'Email tidak ditemukan di database.');
+        }
+
+        // Cek apakah sudah ada data reward token untuk user umum
+        if ($peruntukan === 'umum') {
+            $exists = $userTokenModel->isExists($user['id'], $reward_from);
+
+            if ($exists) {
+                return redirect()->back()->with('error', 'User sudah pernah menerima token dari reward ini.');
+            }
+        }
+
+        // Insert reward token sesuai jumlah yang ditentukan
+        for ($i = 0; $i < $token_amount; $i++) {
+            $userTokenModel->generate($user['id'], $reward_from);
+        }
+
+        $message = "Token berhasil di-generate untuk {$email}. Total {$token_amount} token.";
 
         return redirect()->back()->with('success', $message);
     }

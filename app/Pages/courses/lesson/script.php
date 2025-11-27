@@ -20,6 +20,14 @@
       init() {
         base.init.call(this);
 
+        this.$watch('data', (value) => {
+          // Check access
+          if (value.response_code == 405) {
+            if(alert) alert(value.response_message);
+            this.$router.navigate(`/`);
+          }
+        });
+
         // Show button saya sudah paham setelah n detik
         this.setTimerButtonPaham();
       },

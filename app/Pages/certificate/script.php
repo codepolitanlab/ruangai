@@ -55,6 +55,10 @@
                     if (newData?.status === 'failed') {
                         this.$router.navigate('/notfound');
                     }
+
+                    if (!newData?.is_feedback) {
+                        this.$router.navigate(`/courses/claim_certificate/${newData?.claimer?.entity_id}`);
+                    }
                 });
                 
                 // Preload fonts saat init

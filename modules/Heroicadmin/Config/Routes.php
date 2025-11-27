@@ -60,5 +60,6 @@ $routes->group(
         $routes->get('token', 'Token::index'); // List
         $routes->get('token/import', 'Token::import'); // List
         $routes->post('token/generate', 'Token::generate'); // Insert
+        $routes->post('token/generate-by-email', 'Token::generateByEmail'); // Insert by email
     }
 );
