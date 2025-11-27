@@ -49,6 +49,9 @@ class Withdrawal extends AdminController
         if (!empty($visible['withdrawn_at'])) {
             $select[] = 'referral_withdrawal.withdrawn_at';
         }
+        if (!empty($visible['description'])) {
+            $select[] = 'referral_withdrawal.description';
+        }
 
         $builder->select(implode(',', $select));
 
@@ -105,6 +108,7 @@ class Withdrawal extends AdminController
             'amount' => 'required|decimal',
             'withdrawn_at' => 'permit_empty'
         ];
+        $rules['description'] = 'permit_empty|string|max_length[1000]';
 
         if (!$this->validate($rules)) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
@@ -115,6 +119,7 @@ class Withdrawal extends AdminController
         $data = [
             'user_id' => $postData['user_id'],
             'amount' => $postData['amount'],
+            'description' => $postData['description'] ?? null,
         ];
 
         // Handle withdrawn_at from input datetime-local (e.g., 2025-11-27T14:30)
@@ -131,13 +136,13 @@ class Withdrawal extends AdminController
         }
 
         try {
-            // Check balance before save
-            $db = \Config\Database::connect();
-            $row = $db->table('view_referrals')->select('balance')->where('user_id', $postData['user_id'])->get()->getRowArray();
-            $balance = isset($row['balance']) ? (float)$row['balance'] : 0.0;
-            if ((float)$data['amount'] > $balance) {
-                return redirect()->back()->withInput()->with('error', 'Insufficient balance: withdrawal amount exceeds available balance.');
-            }
+            // Check balance before save - use user_affiliators table balance
+            // $db = \Config\Database::connect();
+            // $rowBalance = $db->table('user_affiliators')->select('balance')->where('user_id', $postData['user_id'])->get()->getRowArray();
+            // $balance = isset($rowBalance['balance']) ? (float)$rowBalance['balance'] : 0.0;
+            // if ((float)$data['amount'] > $balance) {
+            //     return redirect()->back()->withInput()->with('error', 'Insufficient balance: withdrawal amount exceeds available balance.');
+            // }
             if ($id) {
                 $this->withdrawalModel->update($id, $data);
                 $message = 'Withdrawal updated successfully';
@@ -164,6 +169,8 @@ class Withdrawal extends AdminController
 
         try {
             $this->withdrawalModel->delete($id);
+            // Recalculate balance for user
+            $this->withdrawalModel->recalculateUserBalance($row['user_id']);
             return $this->response->setJSON(['success' => true, 'message' => 'Withdrawal deleted']);
         } catch (\Exception $e) {
             return $this->response->setJSON(['success' => false, 'message' => $e->getMessage()]);

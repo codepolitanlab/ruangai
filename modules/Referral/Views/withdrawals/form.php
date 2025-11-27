@@ -55,6 +55,7 @@
                                         <div>
                                             <strong x-text="user.name"></strong>
                                             <small class="text-muted d-block" x-text="user.email"></small>
+                                            <div class="text-muted small">Balance: <span x-text="formatMoney(user.balance || 0)"></span></div>
                                         </div>
                                     </button>
                                 </template>
@@ -65,7 +66,7 @@
 
                     <div class="mb-3">
                         <label for="amount" class="form-label">Amount (Rp)</label>
-                        <input type="number" name="amount" id="amount" class="form-control" x-model="amount" @input.debounce.200ms="validateAmount()" value="<?= old('amount', $withdrawal['amount'] ?? '') ?>" required>
+                        <input type="number" name="amount" id="amount" class="form-control" x-model="amount" value="<?= old('amount', $withdrawal['amount'] ?? '') ?>" required>
                     </div>
 
                     <div class="mb-3">
@@ -74,11 +75,17 @@
                         <small class="text-muted">Optional: set the date and time the withdrawal occurred</small>
                     </div>
 
-                    <div class="mb-2" x-show="amountTooLarge">
-                        <div class="alert alert-danger py-2">Nominal pencairan tidak boleh melebihi balance yang tersedia ( <strong x-text="formatMoney(selectedUser.balance || 0)"></strong> )</div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea name="description" id="description" rows="3" class="form-control"><?= esc(old('description', $withdrawal['description'] ?? '')) ?></textarea>
+                        <small class="text-muted">Optional note for this withdrawal</small>
                     </div>
+
+                    <!-- <div class="mb-2" x-show="amountTooLarge">
+                        <div class="alert alert-danger py-2">Nominal pencairan tidak boleh melebihi balance yang tersedia ( <strong x-text="formatMoney(selectedUser.balance || 0)"></strong> )</div>
+                    </div> -->
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary" :disabled="amountTooLarge || !selectedUser.id"><i class="bi bi-save"></i> Save</button>
+                        <button type="submit" class="btn btn-primary" :disabled="!selectedUser.id"><i class="bi bi-save"></i> Save</button>
                         <a href="<?= admin_url() ?>referral/withdrawals" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Cancel</a>
                     </div>
                 </form>
@@ -98,12 +105,8 @@ function withdrawalForm(initialUser = null) {
         showUserDropdown: false,
     isSearchingUser: false,
     amount: '<?= old('amount', $withdrawal['amount'] ?? '') ?>',
-    amountTooLarge: false,
+    // amountTooLarge: false,
 
-        init() {
-            // initial validation if amount prefilled
-            this.validateAmount();
-        },
 
         async searchUsers() {
             if (this.userSearchQuery.length < 2) {
@@ -135,14 +138,13 @@ function withdrawalForm(initialUser = null) {
             this.userSearchQuery = user.name || user.username;
             this.showUserDropdown = false;
             this.userSearchResults = [];
-            this.validateAmount();
         },
 
     clearUserSelection() {
             this.selectedUser = { id: '', name: '', email: '' };
             this.userSearchQuery = '';
             this.userSearchResults = [];
-            this.amountTooLarge = false;
+            // this.amountTooLarge = false;
         }
 ,
 
@@ -152,11 +154,11 @@ function withdrawalForm(initialUser = null) {
             return 'Rp ' + (parseFloat(val) || 0).toLocaleString('id-ID', { maximumFractionDigits: 0 });
         },
 
-        validateAmount() {
-            const amt = parseFloat(this.amount) || 0;
-            const bal = parseFloat(this.selectedUser.balance) || 0;
-            this.amountTooLarge = amt > bal;
-        }
+        // validateAmount() {
+        //     const amt = parseFloat(this.amount) || 0;
+        //     const bal = parseFloat(this.selectedUser.balance) || 0;
+        //     this.amountTooLarge = amt > bal;
+        // }
     }
 }
 </script>

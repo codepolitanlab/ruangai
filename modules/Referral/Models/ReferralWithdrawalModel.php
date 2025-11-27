@@ -8,7 +8,7 @@ class ReferralWithdrawalModel extends Model
 {
     protected $table = 'referral_withdrawal';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['user_id', 'amount', 'withdrawn_at'];
+    protected $allowedFields = ['user_id', 'amount', 'withdrawn_at', 'description'];
     protected $useTimestamps = true;
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
@@ -30,14 +30,6 @@ class ReferralWithdrawalModel extends Model
 
         if (!empty($filters['amount'])) {
             $builder->where('amount', $filters['amount']);
-        }
-
-        if (!empty($filters['created_at'])) {
-            $builder->where('DATE(created_at)', $filters['created_at']);
-        }
-
-        if (!empty($filters['withdrawn_at'])) {
-            $builder->where('DATE(withdrawn_at)', $filters['withdrawn_at']);
         }
 
         return $builder;

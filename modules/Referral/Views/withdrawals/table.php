@@ -65,6 +65,7 @@
                                 <th x-show="visibleColumns.amount">Amount</th>
                                 <th x-show="visibleColumns.created_at">Created At</th>
                                 <th x-show="visibleColumns.withdrawn_at">Withdrawn At</th>
+                                <th x-show="visibleColumns.description">Description</th>
                                 <th class="text-end">Aksi</th>
                             </tr>
                             <tr class="filters">
@@ -80,6 +81,9 @@
                                 </th>
                                 <th x-show="visibleColumns.withdrawn_at">
                                     <input type="date" class="form-control form-control-sm" x-model="filters.withdrawn_at" @change="page=1; loadTable()" />
+                                </th>
+                                <th x-show="visibleColumns.description">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Search description" x-model="filters.description" @keydown.enter="page=1; loadTable()" />
                                 </th>
                                 <th>
                                     <div class="d-flex justify-content-end gap-1">
@@ -109,21 +113,24 @@
             user: '',
             amount: '',
             created_at: '',
-            withdrawn_at: ''
+            withdrawn_at: '',
+            description: ''
         },
 
         visibleColumns: {
             user: true,
             amount: true,
             created_at: true,
-            withdrawn_at: true
+            withdrawn_at: true,
+            description: true
         },
 
         labelMap: {
             user: 'User',
             amount: 'Amount',
             created_at: 'Created',
-            withdrawn_at: 'Withdrawn'
+            withdrawn_at: 'Withdrawn',
+            description: 'Description'
         },
 
         page: 1,

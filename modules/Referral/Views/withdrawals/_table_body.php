@@ -20,6 +20,9 @@
         <?php if (!empty($visible['withdrawn_at'])): ?>
             <td><?= !empty($row['withdrawn_at']) ? date('d M Y H:i', strtotime($row['withdrawn_at'])) : '-' ?></td>
         <?php endif; ?>
+        <?php if (!empty($visible['description'])): ?>
+            <td><?= esc($row['description'] ?? '') ?></td>
+        <?php endif; ?>
         <td class="text-end">
             <div class="btn-group btn-group-sm">
                 <a href="<?= admin_url() ?>referral/withdrawals/form/<?= $row['id'] ?>" class="btn btn-sm btn-outline-warning">Edit</a>
@@ -37,6 +40,7 @@
             if (!empty($visible['amount'])) $colspan++;
             if (!empty($visible['created_at'])) $colspan++;
             if (!empty($visible['withdrawn_at'])) $colspan++;
+            if (!empty($visible['description'])) $colspan++;
             $colspan++; // action
         ?>
         <td colspan="<?= $colspan ?>" class="text-center py-3">
@@ -51,7 +55,8 @@
         if (!empty($visible['user'])) $colspan++;
         if (!empty($visible['amount'])) $colspan++;
         if (!empty($visible['created_at'])) $colspan++;
-        if (!empty($visible['withdrawn_at'])) $colspan++;
+    if (!empty($visible['withdrawn_at'])) $colspan++;
+    if (!empty($visible['description'])) $colspan++;
         $colspan++; // action
     ?>
     <td colspan="<?= $colspan ?>">
