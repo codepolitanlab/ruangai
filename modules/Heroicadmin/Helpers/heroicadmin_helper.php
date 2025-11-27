@@ -17,5 +17,10 @@ if (! function_exists('user_id')) {
 
 function urlScope()
 {
-    return config('Heroicadmin')->urlScope;
+    return trim(config('Heroicadmin')->urlScope, '/');
+}
+
+function admin_url($uri = '')
+{
+    return site_url(trim(config('Heroicadmin')->urlScope, '/').'/'.trim($uri, '/'));
 }

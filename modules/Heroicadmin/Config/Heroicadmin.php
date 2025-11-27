@@ -144,5 +144,25 @@ class Heroicadmin extends BaseConfig
                 ],
             ],
         ],
+        70 => [
+            'label'    => 'Referral',
+            'icon'     => 'bi bi-tag',
+            'url'      => '#',
+            'module'   => 'referral',
+            'children' => [
+                'referer' => [
+                    'label'     => 'Referrers',
+                    'icon'      => 'bi bi-file-earmark-text',
+                    'url'       => 'referral',
+                    'submodule' => 'referrer',
+                ],
+                'withdrawal' => [
+                    'label'     => 'Withdrawals',
+                    'icon'      => 'bi bi-file-earmark-text',
+                    'url'       => 'referral/withdrawals',
+                    'submodule' => 'withdrawal',
+                ],
+            ],
+        ],
     ];
 }

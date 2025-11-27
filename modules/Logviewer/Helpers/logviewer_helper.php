@@ -232,7 +232,7 @@ if (!function_exists('export_logs_csv')) {
     /**
      * Export log data to CSV format
      */
-    function export_logs_csv(string $filepath, string $outputPath = null): string
+    function export_logs_csv(string $filepath, string $outputPath = ''): string
     {
         if (!file_exists($filepath)) {
             throw new InvalidArgumentException('Log file not found');

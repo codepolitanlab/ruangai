@@ -12,6 +12,6 @@
             </div>
         </div>
 
-        <?= view_cell('Heroicadmin\Cells\SidebarMenuCell::show', ['module' => $module, 'submodule' => $submodule]) ?>
+        <?= view_cell('Heroicadmin\Cells\SidebarMenuCell::show', ['module' => $module ?? null, 'submodule' => $submodule ?? null]) ?>
     </div>
 </div>
