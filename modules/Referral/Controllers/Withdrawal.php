@@ -180,7 +180,6 @@ class Withdrawal extends AdminController
     $db = \Config\Database::connect();
         $builder = $db->table('view_referrals')
             ->select('user_id as id, fullname as name, email, balance')
-            ->groupBy('user_id')
             ->limit(10);
 
         if (!empty($search)) {
