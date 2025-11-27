@@ -267,7 +267,9 @@ class ScholarshipController extends ResourceController
 
         $commision = $leader['commission_per_graduate'];
         $disbursed = $leader['withdrawal'];
+        $referral = model('ReferralModel')->where('user_id', $leader['user_id'])->first();
 
+        $data['withdrawal']         = model('ReferralWithdrawalModel')->select('amount, withdrawn_at, description, created_at')->where('user_id', $leader['user_id'])->get()->getResultArray();
         $data['referral_code']      = $leader['referral_code'];
         $data['is_sponsorship']     = $leader['is_sponsorship'] === 1 ? true : false;
         $data['program']            = $leader['program'];
@@ -277,9 +279,9 @@ class ScholarshipController extends ResourceController
         $data['bank']               = $bank;
         $data['members']            = $members;
         $data['total_member']       = $memberQuery->getNumRows();
-        $data['total_graduated']    = $totalGraduated;
-        $data['total_commission']   = ($commision * $totalGraduated) - $disbursed;
-        $data['total_disbursed']    = $disbursed;
+        $data['total_graduated']    = (int) $referral['total_referral_graduate'] ?? 0;
+        $data['total_commission']   = (int) $referral['balance'] ?? 0;
+        $data['total_disbursed']    = (int) $referral['withdrawal'] ?? 0;
         $data['graduated']          = $graduatedPerProgram;
 
         return $this->respond($data);
