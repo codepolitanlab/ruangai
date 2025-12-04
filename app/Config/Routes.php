@@ -34,6 +34,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
     $routes->post('auth/send-otp-email', 'AuthController::sendOtpEmail');
     $routes->post('auth/verify-otp', 'AuthController::verifyOtp');
     $routes->post('auth/verify-otp-email', 'AuthController::verifyOtpEmail');
+    $routes->get('auth/check-referral-comentor', 'AuthController::checkReferralComentorCode');
     $routes->post('auth/register', 'AuthController::register');
 
     // Route scholarship

@@ -332,4 +332,36 @@ class AuthController extends ResourceController
             'token'   => $token,
         ]);
     }
+
+    public function checkReferralComentorCode()
+    {
+        $code = $this->request->getGet('code');
+
+        if (! $code) {
+            return $this->failValidationErrors(['code' => 'Kode referral harus diisi.']);
+        }
+
+        $participantModel = new \App\Models\ScholarshipParticipantModel();
+        $participant      = $participantModel
+            ->select('fullname, referral_code_comentor')
+            ->where('referral_code_comentor', strtolower($code))
+            ->where('deleted_at', null)
+            ->first();
+
+        if (! $participant) {
+            return $this->respond([
+                'status'  => 'failed',
+                'message' => 'Kode referral co-mentor tidak valid.',
+                'isValid' => false,
+            ]);
+        }
+
+        return $this->respond([
+            'status'         => 'success',
+            'message'        => 'Kode referral co-mentor valid.',
+            'isValid'        => true,
+            'comentor_name'  => $participant['fullname'],
+            'referral_code'  => $participant['referral_code_comentor'],
+        ]);
+    }
 }
