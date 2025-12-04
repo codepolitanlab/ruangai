@@ -36,6 +36,10 @@
 		.lesson-item.completed .bi {
 			color: #fff !important;
 		}
+
+		.lesson-item.recommended {
+			border: 2px dashed #79B2CD !important;
+		}
 		.bg-warning-2 {
 			background-color: #fe9500;
 		}
@@ -58,7 +62,7 @@
 							</span>
 						</p>
 						<button x-show="data.student.progress < 100 && !data.is_expire" class="btn btn-secondary btn-sm rounded-pill"
-							x-on:click="$router.navigate(`/courses/${data.course?.id}/lesson/${nextLesson(data.lessonsCompleted)}`)">
+							x-on:click="navigateToTargetLesson()">
 							Lanjutkan Belajar</button>
 
 						<button x-show="data.student.progress == 100 && !data.is_expire" class="btn btn-secondary btn-sm rounded-pill"
@@ -116,7 +120,7 @@
 							<template x-for="lesson of topicLessons">
 								<a :native="data.is_expire"
 									:href="data.is_expire ? `javascript:void()` : `/courses/${data.course.id}/lesson/${lesson.id}`"
-									:class="{'disabled': !canAccessLesson(lesson.id, data.lessonsCompleted)}"
+									:class="{'disabled': !canAccessLesson(lesson.id, data.lessonsCompleted), 'recommended': lesson.id === nextLesson(data.lessonsCompleted)}"
 									class="d-block w-100">
 									<div
 										class="lesson-item rounded-20 p-3 w-100 d-flex align-items-center justify-content-between"

@@ -9,7 +9,7 @@ a { color: #076b89; }
 .container-large {margin: 0 auto;}
 .container-large .appHeader, 
 .container-large #appCapsule, 
-.container-large .extraHeader { max-width: 1024px; margin: 0 auto}
+.container-large .extraHeader { max-width: 1280px; margin: 0 auto}
 .appHeader.bg-brand { box-shadow: none !important}
 .bg-brand { background-color: #3BC0CF !important}
 .bg-brand-2 { background-color: #157CA1 !important}

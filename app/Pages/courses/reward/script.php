@@ -15,7 +15,7 @@
         },
 
         nextLesson(lessonsCompleted) {
-            const nextItem = lessonsCompleted.find(item => item.completed === false);
+            const nextItem = lessonsCompleted.find(item => !item.completed);
             return nextItem ? nextItem.id : null;
         },
 

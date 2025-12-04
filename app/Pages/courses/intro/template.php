@@ -122,8 +122,6 @@
 								Lihat selengkapnya
 							</button>
 						</p>
-
-						<!-- Full text (hanya tampil kalau expand) -->
 						<div class="mt-3" x-show="meta.expandDesc" x-transition.opacity>
 							<p x-html="data.course.description"></p>
 							<button
@@ -236,8 +234,8 @@
 											</div>
 											<span class="fw-bold" x-text="`${Math.round(data.lesson_completed/data.total_lessons*100)}%`"></span>
 										</div>
-										<a
-											:href="`/courses/intro/${data.course.id}/${data.course.slug}/lessons`"
+										<a href="javascript:void(0)"
+											@click.prevent="navigateToTargetLesson()"
 											class="btn btn-primary hover rounded-pill p-1 fs-6">Lihat Materi</a>
 										<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
 									</div>

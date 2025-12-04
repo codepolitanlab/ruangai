@@ -12,7 +12,10 @@
                 <div class="text-center">
                     <div class="card-body">
                         <p x-text="data.lesson.quiz_description"></p>
-                        <button class="btn btn-lg btn-primary" @click="startQuiz = true">Mulai Quiz</button>
+                        <button class="btn btn-lg btn-primary" @click="startQuiz = true" :disabled="quizKeys.length === 0">Mulai Quiz</button>
+                        <template x-if="quizKeys.length === 0">
+                            <div class="text-muted mt-3">Tidak ada pertanyaan untuk quiz ini.</div>
+                        </template>
                     </div>
                 </div>
             </template>
@@ -38,7 +41,7 @@
                     </div>
 
                     <!-- Card Pertanyaan -->
-                    <div class="card mb-4 shadow-lg quiz-item" :id="key">
+                    <div class="card mb-4 shadow-lg quiz-item" :id="currentKey">
                         <div class="card-body">
                             <h6 class="h6" x-html="currentQuiz.question"></h6>
 

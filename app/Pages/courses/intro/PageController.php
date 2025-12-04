@@ -132,6 +132,18 @@ class PageController extends BaseController
                 }
             }
 
+            // Last progress: the most recent lesson visited by user for this course
+            $lastProgress = $db->table('course_lesson_progress')
+                ->select('lesson_id')
+                ->where('user_id', $jwt->user_id)
+                ->where('course_id', $id)
+                ->orderBy('created_at', 'DESC')
+                ->limit(1)
+                ->get()
+                ->getRowArray();
+
+            $this->data['last_progress_lesson_id'] = $lastProgress['lesson_id'] ?? null;
+
             $this->data['is_comentor'] = $jwt->user['role_id'] == 4 ? true : false;
             $this->data['group_comentor'] = null;
             if ($this->data['student']['reference'] ?? null) {

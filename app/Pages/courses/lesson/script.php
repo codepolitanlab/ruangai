@@ -14,6 +14,7 @@
       errorMessage: null,
       buttonSubmitting: false,
       selectedServer: null,
+      sidebarVisible: true,
 
       currentQuestion: 0,
 
@@ -30,6 +31,35 @@
 
         // Show button saya sudah paham setelah n detik
         this.setTimerButtonPaham();
+
+        // Listen to global lesson completed events to update local course data without full reload
+        window.addEventListener('ruangai:lesson-completed', (e) => {
+          try {
+            if (e.detail && this.data && this.data.lesson && String(this.data.lesson.course_id) === String(e.detail.course_id)) {
+              // mark lesson in course.lessons as completed
+              if (this.data.course && Array.isArray(this.data.course.lessons)) {
+                const idx = this.data.course.lessons.findIndex(l => String(l.id) === String(e.detail.lesson_id));
+                if (idx !== -1) {
+                  this.data.course.lessons[idx].is_completed = true;
+                }
+              }
+              // if lessons_grouped present, update that too
+              if (this.data.course && this.data.course.lessons_grouped) {
+                for (let topic in this.data.course.lessons_grouped) {
+                  this.data.course.lessons_grouped[topic].forEach(l => {
+                    if (String(l.id) === String(e.detail.lesson_id)) l.is_completed = true;
+                  });
+                }
+              }
+              // Update last_progress_lesson_id to the most recent completed lesson
+              if (this.data.course) {
+                this.data.course.last_progress_lesson_id = e.detail.lesson_id;
+              }
+            }
+          } catch (err) {
+            console.error('Error handling ruangai:lesson-completed in lesson_detail', err);
+          }
+        });
       },
 
       setNativeLinks(selector = '#lesson_text_container') {
@@ -47,6 +77,43 @@
       setTimerButtonPaham() {
         this.showButtonPaham = false;
         setTimeout(() => this.showButtonPaham = true, this.waitToShowButtonPaham)
+      },
+
+      getNextLessonIdFromCourse() {
+        if (!this.data.course || !this.data.course.lessons) return null;
+        
+        const lastProgressId = this.data.course.last_progress_lesson_id;
+        
+        // If we have last progress, find the next uncompleted lesson AFTER that progress
+        if (lastProgressId) {
+          const lastProgressIndex = this.data.course.lessons.findIndex(l => l.id == lastProgressId);
+          if (lastProgressIndex !== -1) {
+            // Look for the next uncompleted lesson starting from last progress
+            for (let i = lastProgressIndex; i < this.data.course.lessons.length; i++) {
+              if (!this.data.course.lessons[i].is_completed) {
+                return this.data.course.lessons[i].id;
+              }
+            }
+          }
+        }
+        
+        // Fallback: find first uncompleted lesson
+        const nextLesson = this.data.course.lessons.find(l => !l.is_completed);
+        return nextLesson ? nextLesson.id : null;
+      },
+
+      canAccessLessonById(lessonId) {
+        if (!this.data.course || !this.data.course.lessons) return false;
+        // If lesson is completed -> accessible
+        const found = this.data.course.lessons.find(l => l.id === lessonId);
+        if (!found) return false;
+        if (found.is_completed) return true;
+        // If it's the next uncompleted lesson, allow access
+        const nextId = this.getNextLessonIdFromCourse();
+        if (lessonId === nextId) return true;
+        // If lesson is free allow access
+        if (found.free && +found.free === 1) return true;
+        return false;
       },
 
       getVideoUrl(type, video_id) {
@@ -83,6 +150,25 @@
               $heroicHelper.toastr(response.data.message, "success", 'bottom');
               // unset cache lesson list
               $heroicHelper.cached[`/courses/intro/lessons/data/${course_id}`] = null;
+                // Also invalidate intro page data so getTargetLessonId will use updated progress
+                $heroicHelper.cached[`/courses/intro/data/${course_id}`] = null;
+                // Dispatch a global event to inform other components (intro pages) to refresh/update
+                try {
+                  window.dispatchEvent(new CustomEvent('ruangai:lesson-completed', { detail: { course_id: course_id, lesson_id: lesson_id, next_lesson_id: next_lesson_id } }));
+                } catch (e) {
+                  // ignore if dispatch fails
+                  console.error('Failed to dispatch event', e);
+                }
+                // Also fetch the updated intro data and update local / cached values to reduce race condition
+                try {
+                  $heroicHelper.fetch(`/courses/intro/data/${course_id}`)
+                    .then((r) => {
+                      if (r && r.data) $heroicHelper.setCache(`/courses/intro/data/${course_id}`, r.data);
+                    })
+                    .catch((e) => console.error('Failed to prefetch intro data after progress', e));
+                } catch (e) {
+                  console.error('prefetch intro data error', e);
+                }
               if (!next_lesson_id) {
                 let courseId = response.data.course.course_id;
                 let courseSlug = response.data.course.course_slug;
@@ -121,7 +207,20 @@
       result: {},
 
       init() {
-        this.quizKeys = Object.keys(this.quizzes);
+        try {
+          this.quizKeys = this.quizzes && typeof this.quizzes === 'object' ? Object.keys(this.quizzes) : [];
+        } catch (e) {
+          this.quizKeys = [];
+        }
+        // If quizzes come later (when data loads), watch and update keys
+        this.$watch('quizzes', (value) => {
+          try {
+            this.quizKeys = value && typeof value === 'object' ? Object.keys(value) : [];
+            this.currentIndex = 0;
+          } catch (err) {
+            this.quizKeys = [];
+          }
+        });
       },
 
       get currentKey() {

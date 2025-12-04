@@ -75,16 +75,30 @@ class PageController extends BaseController
 
             // Mengubah array hasil menjadi array sederhana berisi lesson_id
             $completedLessonIds = array_column($completedLessons, 'lesson_id');
+            
+            // Get last progress lesson (most recent lesson user interacted with)
+            $lastProgress = $db->table('course_lesson_progress')
+                ->select('lesson_id')
+                ->where('user_id', $jwt->user_id)
+                ->where('course_id', $course_id)
+                ->orderBy('created_at', 'DESC')
+                ->limit(1)
+                ->get()
+                ->getRowArray();
+            
+            $lastProgressLessonId = $lastProgress['lesson_id'] ?? null;
 
             // Query utama untuk mendapatkan semua lesson dengan urutan yang benar
             $lessons = $db->table('course_lessons')
                 ->select('
                     course_lessons.id,
+                    course_lessons.course_id,
                     course_lessons.lesson_title,
                     course_lessons.topic_id,
                     course_topics.topic_order,
                     course_lessons.lesson_order,
-                    course_topics.topic_title
+                    course_topics.topic_title,
+                    course_lessons.free
                 ')
                 ->join('course_topics', 'course_topics.id = course_lessons.topic_id')
                 ->where('course_lessons.course_id', $course_id)
@@ -103,7 +117,15 @@ class PageController extends BaseController
                 ]);
             }
 
-            $course['lessons']      = $orderedLessons;
+            // Group lessons by topic title for UI
+            $lessonsGrouped = [];
+            foreach ($orderedLessons as $l) {
+                $lessonsGrouped[$l['topic_title']][] = $l;
+            }
+
+            $course['lessons'] = $orderedLessons;
+            $course['lessons_grouped'] = $lessonsGrouped;
+            $course['last_progress_lesson_id'] = $lastProgressLessonId;
             $lesson['is_completed'] = in_array($lesson['id'], $completedLessonIds, true);
 
             // Get previous and next lesson
@@ -114,7 +136,21 @@ class PageController extends BaseController
             $lesson['prev_lesson'] = $course['lessons'][$prevLessonIndex] ?? null;
             $lesson['next_lesson'] = $course['lessons'][$nextLessonIndex] ?? null;
 
-            $this->data['course'] = $course;
+            // Fetch baseline course info (description, long_description if available in course_meta)
+            $course_info = $db->table('courses')
+                ->select('courses.*, course_meta.long_description')
+                ->join('course_meta', 'course_meta.id = courses.id', 'left')
+                ->where('courses.id', $course_id)
+                ->get()
+                ->getRowArray();
+
+            // merge course info and lessons
+            if (! $course_info) {
+                $course_info = [];
+            }
+            $course_info['lessons'] = $course['lessons'];
+            $course_info['lessons_grouped'] = $course['lessons_grouped'];
+            $this->data['course'] = $course_info;
             $this->data['lesson'] = $lesson;
 
             return $this->respond($this->data);
