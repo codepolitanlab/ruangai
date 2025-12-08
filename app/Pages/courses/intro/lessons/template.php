@@ -53,7 +53,7 @@
 						<p>
 							<span class="h5 text-primary opacity-100" x-text="data.numCompleted"></span>
 							<span class="text-dark opacity-50">/
-								<span x-text="data.lessonsCompleted ? data.lessonsCompleted.length : 0"></span>
+								<span x-text="data.lessonsCompleted ? data.lessonsCompleted.filter(l => l.mandatory == 1).length : 0"></span>
 								materi selesai
 							</span>
 						</p>

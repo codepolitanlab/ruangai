@@ -12,7 +12,8 @@
         },
 
         nextLesson(lessonsCompleted) {
-            const nextItem = lessonsCompleted.find(item => item.completed === false);
+            // Cari lesson mandatory yang belum completed
+            const nextItem = lessonsCompleted.find(item => item.mandatory == 1 && item.completed === false);
             return nextItem ? nextItem.id : null;
         },
 
@@ -34,7 +35,9 @@
         },
 
         countPercentageCompleteness(numCompleted, lessonsCompleted) {
-            return Math.round(numCompleted / Object.keys(lessonsCompleted).length * 100);
+            // Hitung hanya lesson mandatory
+            const mandatoryCount = lessonsCompleted.filter(l => l.mandatory == 1).length;
+            return mandatoryCount > 0 ? Math.round(numCompleted / mandatoryCount * 100) : 0;
         }
     }));
 </script>

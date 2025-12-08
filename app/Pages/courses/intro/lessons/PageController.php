@@ -75,6 +75,7 @@ class PageController extends BaseController
 
             $lessonsCompleted = [];
             $numCompleted     = 0;
+            $numCompletedMandatory = 0;
             $topicsMandatory  = [];
 
             foreach ($lessons as $key => $lesson) {
@@ -92,14 +93,19 @@ class PageController extends BaseController
                 $lessonsCompleted[] = [
                     'id'        => $lesson['id'],
                     'completed' => in_array($lesson['id'], $completedLessonIds, true),
+                    'mandatory' => $lesson['mandatory'],
                 ];
                 if (in_array($lesson['id'], $completedLessonIds, true)) {
                     $numCompleted++;
+                    // Hitung yang mandatory saja
+                    if ($lesson['mandatory'] == 1) {
+                        $numCompletedMandatory++;
+                    }
                 }
             }
             $this->data['lessonsCompleted'] = $lessonsCompleted;
             $this->data['topicsMandatory']  = $topicsMandatory;
-            $this->data['numCompleted']     = $numCompleted;
+            $this->data['numCompleted']     = $numCompletedMandatory;
 
             // Get course_students
             $this->data['student'] = $db->table('course_students')
