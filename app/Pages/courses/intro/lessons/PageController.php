@@ -76,19 +76,10 @@ class PageController extends BaseController
             $lessonsCompleted = [];
             $numCompleted     = 0;
             $numCompletedMandatory = 0;
-            $topicsMandatory  = [];
 
             foreach ($lessons as $key => $lesson) {
                 // Tambahkan status is_completed ke setiap lesson
                 $this->data['course']['lessons'][$lesson['topic_title']][] = $lesson;
-                
-                // Track if any lesson in this topic is mandatory=0 (opsional)
-                if (!isset($topicsMandatory[$lesson['topic_title']])) {
-                    $topicsMandatory[$lesson['topic_title']] = true; // default mandatory
-                }
-                if ($lesson['mandatory'] == 0) {
-                    $topicsMandatory[$lesson['topic_title']] = false; // ada lesson opsional
-                }
                 
                 $lessonsCompleted[] = [
                     'id'        => $lesson['id'],
@@ -104,7 +95,6 @@ class PageController extends BaseController
                 }
             }
             $this->data['lessonsCompleted'] = $lessonsCompleted;
-            $this->data['topicsMandatory']  = $topicsMandatory;
             $this->data['numCompleted']     = $numCompletedMandatory;
 
             // Get course_students
