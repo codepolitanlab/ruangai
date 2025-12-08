@@ -144,14 +144,28 @@ class PageController extends BaseController
                 ->get()
                 ->getRowArray();
 
+            // Get student progress
+            $student = $db->table('course_students')
+                ->select('progress, graduate')
+                ->where('course_id', $course_id)
+                ->where('user_id', $jwt->user_id)
+                ->get()
+                ->getRowArray();
+
             // merge course info and lessons
             if (! $course_info) {
                 $course_info = [];
             }
             $course_info['lessons'] = $course['lessons'];
             $course_info['lessons_grouped'] = $course['lessons_grouped'];
+            $course_info['last_progress_lesson_id'] = $lastProgressLessonId;
+            $course_info['progress'] = $student['progress'] ?? 0;
+            $course_info['graduate'] = $student['graduate'] ?? 0;
             $this->data['course'] = $course_info;
             $this->data['lesson'] = $lesson;
+
+            // Get live sessions data
+            $this->data['live_sessions'] = $this->getLiveSessions($course_id, $jwt->user_id, $db);
 
             return $this->respond($this->data);
         }
@@ -369,5 +383,90 @@ class PageController extends BaseController
         }
 
         return [$description, $questions, $answers];
+    }
+
+    private function getLiveSessions($course_id, $user_id, $db)
+    {
+        // Get attended events
+        $attendedQuery = $db->table('live_attendance')
+            ->select('live_meeting_id, live_meetings.meeting_code, live_meetings.title, 
+            live_meetings.subtitle, live_meetings.theme_code, duration, meeting_feedback_id, 
+            meeting_date, meeting_time, live_batch.name as batch_title, 
+            live_attendance.status')
+            ->join('live_meetings', 'live_meetings.id = live_attendance.live_meeting_id')
+            ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
+            ->where('live_attendance.course_id', $course_id)
+            ->where('user_id', $user_id)
+            ->orderBy('live_meetings.meeting_date', 'asc')
+            ->get()
+            ->getResultArray();
+
+        $attended = [];
+        $attendedCode = [];
+        if ($attendedQuery) {
+            $attended = array_column($attendedQuery, 'live_meeting_id');
+            foreach ($attendedQuery as $value) {
+                if ($value['status'] === '1') {
+                    $attendedCode[] = $value['theme_code'];
+                }
+            }
+        }
+
+        $live_sessions = $db->table('live_meetings')
+            ->select('live_meetings.*, live_batch.name as batch_title')
+            ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
+            ->where('live_batch.status', 'ongoing')
+            ->where('live_batch.course_id', $course_id)
+            ->where('live_meetings.deleted_at', null)
+            ->orderBy('meeting_date', 'ASC')
+            ->orderBy('meeting_time', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        $result = [
+            'scheduled' => [],
+            'ongoing' => [],
+            'completed' => [],
+            'attended' => []
+        ];
+
+        if ($live_sessions) {
+            foreach ($live_sessions as $live_session) {
+                $feedbackExists = $db->table('live_meeting_feedback')
+                    ->where('user_id', $user_id)
+                    ->where('live_meeting_id', $live_session['id'])
+                    ->countAllResults() > 0;
+
+                $live_session['feedback_submitted'] = $feedbackExists;
+
+                // Determine status_date
+                if (date('Y-m-d') === $live_session['meeting_date']) {
+                    if (date('H:i:s') > date('H:i:s', strtotime('+2 hours', strtotime($live_session['meeting_time'])))) {
+                        $live_session['status_date'] = in_array($live_session['id'], $attended) ? 'attended' : 'completed';
+                    } elseif (date('H:i:s') < $live_session['meeting_time']) {
+                        $live_session['status_date'] = 'upcoming';
+                    } else {
+                        $live_session['status_date'] = 'ongoing';
+                    }
+                } elseif (date('Y-m-d') > $live_session['meeting_date']) {
+                    $live_session['status_date'] = in_array($live_session['id'], $attended) ? 'attended' : 'completed';
+                } else {
+                    $live_session['status_date'] = 'upcoming';
+                }
+
+                // Pack into categories
+                if ($live_session['status_date'] === 'ongoing') {
+                    $result['ongoing'][] = $live_session;
+                } elseif ($live_session['status_date'] === 'attended') {
+                    $result['attended'][] = $live_session;
+                } elseif ($live_session['status_date'] === 'completed') {
+                    $result['completed'][] = $live_session;
+                } else {
+                    $result['scheduled'][] = $live_session;
+                }
+            }
+        }
+
+        return $result;
     }
 }

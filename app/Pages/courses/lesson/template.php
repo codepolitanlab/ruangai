@@ -81,8 +81,21 @@
                     <!-- LEFT: Lesson list -->
 					<div class="d-none d-lg-block col-lg-3 sidebar-col vh-100 pt-2 bg-light-primary" x-show="sidebarVisible" x-transition.opacity>
 						<div class="card shadow-none rounded-4 p-3 lesson-sidebar ms-2" style="margin-bottom: 0;">
-                            <h5 class="mb-3">Daftar Materi</h5>
-                            <div class="lesson-list">
+                            <!-- Tab Menu -->
+                            <ul class="nav nav-pills mb-3" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#lesson-list-tab" type="button" role="tab">Daftar Materi</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#live-session-tab" type="button" role="tab">Live Session</button>
+                                </li>
+                            </ul>
+
+                            <!-- Tab Content -->
+                            <div class="tab-content">
+                                <!-- Lesson List Tab -->
+                                <div class="tab-pane fade show active" id="lesson-list-tab" role="tabpanel">
+                                    <div class="lesson-list">
                                 <template x-for="(topicLessons, topic) of (data.course?.lessons_grouped || {})" :key="topic">
                                     <div class="mb-3">
                                         <div class="fw-bold mb-2" x-text="topic"></div>
@@ -119,6 +132,178 @@
                                         </template>
                                     </div>
                                 </template>
+                                    </div>
+                                </div>
+
+                                <!-- Live Session Tab -->
+                                <div class="tab-pane fade" id="live-session-tab" role="tabpanel">
+                                    <div class="live-session-list">
+                                        <!-- Ongoing Sessions -->
+                                        <template x-if="data.live_sessions?.ongoing && data.live_sessions.ongoing.length > 0">
+                                            <div class="mb-3">
+                                                <div class="text-warning fw-bold mb-2"><i class="bi bi-broadcast"></i> Sedang Berlangsung</div>
+                                                <div class="accordion" id="accordion-ongoing">
+                                                    <template x-for="(session, idx) in data.live_sessions.ongoing" :key="session.id">
+                                                        <div class="accordion-item mb-2 border-warning bg-warning bg-opacity-10">
+                                                            <h2 class="accordion-header">
+                                                                <button class="accordion-button py-2 bg-warning bg-opacity-25" type="button" data-bs-toggle="collapse" :data-bs-target="`#ongoing-${session.id}`">
+                                                                    <div class="w-100">
+                                                                        <div class="small text-muted mb-1" x-text="session.subtitle"></div>
+                                                                        <div class="fw-bold mb-1" x-text="session.title" style="font-size: 0.9rem;"></div>
+                                                                        <div class="small text-muted" style="display: inline-flex; flex-wrap: wrap; align-items: center;">
+                                                                            <span style="display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap;">
+                                                                                <i class="bi bi-calendar3" style="font-size: 0.85rem;"></i>
+                                                                                <span x-text="$heroicHelper.formatDate(session.meeting_date)"></span>
+                                                                            </span>
+                                                                            <span style="display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap;">
+                                                                                <i class="bi bi-clock" style="font-size: 0.85rem;"></i>
+                                                                                <span x-text="session.meeting_time.substring(0, 5) + ' WIB'"></span>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                            </h2>
+                                                            <div :id="`ongoing-${session.id}`" class="accordion-collapse collapse show" data-bs-parent="#accordion-ongoing">
+                                                                <div class="accordion-body small">
+                                                                    <dl class="mb-2">
+                                                                        <dt>Deskripsi</dt>
+                                                                        <dd x-text="session.description"></dd>
+                                                                    </dl>
+                                                                    <dl class="mb-2">
+                                                                        <dt>Mentor</dt>
+                                                                        <dd x-text="session.mentor_name"></dd>
+                                                                    </dl>
+                                                                    <template x-if="data.course?.progress >= 100">
+                                                                        <a :href="`/courses/zoom/${session.meeting_code}`" class="btn btn-sm btn-primary">
+                                                                            <i class="bi bi-camera-video"></i> Daftar Live Session
+                                                                        </a>
+                                                                    </template>
+                                                                    <template x-if="data.course?.progress < 100">
+                                                                        <div class="alert alert-warning small mb-0">
+                                                                            Selesaikan kursus terlebih dahulu
+                                                                        </div>
+                                                                    </template>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                        <!-- Scheduled Sessions -->
+                                        <template x-if="data.live_sessions?.scheduled && data.live_sessions.scheduled.length > 0">
+                                            <div class="mb-3">
+                                                <div class="text-primary fw-bold mb-2"><i class="bi bi-calendar-event"></i> Akan Datang</div>
+                                                <div class="accordion" id="accordion-scheduled">
+                                                    <template x-for="(session, idx) in data.live_sessions.scheduled" :key="session.id">
+                                                        <div class="accordion-item mb-2">
+                                                            <h2 class="accordion-header">
+                                                                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" :data-bs-target="`#scheduled-${session.id}`">
+                                                                    <div class="w-100">
+                                                                        <div class="small text-muted mb-1" x-text="session.subtitle"></div>
+                                                                        <div class="fw-bold mb-1" x-text="session.title" style="font-size: 0.9rem;"></div>
+                                                                        <div class="small text-muted" style="display: inline-flex; flex-wrap: wrap; align-items: center;">
+                                                                            <span style="display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap;">
+                                                                                <i class="bi bi-calendar3" style="font-size: 0.85rem;"></i>
+                                                                                <span x-text="$heroicHelper.formatDate(session.meeting_date)"></span>
+                                                                            </span>
+                                                                            <span style="display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap;">
+                                                                                <i class="bi bi-clock" style="font-size: 0.85rem;"></i>
+                                                                                <span x-text="session.meeting_time.substring(0, 5) + ' WIB'"></span>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                            </h2>
+                                                            <div :id="`scheduled-${session.id}`" class="accordion-collapse collapse" data-bs-parent="#accordion-scheduled">
+                                                                <div class="accordion-body small">
+                                                                    <dl class="mb-2">
+                                                                        <dt>Deskripsi</dt>
+                                                                        <dd x-text="session.description"></dd>
+                                                                    </dl>
+                                                                    <dl class="mb-2">
+                                                                        <dt>Mentor</dt>
+                                                                        <dd x-text="session.mentor_name"></dd>
+                                                                    </dl>
+                                                                    <template x-if="data.course?.progress >= 100">
+                                                                        <a :href="`/courses/zoom/${session.meeting_code}`" class="btn btn-sm btn-primary">
+                                                                            <i class="bi bi-camera-video"></i> Daftar Live Session
+                                                                        </a>
+                                                                    </template>
+                                                                    <template x-if="data.course?.progress < 100">
+                                                                        <div class="alert alert-warning small mb-0">
+                                                                            Selesaikan kursus terlebih dahulu
+                                                                        </div>
+                                                                    </template>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                        <!-- Attended Sessions -->
+                                        <template x-if="data.live_sessions?.attended && data.live_sessions.attended.length > 0">
+                                            <div class="mb-3">
+                                                <div class="text-success mb-2"><i class="bi bi-check-circle"></i> Sudah Diikuti</div>
+                                                <div class="accordion" id="accordion-attended">
+                                                    <template x-for="(session, idx) in data.live_sessions.attended" :key="session.id">
+                                                        <div class="accordion-item mb-2 border-success">
+                                                            <h2 class="accordion-header">
+                                                                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" :data-bs-target="`#attended-${session.id}`">
+                                                                    <div class="w-100">
+                                                                        <div class="small text-muted mb-1" x-text="session.subtitle"></div>
+                                                                        <div class="fw-bold mb-1" x-text="session.title" style="font-size: 0.9rem;"></div>
+                                                                        <div class="small text-muted" style="display: inline-flex; flex-wrap: wrap; align-items: center;">
+                                                                            <span style="display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap;">
+                                                                                <i class="bi bi-calendar3" style="font-size: 0.85rem;"></i>
+                                                                                <span x-text="$heroicHelper.formatDate(session.meeting_date)"></span>
+                                                                            </span>
+                                                                            <span style="display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap;">
+                                                                                <i class="bi bi-clock" style="font-size: 0.85rem;"></i>
+                                                                                <span x-text="session.meeting_time.substring(0, 5) + ' WIB'"></span>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </button>
+                                                            </h2>
+                                                            <div :id="`attended-${session.id}`" class="accordion-collapse collapse" data-bs-parent="#accordion-attended">
+                                                                <div class="accordion-body small">
+                                                                    <dl class="mb-2">
+                                                                        <dt>Deskripsi</dt>
+                                                                        <dd x-text="session.description"></dd>
+                                                                    </dl>
+                                                                    <dl class="mb-2">
+                                                                        <dt>Mentor</dt>
+                                                                        <dd x-text="session.mentor_name"></dd>
+                                                                    </dl>
+                                                                    <div class="alert alert-success small mb-2">
+                                                                        <i class="bi bi-check-circle"></i> Kamu sudah mengikuti sesi ini
+                                                                    </div>
+                                                                    <template x-if="session.recording_link">
+                                                                        <a :href="session.recording_link" target="_blank" class="btn btn-sm btn-danger">
+                                                                            <i class="bi bi-play-circle-fill"></i> Rekaman Video
+                                                                        </a>
+                                                                    </template>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                        <!-- No Sessions -->
+                                        <template x-if="!data.live_sessions || (!data.live_sessions.ongoing?.length && !data.live_sessions.scheduled?.length && !data.live_sessions.attended?.length)">
+                                            <div class="text-center text-muted py-4">
+                                                <i class="bi bi-calendar-x fs-3"></i>
+                                                <p class="small mb-0 mt-2">Belum ada jadwal live session</p>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -225,11 +410,25 @@
     <!-- Offcanvas for Lesson List (Mobile) -->
     <div class="offcanvas offcanvas-start offcanvas-lesson-list" tabindex="-1" id="lessonListOffcanvas">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title">Daftar Materi</h5>
+            <h5 class="offcanvas-title">Menu</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
         <div class="offcanvas-body p-0">
-            <div class="lesson-list px-3">
+            <!-- Tab Menu Mobile -->
+            <ul class="nav nav-pills mb-3 px-3 pt-2" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#mobile-lesson-list-tab" type="button" role="tab">Daftar Materi</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#mobile-live-session-tab" type="button" role="tab">Live Session</button>
+                </li>
+            </ul>
+
+            <!-- Tab Content Mobile -->
+            <div class="tab-content px-3">
+                <!-- Lesson List Tab -->
+                <div class="tab-pane fade show active" id="mobile-lesson-list-tab" role="tabpanel">
+                    <div class="lesson-list">
                 <template x-for="(topicLessons, topic) of (data.course?.lessons_grouped || {})" :key="topic">
                     <div class="mb-3">
                         <div class="fw-bold my-2" x-text="topic"></div>
@@ -266,6 +465,178 @@
                         </template>
                     </div>
                 </template>
+                    </div>
+                </div>
+
+                <!-- Live Session Tab Mobile -->
+                <div class="tab-pane fade" id="mobile-live-session-tab" role="tabpanel">
+                    <div class="live-session-list">
+                        <!-- Ongoing Sessions -->
+                        <template x-if="data.live_sessions?.ongoing && data.live_sessions.ongoing.length > 0">
+                            <div class="mb-3">
+                                <div class="text-warning fw-bold mb-2"><i class="bi bi-broadcast"></i> Sedang Berlangsung</div>
+                                <div class="accordion" id="accordion-mobile-ongoing">
+                                    <template x-for="(session, idx) in data.live_sessions.ongoing" :key="session.id">
+                                        <div class="accordion-item mb-2 border-warning bg-warning bg-opacity-10">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button py-2 bg-warning bg-opacity-25" type="button" data-bs-toggle="collapse" :data-bs-target="`#mobile-ongoing-${session.id}`">
+                                                    <div class="w-100">
+                                                        <div class="small text-muted mb-1" x-text="session.subtitle"></div>
+                                                        <div class="fw-bold mb-1" x-text="session.title" style="font-size: 0.85rem;"></div>
+                                                        <div class="small text-muted" style="display: inline-flex; flex-wrap: wrap; align-items: center; font-size: 0.75rem;">
+                                                            <span style="display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap;">
+                                                                <i class="bi bi-calendar3" style="font-size: 0.8rem;"></i>
+                                                                <span x-text="$heroicHelper.formatDate(session.meeting_date)"></span>
+                                                            </span>
+                                                            <span style="display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap;">
+                                                                <i class="bi bi-clock" style="font-size: 0.8rem;"></i>
+                                                                <span x-text="session.meeting_time.substring(0, 5) + ' WIB'"></span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                            </h2>
+                                            <div :id="`mobile-ongoing-${session.id}`" class="accordion-collapse collapse show" data-bs-parent="#accordion-mobile-ongoing">
+                                                <div class="accordion-body small">
+                                                    <dl class="mb-2">
+                                                        <dt>Deskripsi</dt>
+                                                        <dd x-text="session.description"></dd>
+                                                    </dl>
+                                                    <dl class="mb-2">
+                                                        <dt>Mentor</dt>
+                                                        <dd x-text="session.mentor_name"></dd>
+                                                    </dl>
+                                                    <template x-if="data.course?.progress >= 100">
+                                                        <a :href="`/courses/zoom/${session.meeting_code}`" class="btn btn-sm btn-primary">
+                                                            <i class="bi bi-camera-video"></i> Daftar Live Session
+                                                        </a>
+                                                    </template>
+                                                    <template x-if="data.course?.progress < 100">
+                                                        <div class="alert alert-warning small mb-0">
+                                                            Selesaikan kursus terlebih dahulu
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- Scheduled Sessions -->
+                        <template x-if="data.live_sessions?.scheduled && data.live_sessions.scheduled.length > 0">
+                            <div class="mb-3">
+                                <div class="text-primary fw-bold mb-2"><i class="bi bi-calendar-event"></i> Akan Datang</div>
+                                <div class="accordion" id="accordion-mobile-scheduled">
+                                    <template x-for="(session, idx) in data.live_sessions.scheduled" :key="session.id">
+                                        <div class="accordion-item mb-2">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" :data-bs-target="`#mobile-scheduled-${session.id}`">
+                                                    <div class="w-100">
+                                                        <div class="small text-muted mb-1" x-text="session.subtitle"></div>
+                                                        <div class="fw-bold mb-1" x-text="session.title" style="font-size: 0.85rem;"></div>
+                                                        <div class="small text-muted" style="display: inline-flex; flex-wrap: wrap; align-items: center; font-size: 0.75rem;">
+                                                            <span style="display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap;">
+                                                                <i class="bi bi-calendar3" style="font-size: 0.8rem;"></i>
+                                                                <span x-text="$heroicHelper.formatDate(session.meeting_date)"></span>
+                                                            </span>
+                                                            <span style="display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap;">
+                                                                <i class="bi bi-clock" style="font-size: 0.8rem;"></i>
+                                                                <span x-text="session.meeting_time.substring(0, 5) + ' WIB'"></span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                            </h2>
+                                            <div :id="`mobile-scheduled-${session.id}`" class="accordion-collapse collapse" data-bs-parent="#accordion-mobile-scheduled">
+                                                <div class="accordion-body small">
+                                                    <dl class="mb-2">
+                                                        <dt>Deskripsi</dt>
+                                                        <dd x-text="session.description"></dd>
+                                                    </dl>
+                                                    <dl class="mb-2">
+                                                        <dt>Mentor</dt>
+                                                        <dd x-text="session.mentor_name"></dd>
+                                                    </dl>
+                                                    <template x-if="data.course?.progress >= 100">
+                                                        <a :href="`/courses/zoom/${session.meeting_code}`" class="btn btn-sm btn-primary">
+                                                            <i class="bi bi-camera-video"></i> Daftar Live Session
+                                                        </a>
+                                                    </template>
+                                                    <template x-if="data.course?.progress < 100">
+                                                        <div class="alert alert-warning small mb-0">
+                                                            Selesaikan kursus terlebih dahulu
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- Attended Sessions -->
+                        <template x-if="data.live_sessions?.attended && data.live_sessions.attended.length > 0">
+                            <div class="mb-3">
+                                <div class="text-success mb-2"><i class="bi bi-check-circle"></i> Sudah Diikuti</div>
+                                <div class="accordion" id="accordion-mobile-attended">
+                                    <template x-for="(session, idx) in data.live_sessions.attended" :key="session.id">
+                                        <div class="accordion-item mb-2 border-success">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" :data-bs-target="`#mobile-attended-${session.id}`">
+                                                    <div class="w-100">
+                                                        <div class="small text-muted mb-1" x-text="session.subtitle"></div>
+                                                        <div class="fw-bold mb-1" x-text="session.title" style="font-size: 0.85rem;"></div>
+                                                        <div class="small text-muted" style="display: inline-flex; flex-wrap: wrap; align-items: center; font-size: 0.75rem;">
+                                                            <span style="display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap;">
+                                                                <i class="bi bi-calendar3" style="font-size: 0.8rem;"></i>
+                                                                <span x-text="$heroicHelper.formatDate(session.meeting_date)"></span>
+                                                            </span>
+                                                            <span style="display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap;">
+                                                                <i class="bi bi-clock" style="font-size: 0.8rem;"></i>
+                                                                <span x-text="session.meeting_time.substring(0, 5) + ' WIB'"></span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                            </h2>
+                                            <div :id="`mobile-attended-${session.id}`" class="accordion-collapse collapse" data-bs-parent="#accordion-mobile-attended">
+                                                <div class="accordion-body small">
+                                                    <dl class="mb-2">
+                                                        <dt>Deskripsi</dt>
+                                                        <dd x-text="session.description"></dd>
+                                                    </dl>
+                                                    <dl class="mb-2">
+                                                        <dt>Mentor</dt>
+                                                        <dd x-text="session.mentor_name"></dd>
+                                                    </dl>
+                                                    <div class="alert alert-success small mb-2">
+                                                        <i class="bi bi-check-circle"></i> Kamu sudah mengikuti sesi ini
+                                                    </div>
+                                                    <template x-if="session.recording_link">
+                                                        <a :href="session.recording_link" target="_blank" class="btn btn-sm btn-danger">
+                                                            <i class="bi bi-play-circle-fill"></i> Rekaman Video
+                                                        </a>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- No Sessions -->
+                        <template x-if="!data.live_sessions || (!data.live_sessions.ongoing?.length && !data.live_sessions.scheduled?.length && !data.live_sessions.attended?.length)">
+                            <div class="text-center text-muted py-4">
+                                <i class="bi bi-calendar-x fs-3"></i>
+                                <p class="small mb-0 mt-2">Belum ada jadwal live session</p>
+                            </div>
+                        </template>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
