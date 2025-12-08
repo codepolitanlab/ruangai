@@ -60,7 +60,7 @@ class PageController extends BaseController
             // Get lessons for this course
             if (! $lessons = cache('course_' . $id . '_lessons')) {
                 $lessons = $db->table('course_lessons')
-                    ->select('course_lessons.*, course_topics.*, course_lessons.id as id')
+                    ->select('course_lessons.*, course_topics.topic_title, course_topics.topic_slug, course_topics.topic_order, course_topics.free as topic_free, course_topics.status as topic_status, course_lessons.id as id, course_lessons.mandatory as mandatory')
                     ->join('course_topics', 'course_topics.id = course_lessons.topic_id', 'left')
                     ->where('course_lessons.course_id', $id)
                     ->where('course_lessons.deleted_at', null)
@@ -75,10 +75,20 @@ class PageController extends BaseController
 
             $lessonsCompleted = [];
             $numCompleted     = 0;
+            $topicsMandatory  = [];
 
             foreach ($lessons as $key => $lesson) {
                 // Tambahkan status is_completed ke setiap lesson
                 $this->data['course']['lessons'][$lesson['topic_title']][] = $lesson;
+                
+                // Track if any lesson in this topic is mandatory=0 (opsional)
+                if (!isset($topicsMandatory[$lesson['topic_title']])) {
+                    $topicsMandatory[$lesson['topic_title']] = true; // default mandatory
+                }
+                if ($lesson['mandatory'] == 0) {
+                    $topicsMandatory[$lesson['topic_title']] = false; // ada lesson opsional
+                }
+                
                 $lessonsCompleted[] = [
                     'id'        => $lesson['id'],
                     'completed' => in_array($lesson['id'], $completedLessonIds, true),
@@ -88,6 +98,7 @@ class PageController extends BaseController
                 }
             }
             $this->data['lessonsCompleted'] = $lessonsCompleted;
+            $this->data['topicsMandatory']  = $topicsMandatory;
             $this->data['numCompleted']     = $numCompleted;
 
             // Get course_students

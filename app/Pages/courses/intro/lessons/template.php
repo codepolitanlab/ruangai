@@ -111,7 +111,12 @@
 			<template x-if="data.course?.lessons && Object.keys(data.course?.lessons).length > 0">
 				<template x-for="(topicLessons,topic) of data.course?.lessons">
 					<section class="card shadow-none rounded-4 p-3 mb-3">
-						<div class="h5 m-0" x-text="topic"></div>
+						<div class="d-flex align-items-center gap-2">
+							<div class="h5 m-0" x-text="topic"></div>
+							<template x-if="data.topicsMandatory && data.topicsMandatory[topic] === false">
+								<span class="badge bg-secondary rounded-pill text-white" style="font-size: 0.7rem;">Opsional</span>
+							</template>
+						</div>
 						<div class="card-body d-flex flex-column align-items-center gap-3 px-0">
 							<template x-for="lesson of topicLessons">
 								<a :native="data.is_expire"
@@ -123,8 +128,7 @@
 										:class="{ 'completed': isLessonCompleted(lesson.id, data.lessonsCompleted),
 												  'active': canAccessLesson(lesson.id, data.lessonsCompleted),
 												  'disabled': data.is_expire }">
-										<div>
-
+										<div class="flex-grow-1">
 											<h4 class="fw-normal m-0 mb-1" x-text="lesson.lesson_title"></h4>
 											<h5 class="m-0 text-muted" x-text="lesson.duration"></h5>
 										</div>
