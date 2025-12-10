@@ -78,7 +78,7 @@ class Quiz extends Lesson
             'course_id'    => (int) $postData['course_id'],
             'topic_id'     => (int) $postData['topic_id'],
             'lesson_title' => $postData['lesson_title'],
-            'lesson_order' => $lastOrder['lesson_order'] + 1,
+            'lesson_order' => ($lastOrder['lesson_order'] ?? 0) + 1,
             'lesson_slug'  => $postData['lesson_slug'],
             'quiz'         => $postData['quiz'],
             'type'         => 'quiz',
