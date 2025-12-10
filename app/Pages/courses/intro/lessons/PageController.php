@@ -26,7 +26,7 @@ class PageController extends BaseController
                 ->get()
                 ->getRowArray();
 
-            // Save into the cache for 5 minutes
+            // Save into the cache for 1 hours
             cache()->save('course_' . $id, $course, 3600);
         }
         $this->data['course'] = $course;
@@ -58,11 +58,12 @@ class PageController extends BaseController
             $completedLessonIds = array_column($completedLessons, 'lesson_id');
 
             // Get lessons for this course
-            if (! $lessons = cache('course_' . $id . '_lessons')) {
+            // if (! $lessons = cache('course_' . $id . '_lessons')) {
                 $lessons = $db->table('course_lessons')
                     ->select('course_lessons.*, course_topics.topic_title, course_topics.topic_slug, course_topics.topic_order, course_topics.free as topic_free, course_topics.status as topic_status, course_lessons.id as id, course_lessons.mandatory as mandatory')
                     ->join('course_topics', 'course_topics.id = course_lessons.topic_id', 'left')
                     ->where('course_lessons.course_id', $id)
+                    ->where('course_lessons.status', 1)
                     ->where('course_lessons.deleted_at', null)
                     ->orderBy('course_topics.topic_order', 'ASC')
                     ->orderBy('course_lessons.lesson_order', 'ASC')
@@ -70,8 +71,8 @@ class PageController extends BaseController
                     ->getResultArray();
 
                 // Save into the cache for 1 hours
-                cache()->save('course_' . $id . '_lessons', $lessons, 3600);
-            }
+                // cache()->save('course_' . $id . '_lessons', $lessons, 3600);
+            // }
 
             $lessonsCompleted = [];
             $numCompleted     = 0;
