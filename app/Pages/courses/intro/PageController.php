@@ -42,6 +42,7 @@ class PageController extends BaseController
                 ->join('course_lesson_progress', 'course_lesson_progress.lesson_id = course_lessons.id AND user_id = ' . $jwt->user_id, 'left')
                 ->where('course_lessons.course_id', $id)
                 ->where('course_lessons.status', 1)
+                ->where('course_lessons.mandatory', 1)
                 ->where('course_lessons.deleted_at', null)
                 ->get()
                 ->getRowArray();
@@ -110,6 +111,7 @@ class PageController extends BaseController
                     ->join('course_topics', 'course_topics.id = course_lessons.topic_id', 'left')
                     ->where('course_lessons.course_id', $id)
                     ->where('course_lessons.status', 1)
+                    ->where('course_lessons.mandatory', 1)
                     ->where('course_lessons.deleted_at', null)
                     ->orderBy('course_topics.topic_order', 'ASC')
                     ->orderBy('course_lessons.lesson_order', 'ASC')
