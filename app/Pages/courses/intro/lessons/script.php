@@ -19,8 +19,14 @@
 
         // Method untuk mengecek apakah lesson bisa diakses
         canAccessLesson(lesson_id, lessonsCompleted) {
-            // Cek apakah lesson_id sudah di-complete
             const found = lessonsCompleted.find(item => item.id === lesson_id);
+            
+            // Lesson non-mandatory selalu bisa diakses
+            if (found && found.mandatory != 1) {
+                return true;
+            }
+
+            // Cek apakah lesson_id sudah di-complete
             if (found && found.completed === true) {
                 return true;
             }
