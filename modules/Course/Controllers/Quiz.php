@@ -51,6 +51,7 @@ class Quiz extends Lesson
                 'quiz'         => $postData['quiz'],
                 'status'       => (int) ($postData['status'] ?? 0),
                 'free'         => (int) ($postData['free'] ?? 0),
+                'mandatory'    => (int) ($postData['mandatory'] ?? 1),
             ];
             $LessonModel->update($postData['lesson_id'], $data);
             session()->setFlashdata('success_message', 'Quiz telah diperbaharui');
@@ -77,12 +78,13 @@ class Quiz extends Lesson
             'course_id'    => (int) $postData['course_id'],
             'topic_id'     => (int) $postData['topic_id'],
             'lesson_title' => $postData['lesson_title'],
-            'lesson_order' => $lastOrder['lesson_order'] + 1,
+            'lesson_order' => ($lastOrder['lesson_order'] ?? 0) + 1,
             'lesson_slug'  => $postData['lesson_slug'],
             'quiz'         => $postData['quiz'],
             'type'         => 'quiz',
             'status'       => (int) ($postData['status'] ?? 0),
             'free'         => (int) ($postData['free'] ?? 0),
+            'mandatory'    => (int) ($postData['mandatory'] ?? 1),
         ];
 
         $LessonModel->insert($data);

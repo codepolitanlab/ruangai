@@ -89,6 +89,20 @@
                                     <label class="form-check-label" for="lesson_free">Is Quiz Free?</label>
                                 </div>
                             </div>
+                            <div class="pe-5">
+                                <div class="form-check form-switch">
+                                    <input type="hidden" name="mandatory" value="0">
+                                    <input
+                                        class="form-check-input"
+                                        value="1"
+                                        name="mandatory"
+                                        type="checkbox"
+                                        role="switch"
+                                        id="lesson_mandatory"
+                                        <?= ($lesson['mandatory'] ?? 1) ? 'checked' : '' ?>>
+                                    <label class="form-check-label" for="lesson_mandatory">Is Quiz Mandatory?</label>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="row mt-3">

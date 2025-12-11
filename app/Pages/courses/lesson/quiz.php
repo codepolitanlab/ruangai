@@ -128,16 +128,16 @@
                     <!-- Jika Lulus -->
                     <div class="text-center pb-5 mb-5 border-bottom" x-show="result.is_pass">
                         <div class="display-2 mb-3">👏🏻😎</div>
-                        <p class="lead">Kamu keren!<br> Yuk lanjutkan belajar ke materi selanjutnya.</p>
+                        <p class="lead">Selamat!<br> kamu sudah menyelesaikan semua materi.</p>
 
-                        <a :href="`/courses/${data.lesson.course_id}/lesson/${data.lesson?.next_lesson.id}`"
+                        <!-- <a :href="`/courses/${data.lesson.course_id}/lesson/${data.lesson?.next_lesson.id}`"
                             class="btn btn-outline-primary rounded-pill ps-4 pe-3 py-4">
                             <div class="text-end me-3 mt-2">
                                 <span class="">Materi Selanjutnya</span><br>
                                 <h5 class="h6 " x-text="data.lesson?.next_lesson.lesson_title"></h5>
                             </div>
                             <i class="bi bi-arrow-right me-2"></i>
-                        </a>
+                        </a> -->
                     </div>
 
                     <h4>Ulasan Jawaban</h4>

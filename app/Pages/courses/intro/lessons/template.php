@@ -57,7 +57,7 @@
 						<p>
 							<span class="h5 text-primary opacity-100" x-text="data.numCompleted"></span>
 							<span class="text-dark opacity-50">/
-								<span x-text="data.lessonsCompleted ? data.lessonsCompleted.length : 0"></span>
+								<span x-text="data.lessonsCompleted ? data.lessonsCompleted.filter(l => l.mandatory == 1).length : 0"></span>
 								materi selesai
 							</span>
 						</p>
@@ -127,8 +127,7 @@
 										:class="{ 'completed': isLessonCompleted(lesson.id, data.lessonsCompleted),
 												  'active': canAccessLesson(lesson.id, data.lessonsCompleted),
 												  'disabled': data.is_expire }">
-										<div>
-
+										<div class="flex-grow-1">
 											<h4 class="fw-normal m-0 mb-1" x-text="lesson.lesson_title"></h4>
 											<h5 class="m-0 text-muted" x-text="lesson.duration"></h5>
 										</div>
