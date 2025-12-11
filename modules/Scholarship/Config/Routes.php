@@ -19,5 +19,10 @@ $routes->group(
         $routes->get('participants/(:num)/edit', 'Participants::edit/$1');
         $routes->post('participants/(:num)/edit', 'Participants::edit/$1');
         $routes->get('participants/(:num)/delete', 'Participants::delete/$1');
+
+        $routes->get('followup-comentors', 'FollowupComentors::index');
+        $routes->get('followup-comentors/(:num)/detail', 'FollowupComentors::detail/$1');
+        $routes->get('followup-comentors/(:num)/import', 'FollowupComentors::import/$1');
+        $routes->post('followup-comentors/(:num)/process-import', 'FollowupComentors::processImport/$1');
     }
 );
