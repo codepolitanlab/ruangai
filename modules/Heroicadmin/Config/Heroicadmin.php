@@ -66,6 +66,12 @@ class Heroicadmin extends BaseConfig
                     'url'       => 'scholarship/participants',
                     'submodule' => 'participants',
                 ],
+                'followup_comentors' => [
+                    'label'     => 'Followup Comentor',
+                    'icon'      => 'bi bi-chat-dots',
+                    'url'       => 'scholarship/followup-comentors',
+                    'submodule' => 'followup_comentors',
+                ],
                 'referral' => [
                     'label'     => 'Referral',
                     'icon'      => 'bi bi-person-gear',
