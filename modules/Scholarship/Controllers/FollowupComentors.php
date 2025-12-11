@@ -195,13 +195,22 @@ class FollowupComentors extends AdminController
 
             $email = trim($row[0]);
             
-            // Cari peserta berdasarkan email di scholarship_participants
-            $participant = $db->table('scholarship_participants')
-                             ->where('email', $email)
+            // Cari peserta berdasarkan email di scholarship_participants dan join dengan course_students
+            $participant = $db->table('scholarship_participants sp')
+                             ->select('sp.*, cs.graduate')
+                             ->join('course_students cs', 'cs.user_id = sp.user_id', 'left')
+                             ->where('sp.email', $email)
                              ->get()
                              ->getRowArray();
 
             if ($participant) {
+                // Cek apakah peserta belum lulus (graduate = 0 atau NULL)
+                if ($participant['graduate'] != 0 && !is_null($participant['graduate'])) {
+                    $failedCount++;
+                    $failedEmails[] = $email . ' (sudah lulus, tidak bisa di-mapping)';
+                    continue;
+                }
+                
                 // Cek apakah reference_comentor masih null atau is_reference_followup = 1
                 if (empty($participant['reference_comentor']) || $participant['is_reference_followup'] == 1) {
                     
