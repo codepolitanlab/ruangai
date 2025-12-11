@@ -1,7 +1,17 @@
 <div
 	class="header-mobile-only"
 	id="comentor"
-	x-data="comentor()">
+	x-data="$heroic({
+    title: `<?= $page_title ?>`,
+    url: `/comentor/data/`,
+    meta: {
+        expandDesc: false,
+        graduate: false,
+        email: '',
+        isValidEmail: false,
+        loading: false,
+        videoTutorial: null
+    }})">
 
 	<?= $this->include('_appHeader'); ?>
 
@@ -97,168 +107,181 @@
 		}
 	</style>
 
-	<div id="appCapsule">
-		<div class="appContent pt-2 pb-4" style="min-height:90vh">
+	<template x-if="ui.loading === false">
 
-			<div class="my-3">
-				<button @click="history.back()" class="btn rounded-4 px-2 btn-white bg-white text-primary">
-					<h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>
-				</button>
-			</div>
+		<div id="appCapsule" x-data="comentor()">
+			<div class="appContent pt-2 pb-4" style="min-height:90vh">
 
-			<template x-if="data?.leader?.role_id == 4">
-				<div>
-
-
-					<!-- Referral Co-Mentor -->
-					<div class="p-3 mb-3 rounded-4 bg-white d-flex flex-column gap-2 justify-content-between">
-						<div class="d-flex flex-column flex-md-row gap-2 mb-3">
-							<!-- Card Total Invite -->
-							<div class="flex-fill p-3 rounded-4 d-flex align-items-center justify-content-between" style="background-color: #FFE8E1;">
-								<div class="d-flex align-items-center gap-2">
-									<div class="p-3 rounded-3 d-flex align-items-center justify-content-center" style="background-color: #FDD6C9; width:60px; height:60px;">
-										<i class="bi bi-people-fill fs-3 text-secondary"></i>
-									</div>
-									<div>
-										<div>Total Peserta</div>
-										<div class="fw-bold fs-5 text-secondary" x-text="data?.total_member ?? 0">0</div>
-									</div>
-								</div>
-							</div>
-
-							<!-- Card Total Lulus -->
-							<div class="flex-fill p-3 rounded-4 d-flex align-items-center justify-content-between" style="background-color: #DCFCE6;">
-								<div class="d-flex align-items-center gap-2">
-									<div class="p-3 rounded-3 d-flex align-items-center justify-content-center" style="background-color: #B9F8CF; width:60px; height:60px;">
-										<i class="bi bi-person-check-fill fs-3 text-success"></i>
-									</div>
-									<div>
-										<div>Total Peserta Tuntas</div>
-										<div class="fw-bold fs-5 text-success" x-text="data?.total_graduated ?? 0">0</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<span>Kode Referral kamu</span>
-						<div class="p-2 bg-light rounded-3 d-flex align-items-center">
-							<!-- Input link -->
-							<input
-								type="text"
-								class="form-control border-0 bg-transparent shadow-none"
-								:value="`https://ruangai.id/cmref/${data?.leader?.referral_code_comentor}`"
-								readonly>
-
-							<!-- Tombol copy -->
-							<button
-								class="btn btn-sm btn-light ms-2 border-0 d-flex align-items-center gap-1"
-								@click="copyToClipboard(data?.leader?.referral_code_comentor)">
-								<i class="bi bi-clipboard"></i> Copy Link
-							</button>
-						</div>
-					</div>
-
-					<div class="p-3 rounded-4 bg-white d-flex flex-column gap-2 justify-content-between">
-						<h5 class="fw-bold">Daftar Peserta</h5>
-						<div class="mb-2">
-							<input
-								type="text"
-								class="form-control"
-								placeholder="Cari peserta..."
-								x-model="search">
-						</div>
-
-						<div class="table-responsive">
-							<div class="d-flex gap-3 mb-3">
-								<div class="d-flex align-items-center gap-2">
-									<div style="width: 20px;height: 13px;background-color: #ecba73ff;"></div>
-									<span>Peserta Lama</span>
-								</div>
-								<div class="d-flex align-items-center gap-2">
-									<div style="width: 20px;height: 13px;background-color: #e6f1f6;"></div>
-									<span>Peserta Baru</span>
-								</div>
-								<div class="ms-auto d-flex align-items-center gap-2">
-									<label for="sort" class="mb-0">Urutkan:</label>
-									<select id="sort" class="form-select form-select-sm w-auto" x-model="sortOrder" @change="sortMembers">
-										<option value="desc">Terbaru</option>
-										<option value="asc">Terlama</option>
-									</select>
-									<button @click="downloadCSV" class="btn btn-sm btn-outline-primary">
-										<i class="bi bi-download"></i> Unduh Data
-									</button>
-								</div>
-							</div>
-							<table class="w-100 mb-0 align-middle custom-table">
-								<thead>
-									<tr>
-										<th>Nama</th>
-										<th class="d-none d-md-table-cell">Email</th>
-										<th class="d-none d-lg-table-cell">Profesi</th>
-										<th class="d-none d-lg-table-cell">Tanggal Bergabung</th>
-										<th class="d-none d-lg-table-cell">Tanggal Lulus</th>
-										<th>Status & Progres</th>
-									</tr>
-								</thead>
-								<tbody>
-									<template x-for="member in filteredMembers" :key="member.user_id">
-										<tr :class="member.from == 'mapping' ? 'bg-warning-2' : 'bg-primary-2'">
-											<td>
-												<div class="fw-semibold" x-text="member.fullname"></div>
-												<a :href="`https://wa.me/${member.whatsapp}`"
-													target="_blank"
-													class="small"
-													x-text="member.whatsapp"></a>
-												<div class="d-block d-md-none" x-text="member.email"></div>
-											</td>
-											<td class="d-none d-md-table-cell">
-												<span x-text="member.email"></span>
-											</td>
-											<td class="d-none d-lg-table-cell">
-												<span x-text="member.occupation || '-'"></span>
-											</td>
-											<td class="d-none d-lg-table-cell">
-												<span x-text="member.joined_at ? new Date(member.joined_at).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'}) : '-'"></span>
-											</td>
-											<td class="d-none d-lg-table-cell">
-												<span x-text="member.graduated_at ? new Date(member.graduated_at).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'}) : '-'"></span>
-											</td>
-											<td>
-												<!-- badge status -->
-												<div class="mb-1">
-													<template x-if="member.graduate == 1">
-														<span class="badge bg-success fw-semibold">Tuntas</span>
-													</template>
-													<template x-if="member.progress == 100 && member.total_live_session >= 1 && member.graduate != 1">
-														<span class="badge bg-secondary fw-semibold">Belum Klaim Sertifikat</span>
-													</template>
-													<template x-if="member.progress == 100 && member.total_live_session == 0 && member.graduate != 1">
-														<span class="badge bg-warning fw-semibold">Belum Live</span>
-													</template>
-													<template x-if="member.progress != 100 && member.total_live_session >= 1 && member.graduate != 1">
-														<span class="badge bg-warning fw-semibold">Belum Course</span>
-													</template>
-													<template x-if="member.progress < 100 && member.total_live_session == 0 && member.graduate != 1">
-														<span class="badge bg-secondary-subtle text-dark fw-semibold">Masih Belajar</span>
-													</template>
-												</div>
-
-												<!-- statistik progres -->
-												<div class="d-flex align-items-center gap-2 text-muted small">
-													<span><i class="bi bi-journal-bookmark text-success"></i> <span x-text="member.progress + '%'"></span></span>
-													<span><i class="bi bi-broadcast text-danger"></i> <span x-text="member.total_live_session + 'x'"></span></span>
-												</div>
-											</td>
-										</tr>
-									</template>
-								</tbody>
-							</table>
-						</div>
-
-
-					</div>
+				<div class="my-3">
+					<button @click="history.back()" class="btn rounded-4 px-2 btn-white bg-white text-primary">
+						<h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>
+					</button>
 				</div>
-			</template>
 
+				<template x-if="data?.leader?.role_id == 4">
+					<div>
+						<!-- Referral Co-Mentor -->
+						<div class="p-3 mb-3 rounded-4 bg-white d-flex flex-column gap-2 justify-content-between">
+							<div class="d-flex flex-column flex-md-row gap-2 mb-3">
+								<!-- Card Total Invite -->
+								<div class="flex-fill p-3 rounded-4 d-flex align-items-center justify-content-between" style="background-color: #FFE8E1;">
+									<div class="d-flex align-items-center gap-2">
+										<div class="p-3 rounded-3 d-flex align-items-center justify-content-center" style="background-color: #FDD6C9; width:60px; height:60px;">
+											<i class="bi bi-people-fill fs-3 text-secondary"></i>
+										</div>
+										<div>
+											<div>Total Peserta</div>
+											<div class="fw-bold fs-5 text-secondary" x-text="data?.total_member ?? 0">0</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- Card Total Lulus -->
+								<div class="flex-fill p-3 rounded-4 d-flex align-items-center justify-content-between" style="background-color: #DCFCE6;">
+									<div class="d-flex align-items-center gap-2">
+										<div class="p-3 rounded-3 d-flex align-items-center justify-content-center" style="background-color: #B9F8CF; width:60px; height:60px;">
+											<i class="bi bi-person-check-fill fs-3 text-success"></i>
+										</div>
+										<div>
+											<div>Total Peserta Tuntas</div>
+											<div class="fw-bold fs-5 text-success" x-text="data?.total_graduated ?? 0">0</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<span>Kode Referral kamu</span>
+							<div class="p-2 bg-light rounded-3 d-flex align-items-center">
+								<!-- Input link -->
+								<input
+									type="text"
+									class="form-control border-0 bg-transparent shadow-none"
+									:value="`https://ruangai.id/cmref/${data?.leader?.referral_code_comentor}`"
+									readonly>
+
+								<!-- Tombol copy -->
+								<button
+									class="btn btn-sm btn-light ms-2 border-0 d-flex align-items-center gap-1"
+									@click="copyToClipboard(data?.leader?.referral_code_comentor)">
+									<i class="bi bi-clipboard"></i> Copy Link
+								</button>
+							</div>
+						</div>
+
+						<div class="p-3 rounded-4 bg-white d-flex flex-column gap-2 justify-content-between">
+							<h5 class="fw-bold">Daftar Peserta</h5>
+							<div class="mb-2">
+								<input
+									type="text"
+									class="form-control"
+									pDaftar Pelaceholder="Cari peserta..."
+									x-model="search">
+							</div>
+
+							<div class="table-responsive">
+								<div class="d-flex gap-3 mb-3">
+									<div class="d-flex align-items-center gap-2">
+										<div style="width: 20px;height: 13px;background-color: #ecba73ff;"></div>
+										<span>Peserta Lama</span>
+									</div>
+									<div class="d-flex align-items-center gap-2">
+										<div style="width: 20px;height: 13px;background-color: #e6f1f6;"></div>
+										<span>Peserta Baru</span>
+									</div>
+									<div class="ms-auto d-flex align-items-center gap-2">
+										<label for="sort" class="mb-0">Urutkan:</label>
+										<select id="sort" class="form-select form-select-sm w-auto" x-model="sortOrder" @change="sortMembers">
+											<option value="desc">Terbaru</option>
+											<option value="asc">Terlama</option>
+										</select>
+										<button @click="downloadCSV" class="btn btn-sm btn-outline-primary">
+											<i class="bi bi-download"></i> Unduh Data
+										</button>
+									</div>
+								</div>
+								<table class="w-100 mb-0 align-middle custom-table">
+									<thead>
+										<tr>
+											<th>Nama</th>
+											<th class="d-none d-md-table-cell">Email</th>
+											<th class="d-none d-lg-table-cell">Profesi</th>
+											<th class="d-none d-lg-table-cell">Tanggal Bergabung</th>
+											<th class="d-none d-lg-table-cell">Tanggal Lulus</th>
+											<th>Status & Progres</th>
+										</tr>
+									</thead>
+									<tbody>
+										<template x-for="member in filteredMembers" :key="member.user_id">
+											<tr :class="member.from == 'mapping' ? 'bg-warning-2' : 'bg-primary-2'">
+												<td>
+													<div class="fw-semibold" x-text="member.fullname"></div>
+													<a :href="`https://wa.me/${member.whatsapp}`"
+														target="_blank"
+														class="small"
+														x-text="member.whatsapp"></a>
+													<div class="d-block d-md-none" x-text="member.email"></div>
+												</td>
+												<td class="d-none d-md-table-cell">
+													<span x-text="member.email"></span>
+												</td>
+												<td class="d-none d-lg-table-cell">
+													<span x-text="member.occupation || '-'"></span>
+												</td>
+												<td class="d-none d-lg-table-cell">
+													<span x-text="member.joined_at ? new Date(member.joined_at).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'}) : '-'"></span>
+												</td>
+												<td class="d-none d-lg-table-cell">
+													<span x-text="member.graduated_at ? new Date(member.graduated_at).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'}) : '-'"></span>
+												</td>
+												<td>
+													<!-- badge status -->
+													<div class="mb-1">
+														<template x-if="member.graduate == 1">
+															<span class="badge bg-success fw-semibold">Tuntas</span>
+														</template>
+														<template x-if="member.progress == 100 && member.total_live_session >= 1 && member.graduate != 1">
+															<span class="badge bg-secondary fw-semibold">Belum Klaim Sertifikat</span>
+														</template>
+														<template x-if="member.progress == 100 && member.total_live_session == 0 && member.graduate != 1">
+															<span class="badge bg-warning fw-semibold">Belum Live</span>
+														</template>
+														<template x-if="member.progress != 100 && member.total_live_session >= 1 && member.graduate != 1">
+															<span class="badge bg-warning fw-semibold">Belum Course</span>
+														</template>
+														<template x-if="member.progress < 100 && member.total_live_session == 0 && member.graduate != 1">
+															<span class="badge bg-secondary-subtle text-dark fw-semibold">Masih Belajar</span>
+														</template>
+													</div>
+
+													<!-- statistik progres -->
+													<div class="d-flex align-items-center gap-2 text-muted small">
+														<span><i class="bi bi-journal-bookmark text-success"></i> <span x-text="member.progress + '%'"></span></span>
+														<span><i class="bi bi-broadcast text-danger"></i> <span x-text="member.total_live_session + 'x'"></span></span>
+													</div>
+												</td>
+											</tr>
+										</template>
+									</tbody>
+								</table>
+							</div>
+
+
+						</div>
+					</div>
+				</template>
+
+			</div>
+		</div>
+
+	</template>
+
+	<!-- Show loading state  -->
+	<div x-show="ui.loading === true">
+		<div class="appContent pt-2 pb-4" style="min-height:90vh">
+			<div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
+				<div class="spinner-border text-primary" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			</div>
 		</div>
 	</div>
 
