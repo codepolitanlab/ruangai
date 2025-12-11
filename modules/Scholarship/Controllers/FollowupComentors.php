@@ -202,8 +202,8 @@ class FollowupComentors extends AdminController
                              ->getRowArray();
 
             if ($participant) {
-                // Cek apakah reference_comentor masih null dan is_reference_followup = 1
-                if (empty($participant['reference_comentor']) && $participant['is_reference_followup'] == 1) {
+                // Cek apakah reference_comentor masih null atau is_reference_followup = 1
+                if (empty($participant['reference_comentor']) || $participant['is_reference_followup'] == 1) {
                     
                     // Update data peserta dengan kode comentor
                     $updateData = [
