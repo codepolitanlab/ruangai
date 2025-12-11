@@ -12,7 +12,7 @@ class CourseLesson extends Model
     protected $returnType             = 'array';
     protected $useSoftDeletes         = true;
     protected $protectFields          = true;
-    protected $allowedFields          = ['course_id', 'topic_id', 'lesson_title', 'lesson_order', 'lesson_slug', 'text', 'quiz', 'type', 'status', 'free', 'video_diupload', 'video_bunny', 'duration'];
+    protected $allowedFields          = ['course_id', 'topic_id', 'lesson_title', 'lesson_order', 'lesson_slug', 'text', 'quiz', 'type', 'status', 'free', 'mandatory', 'video_diupload', 'video_bunny', 'duration'];
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
     protected array $casts            = [];

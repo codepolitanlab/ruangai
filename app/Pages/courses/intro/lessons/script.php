@@ -28,32 +28,21 @@
         },
 
         nextLesson(lessonsCompleted) {
-            if (!lessonsCompleted || lessonsCompleted.length === 0) return null;
-            
-            const lastProgressId = this.$root?.data?.last_progress_lesson_id;
-            
-            // If we have last progress, find next uncompleted after that progress
-            if (lastProgressId) {
-                const lastProgressIndex = lessonsCompleted.findIndex(item => item.id == lastProgressId);
-                if (lastProgressIndex !== -1) {
-                    // Look for next uncompleted lesson from last progress onwards
-                    for (let i = lastProgressIndex; i < lessonsCompleted.length; i++) {
-                        if (!lessonsCompleted[i].completed) {
-                            return lessonsCompleted[i].id;
-                        }
-                    }
-                }
-            }
-            
-            // Fallback: return first uncompleted lesson
-            const nextItem = lessonsCompleted.find(item => !item.completed);
+            // Cari lesson mandatory yang belum completed
+            const nextItem = lessonsCompleted.find(item => item.mandatory == 1 && item.completed === false);
             return nextItem ? nextItem.id : null;
         },
 
         // Method untuk mengecek apakah lesson bisa diakses
         canAccessLesson(lesson_id, lessonsCompleted) {
-            // Cek apakah lesson_id sudah di-complete
             const found = lessonsCompleted.find(item => item.id === lesson_id);
+            
+            // Lesson non-mandatory selalu bisa diakses
+            if (found && found.mandatory != 1) {
+                return true;
+            }
+
+            // Cek apakah lesson_id sudah di-complete
             if (found && found.completed === true) {
                 return true;
             }
@@ -68,7 +57,9 @@
         },
 
         countPercentageCompleteness(numCompleted, lessonsCompleted) {
-            return Math.round(numCompleted / Object.keys(lessonsCompleted).length * 100);
+            // Hitung hanya lesson mandatory
+            const mandatoryCount = lessonsCompleted.filter(l => l.mandatory == 1).length;
+            return mandatoryCount > 0 ? Math.round(numCompleted / mandatoryCount * 100) : 0;
         }
         ,
         async navigateToTargetLesson() {

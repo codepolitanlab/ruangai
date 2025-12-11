@@ -44,13 +44,12 @@
 
     <!-- Show Expire Alert -->
     <template x-if="data.is_expire">
-        <div class="card bg-warning-2 rounded-4 mb-3 shadow-none">
+        <div class="card bg-secondary rounded-4 mb-3 shadow-none">
             <div class="card-body d-flex gap-3">
-                <i class="bi bi-stopwatch-fill text-white display-3 shaky-icon"></i>
+                <i class="bi bi-stopwatch-fill text-white display-3"></i>
                 <div>
-                    <h4 class="text-white">Program Belajar Chapter 3 Sudah Dibuka!</h4>
-                    <p class="mb-3 text-white">Kamu dapat melanjutkan belajar dengan bergabung di Chapter 3 dengan mengklik tombol di bawah ini untuk mendaftar ulang.</p>
-                    <button class="btn btn-light" @click="heregister"><i class="bi bi-file-earmark-arrow-up"></i> Daftar Ulang ke Chapter 3</button>
+                    <h4 class="text-white">Program Belajar Chapter 3 Sudah Ditutup</h4>
+                    <p class="mb-3 text-white">Pendaftaran untuk Chapter 3 telah ditutup. Nantikan informasi untuk chapter berikutnya.</p>
                 </div>
             </div>
         </div>

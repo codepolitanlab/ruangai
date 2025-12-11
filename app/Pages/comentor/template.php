@@ -193,6 +193,9 @@
 									<tr>
 										<th>Nama</th>
 										<th class="d-none d-md-table-cell">Email</th>
+										<th class="d-none d-lg-table-cell">Profesi</th>
+										<th class="d-none d-lg-table-cell">Tanggal Bergabung</th>
+										<th class="d-none d-lg-table-cell">Tanggal Lulus</th>
 										<th>Status & Progres</th>
 									</tr>
 								</thead>
@@ -209,6 +212,15 @@
 											</td>
 											<td class="d-none d-md-table-cell">
 												<span x-text="member.email"></span>
+											</td>
+											<td class="d-none d-lg-table-cell">
+												<span x-text="member.occupation || '-'"></span>
+											</td>
+											<td class="d-none d-lg-table-cell">
+												<span x-text="member.joined_at ? new Date(member.joined_at).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'}) : '-'"></span>
+											</td>
+											<td class="d-none d-lg-table-cell">
+												<span x-text="member.graduated_at ? new Date(member.graduated_at).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'}) : '-'"></span>
 											</td>
 											<td>
 												<!-- badge status -->

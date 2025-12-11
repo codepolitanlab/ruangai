@@ -95,6 +95,7 @@ class PageController extends BaseController
                     course_lessons.course_id,
                     course_lessons.lesson_title,
                     course_lessons.topic_id,
+                    course_lessons.mandatory,
                     course_topics.topic_order,
                     course_lessons.lesson_order,
                     course_topics.topic_title,
@@ -103,6 +104,7 @@ class PageController extends BaseController
                 ->join('course_topics', 'course_topics.id = course_lessons.topic_id')
                 ->where('course_lessons.course_id', $course_id)
                 ->where('course_lessons.deleted_at', null)
+                ->where('course_lessons.mandatory', 1)
                 ->orderBy('course_topics.topic_order', 'ASC')
                 ->orderBy('course_lessons.lesson_order', 'ASC')
                 ->get()
@@ -257,18 +259,20 @@ class PageController extends BaseController
     {
         $db = \Config\Database::connect();
 
-        $course = $db->table('course_lessons')
-            ->select('courses.id as course_id, courses.slug as course_slug')
+        $lesson = $db->table('course_lessons')
+            ->select('courses.id as course_id, courses.slug as course_slug, course_lessons.mandatory')
             ->join('courses', 'courses.id = course_lessons.course_id')
             ->where('course_lessons.id', $lesson_id)
             ->where('course_lessons.course_id', $course_id)
+            ->where('course_lessons.status', 1)
+            ->where('course_lessons.deleted_at', null)
             ->get()
             ->getRowArray();
 
-        if (! $course) {
+        if (! $lesson) {
             return [
                 'status'  => 'failed',
-                'message' => 'Course tidak ditemukan',
+                'message' => 'Course tidak ditemukan atau tidak tersedia',
             ];
         }
 
@@ -276,7 +280,7 @@ class PageController extends BaseController
         $existingProgress = $db->table('course_lesson_progress')
             ->where('user_id', $user_id)
             ->where('lesson_id', $lesson_id)
-            ->where('course_id', $course['course_id'])
+            ->where('course_id', $lesson['course_id'])
             ->get()
             ->getRowArray();
 
@@ -285,19 +289,21 @@ class PageController extends BaseController
             $progressData = [
                 'user_id'   => $user_id,
                 'lesson_id' => $lesson_id,
-                'course_id' => $course['course_id'],
+                'course_id' => $lesson['course_id'],
             ];
 
             $inserted = $db->table('course_lesson_progress')->insert($progressData);
 
             if ($inserted) {
-                // Update progress di course_students
-                $this->updateCourseProgress($user_id, $course['course_id']);
+                // Update progress di course_students hanya jika lesson mandatory
+                if ($lesson['mandatory'] == 1) {
+                    $this->updateCourseProgress($user_id, $lesson['course_id']);
+                }
 
                 return [
                     'status'  => 'success',
                     'message' => 'Berhasil menyelesaikan materi',
-                    'course'  => $course,
+                    'course'  => $lesson,
                 ];
             }
 
@@ -313,10 +319,11 @@ class PageController extends BaseController
     {
         $db = \Config\Database::connect();
 
-        // Hitung progress course
+        // Hitung progress course (hanya lesson mandatory)
         $totalQuery = $db->table('course_lessons')
             ->select('course_lessons.id, course_lesson_progress.lesson_id')
             ->where('course_lessons.course_id', $course_id)
+            ->where('course_lessons.mandatory', 1)
             ->join('course_lesson_progress', 'course_lesson_progress.lesson_id = course_lessons.id AND course_lesson_progress.user_id = ' . $user_id, 'left')
             ->get()
             ->getResultArray();
