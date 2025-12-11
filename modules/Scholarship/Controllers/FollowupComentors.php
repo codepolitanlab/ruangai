@@ -202,9 +202,8 @@ class FollowupComentors extends AdminController
                              ->getRowArray();
 
             if ($participant) {
-                // Cek apakah reference_comentor masih null dan is_reference_followup masih 0 atau null
-                if (empty($participant['reference_comentor']) && 
-                    (empty($participant['is_reference_followup']) || $participant['is_reference_followup'] == 0)) {
+                // Cek apakah reference_comentor masih null dan is_reference_followup = 1
+                if (empty($participant['reference_comentor']) && $participant['is_reference_followup'] == 1) {
                     
                     // Update data peserta dengan kode comentor
                     $updateData = [
@@ -224,9 +223,13 @@ class FollowupComentors extends AdminController
                         $failedEmails[] = $email . ' (gagal update)';
                     }
                 } else {
-                    // Peserta sudah punya comentor atau sudah di-followup
+                    // Peserta sudah punya comentor atau is_reference_followup bukan 1
                     $failedCount++;
-                    $failedEmails[] = $email . ' (sudah memiliki comentor)';
+                    if (!empty($participant['reference_comentor'])) {
+                        $failedEmails[] = $email . ' (sudah memiliki comentor: ' . $participant['reference_comentor'] . ')';
+                    } else {
+                        $failedEmails[] = $email . ' (is_reference_followup bukan 1)';
+                    }
                 }
             } else {
                 $failedCount++;
