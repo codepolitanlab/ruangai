@@ -1,21 +1,7 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <script>
   Alpine.data("comentor", function() {
-    let base = $heroic({
-      title: `<?= $page_title ?>`,
-      url: `/comentor/data/`,
-      meta: {
-        expandDesc: false,
-        graduate: false,
-        email: '',
-        isValidEmail: false,
-        loading: false,
-        videoTutorial: null
-      }
-    })
-
     return {
-      ...base,
       title: "Co-Mentor",
       errorMessage: null,
       search: "", // keyword pencarian
@@ -23,14 +9,9 @@
       sortOrder: "asc",
 
       init() {
-        base.init.call(this);
-
-        // awalnya tampilkan semua data
-        this.$watch("data", (val) => {
-          if (val?.members) {
-            this.filteredMembers = [...val.members].sort((a, b) => new Date(a.joined_at) - new Date(b.joined_at));
-          }
-        });
+        if(this.ui.empty === false) {
+          this.filteredMembers = [...this.data.members].sort((a, b) => new Date(a.joined_at) - new Date(b.joined_at));
+        }
 
         // auto filter saat ketik
         this.$watch("search", (val) => {
