@@ -247,13 +247,16 @@ class FollowupComentors extends AdminController
         }
 
         // Set flash message
-        $message = "Import selesai. Berhasil: {$successCount}, Gagal: {$failedCount}";
+        $message = "<strong>Import selesai.</strong><br>";
+        $message .= "✓ Berhasil: <strong>{$successCount}</strong> data<br>";
+        $message .= "✗ Gagal: <strong>{$failedCount}</strong> data";
         
         if (!empty($failedEmails)) {
-            $message .= "<br>Email gagal: " . implode(', ', array_slice($failedEmails, 0, 10));
-            if (count($failedEmails) > 10) {
-                $message .= " dan " . (count($failedEmails) - 10) . " lainnya";
+            $message .= "<br><br><strong>Detail Email yang Gagal:</strong><ul style='margin-top: 10px; margin-bottom: 0;'>";
+            foreach ($failedEmails as $failedEmail) {
+                $message .= "<li>" . htmlspecialchars($failedEmail) . "</li>";
             }
+            $message .= "</ul>";
         }
 
         if ($successCount > 0) {
