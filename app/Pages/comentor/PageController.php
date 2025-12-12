@@ -35,11 +35,13 @@ class PageController extends BaseController
                 MAX(scholarship_participants.whatsapp) as whatsapp,
                 MAX(scholarship_participants.email) as email,
                 MAX(scholarship_participants.occupation) as occupation,
+                MAX(scholarship_participants.program) as program,
                 MAX(scholarship_participants.created_at) as joined_at, 
                 MAX(course_students.graduate) as graduate, 
                 MAX(course_students.progress) as progress, 
                 MAX(course_students.cert_claim_date) as cert_claim_date, 
                 COUNT(CASE WHEN live_attendance.status = 1 THEN 1 END) as total_live_session,
+                COUNT(CASE WHEN live_attendance.status = 1 AND live_attendance.created_at >= '2025-08-12' THEN 1 END) as valid_live_since_batch2,
                 MIN(CASE WHEN live_attendance.status = 1 THEN live_attendance.created_at END) as graduated_at,
                 scholarship_participants.reference_comentor
             ")
@@ -64,6 +66,11 @@ class PageController extends BaseController
         ];
 
         foreach ($members as $key => $member) {
+            // Fix untuk batch 1: graduated_at hanya valid jika ada live attendance sejak 2025-08-12
+            if ($member['program'] === 'RuangAI2025B1' && $member['valid_live_since_batch2'] == 0) {
+                $members[$key]['graduated_at'] = null;
+            }
+            
             $members[$key]['status'] = $member['graduate'] == 1 ? 'lulus' : 'terdaftar';
             $members[$key]['progress'] = (int) $member['progress'];
             $members[$key]['total_live_session'] = (int) $member['total_live_session'];
