@@ -34,12 +34,28 @@
 			color: #000;
 		}
 
-		.bg-warning-2 {
-			background-color: #ecba73ff;
-		}
-
 		.bg-primary-2 {
 			background-color: #e6f1f6;
+		}
+
+		.followup-indicator {
+			display: inline-block;
+			width: 10px;
+			height: 10px;
+			background-color: #ffc107;
+			border-radius: 50%;
+			margin-right: 8px;
+			vertical-align: middle;
+		}
+
+		.register-indicator {
+			display: inline-block;
+			width: 10px;
+			height: 10px;
+			background-color: #28a745;
+			border-radius: 50%;
+			margin-right: 8px;
+			vertical-align: middle;
 		}
 
 		.class-card {
@@ -180,12 +196,12 @@
 							<div class="table-responsive">
 								<div class="d-flex gap-3 mb-3">
 									<div class="d-flex align-items-center gap-2">
-										<div style="width: 20px;height: 13px;background-color: #ecba73ff;"></div>
-										<span>Peserta Lama</span>
+										<div class="followup-indicator"></div>
+										<span>Peserta Followup</span>
 									</div>
 									<div class="d-flex align-items-center gap-2">
-										<div style="width: 20px;height: 13px;background-color: #e6f1f6;"></div>
-										<span>Peserta Baru</span>
+										<div class="register-indicator"></div>
+										<span>Peserta Referral</span>
 									</div>
 									<div class="ms-auto d-flex align-items-center gap-2">
 										<label for="sort" class="mb-0">Urutkan:</label>
@@ -210,10 +226,14 @@
 										</tr>
 									</thead>
 									<tbody>
-										<template x-for="member in filteredMembers" :key="member.user_id">
-											<tr :class="member.from == 'mapping' ? 'bg-warning-2' : 'bg-primary-2'">
-												<td>
-													<div class="fw-semibold" x-text="member.fullname"></div>
+									<template x-for="member in filteredMembers" :key="member.user_id">
+										<tr class="bg-primary-2">
+											<td>
+												<div class="fw-semibold">
+													<span x-show="member.from == 'mapping'" class="followup-indicator" title="Peserta Followup"></span>
+													<span x-show="member.from != 'mapping'" class="register-indicator" title="Peserta Referral"></span>
+													<span x-text="member.fullname"></span>
+												</div>
 													<a :href="`https://wa.me/${member.whatsapp}`"
 														target="_blank"
 														class="small"
