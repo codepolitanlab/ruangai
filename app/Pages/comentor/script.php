@@ -66,7 +66,7 @@
 
         try {
           // Buat header CSV
-          const headers = ["Nama", "Email", "Whatsapp", "Status", "Progres", "Live Session"];
+          const headers = ["Nama", "Email", "Whatsapp", "Profesi", "Tanggal Bergabung", "Tanggal Lulus", "Status", "Progres", "Live Session"];
 
           // Mapping data ke baris CSV
           const rows = this.filteredMembers.map(member => {
@@ -77,10 +77,22 @@
             else if (member.progress == 100 && member.total_live_session == 0) status = "Belum Live";
             else if (member.progress != 100 && member.total_live_session >= 1) status = "Belum Course";
 
+            // Format tanggal
+            const tanggalBergabung = member.joined_at 
+              ? new Date(member.joined_at).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'})
+              : '-';
+            
+            const tanggalLulus = member.graduated_at 
+              ? new Date(member.graduated_at).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'})
+              : '-';
+
             return [
               member.fullname,
               member.email,
               member.whatsapp || '',
+              member.occupation || '-',
+              tanggalBergabung,
+              tanggalLulus,
               status,
               member.progress + '%',
               member.total_live_session + 'x'
