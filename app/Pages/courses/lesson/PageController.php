@@ -89,43 +89,59 @@ class PageController extends BaseController
             $lastProgressLessonId = $lastProgress['lesson_id'] ?? null;
 
             // Query utama untuk mendapatkan semua lesson dengan urutan yang benar
-            $lessons = $db->table('course_lessons')
-                ->select('
-                    course_lessons.id,
-                    course_lessons.course_id,
-                    course_lessons.lesson_title,
-                    course_lessons.topic_id,
-                    course_lessons.mandatory,
-                    course_topics.topic_order,
-                    course_lessons.lesson_order,
-                    course_topics.topic_title,
-                    course_lessons.free
-                ')
-                ->join('course_topics', 'course_topics.id = course_lessons.topic_id')
-                ->where('course_lessons.course_id', $course_id)
-                ->where('course_lessons.deleted_at', null)
-                ->where('course_lessons.mandatory', 1)
-                ->orderBy('course_topics.topic_order', 'ASC')
-                ->orderBy('course_lessons.lesson_order', 'ASC')
-                ->get()
-                ->getResultArray();
+            // if (! $lessons = cache('course_' . $course_id . '_lessons')) {
+                $lessons = $db->table('course_lessons')
+                    ->select('
+                        course_lessons.id,
+                        course_lessons.course_id,
+                        course_lessons.lesson_title,
+                        course_lessons.topic_id,
+                        course_lessons.mandatory,
+                        course_lessons.duration,
+                        course_topics.topic_order,
+                        course_lessons.lesson_order,
+                        course_topics.topic_title,
+                        course_lessons.free
+                    ')
+                    ->join('course_topics', 'course_topics.id = course_lessons.topic_id')
+                    ->where('course_lessons.course_id', $course_id)
+                    ->where('course_lessons.status', 1)
+                    ->where('course_lessons.deleted_at', null)
+                    ->orderBy('course_topics.topic_order', 'ASC')
+                    ->orderBy('course_lessons.lesson_order', 'ASC')
+                    ->get()
+                    ->getResultArray();
+
+                // Save into the cache for 1 hours
+                // cache()->save('course_' . $course_id . '_lessons', $lessons, 3600);
+            // }
 
             // Menambahkan status completed ke setiap lesson
             $orderedLessons = [];
+            $orderedMandatoryLessons = [];
 
             foreach ($lessons as $lessonItem) {
-                $orderedLessons[] = array_merge($lessonItem, [
-                    'is_completed' => in_array($lessonItem['id'], $completedLessonIds, true),
+                $isCompleted = in_array($lessonItem['id'], $completedLessonIds, true);
+                $lessonWithStatus = array_merge($lessonItem, [
+                    'is_completed' => $isCompleted,
                 ]);
+                
+                $orderedLessons[] = $lessonWithStatus;
+                
+                // Juga simpan hanya yang mandatory untuk navigasi prev/next
+                if ($lessonItem['mandatory'] == 1) {
+                    $orderedMandatoryLessons[] = $lessonWithStatus;
+                }
             }
 
-            // Group lessons by topic title for UI
+            // Group lessons by topic title for UI (semua lesson)
             $lessonsGrouped = [];
             foreach ($orderedLessons as $l) {
                 $lessonsGrouped[$l['topic_title']][] = $l;
             }
 
-            $course['lessons'] = $orderedLessons;
+            $course['lessons'] = $orderedMandatoryLessons; // untuk prev/next hanya mandatory
+            $course['lessons_all'] = $orderedLessons; // semua lesson termasuk opsional
             $course['lessons_grouped'] = $lessonsGrouped;
             $course['last_progress_lesson_id'] = $lastProgressLessonId;
             $lesson['is_completed'] = in_array($lesson['id'], $completedLessonIds, true);
@@ -159,6 +175,7 @@ class PageController extends BaseController
                 $course_info = [];
             }
             $course_info['lessons'] = $course['lessons'];
+            $course_info['lessons_all'] = $course['lessons_all'];
             $course_info['lessons_grouped'] = $course['lessons_grouped'];
             $course_info['last_progress_lesson_id'] = $lastProgressLessonId;
             $course_info['progress'] = $student['progress'] ?? 0;
