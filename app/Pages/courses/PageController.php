@@ -19,17 +19,20 @@ class PageController extends BaseController
         $this->data['name'] = $jwt->user['name'];
         $db = \Config\Database::connect();
 
-        // Subquery untuk menghitung total modul per course
+        // Subquery untuk menghitung total modul mandatory per course
         $totalModuleSubquery = "(SELECT COUNT(id) 
                         FROM course_lessons 
-                        WHERE course_lessons.course_id = courses.id) 
+                        WHERE course_lessons.course_id = courses.id 
+                        AND course_lessons.mandatory = 1) 
                         AS total_module";
 
-        // Subquery untuk menghitung modul yang sudah selesai oleh user per course
+        // Subquery untuk menghitung modul mandatory yang sudah selesai oleh user per course
         $totalCompletedSubquery = "(SELECT COUNT(clp.id) 
                             FROM course_lesson_progress clp
                             JOIN course_lessons cl ON clp.lesson_id = cl.id
-                            WHERE cl.course_id = courses.id AND clp.user_id = {$db->escape($jwt->user_id)})
+                            WHERE cl.course_id = courses.id 
+                            AND cl.mandatory = 1 
+                            AND clp.user_id = {$db->escape($jwt->user_id)})
                             AS total_completed";
 
         $this->data['courses'] = $db->table('course_students')
