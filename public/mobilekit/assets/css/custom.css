@@ -301,3 +301,6 @@ div#lesson_text_container img {
   margin-right: 6px;
     vertical-align: middle;
 }
+.sidebar .image-listview > li a.item {
+    padding-right: 16px;
+}

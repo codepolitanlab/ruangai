@@ -8,11 +8,17 @@ $bottommenu = [
         'module' => 'homepage'
     ],
     [
-        'label'  => 'Misi Beasiswa',
+        'label'  => 'Beasiswa',
         'url'    => '/courses/intro/1/dasar-dan-penggunaan-generative-ai',
-        'icon'   => 'bi bi-megaphone',
         'icon'   => 'bi bi-journal-check',
         'module' => 'misi_beasiswa',
+    ],
+    [
+        'label'  => 'Kompetisi',
+        'url'    => '/challenge',
+        'icon'   => 'bi bi-trophy',
+        'module' => 'challenge',
+        'badge'  => ['warning', 'NEW'],
     ],
     [
         'label'  => 'Kelas Saya',
@@ -46,7 +52,7 @@ $bottommenu = [
         :class="(data?.module ?? '') == '<?= $menu['module'] ?>' ? 'active' : ''">
         <div class="col">
             <i class="<?= $menu['icon'] ?>"></i>
-            <strong class=""><?= $menu['label'] ?></strong>
+            <strong><?= $menu['label'] ?></strong>
         </div>
     </a>
     <?php endforeach; ?>
@@ -70,6 +76,9 @@ $bottommenu = [
                 </div>
                 <div class="in">
                     <?= $menu['label'] ?>
+                    <?php if($menu['badge'] ?? null): ?>
+                        <span class="badge bg-<?= $menu['badge'][0] ?>"><?= $menu['badge'][1] ?></span>
+                    <?php endif; ?>
                 </div>
             </a>
         </li>

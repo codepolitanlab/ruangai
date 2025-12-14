@@ -1,0 +1,388 @@
+<?php
+
+namespace App\Pages\challenge\submit;
+
+use App\Pages\BaseController;
+use Challenge\Models\ChallengeAlibabaModel;
+use Challenge\Config\Challenge as ChallengeConfig;
+
+class PageController extends BaseController
+{
+    protected $model;
+    protected $config;
+
+    public $data = [
+        'page_title' => 'Submit Challenge - WAN Vision Clash',
+        'module' => 'challenge',
+        'active_page' => 'challenge_submit',
+    ];
+
+    public function __construct()
+    {
+        $this->model = new ChallengeAlibabaModel();
+        $this->config = new ChallengeConfig();
+        helper('challenge');
+
+        $this->data['module'] = 'challenge';
+        $this->data['active_page'] = 'challenge_submit';
+    }
+
+    /**
+     * Display submission form
+     */
+    public function getData()
+    {
+        $Heroic = new \App\Libraries\Heroic();
+        $jwt = $Heroic->checkToken(true);
+
+        // Check if registration is open
+        if (!$this->config->isRegistrationOpen()) {
+            return $this->respond([
+                'success' => 0,
+                'message' => 'Pendaftaran belum dibuka atau sudah ditutup',
+                'registration_start' => $this->config->registrationStart,
+                'registration_end' => $this->config->registrationEnd,
+            ]);
+        }
+
+        // Check if user has an existing submission (we will still allow edit if status is pending)
+        $existingSubmission = $this->model->getUserSubmission($jwt->user_id);
+
+        if ($existingSubmission) {
+            // If not pending, we block new submissions
+            if ($existingSubmission['status'] !== 'pending') {
+                return $this->respond([
+                    'success' => 0,
+                    'message' => 'Anda sudah memiliki submission aktif. Satu akun hanya boleh submit satu kali.',
+                    'existing_submission' => $existingSubmission,
+                ]);
+            }
+
+            $this->data['existing_submission'] = $existingSubmission;
+            $this->data['can_edit'] = true;
+        } else {
+            $this->data['existing_submission'] = null;
+            $this->data['can_edit'] = false;
+        }
+
+        // Get user info
+        $db = \Config\Database::connect();
+        $user = $db->table('users')
+            ->select('id, name, email, phone')
+            ->where('id', $jwt->user_id)
+            ->get()
+            ->getRowArray();
+
+        $this->data['user'] = $user;
+        $this->data['config'] = [
+            'max_team_members' => $this->config->maxTeamMembers,
+            'max_file_size' => $this->config->maxFileSize,
+            'registration_end' => $this->config->registrationEnd,
+        ];
+
+        // Indicate success
+        $this->data['success'] = 1;
+        return $this->respond($this->data);
+    }
+
+    /**
+     * Handle form submission
+     */
+    public function postIndex()
+    {
+        $Heroic = new \App\Libraries\Heroic();
+        $jwt = $Heroic->checkToken(true);
+
+        // Check if registration is open
+        if (!$this->config->isRegistrationOpen()) {
+            return $this->respond([
+                'success' => 0,
+                'errors' => ['general' => 'Pendaftaran belum dibuka atau sudah ditutup'],
+            ]);
+        }
+
+        // Determine if this is an update or new submission
+        $submissionId = $this->request->getPost('submission_id');
+        $isUpdate = false;
+
+        if ($submissionId) {
+            // Verify user can edit this submission
+            if (!$this->model->canEdit($submissionId, $jwt->user_id)) {
+                return $this->respond([
+                    'success' => 0,
+                    'errors' => ['general' => 'Anda tidak dapat mengedit submission ini'],
+                ]);
+            }
+            $isUpdate = true;
+        } else {
+            // For new submissions, ensure there's no active (non-rejected) submission
+            $existingSubmission = $this->model->getUserSubmission($jwt->user_id);
+            if ($existingSubmission) {
+                return $this->respond([
+                    'success' => 0,
+                    'errors' => ['general' => 'Anda sudah memiliki submission aktif'],
+                ]);
+            }
+        }
+
+        // Validation rules
+        $validation = service('validation');
+        $validation->setRules([
+            'twitter_post_url' => [
+                'rules' => 'required|valid_url',
+                'errors' => [
+                    'required' => 'URL post Twitter wajib diisi',
+                    'valid_url' => 'URL tidak valid',
+                ],
+            ],
+            'video_title' => [
+                'rules' => 'required|min_length[5]|max_length[255]',
+                'errors' => [
+                    'required' => 'Judul video wajib diisi',
+                    'min_length' => 'Judul video minimal 5 karakter',
+                    'max_length' => 'Judul video maksimal 255 karakter',
+                ],
+            ],
+            'video_description' => [
+                'rules' => 'required|min_length[10]',
+                'errors' => [
+                    'required' => 'Deskripsi video wajib diisi',
+                    'min_length' => 'Deskripsi video minimal 10 karakter',
+                ],
+            ],
+            'team_members' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Data team members wajib diisi',
+                ],
+            ],
+            'ethical_statement_agreed' => [
+                'rules' => 'required|in_list[1]',
+                'errors' => [
+                    'required' => 'Anda harus menyetujui pernyataan etika',
+                    'in_list' => 'Anda harus menyetujui pernyataan etika',
+                ],
+            ],
+        ]);
+
+        if (!$validation->run($this->request->getPost())) {
+            return $this->respond([
+                'success' => 0,
+                'errors' => $validation->getErrors(),
+            ]);
+        }
+
+        // Validate team members JSON
+        $teamMembersJson = $this->request->getPost('team_members');
+        $challengeRules = new \Challenge\Validation\ChallengeRules();
+        $error = '';
+        
+        if (!$challengeRules->team_members_json($teamMembersJson, $error)) {
+            return $this->respond([
+                'success' => 0,
+                'errors' => ['team_members' => $error],
+            ]);
+        }
+
+        // Validate Twitter URL format
+        $twitterUrl = $this->request->getPost('twitter_post_url');
+        if (!$challengeRules->twitter_url_format($twitterUrl, $error)) {
+            return $this->respond([
+                'success' => 0,
+                'errors' => ['twitter_post_url' => $error],
+            ]);
+        }
+
+        // Handle file uploads
+        $uploadedFiles = [];
+        $uploadPath = ensure_upload_directory($jwt->user_id);
+
+        // For update, fetch existing submission files
+        $existingFiles = [];
+        if ($isUpdate) {
+            $existing = $this->model->find($submissionId);
+            $existingFiles = [
+                'prompt_file' => $existing['prompt_file'] ?? null,
+                // 'params_file' => $existing['params_file'] ?? null,
+                'assets_list_file' => $existing['assets_list_file'] ?? null,
+                'alibaba_screenshot' => $existing['alibaba_screenshot'] ?? null,
+                'twitter_follow_screenshot' => $existing['twitter_follow_screenshot'] ?? null,
+            ];
+        }
+
+        try {
+            // Upload prompt file (PDF/TXT)
+            $promptFile = $this->request->getFile('prompt_file');
+            if ($promptFile && $promptFile->isValid() && !$promptFile->hasMoved()) {
+                // Replace old file on update
+                if ($isUpdate && !empty($existingFiles['prompt_file'])) {
+                    $oldFile = $uploadPath . $existingFiles['prompt_file'];
+                    if (file_exists($oldFile)) {
+                        unlink($oldFile);
+                    }
+                }
+                $promptFileName = $promptFile->getRandomName();
+                $promptFile->move($uploadPath, $promptFileName);
+                $uploadedFiles['prompt_file'] = $promptFileName;
+            } elseif ($isUpdate && !empty($existingFiles['prompt_file'])) {
+                // Keep existing prompt file if not re-uploaded
+                $uploadedFiles['prompt_file'] = $existingFiles['prompt_file'];
+            } else {
+                throw new \Exception('Prompt file wajib diupload');
+            }
+
+            // // Upload params file (JSON)
+            // $paramsFile = $this->request->getFile('params_file');
+            // if ($paramsFile && $paramsFile->isValid() && !$paramsFile->hasMoved()) {
+            //     // Replace old file on update
+            //     if ($isUpdate && !empty($existingFiles['params_file'])) {
+            //         $oldFile = $uploadPath . $existingFiles['params_file'];
+            //         if (file_exists($oldFile)) {
+            //             unlink($oldFile);
+            //         }
+            //     }
+            //     $paramsFileName = $paramsFile->getRandomName();
+            //     $paramsFile->move($uploadPath, $paramsFileName);
+                
+            //     // Validate JSON structure
+            //     $fullPath = $uploadPath . $paramsFileName;
+            //     if (!$challengeRules->json_params_structure($fullPath, $error)) {
+            //         unlink($fullPath);
+            //         throw new \Exception($error);
+            //     }
+                
+            //     $uploadedFiles['params_file'] = $paramsFileName;
+            // } elseif ($isUpdate && !empty($existingFiles['params_file'])) {
+            //     // Keep existing params file when not replaced
+            //     $uploadedFiles['params_file'] = $existingFiles['params_file'];
+            // } else {
+            //     throw new \Exception('Params file (JSON) wajib diupload');
+            // }
+
+            // Upload assets list file (TXT) - optional
+            $assetsFile = $this->request->getFile('assets_list_file');
+            if ($assetsFile && $assetsFile->isValid() && !$assetsFile->hasMoved()) {
+                if ($isUpdate && !empty($existingFiles['assets_list_file'])) {
+                    $oldFile = $uploadPath . $existingFiles['assets_list_file'];
+                    if (file_exists($oldFile)) {
+                        unlink($oldFile);
+                    }
+                }
+                $assetsFileName = $assetsFile->getRandomName();
+                $assetsFile->move($uploadPath, $assetsFileName);
+                $uploadedFiles['assets_list_file'] = $assetsFileName;
+            } elseif ($isUpdate && !empty($existingFiles['assets_list_file'])) {
+                $uploadedFiles['assets_list_file'] = $existingFiles['assets_list_file'];
+            }
+
+            // Upload Alibaba screenshot
+            $alibabaScreenshot = $this->request->getFile('alibaba_screenshot');
+            if ($alibabaScreenshot && $alibabaScreenshot->isValid() && !$alibabaScreenshot->hasMoved()) {
+                if ($isUpdate && !empty($existingFiles['alibaba_screenshot'])) {
+                    $oldFile = $uploadPath . $existingFiles['alibaba_screenshot'];
+                    if (file_exists($oldFile)) {
+                        unlink($oldFile);
+                    }
+                }
+                $alibabaFileName = $alibabaScreenshot->getRandomName();
+                $alibabaScreenshot->move($uploadPath, $alibabaFileName);
+                $uploadedFiles['alibaba_screenshot'] = $alibabaFileName;
+            } elseif ($isUpdate && !empty($existingFiles['alibaba_screenshot'])) {
+                $uploadedFiles['alibaba_screenshot'] = $existingFiles['alibaba_screenshot'];
+            } else {
+                throw new \Exception('Screenshot akun Alibaba Cloud wajib diupload');
+            }
+
+            // Upload Twitter follow screenshot
+            $twitterScreenshot = $this->request->getFile('twitter_follow_screenshot');
+            if ($twitterScreenshot && $twitterScreenshot->isValid() && !$twitterScreenshot->hasMoved()) {
+                if ($isUpdate && !empty($existingFiles['twitter_follow_screenshot'])) {
+                    $oldFile = $uploadPath . $existingFiles['twitter_follow_screenshot'];
+                    if (file_exists($oldFile)) {
+                        unlink($oldFile);
+                    }
+                }
+                $twitterFileName = $twitterScreenshot->getRandomName();
+                $twitterScreenshot->move($uploadPath, $twitterFileName);
+                $uploadedFiles['twitter_follow_screenshot'] = $twitterFileName;
+            } elseif ($isUpdate && !empty($existingFiles['twitter_follow_screenshot'])) {
+                $uploadedFiles['twitter_follow_screenshot'] = $existingFiles['twitter_follow_screenshot'];
+            } else {
+                throw new \Exception('Screenshot follow Twitter @codepolitan & @alibaba_cloud wajib diupload');
+            }
+
+        } catch (\Exception $e) {
+            // Clean up any uploaded files on error
+            foreach ($uploadedFiles as $file) {
+                if (file_exists($uploadPath . $file)) {
+                    unlink($uploadPath . $file);
+                }
+            }
+
+            return $this->respond([
+                'success' => 0,
+                'errors' => ['files' => $e->getMessage()],
+            ]);
+        }
+
+        // Prepare data for database
+        $data = [
+            'twitter_post_url' => $this->request->getPost('twitter_post_url'),
+            'video_title' => $this->request->getPost('video_title'),
+            'video_description' => $this->request->getPost('video_description'),
+            'team_members' => $teamMembersJson,
+            'prompt_file' => $uploadedFiles['prompt_file'],
+            // 'params_file' => $uploadedFiles['params_file'],
+            'assets_list_file' => $uploadedFiles['assets_list_file'] ?? null,
+            'alibaba_screenshot' => $uploadedFiles['alibaba_screenshot'],
+            'twitter_follow_screenshot' => $uploadedFiles['twitter_follow_screenshot'],
+            'ethical_statement_agreed' => 1,
+        ];
+
+        if ($isUpdate) {
+            // Update existing submission
+            $success = $this->model->update($submissionId, $data);
+            
+            if (!$success) {
+                return $this->respond([
+                    'success' => 0,
+                    'errors' => ['general' => 'Gagal mengupdate submission. Silakan coba lagi.'],
+                ]);
+            }
+
+            return $this->respond([
+                'success' => 1,
+                'message' => 'Submission berhasil diupdate!',
+                'submission_id' => $submissionId,
+            ]);
+        } else {
+            // Create new submission
+            $data['user_id'] = $jwt->user_id;
+            $data['challenge_id'] = $this->config->challengeId;
+            $data['status'] = 'pending';
+            $data['submitted_at'] = date('Y-m-d H:i:s');
+
+            $newSubmissionId = $this->model->insert($data);
+
+            if (!$newSubmissionId) {
+                // Clean up uploaded files
+                foreach ($uploadedFiles as $file) {
+                    if ($file && file_exists($uploadPath . $file)) {
+                        unlink($uploadPath . $file);
+                    }
+                }
+
+                return $this->respond([
+                    'success' => 0,
+                    'errors' => ['general' => 'Gagal menyimpan submission. Silakan coba lagi.'],
+                ]);
+            }
+
+            return $this->respond([
+                'success' => 1,
+                'message' => 'Submission berhasil dikirim! Tim kami akan mereview dalam 1-3 hari kerja.',
+                'submission_id' => $newSubmissionId,
+            ]);
+        }
+    }
+}

@@ -48,6 +48,7 @@ class Autoload extends AutoloadConfig
         'Certificate' => ROOTPATH . 'modules/Certificate',
         'Logviewer'   => ROOTPATH . 'modules/Logviewer',
         'Referral'    => ROOTPATH . 'modules/Referral',
+        'Challenge'   => ROOTPATH . 'modules/Challenge',
     ];
 
     /**

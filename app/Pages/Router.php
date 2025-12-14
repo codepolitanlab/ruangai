@@ -76,5 +76,7 @@ class Router
         '/reset_password' => [],
         '/reset_password/change/:token' => [],
         '/courses/reward/howto' => [],
+        '/challenge' => [],
+        '/challenge/submit' => [],
     ];
 }
