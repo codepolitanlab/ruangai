@@ -19,7 +19,7 @@
                     <p class="">Silahkan isi formulir di bawah ini untuk membuat akun RuangAI</p>
                 </div>
 
-                <div class="section mt-1 mb-5 px-0">
+                <div class="section mt-1 px-0">
                     <div>
                         <div class="form-group px-3 boxed">
                             <div class="text-start input-wrapper">
