@@ -33,6 +33,12 @@ $bottommenu = [
         'module' => 'reward'
     ],
     [
+        'label'  => 'Pustaka Prompt',
+        'url'    => '/prompts',
+        'icon'   => 'bi bi-input-cursor-text',
+        'module' => 'prompts'
+    ],
+    [
         'label'  => 'Keluar',
         'url'    => '/logout',
         'native' => true,

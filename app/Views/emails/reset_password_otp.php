@@ -2,7 +2,7 @@
 // Variabel tema
 $primaryColor   = '#164252';     // Warna utama
 $secondaryColor = '#E7E725';   // Warna aksen
-$logoUrl        = 'https://image.web.id/images/imageff1ca974457fdac4.png'; // Ganti dengan URL logo milik Boss Toni
+$logoUrl        = 'https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-logo-transparan.png'; // Ganti dengan URL logo milik Boss Toni
 ?>
 
 <!DOCTYPE html>

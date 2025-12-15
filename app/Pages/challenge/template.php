@@ -33,7 +33,7 @@
                             </div>
                         </div>
                     </div>
-          
+
                     <h5 class="card-title mt-4">Kategori Hadiah</h5>
                     <ul class="listview simple-listview">
                         <li>
@@ -53,7 +53,7 @@
                             <span class="text-muted">$200 Alibaba Cloud/orang</span>
                         </li>
                     </ul>
-              
+
                     <h5 class="card-title mt-4">Persyaratan</h5>
                     <ul class="mb-0">
                         <li>Akun Alibaba Cloud (Screenshot wajib)</li>

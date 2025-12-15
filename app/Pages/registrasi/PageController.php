@@ -6,10 +6,9 @@ use App\Pages\BaseController;
 
 class PageController extends BaseController
 {
-    public function getContent()
-    {
-        return pageView('registrasi/index', $this->data);
-    }
+    public $data = [
+        'page_title' => 'Masuk',
+    ];
 
     // Submit new user
     public function postIndex()
@@ -19,9 +18,27 @@ class PageController extends BaseController
 
         $validation->setRules([
             'fullname'        => 'required|min_length[2]',
-            'whatsapp'        => 'required',
+            'email'           => 'required|valid_email',
             'password'        => 'required|max_length[50]|min_length[6]',
             'repeat_password' => 'required|matches[password]',
+        ], [
+            'fullname' => [
+                'required'   => 'Nama lengkap wajib diisi',
+                'min_length' => 'Nama lengkap minimal 2 karakter',
+            ],
+            'email' => [
+                'required'    => 'Email wajib diisi',
+                'valid_email' => 'Format email tidak valid',
+            ],
+            'password' => [
+                'required'   => 'Kata sandi wajib diisi',
+                'max_length' => 'Kata sandi maksimal 50 karakter',
+                'min_length' => 'Kata sandi minimal 6 karakter',
+            ],
+            'repeat_password' => [
+                'required' => 'Ulangi kata sandi wajib diisi',
+                'matches'  => 'Ulangi kata sandi tidak sesuai dengan kata sandi',
+            ],
         ]);
 
         if (! $validation->run($request->getPost())) {
@@ -33,24 +50,16 @@ class PageController extends BaseController
         }
         $validData = $validation->getValidated();
 
-        // Make sure the number begin with 62
-        $phone = substr($validData['whatsapp'], 0, 1) === '0'
-        ? substr_replace($validData['whatsapp'], '62', 0, 1)
-        : $validData['whatsapp'];
-        if (substr($phone, 0, 1) === '8') {
-            $phone = '62' . $phone;
-        }
-
         // Get database pesantren
         $Heroic = new \App\Libraries\Heroic();
         $db     = \Config\Database::connect();
 
-        // Check if phone not exist
-        $found = $db->query('SELECT phone FROM users where phone = :phone:', ['phone' => $phone])->getRow();
+        // Check if email not exist
+        $found = $db->query('SELECT email FROM users where email = :email:', ['email' => $validData['email']])->getRow();
         if ($found) {
             return $this->respond([
                 'success' => 0,
-                'errors'  => ['whatsapp' => 'Nomor WhatsApp sudah terdaftar'],
+                'errors'  => ['email' => 'Email sudah terdaftar. Mungkin Anda bisa mencoba fitur Lupa Kata Sandi.'],
             ]);
         }
 

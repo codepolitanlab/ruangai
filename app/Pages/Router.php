@@ -12,6 +12,7 @@ class Router
         'notfound' => [
             'preload' => true,
         ],
+        '/registrasi' => [],
         '/masuk' => [],
         '/masuk/instant/:token' => [
             'template' => '/masuk/instant/template',

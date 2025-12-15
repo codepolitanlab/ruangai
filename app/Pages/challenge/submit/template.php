@@ -250,9 +250,9 @@
 
                         <div class="row mt-5">
                             <div class="col-12">
-                                <button type="button" class="btn btn-success btn-block" @click="submitForm()" 
+                                <button type="button" class="btn btn-success btn-lg btn-block" @click="submitForm()" 
                                     :disabled="isSubmitting">
-                                    <span x-show="!isSubmitting" x-text="isEdit ? 'Update Submission' : 'Submit'"></span>
+                                    <span x-show="!isSubmitting" x-text="isEdit ? 'UPDATE SUBMISSION' : 'SUBMIT'"></span>
                                     <span x-show="isSubmitting">Submitting...</span>
                                 </button>
                             </div>

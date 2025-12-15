@@ -1,3 +1,4 @@
+<script>
 // Page member/component
 window.member_register = function(){
     return {
@@ -6,7 +7,7 @@ window.member_register = function(){
         registering: false,
         data: {
             fullname: '',
-            whatsapp: '',
+            email: '',
             password: '',
             repeat_password: '',
             logo: '',
@@ -14,7 +15,7 @@ window.member_register = function(){
         },
         errors: {
             fullname: '',
-            whatsapp: '',
+            email: '',
             password: '',
             repeat_password: '',
         },
@@ -28,7 +29,7 @@ window.member_register = function(){
 
             this.errors = {
                 fullname: '',
-                whatsapp: '',
+                email: '',
                 password: '',
                 repeat_password: '',
             };
@@ -36,7 +37,7 @@ window.member_register = function(){
             // Check login using axios post
             const formData = new FormData();
             formData.append('fullname', this.data.fullname ?? '');
-            formData.append('whatsapp', this.data.whatsapp ?? '');
+            formData.append('email', this.data.email ?? '');
             formData.append('password', this.data.password ?? '');
             formData.append('repeat_password', this.data.repeat_password ?? '');
             axios.post('/registrasi', formData, {
@@ -56,3 +57,4 @@ window.member_register = function(){
         }
     }
 }
+</script>
