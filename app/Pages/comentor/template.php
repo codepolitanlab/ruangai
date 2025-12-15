@@ -189,20 +189,31 @@
 								<input
 									type="text"
 									class="form-control"
-									pDaftar Pelaceholder="Cari peserta..."
+									placeholder="Cari peserta..."
 									x-model="search">
 							</div>
 
 							<div class="table-responsive">
-								<div class="d-flex gap-3 mb-3">
-									<div class="d-flex align-items-center gap-2">
-										<div class="followup-indicator"></div>
-										<span>Peserta Followup</span>
-									</div>
-									<div class="d-flex align-items-center gap-2">
-										<div class="register-indicator"></div>
-										<span>Peserta Referral</span>
-									</div>
+								<!-- Filter Buttons -->
+								<div class="d-flex flex-wrap gap-2 mb-3">
+									<button 
+										@click="filterType = 'all'" 
+										:class="filterType === 'all' ? 'btn-primary' : 'btn-outline-primary'"
+										class="btn btn-sm">
+										<i class="bi bi-people-fill"></i> Semua Peserta
+									</button>
+									<button 
+										@click="filterType = 'followup'" 
+										:class="filterType === 'followup' ? 'btn-warning' : 'btn-outline-warning'"
+										class="btn btn-sm">
+										<div class="followup-indicator d-inline-block" style="margin: 0 4px 0 0;"></div> Peserta Followup
+									</button>
+									<button 
+										@click="filterType = 'referral'" 
+										:class="filterType === 'referral' ? 'btn-success' : 'btn-outline-success'"
+										class="btn btn-sm">
+										<div class="register-indicator d-inline-block" style="margin: 0 4px 0 0;"></div> Peserta Referral
+									</button>
 									<div class="ms-auto d-flex align-items-center gap-2">
 										<label for="sort" class="mb-0">Urutkan:</label>
 										<select id="sort" class="form-select form-select-sm w-auto" x-model="sortOrder" @change="sortMembers">

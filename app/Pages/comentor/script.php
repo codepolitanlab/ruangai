@@ -7,6 +7,7 @@
       search: "", // keyword pencarian
       filteredMembers: [], // hasil filter
       sortOrder: "asc",
+      filterType: "all", // all, followup, referral
 
       init() {
         if(this.ui.empty === false) {
@@ -17,21 +18,35 @@
         this.$watch("search", (val) => {
           this.filterMembers(val);
         });
+        
+        // auto filter saat ganti filter type
+        this.$watch("filterType", () => {
+          this.filterMembers(this.search);
+        });
         console.log(this.filteredMembers)
       },
 
       filterMembers(keyword) {
-        if (!keyword) {
-          this.filteredMembers = this.data?.members ?? [];
-        } else {
+        let members = this.data?.members ?? [];
+        
+        // Filter by type first
+        if (this.filterType === "followup") {
+          members = members.filter(m => m.from === "mapping");
+        } else if (this.filterType === "referral") {
+          members = members.filter(m => m.from !== "mapping");
+        }
+        
+        // Then filter by keyword
+        if (keyword) {
           let lower = keyword.toLowerCase();
-          this.filteredMembers = this.data?.members?.filter(m =>
+          members = members.filter(m =>
             m.fullname.toLowerCase().includes(lower) ||
             m.email.toLowerCase().includes(lower) ||
             (m.whatsapp || "").toLowerCase().includes(lower)
-          ) ?? [];
+          );
         }
-
+        
+        // Sort the results
         this.filteredMembers = members.sort((a, b) => {
           if (this.sortOrder === "asc") {
             return new Date(a.joined_at) - new Date(b.joined_at);

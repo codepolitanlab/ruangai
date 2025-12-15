@@ -44,6 +44,7 @@ class PageController extends BaseController
                 COUNT(CASE WHEN live_attendance.status = 1 THEN 1 END) as total_live_session,
                 COUNT(CASE WHEN live_attendance.status = 1 AND live_attendance.created_at >= '2025-08-12' THEN 1 END) as valid_live_since_batch2,
                 MIN(CASE WHEN live_attendance.status = 1 THEN live_attendance.created_at END) as graduated_at,
+                MAX(scholarship_participants.is_reference_followup) as is_reference_followup,
                 scholarship_participants.reference_comentor
             ")
             ->join('course_students', 'course_students.user_id = scholarship_participants.user_id', 'left')
@@ -82,16 +83,13 @@ class PageController extends BaseController
             $occupation = $member['occupation'] ?? '';
             $members[$key]['occupation'] = $occupationMap[$occupation] ?? $occupation;
 
-            // Tambahan flagging berdasarkan format reference_comentor
-            if (preg_match('/^CO-[A-Za-z0-9]+$/', $member['reference_comentor'])) {
-                // Format: CO-User → mapping
+            // Flagging berdasarkan is_reference_followup
+            if ($member['is_reference_followup'] == 1) {
+                // Peserta dari followup/mapping
                 $members[$key]['from'] = 'mapping';
-            } elseif (preg_match('/^co-[A-Za-z0-9]+$/', $member['reference_comentor'])) {
-                // Format: co-user → register
-                $members[$key]['from'] = 'register';
             } else {
-                // Default jika tidak cocok format
-                $members[$key]['from'] = 'unknown';
+                // Peserta dari register langsung
+                $members[$key]['from'] = 'register';
             }
         }
 
