@@ -194,8 +194,13 @@
 							</div>
 
 							<div class="table-responsive">
+								<!-- Total Filtered Count -->
+								<div class="mb-2">
+									<span class="text-muted">Total: <span class="fw-semibold text-dark" x-text="filteredMembers.length"></span> Peserta</span>
+								</div>
+								
 								<!-- Filter Buttons -->
-								<div class="d-flex flex-wrap gap-2 mb-3">
+								<div class="d-flex flex-wrap gap-2 mb-3 align-items-center">
 									<button 
 										@click="filterType = 'all'" 
 										:class="filterType === 'all' ? 'btn-primary' : 'btn-outline-primary'"
@@ -214,6 +219,7 @@
 										class="btn btn-sm">
 										<div class="register-indicator d-inline-block" style="margin: 0 4px 0 0;"></div> Peserta Referral
 									</button>
+									
 									<div class="ms-auto d-flex align-items-center gap-2">
 										<label for="sort" class="mb-0">Urutkan:</label>
 										<select id="sort" class="form-select form-select-sm w-auto" x-model="sortOrder" @change="sortMembers">
