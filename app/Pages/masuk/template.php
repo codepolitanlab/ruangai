@@ -54,6 +54,9 @@
         </div>
         <button type="button" class="btn btn-sm btn-text-light" x-on:click="errorMessage = false">OK</button>
     </div>
+    
+    <!-- show copyright footer -->
+    <p class="text-center sticky-bottom pb-2 mb-0">&copy; <?= date('Y') ?> CODEPOLITAN</p>
+    
+    <?= $this->include('masuk/script') ?>
 </div>
-
-<?= $this->include('masuk/script') ?>

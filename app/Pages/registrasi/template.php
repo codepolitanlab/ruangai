@@ -87,5 +87,8 @@
     </div>
     <!-- * App Capsule -->
 
+    <!-- show copyright footer -->
+    <p class="text-center pb-2 mb-0">&copy; <?= date('Y') ?> CODEPOLITAN</p>
+
     <?= $this->include('registrasi/script') ?>
 </div>
