@@ -2,28 +2,25 @@
 
     <?= $this->include('_appHeader'); ?>
 
-	<!-- App Capsule -->
-	<div id="appCapsule" class="bg-white">
-		<div class="appContent px-0" style="min-height:90vh">
-			<section class="mb-5">
-				<div class="position-relative">
-					<div class="card ps-3 bg-primary shadow-none container-fluid pt-3 pb-3 rounded-0" style="height: 135px;">
-						<div class="d-flex align-items-center justify-content-start gap-3">
-							<div>
-								<img :src="data?.profile?.user?.avatar ? data?.profile?.user?.avatar : `<?= $themeURL ?>assets/img/icon/default-avatar-user.webp`"
-									class="rounded-circle"
-									:alt="data?.profile?.user?.name"
-									style="width:65px">
-							</div>
-							<div class="text-white">
-								<div class="h6 m-0" x-text="data?.profile?.user?.name || 'Undefined'"></div>
-								<small x-text="data?.profile?.user?.email || 'CODING IS A SHINOBI WAYS FOR ME!!!!!'"></small>
-							</div>
-						</div>
-					</div>
+    <!-- App Capsule -->
+    <div id="appCapsule" class="bg-white">
+        <div class="p-4 px-3 mb-3 bg-white rounded-4 position-relative" style="min-height:110px; z-index: 100;">
+            <div class="d-flex align-items-center gap-3 position-relative" style="z-index: 99; position: absolute !important; bottom: 10px;">
+                <div class="avatar">
+                    <img :src="data?.user?.avatar && data?.user?.avatar != '' ? data?.user?.avatar : `https://ui-avatars.com/api/?name=${data?.name ?? 'El'}&background=79B2CD&color=FFF`" alt="avatar" class="imaged w48 rounded-circle">
+                </div>
+                <div>
+                    <div class="h5 m-0" x-text="data?.profile?.user?.name || 'Undefined'"></div>
+                </div>
+            </div>
+            <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206633.png" class="position-absolute bottom-0 end-0 w-25" alt="">
+        </div>
 
-					<div class="text-center bg-white rounded-top-5 position-relative p-1" style="margin-top: -40px;z-index: 1">
-						<div class="listview-title">
+        <div class="appContent px-0" style="min-height:90vh">
+            <section class="mb-5">
+                <div class="position-relative">
+                    <div class="text-center bg-white rounded-top-5 position-relative p-1 pt-5" style="margin-top: -40px;z-index: 1">
+                        <!-- <div class="listview-title">
 							Personalisasi Akun
 						</div>
 						<ul class="listview image-listview flush transparent">
@@ -39,7 +36,25 @@
 									<span>Edit Akun</span>
 								</a>
 							</li>
-						</ul>
+						</ul> -->
+
+                        <div class="listview-title">
+                            Fasilitas
+                        </div>
+                        <ul class="listview image-listview flush transparent">
+                            <li>
+                                <a href="/profile/edit_info" class="item">
+                                    <i class="fs-4 me-2 bi bi-pencil text-primary"></i>
+                                    <span>Edit Profil</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/profile/edit_account" class="item">
+                                    <i class="fs-4 me-2 bi bi-person-vcard text-primary"></i>
+                                    <span>Edit Akun</span>
+                                </a>
+                            </li>
+                        </ul>
 
                         <div class="listview-title mt-2">
                             Aplikasi RuangAI
@@ -102,7 +117,7 @@
     </div>
     <!-- * App Capsule -->
 
-<?= $this->include('_bottommenu') ?>
+    <?= $this->include('_bottommenu') ?>
 </div>
 
 <?= $this->include('profile/script') ?>
