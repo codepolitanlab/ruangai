@@ -43,7 +43,7 @@ class PageController extends BaseController
             ->get()
             ->getRowArray();
 
-        if(!$last_course) {
+        if (!$last_course) {
             $last_course = $db->table('courses')
                 ->select('id, course_title as title, slug')
                 ->where('id', 1)

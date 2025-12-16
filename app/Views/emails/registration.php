@@ -2,7 +2,7 @@
 // Variabel tema
 $primaryColor   = '#164252';     // Warna utama
 $secondaryColor = '#E7E725';   // Warna aksen
-$logoUrl        = 'https://www.ruangai.id/logo-ruangai.svg';
+$logoUrl        = 'https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-logo-transparan.png'; // Ganti dengan URL logo milik Boss Toni
 ?>
 
 <!DOCTYPE html>
@@ -48,6 +48,9 @@ $logoUrl        = 'https://www.ruangai.id/logo-ruangai.svg';
                   Halo <?= $name ?? '{NAME}' ?>,<br><br>
                   Terima kasih telah mendaftar di aplikasi RuangAI <br>
                   Untuk melanjutkan proses pendaftaran, silahkan masukan kode registrasi berikut ini ke dalam aplikasi:
+                </p>
+                <p style="font-size:16px;line-height:1.5;">
+                    <strong><?= $otp ?? '{OTP}' ?></strong>
                 </p>
                 <p>Salam,<br>
                 <strong>Tim CODEPOLITAN</strong>

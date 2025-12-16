@@ -22,6 +22,24 @@ class PageController extends BaseController
             'email'           => 'required|valid_email',
             'password'        => 'required|max_length[50]|min_length[6]',
             'repeat_password' => 'required|matches[password]',
+        ], [
+            'fullname' => [
+                'required'   => 'Nama lengkap wajib diisi',
+                'min_length' => 'Nama lengkap minimal 2 karakter',
+            ],
+            'email' => [
+                'required'    => 'Email wajib diisi',
+                'valid_email' => 'Format email tidak valid',
+            ],
+            'password' => [
+                'required'   => 'Kata sandi wajib diisi',
+                'max_length' => 'Kata sandi maksimal 50 karakter',
+                'min_length' => 'Kata sandi minimal 6 karakter',
+            ],
+            'repeat_password' => [
+                'required' => 'Ulangi kata sandi wajib diisi',
+                'matches'  => 'Ulangi kata sandi tidak sesuai dengan kata sandi',
+            ],
         ]);
 
         if (! $validation->run($request->getPost())) {
@@ -101,5 +119,31 @@ class PageController extends BaseController
             'success' => 0, 
             'message' => 'Gagal menambahkan akun. Silahkan coba kembali.',
         ]);
+    }
+
+    private function sendOTP($user, $otp)
+    {
+        // Get database pesantren
+        $Heroic = new \App\Libraries\Heroic();
+        $db     = \Config\Database::connect();
+
+        // Send OTP
+        $namaAplikasi = setting()->get('Heroicadmin.title');
+
+        if (isset($user['email'])) {
+            $EmailSender = new \App\Libraries\EmailSender();
+            $body        = [
+                'name'     => $user['name'],
+                'aplikasi' => $namaAplikasi,
+                'otp'      => $otp,
+            ];
+            $EmailSender->setTemplate('registration', $body);
+            return $EmailSender->send($user['email'], 'Konfirmasi Registrasi Akun');
+        }
+
+        return [
+            'status' => false,
+            'message' => 'Alamat email tidak valid.'
+        ];
     }
 }

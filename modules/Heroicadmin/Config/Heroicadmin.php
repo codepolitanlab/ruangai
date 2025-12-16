@@ -10,19 +10,25 @@ class Heroicadmin extends BaseConfig
     public $urlScope     = 'ruangpanel';
     public $rootPanelUrl = 'dashboard';
     public $sidebarMenu  = [
-        10 => [
+        [
             'label'  => 'Dashboard',
             'icon'   => 'bi bi-grid-fill',
             'module' => 'dashboard',
             'url'    => '',
         ],
-        15 => [
+        [
             'label'  => 'Shortener',
             'icon'   => 'bi bi-link',
             'module' => 'shortener',
             'url'    => 'shortener',
         ],
-        20 => [
+        [
+            'label' => 'Challenge',
+            'icon' => 'bi bi-trophy',
+            'module' => 'challenge',
+            'url' => 'challenge/submissions'
+        ],
+        [
             'label'    => 'User Management',
             'icon'     => 'bi bi-lock-fill',
             'url'      => '#',
@@ -48,7 +54,7 @@ class Heroicadmin extends BaseConfig
                 ],
             ],
         ],
-        25 => [
+        [
             'label'    => 'Scholarship',
             'icon'     => 'bi bi-lock-fill',
             'url'      => '#',
@@ -80,7 +86,7 @@ class Heroicadmin extends BaseConfig
                 ],
             ],
         ],
-        30 => [
+        [
             'label'    => 'E-Learning',
             'icon'     => 'bi bi-book-fill',
             'url'      => '#',
@@ -94,7 +100,7 @@ class Heroicadmin extends BaseConfig
                 ],
             ],
         ],
-        50 => [
+        [
             'label'    => 'Products',
             'icon'     => 'bi bi-bag-fill',
             'url'      => '#',
@@ -108,7 +114,7 @@ class Heroicadmin extends BaseConfig
                 ],
             ],
         ],
-        // 60 => [
+        // [
         //     'label'    => 'Vouchers',
         //     'icon'     => 'bi bi-bag-fill',
         //     'url'      => '#',
@@ -122,7 +128,7 @@ class Heroicadmin extends BaseConfig
         //         ],
         //     ],
         // ],
-        40 => [
+        [
             'label'    => 'Configuration',
             'icon'     => 'bi bi-house-gear-fill',
             'url'      => '#',
@@ -136,7 +142,7 @@ class Heroicadmin extends BaseConfig
                 ],
             ],
         ],
-        60 => [
+        [
             'label'    => 'Development',
             'icon'     => 'bi bi-hammer',
             'url'      => '#',
@@ -150,7 +156,7 @@ class Heroicadmin extends BaseConfig
                 ],
             ],
         ],
-        70 => [
+        [
             'label'    => 'Referral',
             'icon'     => 'bi bi-tag',
             'url'      => '#',

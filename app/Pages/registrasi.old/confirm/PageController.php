@@ -7,11 +7,6 @@ use Firebase\JWT\JWT;
 
 class PageController extends BaseController
 {
-    public function getContent()
-    {
-        return pageView('registrasi/confirm/index', $this->data);
-    }
-
     public function postIndex()
     {
         $request = service('request');

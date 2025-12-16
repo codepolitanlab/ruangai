@@ -12,6 +12,8 @@ class Router
         'notfound' => [
             'preload' => true,
         ],
+        '/registrasi' => [],
+        '/registrasi/confirm/:token' => [],
         '/masuk' => [],
         '/masuk/instant/:token' => [
             'template' => '/masuk/instant/template',
@@ -77,5 +79,7 @@ class Router
         '/reset_password' => [],
         '/reset_password/change/:token' => [],
         '/courses/reward/howto' => [],
+        '/challenge' => [],
+        '/challenge/submit' => [],
     ];
 }
