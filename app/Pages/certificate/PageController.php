@@ -18,6 +18,7 @@ class PageController extends BaseController
         $certificate = $db->table('certificates')
             ->where('user_id', $jwt->user_id)
             ->where('is_active', 1)
+            ->orderBy('cert_claim_date', 'DESC')
             ->get()
             ->getResultArray();
         $this->data['certificates'] = $certificate;
