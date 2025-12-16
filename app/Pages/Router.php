@@ -13,6 +13,7 @@ class Router
             'preload' => true,
         ],
         '/registrasi' => [],
+        '/registrasi/confirm/:token' => [],
         '/masuk' => [],
         '/masuk/instant/:token' => [
             'template' => '/masuk/instant/template',

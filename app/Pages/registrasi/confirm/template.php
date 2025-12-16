@@ -1,4 +1,4 @@
-<div id="member-register-confirm" x-data="member_register_confirm()">
+<div id="member-register-confirm" x-data="member_register_confirm($params.token)">
 
     <div class="appHeader">
         <div class="left">
@@ -20,13 +20,20 @@
             <div class="section mt-1 mb-5 px-0">
                 <div>
                     <div class="py-3">
-                        <div class="form-group px-3 py-3 text-start bg-secondary bg-opacity-25">
+                        <div class="form-group px-3 py-3 text-start text-white bg-primary rounded-3 bg-opacity-25">
                             <div class="d-flex justify-content-between">
                                 <label class="fw-bold mb-1">Tidak menerima Kode Registrasi?</label>
                             </div>
                             <small x-show="remainingTime > 0">Kirim ulang dalam <span x-text="formattedTime"></span></small>
                             <div class="d-flex">
-                                <button type="button" x-on:click="resendOTP" class="btn bg-success text-white btn-sm" :disabled="remainingTime > 0 || resending"><span class="bi bi-whatsapp me-1"></span> <span x-text="resending ? 'Mengirim ulang...' : 'Kirim Ulang Kode ke WhatsApp'"></span></button>
+                                <button 
+                                    type="button" 
+                                    x-on:click="resendOTP" 
+                                    class="btn bg-success text-white btn-sm" 
+                                    :disabled="remainingTime > 0 || resending">
+                                    <span class="bi bi-envelope me-1"></span> 
+                                    <span x-text="resending ? 'Mengirim ulang...' : 'Kirim Ulang Kode Registrasi'"></span>
+                                </button>
                             </div>
                         </div>
 
@@ -48,4 +55,5 @@
     </div>
     <!-- * App Capsule -->
 
+    <?= $this->include('registrasi/confirm/script') ?>
 </div>

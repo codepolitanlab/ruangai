@@ -1,7 +1,9 @@
+<script>
 // Page member/component
-window.member_register_confirm = function(){
+window.member_register_confirm = function(token){
     return {
         title: "Konfirmasi Registrasi",
+        raw_token: token,
         data: {
             logo: '',
             id: '',
@@ -34,13 +36,11 @@ window.member_register_confirm = function(){
             Alpine.store('core').currentPage = 'register_confirm'
 
             const tokenRegex = /^[a-f0-9]+_[0-9]+X.+$/;
-            const urlParams = new URLSearchParams(window.location.search);
-            const tokens = urlParams.get('token');
-            if (!tokenRegex.test(tokens)) {
+            if (!tokenRegex.test(this.raw_token)) {
                 window.PineconeRouter.navigate('/registrasi')
             }
 
-            const [part1, rest] = tokens.split('_');  // Bagian pertama sebelum _ adalah token
+            const [part1, rest] = this.raw_token.split('_');  // Bagian pertama sebelum _ adalah token
             const [part2, part3] = rest.split('X'); // Bagian kedua antara _ dan X, dan bagian ketiga
             this.data.token = part1
             this.data.id = part2
@@ -93,7 +93,7 @@ window.member_register_confirm = function(){
             }).then(response => {
                 if(response.data.success == 1){
                     let token = response.data.token + '_' + response.data.id + 'X' + Math.random().toString(36).substring(7)
-                    window.PineconeRouter.navigate('/registrasi/confirm/?token=' + token)
+                    window.PineconeRouter.navigate('/registrasi/confirm/' + token)
                 } else {
                     this.error = response.data.message
                     this.resending = false
@@ -102,3 +102,4 @@ window.member_register_confirm = function(){
         }
     }
 }
+</script>

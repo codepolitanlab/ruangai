@@ -38,7 +38,7 @@ class PageController extends BaseController
             ->get()
             ->getRowArray();
 
-        if(!$last_course) {
+        if (!$last_course) {
             $last_course = $db->table('courses')
                 ->select('id, course_title as title, slug')
                 ->where('id', 1)
@@ -67,14 +67,16 @@ class PageController extends BaseController
             ->get()
             ->getRowArray();
 
-        $this->data['event'] = $db->table('events')->select('date_start, date_end, code')->where('code', $this->data['student']['program'])->get()->getRowArray();
+        if ($this->data['student']['program'] ?? null) {
+            $this->data['event'] = $db->table('events')->select('date_start, date_end, code')->where('code', $this->data['student']['program'])->get()->getRowArray();
+            $this->data['is_expire'] = $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
 
-        $this->data['is_expire'] = $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
-
-        $this->data['group_comentor'] = $db->table('shorteners')
+            $this->data['group_comentor'] = $db->table('shorteners')
                 ->where('code', $this->data['student']['reference'])
                 ->get()
                 ->getRowArray();
+        }
+
 
         $this->data['is_comentor'] = $jwt->user['role_id'] == 4 ? true : false;
 
@@ -191,7 +193,7 @@ class PageController extends BaseController
                 'otp_email'   => null,
                 'email'       => $email,
             ]);
-        
+
         $db->table('scholarship_participants')
             ->where('user_id', $jwt->user_id)
             ->update([

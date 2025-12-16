@@ -67,41 +67,58 @@ class PageController extends BaseController
         $Phpass   = new \App\Libraries\Phpass();
         $password = $Phpass->HashPassword($validData['password']);
 
-        helper('text');
-        $otp   = random_string('numeric', 6);
-        $token = sha1($otp);
+        // Get only alphanumeric for username
+        $username = preg_replace('/[^a-z0-9]/', '', strtolower($validData['fullname']));
+        $username .= rand(100, 999);
 
         $userData = [
             'name'       => $validData['fullname'],
-            'phone'      => $phone,
-            'username'   => $phone,
+            'username'   => $username,
+            'email'      => $validData['email'],
             'pwd'        => $password,
-            'token'      => $token,
-            'otp'        => $otp,
             'created_at' => date('Y-m-d H:i:s'),
         ];
         $db->table('users')->insert($userData);
         $id = $db->insertID();
-        if ($db->affectedRows() > 0) {
-            // Send OTP
-            $message = <<<EOD
-                Halo {$userData['name']},\n
-                Terima kasih telah mendaftar di aplikasi RuangAI
-                Untuk melanjutkan proses pendaftaran, silahkan masukan kode registrasi berikut ini ke dalam aplikasi:\n
-                *{$userData['otp']}*\n
-                Salam
-                EOD;
-            $Heroic->sendWhatsapp($phone, $message);
+        if ($id) {
+            // Check login to database directly using $db
+            $Auth                      = new \App\Libraries\Auth();
+            [$status, $message, $user] = $Auth->login($validData['email'], $validData['password']);
 
             return $this->respond([
                 'success' => 1,
-                'id'      => $id,
-                'token'   => $token,
+                'jwt'     => $user['jwt'] ?? '',
             ]);
         }
 
         return $this->respond([
             'success' => 0, 'message' => 'Gagal menambahkan akun. Silahkan coba kembali.',
         ]);
+    }
+
+    private function sendOTP($user, $otp)
+    {
+        // Get database pesantren
+        $Heroic = new \App\Libraries\Heroic();
+        $db     = \Config\Database::connect();
+
+        // Send OTP
+        $namaAplikasi = setting()->get('Heroicadmin.title');
+
+        if (isset($user['email'])) {
+            $EmailSender = new \App\Libraries\EmailSender();
+            $body        = [
+                'name'     => $user['name'],
+                'aplikasi' => $namaAplikasi,
+                'otp'      => $otp,
+            ];
+            $EmailSender->setTemplate('registration', $body);
+            return $EmailSender->send($user['email'], 'Konfirmasi Registrasi Akun');
+        }
+
+        return [
+            'status' => false,
+            'message' => 'Alamat email tidak valid.'
+        ];
     }
 }
