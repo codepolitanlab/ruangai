@@ -14,7 +14,6 @@
       errorMessage: null,
       buttonSubmitting: false,
       selectedServer: null,
-      sidebarVisible: true,
 
       currentQuestion: 0,
 
@@ -62,14 +61,18 @@
         });
       },
 
-      setNativeLinks(selector = '#lesson_text_container') {
+      setNativeLinks(selector = '.lesson-content') {
         const container = document.querySelector(selector);
         if (container) {
           const links = container.querySelectorAll('a');
           links.forEach(link => {
-            link.setAttribute('native', '');
-            link.setAttribute('target', '_blank');
-            link.setAttribute('rel', 'noopener noreferrer');
+            // Only add target="_blank" for external links (http/https)
+            const href = link.getAttribute('href');
+            if (href && (href.startsWith('http://') || href.startsWith('https://'))) {
+              link.setAttribute('native', '');
+              link.setAttribute('target', '_blank');
+              link.setAttribute('rel', 'noopener noreferrer');
+            }
           });
         }
       },
