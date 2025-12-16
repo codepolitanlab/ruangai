@@ -8,48 +8,48 @@ $bottommenu = [
         'module' => 'homepage'
     ],
     [
-        'label'  => 'Beasiswa',
+        'label'  => 'Misi Beasiswa',
         'url'    => '/courses/intro/1/dasar-dan-penggunaan-generative-ai',
         'icon'   => 'bi bi-journal-check',
         'module' => 'misi_beasiswa',
     ],
-    [
-        'label'  => 'Kompetisi',
-        'url'    => '/challenge',
-        'icon'   => 'bi bi-trophy',
-        'module' => 'challenge',
-        'badge'  => ['warning', 'NEW'],
-    ],
+    // [
+    //     'label'  => 'Kompetisi',
+    //     'url'    => '/challenge',
+    //     'icon'   => 'bi bi-trophy',
+    //     'module' => 'challenge',
+    //     'badge'  => ['warning', 'NEW'],
+    // ],
     [
         'label'  => 'Kelas Saya',
         'url'    => '/courses',
         'icon'   => 'bi bi-book',
         'module' => 'courses'
     ],
-    [
-        'label'  => 'Workshop',
-        'url'    => '/workshop',
-        'icon'   => 'bi bi-ticket',
-        'module' => 'workshop'
-    ],
+    // [
+    //     'label'  => 'Workshop',
+    //     'url'    => '/workshop',
+    //     'icon'   => 'bi bi-ticket',
+    //     'module' => 'workshop'
+    // ],
     [
         'label'  => 'Reward',
         'url'    => '/courses/reward',
         'icon'   => 'bi bi-gift',
         'module' => 'reward'
     ],
-    [
-        'label'  => 'Sertifikat',
-        'url'    => '/certificate',
-        'icon'   => 'bi bi-award',
-        'module' => 'certificate'
-    ],
-    [
-        'label'  => 'Pustaka Prompt',
-        'url'    => '/prompts',
-        'icon'   => 'bi bi-input-cursor-text',
-        'module' => 'prompts'
-    ],
+    // [
+    //     'label'  => 'Sertifikat',
+    //     'url'    => '/certificate',
+    //     'icon'   => 'bi bi-award',
+    //     'module' => 'certificate'
+    // ],
+    // [
+    //     'label'  => 'Pustaka Prompt',
+    //     'url'    => '/prompts',
+    //     'icon'   => 'bi bi-input-cursor-text',
+    //     'module' => 'prompts'
+    // ],
     [
         'label'  => 'Keluar',
         'url'    => '/logout',
