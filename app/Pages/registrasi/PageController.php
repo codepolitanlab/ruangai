@@ -6,12 +6,11 @@ use App\Pages\BaseController;
 
 class PageController extends BaseController
 {
-    public function getContent()
-    {
-        return pageView('registrasi/index', $this->data);
-    }
+    public $data = [
+        'page_title' => 'Daftar Akun',
+    ];
 
-    // Submit new user
+    // Submit new user registration
     public function postIndex()
     {
         $request    = service('request');
@@ -19,7 +18,8 @@ class PageController extends BaseController
 
         $validation->setRules([
             'fullname'        => 'required|min_length[2]',
-            'whatsapp'        => 'required',
+            'phone'           => 'required',
+            'email'           => 'required|valid_email',
             'password'        => 'required|max_length[50]|min_length[6]',
             'repeat_password' => 'required|matches[password]',
         ]);
@@ -28,71 +28,78 @@ class PageController extends BaseController
             $errors = $validation->getErrors();
 
             return $this->respond([
-                'success' => 0, 'errors' => $errors,
+                'success' => 0, 
+                'errors' => $errors,
             ]);
         }
         $validData = $validation->getValidated();
 
-        // Make sure the number begin with 62
-        $phone = substr($validData['whatsapp'], 0, 1) === '0'
-        ? substr_replace($validData['whatsapp'], '62', 0, 1)
-        : $validData['whatsapp'];
+        // Make sure the phone number begins with 62
+        $phone = substr($validData['phone'], 0, 1) === '0'
+            ? substr_replace($validData['phone'], '62', 0, 1)
+            : $validData['phone'];
         if (substr($phone, 0, 1) === '8') {
             $phone = '62' . $phone;
         }
 
-        // Get database pesantren
-        $Heroic = new \App\Libraries\Heroic();
-        $db     = \Config\Database::connect();
+        // Get database connection
+        $db = \Config\Database::connect();
 
-        // Check if phone not exist
-        $found = $db->query('SELECT phone FROM users where phone = :phone:', ['phone' => $phone])->getRow();
-        if ($found) {
+        // Check if phone already exists
+        $foundPhone = $db->query('SELECT phone FROM users WHERE phone = :phone:', ['phone' => $phone])->getRow();
+        if ($foundPhone) {
             return $this->respond([
                 'success' => 0,
-                'errors'  => ['whatsapp' => 'Nomor WhatsApp sudah terdaftar'],
+                'errors'  => ['phone' => 'Nomor telepon sudah terdaftar'],
             ]);
         }
 
-        // Register user to database
+        // Check if email already exists
+        $foundEmail = $db->query('SELECT email FROM users WHERE email = :email:', ['email' => $validData['email']])->getRow();
+        if ($foundEmail) {
+            return $this->respond([
+                'success' => 0,
+                'errors'  => ['email' => 'Email sudah terdaftar'],
+            ]);
+        }
+
+        // Hash password
         $Phpass   = new \App\Libraries\Phpass();
         $password = $Phpass->HashPassword($validData['password']);
 
-        helper('text');
-        $otp   = random_string('numeric', 6);
-        $token = sha1($otp);
+        // Generate username from email (before @ symbol) or phone
+        $username = explode('@', $validData['email'])[0];
+        // Check if username exists, if yes add random number
+        $usernameCheck = $db->query('SELECT username FROM users WHERE username = :username:', ['username' => $username])->getRow();
+        if ($usernameCheck) {
+            $username = $username . rand(100, 999);
+        }
 
         $userData = [
             'name'       => $validData['fullname'],
             'phone'      => $phone,
-            'username'   => $phone,
+            'email'      => $validData['email'],
+            'username'   => $username,
             'pwd'        => $password,
-            'token'      => $token,
-            'otp'        => $otp,
+            'status'     => null,
+            'active'     => 0,
             'created_at' => date('Y-m-d H:i:s'),
         ];
+        
         $db->table('users')->insert($userData);
         $id = $db->insertID();
+        
         if ($db->affectedRows() > 0) {
-            // Send OTP
-            $message = <<<EOD
-                Halo {$userData['name']},\n
-                Terima kasih telah mendaftar di aplikasi RuangAI
-                Untuk melanjutkan proses pendaftaran, silahkan masukan kode registrasi berikut ini ke dalam aplikasi:\n
-                *{$userData['otp']}*\n
-                Salam
-                EOD;
-            $Heroic->sendWhatsapp($phone, $message);
-
             return $this->respond([
                 'success' => 1,
                 'id'      => $id,
-                'token'   => $token,
+                'message' => 'Registrasi berhasil! Silakan login untuk melanjutkan.',
             ]);
         }
 
         return $this->respond([
-            'success' => 0, 'message' => 'Gagal menambahkan akun. Silahkan coba kembali.',
+            'success' => 0, 
+            'message' => 'Gagal menambahkan akun. Silahkan coba kembali.',
         ]);
     }
 }

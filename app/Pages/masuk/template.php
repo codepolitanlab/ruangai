@@ -38,6 +38,11 @@
                         <div class="text-end mt-2">
                             <a href="/reset_password" class="btn btn-link text-primary pe-0 fs-6">Lupa kata sandi?</a>
                         </div>
+
+                        <div class="text-center mt-3">
+                            <p class="mb-1">Belum punya akun?</p>
+                            <a href="/registrasi" class="btn btn-link text-primary fs-6">Daftar di sini</a>
+                        </div>
                     </div>
                 </div>
             </div>
