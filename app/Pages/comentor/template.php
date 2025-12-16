@@ -245,7 +245,7 @@
 										</tr>
 									</thead> -->
 								<!-- <tbody> -->
-								<template x-for="member in filteredMembers" :key="member.user_id">
+								<template x-for="(member, index) in filteredMembers" :key="index">
 									<div class="card p-3 rounded-3 mb-3 shadow-sm">
 										<div class="fw-semibold indicator-peserta">
 											<span x-show="member.from == 'mapping'" class="followup-indicator" title="Peserta Followup"></span>
