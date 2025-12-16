@@ -96,15 +96,12 @@
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <?php if ($comentor['total_followup'] > 0): ?>
-                                            <a href="/<?= urlScope() ?>/scholarship/followup-comentors/<?= $comentor['id'] ?>/detail" 
-                                               class="btn btn-sm btn-info" 
-                                               title="Lihat Detail">
-                                                <i class="bi bi-eye"></i> Detail
-                                            </a>
-                                        <?php else: ?>
-                                            <span class="text-muted">-</span>
-                                        <?php endif; ?>
+                                        <a href="/<?= urlScope() ?>/scholarship/followup-comentors/<?= $comentor['id'] ?>/detail" 
+                                            class="btn btn-sm btn-info" 
+                                            title="Lihat Detail">
+                                            <i class="bi bi-eye"></i> Detail
+                                        </a>
+                                        
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

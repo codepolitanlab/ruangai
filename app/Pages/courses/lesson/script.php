@@ -14,7 +14,6 @@
       errorMessage: null,
       buttonSubmitting: false,
       selectedServer: null,
-      sidebarVisible: true,
 
       currentQuestion: 0,
 
@@ -62,14 +61,18 @@
         });
       },
 
-      setNativeLinks(selector = '#lesson_text_container') {
+      setNativeLinks(selector = '.lesson-content') {
         const container = document.querySelector(selector);
         if (container) {
           const links = container.querySelectorAll('a');
           links.forEach(link => {
-            link.setAttribute('native', '');
-            link.setAttribute('target', '_blank');
-            link.setAttribute('rel', 'noopener noreferrer');
+            // Only add target="_blank" for external links (http/https)
+            const href = link.getAttribute('href');
+            if (href && (href.startsWith('http://') || href.startsWith('https://'))) {
+              link.setAttribute('native', '');
+              link.setAttribute('target', '_blank');
+              link.setAttribute('rel', 'noopener noreferrer');
+            }
           });
         }
       },
@@ -103,16 +106,29 @@
       },
 
       canAccessLessonById(lessonId) {
-        if (!this.data.course || !this.data.course.lessons) return false;
-        // If lesson is completed -> accessible
-        const found = this.data.course.lessons.find(l => l.id === lessonId);
+        if (!this.data.course) return false;
+        
+        // Cari lesson dari lessons_all (semua lesson)
+        const allLessons = this.data.course.lessons_all || this.data.course.lessons || [];
+        const found = allLessons.find(l => l.id === lessonId);
+        
         if (!found) return false;
+        
+        // Lesson non-mandatory selalu bisa diakses
+        if (found.mandatory != 1) {
+          return true;
+        }
+        
+        // If lesson is completed -> accessible
         if (found.is_completed) return true;
-        // If it's the next uncompleted lesson, allow access
+        
+        // If it's the next uncompleted mandatory lesson, allow access
         const nextId = this.getNextLessonIdFromCourse();
         if (lessonId === nextId) return true;
+        
         // If lesson is free allow access
         if (found.free && +found.free === 1) return true;
+        
         return false;
       },
 

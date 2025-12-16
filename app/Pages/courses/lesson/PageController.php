@@ -89,43 +89,59 @@ class PageController extends BaseController
             $lastProgressLessonId = $lastProgress['lesson_id'] ?? null;
 
             // Query utama untuk mendapatkan semua lesson dengan urutan yang benar
-            $lessons = $db->table('course_lessons')
-                ->select('
-                    course_lessons.id,
-                    course_lessons.course_id,
-                    course_lessons.lesson_title,
-                    course_lessons.topic_id,
-                    course_lessons.mandatory,
-                    course_topics.topic_order,
-                    course_lessons.lesson_order,
-                    course_topics.topic_title,
-                    course_lessons.free
-                ')
-                ->join('course_topics', 'course_topics.id = course_lessons.topic_id')
-                ->where('course_lessons.course_id', $course_id)
-                ->where('course_lessons.deleted_at', null)
-                ->where('course_lessons.mandatory', 1)
-                ->orderBy('course_topics.topic_order', 'ASC')
-                ->orderBy('course_lessons.lesson_order', 'ASC')
-                ->get()
-                ->getResultArray();
+            // if (! $lessons = cache('course_' . $course_id . '_lessons')) {
+                $lessons = $db->table('course_lessons')
+                    ->select('
+                        course_lessons.id,
+                        course_lessons.course_id,
+                        course_lessons.lesson_title,
+                        course_lessons.topic_id,
+                        course_lessons.mandatory,
+                        course_lessons.duration,
+                        course_topics.topic_order,
+                        course_lessons.lesson_order,
+                        course_topics.topic_title,
+                        course_lessons.free
+                    ')
+                    ->join('course_topics', 'course_topics.id = course_lessons.topic_id')
+                    ->where('course_lessons.course_id', $course_id)
+                    ->where('course_lessons.status', 1)
+                    ->where('course_lessons.deleted_at', null)
+                    ->orderBy('course_topics.topic_order', 'ASC')
+                    ->orderBy('course_lessons.lesson_order', 'ASC')
+                    ->get()
+                    ->getResultArray();
+
+                // Save into the cache for 1 hours
+                // cache()->save('course_' . $course_id . '_lessons', $lessons, 3600);
+            // }
 
             // Menambahkan status completed ke setiap lesson
             $orderedLessons = [];
+            $orderedMandatoryLessons = [];
 
             foreach ($lessons as $lessonItem) {
-                $orderedLessons[] = array_merge($lessonItem, [
-                    'is_completed' => in_array($lessonItem['id'], $completedLessonIds, true),
+                $isCompleted = in_array($lessonItem['id'], $completedLessonIds, true);
+                $lessonWithStatus = array_merge($lessonItem, [
+                    'is_completed' => $isCompleted,
                 ]);
+                
+                $orderedLessons[] = $lessonWithStatus;
+                
+                // Juga simpan hanya yang mandatory untuk navigasi prev/next
+                if ($lessonItem['mandatory'] == 1) {
+                    $orderedMandatoryLessons[] = $lessonWithStatus;
+                }
             }
 
-            // Group lessons by topic title for UI
+            // Group lessons by topic title for UI (semua lesson)
             $lessonsGrouped = [];
             foreach ($orderedLessons as $l) {
                 $lessonsGrouped[$l['topic_title']][] = $l;
             }
 
-            $course['lessons'] = $orderedLessons;
+            $course['lessons'] = $orderedMandatoryLessons; // untuk prev/next hanya mandatory
+            $course['lessons_all'] = $orderedLessons; // semua lesson termasuk opsional
             $course['lessons_grouped'] = $lessonsGrouped;
             $course['last_progress_lesson_id'] = $lastProgressLessonId;
             $lesson['is_completed'] = in_array($lesson['id'], $completedLessonIds, true);
@@ -159,15 +175,13 @@ class PageController extends BaseController
                 $course_info = [];
             }
             $course_info['lessons'] = $course['lessons'];
+            $course_info['lessons_all'] = $course['lessons_all'];
             $course_info['lessons_grouped'] = $course['lessons_grouped'];
             $course_info['last_progress_lesson_id'] = $lastProgressLessonId;
             $course_info['progress'] = $student['progress'] ?? 0;
             $course_info['graduate'] = $student['graduate'] ?? 0;
             $this->data['course'] = $course_info;
             $this->data['lesson'] = $lesson;
-
-            // Get live sessions data
-            $this->data['live_sessions'] = $this->getLiveSessions($course_id, $jwt->user_id, $db);
 
             return $this->respond($this->data);
         }
@@ -390,90 +404,5 @@ class PageController extends BaseController
         }
 
         return [$description, $questions, $answers];
-    }
-
-    private function getLiveSessions($course_id, $user_id, $db)
-    {
-        // Get attended events
-        $attendedQuery = $db->table('live_attendance')
-            ->select('live_meeting_id, live_meetings.meeting_code, live_meetings.title, 
-            live_meetings.subtitle, live_meetings.theme_code, duration, meeting_feedback_id, 
-            meeting_date, meeting_time, live_batch.name as batch_title, 
-            live_attendance.status')
-            ->join('live_meetings', 'live_meetings.id = live_attendance.live_meeting_id')
-            ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
-            ->where('live_attendance.course_id', $course_id)
-            ->where('user_id', $user_id)
-            ->orderBy('live_meetings.meeting_date', 'asc')
-            ->get()
-            ->getResultArray();
-
-        $attended = [];
-        $attendedCode = [];
-        if ($attendedQuery) {
-            $attended = array_column($attendedQuery, 'live_meeting_id');
-            foreach ($attendedQuery as $value) {
-                if ($value['status'] === '1') {
-                    $attendedCode[] = $value['theme_code'];
-                }
-            }
-        }
-
-        $live_sessions = $db->table('live_meetings')
-            ->select('live_meetings.*, live_batch.name as batch_title')
-            ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
-            ->where('live_batch.status', 'ongoing')
-            ->where('live_batch.course_id', $course_id)
-            ->where('live_meetings.deleted_at', null)
-            ->orderBy('meeting_date', 'ASC')
-            ->orderBy('meeting_time', 'ASC')
-            ->get()
-            ->getResultArray();
-
-        $result = [
-            'scheduled' => [],
-            'ongoing' => [],
-            'completed' => [],
-            'attended' => []
-        ];
-
-        if ($live_sessions) {
-            foreach ($live_sessions as $live_session) {
-                $feedbackExists = $db->table('live_meeting_feedback')
-                    ->where('user_id', $user_id)
-                    ->where('live_meeting_id', $live_session['id'])
-                    ->countAllResults() > 0;
-
-                $live_session['feedback_submitted'] = $feedbackExists;
-
-                // Determine status_date
-                if (date('Y-m-d') === $live_session['meeting_date']) {
-                    if (date('H:i:s') > date('H:i:s', strtotime('+2 hours', strtotime($live_session['meeting_time'])))) {
-                        $live_session['status_date'] = in_array($live_session['id'], $attended) ? 'attended' : 'completed';
-                    } elseif (date('H:i:s') < $live_session['meeting_time']) {
-                        $live_session['status_date'] = 'upcoming';
-                    } else {
-                        $live_session['status_date'] = 'ongoing';
-                    }
-                } elseif (date('Y-m-d') > $live_session['meeting_date']) {
-                    $live_session['status_date'] = in_array($live_session['id'], $attended) ? 'attended' : 'completed';
-                } else {
-                    $live_session['status_date'] = 'upcoming';
-                }
-
-                // Pack into categories
-                if ($live_session['status_date'] === 'ongoing') {
-                    $result['ongoing'][] = $live_session;
-                } elseif ($live_session['status_date'] === 'attended') {
-                    $result['attended'][] = $live_session;
-                } elseif ($live_session['status_date'] === 'completed') {
-                    $result['completed'][] = $live_session;
-                } else {
-                    $result['scheduled'][] = $live_session;
-                }
-            }
-        }
-
-        return $result;
     }
 }

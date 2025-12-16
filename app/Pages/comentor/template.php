@@ -34,12 +34,28 @@
 			color: #000;
 		}
 
-		.bg-warning-2 {
-			background-color: #ecba73ff;
-		}
-
 		.bg-primary-2 {
 			background-color: #e6f1f6;
+		}
+
+		.followup-indicator {
+			display: inline-block;
+			width: 10px;
+			height: 10px;
+			background-color: #ffc107;
+			border-radius: 50%;
+			margin-right: 8px;
+			vertical-align: middle;
+		}
+
+		.register-indicator {
+			display: inline-block;
+			width: 10px;
+			height: 10px;
+			background-color: #28a745;
+			border-radius: 50%;
+			margin-right: 8px;
+			vertical-align: middle;
 		}
 
 		.class-card {
@@ -173,20 +189,37 @@
 								<input
 									type="text"
 									class="form-control"
-									pDaftar Pelaceholder="Cari peserta..."
+									placeholder="Cari peserta..."
 									x-model="search">
 							</div>
 
 							<div class="table-responsive">
-								<div class="d-flex gap-3 mb-3">
-									<div class="d-flex align-items-center gap-2">
-										<div style="width: 20px;height: 13px;background-color: #ecba73ff;"></div>
-										<span>Peserta Lama</span>
-									</div>
-									<div class="d-flex align-items-center gap-2">
-										<div style="width: 20px;height: 13px;background-color: #e6f1f6;"></div>
-										<span>Peserta Baru</span>
-									</div>
+								<!-- Total Filtered Count -->
+								<div class="mb-2">
+									<span class="text-muted">Total: <span class="fw-semibold text-dark" x-text="filteredMembers.length"></span> Peserta</span>
+								</div>
+								
+								<!-- Filter Buttons -->
+								<div class="d-flex flex-wrap gap-2 mb-3 align-items-center">
+									<button 
+										@click="filterType = 'all'" 
+										:class="filterType === 'all' ? 'btn-primary' : 'btn-outline-primary'"
+										class="btn btn-sm">
+										<i class="bi bi-people-fill"></i> Semua Peserta
+									</button>
+									<button 
+										@click="filterType = 'followup'" 
+										:class="filterType === 'followup' ? 'btn-warning' : 'btn-outline-warning'"
+										class="btn btn-sm">
+										<div class="followup-indicator d-inline-block" style="margin: 0 4px 0 0;"></div> Peserta Followup
+									</button>
+									<button 
+										@click="filterType = 'referral'" 
+										:class="filterType === 'referral' ? 'btn-success' : 'btn-outline-success'"
+										class="btn btn-sm">
+										<div class="register-indicator d-inline-block" style="margin: 0 4px 0 0;"></div> Peserta Referral
+									</button>
+									
 									<div class="ms-auto d-flex align-items-center gap-2">
 										<label for="sort" class="mb-0">Urutkan:</label>
 										<select id="sort" class="form-select form-select-sm w-auto" x-model="sortOrder" @change="sortMembers">
@@ -210,10 +243,14 @@
 										</tr>
 									</thead>
 									<tbody>
-										<template x-for="member in filteredMembers" :key="member.user_id">
-											<tr :class="member.from == 'mapping' ? 'bg-warning-2' : 'bg-primary-2'">
-												<td>
-													<div class="fw-semibold" x-text="member.fullname"></div>
+									<template x-for="member in filteredMembers" :key="member.user_id">
+										<tr class="bg-primary-2">
+											<td>
+												<div class="fw-semibold">
+													<span x-show="member.from == 'mapping'" class="followup-indicator" title="Peserta Followup"></span>
+													<span x-show="member.from != 'mapping'" class="register-indicator" title="Peserta Referral"></span>
+													<span x-text="member.fullname"></span>
+												</div>
 													<a :href="`https://wa.me/${member.whatsapp}`"
 														target="_blank"
 														class="small"

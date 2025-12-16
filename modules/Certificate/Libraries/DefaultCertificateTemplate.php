@@ -117,7 +117,7 @@ class DefaultCertificateTemplate extends CertificateTemplate
                 ),
                 // Buat halaman 3 - rekap
                 $this->createPage(
-                    base_url('certificates/tpl/back_1.tpl-min.jpg'),
+                    base_url('certificates/tpl/back_1.tpl-min-2.jpg'),
                     [
                         'name' => $this->createPosition(
                             xPct: 50,

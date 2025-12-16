@@ -35,12 +35,16 @@ class PageController extends BaseController
                 MAX(scholarship_participants.whatsapp) as whatsapp,
                 MAX(scholarship_participants.email) as email,
                 MAX(scholarship_participants.occupation) as occupation,
+                MAX(scholarship_participants.program) as program,
+                MAX(scholarship_participants.prev_chapter) as prev_chapter,
                 MAX(scholarship_participants.created_at) as joined_at, 
                 MAX(course_students.graduate) as graduate, 
                 MAX(course_students.progress) as progress, 
                 MAX(course_students.cert_claim_date) as cert_claim_date, 
                 COUNT(CASE WHEN live_attendance.status = 1 THEN 1 END) as total_live_session,
+                COUNT(CASE WHEN live_attendance.status = 1 AND live_attendance.created_at >= '2025-08-12' THEN 1 END) as valid_live_since_batch2,
                 MIN(CASE WHEN live_attendance.status = 1 THEN live_attendance.created_at END) as graduated_at,
+                MAX(scholarship_participants.is_reference_followup) as is_reference_followup,
                 scholarship_participants.reference_comentor
             ")
             ->join('course_students', 'course_students.user_id = scholarship_participants.user_id', 'left')
@@ -64,6 +68,13 @@ class PageController extends BaseController
         ];
 
         foreach ($members as $key => $member) {
+            // Fix untuk batch 1: graduated_at hanya valid jika ada live attendance sejak 2025-08-12
+            // Cek program = RuangAI2025B1 ATAU prev_chapter = RuangAI2025B1 (yang daftar ulang)
+            if (($member['program'] === 'RuangAI2025B1' || $member['prev_chapter'] === 'RuangAI2025B1') 
+                && $member['valid_live_since_batch2'] == 0) {
+                $members[$key]['graduated_at'] = null;
+            }
+            
             $members[$key]['status'] = $member['graduate'] == 1 ? 'lulus' : 'terdaftar';
             $members[$key]['progress'] = (int) $member['progress'];
             $members[$key]['total_live_session'] = (int) $member['total_live_session'];
@@ -72,16 +83,13 @@ class PageController extends BaseController
             $occupation = $member['occupation'] ?? '';
             $members[$key]['occupation'] = $occupationMap[$occupation] ?? $occupation;
 
-            // Tambahan flagging berdasarkan format reference_comentor
-            if (preg_match('/^CO-[A-Za-z0-9]+$/', $member['reference_comentor'])) {
-                // Format: CO-User → mapping
+            // Flagging berdasarkan is_reference_followup
+            if ($member['is_reference_followup'] == 1) {
+                // Peserta dari followup/mapping
                 $members[$key]['from'] = 'mapping';
-            } elseif (preg_match('/^co-[A-Za-z0-9]+$/', $member['reference_comentor'])) {
-                // Format: co-user → register
-                $members[$key]['from'] = 'register';
             } else {
-                // Default jika tidak cocok format
-                $members[$key]['from'] = 'unknown';
+                // Peserta dari register langsung
+                $members[$key]['from'] = 'register';
             }
         }
 

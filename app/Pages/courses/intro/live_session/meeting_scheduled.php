@@ -35,7 +35,7 @@
                     </dl>
                     <template x-if="data?.completed">
                         <div class="d-flex gap-2 mt-4">
-                            <template x-if="!data.attendedCode.includes(live_session.theme_code) && !data.is_expire">
+                            <template x-if="(!live_session.theme_code || !data.attendedCode.includes(live_session.theme_code)) && !data.is_expire">
                                 <button
                                     class="btn btn-primary rounded-3"
                                     @click.prevent="checkEmailIsVerified(meetingIndex, 'scheduled')"
@@ -53,7 +53,7 @@
                             </p>
 
                             <p class="px-3 py-2 bg-info bg-opacity-50 rounded-2"
-                                x-show="data.attendedCode.includes(live_session.theme_code)">
+                                x-show="live_session.theme_code && data.attendedCode.includes(live_session.theme_code)">
                                 <i class="bi bi-hand-thumbs-up"></i>
                                 Kamu sudah mengikuti sesi dengan judul ini
                             </p>

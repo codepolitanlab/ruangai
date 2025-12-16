@@ -195,16 +195,24 @@ class FollowupComentors extends AdminController
 
             $email = trim($row[0]);
             
-            // Cari peserta berdasarkan email di scholarship_participants
-            $participant = $db->table('scholarship_participants')
-                             ->where('email', $email)
+            // Cari peserta berdasarkan email di scholarship_participants dan join dengan course_students
+            $participant = $db->table('scholarship_participants sp')
+                             ->select('sp.*, cs.graduate')
+                             ->join('course_students cs', 'cs.user_id = sp.user_id', 'left')
+                             ->where('sp.email', $email)
                              ->get()
                              ->getRowArray();
 
             if ($participant) {
-                // Cek apakah reference_comentor masih null dan is_reference_followup masih 0 atau null
-                if (empty($participant['reference_comentor']) && 
-                    (empty($participant['is_reference_followup']) || $participant['is_reference_followup'] == 0)) {
+                // Cek apakah peserta belum lulus (graduate = 0 atau NULL)
+                if ($participant['graduate'] != 0 && !is_null($participant['graduate'])) {
+                    $failedCount++;
+                    $failedEmails[] = $email . ' (sudah lulus, tidak bisa di-mapping)';
+                    continue;
+                }
+                
+                // Cek apakah reference_comentor masih null atau is_reference_followup = 1
+                if (empty($participant['reference_comentor']) || $participant['is_reference_followup'] == 1) {
                     
                     // Update data peserta dengan kode comentor
                     $updateData = [
@@ -224,9 +232,13 @@ class FollowupComentors extends AdminController
                         $failedEmails[] = $email . ' (gagal update)';
                     }
                 } else {
-                    // Peserta sudah punya comentor atau sudah di-followup
+                    // Peserta sudah punya comentor atau is_reference_followup bukan 1
                     $failedCount++;
-                    $failedEmails[] = $email . ' (sudah memiliki comentor)';
+                    if (!empty($participant['reference_comentor'])) {
+                        $failedEmails[] = $email . ' (sudah memiliki comentor: ' . $participant['reference_comentor'] . ')';
+                    } else {
+                        $failedEmails[] = $email . ' (is_reference_followup bukan 1)';
+                    }
                 }
             } else {
                 $failedCount++;
@@ -235,13 +247,16 @@ class FollowupComentors extends AdminController
         }
 
         // Set flash message
-        $message = "Import selesai. Berhasil: {$successCount}, Gagal: {$failedCount}";
+        $message = "<strong>Import selesai.</strong><br>";
+        $message .= "✓ Berhasil: <strong>{$successCount}</strong> data<br>";
+        $message .= "✗ Gagal: <strong>{$failedCount}</strong> data";
         
         if (!empty($failedEmails)) {
-            $message .= "<br>Email gagal: " . implode(', ', array_slice($failedEmails, 0, 10));
-            if (count($failedEmails) > 10) {
-                $message .= " dan " . (count($failedEmails) - 10) . " lainnya";
+            $message .= "<br><br><strong>Detail Email yang Gagal:</strong><ul style='margin-top: 10px; margin-bottom: 0;'>";
+            foreach ($failedEmails as $failedEmail) {
+                $message .= "<li>" . htmlspecialchars($failedEmail) . "</li>";
             }
+            $message .= "</ul>";
         }
 
         if ($successCount > 0) {

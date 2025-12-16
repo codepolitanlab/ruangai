@@ -48,6 +48,7 @@ class PageController extends BaseController
             ->select('count(course_lessons.id) as total_lessons, count(course_lesson_progress.user_id) as completed')
             ->join('course_lesson_progress', 'course_lesson_progress.lesson_id = course_lessons.id AND user_id = ' . $jwt->user_id, 'left')
             ->where('course_lessons.course_id', $course['id'])
+            ->where('course_lessons.mandatory', 1)
             ->get()
             ->getRowArray();
         $this->data['total_lessons']    = $completedLessons['total_lessons'] ?? 1;
