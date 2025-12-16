@@ -32,26 +32,8 @@
 			</div>
 
 			<div class="">
-				<!-- <div class="card text-white bg-primary p-3 mb-4 shadow-sm">
-					<div class="d-flex align-items-center">
-						<div class="bg-white p-4 rounded-3 d-flex align-items-center justify-content-center me-3">
-							<img src="<?= base_url('mobilekit/assets/img/ruangai/book-play.svg') ?>" alt="">
-						</div>
-						<div class="flex-grow-1">
-							<div class="d-flex align-items-center">
-								<span class="fw-bold">Lanjutkan Belajar</span>
-							</div>
-							<p class="fw-bold mb-2" x-text="data.last_lesson?.title"></p>
-							<div class="d-flex align-items-center">
-								<i class="bi bi-play-fill fs-3 me-2"></i>
-								<div class="progress flex-grow-1" style="background: #BFD6E0">
-									<div class="progress-bar bg-white" role="progressbar" :style="{ width: data.last_lesson?.progress + '%' }" aria-valuenow="data.last_lesson?.progress" aria-valuemin="0" aria-valuemax="100"></div>
-								</div>
-								<span class="ms-3 fw-bold small" x-text="data.last_lesson?.progress + '%'">0%</span></span>
-							</div>
-						</div>
-					</div>
-				</div> -->
+				<!-- Show Scholarship CTA for Competition Users -->
+				<?= $this->include('_components/scholarship_cta') ?>
 
 				<template x-if="data.courses.length > 0">
 					<div class="bg-white px-3 py-4 rounded-4 mb-4">
@@ -75,6 +57,14 @@
 								</div>
 							</a>
 						</template>
+					</div>
+				</template>
+				
+				<template x-if="data.courses.length === 0 && !data?.is_scholarship_participant">
+					<div class="bg-white px-3 py-4 rounded-4 mb-4 text-center">
+						<i class="bi bi-inbox display-1 text-muted"></i>
+						<h5 class="fw-bold mb-2 mt-3">Belum Ada Kelas</h5>
+						<p class="text-muted">Kamu belum memiliki kelas aktif. Daftar program beasiswa untuk mendapatkan akses kelas gratis!</p>
 					</div>
 				</template>
 

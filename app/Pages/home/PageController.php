@@ -15,11 +15,16 @@ class PageController extends BaseController
 
     public function getData()
     {
+        helper('scholarship');
+        
         $Heroic = new \App\Libraries\Heroic();
         $jwt = $Heroic->checkToken(true);
         $this->data['name'] = $jwt->user['name'];
 
         $db = \Config\Database::connect();
+        
+        // Check if user is scholarship participant
+        $this->data['is_scholarship_participant'] = is_scholarship_participant($jwt->user_id);
 
         $this->data['courses'] = $db->table('course_students')
             ->where('user_id', $jwt->user_id)
@@ -58,7 +63,7 @@ class PageController extends BaseController
         $this->data['last_course']['total_lessons']    = $completedLessons['total_lessons'] ?? 1;
         $this->data['last_course']['lesson_completed'] = $completedLessons['completed'] ?? 0;
 
-        // Get course_students
+        // Get course_students - safe for non-scholarship users
         $this->data['student'] = $db->table('course_students')
             ->select('progress, cert_claim_date, cert_code, expire_at, scholarship_participants.program, scholarship_participants.reference')
             ->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id', 'left')
@@ -67,16 +72,29 @@ class PageController extends BaseController
             ->get()
             ->getRowArray();
 
-        $this->data['event'] = $db->table('events')->select('date_start, date_end, code')->where('code', $this->data['student']['program'])->get()->getRowArray();
+        // Safe null handling untuk user kompetisi
+        $this->data['event'] = null;
+        $this->data['group_comentor'] = null;
+        
+        if ($this->data['student'] && isset($this->data['student']['program'])) {
+            $this->data['event'] = $db->table('events')
+                ->select('date_start, date_end, code')
+                ->where('code', $this->data['student']['program'])
+                ->get()
+                ->getRowArray();
+        }
 
-        $this->data['is_expire'] = $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
+        $this->data['is_expire'] = ($this->data['student'] && isset($this->data['student']['expire_at']) && $this->data['student']['expire_at'] < date('Y-m-d H:i:s')) ? true : false;
 
-        $this->data['group_comentor'] = $db->table('shorteners')
+        if ($this->data['student'] && isset($this->data['student']['reference'])) {
+            $this->data['group_comentor'] = $db->table('shorteners')
                 ->where('code', $this->data['student']['reference'])
                 ->get()
                 ->getRowArray();
+        }
 
         $this->data['is_comentor'] = $jwt->user['role_id'] == 4 ? true : false;
+        $this->data['scholarship_url'] = scholarship_registration_url();
 
         return $this->respond($this->data);
     }
@@ -192,11 +210,14 @@ class PageController extends BaseController
                 'email'       => $email,
             ]);
         
-        $db->table('scholarship_participants')
-            ->where('user_id', $jwt->user_id)
-            ->update([
-                'email' => $email,
-            ]);
+        // Update scholarship_participants only if user is participant
+        if (is_scholarship_participant($jwt->user_id)) {
+            $db->table('scholarship_participants')
+                ->where('user_id', $jwt->user_id)
+                ->update([
+                    'email' => $email,
+                ]);
+        }
 
         $newJwt = JWT::encode([
             'email'        => strtolower($user['email']),
