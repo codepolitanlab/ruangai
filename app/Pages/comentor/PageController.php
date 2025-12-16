@@ -74,7 +74,9 @@ class PageController extends BaseController
         foreach ($members as $key => $member) {
             // Fix untuk batch 1: graduated_at hanya valid jika ada live attendance sejak 2025-08-12
             // Cek program = RuangAI2025B1 ATAU prev_chapter = RuangAI2025B1 (yang daftar ulang)
-            // if (($member['program'] === 'RuangAI2025B1' || $member['prev_chapter'] === 'RuangAI2025B1') 
+            
+            // TODO: Cek ulang
+            // if (($member['prev_chapter'] === 'RuangAI2025B1' || $member['prev_chapter'] === 'RuangAI2025B2') 
             //     && $member['valid_live_since_batch2'] == 0) {
             //     $members[$key]['graduated_at'] = null;
             // }
