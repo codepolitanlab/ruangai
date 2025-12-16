@@ -97,4 +97,23 @@ if (!function_exists('ensure_upload_directory')) {
 
         return $path;
     }
+
+    if (!function_exists('profile_upload_path')) {
+        function profile_upload_path($userId)
+        {
+            return WRITEPATH . 'uploads/profile/' . $userId . '/';
+        }
+    }
+
+    if (!function_exists('ensure_profile_upload_directory')) {
+        function ensure_profile_upload_directory($userId)
+        {
+            $path = profile_upload_path($userId);
+            if (!is_dir($path)) {
+                mkdir($path, 0755, true);
+            }
+
+            return $path;
+        }
+    }
 }

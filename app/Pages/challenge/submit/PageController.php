@@ -68,8 +68,14 @@ class PageController extends BaseController
         // Get user info
         $db = \Config\Database::connect();
         $user = $db->table('users')
-            ->select('id, name, email, phone')
+            ->select('id, name, email, phone, whatsapp, address, gender, alibabacloud_id, alibabacloud_screenshot, profession, job_title, company, industry, referral_code, agreed_terms, birth_date, x_profile_url')
             ->where('id', $jwt->user_id)
+            ->get()
+            ->getRowArray();
+
+        // Get user profile from table challenge_alibaba
+        $profile = $db->table('challenge_alibaba')
+            ->where('user_id', $jwt->user_id)
             ->get()
             ->getRowArray();
 
@@ -384,5 +390,188 @@ class PageController extends BaseController
                 'submission_id' => $newSubmissionId,
             ]);
         }
+
+    }
+
+    /**
+     * Save user profile (ajax)
+     */
+    public function postSaveProfile()
+    {
+        $Heroic = new \App\Libraries\Heroic();
+        $jwt = $Heroic->checkToken(true);
+
+        $validation = service('validation');
+        $validation->setRules([
+            'name' => [
+                'rules' => 'required|min_length[3]',
+                'errors' => [
+                    'required' => 'Nama wajib diisi',
+                    'min_length' => 'Nama minimal 3 karakter'
+                ]
+            ],
+            'email' => [
+                'rules' => 'required|valid_email',
+                'errors' => [
+                    'required' => 'Email wajib diisi',
+                    'valid_email' => 'Format email tidak valid'
+                ]
+            ],
+            'whatsapp' => [
+                'rules' => 'required|regex_match[/^62\d{9,13}$/]',
+                'errors' => [
+                    'required' => 'WhatsApp wajib diisi',
+                    'regex_match' => 'Format WhatsApp: 62812xxxx (9-13 digit)'
+                ]
+            ],
+            'birth_date' => [
+                'rules' => 'required|valid_date',
+                'errors' => [
+                    'required' => 'Tanggal lahir wajib diisi',
+                    'valid_date' => 'Format tanggal tidak valid'
+                ]
+            ],
+            'address' => [
+                'rules' => 'required|min_length[10]',
+                'errors' => [
+                    'required' => 'Alamat wajib diisi',
+                    'min_length' => 'Alamat minimal 10 karakter'
+                ]
+            ],
+            'gender' => [
+                'rules' => 'required|in_list[male,female]',
+                'errors' => [
+                    'required' => 'Jenis kelamin wajib dipilih',
+                    'in_list' => 'Pilihan jenis kelamin tidak valid'
+                ]
+            ],
+            'profession' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Profesi wajib diisi'
+                ]
+            ],
+            'job_title' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Pekerjaan/Job Title wajib diisi'
+                ]
+            ],
+            'company' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Instansi/Perusahaan wajib diisi'
+                ]
+            ],
+            'industry' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Industri wajib diisi'
+                ]
+            ],
+            'alibabacloud_id' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'AlibabaCloud ID wajib diisi'
+                ]
+            ],
+            'x_profile_url' => [
+                'rules' => 'required|valid_url|regex_match[/^https:\\/\\/(www\\.)?(x\\.com|twitter\\.com)\\/.+/]',
+                'errors' => [
+                    'required' => 'Link Profil X wajib diisi',
+                    'valid_url' => 'Format URL tidak valid',
+                    'regex_match' => 'Link harus dari domain x.com atau twitter.com'
+                ]
+            ],
+            'agreed_terms' => [
+                'rules' => 'required|in_list[1]',
+                'errors' => [
+                    'required' => 'Anda harus menyetujui syarat dan ketentuan',
+                    'in_list' => 'Anda harus menyetujui syarat dan ketentuan'
+                ]
+            ],
+        ]);
+
+        $post = $this->request->getPost();
+        if (!$validation->run($post)) {
+            return $this->respond([
+                'success' => 0, 
+                'message' => 'Mohon lengkapi semua field yang wajib diisi dengan benar',
+                'errors' => $validation->getErrors()
+            ]);
+        }
+
+        // Validate minimum age 17 years
+        if (!empty($post['birth_date'])) {
+            $birthDate = new \DateTime($post['birth_date']);
+            $today = new \DateTime();
+            $age = $today->diff($birthDate)->y;
+            
+            if ($age < 17) {
+                return $this->respond([
+                    'success' => 0,
+                    'message' => 'Usia minimal 17 tahun',
+                    'errors' => ['birth_date' => 'Usia minimal 17 tahun']
+                ]);
+            }
+        }
+
+        // Check if user already has screenshot or is uploading one
+        $db = \Config\Database::connect();
+        $user = $db->table('users')->where('id', $jwt->user_id)->get()->getRow();
+        
+        $screenshot = $this->request->getFile('alibabacloud_screenshot');
+        $hasScreenshot = ($user && $user->alibabacloud_screenshot) || ($screenshot && $screenshot->isValid());
+        
+        if (!$hasScreenshot) {
+            return $this->respond([
+                'success' => 0,
+                'message' => 'Screenshot Alibaba Account wajib diupload',
+                'errors' => ['alibabacloud_screenshot' => 'Screenshot Alibaba Account wajib diupload']
+            ]);
+        }
+
+        $data = [
+            'name' => $post['name'],
+            'email' => $post['email'],
+            'alibabacloud_id' => $post['alibabacloud_id'] ?? null,
+            'whatsapp' => $post['whatsapp'] ?? null,
+            'address' => $post['address'] ?? null,
+            'gender' => $post['gender'] ?? null,
+            'profession' => $post['profession'] ?? null,
+            'job_title' => $post['job_title'] ?? null,
+            'company' => $post['company'] ?? null,
+            'industry' => $post['industry'] ?? null,
+            'referral_code' => $post['referral_code'] ?? null,
+            'agreed_terms' => isset($post['agreed_terms']) ? 1 : 0,
+            'birth_date' => $post['birth_date'] ?? null,
+            'x_profile_url' => $post['x_profile_url'] ?? null,
+        ];
+
+        // Handle optional screenshot upload
+        if ($screenshot && $screenshot->isValid() && !$screenshot->hasMoved()) {
+            $uploadPath = ensure_profile_upload_directory($jwt->user_id);
+            $fileName = $screenshot->getRandomName();
+            $screenshot->move($uploadPath, $fileName);
+            $data['alibabacloud_screenshot'] = $fileName;
+            
+            // Delete old screenshot if exists
+            if ($user && $user->alibabacloud_screenshot) {
+                $oldFile = $uploadPath . $user->alibabacloud_screenshot;
+                if (file_exists($oldFile)) {
+                    @unlink($oldFile);
+                }
+            }
+        }
+
+        $db = \Config\Database::connect();
+        $builder = $db->table('users');
+        $updated = $builder->where('id', $jwt->user_id)->update($data);
+
+        if ($updated) {
+            return $this->respond(['success' => 1, 'message' => 'Profil berhasil disimpan']);
+        }
+
+        return $this->respond(['success' => 0, 'message' => 'Gagal menyimpan profil']);
     }
 }

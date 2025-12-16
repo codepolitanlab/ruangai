@@ -27,10 +27,22 @@ $bottommenu = [
         'module' => 'courses'
     ],
     [
+        'label'  => 'Workshop',
+        'url'    => '/workshop',
+        'icon'   => 'bi bi-ticket',
+        'module' => 'workshop'
+    ],
+    [
         'label'  => 'Reward',
         'url'    => '/courses/reward',
         'icon'   => 'bi bi-gift',
         'module' => 'reward'
+    ],
+    [
+        'label'  => 'Sertifikat',
+        'url'    => '/certificate',
+        'icon'   => 'bi bi-award',
+        'module' => 'certificate'
     ],
     [
         'label'  => 'Pustaka Prompt',

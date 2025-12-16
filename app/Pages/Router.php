@@ -22,14 +22,18 @@ class Router
         '/masuk/sebagai/:key' => [
             'template' => '/masuk/sebagai/template',
         ],
-        '/certificate/claim/:course_id/:cert_code' => [
-            'handler' => '[isLoggedIn]',
-        ],
+        '/page/:slug' => [],
+        '/profile' => [],
+        '/profile/edit_info' => [],
+        '/profile/edit_account' => [],
         '/voucher/' => [
             'preload' => true,
             'handler' => '[isLoggedIn]',
         ],
-        '/certificate/:code' => [],
+        '/certificate' => [],
+        '/certificate/:code' => [
+            'template' => '/certificate/detail/template',
+        ],
         '/courses' => [
             'preload' => true,
             'handler' => '[isLoggedIn]',
@@ -81,5 +85,6 @@ class Router
         '/courses/reward/howto' => [],
         '/challenge' => [],
         '/challenge/submit' => [],
+        '/workshop' => [],
     ];
 }

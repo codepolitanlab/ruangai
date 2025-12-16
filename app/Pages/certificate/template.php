@@ -1,55 +1,73 @@
 <div
-    id="certificate_print"
+    id="certificate"
     x-data="$heroic({
         title: `<?= $page_title ?>`,
-        url: `certificate/data/${$params.code}`
+        url: `certificate/data`
         })">
 
-    <div id="appCapsule" class="mt-4" x-data="render_certificate()">
+    <style>
+        .cert-card {
+            background: #fff;
+            overflow: hidden;
+        }
 
-        <template x-if="data?.status !== 'failed'">
-            <div class="appContent" style="min-height:90vh;">
-                <a href="/courses" class="mb-4 d-flex align-items-center gap-2">
-                    <i class="bi bi-arrow-left-circle-fill fs-2 text-secondary"></i>
-                    <h4 class="m-0">Kembali</h4>
-                </a>
+        .cert-card .cert-stripe {
+            width: 6px;
+        }
 
-                <div class="mt-3 text-center">
-                    <p>
-                        Sertifikat ini valid diterbitkan oleh PT CODEPOLITAN INTEGRASI INDONESIA
-                        untuk peserta atas nama <strong x-text="data.claimer?.name"></strong>.</p>
+        .cert-card .cert-body {
+            min-height: 140px;
+        }
 
-                    <p>
-                        Program: <strong x-text="data.claimer?.course"></strong> <br>
-                        Tanggal Terbit: <strong x-text="data.claimer?.publishDate"></strong> <br>
-                        Nomor Sertifikat: <strong x-text="data.claimer?.number"></strong></p>
+        @media (max-width: 576px) {
+            .cert-card .cert-body {
+                min-height: 120px;
+            }
+        }
+    </style>
 
-                        <button
-                            x-show="localStorage.getItem('heroic_token')"
-                            @click="downloadPDF()"
-                            class="btn btn-secondary mb-3">Unduh PDF Sertifikat</button>
-                </div>
-
-                <!-- Wadah preview -->
-                <div id="pdf-container" style="width:100%; max-width:900px; margin:0 auto; position:relative">
-
-                    <!-- Container multi halaman -->
-                    <div id="pdf-pages" style="width:100%; border-radius:8px; position:relative; background:#f8f8f8"></div>
-
-                    <p @click="window.location.reload()"
-                        style="position: absolute; top: 1%; right: 1%; cursor: pointer; font-size: 12px; background: #eee; padding: 11px 20px; border-radius: 50px; font-style: italic; opacity: .5">
-                        Klik untuk refresh preview
-                    </p>
-
-                    <template x-if="data.claimer?.number">
-                        <div x-init="previewPDF()"></div>
-                    </template>
-                </div>
-
+    <div id="appCapsule">
+        <div class="appContent py-4">
+            <div class="header-large-title mb-4 ps-0">
+                <h2 class="h3 fw-normal">Sertifikat Saya</h2>
             </div>
-        </template>
 
+            <div class="row g-3">
+                <template x-for="cert in data.certificates" :key="cert.cert_code">
+                    <a :href="`/certificate/${cert.cert_code}`">
+                        <div class="col-12">
+                            <div class="cert-card d-flex align-items-stretch shadow-sm rounded-4">
+                                <div class="cert-stripe" :class="{
+                                    'bg-primary': cert.entity_type === 'course',
+                                    'bg-warning': cert.entity_type === 'workshop',
+                                    'bg-secondary': cert.entity_type !== 'course' && cert.entity_type !== 'workshop'
+                                }"></div>
+
+                                <div class="cert-body flex-grow-1 p-3">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <div class="d-flex align-items-center mb-1">
+                                                <h5 class="fs-5 text-primary mb-0 me-2" x-text="cert.title"></h5>
+                                            </div>
+                                            <p class="mb-0 text-muted" style="font-size: 13px;">
+                                                <b>Nomor:</b> <span x-text="cert.cert_number"></span> <br>
+                                                <b>Diterbitkan:</b> <span x-text="$heroicHelper.formatDate(cert.cert_claim_date)"></span>
+                                            </p>
+                                        </div>
+
+                                        <div class="text-end ms-2">
+                                            <div class="mb-2">
+                                                <span class="px-2 py-1 rounded-2 border border-success text-success" x-text="cert.entity_type"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </template>
+            </div>
+        </div>
+
+        <?= $this->include('_bottommenu'); ?>
     </div>
-</div>
-
-<?= $this->include('certificate/script'); ?>
