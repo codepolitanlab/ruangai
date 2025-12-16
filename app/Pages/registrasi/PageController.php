@@ -54,6 +54,15 @@ class PageController extends BaseController
         $Heroic = new \App\Libraries\Heroic();
         $db     = \Config\Database::connect();
 
+        // Check google recaptcha response
+        $recaptchaResponse  = $request->getPost('recaptcha');
+        $recaptchaSecretKey = config('Heroic')->recaptcha['secretKey'];
+        $Recaptcha          = new \ReCaptcha\ReCaptcha($recaptchaSecretKey);
+        $resp               = $Recaptcha->setExpectedHostname($_SERVER['HTTP_HOST'])->verify($recaptchaResponse, $_SERVER['REMOTE_ADDR']);
+        if (! $resp->isSuccess()) {
+            return $this->respond(['success' => 0, 'message' => 'Terjadi kesalahan saat mengecek recaptcha: ' . implode(', ', $resp->getErrorCodes())]);
+        }
+
         // Check if email not exist
         $found = $db->query('SELECT email FROM users where email = :email:', ['email' => $validData['email']])->getRow();
         if ($found) {

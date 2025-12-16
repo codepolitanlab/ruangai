@@ -1,4 +1,4 @@
-<div id="member_register" x-data="member_register()">
+<div id="member_register" x-data="member_register(`<?= config('Heroic')->recaptcha['siteKey'] ?>`)">
 
     <style>
         small.text-danger {
@@ -65,6 +65,8 @@
                                 <small class="text-danger" x-show="errors.repeat_password" x-text="errors.repeat_password"></small>
                             </div>
                         </div>
+                        
+                        <div class="d-flex justify-content-center" id="grecaptcha"></div>
 
                         <div class="form-group px-3 mt-3">
                             <button
