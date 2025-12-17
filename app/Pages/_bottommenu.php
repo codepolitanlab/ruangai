@@ -8,7 +8,7 @@ $bottommenu = [
         'module' => 'homepage'
     ],
     [
-        'label'  => 'Beasiswa',
+        'label'  => 'Misi Beasiswa',
         'url'    => '/courses/intro/1/dasar-dan-penggunaan-generative-ai',
         'icon'   => 'bi bi-journal-check',
         'module' => 'misi_beasiswa',
@@ -26,29 +26,31 @@ $bottommenu = [
         'icon'   => 'bi bi-book',
         'module' => 'courses'
     ],
-    [
-        'label'  => 'Workshop',
-        'url'    => '/workshop',
-        'icon'   => 'bi bi-ticket',
-        'module' => 'workshop'
-    ],
+    // [
+    //     'label'  => 'Workshop',
+    //     'url'    => '/workshop',
+    //     'icon'   => 'bi bi-ticket',
+    //     'module' => 'workshop'
+    // ],
     [
         'label'  => 'Reward',
         'url'    => '/courses/reward',
         'icon'   => 'bi bi-gift',
         'module' => 'reward'
     ],
+    // [
+    //     'label'  => 'Sertifikat',
+    //     'url'    => '/certificate',
+    //     'icon'   => 'bi bi-award',
+    //     'module' => 'certificate'
+    // ],
     [
-        'label'  => 'Sertifikat',
-        'url'    => '/certificate',
-        'icon'   => 'bi bi-award',
-        'module' => 'certificate'
-    ],
-    [
-        'label'  => 'Pustaka Prompt',
+        'label'  => 'Prompts',
         'url'    => '/prompts',
         'icon'   => 'bi bi-input-cursor-text',
-        'module' => 'prompts'
+        'module' => 'prompts',
+        'target' => '_blank',
+        'badge'  => ['warning', 'NEW'],
     ],
     [
         'label'  => 'Keluar',
@@ -88,6 +90,7 @@ $bottommenu = [
             <a href="<?= $menu['url'] ?>"
                 <?= $menu['native'] ?? null ? 'native' : '' ?>
                 class="item"
+                <?= isset($menu['target']) && $menu['target'] == '_blank' ? 'target="_blank" native' : '' ?>
                 :class="(data?.module ?? '') == '<?= $menu['module'] ?>' ? 'active' : ''">
                 <div class="icon-box icon-box-transparent">
                     <i class="<?= $menu['icon'] ?>"></i>

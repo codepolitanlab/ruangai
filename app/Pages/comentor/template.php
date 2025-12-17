@@ -38,24 +38,27 @@
 			background-color: #e6f1f6;
 		}
 
+		.indicator-peserta {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+		}
+
 		.followup-indicator {
 			display: inline-block;
-			width: 10px;
-			height: 10px;
+			width: 8px;
+			height: 100%;
 			background-color: #ffc107;
-			border-radius: 50%;
-			margin-right: 8px;
-			vertical-align: middle;
+			border-radius: 10px 0 0 10px;
 		}
 
 		.register-indicator {
 			display: inline-block;
-			width: 10px;
-			height: 10px;
+			width: 8px;
+			height: 100%;
 			background-color: #28a745;
-			border-radius: 50%;
-			margin-right: 8px;
-			vertical-align: middle;
+			border-radius: 10px 0 0 10px;
 		}
 
 		.class-card {
@@ -186,8 +189,9 @@
 							</div>
 						</div>
 
-						<div class="p-3 rounded-4 bg-white d-flex flex-column gap-2 justify-content-between">
-							<h5 class="fw-bold">Daftar Peserta</h5>
+						<div class="rounded-4 d-flex flex-column gap-2 mt-5 justify-content-between">
+							<h4 class="fw-bold">Daftar Mentee</h4>
+
 							<div class="mb-2">
 								<input
 									type="text"
@@ -196,33 +200,33 @@
 									x-model="search">
 							</div>
 
-							<div class="table-responsive">
+							<div class="">
 								<!-- Total Filtered Count -->
 								<div class="mb-2">
 									<span class="text-muted">Total: <span class="fw-semibold text-dark" x-text="filteredMembers.length"></span> Peserta</span>
 								</div>
-								
+
 								<!-- Filter Buttons -->
 								<div class="d-flex flex-wrap gap-2 mb-3 align-items-center">
-									<button 
-										@click="filterType = 'all'" 
+									<button
+										@click="filterType = 'all'"
 										:class="filterType === 'all' ? 'btn-primary' : 'btn-outline-primary'"
 										class="btn btn-sm">
-										<i class="bi bi-people-fill"></i> Semua Peserta
+										<i class="bi bi-people-fill"></i> Semua
 									</button>
-									<button 
-										@click="filterType = 'followup'" 
+									<button
+										@click="filterType = 'followup'"
 										:class="filterType === 'followup' ? 'btn-warning' : 'btn-outline-warning'"
 										class="btn btn-sm">
-										<div class="followup-indicator d-inline-block" style="margin: 0 4px 0 0;"></div> Peserta Followup
+										<div class="d-inline-block" style="margin: 0 4px 0 0;"></div> Followup
 									</button>
-									<button 
-										@click="filterType = 'referral'" 
+									<button
+										@click="filterType = 'referral'"
 										:class="filterType === 'referral' ? 'btn-success' : 'btn-outline-success'"
 										class="btn btn-sm">
-										<div class="register-indicator d-inline-block" style="margin: 0 4px 0 0;"></div> Peserta Referral
+										<div class="d-inline-block" style="margin: 0 4px 0 0;"></div> Referral
 									</button>
-									
+
 									<div class="ms-auto d-flex align-items-center gap-2">
 										<label for="sort" class="mb-0">Urutkan:</label>
 										<select id="sort" class="form-select form-select-sm w-auto" x-model="sortOrder" @change="sortMembers">
@@ -234,46 +238,54 @@
 										</button>
 									</div>
 								</div>
-								<table class="w-100 mb-0 align-middle custom-table">
-									<thead>
+								<!-- <table class="w-100 mb-0 align-middle custom-table"> -->
+								<!-- <thead>
 										<tr>
-											<th>Nama</th>
-											<th class="d-none d-md-table-cell">Email</th>
+											<th>Mentee</th>
 											<th class="d-none d-lg-table-cell">Profesi</th>
-											<th class="d-none d-lg-table-cell">Tanggal Bergabung</th>
-											<th class="d-none d-lg-table-cell">Tanggal Lulus</th>
-											<th>Status & Progres</th>
+											<th class="d-none d-lg-table-cell">Tanggal</th>
+											<th>Status</th>
 										</tr>
-									</thead>
-									<tbody>
-									<template x-for="member in filteredMembers" :key="member.user_id">
-										<tr class="bg-primary-2">
-											<td>
-												<div class="fw-semibold">
-													<span x-show="member.from == 'mapping'" class="followup-indicator" title="Peserta Followup"></span>
-													<span x-show="member.from != 'mapping'" class="register-indicator" title="Peserta Referral"></span>
-													<span x-text="member.fullname"></span>
+									</thead> -->
+								<!-- <tbody> -->
+								<template x-for="(member, index) in filteredMembers" :key="index">
+									<div class="card p-3 rounded-3 mb-3 shadow-sm">
+										<div class="fw-semibold indicator-peserta">
+											<span x-show="member.from == 'mapping'" class="followup-indicator" title="Peserta Followup"></span>
+											<span x-show="member.from != 'mapping'" class="register-indicator" title="Peserta Referral"></span>
+										</div>
+										<div class="row ps-2">
+											<div class="col-md-6 mb-2 mb-md-0">
+												<div class="d-flex position-relative">
+													<div>
+														<strong class="fw-bold" x-text="member.fullname"></strong> <br>
+														(<span x-text="member.email"></span>) -
+														<a :href="`https://wa.me/${member.whatsapp}`"
+															target="_blank"
+															class="small"
+															x-text="member.whatsapp"></a>
+														<br>
+														<span x-text="member.occupation || '-'"></span>
+													</div>
 												</div>
-													<a :href="`https://wa.me/${member.whatsapp}`"
-														target="_blank"
-														class="small"
-														x-text="member.whatsapp"></a>
-													<div class="d-block d-md-none" x-text="member.email"></div>
-												</td>
-												<td class="d-none d-md-table-cell">
-													<span x-text="member.email"></span>
-												</td>
-												<td class="d-none d-lg-table-cell">
-													<span x-text="member.occupation || '-'"></span>
-												</td>
-												<td class="d-none d-lg-table-cell">
-													<span x-text="member.joined_at ? new Date(member.joined_at).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'}) : '-'"></span>
-												</td>
-												<td class="d-none d-lg-table-cell">
-													<span x-text="member.graduated_at ? new Date(member.graduated_at).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'}) : '-'"></span>
-												</td>
-												<td>
-													<!-- badge status -->
+											</div>
+
+											<!-- Display only in mobile view -->
+											<div class="border-bottom mb-3 d-md-none"></div>
+
+											<div class="col-md-6 ps-0 d-flex justify-content-between align-items-top">
+												<div>
+													<div class="px-2 py-0 rounded-3">
+														<strong>Bergabung:</strong>
+														<span class="text-nowrap" x-text="member.tanggal_daftar ? new Date(member.tanggal_daftar).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'}) : '-'"></span> <br>
+													</div>
+													<div class="px-2 py-0 rounded-3">
+														<strong>Lulus:</strong>
+														<span class="text-nowrap" x-text="member.tanggal_klaim_sertifikat ? new Date(member.tanggal_klaim_sertifikat).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'}) : '-'"></span>
+													</div>
+												</div>
+
+												<div class="text-end">
 													<div class="mb-1">
 														<template x-if="member.graduate == 1">
 															<span class="badge bg-success fw-semibold">Tuntas</span>
@@ -293,15 +305,17 @@
 													</div>
 
 													<!-- statistik progres -->
-													<div class="d-flex align-items-center gap-2 text-muted small">
+													<div class="d-flex align-items-center justify-content-end gap-2 text-muted small">
 														<span><i class="bi bi-journal-bookmark text-success"></i> <span x-text="member.progress + '%'"></span></span>
 														<span><i class="bi bi-broadcast text-danger"></i> <span x-text="member.total_live_session + 'x'"></span></span>
 													</div>
-												</td>
-											</tr>
-										</template>
-									</tbody>
-								</table>
+												</div>
+											</div>
+										</div>
+									</div>
+								</template>
+								<!-- </tbody>
+								</table> -->
 							</div>
 
 

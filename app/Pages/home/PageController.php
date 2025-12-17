@@ -51,11 +51,12 @@ class PageController extends BaseController
                 ->getRowArray();
         }
 
-        // Get completed lessons for current user
+        // Get completed lessons for current user (only mandatory lessons)
         $completedLessons = $db->table('course_lessons')
             ->select('count(course_lessons.id) as total_lessons, count(course_lesson_progress.user_id) as completed')
             ->join('course_lesson_progress', 'course_lesson_progress.lesson_id = course_lessons.id AND user_id = ' . $jwt->user_id, 'left')
             ->where('course_lessons.course_id', $last_course['id'])
+            ->where('course_lessons.mandatory', 1)
             ->get()
             ->getRowArray();
 

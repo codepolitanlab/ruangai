@@ -10,10 +10,6 @@
       filterType: "all", // all, followup, referral
 
       init() {
-        if(this.ui.empty === false) {
-          this.filteredMembers = [...this.data.members].sort((a, b) => new Date(a.joined_at) - new Date(b.joined_at));
-        }
-
         // auto filter saat ketik
         this.$watch("search", (val) => {
           this.filterMembers(val);
@@ -23,7 +19,11 @@
         this.$watch("filterType", () => {
           this.filterMembers(this.search);
         });
-        console.log(this.filteredMembers)
+
+        // Initial filter saat pertama kali load
+        if(this.ui.empty === false) {
+          this.filterMembers(this.search);
+        }
       },
 
       filterMembers(keyword) {
@@ -49,9 +49,9 @@
         // Sort the results
         this.filteredMembers = members.sort((a, b) => {
           if (this.sortOrder === "asc") {
-            return new Date(a.joined_at) - new Date(b.joined_at);
+            return new Date(a.tanggal_daftar) - new Date(b.tanggal_daftar);
           } else {
-            return new Date(b.joined_at) - new Date(a.joined_at);
+            return new Date(b.tanggal_daftar) - new Date(a.tanggal_daftar);
           }
         });
       },
@@ -59,9 +59,9 @@
       sortMembers() {
         this.filteredMembers.sort((a, b) => {
           if (this.sortOrder === "asc") {
-            return new Date(a.joined_at) - new Date(b.joined_at);
+            return new Date(a.tanggal_daftar) - new Date(b.tanggal_daftar);
           } else {
-            return new Date(b.joined_at) - new Date(a.joined_at);
+            return new Date(b.tanggal_daftar) - new Date(a.tanggal_daftar);
           }
         });
       },
@@ -93,12 +93,12 @@
             else if (member.progress != 100 && member.total_live_session >= 1) status = "Belum Course";
 
             // Format tanggal
-            const tanggalBergabung = member.joined_at 
-              ? new Date(member.joined_at).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'})
+            const tanggalBergabung = member.tanggal_daftar 
+              ? new Date(member.tanggal_daftar).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'})
               : '-';
             
-            const tanggalLulus = member.graduated_at 
-              ? new Date(member.graduated_at).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'})
+            const tanggalLulus = member.tanggal_klaim_sertifikat 
+              ? new Date(member.tanggal_klaim_sertifikat).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'})
               : '-';
 
             return [
