@@ -72,10 +72,12 @@
         </style>
 
         <!-- Hero -->
-        <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%2010476.png" class="w-100 rounded-4 mt-4" alt="">
+        <a native target="_blank" href="https://www.ruangai.id/genaivideofest">
+            <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%2010476.png" class="w-100 rounded-bottom-5" alt="">
+        </a>
 
         <!-- Details -->
-        <div id="details" class="mt-4">
+        <div id="details" class="mt-4 px-3 px-md-0">
             
             <div class="accordion bg-transparent border-0" id="challengeAccordion">
                 
@@ -95,7 +97,6 @@
                                 <li>Wajib Pakai WAN Model Studio</li>
                                 <li>1 Akun = 1 Submission</li>
                                 <li>Usia : Minimal 17+</li>
-                                <li>Format Peserta : Solo / Tim 3</li>
                                 <li>Wajib Tanda Tangan Etika & HAk Cipta</li>
                                 <li>Konten Terlarang = Diskualifikasi</li>
                                 <li>Konten Harus Fresh tidak pernah di posting dimanapun</li>
@@ -104,27 +105,23 @@
                     </div>
                 </div>
 
-                <!-- FAQ -->
-                <div class="accordion-item">
-                    <h1 class="m-0">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            FAQ
-                        </button>
-                    </h1>
-                    <div id="collapseTwo" class="accordion-collapse collapse p-4 pt-0">
-                        <div class="accordion-body rounded-4">
-                            <p class="mb-2"><strong>Apa format video?</strong> Video max 1 menit, resolusi 1080p.</p>
-                            <p class="mb-0"><strong>Berapa banyak submission?</strong> 1 akun = 1 submission.</p>
-                        </div>
-                    </div>
-                </div>
-
             </div>
 
             <!-- CTA Button -->
-            <div class="mt-4 mb-5">
+            <div class="mt-4 mb-2">
                 <a href="/challenge/submit" class="btn btn-lg w-100 d-flex align-items-center justify-content-center" style="background:#ff6b35; border:none; color:#fff; font-size: 1.1rem; font-weight: 700; padding: 1rem 2rem; border-radius: 2rem;">
                     Kirim Formulir
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="ms-2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+            </div>
+            
+            <!-- CTA Button -->
+            <div class="mb-5">
+                <a native target="_blank" href="https://ruangai.id/genaivideofest#faq" class="btn btn-outline-primary btn-lg w-100 d-flex align-items-center justify-content-center" style="font-size: 1.1rem; font-weight: 700; padding: 1rem 2rem; border-radius: 2rem;">
+                    Frequently Asked Questions
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="ms-2">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                         <polyline points="12 5 19 12 12 19"></polyline>
@@ -135,7 +132,7 @@
         </div>
 
         <!-- Small footer note -->
-        <div class="text-center text-muted small mb-4">Untuk informasi lengkap dan syarat detail, klik "Lihat Selengkapnya"</div>
+        <!-- <div class="text-center text-muted small mb-4">Untuk informasi lengkap dan syarat detail, klik "Lihat Selengkapnya"</div> -->
 
     </div>
 
