@@ -10,9 +10,9 @@
                         <div class="bg-white rounded-circle p-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
                             <i class="bi bi-mortarboard-fill text-primary fs-3"></i>
                         </div>
-                        <div class="text-white">
+                        <div class="">
                             <h4 class="mb-2 fw-bold">Program Beasiswa RuangAI</h4>
-                            <p class="mb-0 opacity-90">Bergabunglah dengan ribuan peserta lainnya dalam program beasiswa kami dan raih kesempatan belajar gratis dengan mentor berpengalaman.</p>
+                            <p class="mb-0 opacity-90">Kesempatan belajar gratis dengan mentor berpengalaman.</p>
                         </div>
                     </div>
                 </div>

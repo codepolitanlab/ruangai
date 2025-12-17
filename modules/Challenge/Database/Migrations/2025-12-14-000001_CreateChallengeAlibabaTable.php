@@ -36,44 +36,19 @@ class CreateChallengeAlibabaTable extends Migration
                 'type' => 'TEXT',
                 'null' => true,
             ],
-            'team_members' => [
-                'type' => 'TEXT',
-                'null' => true,
-                'comment' => 'JSON array of team members: [{"name":"...","email":"...","role":"..."}]',
-            ],
             'prompt_file' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255,
                 'null'       => true,
             ],
-            'params_file' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 255,
-                'null'       => true,
-            ],
-            'assets_list_file' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 255,
-                'null'       => true,
-            ],
-            'alibaba_screenshot' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 255,
-                'null'       => true,
-            ],
-            'twitter_follow_screenshot' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 255,
-                'null'       => true,
+            'other_tools' => [
+                'type' => 'TEXT',
+                'null' => true,
             ],
             'ethical_statement_agreed' => [
                 'type'       => 'TINYINT',
                 'constraint' => 1,
                 'default'    => 0,
-            ],
-            'admin_notes' => [
-                'type' => 'TEXT',
-                'null' => true,
             ],
             'status' => [
                 'type'       => 'ENUM',

@@ -18,37 +18,43 @@
             font-weight: 500;
         }
         [x-cloak] { display: none !important; }
+        #appCapsule {
+            max-width: 740px;
+        }
+        .appContent {
+            margin: 0 auto;
+            padding: 0;;
+        }
     </style>
 
     <div id="appCapsule">
-        <!-- Header -->
-        <div class="appHeader bg-primary text-white">
-            <div class="left">
-                <a href="/challenge" class="headerButton">
-                    <i class="bi bi-chevron-back-outline"></i>
-                </a>
+        <div class="appContent py-4">
+            <div class="mb-3 d-flex align-items-center gap-3">
+                <button @click="window.location.href='/challenge'" class="btn rounded-4 px-2 btn-white bg-white text-primary">
+                    <h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>
+                </button>
+                <h4 class="m-0 fw-bold">GenAI Video Fest Submission</h4>
             </div>
-            <div class="pageTitle">GenAI Video Fest Submission</div>
-        </div>
 
-        <!-- Alert Messages -->
-        <div class="section mt-2" x-show="alert.show" x-cloak>
-            <div class="alert" :class="alert.type === 'error' ? 'alert-danger' : 'alert-success'" role="alert">
-                <span x-text="alert.message"></span>
-            </div>
-        </div>
-
-        <!-- Progress Steps -->
-        <div class="section mt-3">
-            <template x-if="isEdit">
-                <div class="alert bg-warning bg-opacity-10 mb-2">
-                    Anda masih dapat mengedit submission sebelum batas akhir pendaftaran.
+            <!-- Alert Messages -->
+            <div class="mt-2" x-show="alert.show" x-cloak>
+                <div class="alert" :class="alert.type === 'error' ? 'alert-danger' : 'alert-success'" role="alert">
+                    <span x-text="alert.message"></span>
                 </div>
-            </template>
+            </div>
 
-            <?= $this->include('challenge/submit/_profile'); ?>
-            
-            <?= $this->include('challenge/submit/_video'); ?>
+            <!-- Progress Steps -->
+            <div class="mt-3">
+                <template x-if="isEdit">
+                    <div class="alert bg-warning bg-opacity-10 mb-2">
+                        Anda masih dapat mengedit submission sebelum batas akhir pendaftaran.
+                    </div>
+                </template>
+
+                <?= $this->include('challenge/submit/_profile'); ?>
+                
+                <?= $this->include('challenge/submit/_video'); ?>
+            </div>
         </div>
     </div>
 

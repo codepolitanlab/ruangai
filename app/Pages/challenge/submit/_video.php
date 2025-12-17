@@ -96,37 +96,37 @@
 
                 <div class="col-12">
                     <div class="form-check mt-2">
-                        <input class="form-check-input" type="checkbox" x-model="profile.agreed_terms_1" id="agreeTerms" :class="{'is-invalid': profileErrors.agreed_terms_1}">
-                        <label class="form-check-label" for="agreeTerms">
+                        <input class="form-check-input" type="checkbox" x-model="profile.agreed_terms_1" id="agreeTerms1" :class="{'is-invalid': errors.agreed_terms_1}">
+                        <label class="form-check-label" for="agreeTerms1">
                             Saya menyatakan bahwa karya ini adalah hasil saya sendiri, tidak melanggar hak cipta pihak ketiga <span class="text-danger">*</span>
                         </label>
                     </div>
-                    <template x-if="profileErrors.agreed_terms_1">
-                        <small class="text-danger" x-text="profileErrors.agreed_terms_1"></small>
+                    <template x-if="errors.agreed_terms_1">
+                        <small class="text-danger" x-text="errors.agreed_terms_1"></small>
                     </template>
                 </div>
 
                 <div class="col-12">
                     <div class="form-check mt-2">
-                        <input class="form-check-input" type="checkbox" x-model="profile.agreed_terms_2" id="agreeTerms" :class="{'is-invalid': profileErrors.agreed_terms_2}">
-                        <label class="form-check-label" for="agreeTerms">
+                        <input class="form-check-input" type="checkbox" x-model="profile.agreed_terms_2" id="agreeTerms2" :class="{'is-invalid': errors.agreed_terms_2}">
+                        <label class="form-check-label" for="agreeTerms2">
                             Saya menyatakan bahwa karya ini dibuat salah satunya menggunakan WAN Model Studio dari Alibaba Cloud <span class="text-danger">*</span>
                         </label>
                     </div>
-                    <template x-if="profileErrors.agreed_terms_2">
-                        <small class="text-danger" x-text="profileErrors.agreed_terms_2"></small>
+                    <template x-if="errors.agreed_terms_2">
+                        <small class="text-danger" x-text="errors.agreed_terms_2"></small>
                     </template>
                 </div>
 
                 <div class="col-12">
                     <div class="form-check mt-2">
-                        <input class="form-check-input" type="checkbox" x-model="profile.agreed_terms_3" id="agreeTerms" :class="{'is-invalid': profileErrors.agreed_terms_3}">
-                        <label class="form-check-label" for="agreeTerms">
+                        <input class="form-check-input" type="checkbox" x-model="profile.agreed_terms_3" id="agreeTerms3" :class="{'is-invalid': errors.agreed_terms_3}">
+                        <label class="form-check-label" for="agreeTerms3">
                             Saya menyatakan memberi izin kepada CODEPOLITAN dan Alibaba Cloud untuk menggunakan karya ini untuk keperluan promosi <span class="text-danger">*</span>
                         </label>
                     </div>
-                    <template x-if="profileErrors.agreed_terms_3">
-                        <small class="text-danger" x-text="profileErrors.agreed_terms_3"></small>
+                    <template x-if="errors.agreed_terms_3">
+                        <small class="text-danger" x-text="errors.agreed_terms_3"></small>
                     </template>
                 </div>
 
@@ -135,7 +135,12 @@
                 </template>
 
                 <div class="mt-3 d-flex justify-content-end">
-                    <button type="button" class="btn btn-success" @click="saveProfile()">Simpan Data</button>
+                    <button type="button" class="btn btn-success" @click="submitForm()" :disabled="isSubmitting">
+                        <template x-if="isSubmitting">
+                            <span class="spinner-border spinner-border-sm me-2"></span>
+                        </template>
+                        <span x-text="isSubmitting ? 'Mengirim...' : 'Submit Challenge'"></span>
+                    </button>
                 </div>
             </div>
         </div>

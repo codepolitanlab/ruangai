@@ -156,19 +156,6 @@ class PageController extends BaseController
                     'min_length' => 'Deskripsi video minimal 10 karakter',
                 ],
             ],
-            'team_members' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Data team members wajib diisi',
-                ],
-            ],
-            'ethical_statement_agreed' => [
-                'rules' => 'required|in_list[1]',
-                'errors' => [
-                    'required' => 'Anda harus menyetujui pernyataan etika',
-                    'in_list' => 'Anda harus menyetujui pernyataan etika',
-                ],
-            ],
         ]);
 
         if (!$validation->run($this->request->getPost())) {
@@ -178,20 +165,11 @@ class PageController extends BaseController
             ]);
         }
 
-        // Validate team members JSON
-        $teamMembersJson = $this->request->getPost('team_members');
+        // Validate Twitter URL format
+        $twitterUrl = $this->request->getPost('twitter_post_url');
         $challengeRules = new \Challenge\Validation\ChallengeRules();
         $error = '';
         
-        if (!$challengeRules->team_members_json($teamMembersJson, $error)) {
-            return $this->respond([
-                'success' => 0,
-                'errors' => ['team_members' => $error],
-            ]);
-        }
-
-        // Validate Twitter URL format
-        $twitterUrl = $this->request->getPost('twitter_post_url');
         if (!$challengeRules->twitter_url_format($twitterUrl, $error)) {
             return $this->respond([
                 'success' => 0,
@@ -209,10 +187,6 @@ class PageController extends BaseController
             $existing = $this->model->find($submissionId);
             $existingFiles = [
                 'prompt_file' => $existing['prompt_file'] ?? null,
-                // 'params_file' => $existing['params_file'] ?? null,
-                'assets_list_file' => $existing['assets_list_file'] ?? null,
-                'alibaba_screenshot' => $existing['alibaba_screenshot'] ?? null,
-                'twitter_follow_screenshot' => $existing['twitter_follow_screenshot'] ?? null,
             ];
         }
 
@@ -237,86 +211,6 @@ class PageController extends BaseController
                 throw new \Exception('Prompt file wajib diupload');
             }
 
-            // // Upload params file (JSON)
-            // $paramsFile = $this->request->getFile('params_file');
-            // if ($paramsFile && $paramsFile->isValid() && !$paramsFile->hasMoved()) {
-            //     // Replace old file on update
-            //     if ($isUpdate && !empty($existingFiles['params_file'])) {
-            //         $oldFile = $uploadPath . $existingFiles['params_file'];
-            //         if (file_exists($oldFile)) {
-            //             unlink($oldFile);
-            //         }
-            //     }
-            //     $paramsFileName = $paramsFile->getRandomName();
-            //     $paramsFile->move($uploadPath, $paramsFileName);
-                
-            //     // Validate JSON structure
-            //     $fullPath = $uploadPath . $paramsFileName;
-            //     if (!$challengeRules->json_params_structure($fullPath, $error)) {
-            //         unlink($fullPath);
-            //         throw new \Exception($error);
-            //     }
-                
-            //     $uploadedFiles['params_file'] = $paramsFileName;
-            // } elseif ($isUpdate && !empty($existingFiles['params_file'])) {
-            //     // Keep existing params file when not replaced
-            //     $uploadedFiles['params_file'] = $existingFiles['params_file'];
-            // } else {
-            //     throw new \Exception('Params file (JSON) wajib diupload');
-            // }
-
-            // Upload assets list file (TXT) - optional
-            $assetsFile = $this->request->getFile('assets_list_file');
-            if ($assetsFile && $assetsFile->isValid() && !$assetsFile->hasMoved()) {
-                if ($isUpdate && !empty($existingFiles['assets_list_file'])) {
-                    $oldFile = $uploadPath . $existingFiles['assets_list_file'];
-                    if (file_exists($oldFile)) {
-                        unlink($oldFile);
-                    }
-                }
-                $assetsFileName = $assetsFile->getRandomName();
-                $assetsFile->move($uploadPath, $assetsFileName);
-                $uploadedFiles['assets_list_file'] = $assetsFileName;
-            } elseif ($isUpdate && !empty($existingFiles['assets_list_file'])) {
-                $uploadedFiles['assets_list_file'] = $existingFiles['assets_list_file'];
-            }
-
-            // Upload Alibaba screenshot
-            $alibabaScreenshot = $this->request->getFile('alibaba_screenshot');
-            if ($alibabaScreenshot && $alibabaScreenshot->isValid() && !$alibabaScreenshot->hasMoved()) {
-                if ($isUpdate && !empty($existingFiles['alibaba_screenshot'])) {
-                    $oldFile = $uploadPath . $existingFiles['alibaba_screenshot'];
-                    if (file_exists($oldFile)) {
-                        unlink($oldFile);
-                    }
-                }
-                $alibabaFileName = $alibabaScreenshot->getRandomName();
-                $alibabaScreenshot->move($uploadPath, $alibabaFileName);
-                $uploadedFiles['alibaba_screenshot'] = $alibabaFileName;
-            } elseif ($isUpdate && !empty($existingFiles['alibaba_screenshot'])) {
-                $uploadedFiles['alibaba_screenshot'] = $existingFiles['alibaba_screenshot'];
-            } else {
-                throw new \Exception('Screenshot akun Alibaba Cloud wajib diupload');
-            }
-
-            // Upload Twitter follow screenshot
-            $twitterScreenshot = $this->request->getFile('twitter_follow_screenshot');
-            if ($twitterScreenshot && $twitterScreenshot->isValid() && !$twitterScreenshot->hasMoved()) {
-                if ($isUpdate && !empty($existingFiles['twitter_follow_screenshot'])) {
-                    $oldFile = $uploadPath . $existingFiles['twitter_follow_screenshot'];
-                    if (file_exists($oldFile)) {
-                        unlink($oldFile);
-                    }
-                }
-                $twitterFileName = $twitterScreenshot->getRandomName();
-                $twitterScreenshot->move($uploadPath, $twitterFileName);
-                $uploadedFiles['twitter_follow_screenshot'] = $twitterFileName;
-            } elseif ($isUpdate && !empty($existingFiles['twitter_follow_screenshot'])) {
-                $uploadedFiles['twitter_follow_screenshot'] = $existingFiles['twitter_follow_screenshot'];
-            } else {
-                throw new \Exception('Screenshot follow Twitter @codepolitan & @alibaba_cloud wajib diupload');
-            }
-
         } catch (\Exception $e) {
             // Clean up any uploaded files on error
             foreach ($uploadedFiles as $file) {
@@ -336,13 +230,9 @@ class PageController extends BaseController
             'twitter_post_url' => $this->request->getPost('twitter_post_url'),
             'video_title' => $this->request->getPost('video_title'),
             'video_description' => $this->request->getPost('video_description'),
-            'team_members' => $teamMembersJson,
+            'other_tools' => $this->request->getPost('other_tools') ?? null,
             'prompt_file' => $uploadedFiles['prompt_file'],
-            // 'params_file' => $uploadedFiles['params_file'],
-            'assets_list_file' => $uploadedFiles['assets_list_file'] ?? null,
-            'alibaba_screenshot' => $uploadedFiles['alibaba_screenshot'],
-            'twitter_follow_screenshot' => $uploadedFiles['twitter_follow_screenshot'],
-            'ethical_statement_agreed' => 1,
+            'ethical_statement_agreed' => $this->request->getPost('ethical_statement_agreed') == '1' ? 1 : 0,
         ];
 
         if ($isUpdate) {
@@ -403,20 +293,6 @@ class PageController extends BaseController
 
         $validation = service('validation');
         $validation->setRules([
-            'name' => [
-                'rules' => 'required|min_length[3]',
-                'errors' => [
-                    'required' => 'Nama wajib diisi',
-                    'min_length' => 'Nama minimal 3 karakter'
-                ]
-            ],
-            'email' => [
-                'rules' => 'required|valid_email',
-                'errors' => [
-                    'required' => 'Email wajib diisi',
-                    'valid_email' => 'Format email tidak valid'
-                ]
-            ],
             'whatsapp' => [
                 'rules' => 'required|regex_match[/^62\d{9,13}$/]',
                 'errors' => [
@@ -429,13 +305,6 @@ class PageController extends BaseController
                 'errors' => [
                     'required' => 'Tanggal lahir wajib diisi',
                     'valid_date' => 'Format tanggal tidak valid'
-                ]
-            ],
-            'address' => [
-                'rules' => 'required|min_length[10]',
-                'errors' => [
-                    'required' => 'Alamat wajib diisi',
-                    'min_length' => 'Alamat minimal 10 karakter'
                 ]
             ],
             'gender' => [
@@ -451,22 +320,10 @@ class PageController extends BaseController
                     'required' => 'Profesi wajib diisi'
                 ]
             ],
-            'job_title' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Pekerjaan/Job Title wajib diisi'
-                ]
-            ],
             'company' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => 'Instansi/Perusahaan wajib diisi'
-                ]
-            ],
-            'industry' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Industri wajib diisi'
                 ]
             ],
             'alibabacloud_id' => [
@@ -481,13 +338,6 @@ class PageController extends BaseController
                     'required' => 'Link Profil X wajib diisi',
                     'valid_url' => 'Format URL tidak valid',
                     'regex_match' => 'Link harus dari domain x.com atau twitter.com'
-                ]
-            ],
-            'agreed_terms' => [
-                'rules' => 'required|in_list[1]',
-                'errors' => [
-                    'required' => 'Anda harus menyetujui syarat dan ketentuan',
-                    'in_list' => 'Anda harus menyetujui syarat dan ketentuan'
                 ]
             ],
         ]);
