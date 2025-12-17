@@ -1,18 +1,47 @@
 <div class="accordion rounded-4 mb-3" id="profileAccordion">
     <div class="accordion-item rounded-4 border-0 shadow-sm">
         <h2 class="accordion-header" id="headingProfile">
-            <button 
-                class="fs-6 fw-bold accordion-button" 
-                type="button" 
-                data-bs-toggle="collapse" 
-                data-bs-target="#collapseProfile" aria-expanded="true" 
+            <button
+                class="fs-6 fw-bold accordion-button accordion-button-green"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseProfile" aria-expanded="true"
                 aria-controls="collapseProfile">
-                Lengkapi Data Diri (+100 poin)
+                1. Lengkapi Data Diri
             </button>
         </h2>
         <div id="collapseProfile" class="accordion-collapse collapse show" aria-labelledby="headingProfile" data-bs-parent="#profileAccordion">
             <div class="accordion-body">
-                <p class="small text-muted">Lengkapi data dengan informasi yang valid. Data dapat diupdate jika diperlukan.</p>
+
+                <!-- Teks panduan -->
+                <div class="card p-2 shadow-none border mb-4 panduan">
+                    <h5>Panduan:</h5>
+                    <ol>
+                        <li>
+                            Program DevHandal ini <strong>GRATIS</strong>. Namun wajib memasukkan Kartu Debit/Kredit di Alibabacloud untuk dapat mengaktifkan Trial Alibabacloud Model Studio
+                        </li>
+                        <li>
+                            Cara Registrasi Akun Alibaba Cloud:
+                            <strong>Buat Akun</strong> atau Video:
+                            <strong>Video Panduan buat Akun Alibaba Cloud</strong>
+                        </li>
+                        <li>
+                            Bagi yang tidak memiliki Credit Card bisa menggunakan Debit Card Fisik berlogo Visa atau Mastercard seperti BCA, Mandiri, Jenius Mcard, Jago Fisik atau bank lainnya.
+                        </li>
+                        <li>
+                            Pastikan settingan debit online dan transaksi internasional aktif.
+                        </li>
+                        <li>
+                            Pastikan terdapat saldo minimal Rp 100.000 dan disarankan sudah pernah melakukan transaksi
+                            (contoh: isi pulsa, bayar toko online, QRIS, dsb) untuk menekan kemungkinan dianggap fraud
+                            karena penggunaan kartu debit baru.
+                        </li>
+                        <li>
+                            Akan ada verifikasi CC/debit card Visa/Mastercard berupa simulasi kredit dan debit sebesar
+                            $1 (satu USD) dan akan dikembalikan ke dalam saldo kamu dalam beberapa jam setelahnya.
+                        </li>
+                    </ol>
+                </div>
 
                 <div class="row g-3">
                     <div class="col-md-6">
@@ -60,14 +89,6 @@
                         </template>
                     </div>
 
-                    <!-- <div class="col-12">
-                        <label class="form-label">Alamat <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" x-model="profile.address" :class="{'is-invalid': profileErrors.address}">
-                        <template x-if="profileErrors.address">
-                            <small class="text-danger" x-text="profileErrors.address"></small>
-                        </template>
-                    </div> -->
-
                     <div class="col-md-6">
                         <label class="form-label">Profesi <span class="text-danger">*</span></label>
                         <select class="form-select" x-model="profile.profession" :class="{'is-invalid': profileErrors.profession}">
@@ -86,14 +107,6 @@
                         </template>
                     </div>
 
-                    <!-- <div class="col-md-6">
-                        <label class="form-label">Pekerjaan <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" x-model="profile.job_title" :class="{'is-invalid': profileErrors.job_title}">
-                        <template x-if="profileErrors.job_title">
-                            <small class="text-danger" x-text="profileErrors.job_title"></small>
-                        </template>
-                    </div> -->
-
                     <div class="col-md-6">
                         <label class="form-label">Instansi / Perusahaan <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" x-model="profile.company" :class="{'is-invalid': profileErrors.company}">
@@ -101,14 +114,6 @@
                             <small class="text-danger" x-text="profileErrors.company"></small>
                         </template>
                     </div>
-
-                    <!-- <div class="col-md-6">
-                        <label class="form-label">Industri Institusi / Perusahaan <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" x-model="profile.industry" :class="{'is-invalid': profileErrors.industry}">
-                        <template x-if="profileErrors.industry">
-                            <small class="text-danger" x-text="profileErrors.industry"></small>
-                        </template>
-                    </div> -->
 
                     <div class="col-md-6">
                         <label class="form-label">Link Profil X <span class="text-danger">*</span></label>
@@ -137,27 +142,9 @@
                             <small class="text-danger" x-text="profileErrors.alibabacloud_screenshot"></small>
                         </template>
                     </div>
-
-                    <!-- <div class="col-md-6">
-                        <label class="form-label">Kode Referral</label>
-                        <input type="text" class="form-control" x-model="profile.referral_code">
-                    </div> -->
-
-                    <div class="col-12">
-                        <div class="form-check mt-2">
-                            <input class="form-check-input" type="checkbox" x-model="profile.agreed_terms" id="agreeTerms" :class="{'is-invalid': profileErrors.agreed_terms}">
-                            <label class="form-check-label" for="agreeTerms">
-                                Saya menyatakan bahwa karya ini adalah hasil saya sendiri, tidak melanggar hak cipta pihak ketiga, dan memberi izin kepada RuangAI/Codepolitan untuk menampilkan karya ini untuk keperluan promosi. *
-                            </label>
-                        </div>
-                        <template x-if="profileErrors.agreed_terms">
-                            <small class="text-danger" x-text="profileErrors.agreed_terms"></small>
-                        </template>
-                    </div>
                 </div>
 
                 <div class="mt-3 d-flex justify-content-end">
-                    <!-- <button type="button" class="btn btn-outline-secondary me-2" @click="resetProfile()">Reset</button> -->
                     <button type="button" class="btn btn-success" @click="saveProfile()">Simpan Data</button>
                 </div>
             </div>
