@@ -61,8 +61,9 @@ class PageController extends BaseController
 
         // Get course_students
         $this->data['student'] = $db->table('course_students')
-            ->select('progress, cert_claim_date, cert_code, expire_at, scholarship_participants.program, scholarship_participants.reference')
+            ->select('progress, expire_at, scholarship_participants.program, scholarship_participants.reference, certificates.cert_claim_date, certificates.cert_code')
             ->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id', 'left')
+            ->join('certificates', 'certificates.user_id = course_students.user_id AND certificates.entity_id = 1', 'left')
             ->where('course_students.course_id', 1)
             ->where('course_students.user_id', $jwt->user_id)
             ->get()
