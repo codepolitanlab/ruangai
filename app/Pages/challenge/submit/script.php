@@ -18,6 +18,7 @@ function challengeSubmit() {
             twitter_post_url: '',
             video_title: '',
             video_description: '',
+            other_tools: '',
             ethical_statement_agreed: false
         },
         profile: {
@@ -117,7 +118,14 @@ function challengeSubmit() {
                     this.form.twitter_post_url = result.existing_submission.twitter_post_url || '';
                     this.form.video_title = result.existing_submission.video_title || '';
                     this.form.video_description = result.existing_submission.video_description || '';
+                    this.form.other_tools = result.existing_submission.other_tools || '';
                     this.form.ethical_statement_agreed = result.existing_submission.ethical_statement_agreed == 1 ? true : false;
+                    // Map ethical_statement_agreed to checkboxes
+                    if (result.existing_submission.ethical_statement_agreed == 1) {
+                        this.profile.agreed_terms_1 = true;
+                        this.profile.agreed_terms_2 = true;
+                        this.profile.agreed_terms_3 = true;
+                    }
 
                     // team members
                     try {

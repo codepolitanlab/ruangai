@@ -14,6 +14,7 @@ class ChallengeAlibabaModel extends Model
         'twitter_post_url',
         'video_title',
         'video_description',
+        'other_tools',
         'team_members',
         'prompt_file',
         'params_file',
