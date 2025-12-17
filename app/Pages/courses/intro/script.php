@@ -127,7 +127,7 @@
           if (!this.data.certificate_id) {
             this.$router.navigate(`/courses/claim_certificate/${this.data.course.id}`)
           } else {
-            window.location.href = `/certificate/show/${this.data.certificate_id}`;
+            window.location.href = `/certificate`;
           }
         } else {
           $heroicHelper.toastr("Kamu belum menyelesaikan kelas ini. Silahkan selesaikan kelas terlebih dahulu.", "warning", "bottom");
