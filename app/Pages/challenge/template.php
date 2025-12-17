@@ -110,7 +110,7 @@
             <!-- CTA Button -->
             <div class="mt-4 mb-2">
                 <a href="/challenge/submit" class="btn btn-lg w-100 d-flex align-items-center justify-content-center" style="background:#ff6b35; border:none; color:#fff; font-size: 1.1rem; font-weight: 700; padding: 1rem 2rem; border-radius: 2rem;">
-                    Kirim Formulir
+                    SUBMIT KARYA
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="ms-2">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                         <polyline points="12 5 19 12 12 19"></polyline>
@@ -121,11 +121,8 @@
             <!-- CTA Button -->
             <div class="mb-5">
                 <a native target="_blank" href="https://ruangai.id/genaivideofest#faq" class="btn btn-outline-primary btn-lg w-100 d-flex align-items-center justify-content-center" style="font-size: 1.1rem; font-weight: 700; padding: 1rem 2rem; border-radius: 2rem;">
+                    <i class="bi bi-question-square fs-4"></i>
                     Frequently Asked Questions
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="ms-2">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
                 </a>
             </div>
 
