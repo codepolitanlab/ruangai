@@ -14,33 +14,33 @@
                 <div>
                     <div class="form-group boxed">
                         <div class="text-start input-wrapper">
-                            <label class="fs-6" for="fullname">Nama Lengkap</label>
-                            <input type="text" class="form-control" id="fullname" x-model="data.fullname">
+                            <label class="fs-6" for="fullname">Nama Lengkap <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="fullname" x-model="data.fullname" required>
                             <small class="text-danger" x-show="errors.fullname" x-text="errors.fullname"></small>
                         </div>
                     </div>
 
                     <div class="form-group boxed">
                         <div class="text-start input-wrapper">
-                            <label class="fs-6" for="email">Email</label>
-                            <input type="email" class="form-control" id="email" x-model="data.email" placeholder="email@example.com">
+                            <label class="fs-6" for="email">Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="email" x-model="data.email" placeholder="email@example.com" required>
                             <small class="text-danger" x-show="errors.email" x-text="errors.email"></small>
                         </div>
                     </div>
 
                     <div class="form-group boxed">
                         <div class="text-start input-wrapper">
-                            <label class="fs-6" for="phone">No. Telepon</label>
+                            <label class="fs-6" for="phone">No. Telepon <span class="text-danger">*</span></label>
                             <small class="text-muted d-block mb-1">Awali dengan 62, mis. 6289xxxxxx</small>
-                            <input type="text" class="form-control" id="phone" x-model="data.phone" placeholder="628xxxxxxxxx">
+                            <input type="text" class="form-control" id="phone" x-model="data.phone" placeholder="628xxxxxxxxx" inputmode="numeric" pattern="[0-9]*" @input="data.phone = data.phone.replace(/[^0-9]/g, '')" required>
                             <small class="text-danger" x-show="errors.phone" x-text="errors.phone"></small>
                         </div>
                     </div>
 
                     <div class="form-group boxed">
                         <div class="text-start input-wrapper">
-                            <label class="fs-6" for="password">Kata Sandi</label>
-                            <input :type="showPwd ? 'text' : 'password'" class="form-control" id="password" autocomplete="new-password" x-model="data.password">
+                            <label class="fs-6" for="password">Kata Sandi <span class="text-danger">*</span></label>
+                            <input :type="showPwd ? 'text' : 'password'" class="form-control" id="password" autocomplete="new-password" x-model="data.password" required>
                             <i x-on:click="showPwd = !showPwd" class="input-icon-append">
                                 <ion-icon id="pw-icon" :name="showPwd ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
                             </i>
@@ -50,8 +50,8 @@
 
                     <div class="form-group boxed">
                         <div class="text-start input-wrapper">
-                            <label class="fs-6" for="repeat_password">Ulangi Kata Sandi</label>
-                            <input :type="showPwd ? 'text' : 'password'" class="form-control" id="repeat_password" autocomplete="new-password" x-model="data.repeat_password">
+                            <label class="fs-6" for="repeat_password">Ulangi Kata Sandi <span class="text-danger">*</span></label>
+                            <input :type="showPwd ? 'text' : 'password'" class="form-control" id="repeat_password" autocomplete="new-password" x-model="data.repeat_password" required>
                             <i x-on:click="showPwd = !showPwd" class="input-icon-append">
                                 <ion-icon id="pw-icon" :name="showPwd ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
                             </i>

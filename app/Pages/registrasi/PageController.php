@@ -18,7 +18,7 @@ class PageController extends BaseController
 
         $validation->setRules([
             'fullname'        => 'required|min_length[2]',
-            'phone'           => 'required',
+            'phone'           => 'required|numeric',
             'email'           => 'required|valid_email',
             'password'        => 'required|max_length[50]|min_length[6]',
             'repeat_password' => 'required|matches[password]',
@@ -26,6 +26,10 @@ class PageController extends BaseController
             'fullname' => [
                 'required'   => 'Nama lengkap wajib diisi',
                 'min_length' => 'Nama lengkap minimal 2 karakter',
+            ],
+            'phone' => [
+                'required' => 'Nomor telepon wajib diisi',
+                'numeric'  => 'Nomor telepon harus berupa angka',
             ],
             'email' => [
                 'required'    => 'Email wajib diisi',

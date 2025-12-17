@@ -42,6 +42,15 @@
           password: "",
           repeat_password: "",
         };
+
+        // Validate phone number is numeric
+        if (this.data.phone && !/^\d+$/.test(this.data.phone)) {
+          this.errors.phone = "Nomor telepon harus berupa angka";
+          this.errorMessage = "Nomor telepon harus berupa angka";
+          setTimeout(() => (this.errorMessage = ""), 5000);
+          return;
+        }
+
         this.buttonSubmitting = true;
 
         // Check registration using axios post

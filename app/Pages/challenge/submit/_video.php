@@ -68,7 +68,7 @@
                     </template>
                 </div>
 
-                <div class="col-12 mb-4">
+                <div class="col-12 mb-4" style="display: none;">
                     <label class="form-label">Tools Lain yang Digunakan (selain WAN)</label>
                     <textarea class="form-control" rows="3" x-model="form.other_tools"
                         placeholder="Deskripsikan tools lain yang Anda gunakan"></textarea>

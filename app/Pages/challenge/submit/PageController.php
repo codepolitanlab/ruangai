@@ -194,6 +194,11 @@ class PageController extends BaseController
             // Upload prompt file (PDF/TXT)
             $promptFile = $this->request->getFile('prompt_file');
             if ($promptFile && $promptFile->isValid() && !$promptFile->hasMoved()) {
+                // Validate file size (max 1MB)
+                if ($promptFile->getSize() > 1048576) { // 1MB = 1048576 bytes
+                    throw new \Exception('Ukuran file maksimal 1MB');
+                }
+                
                 // Replace old file on update
                 if ($isUpdate && !empty($existingFiles['prompt_file'])) {
                     $oldFile = $uploadPath . $existingFiles['prompt_file'];
@@ -230,7 +235,7 @@ class PageController extends BaseController
             'twitter_post_url' => $this->request->getPost('twitter_post_url'),
             'video_title' => $this->request->getPost('video_title'),
             'video_description' => $this->request->getPost('video_description'),
-            'other_tools' => $this->request->getPost('other_tools') ?? null,
+            'other_tools' => !empty($this->request->getPost('other_tools')) ? $this->request->getPost('other_tools') : null,
             'prompt_file' => $uploadedFiles['prompt_file'],
             'ethical_statement_agreed' => $this->request->getPost('ethical_statement_agreed') == '1' ? 1 : 0,
         ];
@@ -327,9 +332,11 @@ class PageController extends BaseController
                 ]
             ],
             'alibabacloud_id' => [
-                'rules' => 'required',
+                'rules' => 'required|numeric|min_length[15]',
                 'errors' => [
-                    'required' => 'AlibabaCloud ID wajib diisi'
+                    'required' => 'AlibabaCloud ID wajib diisi',
+                    'numeric' => 'AlibabaCloud ID harus berupa angka',
+                    'min_length' => 'AlibabaCloud ID minimal 15 karakter'
                 ]
             ],
             'x_profile_url' => [
@@ -400,6 +407,15 @@ class PageController extends BaseController
 
         // Handle optional screenshot upload
         if ($screenshot && $screenshot->isValid() && !$screenshot->hasMoved()) {
+            // Validate file size (max 1MB)
+            if ($screenshot->getSize() > 1048576) { // 1MB = 1048576 bytes
+                return $this->respond([
+                    'success' => 0,
+                    'message' => 'Ukuran file maksimal 1MB',
+                    'errors' => ['alibabacloud_screenshot' => 'Ukuran file maksimal 1MB']
+                ]);
+            }
+            
             $uploadPath = ensure_profile_upload_directory($jwt->user_id);
             $fileName = $screenshot->getRandomName();
             $screenshot->move($uploadPath, $fileName);

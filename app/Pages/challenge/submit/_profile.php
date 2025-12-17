@@ -126,7 +126,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">AlibabaCloud ID <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" x-model="profile.alibabacloud_id" :class="{'is-invalid': profileErrors.alibabacloud_id}">
+                        <input type="text" class="form-control" x-model="profile.alibabacloud_id" :class="{'is-invalid': profileErrors.alibabacloud_id}" inputmode="numeric" pattern="[0-9]*" @input="profile.alibabacloud_id = profile.alibabacloud_id.replace(/[^0-9]/g, '')">
                         <template x-if="profileErrors.alibabacloud_id">
                             <small class="text-danger" x-text="profileErrors.alibabacloud_id"></small>
                         </template>

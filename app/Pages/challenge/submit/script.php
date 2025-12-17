@@ -88,7 +88,7 @@ function challengeSubmit() {
                     this.profile.profession = result.user.profession || '';
                     this.profile.job_title = result.user.job_title || '';
                     this.profile.company = result.user.company || '';
-                    this.profile.whatsapp = result.user.whatsapp || '';
+                    this.profile.whatsapp = result.user.phone ||result.user.whatsapp;
                     this.profile.address = result.user.address || '';
                     this.profile.gender = result.user.gender || '';
                     this.profile.industry = result.user.industry || '';
@@ -169,7 +169,18 @@ function challengeSubmit() {
         handleFileUpload(event, fieldName) {
             const file = event.target.files[0];
             if (file) {
+                // Validate file size (max 1MB)
+                const maxSize = 1 * 1024 * 1024; // 1MB in bytes
+                if (file.size > maxSize) {
+                    this.errors[fieldName] = 'Ukuran file maksimal 1MB';
+                    event.target.value = ''; // Clear input
+                    $heroicHelper.toastr('Ukuran file maksimal 1MB', 'danger', 'bottom');
+                    return;
+                }
+                
                 this.files[fieldName] = file;
+                // Clear error if any
+                delete this.errors[fieldName];
                 // If replacing existing file, clear its name so valiation relies on this.files
                 if (this.existingFiles[fieldName]) {
                     this.existingFiles[fieldName] = null;
@@ -180,9 +191,20 @@ function challengeSubmit() {
         handleProfileScreenshot(event) {
             const file = event.target.files[0];
             if (file) {
+                // Validate file size (max 1MB)
+                const maxSize = 1 * 1024 * 1024; // 1MB in bytes
+                if (file.size > maxSize) {
+                    this.profileErrors.alibabacloud_screenshot = 'Ukuran file maksimal 1MB';
+                    event.target.value = ''; // Clear input
+                    $heroicHelper.toastr('Ukuran file maksimal 1MB', 'danger', 'bottom');
+                    return;
+                }
+                
                 // show filename, actual upload happens on submitProfile
                 this.profile.alibabacloud_screenshot = file.name;
                 this.profile._screenshot_file = file;
+                // Clear error if any
+                delete this.profileErrors.alibabacloud_screenshot;
             }
         },
 
@@ -277,6 +299,10 @@ function challengeSubmit() {
             // Validasi AlibabaCloud ID
             if (!this.profile.alibabacloud_id || this.profile.alibabacloud_id.trim() === '') {
                 this.profileErrors.alibabacloud_id = 'AlibabaCloud ID wajib diisi';
+            } else if (!/^\d+$/.test(this.profile.alibabacloud_id)) {
+                this.profileErrors.alibabacloud_id = 'AlibabaCloud ID harus berupa angka';
+            } else if (this.profile.alibabacloud_id.length < 15) {
+                this.profileErrors.alibabacloud_id = 'AlibabaCloud ID minimal 15 karakter';
             }
 
             // Validasi Screenshot
@@ -391,7 +417,6 @@ function challengeSubmit() {
                 twitter_post_url: this.form.twitter_post_url,
                 video_title: this.form.video_title,
                 video_description: this.form.video_description,
-                other_tools: this.form.other_tools || '',
                 ethical_statement_agreed: (this.profile.agreed_terms_1 && this.profile.agreed_terms_2 && this.profile.agreed_terms_3) ? '1' : '0'
             };
 
