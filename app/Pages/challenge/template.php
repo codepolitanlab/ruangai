@@ -6,73 +6,137 @@
         })">
 
     <div id="appCapsule">
-        <div class="card mt-3 rounded-4 bg-white text-center py-3">
-            <h2 class="text-primary mb-0 mt-0">RuangAI Challenge</h2>
-            <h1 class="fs-2 text-dark opacity-75 mb-0">WAN Vision Clash</h1>
-            <h4 class="fs-5 text-primary-50 mb-0">AI Video Competition 2025</h4>
-        </div>
 
-        <div class="section mt-3 px-1">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Tentang Kompetisi</h5>
-                    <p>Kompetisi video pendek menggunakan <strong>Alibaba Model Studio - WAN</strong>. 
-                    Buat video kreatif maksimal 1 menit dan menangkan hadiah total <strong>250 Juta Rupiah!</strong></p>
-                    
-                    <div class="row mt-3">
-                        <div class="col-6">
-                            <div class="stat-box">
-                                <div class="title fw-bold">Periode</div>
-                                <div class="value">17 Des - 31 Jan</div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="stat-box">
-                                <div class="title fw-bold">Total Hadiah</div>
-                                <div class="value">250 Juta</div>
-                            </div>
+        <style>
+            /* Bootstrap 5 Accordion Custom Styling */
+            .accordion {
+                --bs-accordion-border-radius: 1rem;
+            }
+            .accordion-button {
+                font-size: 1.05rem;
+                font-weight: 600;
+                padding: 1.25rem 1.5rem;
+                background-color: white !important;
+                color: #1f2937 !important;
+                box-shadow: none !important;
+                border: none !important;
+                border-radius: 1rem !important;
+            }
+            .accordion-button:not(.collapsed) {
+                background-color: white !important;
+                color: #1f2937 !important;
+                border-bottom-left-radius: 0 !important;
+                border-bottom-right-radius: 0 !important;
+            }
+            .accordion-button:focus {
+                box-shadow: none !important;
+                border-color: transparent !important;
+            }
+            .accordion-button::after {
+                width: 1.25rem;
+                height: 1.25rem;
+                background-size: 1.25rem;
+                filter: brightness(0) saturate(100%) invert(47%) sepia(6%) saturate(434%) hue-rotate(179deg) brightness(92%) contrast(86%);
+            }
+            .accordion-body {
+                background-color: #F7F7F7;
+                color: #4b5563;
+                padding: 1.25rem 1.5rem 1.5rem 1.5rem;
+                border-bottom-left-radius: 1rem !important;
+                border-bottom-right-radius: 1rem !important;
+            }
+            .accordion-item {
+                border: 1px solid #e5e7eb !important;
+                border-radius: 1rem !important;
+                overflow: hidden;
+                margin-bottom: 1rem;
+                background: white;
+            }
+            .accordion-item:first-of-type .accordion-button {
+                border-top-left-radius: 1rem !important;
+                border-top-right-radius: 1rem !important;
+            }
+            .accordion-item:last-of-type {
+                margin-bottom: 1.5rem;
+            }
+            .accordion-collapse {
+                border: none !important;
+            }
+
+            /* Small responsive tweaks */
+            @media (max-width: 576px) {
+                .challenge-hero h1 { font-size: 1.4rem !important; }
+                .challenge-hero .display-5 { font-size: 1.5rem !important; }
+                .challenge-hero .p-4 { padding-top: 28px !important; padding-bottom: 28px !important; }
+            }
+        </style>
+
+        <!-- Hero -->
+        <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%2010476.png" class="w-100 rounded-4 mt-4" alt="">
+
+        <!-- Details -->
+        <div id="details" class="mt-4">
+            
+            <div class="accordion bg-transparent border-0" id="challengeAccordion">
+                
+                <!-- Persyaratan Pendaftaran -->
+                <div class="accordion-item">
+                    <h1 class="m-0">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Persyaratan Pendaftaran
+                        </button>
+                    </h1>
+                    <div id="collapseOne" class="accordion-collapse collapse show p-4 pt-0">
+                        <div class="accordion-body rounded-4">
+                            <p class="mb-3">Untuk mengikuti kompetisi ini ada beberapa persyaratan yang wajib dilengkapi supaya kamu berhak mendapatkan hadiah di kompetisi GenAI Video Fest. berikut adalah persyaratannya</p>
+                            <ul class="mb-0">
+                                <li>Wajib Punya Akun Alibaba Cloud</li>
+                                <li>Follow Akun X Resmi @RuangAI @codepolitan @alibaba_cloud</li>
+                                <li>Wajib Pakai WAN Model Studio</li>
+                                <li>1 Akun = 1 Submission</li>
+                                <li>Usia : Minimal 17+</li>
+                                <li>Format Peserta : Solo / Tim 3</li>
+                                <li>Wajib Tanda Tangan Etika & HAk Cipta</li>
+                                <li>Konten Terlarang = Diskualifikasi</li>
+                                <li>Konten Harus Fresh tidak pernah di posting dimanapun</li>
+                            </ul>
                         </div>
                     </div>
-
-                    <h5 class="card-title mt-4">Kategori Hadiah</h5>
-                    <ul class="listview simple-listview">
-                        <li>
-                            <strong>Juara Best Video</strong>
-                            <span class="text-muted">18 Juta (Acer Nitro + Credits)</span>
-                        </li>
-                        <li>
-                            <strong>Juara Favorit</strong>
-                            <span class="text-muted">13 Juta (iPad 11 + Credits)</span>
-                        </li>
-                        <li>
-                            <strong>Juara Favorit Alumni RuangAI</strong>
-                            <span class="text-muted">10 Juta (Galaxy Tab + Credits)</span>
-                        </li>
-                        <li>
-                            <strong>47 Pemenang Credit</strong>
-                            <span class="text-muted">$200 Alibaba Cloud/orang</span>
-                        </li>
-                    </ul>
-
-                    <h5 class="card-title mt-4">Persyaratan</h5>
-                    <ul class="mb-0">
-                        <li>Akun Alibaba Cloud (Screenshot wajib)</li>
-                        <li>Follow X @codepolitan & @alibaba_cloud</li>
-                        <li>Wajib menggunakan WAN Model Studio</li>
-                        <li>Video maksimal 1 menit, resolusi 1080p</li>
-                        <li>1 Akun = 1 Submission</li>
-                        <li>Tim maksimal 3 orang</li>
-                    </ul>
                 </div>
+
+                <!-- FAQ -->
+                <div class="accordion-item">
+                    <h1 class="m-0">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            FAQ
+                        </button>
+                    </h1>
+                    <div id="collapseTwo" class="accordion-collapse collapse p-4 pt-0">
+                        <div class="accordion-body rounded-4">
+                            <p class="mb-2"><strong>Apa format video?</strong> Video max 1 menit, resolusi 1080p.</p>
+                            <p class="mb-0"><strong>Berapa banyak submission?</strong> 1 akun = 1 submission.</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="section mt-3 mb-5">
-                <a href="/challenge/submit" class="btn btn-success btn-lg btn-block py-4">
-                    <i class="bi bi-send"></i>
-                    SUBMIT KARYA
+            <!-- CTA Button -->
+            <div class="mt-4 mb-5">
+                <a href="/challenge/submit" class="btn btn-lg w-100 d-flex align-items-center justify-content-center" style="background:#ff6b35; border:none; color:#fff; font-size: 1.1rem; font-weight: 700; padding: 1rem 2rem; border-radius: 2rem;">
+                    Kirim Formulir
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="ms-2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
                 </a>
             </div>
+
         </div>
+
+        <!-- Small footer note -->
+        <div class="text-center text-muted small mb-4">Untuk informasi lengkap dan syarat detail, klik "Lihat Selengkapnya"</div>
+
     </div>
 
     <?= $this->include('_bottommenu') ?>

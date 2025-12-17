@@ -7,10 +7,10 @@ use App\Pages\BaseController;
 class PageController extends BaseController
 {
     public $data = [
-        'page_title' => 'Masuk',
+        'page_title' => 'Daftar Akun',
     ];
 
-    // Submit new user
+    // Submit new user registration
     public function postIndex()
     {
         $request    = service('request');
@@ -18,6 +18,7 @@ class PageController extends BaseController
 
         $validation->setRules([
             'fullname'        => 'required|min_length[2]',
+            'phone'           => 'required',
             'email'           => 'required|valid_email',
             'password'        => 'required|max_length[50]|min_length[6]',
             'repeat_password' => 'required|matches[password]',
@@ -45,63 +46,78 @@ class PageController extends BaseController
             $errors = $validation->getErrors();
 
             return $this->respond([
-                'success' => 0, 'errors' => $errors,
+                'success' => 0, 
+                'errors' => $errors,
             ]);
         }
         $validData = $validation->getValidated();
 
-        // Get database pesantren
-        $Heroic = new \App\Libraries\Heroic();
-        $db     = \Config\Database::connect();
-
-        // Check google recaptcha response
-        $recaptchaResponse  = $request->getPost('recaptcha');
-        $recaptchaSecretKey = config('Heroic')->recaptcha['secretKey'];
-        $Recaptcha          = new \ReCaptcha\ReCaptcha($recaptchaSecretKey);
-        $resp               = $Recaptcha->setExpectedHostname($_SERVER['HTTP_HOST'])->verify($recaptchaResponse, $_SERVER['REMOTE_ADDR']);
-        if (! $resp->isSuccess()) {
-            return $this->respond(['success' => 0, 'message' => 'Terjadi kesalahan saat mengecek recaptcha: ' . implode(', ', $resp->getErrorCodes())]);
+        // Make sure the phone number begins with 62
+        $phone = substr($validData['phone'], 0, 1) === '0'
+            ? substr_replace($validData['phone'], '62', 0, 1)
+            : $validData['phone'];
+        if (substr($phone, 0, 1) === '8') {
+            $phone = '62' . $phone;
         }
 
-        // Check if email not exist
-        $found = $db->query('SELECT email FROM users where email = :email:', ['email' => $validData['email']])->getRow();
-        if ($found) {
+        // Get database connection
+        $db = \Config\Database::connect();
+
+        // Check if phone already exists
+        $foundPhone = $db->query('SELECT phone FROM users WHERE phone = :phone:', ['phone' => $phone])->getRow();
+        if ($foundPhone) {
             return $this->respond([
                 'success' => 0,
-                'errors'  => ['email' => 'Email sudah terdaftar. Mungkin Anda bisa mencoba fitur Lupa Kata Sandi.'],
+                'errors'  => ['phone' => 'Nomor telepon sudah terdaftar'],
             ]);
         }
 
-        // Register user to database
+        // Check if email already exists
+        $foundEmail = $db->query('SELECT email FROM users WHERE email = :email:', ['email' => $validData['email']])->getRow();
+        if ($foundEmail) {
+            return $this->respond([
+                'success' => 0,
+                'errors'  => ['email' => 'Email sudah terdaftar'],
+            ]);
+        }
+
+        // Hash password
         $Phpass   = new \App\Libraries\Phpass();
         $password = $Phpass->HashPassword($validData['password']);
 
-        // Get only alphanumeric for username
-        $username = preg_replace('/[^a-z0-9]/', '', strtolower($validData['fullname']));
-        $username .= rand(100, 999);
+        // Generate username from email (before @ symbol) or phone
+        $username = explode('@', $validData['email'])[0];
+        // Check if username exists, if yes add random number
+        $usernameCheck = $db->query('SELECT username FROM users WHERE username = :username:', ['username' => $username])->getRow();
+        if ($usernameCheck) {
+            $username = $username . rand(100, 999);
+        }
 
         $userData = [
             'name'       => $validData['fullname'],
-            'username'   => $username,
+            'phone'      => $phone,
             'email'      => $validData['email'],
+            'username'   => $username,
             'pwd'        => $password,
+            'status'     => null,
+            'active'     => 0,
             'created_at' => date('Y-m-d H:i:s'),
         ];
+        
         $db->table('users')->insert($userData);
         $id = $db->insertID();
-        if ($id) {
-            // Check login to database directly using $db
-            $Auth                      = new \App\Libraries\Auth();
-            [$status, $message, $user] = $Auth->login($validData['email'], $validData['password']);
-
+        
+        if ($db->affectedRows() > 0) {
             return $this->respond([
                 'success' => 1,
-                'jwt'     => $user['jwt'] ?? '',
+                'id'      => $id,
+                'message' => 'Registrasi berhasil! Silakan login untuk melanjutkan.',
             ]);
         }
 
         return $this->respond([
-            'success' => 0, 'message' => 'Gagal menambahkan akun. Silahkan coba kembali.',
+            'success' => 0, 
+            'message' => 'Gagal menambahkan akun. Silahkan coba kembali.',
         ]);
     }
 

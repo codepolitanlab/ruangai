@@ -69,8 +69,11 @@
         </div>
     </div>
 
+    <!-- Show Scholarship CTA for Competition Users -->
+    <?= $this->include('_components/scholarship_cta') ?>
+
     <!-- Show Expire Alert -->
-    <template x-if="data.is_expire">
+    <template x-if="data?.is_scholarship_participant && data.is_expire">
         <div class="card bg-secondary rounded-4 mb-3 shadow-none">
             <div class="card-body d-flex gap-3">
                 <i class="bi bi-stopwatch-fill text-white display-3"></i>

@@ -17,6 +17,7 @@ class Router
         '/masuk/instant/:token' => [
             'template' => '/masuk/instant/template',
         ],
+        '/registrasi' => [],
         '/masuk/sebagai/:key' => [
             'template' => '/masuk/sebagai/template',
         ],

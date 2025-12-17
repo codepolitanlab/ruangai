@@ -15,11 +15,27 @@ class PageController extends BaseController
 
     public function getData()
     {
+        helper('scholarship');
+        
         $Heroic = new \App\Libraries\Heroic();
         $jwt = $Heroic->checkToken(true);
         $this->data['name'] = $jwt->user['name'];
 
         $db = \Config\Database::connect();
+        
+        // Check if user is scholarship participant
+        $this->data['is_scholarship_participant'] = is_scholarship_participant($jwt->user_id);
+        $this->data['scholarship_url'] = scholarship_registration_url();
+        
+        // If user is not scholarship participant, return early with empty data
+        if (!$this->data['is_scholarship_participant']) {
+            $this->data['leader'] = null;
+            $this->data['members'] = [];
+            $this->data['total_member'] = 0;
+            $this->data['total_graduate'] = 0;
+            $this->data['leaderboard'] = [];
+            return $this->respond($this->data);
+        }
 
         $participantModel = new \App\Models\ScholarshipParticipantModel();
         $leader = $participantModel
@@ -28,6 +44,16 @@ class PageController extends BaseController
             ->where('scholarship_participants.user_id', $jwt->user_id)
             ->where('scholarship_participants.deleted_at', null)
             ->first();
+        
+        // Additional null check for leader
+        if (!$leader) {
+            $this->data['leader'] = null;
+            $this->data['members'] = [];
+            $this->data['total_member'] = 0;
+            $this->data['total_graduate'] = 0;
+            $this->data['leaderboard'] = [];
+            return $this->respond($this->data);
+        }
 
         // $memberQuery = $participantModel->select("
         //         scholarship_participants.user_id,

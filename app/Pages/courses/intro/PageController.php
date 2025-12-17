@@ -14,11 +14,17 @@ class PageController extends BaseController
 
     public function getData($id)
     {
+        helper('scholarship');
+        
         $Heroic             = new \App\Libraries\Heroic();
         $jwt                = $Heroic->checkToken(true);
         $this->data['name'] = $jwt->user['name'];
 
         $db = \Config\Database::connect();
+        
+        // Check if user is scholarship participant
+        $this->data['is_scholarship_participant'] = is_scholarship_participant($jwt->user_id);
+        $this->data['scholarship_url'] = scholarship_registration_url();
 
         // Get course
         // if (! $course = cache('course_' . $id)) {
@@ -86,7 +92,7 @@ class PageController extends BaseController
             if ($this->data['student']) {
                 $this->data['course_completed'] = $this->data['total_lessons'] === $this->data['lesson_completed'] && $this->data['live_attendance'] > 0 ? true : false;
                 $this->data['is_enrolled']      = $db->table('course_students')->where('course_id', $id)->where('user_id', $jwt->user_id)->countAllResults() > 0 ? true : false;
-                $this->data['is_expire']        = $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
+                $this->data['is_expire']        = (isset($this->data['student']['expire_at']) && $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s')) ? true : false;
             } else {
                 $this->data['course_completed'] = false;
                 $this->data['is_enrolled']      = false;
