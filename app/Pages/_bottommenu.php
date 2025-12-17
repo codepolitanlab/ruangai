@@ -45,10 +45,10 @@ $bottommenu = [
     //     'module' => 'certificate'
     // ],
     [
-        'label'  => 'Prompts',
-        'url'    => '/prompts',
+        'label'  => 'Prompt',
+        'url'    => '/prompt',
         'icon'   => 'bi bi-input-cursor-text',
-        'module' => 'prompts',
+        'module' => 'prompt',
         'target' => '_blank',
         'badge'  => ['warning', 'NEW'],
     ],

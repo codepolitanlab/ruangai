@@ -14,13 +14,13 @@ class Router
         ],
         '/registrasi' => [],
         '/registrasi/confirm/:token' => [],
-        '/masuk' => [],
         '/masuk/instant/:token' => [
             'template' => '/masuk/instant/template',
         ],
         '/masuk/sebagai/:key' => [
             'template' => '/masuk/sebagai/template',
         ],
+        '/masuk/:redirect*' => [],
         '/page/:slug' => [],
         '/profile' => [],
         '/profile/edit_info' => [],
@@ -85,6 +85,6 @@ class Router
         '/challenge' => [],
         '/challenge/submit' => [],
         '/workshop' => [],
-        '/prompts' => [],
+        '/prompt' => [],
     ];
 }

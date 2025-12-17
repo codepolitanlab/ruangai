@@ -1,4 +1,4 @@
-<?php namespace App\Pages\prompts;
+<?php namespace App\Pages\prompt;
 
 use App\Pages\BaseController;
 

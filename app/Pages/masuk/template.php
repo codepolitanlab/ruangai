@@ -1,4 +1,4 @@
-<div id="member-login" x-data="login()">
+<div id="member-login" x-data="login($params.redirect ?? null)">
 
     <!-- App Capsule -->
     <div id="appCapsule" class="pt-5 px-4">
