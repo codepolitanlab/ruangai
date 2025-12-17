@@ -13,13 +13,13 @@ $bottommenu = [
         'icon'   => 'bi bi-journal-check',
         'module' => 'misi_beasiswa',
     ],
-    // [
-    //     'label'  => 'Kompetisi',
-    //     'url'    => '/challenge',
-    //     'icon'   => 'bi bi-trophy',
-    //     'module' => 'challenge',
-    //     'badge'  => ['warning', 'NEW'],
-    // ],
+    [
+        'label'  => 'Kompetisi',
+        'url'    => '/challenge',
+        'icon'   => 'bi bi-trophy',
+        'module' => 'challenge',
+        'badge'  => ['warning', 'NEW'],
+    ],
     [
         'label'  => 'Kelas Saya',
         'url'    => '/courses',
@@ -44,12 +44,14 @@ $bottommenu = [
     //     'icon'   => 'bi bi-award',
     //     'module' => 'certificate'
     // ],
-    // [
-    //     'label'  => 'Pustaka Prompt',
-    //     'url'    => '/prompts',
-    //     'icon'   => 'bi bi-input-cursor-text',
-    //     'module' => 'prompts'
-    // ],
+    [
+        'label'  => 'Prompts',
+        'url'    => '/prompts',
+        'icon'   => 'bi bi-input-cursor-text',
+        'module' => 'prompts',
+        'target' => '_blank',
+        'badge'  => ['warning', 'NEW'],
+    ],
     [
         'label'  => 'Keluar',
         'url'    => '/logout',
@@ -88,6 +90,7 @@ $bottommenu = [
             <a href="<?= $menu['url'] ?>"
                 <?= $menu['native'] ?? null ? 'native' : '' ?>
                 class="item"
+                <?= isset($menu['target']) && $menu['target'] == '_blank' ? 'target="_blank" native' : '' ?>
                 :class="(data?.module ?? '') == '<?= $menu['module'] ?>' ? 'active' : ''">
                 <div class="icon-box icon-box-transparent">
                     <i class="<?= $menu['icon'] ?>"></i>
