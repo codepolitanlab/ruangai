@@ -14,24 +14,15 @@
             <div class="accordion-body">
 
                 <!-- Teks panduan -->
-                <div class="card p-2 shadow-none border mb-4 panduan">
-                    <h5>Panduan:</h5>
-                    <ol>
-                        <li>
-                            Buat video berdurasi minimal 15 detik tanpa batas maksimal menggunakan WAN Model Studio dari Alibaba Cloud. Cek video penjelasannya <a href="https://www.youtube.com/@codepolitan" target="_blank">DI SINI</a>. 
-                        </li>
-                        <li>
-                            Upload video karya Anda ke platform X (Twitter), pastikan video bersifat publik, lalu salin URL postingan video pada kolom <strong>URL Post X</strong>.
-                        </li>
-                        <li>
-                            Isi kolom <strong>Judul Video</strong> dan <strong>Deskripsi Video</strong> dengan singkat, jelas, dan menggambarkan isi video.
-                        </li>
-                        <li>
-                            Isi kolom <strong>Tools Lain yang Digunakan (selain WAN)</strong> jika menggunakan tools AI atau tools tambahan lain. Kosongkan jika tidak ada.
-                        </li>
-                        <li>
-                            Unduh template <a href="https://docs.google.com/document/d/1bmLNpP-GLsdntfIkvMaMUC4DvjoDQPx9pUuSofM4-js/copy" target="_blank">Dokumen Prompt</a>, isi sesuai petunjuk, lalu unggah file tersebut pada kolom yang tersedia.
-                        </li>
+                <div class="card p-3 shadow-none border mb-4 panduan">
+                    <h5 class="mb-2">Panduan Pengumpulan Karya</h5>
+                    <ol class="mb-0">
+                        <li>Buat video berdurasi minimal 15 detik (tanpa batas durasi maksimal) menggunakan WAN Model Studio dari Alibaba Cloud.</li>
+                        <li>Panduan penggunaan WAN Model Studio dapat diakses melalui video tutorial <strong><a target="_blank" href="https://www.youtube.com/watch?v=xvFZjo5PgG0">DI SINI</a></strong>.</li>
+                        <li>Unggah video karya Anda ke platform X dengan pengaturan publik, lalu salin URL postingan video dan tempelkan pada kolom <strong>URL Post X</strong>.</li>
+                        <li>Isi kolom <strong>Judul Video</strong> dan <strong>Deskripsi Video</strong> secara singkat, jelas, dan relevan dengan isi video.</li>
+                        <li>Isi kolom <strong>Tools Lain yang Digunakan (selain WAN Model Studio)</strong> apabila menggunakan tools AI atau tools tambahan lainnya. Biarkan kolom ini kosong jika tidak ada.</li>
+                        <li>Unduh Template <strong>Dokumen Prompt</strong> <a native target="_blank" href="https://docs.google.com/document/d/1bmLNpP-GLsdntfIkvMaMUC4DvjoDQPx9pUuSofM4-js/copy">DI SINI</a>, isi sesuai petunjuk, dan unggah kembali dokumen tersebut dalam format <strong>PDF</strong> melalui kolom unggah yang tersedia.</li>
                     </ol>
                 </div>
 

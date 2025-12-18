@@ -14,32 +14,16 @@
             <div class="accordion-body">
 
                 <!-- Teks panduan -->
-                <div class="card p-2 shadow-none border mb-4 panduan">
-                    <h5>Panduan:</h5>
-                    <ol>
-                        <li>
-                            Program DevHandal ini <strong>GRATIS</strong>. Namun wajib memasukkan Kartu Debit/Kredit di Alibabacloud untuk dapat mengaktifkan Trial <a href="https://www.alibabacloud.com/en/product/modelstudio" target="_blank">Alibabacloud Model Studio</a>
-                        </li>
-                        <li>
-                            Cara Registrasi Akun Alibaba Cloud:
-                            <strong>Buat Akun</strong> atau Video:
-                            <strong>Video Panduan buat Akun Alibaba Cloud</strong>
-                        </li>
-                        <li>
-                            Bagi yang tidak memiliki Credit Card bisa menggunakan Debit Card Fisik berlogo Visa atau Mastercard seperti BCA, Mandiri, Jenius Mcard, Jago Fisik atau bank lainnya.
-                        </li>
-                        <li>
-                            Pastikan settingan debit online dan transaksi internasional aktif.
-                        </li>
-                        <li>
-                            Pastikan terdapat saldo minimal Rp 100.000 dan disarankan sudah pernah melakukan transaksi
-                            (contoh: isi pulsa, bayar toko online, QRIS, dsb) untuk menekan kemungkinan dianggap fraud
-                            karena penggunaan kartu debit baru.
-                        </li>
-                        <li>
-                            Akan ada verifikasi CC/debit card Visa/Mastercard berupa simulasi kredit dan debit sebesar
-                            $1 (satu USD) dan akan dikembalikan ke dalam saldo kamu dalam beberapa jam setelahnya.
-                        </li>
+                <div class="card p-3 shadow-none border mb-4 panduan">
+                    <h5 class="mb-2">Panduan Pendaftaran & Aktivasi</h5>
+                    <ol class="mb-0">
+                        <li><strong>GenAI Video Fest</strong> tidak dipungut biaya (gratis).</li>
+                        <li>Peserta wajib memasukkan kartu Debit/Kredit pada akun Alibaba Cloud untuk mengaktifkan trial <a target="_blank" href="https://www.alibabacloud.com/en/product/modelstudio">Alibaba Cloud Model Studio</a>.</li>
+                        <li>Panduan registrasi akun Alibaba Cloud tersedia dalam <a target="_blank" href="https://www.youtube.com/watch?v=xvFZjo5PgG0">video tutorial berikut</a>.</li>
+                        <li>Peserta yang tidak memiliki kartu kredit dapat menggunakan kartu debit fisik berlogo Visa atau Mastercard, seperti BCA, Mandiri, Jenius, Jago, atau bank lainnya yang mendukung transaksi internasional.</li>
+                        <li>Pastikan fitur transaksi online dan internasional pada kartu debit telah aktif.</li>
+                        <li>Pastikan kartu memiliki saldo minimal Rp100.000 dan pernah digunakan untuk transaksi sebelumnya (misalnya pembelian pulsa, belanja online, atau pembayaran QRIS) guna meminimalkan risiko verifikasi gagal.</li>
+                        <li>Proses verifikasi kartu akan dilakukan melalui simulasi transaksi sebesar USD 1 dan saldo akan dikembalikan secara otomatis dalam beberapa jam setelah proses verifikasi berhasil.</li>
                     </ol>
                 </div>
 
@@ -126,7 +110,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">AlibabaCloud ID <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" x-model="profile.alibabacloud_id" :class="{'is-invalid': profileErrors.alibabacloud_id}" inputmode="numeric" pattern="[0-9]*" @input="profile.alibabacloud_id = profile.alibabacloud_id.replace(/[^0-9]/g, '')">
+                        <input type="text" class="form-control" x-model="profile.alibabacloud_id" :class="{'is-invalid': profileErrors.alibabacloud_id}" inputmode="numeric" pattern="[0-9]*" @input="profile.alibabacloud_id = profile.alibabacloud_id.replace(/[^0-9]/g, '')" placeholder="Cth: 5921721919160498">
                         <template x-if="profileErrors.alibabacloud_id">
                             <small class="text-danger" x-text="profileErrors.alibabacloud_id"></small>
                         </template>

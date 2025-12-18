@@ -237,8 +237,6 @@ function challengeSubmit() {
             // Validasi WhatsApp
             if (!this.profile.whatsapp || this.profile.whatsapp.trim() === '') {
                 this.profileErrors.whatsapp = 'WhatsApp wajib diisi';
-            } else if (!/^62\d{9,13}$/.test(this.profile.whatsapp)) {
-                this.profileErrors.whatsapp = 'Format WhatsApp: 62812xxxx (9-13 digit)';
             }
 
             // Validasi Tanggal Lahir

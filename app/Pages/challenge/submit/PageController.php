@@ -299,10 +299,9 @@ class PageController extends BaseController
         $validation = service('validation');
         $validation->setRules([
             'whatsapp' => [
-                'rules' => 'required|regex_match[/^62\d{9,13}$/]',
+                'rules' => 'required',
                 'errors' => [
                     'required' => 'WhatsApp wajib diisi',
-                    'regex_match' => 'Format WhatsApp: 62812xxxx (9-13 digit)'
                 ]
             ],
             'birth_date' => [
