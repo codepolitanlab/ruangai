@@ -67,8 +67,12 @@ class PageController extends BaseController
         // Get database connection
         $db = \Config\Database::connect();
 
-        // Check if phone already exists
-        $foundPhone = $db->query('SELECT phone FROM users WHERE phone = :phone:', ['phone' => $phone])->getRow();
+        // Check if phone already exists (use Query Builder)
+        $foundPhone = $db->table('users')
+            ->select('phone')
+            ->where('phone', $phone)
+            ->get()
+            ->getRow();
         if ($foundPhone) {
             return $this->respond([
                 'success' => 0,
@@ -76,8 +80,12 @@ class PageController extends BaseController
             ]);
         }
 
-        // Check if email already exists
-        $foundEmail = $db->query('SELECT email FROM users WHERE email = :email:', ['email' => $validData['email']])->getRow();
+        // Check if email already exists (use Query Builder)
+        $foundEmail = $db->table('users')
+            ->select('email')
+            ->where('email', $validData['email'])
+            ->get()
+            ->getRow();
         if ($foundEmail) {
             return $this->respond([
                 'success' => 0,
@@ -91,8 +99,12 @@ class PageController extends BaseController
 
         // Generate username from email (before @ symbol) or phone
         $username = explode('@', $validData['email'])[0];
-        // Check if username exists, if yes add random number
-        $usernameCheck = $db->query('SELECT username FROM users WHERE username = :username:', ['username' => $username])->getRow();
+        // Check if username exists, if yes add random number (use Query Builder)
+        $usernameCheck = $db->table('users')
+            ->select('username')
+            ->where('username', $username)
+            ->get()
+            ->getRow();
         if ($usernameCheck) {
             $username = $username . rand(100, 999);
         }

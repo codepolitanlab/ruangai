@@ -18,7 +18,7 @@
                     <h5>Panduan:</h5>
                     <ol>
                         <li>
-                            Buat video berdurasi 30 detik - 1 menit menggunakan WAN Model Studio dari Alibaba Cloud. Cek video penjelasannya <a href="https://www.youtube.com/watch?v=xvFZjo5PgG0">DI SINI</a>. 
+                            Buat video berdurasi minimal 15 detik tanpa batas maksimal menggunakan WAN Model Studio dari Alibaba Cloud. Cek video penjelasannya <a href="https://www.youtube.com/@codepolitan" target="_blank">DI SINI</a>. 
                         </li>
                         <li>
                             Upload video karya Anda ke platform X (Twitter), pastikan video bersifat publik, lalu salin URL postingan video pada kolom <strong>URL Post X</strong>.
@@ -30,7 +30,7 @@
                             Isi kolom <strong>Tools Lain yang Digunakan (selain WAN)</strong> jika menggunakan tools AI atau tools tambahan lain. Kosongkan jika tidak ada.
                         </li>
                         <li>
-                            Unduh template <strong>Dokumen Prompt</strong>, isi sesuai petunjuk, lalu unggah file tersebut pada kolom yang tersedia.
+                            Unduh template <a href="https://docs.google.com/document/d/1bmLNpP-GLsdntfIkvMaMUC4DvjoDQPx9pUuSofM4-js/copy" target="_blank">Dokumen Prompt</a>, isi sesuai petunjuk, lalu unggah file tersebut pada kolom yang tersedia.
                         </li>
                     </ol>
                 </div>

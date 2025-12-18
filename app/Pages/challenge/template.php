@@ -97,7 +97,7 @@
                                 <li>Wajib Pakai WAN Model Studio</li>
                                 <li>1 Akun = 1 Submission</li>
                                 <li>Usia : Minimal 17+</li>
-                                <li>Wajib Tanda Tangan Etika & HAk Cipta</li>
+                                <li>Wajib Tanda Tangan Etika & Hak Cipta</li>
                                 <li>Konten Terlarang = Diskualifikasi</li>
                                 <li>Konten Harus Fresh tidak pernah di posting dimanapun</li>
                             </ul>

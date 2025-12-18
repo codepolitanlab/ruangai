@@ -18,7 +18,7 @@
                     <h5>Panduan:</h5>
                     <ol>
                         <li>
-                            Program DevHandal ini <strong>GRATIS</strong>. Namun wajib memasukkan Kartu Debit/Kredit di Alibabacloud untuk dapat mengaktifkan Trial Alibabacloud Model Studio
+                            Program DevHandal ini <strong>GRATIS</strong>. Namun wajib memasukkan Kartu Debit/Kredit di Alibabacloud untuk dapat mengaktifkan Trial <a href="https://www.alibabacloud.com/en/product/modelstudio" target="_blank">Alibabacloud Model Studio</a>
                         </li>
                         <li>
                             Cara Registrasi Akun Alibaba Cloud:

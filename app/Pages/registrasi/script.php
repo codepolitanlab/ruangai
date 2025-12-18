@@ -73,7 +73,7 @@
               
               // Redirect to login page after 2 seconds
               setTimeout(() => {
-                window.location.replace("/masuk");
+                window.location.replace("/masuk?redirect=challenge");
               }, 2000);
             } else {
               this.buttonSubmitting = false;

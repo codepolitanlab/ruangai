@@ -27,6 +27,13 @@
 
 				this.data.logo = Alpine.store('core').settings.auth_logo;
 				this.data.sitename = Alpine.store('core').settings.app_title;
+
+				// If redirect wasn't passed from server, try reading it from the URL query string
+				if (!this.redirect) {
+					const params = new URLSearchParams(window.location.search);
+					const r = params.get('redirect');
+					if (r) this.redirect = decodeURIComponent(r);
+				}
 			},
 
 			login() {
@@ -49,11 +56,16 @@
 							Alpine.store('core').sessionToken = localStorage.getItem("heroic_token");
 
 							setTimeout(() => {
-								if (this.redirect) {
-									window.location.replace("/" + this.redirect);
+							let target = '/';
+							if (this.redirect) {
+								const r = String(this.redirect).trim();
+								if (/^https?:\/\//i.test(r)) {
+									target = r;
 								} else {
-									window.location.replace("/");
+									target = r.startsWith('/') ? r : '/' + r;
 								}
+							}
+							window.location.replace(target);
 							}, 500);
 						} else {
 							this.buttonSubmitting = false;
