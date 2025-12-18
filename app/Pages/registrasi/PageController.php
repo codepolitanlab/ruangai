@@ -134,7 +134,7 @@ class PageController extends BaseController
 
             // Generate JWT token for auto-login
             $Auth                      = new \App\Libraries\Auth();
-            [$status, $message, $user] = $Auth->login($username, $validData['password']);
+            [$status, $message, $user] = $Auth->login($newUser['username'], $validData['password']);
 
             return $this->respond([
                 'success' => 1,
