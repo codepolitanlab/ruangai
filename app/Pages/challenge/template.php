@@ -90,16 +90,16 @@
                     </h1>
                     <div id="collapseOne" class="accordion-collapse collapse show p-4 pt-0">
                         <div class="accordion-body rounded-4">
-                            <p class="mb-3">Untuk mengikuti kompetisi ini ada beberapa persyaratan yang wajib dilengkapi supaya kamu berhak mendapatkan hadiah di kompetisi GenAI Video Fest. berikut adalah persyaratannya</p>
+                            <p class="mb-2">Untuk mengikuti GenAI Video Fest, peserta wajib memenuhi ketentuan berikut:</p>
                             <ul class="mb-0">
-                                <li>Wajib Punya Akun Alibaba Cloud</li>
-                                <li>Follow Akun X Resmi @RuangAI @codepolitan @alibaba_cloud</li>
-                                <li>Wajib Pakai WAN Model Studio</li>
-                                <li>1 Akun = 1 Submission</li>
-                                <li>Usia : Minimal 17+</li>
-                                <li>Wajib Tanda Tangan Etika & HAk Cipta</li>
-                                <li>Konten Terlarang = Diskualifikasi</li>
-                                <li>Konten Harus Fresh tidak pernah di posting dimanapun</li>
+                                <li>Memiliki akun Alibaba Cloud yang aktif.</li>
+                                <li>Mengikuti akun X resmi @codepolitan, dan @alibaba_cloud.</li>
+                                <li>Wajib menggunakan WAN Model Studio. Penggunaan model atau tools AI lain diperbolehkan sebagai tambahan (opsional).</li>
+                                <li>1 akun hanya diperbolehkan 1 submission.</li>
+                                <li>Usia peserta minimal 17 tahun.</li>
+                                <li>Wajib menandatangani pernyataan etika dan hak cipta.</li>
+                                <li>Konten terlarang akan langsung didiskualifikasi.</li>
+                                <li>Karya harus orisinal dan belum pernah dipublikasikan di mana pun.</li>
                             </ul>
                         </div>
                     </div>

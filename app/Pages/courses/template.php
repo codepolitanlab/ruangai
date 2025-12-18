@@ -32,8 +32,6 @@
 			</div>
 
 			<div class="">
-				<!-- Show Scholarship CTA for Competition Users -->
-				<?= $this->include('_components/scholarship_cta') ?>
 
 				<template x-if="data.courses.length > 0">
 					<div class="bg-white px-3 py-4 rounded-4 mb-4">
@@ -62,7 +60,6 @@
 				
 				<template x-if="data.courses.length === 0 && !data?.is_scholarship_participant">
 					<div class="bg-white px-3 py-4 rounded-4 mb-4 text-center">
-						<i class="bi bi-inbox display-1 text-muted"></i>
 						<h5 class="fw-bold mb-2 mt-3">Belum Ada Kelas</h5>
 						<p class="text-muted">Kamu belum memiliki kelas aktif. Daftar program beasiswa untuk mendapatkan akses kelas gratis!</p>
 					</div>

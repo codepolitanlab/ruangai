@@ -18,6 +18,7 @@ function challengeSubmit() {
             twitter_post_url: '',
             video_title: '',
             video_description: '',
+            other_tools: '',
             ethical_statement_agreed: false
         },
         profile: {
@@ -34,6 +35,9 @@ function challengeSubmit() {
             industry: '',
             referral_code: '',
             agreed_terms: false,
+            agreed_terms_1: false,
+            agreed_terms_2: false,
+            agreed_terms_3: false,
             birth_date: '',
             x_profile_url: '',
         },
@@ -46,17 +50,9 @@ function challengeSubmit() {
         ],
         files: {
             prompt_file: null,
-            // params_file: null,
-            assets_list_file: null,
-            alibaba_screenshot: null,
-            twitter_follow_screenshot: null
         },
         existingFiles: {
             prompt_file: null,
-            // params_file: null,
-            assets_list_file: null,
-            alibaba_screenshot: null,
-            twitter_follow_screenshot: null
         },
         errors: {},
         profileErrors: {},
@@ -92,7 +88,7 @@ function challengeSubmit() {
                     this.profile.profession = result.user.profession || '';
                     this.profile.job_title = result.user.job_title || '';
                     this.profile.company = result.user.company || '';
-                    this.profile.whatsapp = result.user.whatsapp || '';
+                    this.profile.whatsapp = result.user.phone ||result.user.whatsapp;
                     this.profile.address = result.user.address || '';
                     this.profile.gender = result.user.gender || '';
                     this.profile.industry = result.user.industry || '';
@@ -100,6 +96,19 @@ function challengeSubmit() {
                     this.profile.agreed_terms = result.user.agreed_terms == 1 ? true : false;
                     this.profile.birth_date = result.user.birth_date || '';
                     this.profile.x_profile_url = result.user.x_profile_url || '';
+                    // this.profile.alibabacloud_id = result.user.alibabacloud_id || '123123123';
+                    // this.profile.alibabacloud_screenshot = result.user.alibabacloud_screenshot || null;
+                    // this.profile.profession = result.user.profession || '';
+                    // this.profile.job_title = result.user.job_title || '';
+                    // this.profile.company = result.user.company || 'PT CODEPOLITAN';
+                    // this.profile.whatsapp = result.user.whatsapp || '6285624865055';
+                    // this.profile.address = result.user.address || '';
+                    // this.profile.gender = result.user.gender || '';
+                    // this.profile.industry = result.user.industry || '';
+                    // this.profile.referral_code = result.user.referral_code || '';
+                    // this.profile.agreed_terms = result.user.agreed_terms == 1 ? true : false;
+                    // this.profile.birth_date = result.user.birth_date || '2000-01-01';
+                    // this.profile.x_profile_url = result.user.x_profile_url || 'https://x.com/username';
                 }
 
                 // Pre-fill existing submission if present and editable
@@ -109,7 +118,14 @@ function challengeSubmit() {
                     this.form.twitter_post_url = result.existing_submission.twitter_post_url || '';
                     this.form.video_title = result.existing_submission.video_title || '';
                     this.form.video_description = result.existing_submission.video_description || '';
+                    this.form.other_tools = result.existing_submission.other_tools || '';
                     this.form.ethical_statement_agreed = result.existing_submission.ethical_statement_agreed == 1 ? true : false;
+                    // Map ethical_statement_agreed to checkboxes
+                    if (result.existing_submission.ethical_statement_agreed == 1) {
+                        this.profile.agreed_terms_1 = true;
+                        this.profile.agreed_terms_2 = true;
+                        this.profile.agreed_terms_3 = true;
+                    }
 
                     // team members
                     try {
@@ -123,10 +139,6 @@ function challengeSubmit() {
 
                     // existing files (display only until replaced)
                     this.existingFiles.prompt_file = result.existing_submission.prompt_file || null;
-                    // // this.existingFiles.params_file = result.existing_submission.params_file || null;
-                    this.existingFiles.assets_list_file = result.existing_submission.assets_list_file || null;
-                    this.existingFiles.alibaba_screenshot = result.existing_submission.alibaba_screenshot || null;
-                    this.existingFiles.twitter_follow_screenshot = result.existing_submission.twitter_follow_screenshot || null;
                 } else if (result.existing_submission && !result.can_edit) {
                     // User has an existing non-editable submission, show a message and redirect
                     this.showAlert('error', 'Anda sudah memiliki submission aktif dan tidak dapat diubah.');
@@ -157,7 +169,18 @@ function challengeSubmit() {
         handleFileUpload(event, fieldName) {
             const file = event.target.files[0];
             if (file) {
+                // Validate file size (max 1MB)
+                const maxSize = 1 * 1024 * 1024; // 1MB in bytes
+                if (file.size > maxSize) {
+                    this.errors[fieldName] = 'Ukuran file maksimal 1MB';
+                    event.target.value = ''; // Clear input
+                    $heroicHelper.toastr('Ukuran file maksimal 1MB', 'danger', 'bottom');
+                    return;
+                }
+                
                 this.files[fieldName] = file;
+                // Clear error if any
+                delete this.errors[fieldName];
                 // If replacing existing file, clear its name so valiation relies on this.files
                 if (this.existingFiles[fieldName]) {
                     this.existingFiles[fieldName] = null;
@@ -168,9 +191,20 @@ function challengeSubmit() {
         handleProfileScreenshot(event) {
             const file = event.target.files[0];
             if (file) {
+                // Validate file size (max 1MB)
+                const maxSize = 1 * 1024 * 1024; // 1MB in bytes
+                if (file.size > maxSize) {
+                    this.profileErrors.alibabacloud_screenshot = 'Ukuran file maksimal 1MB';
+                    event.target.value = ''; // Clear input
+                    $heroicHelper.toastr('Ukuran file maksimal 1MB', 'danger', 'bottom');
+                    return;
+                }
+                
                 // show filename, actual upload happens on submitProfile
                 this.profile.alibabacloud_screenshot = file.name;
                 this.profile._screenshot_file = file;
+                // Clear error if any
+                delete this.profileErrors.alibabacloud_screenshot;
             }
         },
 
@@ -203,8 +237,6 @@ function challengeSubmit() {
             // Validasi WhatsApp
             if (!this.profile.whatsapp || this.profile.whatsapp.trim() === '') {
                 this.profileErrors.whatsapp = 'WhatsApp wajib diisi';
-            } else if (!/^62\d{9,13}$/.test(this.profile.whatsapp)) {
-                this.profileErrors.whatsapp = 'Format WhatsApp: 62812xxxx (9-13 digit)';
             }
 
             // Validasi Tanggal Lahir
@@ -265,16 +297,15 @@ function challengeSubmit() {
             // Validasi AlibabaCloud ID
             if (!this.profile.alibabacloud_id || this.profile.alibabacloud_id.trim() === '') {
                 this.profileErrors.alibabacloud_id = 'AlibabaCloud ID wajib diisi';
+            } else if (!/^\d+$/.test(this.profile.alibabacloud_id)) {
+                this.profileErrors.alibabacloud_id = 'AlibabaCloud ID harus berupa angka';
+            } else if (this.profile.alibabacloud_id.length < 15) {
+                this.profileErrors.alibabacloud_id = 'AlibabaCloud ID minimal 15 karakter';
             }
 
             // Validasi Screenshot
             if (!this.profile.alibabacloud_screenshot && !this.profile._screenshot_file) {
                 this.profileErrors.alibabacloud_screenshot = 'Screenshot Alibaba Account wajib diupload';
-            }
-
-            // Validasi Agreed Terms
-            if (!this.profile.agreed_terms) {
-                this.profileErrors.agreed_terms = 'Anda harus menyetujui syarat dan ketentuan';
             }
 
             return Object.keys(this.profileErrors).length === 0;
@@ -286,7 +317,7 @@ function challengeSubmit() {
 
             // Validate form
             if (!this.validateProfileForm()) {
-                this.showAlert('error', 'Mohon lengkapi semua field yang wajib diisi dengan benar');
+                $heroicHelper.toastr('Mohon periksa kembali form yang diisi', 'danger', 'bottom');
                 return;
             }
 
@@ -316,17 +347,20 @@ function challengeSubmit() {
                 const res = await $heroicHelper.post(base_url + 'challenge/submit/saveProfile', data);
                 if (res.data && res.data.success) {
                     this.profileErrors = {};
-                    this.showAlert('success', 'Data profil berhasil disimpan');
+                    $heroicHelper.toastr('Data profil berhasil disimpan', 'success', 'bottom');
                     // optionally refresh defaults
                 } else {
                     // Handle server-side validation errors
                     if (res.data && res.data.errors) {
                         this.profileErrors = res.data.errors;
+                        const errorMessages = Object.values(res.data.errors).join(', ');
+                        $heroicHelper.toastr(errorMessages, 'danger', 'bottom');
+                    } else {
+                        $heroicHelper.toastr((res.data && res.data.message) || 'Gagal menyimpan profil', 'danger', 'bottom');
                     }
-                    this.showAlert('error', (res.data && res.data.message) || 'Gagal menyimpan profil');
                 }
             } catch (e) {
-                this.showAlert('error', 'Gagal menyimpan profil');
+                $heroicHelper.toastr('Gagal menyimpan profil: ' + e.message, 'danger', 'bottom');
             }
         },
 
@@ -344,30 +378,20 @@ function challengeSubmit() {
                 this.errors.video_description = 'Deskripsi minimal 10 karakter';
             }
 
-            // Validate team members
-            for (let member of this.teamMembers) {
-                if (!member.name || !member.email) {
-                    this.errors.team_members = 'Semua anggota tim harus memiliki nama dan email';
-                    break;
-                }
-            }
-
             // Validate files - either new file is uploaded or existing file present (for edit)
             if (!this.files.prompt_file && !this.existingFiles.prompt_file) {
                 this.errors.prompt_file = 'Prompt file wajib diupload';
             }
-            // if (!this.files.params_file && !this.existingFiles.params_file) {
-                // this.errors.params_file = 'Params file wajib diupload';
-            // }
-            if (!this.files.alibaba_screenshot && !this.existingFiles.alibaba_screenshot) {
-                this.errors.alibaba_screenshot = 'Screenshot Alibaba wajib diupload';
-            }
-            if (!this.files.twitter_follow_screenshot && !this.existingFiles.twitter_follow_screenshot) {
-                this.errors.twitter_follow_screenshot = 'Screenshot follow Twitter wajib diupload';
-            }
 
-            if (!this.form.ethical_statement_agreed) {
-                this.errors.ethical_statement_agreed = 'Anda harus menyetujui pernyataan etika';
+            // Validate agreed terms
+            if (!this.profile.agreed_terms_1) {
+                this.errors.agreed_terms_1 = 'Anda harus menyetujui pernyataan ini';
+            }
+            if (!this.profile.agreed_terms_2) {
+                this.errors.agreed_terms_2 = 'Anda harus menyetujui pernyataan ini';
+            }
+            if (!this.profile.agreed_terms_3) {
+                this.errors.agreed_terms_3 = 'Anda harus menyetujui pernyataan ini';
             }
 
             return Object.keys(this.errors).length === 0;
@@ -379,6 +403,7 @@ function challengeSubmit() {
 
         async submitForm() {
             if (!this.validateForm()) {
+                $heroicHelper.toastr('Mohon periksa kembali form yang diisi', 'danger', 'bottom');
                 return;
             }
 
@@ -390,8 +415,7 @@ function challengeSubmit() {
                 twitter_post_url: this.form.twitter_post_url,
                 video_title: this.form.video_title,
                 video_description: this.form.video_description,
-                team_members: JSON.stringify(this.teamMembers),
-                ethical_statement_agreed: this.form.ethical_statement_agreed ? '1' : '0'
+                ethical_statement_agreed: (this.profile.agreed_terms_1 && this.profile.agreed_terms_2 && this.profile.agreed_terms_3) ? '1' : '0'
             };
 
             if (this.isEdit && this.submissionId) {
@@ -410,19 +434,21 @@ function challengeSubmit() {
                 const result = response.data;
 
                 if (result.success === 1) {
-                    this.showAlert('success', result.message);
+                    $heroicHelper.toastr(result.message, 'success', 'bottom');
                     setTimeout(() => {
                         window.location.href = '/challenge';
                     }, 2000);
                 } else {
                     this.errors = result.errors || {};
                     if (result.errors && result.errors.general) {
-                        this.showAlert('error', result.errors.general);
+                        $heroicHelper.toastr(result.errors.general, 'danger', 'bottom');
+                    } else if (result.message) {
+                        $heroicHelper.toastr(result.message, 'danger', 'bottom');
                     }
                     // go back to top to show errors (single-section form)
                 }
             } catch (error) {
-                this.showAlert('error', 'Terjadi kesalahan. Silakan coba lagi.');
+                $heroicHelper.toastr('Terjadi kesalahan. Silakan coba lagi.', 'danger', 'bottom');
             } finally {
                 this.isSubmitting = false;
             }

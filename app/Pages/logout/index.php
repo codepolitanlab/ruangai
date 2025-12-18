@@ -1,4 +1,5 @@
 <script>
     localStorage.removeItem('heroic_token')
-    window.location.href = 'https://www.ruangai.id/logout'
+    let origin = window.location.origin
+    window.location.href = origin + '/masuk'
 </script>

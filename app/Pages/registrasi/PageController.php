@@ -17,8 +17,8 @@ class PageController extends BaseController
         $validation = service('validation');
 
         $validation->setRules([
-            'fullname'        => 'required|min_length[2]',
-            'phone'           => 'required',
+            'fullname'        => 'required|min_length[2]|regex_match[/^[\p{L}\s\'\-]+$/u]',
+            'phone'           => 'required|numeric',
             'email'           => 'required|valid_email',
             'password'        => 'required|max_length[50]|min_length[6]',
             'repeat_password' => 'required|matches[password]',
@@ -26,6 +26,11 @@ class PageController extends BaseController
             'fullname' => [
                 'required'   => 'Nama lengkap wajib diisi',
                 'min_length' => 'Nama lengkap minimal 2 karakter',
+                'regex_match' => 'Nama tidak boleh mengandung angka atau simbol',
+            ],
+            'phone' => [
+                'required' => 'Nomor telepon wajib diisi',
+                'numeric'  => 'Nomor telepon harus berupa angka',
             ],
             'email' => [
                 'required'    => 'Email wajib diisi',
@@ -52,6 +57,15 @@ class PageController extends BaseController
         }
         $validData = $validation->getValidated();
 
+        // Check google recaptcha response
+        $recaptchaResponse = $this->request->getPost('recaptcha');
+        $recaptchaSecretKey = config('Heroic')->recaptcha['secretKey'];
+        $Recaptcha          = new \ReCaptcha\ReCaptcha($recaptchaSecretKey);
+        $resp               = $Recaptcha->setExpectedHostname($_SERVER['HTTP_HOST'])->verify($recaptchaResponse, $_SERVER['REMOTE_ADDR']);
+        if (! $resp->isSuccess()) {
+            return $this->respond(['success' => 0, 'errors' => ['recaptcha' => 'Terjadi kesalahan saat mengecek recaptcha: ' . implode(', ', $resp->getErrorCodes())]]);
+        }
+
         // Make sure the phone number begins with 62
         $phone = substr($validData['phone'], 0, 1) === '0'
             ? substr_replace($validData['phone'], '62', 0, 1)
@@ -63,17 +77,12 @@ class PageController extends BaseController
         // Get database connection
         $db = \Config\Database::connect();
 
-        // Check if phone already exists
-        $foundPhone = $db->query('SELECT phone FROM users WHERE phone = :phone:', ['phone' => $phone])->getRow();
-        if ($foundPhone) {
-            return $this->respond([
-                'success' => 0,
-                'errors'  => ['phone' => 'Nomor telepon sudah terdaftar'],
-            ]);
-        }
-
         // Check if email already exists
-        $foundEmail = $db->query('SELECT email FROM users WHERE email = :email:', ['email' => $validData['email']])->getRow();
+        $foundEmail = $db->table('users')
+            ->select('email')
+            ->where('email', $validData['email'])
+            ->get()
+            ->getRow();
         if ($foundEmail) {
             return $this->respond([
                 'success' => 0,
@@ -81,17 +90,26 @@ class PageController extends BaseController
             ]);
         }
 
+        // Check if phone already exists
+        $foundPhone = $db->table('users')
+            ->select('phone')
+            ->where('phone', $phone)
+            ->get()
+            ->getRow();
+        if ($foundPhone) {
+            return $this->respond([
+                'success' => 0,
+                'errors'  => ['phone' => 'Nomor telepon sudah terdaftar'],
+            ]);
+        }
+
         // Hash password
         $Phpass   = new \App\Libraries\Phpass();
         $password = $Phpass->HashPassword($validData['password']);
 
-        // Generate username from email (before @ symbol) or phone
-        $username = explode('@', $validData['email'])[0];
-        // Check if username exists, if yes add random number
-        $usernameCheck = $db->query('SELECT username FROM users WHERE username = :username:', ['username' => $username])->getRow();
-        if ($usernameCheck) {
-            $username = $username . rand(100, 999);
-        }
+        // Generate username from fullname with alphanumeric and lowercase only
+        $username = preg_replace('/[^a-z0-9]/', '', strtolower($validData['fullname']));
+        $username = $username . rand(100, 999);
 
         $userData = [
             'name'       => $validData['fullname'],
@@ -108,10 +126,21 @@ class PageController extends BaseController
         $id = $db->insertID();
         
         if ($db->affectedRows() > 0) {
+            // Get the newly created user data
+            $newUser = $db->table('users')
+                ->where('id', $id)
+                ->get()
+                ->getRowArray();
+
+            // Generate JWT token for auto-login
+            $Auth                      = new \App\Libraries\Auth();
+            [$status, $message, $user] = $Auth->login($newUser['username'], $validData['password']);
+
             return $this->respond([
                 'success' => 1,
                 'id'      => $id,
-                'message' => 'Registrasi berhasil! Silakan login untuk melanjutkan.',
+                'jwt'     => $user['jwt'] ?? '',
+                'message' => 'Registrasi berhasil!',
             ]);
         }
 

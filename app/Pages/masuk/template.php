@@ -39,11 +39,6 @@
                             <div class="lead mb-1">Belum punya akun? <a href="/registrasi">Daftar di sini</a></div>
                             <div class="lead">Lupa kata sandi? <a href="/reset_password">Reset Kata Sandi</a></div>
                         </div>
-
-                        <div class="text-center mt-3">
-                            <p class="mb-1">Belum punya akun?</p>
-                            <a href="/registrasi" class="btn btn-link text-primary fs-6">Daftar di sini</a>
-                        </div>
                     </div>
                 </div>
             </div>
