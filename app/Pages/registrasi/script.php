@@ -3,6 +3,7 @@
     return {
       title: "Daftar Akun",
       showPwd: false,
+      showRepeatPwd: false,
       errorMessage: null,
       successMessage: null,
       buttonSubmitting: false,

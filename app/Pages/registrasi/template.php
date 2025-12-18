@@ -41,8 +41,8 @@
                         <div class="text-start input-wrapper">
                             <label class="fs-6" for="password">Kata Sandi <span class="text-danger">*</span></label>
                             <input :type="showPwd ? 'text' : 'password'" class="form-control" id="password" autocomplete="new-password" x-model="data.password" required>
-                            <i x-on:click="showPwd = !showPwd" class="input-icon-append">
-                                <ion-icon id="pw-icon" :name="showPwd ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
+                            <i role="button" tabindex="0" aria-label="Tampilkan kata sandi" :aria-pressed="showPwd" @click="showPwd = !showPwd" @keydown.enter="showPwd = !showPwd" class="input-icon-append">
+                                <i id="pw-icon" :class="showPwd ? 'bi bi-eye' : 'bi bi-eye-slash'" aria-hidden="true"></i>
                             </i>
                             <small class="text-danger" x-show="errors.password" x-text="errors.password"></small>
                         </div>
@@ -51,9 +51,9 @@
                     <div class="form-group boxed">
                         <div class="text-start input-wrapper">
                             <label class="fs-6" for="repeat_password">Ulangi Kata Sandi <span class="text-danger">*</span></label>
-                            <input :type="showPwd ? 'text' : 'password'" class="form-control" id="repeat_password" autocomplete="new-password" x-model="data.repeat_password" required>
-                            <i x-on:click="showPwd = !showPwd" class="input-icon-append">
-                                <ion-icon id="pw-icon" :name="showPwd ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
+                            <input :type="showRepeatPwd ? 'text' : 'password'" class="form-control" id="repeat_password" autocomplete="new-password" x-model="data.repeat_password" required>
+                            <i role="button" tabindex="0" aria-label="Tampilkan ulang kata sandi" :aria-pressed="showRepeatPwd" @click="showRepeatPwd = !showRepeatPwd" @keydown.enter="showRepeatPwd = !showRepeatPwd" class="input-icon-append">
+                                <i id="pw-icon-repeat" :class="showRepeatPwd ? 'bi bi-eye' : 'bi bi-eye-slash'" aria-hidden="true"></i>
                             </i>
                             <small class="text-danger" x-show="errors.repeat_password" x-text="errors.repeat_password"></small>
                         </div>
