@@ -107,17 +107,9 @@ class PageController extends BaseController
         $Phpass   = new \App\Libraries\Phpass();
         $password = $Phpass->HashPassword($validData['password']);
 
-        // Generate username from email (before @ symbol) or phone
-        $username = explode('@', $validData['email'])[0];
-        // Check if username exists, if yes add random number
-        $usernameCheck = $db->table('users')
-            ->select('username')
-            ->where('username', $username)
-            ->get()
-            ->getRow();
-        if ($usernameCheck) {
-            $username = $username . rand(100, 999);
-        }
+        // Generate username from fullname with alphanumeric and lowercase only
+        $username = preg_replace('/[^a-z0-9]/', '', strtolower($validData['fullname']));
+        $username = $username . rand(100, 999);
 
         $userData = [
             'name'       => $validData['fullname'],
@@ -141,13 +133,13 @@ class PageController extends BaseController
                 ->getRowArray();
 
             // Generate JWT token for auto-login
-            $Heroic = new \App\Libraries\Heroic();
-            $jwt = $Heroic->generateUserJWT($newUser);
+            $Auth                      = new \App\Libraries\Auth();
+            [$status, $message, $user] = $Auth->login($username, $validData['password']);
 
             return $this->respond([
                 'success' => 1,
                 'id'      => $id,
-                'jwt'     => $jwt,
+                'jwt'     => $user['jwt'] ?? '',
                 'message' => 'Registrasi berhasil!',
             ]);
         }
