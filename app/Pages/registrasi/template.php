@@ -1,4 +1,4 @@
-<div id="member-register" x-data="register()">
+<div id="member-register" x-data="register(`<?= config('Heroic')->recaptcha['siteKey'] ?>`)">
 
     <!-- App Capsule -->
     <div id="appCapsule" class="shadow pt-5">
@@ -15,7 +15,7 @@
                     <div class="form-group boxed">
                         <div class="text-start input-wrapper">
                             <label class="fs-6" for="fullname">Nama Lengkap <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="fullname" x-model="data.fullname" required>
+                            <input type="text" class="form-control" id="fullname" x-model="data.fullname" placeholder="Nama lengkap" @input="data.fullname = data.fullname.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ\s'’-]/g, '')" required>
                             <small class="text-danger" x-show="errors.fullname" x-text="errors.fullname"></small>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                     <div class="form-group boxed">
                         <div class="text-start input-wrapper">
                             <label class="fs-6" for="phone">No. Telepon <span class="text-danger">*</span></label>
-                            <small class="text-muted d-block mb-1">Awali dengan 62, mis. 6289xxxxxx</small>
+                            <small class="text-muted d-block mb-1">Awali dengan 62, Cth: 6289xxxxxx</small>
                             <input type="text" class="form-control" id="phone" x-model="data.phone" placeholder="628xxxxxxxxx" inputmode="numeric" pattern="[0-9]*" @input="data.phone = data.phone.replace(/[^0-9]/g, '')" required>
                             <small class="text-danger" x-show="errors.phone" x-text="errors.phone"></small>
                         </div>
@@ -60,6 +60,8 @@
                     </div>
 
                     <div class="text-start mt-3">
+                        <div class="d-flex justify-content-center mb-3" id="grecaptcha-register" x-show="showRecaptcha"></div>
+
                         <button type="button" x-on:click="register" class="btn btn-primary btn-block btn-lg rounded" :disabled="buttonSubmitting">
                             <span class="spinner-border spinner-border-sm me-1" x-show="buttonSubmitting" aria-hidden="true"></span>
                             <span x-text="buttonSubmitting ? 'MENDAFTAR...' : 'DAFTAR'"></span>

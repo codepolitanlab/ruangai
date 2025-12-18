@@ -17,7 +17,7 @@ class PageController extends BaseController
         $validation = service('validation');
 
         $validation->setRules([
-            'fullname'        => 'required|min_length[2]',
+            'fullname'        => 'required|min_length[2]|regex_match[/^[\p{L}\s\'\-]+$/u]',
             'phone'           => 'required|numeric',
             'email'           => 'required|valid_email',
             'password'        => 'required|max_length[50]|min_length[6]',
@@ -26,6 +26,7 @@ class PageController extends BaseController
             'fullname' => [
                 'required'   => 'Nama lengkap wajib diisi',
                 'min_length' => 'Nama lengkap minimal 2 karakter',
+                'regex_match' => 'Nama tidak boleh mengandung angka atau simbol',
             ],
             'phone' => [
                 'required' => 'Nomor telepon wajib diisi',
@@ -56,6 +57,15 @@ class PageController extends BaseController
         }
         $validData = $validation->getValidated();
 
+        // Check google recaptcha response
+        $recaptchaResponse = $this->request->getPost('recaptcha');
+        $recaptchaSecretKey = config('Heroic')->recaptcha['secretKey'];
+        $Recaptcha          = new \ReCaptcha\ReCaptcha($recaptchaSecretKey);
+        $resp               = $Recaptcha->setExpectedHostname($_SERVER['HTTP_HOST'])->verify($recaptchaResponse, $_SERVER['REMOTE_ADDR']);
+        if (! $resp->isSuccess()) {
+            return $this->respond(['success' => 0, 'errors' => ['recaptcha' => 'Terjadi kesalahan saat mengecek recaptcha: ' . implode(', ', $resp->getErrorCodes())]]);
+        }
+
         // Make sure the phone number begins with 62
         $phone = substr($validData['phone'], 0, 1) === '0'
             ? substr_replace($validData['phone'], '62', 0, 1)
@@ -67,20 +77,7 @@ class PageController extends BaseController
         // Get database connection
         $db = \Config\Database::connect();
 
-        // Check if phone already exists (use Query Builder)
-        $foundPhone = $db->table('users')
-            ->select('phone')
-            ->where('phone', $phone)
-            ->get()
-            ->getRow();
-        if ($foundPhone) {
-            return $this->respond([
-                'success' => 0,
-                'errors'  => ['phone' => 'Nomor telepon sudah terdaftar'],
-            ]);
-        }
-
-        // Check if email already exists (use Query Builder)
+        // Check if email already exists
         $foundEmail = $db->table('users')
             ->select('email')
             ->where('email', $validData['email'])
@@ -93,13 +90,26 @@ class PageController extends BaseController
             ]);
         }
 
+        // Check if phone already exists
+        $foundPhone = $db->table('users')
+            ->select('phone')
+            ->where('phone', $phone)
+            ->get()
+            ->getRow();
+        if ($foundPhone) {
+            return $this->respond([
+                'success' => 0,
+                'errors'  => ['phone' => 'Nomor telepon sudah terdaftar'],
+            ]);
+        }
+
         // Hash password
         $Phpass   = new \App\Libraries\Phpass();
         $password = $Phpass->HashPassword($validData['password']);
 
         // Generate username from email (before @ symbol) or phone
         $username = explode('@', $validData['email'])[0];
-        // Check if username exists, if yes add random number (use Query Builder)
+        // Check if username exists, if yes add random number
         $usernameCheck = $db->table('users')
             ->select('username')
             ->where('username', $username)
@@ -124,10 +134,21 @@ class PageController extends BaseController
         $id = $db->insertID();
         
         if ($db->affectedRows() > 0) {
+            // Get the newly created user data
+            $newUser = $db->table('users')
+                ->where('id', $id)
+                ->get()
+                ->getRowArray();
+
+            // Generate JWT token for auto-login
+            $Heroic = new \App\Libraries\Heroic();
+            $jwt = $Heroic->generateUserJWT($newUser);
+
             return $this->respond([
                 'success' => 1,
                 'id'      => $id,
-                'message' => 'Registrasi berhasil! Silakan login untuk melanjutkan.',
+                'jwt'     => $jwt,
+                'message' => 'Registrasi berhasil!',
             ]);
         }
 
