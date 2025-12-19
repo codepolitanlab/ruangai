@@ -9,6 +9,7 @@ function challengeSubmit() {
         isEdit: false,
         submissionId: null,
         isSubmitting: false,
+        isSavingProfile: false,
         alert: {
             show: false,
             type: 'success',
@@ -330,6 +331,8 @@ function challengeSubmit() {
                 return;
             }
 
+            this.isSavingProfile = true;
+
             const data = {
                 name: this.profile.name,
                 email: this.profile.email,
@@ -370,6 +373,8 @@ function challengeSubmit() {
                 }
             } catch (e) {
                 $heroicHelper.toastr('Gagal menyimpan profil: ' + e.message, 'danger', 'bottom');
+            } finally {
+                this.isSavingProfile = false;
             }
         },
 

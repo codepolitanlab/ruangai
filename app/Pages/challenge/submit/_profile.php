@@ -130,7 +130,12 @@
                 </div>
 
                 <div class="mt-3 d-flex justify-content-end">
-                    <button type="button" class="btn btn-success" @click="saveProfile()">Simpan Data</button>
+                    <button type="button" class="btn btn-success" @click="saveProfile()" :disabled="isSavingProfile">
+                        <template x-if="isSavingProfile">
+                            <span class="spinner-border spinner-border-sm me-2"></span>
+                        </template>
+                        <span x-text="isSavingProfile ? 'Menyimpan...' : 'Simpan Data'"></span>
+                    </button>
                 </div>
             </div>
         </div>
