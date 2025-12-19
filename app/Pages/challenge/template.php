@@ -101,9 +101,9 @@
                         <div class="accordion-body rounded-4">
                             <p class="mb-2">Untuk mengikuti GenAI Video Fest, peserta wajib memenuhi ketentuan berikut:</p>
                             <ul class="mb-0">
-                                <li>Memiliki akun Alibaba Cloud yang aktif.</li>
-                                <li>Mengikuti akun X resmi @codepolitan, dan @alibaba_cloud.</li>
-                                <li>Wajib menggunakan WAN Model Studio. Penggunaan model atau tools AI lain diperbolehkan sebagai tambahan (opsional).</li>
+                                <li>Memiliki akun <a class="fw-bold" href="https://s.id/WanModelStudio" target="_blank">Alibaba Cloud</a> yang aktif.</li>
+                                <li>Mengikuti akun X resmi <a class="fw-bold" href="https://x.com/codepolitan" target="_blank">@codepolitan</a>, dan <a class="fw-bold" href="https://x.com/alibaba_cloud" target="_blank">@alibaba_cloud</a>.</li>
+                                <li>Wajib menggunakan <a class="fw-bold" href="https://s.id/WanModelStudio" target="_blank">WAN Model Studio</a>. Penggunaan model atau tools AI lain diperbolehkan sebagai tambahan (opsional).</li>
                                 <li>1 akun hanya diperbolehkan 1 submission.</li>
                                 <li>Memiliki Kartu Debit/Kredit Pribadi</li>
                                 <li>Wajib menandatangani pernyataan etika dan hak cipta.</li>
