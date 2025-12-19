@@ -19,6 +19,10 @@
       init() {
         base.init.call(this);
         this.$watch('data', (value) => {
+          // Check if course is scholarship course (id = 1) and user doesn't have scholarship
+          if (value && value.has_scholarship === false) {
+            window.location.replace('/scholarship');
+          }
           // if (!value.is_enrolled) {
           //   alert("Kamu belum terdaftar di kelas. Silahkan daftar terlebih dahulu.")
           //   window.location.replace(`https://www.ruangai.id/registration`)

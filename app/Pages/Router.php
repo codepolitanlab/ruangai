@@ -87,5 +87,6 @@ class Router
         '/challenge/submit' => [],
         '/workshop' => [],
         '/prompt' => [],
+        '/scholarship' => []
     ];
 }

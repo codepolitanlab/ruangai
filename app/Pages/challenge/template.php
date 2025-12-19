@@ -96,7 +96,7 @@
                                 <li>Mengikuti akun X resmi @codepolitan, dan @alibaba_cloud.</li>
                                 <li>Wajib menggunakan WAN Model Studio. Penggunaan model atau tools AI lain diperbolehkan sebagai tambahan (opsional).</li>
                                 <li>1 akun hanya diperbolehkan 1 submission.</li>
-                                <li>Usia peserta minimal 17 tahun.</li>
+                                <li>Memiliki Kartu Debit/Kredit Pribadi</li>
                                 <li>Wajib menandatangani pernyataan etika dan hak cipta.</li>
                                 <li>Konten terlarang akan langsung didiskualifikasi.</li>
                                 <li>Karya harus orisinal dan belum pernah dipublikasikan di mana pun.</li>
