@@ -81,7 +81,7 @@
 
         try {
           // Buat header CSV
-          const headers = ["Nama", "Email", "Whatsapp", "Profesi", "Tanggal Bergabung", "Tanggal Lulus", "Status", "Progres", "Live Session"];
+          const headers = ["Nama", "Email", "Whatsapp", "Profesi", "Peserta Dari", "Tanggal Bergabung", "Tanggal Lulus", "Status", "Progres", "Live Session"];
 
           // Mapping data ke baris CSV
           const rows = this.filteredMembers.map(member => {
@@ -101,11 +101,15 @@
               ? new Date(member.tanggal_klaim_sertifikat).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'})
               : '-';
 
+            // Tentukan dari mana peserta berasal
+            const pesertaDari = member.from === 'mapping' ? 'Mapping' : 'Register';
+
             return [
               member.fullname,
               member.email,
               member.whatsapp || '',
               member.occupation || '-',
+              pesertaDari,
               tanggalBergabung,
               tanggalLulus,
               status,
