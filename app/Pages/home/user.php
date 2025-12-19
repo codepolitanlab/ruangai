@@ -73,7 +73,7 @@
             </a>
         </div>
         <div class="col-3">
-            <a href="/workshop" class="text-decoration-none">
+            <a href="" class="text-decoration-none">
                 <div class="menu-card text-center">
                     <div class="menu-icon-wrapper">
                         <img src="<?= base_url('mobilekit/assets/icon/Workshop.svg') ?>" class="menu-icon" alt="Workshop">

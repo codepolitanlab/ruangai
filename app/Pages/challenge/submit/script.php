@@ -191,6 +191,15 @@ function challengeSubmit() {
         handleProfileScreenshot(event) {
             const file = event.target.files[0];
             if (file) {
+                // Validate file type (only images)
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    this.profileErrors.alibabacloud_screenshot = 'File harus berupa gambar (JPG, PNG, GIF, WEBP)';
+                    event.target.value = ''; // Clear input
+                    $heroicHelper.toastr('File harus berupa gambar (JPG, PNG, GIF, WEBP)', 'danger', 'bottom');
+                    return;
+                }
+                
                 // Validate file size (max 1MB)
                 const maxSize = 1 * 1024 * 1024; // 1MB in bytes
                 if (file.size > maxSize) {

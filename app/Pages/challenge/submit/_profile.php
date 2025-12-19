@@ -46,7 +46,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">WhatsApp <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" x-model="profile.whatsapp" placeholder="62812xxxx" :class="{'is-invalid': profileErrors.whatsapp}">
+                        <input type="text" class="form-control" x-model="profile.whatsapp" placeholder="62812xxxx" :class="{'is-invalid': profileErrors.whatsapp}" disabled>
                         <template x-if="profileErrors.whatsapp">
                             <small class="text-danger" x-text="profileErrors.whatsapp"></small>
                         </template>
@@ -117,8 +117,9 @@
                     </div>
 
                     <div class="col-12">
-                        <label class="form-label">Alibaba Account Screenshot <span class="text-danger">*</span></label>
-                        <input type="file" class="form-control" @change="handleProfileScreenshot($event)" :class="{'is-invalid': profileErrors.alibabacloud_screenshot}">
+                        <label class="form-label">Alibaba Account Screenshot <span class="text-danger">*</span></label> <br>
+                        <small>Lihat contoh screenshoot <a href="https://image.web.id/images/contoh_akun_alibabacloud.jpg" target="_blank" rel="noopener noreferrer">DI SINI</a></small>
+                        <input type="file" class="form-control" accept="image/*" @change="handleProfileScreenshot($event)" :class="{'is-invalid': profileErrors.alibabacloud_screenshot}">
                         <template x-if="profile.alibabacloud_screenshot">
                             <div class="mt-2 small text-muted">Tersimpan: <span x-text="profile.alibabacloud_screenshot"></span></div>
                         </template>
