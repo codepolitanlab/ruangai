@@ -281,7 +281,7 @@ class PageController extends BaseController
 
             return $this->respond([
                 'success' => 1,
-                'message' => 'Submission berhasil dikirim! Tim kami akan mereview dalam 1-3 hari kerja.',
+                'message' => 'Submission berhasil dikirim!',
                 'submission_id' => $newSubmissionId,
             ]);
         }

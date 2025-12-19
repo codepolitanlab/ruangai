@@ -30,7 +30,8 @@
                     <label class="form-label d-block mb-0">URL Post X <span class="text-danger">*</span></label>
                     <small class="d-block mb-2">Submit video di X.com dan salin tautannya di sini</small>
                     <input type="url" class="form-control" x-model="form.twitter_post_url"
-                        placeholder="Contoh: https://x.com/username/status/123456">
+                        placeholder="Masukkan URL Post X Kamu">
+                    <small class="form-text text-muted">Contoh: https://x.com/username/status/123456</small>
                     <i class="clear-input"><i class="bi bi-close-circle"></i></i>
 
                     <template x-if="errors.twitter_post_url">

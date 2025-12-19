@@ -101,7 +101,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Link Profil X <span class="text-danger">*</span></label>
-                        <input type="url" class="form-control" x-model="profile.x_profile_url" placeholder="https://x.com/username" :class="{'is-invalid': profileErrors.x_profile_url}">
+                        <input type="url" class="form-control" x-model="profile.x_profile_url" placeholder="Masukkan URL Profil X Kamu" :class="{'is-invalid': profileErrors.x_profile_url}">
                         <small class="form-text text-muted">Contoh: https://x.com/username</small>
                         <template x-if="profileErrors.x_profile_url">
                             <small class="text-danger d-block" x-text="profileErrors.x_profile_url"></small>
