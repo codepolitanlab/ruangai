@@ -22,6 +22,7 @@ class Router
             'template' => '/masuk/sebagai/template',
         ],
         '/masuk/:redirect*' => [],
+        '/verify_email' => [],
         '/page/:slug' => [],
         '/profile' => [],
         '/profile/edit_info' => [],
@@ -87,5 +88,6 @@ class Router
         '/challenge/submit' => [],
         '/workshop' => [],
         '/prompt' => [],
+        '/scholarship' => []
     ];
 }

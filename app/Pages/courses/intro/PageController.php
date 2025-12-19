@@ -22,8 +22,19 @@ class PageController extends BaseController
 
         $db = \Config\Database::connect();
         
+        // For scholarship course (course_id = 1), check if user has scholarship
+        if ($id == 1) {
+            $hasScholarship = $db->table('scholarship_participants')
+                ->where('user_id', $jwt->user_id)
+                ->where('deleted_at', null)
+                ->countAllResults();
+            
+            $this->data['has_scholarship'] = $hasScholarship > 0;
+        }
+        
         // Check if user is scholarship participant
-        $this->data['is_scholarship_participant'] = is_scholarship_participant($jwt->user_id);
+        if (! function_exists('is_scholarship_participant')) helper('scholarship');
+        $this->data['is_scholarship_participant'] = \is_scholarship_participant($jwt->user_id);
         $this->data['scholarship_url'] = scholarship_registration_url();
 
         // Get course

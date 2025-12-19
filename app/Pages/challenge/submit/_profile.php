@@ -19,7 +19,7 @@
                     <ol class="mb-0">
                         <li><strong>GenAI Video Fest</strong> tidak dipungut biaya (gratis).</li>
                         <li>Peserta wajib memasukkan kartu Debit/Kredit pada akun Alibaba Cloud untuk mengaktifkan trial <a target="_blank" href="https://www.alibabacloud.com/en/product/modelstudio">Alibaba Cloud Model Studio</a>.</li>
-                        <li>Panduan registrasi akun Alibaba Cloud tersedia dalam <a target="_blank" href="https://www.youtube.com/watch?v=xvFZjo5PgG0">video tutorial berikut</a>.</li>
+                        <li>Panduan registrasi akun Alibaba Cloud tersedia dalam <a target="_blank" href="https://www.youtube.com/@codepolitan">video tutorial berikut</a>.</li>
                         <li>Peserta yang tidak memiliki kartu kredit dapat menggunakan kartu debit fisik berlogo Visa atau Mastercard, seperti BCA, Mandiri, Jenius, Jago, atau bank lainnya yang mendukung transaksi internasional.</li>
                         <li>Pastikan fitur transaksi online dan internasional pada kartu debit telah aktif.</li>
                         <li>Pastikan kartu memiliki saldo minimal Rp100.000 dan pernah digunakan untuk transaksi sebelumnya (misalnya pembelian pulsa, belanja online, atau pembayaran QRIS) guna meminimalkan risiko verifikasi gagal.</li>
@@ -46,7 +46,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">WhatsApp <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" x-model="profile.whatsapp" placeholder="62812xxxx" :class="{'is-invalid': profileErrors.whatsapp}">
+                        <input type="text" class="form-control" x-model="profile.whatsapp" placeholder="62812xxxx" :class="{'is-invalid': profileErrors.whatsapp}" disabled>
                         <template x-if="profileErrors.whatsapp">
                             <small class="text-danger" x-text="profileErrors.whatsapp"></small>
                         </template>
@@ -101,7 +101,7 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Link Profil X <span class="text-danger">*</span></label>
-                        <input type="url" class="form-control" x-model="profile.x_profile_url" placeholder="https://x.com/username" :class="{'is-invalid': profileErrors.x_profile_url}">
+                        <input type="url" class="form-control" x-model="profile.x_profile_url" placeholder="Masukkan URL Profil X Kamu" :class="{'is-invalid': profileErrors.x_profile_url}">
                         <small class="form-text text-muted">Contoh: https://x.com/username</small>
                         <template x-if="profileErrors.x_profile_url">
                             <small class="text-danger d-block" x-text="profileErrors.x_profile_url"></small>
@@ -117,8 +117,9 @@
                     </div>
 
                     <div class="col-12">
-                        <label class="form-label">Alibaba Account Screenshot <span class="text-danger">*</span></label>
-                        <input type="file" class="form-control" @change="handleProfileScreenshot($event)" :class="{'is-invalid': profileErrors.alibabacloud_screenshot}">
+                        <label class="form-label">Alibaba Account Screenshot <span class="text-danger">*</span></label> <br>
+                        <small>Lihat contoh screenshoot <a href="https://image.web.id/images/contoh_akun_alibabacloud.jpg" target="_blank" rel="noopener noreferrer">DI SINI</a></small>
+                        <input type="file" class="form-control" accept="image/*" @change="handleProfileScreenshot($event)" :class="{'is-invalid': profileErrors.alibabacloud_screenshot}">
                         <template x-if="profile.alibabacloud_screenshot">
                             <div class="mt-2 small text-muted">Tersimpan: <span x-text="profile.alibabacloud_screenshot"></span></div>
                         </template>
@@ -129,7 +130,12 @@
                 </div>
 
                 <div class="mt-3 d-flex justify-content-end">
-                    <button type="button" class="btn btn-success" @click="saveProfile()">Simpan Data</button>
+                    <button type="button" class="btn btn-success" @click="saveProfile()" :disabled="isSavingProfile">
+                        <template x-if="isSavingProfile">
+                            <span class="spinner-border spinner-border-sm me-2"></span>
+                        </template>
+                        <span x-text="isSavingProfile ? 'Menyimpan...' : 'Simpan Data'"></span>
+                    </button>
                 </div>
             </div>
         </div>

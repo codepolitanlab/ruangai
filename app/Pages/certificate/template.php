@@ -32,7 +32,26 @@
                 <h2 class="h3 fw-normal">Sertifikat Saya</h2>
             </div>
 
-            <div class="row g-3">
+            <!-- Empty State -->
+            <template x-if="!data.certificates || data.certificates.length === 0">
+                <div class="card shadow-sm rounded-4 border-0">
+                    <div class="card-body text-center py-5">
+                        <div class="mb-4">
+                            <i class="bi bi-award" style="font-size: 80px; color: #ddd;"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">Belum Ada Sertifikat</h5>
+                        <!-- <p class="text-muted mb-4">
+                            Kamu belum memiliki sertifikat. Selesaikan kursus untuk mendapatkan sertifikat.
+                        </p>
+                        <a href="/courses" class="btn btn-primary rounded-pill px-4">
+                            <i class="bi bi-book me-2"></i>Lihat Kursus
+                        </a> -->
+                    </div>
+                </div>
+            </template>
+
+            <!-- Certificate List -->
+            <div class="row g-3" x-show="data.certificates && data.certificates.length > 0">
                 <template x-for="cert in data.certificates" :key="cert.cert_code">
                     <a :href="`/certificate/${cert.cert_code}`">
                         <div class="col-12">

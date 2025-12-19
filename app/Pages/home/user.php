@@ -73,7 +73,7 @@
             </a>
         </div>
         <div class="col-3">
-            <a href="/workshop" class="text-decoration-none">
+            <a href="" class="text-decoration-none">
                 <div class="menu-card text-center">
                     <div class="menu-icon-wrapper">
                         <img src="<?= base_url('mobilekit/assets/icon/Workshop.svg') ?>" class="menu-icon" alt="Workshop">
@@ -93,7 +93,7 @@
             </a>
         </div>
         <div class="col-3">
-            <a href="#" class="text-decoration-none">
+            <a href="" class="text-decoration-none">
                 <div class="menu-card text-center">
                     <div class="menu-icon-wrapper">
                         <img src="<?= base_url('mobilekit/assets/icon/Lainnya.svg') ?>" class="menu-icon" alt="Lainnya">
@@ -195,12 +195,6 @@
         }
     </style>
 
-    <!-- Tutorial -->
-    <div class="p-3 mb-3 rounded-4 bg-primary d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
-        <span class="text-white">Tutorial Belajar dan misi Beasiswa Ruang AI</span>
-        <button @click="setVideoTutorial(videoTutorial)" type="button" class="btn bg-white rounded-pill" data-bs-toggle="modal" data-bs-target="#modalTutorial">Lihat Tutorial <i class="bi bi-camera-video ms-2"></i></button>
-    </div>
-
     <div x-show="!meta.isValidEmail" class="rounded-20 p-3 py-4 bg-white my-4">
         <div class="row justify-content-center">
             <div class="col-lg-10">
@@ -212,6 +206,12 @@
                 </button>
             </div>
         </div>
+    </div>
+
+    <!-- Tutorial -->
+    <div class="p-3 mb-3 rounded-4 bg-primary d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
+        <span class="text-white">Tutorial Belajar dan misi Beasiswa Ruang AI</span>
+        <button @click="setVideoTutorial(videoTutorial)" type="button" class="btn bg-white rounded-pill" data-bs-toggle="modal" data-bs-target="#modalTutorial">Lihat Tutorial <i class="bi bi-camera-video ms-2"></i></button>
     </div>
 
     <!-- Show Expire Alert -->

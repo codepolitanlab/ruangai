@@ -24,7 +24,8 @@ class PageController extends BaseController
         $db = \Config\Database::connect();
         
         // Check if user is scholarship participant
-        $this->data['is_scholarship_participant'] = is_scholarship_participant($jwt->user_id);
+        if (! function_exists('is_scholarship_participant')) helper('scholarship');
+        $this->data['is_scholarship_participant'] = \is_scholarship_participant($jwt->user_id);
 
         $this->data['courses'] = $db->table('course_students')
             ->where('user_id', $jwt->user_id)
@@ -212,7 +213,8 @@ class PageController extends BaseController
             ]);
         
         // Update scholarship_participants only if user is participant
-        if (is_scholarship_participant($jwt->user_id)) {
+        helper('scholarship');
+        if (\is_scholarship_participant($jwt->user_id)) {
             $db->table('scholarship_participants')
                 ->where('user_id', $jwt->user_id)
                 ->update([

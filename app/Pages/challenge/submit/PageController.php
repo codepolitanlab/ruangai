@@ -68,7 +68,7 @@ class PageController extends BaseController
         // Get user info
         $db = \Config\Database::connect();
         $user = $db->table('users')
-            ->select('id, name, email, phone, whatsapp, address, gender, alibabacloud_id, alibabacloud_screenshot, profession, job_title, company, industry, referral_code, agreed_terms, birth_date, x_profile_url')
+            ->select('id, name, email, phone, email_valid, whatsapp, address, gender, alibabacloud_id, alibabacloud_screenshot, profession, job_title, company, industry, referral_code, agreed_terms, birth_date, x_profile_url')
             ->where('id', $jwt->user_id)
             ->get()
             ->getRowArray();
@@ -281,7 +281,7 @@ class PageController extends BaseController
 
             return $this->respond([
                 'success' => 1,
-                'message' => 'Submission berhasil dikirim! Tim kami akan mereview dalam 1-3 hari kerja.',
+                'message' => 'Submission berhasil dikirim!',
                 'submission_id' => $newSubmissionId,
             ]);
         }

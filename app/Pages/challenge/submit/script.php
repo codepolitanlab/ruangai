@@ -9,6 +9,8 @@ function challengeSubmit() {
         isEdit: false,
         submissionId: null,
         isSubmitting: false,
+        isSavingProfile: false,
+        redirecting: false,
         alert: {
             show: false,
             type: 'success',
@@ -62,12 +64,16 @@ function challengeSubmit() {
             try {
                 const response = await $heroicHelper.fetch('challenge/submit/data');
                 const result = response.data;
-                
-                if (result.success === 0) {
-                    this.showAlert('error', result.message);
-                    setTimeout(() => {
-                        window.location.href = '/challenge';
-                    }, 3000);
+
+                // If user's email is not yet verified, block access to submit page
+                if (result.user && result.user.email_valid != 1) {
+                    // Prevent duplicate alerts/redirects
+                    if (this.redirecting) return;
+                    this.redirecting = true;
+
+                    // Use native alert then redirect
+                    alert('Silakan verifikasi email Anda terlebih dahulu.');
+                    window.location.href = '/challenge';
                     return;
                 }
 
@@ -191,6 +197,15 @@ function challengeSubmit() {
         handleProfileScreenshot(event) {
             const file = event.target.files[0];
             if (file) {
+                // Validate file type (only images)
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    this.profileErrors.alibabacloud_screenshot = 'File harus berupa gambar (JPG, PNG, GIF, WEBP)';
+                    event.target.value = ''; // Clear input
+                    $heroicHelper.toastr('File harus berupa gambar (JPG, PNG, GIF, WEBP)', 'danger', 'bottom');
+                    return;
+                }
+                
                 // Validate file size (max 1MB)
                 const maxSize = 1 * 1024 * 1024; // 1MB in bytes
                 if (file.size > maxSize) {
@@ -321,6 +336,8 @@ function challengeSubmit() {
                 return;
             }
 
+            this.isSavingProfile = true;
+
             const data = {
                 name: this.profile.name,
                 email: this.profile.email,
@@ -361,6 +378,8 @@ function challengeSubmit() {
                 }
             } catch (e) {
                 $heroicHelper.toastr('Gagal menyimpan profil: ' + e.message, 'danger', 'bottom');
+            } finally {
+                this.isSavingProfile = false;
             }
         },
 
