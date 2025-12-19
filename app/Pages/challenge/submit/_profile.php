@@ -19,7 +19,7 @@
                     <ol class="mb-0">
                         <li><strong>GenAI Video Fest</strong> tidak dipungut biaya (gratis).</li>
                         <li>Peserta wajib memasukkan kartu Debit/Kredit pada akun Alibaba Cloud untuk mengaktifkan trial <a target="_blank" href="https://www.alibabacloud.com/en/product/modelstudio">Alibaba Cloud Model Studio</a>.</li>
-                        <li>Panduan registrasi akun Alibaba Cloud tersedia dalam <a target="_blank" href="https://www.youtube.com/watch?v=xvFZjo5PgG0">video tutorial berikut</a>.</li>
+                        <li>Panduan registrasi akun Alibaba Cloud tersedia dalam <a target="_blank" href="https://www.youtube.com/@codepolitan">video tutorial berikut</a>.</li>
                         <li>Peserta yang tidak memiliki kartu kredit dapat menggunakan kartu debit fisik berlogo Visa atau Mastercard, seperti BCA, Mandiri, Jenius, Jago, atau bank lainnya yang mendukung transaksi internasional.</li>
                         <li>Pastikan fitur transaksi online dan internasional pada kartu debit telah aktif.</li>
                         <li>Pastikan kartu memiliki saldo minimal Rp100.000 dan pernah digunakan untuk transaksi sebelumnya (misalnya pembelian pulsa, belanja online, atau pembayaran QRIS) guna meminimalkan risiko verifikasi gagal.</li>
