@@ -10,6 +10,7 @@ function challengeSubmit() {
         submissionId: null,
         isSubmitting: false,
         isSavingProfile: false,
+        redirecting: false,
         alert: {
             show: false,
             type: 'success',
@@ -63,12 +64,16 @@ function challengeSubmit() {
             try {
                 const response = await $heroicHelper.fetch('challenge/submit/data');
                 const result = response.data;
-                
-                if (result.success === 0) {
-                    this.showAlert('error', result.message);
-                    setTimeout(() => {
-                        window.location.href = '/challenge';
-                    }, 3000);
+
+                // If user's email is not yet verified, block access to submit page
+                if (result.user && result.user.email_valid != 1) {
+                    // Prevent duplicate alerts/redirects
+                    if (this.redirecting) return;
+                    this.redirecting = true;
+
+                    // Use native alert then redirect
+                    alert('Silakan verifikasi email Anda terlebih dahulu.');
+                    window.location.href = '/challenge';
                     return;
                 }
 

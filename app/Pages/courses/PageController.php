@@ -22,7 +22,8 @@ class PageController extends BaseController
         $db = \Config\Database::connect();
         
         // Check if user is scholarship participant
-        $this->data['is_scholarship_participant'] = is_scholarship_participant($jwt->user_id);
+        if (! function_exists('is_scholarship_participant')) helper('scholarship');
+        $this->data['is_scholarship_participant'] = \is_scholarship_participant($jwt->user_id);
         $this->data['scholarship_url'] = scholarship_registration_url();
 
         // Subquery untuk menghitung total modul mandatory per course

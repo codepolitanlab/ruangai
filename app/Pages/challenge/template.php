@@ -1,9 +1,6 @@
 <div
     id="challenge"
-    x-data="$heroic({
-        title: `<?= $page_title ?>`,
-        url: `challenge/data`
-        })">
+    x-data="challenge()">
 
     <div id="appCapsule">
 
@@ -79,6 +76,18 @@
         <!-- Details -->
         <div id="details" class="mt-4 px-3 px-md-0">
             
+            <!-- Email Verification Warning -->
+            <template x-if="!data.isValidEmail">
+                <div class="alert alert-warning d-flex align-items-center mb-4" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+                    <div class="flex-grow-1">
+                        <strong>Email Belum Terverifikasi!</strong><br>
+                        <small>Silakan verifikasi email Anda terlebih dahulu untuk dapat submit karya.</small>
+                    </div>
+                    <a href="/verify_email" class="btn btn-sm btn-warning ms-2">Verifikasi</a>
+                </div>
+            </template>
+
             <div class="accordion bg-transparent border-0" id="challengeAccordion">
                 
                 <!-- Persyaratan Pendaftaran -->
@@ -109,7 +118,11 @@
 
             <!-- CTA Button -->
             <div class="mt-4 mb-2">
-                <a href="/challenge/submit" class="btn btn-lg w-100 d-flex align-items-center justify-content-center" style="background:#ff6b35; border:none; color:#fff; font-size: 1.1rem; font-weight: 700; padding: 1rem 2rem; border-radius: 2rem;">
+                <a :href="data && data.isValidEmail === true ? '/challenge/submit' : '#'" 
+                   @click="!data || data.isValidEmail === false ? handleUnverifiedClick($event) : null"
+                   class="btn btn-lg w-100 d-flex align-items-center justify-content-center" 
+                   :class="!data || data.isValidEmail === false ? 'disabled' : ''"
+                   style="background:#ff6b35; border:none; color:#fff; font-size: 1.1rem; font-weight: 700; padding: 1rem 2rem; border-radius: 2rem;">
                     SUBMIT KARYA
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="ms-2">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -130,6 +143,7 @@
 
         <!-- Small footer note -->
         <!-- <div class="text-center text-muted small mb-4">Untuk informasi lengkap dan syarat detail, klik "Lihat Selengkapnya"</div> -->
+    <?= $this->include('challenge/script') ?>
 
     </div>
 

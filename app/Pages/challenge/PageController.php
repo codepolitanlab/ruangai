@@ -12,9 +12,21 @@ class PageController extends BaseController
 
     public function getData()
     {
-        // You can add any data processing logic here if needed
+        $Heroic = new \App\Libraries\Heroic();
+        $jwt    = $Heroic->checkToken();
 
+        $db = \Config\Database::connect();
+        
+        // Get email_valid from users table
+        $user = $db->table('users')
+            ->select('email_valid')
+            ->where('id', $jwt->user_id)
+            ->get()
+            ->getRowArray();
+
+        $this->data['isValidEmail'] = $user['email_valid'] == 1 ? true : false;
         $this->data['message'] = 'Selamat berpartisipasi di WAN Vision Clash Challenge!';
+        
         return $this->respond($this->data);
     }
 }
