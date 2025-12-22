@@ -81,11 +81,28 @@
 	</style>
 
 	<div id="appCapsule">
-		<template x-if="data?.is_comentor">
+		<!-- Show loading / retry until dataReady is true -->
+		<template x-if="!dataReady">
+			<div class="d-flex flex-column justify-content-center align-items-center" style="min-height: 50vh; gap: 1rem;">
+				<div x-show="loadingData" class="d-flex justify-content-center align-items-center">
+					<div class="spinner-border text-primary" role="status">
+						<span class="visually-hidden">Loading...</span>
+					</div>
+				</div>
+
+				<div x-show="!loadingData" class="text-center text-muted">
+					<p>Gagal memuat data. <button class="btn btn-link" @click="reloadData(true)">Coba lagi</button></p>
+				</div>
+			</div>
+		</template>
+
+		<!-- Comentor view -->
+		<template x-if="dataReady && data.is_comentor">
 			<?= $this->include('home/comentor'); ?>
 		</template>
 
-		<template x-if="!data?.is_comentor">
+		<!-- User view -->
+		<template x-if="dataReady && !data.is_comentor">
 			<?= $this->include('home/user'); ?>
 		</template>
 	</div>
