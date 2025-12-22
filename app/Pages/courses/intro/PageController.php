@@ -85,7 +85,7 @@ class PageController extends BaseController
 
             // Get course_students
             $this->data['student'] = $db->table('course_students')
-                ->select('progress, expire_at, scholarship_participants.reference_comentor as reference')
+                ->select('progress, expire_at, scholarship_participants.reference_comentor as reference, scholarship_participants.is_reference_followup as is_reference_followup')
                 ->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id', 'left')
                 ->where('course_students.course_id', $id)
                 ->where('course_students.user_id', $jwt->user_id)
