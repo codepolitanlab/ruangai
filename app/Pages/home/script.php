@@ -19,6 +19,9 @@
       errorMessage: null,
       swiperNotif: null,
       isVerifying: false,
+      // flags to control rendering and reload behavior
+      dataReady: false,
+      loadingData: false,
 
       videoTutorial: '<iframe width="560" height="315" src="https://www.youtube.com/embed/w53uuuglK-c?si=MOkoAMdF3sALJMmr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
 
@@ -56,13 +59,27 @@
         }
 
         // Jalankan countdown kalau ada event
+        // Only mark `dataReady` when payload looks like server response to avoid premature rendering
+        const isServerData = (v) => {
+          if (!v || typeof v !== 'object') return false;
+          // Common keys expected from server payload
+          if (v.event || v.student || v.course || v.profile || v.user || v.id) return true;
+          // if object has multiple keys it's likely a real payload (not an initial empty/default object)
+          try {
+            if (Object.keys(v).length > 2) return true;
+          } catch (e) {}
+          return false;
+        };
+
         this.$watch('data', (value) => {
-          // if (!value.is_enrolled) {
-          //   alert("Kamu belum terdaftar di kelas. Silahkan daftar terlebih dahulu.")
-          //   window.location.replace(`https://www.ruangai.id/registration`)
-          // }
-          localStorage.setItem("event_date_end", value.event.date_end);
-          if (value?.event?.date_end) {
+          // Mark dataReady only when we detect server-provided payload
+          if (!this.dataReady && isServerData(value)) {
+            this.dataReady = true;
+          }
+
+          // Guard access to nested properties
+          if (value && value.event && value.event.date_end) {
+            localStorage.setItem("event_date_end", value.event.date_end);
             this.startCountdown(value.event.date_end);
           }
         });
