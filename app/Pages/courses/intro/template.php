@@ -259,7 +259,7 @@
 							</template> -->
 
 							<!-- Card Live Session Khusus Co-Mentor -->
-							<template x-if="data?.group_comentor && ! data.course_completed">
+							<template x-if="data?.group_comentor && ! data.course_completed && !data.student.is_reference_followup">
 								<div class="col-md-6 mb-3">
 									<div id="card-progress-live"
 										class="card border-0 shadow-none rounded-4  p-3 d-flex flex-column justify-content-between position-relative"
@@ -284,7 +284,7 @@
 							</template>
 							
 							<!-- Card Live Session Program Reguler -->
-							<template x-if="data.course?.has_live_sessions === '1' && (	!data?.group_comentor || data.course_completed)">
+							<template x-if="data.course?.has_live_sessions === '1' && (	!data?.group_comentor || data.course_completed || data.student.is_reference_followup)">
 								<div class="col-md-6 mb-3">
 									<div id="card-progress-live"
 										class="card border-0 shadow-none rounded-4  p-3 d-flex flex-column justify-content-between position-relative"
