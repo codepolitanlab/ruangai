@@ -14,7 +14,7 @@ fbq('track', 'PageView');
 // helper to track save button
 window.trackSaveProfile = function(info = {}) {
     if (typeof fbq === 'function') {
-        fbq('trackCustom', 'SaveProfile', info);
+        fbq('trackCustom', 'Leads', info);
     }
 };
 </script>
