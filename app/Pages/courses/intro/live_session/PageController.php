@@ -132,7 +132,7 @@ class PageController extends BaseController
         $this->data['completed']        = round($completedLessons['completed'] / $completedLessons['total_lessons'] * 100);
 
         $this->data['user'] = $db->table('users')
-            ->select('id, name')
+            ->select('id, name, role_id')
             ->where('id', $jwt->user_id)
             ->get()
             ->getRowArray();
