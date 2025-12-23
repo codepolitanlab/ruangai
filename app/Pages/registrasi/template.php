@@ -62,6 +62,7 @@
                     <div class="text-start mt-3">
                         <div class="d-flex justify-content-center mb-3" id="grecaptcha-register" x-show="showRecaptcha"></div>
 
+                        <input type="hidden" id="source" x-model="data.source">
                         <button type="button" x-on:click="register" class="btn btn-primary btn-block btn-lg rounded" :disabled="buttonSubmitting">
                             <span class="spinner-border spinner-border-sm me-1" x-show="buttonSubmitting" aria-hidden="true"></span>
                             <span x-text="buttonSubmitting ? 'MENDAFTAR...' : 'DAFTAR'"></span>
