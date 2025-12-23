@@ -151,21 +151,23 @@
 								</div>
 							</template>
 
-							<div class="mb-5" x-show="data.live_sessions?.ongoing.length > 0" x-transition>
-								<h4 class="border-bottom pb-2 opacity-75">Event Hari Ini</h4>
-								<?= $this->include('courses/intro/live_session/meeting_ongoing') ?>
-							</div>
-
-							<div class="mb-5" x-show="data.live_sessions?.scheduled.length > 0" x-transition>
-								<h4 class="border-bottom pb-2 opacity-75">Event Mendatang</h4>
-								<?= $this->include('courses/intro/live_session/meeting_scheduled') ?>
-							</div>
-
-							<div x-show="data.live_sessions?.completed.length > 0" x-transition>
-								<h4 class="border-bottom pb-2 opacity-75">Sudah Selesai</h4>
-								<?= $this->include('courses/intro/live_session/meeting_completed') ?>
-							</div>
-
+							<!-- hanya tampil jika is_reference_followup true -->
+							<template x-if="data.is_reference_followup" x-transition>
+								<div class="mb-5" x-show="data.live_sessions?.ongoing.length > 0" x-transition>
+									<h4 class="border-bottom pb-2 opacity-75">Event Hari Ini</h4>
+									<?= $this->include('courses/intro/live_session/meeting_ongoing') ?>
+								</div>
+	
+								<div class="mb-5" x-show="data.live_sessions?.scheduled.length > 0" x-transition>
+									<h4 class="border-bottom pb-2 opacity-75">Event Mendatang</h4>
+									<?= $this->include('courses/intro/live_session/meeting_scheduled') ?>
+								</div>
+	
+								<div x-show="data.live_sessions?.completed.length > 0" x-transition>
+									<h4 class="border-bottom pb-2 opacity-75">Sudah Selesai</h4>
+									<?= $this->include('courses/intro/live_session/meeting_completed') ?>
+								</div>
+							</template>
 						</div>
 					</div>
 				</div>
