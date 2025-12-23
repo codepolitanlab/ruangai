@@ -18,7 +18,7 @@
                     <h5 class="mb-2">Panduan Pengumpulan Karya</h5>
                     <ol class="mb-0">
                         <li>Buat video berdurasi minimal 15 detik (tanpa batas durasi maksimal) menggunakan WAN Model Studio dari Alibaba Cloud.</li>
-                        <li>Panduan penggunaan WAN Model Studio dapat diakses melalui video tutorial <strong><a target="_blank" href="https://www.youtube.com/watch?v=xvFZjo5PgG0">DI SINI</a></strong>.</li>
+                        <li>Panduan penggunaan WAN Model Studio dapat diakses melalui video tutorial <strong><a target="_blank" href="https://www.youtube.com/watch?v=lFLDUMHjEfc">DI SINI</a></strong>.</li>
                         <li>Unggah video karya Anda ke platform X dengan pengaturan publik, lalu salin URL postingan video dan tempelkan pada kolom <strong>URL Post X</strong>.</li>
                         <li>Isi kolom <strong>Judul Video</strong> dan <strong>Deskripsi Video</strong> secara singkat, jelas, dan relevan dengan isi video.</li>
                         <li>Isi kolom <strong>Tools Lain yang Digunakan (selain WAN Model Studio)</strong> apabila menggunakan tools AI atau tools tambahan lainnya. Biarkan kolom ini kosong jika tidak ada.</li>
