@@ -147,7 +147,7 @@ class PageController extends BaseController
         $this->data['is_mentor'] = $jwt->user['role_id'] == 5 ? true : false;
         $this->data['is_comentor'] = $jwt->user['role_id'] == 4 ? true : false;
         $this->data['is_mentee_comentor'] = false;
-        $this->data['is_reference_followup'] = false;
+        $this->data['is_reference_followup'] = $participant && $participant->is_reference_followup == 1 ? true : false;
         $this->data['is_participating_other_ai_program'] = $participant && $participant->is_participating_other_ai_program == 1 ? true : false;
         $this->data['comentor'] = null;
         $this->data['program'] = $participant ? $participant->program : null;
@@ -155,7 +155,6 @@ class PageController extends BaseController
         if ($participant) {
             if (isset($participant->reference_comentor)) {
                 $this->data['is_mentee_comentor'] = true;
-                $this->data['is_reference_followup'] = $participant->is_reference_followup == 1 ? true : false;
                 $comentorData = $db->table('scholarship_participants')
                     ->select('fullname')
                     ->where('scholarship_participants.referral_code_comentor', $participant->reference_comentor)
