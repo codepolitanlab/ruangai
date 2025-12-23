@@ -1,3 +1,28 @@
+<!-- Meta Pixel Code (added for Save Data tracking) -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '745152591506359');
+fbq('track', 'PageView');
+
+// helper to track save button
+window.trackSaveProfile = function(info = {}) {
+    if (typeof fbq === 'function') {
+        fbq('trackCustom', 'SaveProfile', info);
+    }
+};
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
 <div class="accordion rounded-4 mb-3" id="profileAccordion">
     <div class="accordion-item rounded-4 border-0 shadow-sm">
         <h2 class="accordion-header" id="headingProfile">
@@ -131,7 +156,7 @@
                 </div>
 
                 <div class="mt-3 d-flex justify-content-end">
-                    <button type="button" class="btn btn-success" @click="saveProfile()" :disabled="isSavingProfile">
+                    <button type="button" class="btn btn-success" @click="trackSaveProfile({email: profile.email, name: profile.name}); saveProfile()" :disabled="isSavingProfile">
                         <template x-if="isSavingProfile">
                             <span class="spinner-border spinner-border-sm me-2"></span>
                         </template>
