@@ -1,3 +1,28 @@
+<!-- Meta Pixel Code (added for Save Data tracking) -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '745152591506359');
+fbq('track', 'PageView');
+
+// helper to track save button
+window.trackSaveProfile = function(info = {}) {
+    if (typeof fbq === 'function') {
+        fbq('trackCustom', 'Leads', info);
+    }
+};
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
 <div class="accordion rounded-4 mb-3" id="profileAccordion">
     <div class="accordion-item rounded-4 border-0 shadow-sm">
         <h2 class="accordion-header" id="headingProfile">
@@ -19,7 +44,7 @@
                     <ol class="mb-0">
                         <li><strong>GenAI Video Fest</strong> tidak dipungut biaya (gratis).</li>
                         <li>Peserta wajib memasukkan kartu Debit/Kredit pada akun Alibaba Cloud untuk mengaktifkan trial <a target="_blank" class="fw-bold" href="https://s.id/WanModelStudio">Alibaba Cloud Model Studio</a>.</li>
-                        <li>Panduan registrasi akun Alibaba Cloud tersedia dalam <a class="fw-bold" target="_blank" href="https://www.youtube.com/@codepolitan">video tutorial berikut</a>.</li>
+                        <li>Panduan registrasi akun Alibaba Cloud tersedia dalam <a class="fw-bold" target="_blank" href="https://www.youtube.com/watch?v=lFLDUMHjEfc">video tutorial berikut</a>.</li>
                         <li>Peserta yang tidak memiliki kartu kredit dapat menggunakan kartu debit fisik berlogo Visa atau Mastercard, seperti BCA, Mandiri, Jenius, Jago, atau bank lainnya yang mendukung transaksi internasional.</li>
                         <li>Pastikan fitur transaksi online dan internasional pada kartu debit telah aktif.</li>
                         <li>Pastikan kartu memiliki saldo minimal Rp100.000 dan pernah digunakan untuk transaksi sebelumnya (misalnya pembelian pulsa, belanja online, atau pembayaran QRIS) guna meminimalkan risiko verifikasi gagal.</li>
@@ -131,7 +156,7 @@
                 </div>
 
                 <div class="mt-3 d-flex justify-content-end">
-                    <button type="button" class="btn btn-success" @click="saveProfile()" :disabled="isSavingProfile">
+                    <button type="button" class="btn btn-success" @click="trackSaveProfile({email: profile.email, name: profile.name}); saveProfile()" :disabled="isSavingProfile">
                         <template x-if="isSavingProfile">
                             <span class="spinner-border spinner-border-sm me-2"></span>
                         </template>

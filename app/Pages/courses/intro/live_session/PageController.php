@@ -39,6 +39,7 @@ class PageController extends BaseController
             ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
             ->where('live_attendance.course_id', $course_id)
             ->where('user_id', $jwt->user_id)
+            ->where('live_attendance.deleted_at', null)
             ->orderBy('live_meetings.meeting_date', 'asc')
             ->get()
             ->getResultArray();
@@ -131,14 +132,14 @@ class PageController extends BaseController
         $this->data['completed']        = round($completedLessons['completed'] / $completedLessons['total_lessons'] * 100);
 
         $this->data['user'] = $db->table('users')
-            ->select('id, name')
+            ->select('id, name, role_id')
             ->where('id', $jwt->user_id)
             ->get()
             ->getRowArray();
 
         // Ambil data participant berdasarkan user_id dengan null safety
         $participant = $db->table('scholarship_participants')
-            ->select('reference, program, is_participating_other_ai_program')
+            ->select('reference_comentor, is_reference_followup, program, is_participating_other_ai_program')
             ->where('user_id', $jwt->user_id)
             ->get()
             ->getRow();
@@ -146,17 +147,17 @@ class PageController extends BaseController
         $this->data['is_mentor'] = $jwt->user['role_id'] == 5 ? true : false;
         $this->data['is_comentor'] = $jwt->user['role_id'] == 4 ? true : false;
         $this->data['is_mentee_comentor'] = false;
+        $this->data['is_reference_followup'] = $participant && $participant->is_reference_followup == 1 ? true : false;
         $this->data['is_participating_other_ai_program'] = $participant && $participant->is_participating_other_ai_program == 1 ? true : false;
         $this->data['comentor'] = null;
         $this->data['program'] = $participant ? $participant->program : null;
         
         if ($participant) {
-            // Cek apakah reference mengandung "CO-" atau "co-"
-            if (isset($participant->reference) && preg_match('/co\-/i', $participant->reference)) {
+            if (isset($participant->reference_comentor)) {
                 $this->data['is_mentee_comentor'] = true;
                 $comentorData = $db->table('scholarship_participants')
                     ->select('fullname')
-                    ->where('scholarship_participants.referral_code_comentor', $participant->reference)
+                    ->where('scholarship_participants.referral_code_comentor', $participant->reference_comentor)
                     ->get()
                     ->getRow();
                 $this->data['comentor'] = $comentorData ? $comentorData->fullname : null;
