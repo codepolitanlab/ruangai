@@ -91,7 +91,7 @@
             <div class="card rounded-4 mb-3 shadow-sm">
                 <!-- Tombol video panduan pendaftaran -->
                 <div class="card-body px-4">
-                    <h5 class="mb-3">Panduan Pendaftaran</h5>
+                    <h5 class="mb-3">Panduan Program</h5>
                     <a 
                         native 
                         target="_blank" 
