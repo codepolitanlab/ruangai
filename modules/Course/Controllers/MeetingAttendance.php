@@ -582,10 +582,27 @@ class MeetingAttendance extends AdminController
                 return redirect()->to(site_url(urlScope() . '/course/live/meeting/' . $slug . '/attendant/import'));
             }
 
-            // Normalise header keys
+            // Normalise header keys: handle BOM, Unicode spaces, sep= directives, and semicolon delimiter
             $map = [];
+            $delimiter = ',';
+
+            // If first cell is a sep= directive (e.g., "sep=;") then use that delimiter and read the next line as header
+            $firstCell = isset($header[0]) ? trim((string) $header[0]) : '';
+            if (preg_match('/^sep\s*=\s*([,;\t])$/i', $firstCell, $m)) {
+                $delimiter = $m[1] === "\t" ? "\t" : $m[1];
+                $header = fgetcsv($handle, 0, $delimiter);
+            }
+
+            // If fgetcsv returned a single column containing semicolons, split it into columns
+            if (count($header) === 1 && strpos($header[0], ';') !== false) {
+                $delimiter = ';';
+                $header = str_getcsv($header[0], $delimiter);
+            }
+
             foreach ($header as $idx => $col) {
-                $key       = strtolower(trim($col));
+                // Remove UTF-8 BOM (\xEF\xBB\xBF), non-breaking space (\xC2\xA0), and all Unicode whitespace/control chars
+                $col = preg_replace('/[\x{FEFF}\x{00A0}\p{Zs}\p{Cc}]+/u', '', (string) $col);
+                $key = strtolower(trim($col));
                 $map[$key] = $idx;
             }
 
@@ -593,7 +610,8 @@ class MeetingAttendance extends AdminController
             foreach ($required as $req) {
                 if (! isset($map[$req])) {
                     fclose($handle);
-                    session()->setFlashdata('error_message', 'Header CSV tidak sesuai. Wajib ada: email,rating,duration,comment');
+                    $found = implode(', ', array_keys($map));
+                    session()->setFlashdata('error_message', 'Header CSV tidak sesuai. Wajib ada: email,rating,duration,comment. Ditemukan: ' . $found);
                     return redirect()->to(site_url(urlScope() . '/course/live/meeting/' . $slug . '/attendant/import'));
                 }
             }
@@ -693,7 +711,11 @@ class MeetingAttendance extends AdminController
 
         $message = sprintf('Import selesai. Ditambahkan: %d, Diperbarui: %d, Dilewati: %d', $inserted, $updated, $skipped);
         if (! empty($errors)) {
-            $message .= '. Catatan: ' . implode('; ', $errors);
+            $message .= '<br><br><strong>Catatan:</strong><ul class="mb-0 mt-2">';
+            foreach ($errors as $error) {
+                $message .= '<li>' . esc($error) . '</li>';
+            }
+            $message .= '</ul>';
         }
 
         session()->setFlashdata('success_message', $message);
