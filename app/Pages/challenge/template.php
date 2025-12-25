@@ -88,6 +88,29 @@
                 </div>
             </template>
 
+            <div class="card rounded-4 mb-3 shadow-sm">
+                <!-- Tombol video panduan pendaftaran -->
+                <div class="card-body px-4">
+                    <h5 class="mb-3">Panduan Program</h5>
+                    <a 
+                        native 
+                        target="_blank" 
+                        href="https://www.youtube.com/watch?v=lFLDUMHjEfc" 
+                        class="btn btn-outline-primary py-4 px-3 d-flex align-items-top rounded-3 mb-1 justify-content-start fs-6 text-start">
+                        <i class="bi bi-play-circle fs-3 me-2 pt-1"></i>
+                        Panduang Pendaftaran Akun Alibaba Cloud
+                    </a>
+                    <a 
+                        native 
+                        target="_blank" 
+                        href="https://youtu.be/lFLDUMHjEfc?si=EYjraLUuhAJLXgvL&t=373" 
+                        class="btn btn-outline-primary py-4 px-3 d-flex align-items-top rounded-3 mb-1 justify-content-start fs-6 text-start">
+                        <i class="bi bi-play-circle fs-3 me-2 pt-1"></i>
+                        Tutorial Generate Video di WAN Model Studio
+                    </a>
+                </div>
+            </div>
+
             <div class="accordion bg-transparent border-0" id="challengeAccordion">
                 
                 <!-- Persyaratan Pendaftaran -->
