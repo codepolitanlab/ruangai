@@ -314,6 +314,7 @@ class ScholarshipController extends ResourceController
 
         $count_user_progress = $db->table('view_participants')
                 ->where('progress >', 0)
+                ->where('progress <', 100)
                 ->where('graduate', 0)
                 ->where('tanggal_expire', null)
                 ->countAllResults();
