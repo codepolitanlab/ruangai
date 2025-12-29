@@ -2,7 +2,6 @@
 
 namespace App\Pages\certificate\detail;
 
-use App\Models\Feedback;
 use App\Pages\BaseController;
 use Certificate\Libraries\CertificateTemplateFactory;
 
@@ -21,8 +20,6 @@ class PageController extends BaseController
         $vars = $this->certVariables($code);
         $this->data = array_merge($this->data, $vars);
 
-        $Feedback = new Feedback();
-        $this->data['is_feedback'] = $Feedback->getFeedback($jwt->user_id, $this->data['claimer']['entity_id'], $this->data['claimer']['entity_type']) ? true : false;
         return $this->respond($this->data);
     }
 

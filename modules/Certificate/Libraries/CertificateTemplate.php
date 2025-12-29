@@ -55,6 +55,7 @@ abstract class CertificateTemplate
         string $weight = 'normal',
         string $align = 'left',
         string $color = '#000000',
+        bool $richText = false,
         bool $autoshrink = false,
         string $prefix = ''
     ): array {
@@ -68,6 +69,7 @@ abstract class CertificateTemplate
             'align'       => $align,
             'color'       => $color,
             'autoshrink'  => $autoshrink,
+            'richText'    => $richText,
             'prefix'      => $prefix,
         ];
     }
