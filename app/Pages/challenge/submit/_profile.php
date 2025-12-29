@@ -1,3 +1,28 @@
+<!-- Meta Pixel Code (added for Save Data tracking) -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '745152591506359');
+fbq('track', 'PageView');
+
+// helper to track save button
+window.trackSaveProfile = function(info = {}) {
+    if (typeof fbq === 'function') {
+        fbq('trackCustom', 'Leads', info);
+    }
+};
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
 <div class="accordion rounded-4 mb-3" id="profileAccordion">
     <div class="accordion-item rounded-4 border-0 shadow-sm">
         <h2 class="accordion-header" id="headingProfile">
@@ -18,8 +43,8 @@
                     <h5 class="mb-2">Panduan Pendaftaran & Aktivasi</h5>
                     <ol class="mb-0">
                         <li><strong>GenAI Video Fest</strong> tidak dipungut biaya (gratis).</li>
-                        <li>Peserta wajib memasukkan kartu Debit/Kredit pada akun Alibaba Cloud untuk mengaktifkan trial <a target="_blank" href="https://www.alibabacloud.com/en/product/modelstudio">Alibaba Cloud Model Studio</a>.</li>
-                        <li>Panduan registrasi akun Alibaba Cloud tersedia dalam <a target="_blank" href="https://www.youtube.com/@codepolitan">video tutorial berikut</a>.</li>
+                        <li>Peserta wajib memasukkan kartu Debit/Kredit pada akun Alibaba Cloud untuk mengaktifkan trial <a target="_blank" class="fw-bold" href="https://s.id/WanModelStudio">Alibaba Cloud Model Studio</a>.</li>
+                        <li>Panduan registrasi akun Alibaba Cloud tersedia dalam <a class="fw-bold" target="_blank" href="https://www.youtube.com/watch?v=lFLDUMHjEfc">video tutorial berikut</a>.</li>
                         <li>Peserta yang tidak memiliki kartu kredit dapat menggunakan kartu debit fisik berlogo Visa atau Mastercard, seperti BCA, Mandiri, Jenius, Jago, atau bank lainnya yang mendukung transaksi internasional.</li>
                         <li>Pastikan fitur transaksi online dan internasional pada kartu debit telah aktif.</li>
                         <li>Pastikan kartu memiliki saldo minimal Rp100.000 dan pernah digunakan untuk transaksi sebelumnya (misalnya pembelian pulsa, belanja online, atau pembayaran QRIS) guna meminimalkan risiko verifikasi gagal.</li>
@@ -109,7 +134,8 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label">AlibabaCloud ID <span class="text-danger">*</span></label>
+                        <label class="form-label mb-0">AlibabaCloud ID <span class="text-danger">*</span></label>
+                        <small class="mb-2 d-block">Daftar akun Alibaba Cloud dan WAN Model Studio <a href="https://s.id/WanModelStudio" target="_blank">DI SINI</a></small>
                         <input type="text" class="form-control" x-model="profile.alibabacloud_id" :class="{'is-invalid': profileErrors.alibabacloud_id}" inputmode="numeric" pattern="[0-9]*" @input="profile.alibabacloud_id = profile.alibabacloud_id.replace(/[^0-9]/g, '')" placeholder="Cth: 5921721919160498">
                         <template x-if="profileErrors.alibabacloud_id">
                             <small class="text-danger" x-text="profileErrors.alibabacloud_id"></small>
@@ -117,8 +143,8 @@
                     </div>
 
                     <div class="col-12">
-                        <label class="form-label">Alibaba Account Screenshot <span class="text-danger">*</span></label> <br>
-                        <small>Lihat contoh screenshoot <a href="https://image.web.id/images/contoh_akun_alibabacloud.jpg" target="_blank" rel="noopener noreferrer">DI SINI</a></small>
+                        <label class="form-label mb-0">Alibaba Account Screenshot <span class="text-danger">*</span></label>
+                        <small class="mb-2 d-block">Lihat contoh screenshoot <a href="https://image.web.id/images/contoh_akun_alibabacloud.jpg" target="_blank">DI SINI</a></small>
                         <input type="file" class="form-control" accept="image/*" @change="handleProfileScreenshot($event)" :class="{'is-invalid': profileErrors.alibabacloud_screenshot}">
                         <template x-if="profile.alibabacloud_screenshot">
                             <div class="mt-2 small text-muted">Tersimpan: <span x-text="profile.alibabacloud_screenshot"></span></div>
@@ -130,7 +156,7 @@
                 </div>
 
                 <div class="mt-3 d-flex justify-content-end">
-                    <button type="button" class="btn btn-success" @click="saveProfile()" :disabled="isSavingProfile">
+                    <button type="button" class="btn btn-success" @click="trackSaveProfile({email: profile.email, name: profile.name}); saveProfile()" :disabled="isSavingProfile">
                         <template x-if="isSavingProfile">
                             <span class="spinner-border spinner-border-sm me-2"></span>
                         </template>

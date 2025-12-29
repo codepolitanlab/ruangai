@@ -312,18 +312,12 @@ class ScholarshipController extends ResourceController
                 ->get()
                 ->getRowArray()['code'] ?? null;
 
-        $count_user_progress = $courseStudentModel
-            ->select('scholarship_participants.program, scholarship_participants.reference')
-            ->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id')
-            ->where('course_students.progress >', 0)
-            ->groupStart()
-                ->where('course_students.graduate', 0)
-                ->orWhere('course_students.graduate', null)
-            ->groupEnd()
-            ->where('course_students.expire_at', null)
-            ->where('course_students.course_id', 1)
-            ->where('scholarship_participants.program', $activeProgram)
-            ->countAllResults();
+        $count_user_progress = $db->table('view_participants')
+                ->where('progress >', 0)
+                ->where('progress <', 100)
+                ->where('graduate', 0)
+                ->where('tanggal_expire', null)
+                ->countAllResults();
 
         if ($programCode === 'RuangAI2025B1') {
             $quota      = $masterProgram['quota'];

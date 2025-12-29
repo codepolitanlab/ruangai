@@ -88,6 +88,29 @@
                 </div>
             </template>
 
+            <div class="card rounded-4 mb-3 shadow-sm">
+                <!-- Tombol video panduan pendaftaran -->
+                <div class="card-body px-4">
+                    <h5 class="mb-3">Panduan Program</h5>
+                    <a 
+                        native 
+                        target="_blank" 
+                        href="https://www.youtube.com/watch?v=lFLDUMHjEfc" 
+                        class="btn btn-outline-primary py-4 px-3 d-flex align-items-top rounded-3 mb-1 justify-content-start fs-6 text-start">
+                        <i class="bi bi-play-circle fs-3 me-2 pt-1"></i>
+                        Panduang Pendaftaran Akun Alibaba Cloud
+                    </a>
+                    <a 
+                        native 
+                        target="_blank" 
+                        href="https://youtu.be/lFLDUMHjEfc?si=EYjraLUuhAJLXgvL&t=373" 
+                        class="btn btn-outline-primary py-4 px-3 d-flex align-items-top rounded-3 mb-1 justify-content-start fs-6 text-start">
+                        <i class="bi bi-play-circle fs-3 me-2 pt-1"></i>
+                        Tutorial Generate Video di WAN Model Studio
+                    </a>
+                </div>
+            </div>
+
             <div class="accordion bg-transparent border-0" id="challengeAccordion">
                 
                 <!-- Persyaratan Pendaftaran -->
@@ -101,9 +124,9 @@
                         <div class="accordion-body rounded-4">
                             <p class="mb-2">Untuk mengikuti GenAI Video Fest, peserta wajib memenuhi ketentuan berikut:</p>
                             <ul class="mb-0">
-                                <li>Memiliki akun Alibaba Cloud yang aktif.</li>
-                                <li>Mengikuti akun X resmi @codepolitan, dan @alibaba_cloud.</li>
-                                <li>Wajib menggunakan WAN Model Studio. Penggunaan model atau tools AI lain diperbolehkan sebagai tambahan (opsional).</li>
+                                <li>Memiliki akun <a class="fw-bold" href="https://s.id/WanModelStudio" target="_blank">Alibaba Cloud</a> yang aktif.</li>
+                                <li>Mengikuti akun X resmi <a class="fw-bold" href="https://x.com/codepolitan" target="_blank">@codepolitan</a>, dan <a class="fw-bold" href="https://x.com/alibaba_cloud" target="_blank">@alibaba_cloud</a>.</li>
+                                <li>Wajib menggunakan <a class="fw-bold" href="https://s.id/WanModelStudio" target="_blank">WAN Model Studio</a>. Penggunaan model atau tools AI lain diperbolehkan sebagai tambahan (opsional).</li>
                                 <li>1 akun hanya diperbolehkan 1 submission.</li>
                                 <li>Memiliki Kartu Debit/Kredit Pribadi</li>
                                 <li>Wajib menandatangani pernyataan etika dan hak cipta.</li>

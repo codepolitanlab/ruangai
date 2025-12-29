@@ -1,5 +1,52 @@
 <div class="appContent pt-2 pb-4" style="min-height:90vh">
 
+<!-- Header -->
+    <div class="p-4 px-3 mb-3 bg-white rounded-4 position-relative" style="min-height:110px">
+        <div class="d-flex align-items-center gap-3 position-relative" style="z-index: 99; position: absolute !important; bottom: 10px;">
+            <div class="avatar">
+                <img :src="data?.user?.avatar && data?.user?.avatar != '' ? data?.user?.avatar : `https://ui-avatars.com/api/?name=${data?.name ?? 'El'}&background=79B2CD&color=FFF`" alt="avatar" class="imaged w48 rounded-circle">
+            </div>
+            <div>
+                <h4 class="mb-0 text-muted fw-normal">Selamat Belajar,</h4>
+                <h5 class="mb-0" x-text="data?.name"></h5>
+            </div>
+        </div>
+        <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/Group%206633.png" class="position-absolute bottom-0 end-0 w-25" alt="">
+        <div
+            class="d-flex justify-content-between align-items-start position-absolute px-3"
+            style="top: 10px; left: 0; right: 0;">
+            <template x-if="data?.student?.program == 'RuangAI2025B2' && !data?.group_comentor">
+                <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%208476.png" width="35%" alt="">
+            </template>
+            <template x-if="data?.student?.program == Alpine.store('core').activeProgram">
+                <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%209476.png?updatedAt=1760359599371" width="35%" alt="">
+            </template>
+            <!-- <div class="d-flex flex-column ms-2">
+						<div class="mb-2">Berakhir dalam</div>
+						<div class="d-flex gap-4 justify-content-center text-center">
+							<div>
+								<div class="fs-4 fw-bold text-warning" x-text="countdownParts.days"></div>
+								<div class="small">Hari</div>
+							</div>
+							<div>
+								<div class="fs-4 fw-bold text-warning" x-text="countdownParts.hours"></div>
+								<div class="small">Jam</div>
+							</div>
+							<div>
+								<div class="fs-4 fw-bold text-warning" x-text="countdownParts.minutes"></div>
+								<div class="small">Menit</div>
+							</div>
+							<div>
+								<div class="fs-4 fw-bold text-warning" x-text="countdownParts.seconds"></div>
+								<div class="small">Detik</div>
+							</div>
+						</div>
+
+					</div> -->
+        </div>
+
+    </div>
+
     <!-- Banner & Menu Container -->
     <div class="bg-white rounded-4 p-3 mb-3">
         <!-- Banner GenAI Video Fest -->

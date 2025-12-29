@@ -85,7 +85,7 @@ class PageController extends BaseController
 
             // Get course_students
             $this->data['student'] = $db->table('course_students')
-                ->select('progress, expire_at, scholarship_participants.reference')
+                ->select('progress, expire_at, scholarship_participants.reference_comentor as reference, scholarship_participants.is_reference_followup as is_reference_followup')
                 ->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id', 'left')
                 ->where('course_students.course_id', $id)
                 ->where('course_students.user_id', $jwt->user_id)
@@ -167,7 +167,7 @@ class PageController extends BaseController
             $this->data['last_progress_lesson_id'] = $lastProgress['lesson_id'] ?? null;
 
             $this->data['is_comentor'] = $jwt->user['role_id'] == 4 ? true : false;
-            $this->data['group_comentor'] = null;
+            $this->data['group_comentor'] = false;
             if ($this->data['student']['reference'] ?? null) {
                 $this->data['group_comentor'] = $db->table('shorteners')
                     ->where('code', $this->data['student']['reference'])

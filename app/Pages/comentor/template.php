@@ -137,10 +137,7 @@
 					</button>
 				</div>
 
-				<!-- Show Scholarship CTA for Competition Users -->
-				<?= $this->include('_components/scholarship_cta') ?>
-
-				<template x-if="data?.leader?.role_id == 4 && data?.is_scholarship_participant">
+				<template x-if="data?.leader?.role_id == 4">
 					<div>
 						<!-- Referral Co-Mentor -->
 						<div class="p-3 mb-3 rounded-4 bg-white d-flex flex-column gap-2 justify-content-between">
