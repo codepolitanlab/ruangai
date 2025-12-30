@@ -12,6 +12,15 @@ class Certificate extends BaseConfig
     // Path to store generated certificates
     public $certificatePath = WRITEPATH . 'certificates/';
 
+    // Certificate type
+    public $certificateTypes = [
+        'course' => 'Course',
+        'training'  => 'Training',
+        'workshop'  => 'Workshop',
+        'challenge' => 'Challenge',
+        'event' => 'Event',
+    ];
+
     // Default template name
     public $defaultTemplate = 'default';
 

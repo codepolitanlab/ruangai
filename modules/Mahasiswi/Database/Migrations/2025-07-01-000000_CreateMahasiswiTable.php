@@ -1,10 +1,10 @@
 <?php
 
-namespace Mahasiswa\Migrations;
+namespace Mahasiswi\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateMahasiswaTable extends Migration
+class CreateMahasiswiTable extends Migration
 {
     public function up()
     {
