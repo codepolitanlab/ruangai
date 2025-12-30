@@ -65,26 +65,32 @@ class PageController extends BaseController
             $this->data['can_edit'] = false;
         }
 
-        // Get user info
+        // Get basic user info (other profile fields moved to user_profiles)
         $db = \Config\Database::connect();
         $user = $db->table('users')
-            ->select('id, name, email, phone, email_valid, whatsapp, address, gender, alibabacloud_id, alibabacloud_screenshot, profession, job_title, company, industry, referral_code, agreed_terms, birth_date, x_profile_url')
+            ->select('id, name, email, phone, email_valid')
             ->where('id', $jwt->user_id)
             ->get()
             ->getRowArray();
 
-        // Get user profile from table challenge_alibaba
-        $profile = $db->table('challenge_alibaba')
+        // Load profile from user_profiles and prefer those values
+        $profile = $db->table('user_profiles')
             ->where('user_id', $jwt->user_id)
+            ->where('deleted_at', null)
             ->get()
             ->getRowArray();
 
+        $user = $user ?? [];
+
+        $user['gender'] = $profile['gender'] ?? null;
+        $user['alibaba_cloud_id'] = $profile['alibaba_cloud_id'] ?? null;
+        $user['alibaba_cloud_screenshot'] = $profile['alibaba_cloud_screenshot'] ?? null;
+        $user['occupation'] = $profile['occupation'] ?? null;
+        $user['institution'] = $profile['institution'] ?? null;
+        $user['birthday'] = $profile['birthday'] ?? null;
+        $user['x_profile_url'] = $profile['x_profile_url'] ?? null;
+
         $this->data['user'] = $user;
-        $this->data['config'] = [
-            'max_team_members' => $this->config->maxTeamMembers,
-            'max_file_size' => $this->config->maxFileSize,
-            'registration_end' => $this->config->registrationEnd,
-        ];
 
         // Indicate success
         $this->data['success'] = 1;
@@ -304,7 +310,7 @@ class PageController extends BaseController
                     'required' => 'WhatsApp wajib diisi',
                 ]
             ],
-            'birth_date' => [
+            'birthday' => [
                 'rules' => 'required|valid_date',
                 'errors' => [
                     'required' => 'Tanggal lahir wajib diisi',
@@ -318,19 +324,19 @@ class PageController extends BaseController
                     'in_list' => 'Pilihan jenis kelamin tidak valid'
                 ]
             ],
-            'profession' => [
+            'occupation' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => 'Profesi wajib diisi'
                 ]
             ],
-            'company' => [
+            'institution' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => 'Instansi/Perusahaan wajib diisi'
                 ]
             ],
-            'alibabacloud_id' => [
+            'alibaba_cloud_id' => [
                 'rules' => 'required|numeric|min_length[15]',
                 'errors' => [
                     'required' => 'AlibabaCloud ID wajib diisi',
@@ -358,8 +364,8 @@ class PageController extends BaseController
         }
 
         // Validate minimum age 17 years
-        if (!empty($post['birth_date'])) {
-            $birthDate = new \DateTime($post['birth_date']);
+        if (!empty($post['birthday'])) {
+            $birthDate = new \DateTime($post['birthday']);
             $today = new \DateTime();
             $age = $today->diff($birthDate)->y;
             
@@ -367,40 +373,42 @@ class PageController extends BaseController
                 return $this->respond([
                     'success' => 0,
                     'message' => 'Usia minimal 17 tahun',
-                    'errors' => ['birth_date' => 'Usia minimal 17 tahun']
+                    'errors' => ['birthday' => 'Usia minimal 17 tahun']
                 ]);
             }
         }
 
-        // Check if user already has screenshot or is uploading one
+        // Check if user already has screenshot or is uploading one from user_profiles
         $db = \Config\Database::connect();
-        $user = $db->table('users')->where('id', $jwt->user_id)->get()->getRow();
+        $profileModel = new \App\Models\UserProfile();
+        $existingProfile = $profileModel->where('user_id', $jwt->user_id)->where('deleted_at', null)->first();
         
-        $screenshot = $this->request->getFile('alibabacloud_screenshot');
-        $hasScreenshot = ($user && $user->alibabacloud_screenshot) || ($screenshot && $screenshot->isValid());
+        $screenshot = $this->request->getFile('alibaba_cloud_screenshot');
+        $hasScreenshot = ($existingProfile && $existingProfile['alibaba_cloud_screenshot']) || ($screenshot && $screenshot->isValid());
         
         if (!$hasScreenshot) {
             return $this->respond([
                 'success' => 0,
                 'message' => 'Screenshot Alibaba Account wajib diupload',
-                'errors' => ['alibabacloud_screenshot' => 'Screenshot Alibaba Account wajib diupload']
+                'errors' => ['alibaba_cloud_screenshot' => 'Screenshot Alibaba Account wajib diupload']
             ]);
         }
 
-        $data = [
+        // Prepare user update (only name and email in users table)
+        $userUpdate = [
             'name' => $post['name'],
             'email' => $post['email'],
-            'alibabacloud_id' => $post['alibabacloud_id'] ?? null,
+        ];
+
+        // Prepare profile payload for user_profiles table
+        $profilePayload = [
+            'user_id' => $jwt->user_id,
+            'alibaba_cloud_id' => $post['alibaba_cloud_id'] ?? null,
             'whatsapp' => $post['whatsapp'] ?? null,
-            'address' => $post['address'] ?? null,
             'gender' => $post['gender'] ?? null,
-            'profession' => $post['profession'] ?? null,
-            'job_title' => $post['job_title'] ?? null,
-            'company' => $post['company'] ?? null,
-            'industry' => $post['industry'] ?? null,
-            'referral_code' => $post['referral_code'] ?? null,
-            'agreed_terms' => isset($post['agreed_terms']) ? 1 : 0,
-            'birth_date' => $post['birth_date'] ?? null,
+            'occupation' => $post['occupation'] ?? null,
+            'institution' => $post['institution'] ?? null,
+            'birthday' => $post['birthday'] ?? null,
             'x_profile_url' => $post['x_profile_url'] ?? null,
         ];
 
@@ -411,29 +419,35 @@ class PageController extends BaseController
                 return $this->respond([
                     'success' => 0,
                     'message' => 'Ukuran file maksimal 1MB',
-                    'errors' => ['alibabacloud_screenshot' => 'Ukuran file maksimal 1MB']
+                    'errors' => ['alibaba_cloud_screenshot' => 'Ukuran file maksimal 1MB']
                 ]);
             }
             
             $uploadPath = ensure_profile_upload_directory($jwt->user_id);
             $fileName = $screenshot->getRandomName();
             $screenshot->move($uploadPath, $fileName);
-            $data['alibabacloud_screenshot'] = $fileName;
+            $profilePayload['alibaba_cloud_screenshot'] = $fileName;
             
             // Delete old screenshot if exists
-            if ($user && $user->alibabacloud_screenshot) {
-                $oldFile = $uploadPath . $user->alibabacloud_screenshot;
+            if ($existingProfile && $existingProfile['alibaba_cloud_screenshot']) {
+                $oldFile = $uploadPath . $existingProfile['alibaba_cloud_screenshot'];
                 if (file_exists($oldFile)) {
                     @unlink($oldFile);
                 }
             }
         }
 
-        $db = \Config\Database::connect();
-        $builder = $db->table('users');
-        $updated = $builder->where('id', $jwt->user_id)->update($data);
+        // Update users table (name and email only)
+        $db->table('users')->where('id', $jwt->user_id)->update($userUpdate);
 
-        if ($updated) {
+        // Upsert user_profiles
+        if ($existingProfile) {
+            $saved = $profileModel->update($existingProfile['id'], $profilePayload);
+        } else {
+            $saved = $profileModel->insert($profilePayload);
+        }
+
+        if ($saved) {
             return $this->respond(['success' => 1, 'message' => 'Profil berhasil disimpan']);
         }
 
