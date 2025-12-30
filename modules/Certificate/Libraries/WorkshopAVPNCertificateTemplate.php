@@ -42,7 +42,7 @@ class WorkshopAVPNCertificateTemplate extends CertificateTemplate
             'pages' => [
                 // Halaman 1 - Indonesia
                 $this->createPage(
-                    base_url('certificates/tpl/ws-avpn-min.jpg'),
+                    base_url('certificates/tpl/mws-avpn-min.jpg'),
                     [
                         'name' => $this->createPosition(
                             xPct: 4.6,
@@ -56,7 +56,7 @@ class WorkshopAVPNCertificateTemplate extends CertificateTemplate
                             autoshrink: true
                         ),
                         'course' => $this->createPosition(
-                            xPct: 27,
+                            xPct: 31,
                             yPct: 57.7,
                             maxWidthPct: 80,
                             fontMm: 5.3,
