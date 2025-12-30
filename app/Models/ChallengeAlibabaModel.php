@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class ChallengeAlibabaModel extends Model
 {
-    protected $table         = 'challenge_alibaba_new';
+    protected $table         = 'challenge_alibaba';
 
     protected $allowedFields = [
         'user_id',
