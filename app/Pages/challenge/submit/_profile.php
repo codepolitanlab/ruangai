@@ -136,18 +136,18 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                     <div class="col-md-6">
                         <label class="form-label mb-0">AlibabaCloud ID <span class="text-danger">*</span></label>
                         <small class="mb-2 d-block">Daftar akun Alibaba Cloud dan WAN Model Studio <a href="https://s.id/WanModelStudio" target="_blank">DI SINI</a></small>
-                        <input type="text" class="form-control" x-model="profile.alibabacloud_id" :class="{'is-invalid': profileErrors.alibabacloud_id}" inputmode="numeric" pattern="[0-9]*" @input="profile.alibabacloud_id = profile.alibabacloud_id.replace(/[^0-9]/g, '')" placeholder="Cth: 5921721919160498">
-                        <template x-if="profileErrors.alibabacloud_id">
-                            <small class="text-danger" x-text="profileErrors.alibabacloud_id"></small>
+                        <input type="text" class="form-control" x-model="profile.alibaba_cloud_id" :class="{'is-invalid': profileErrors.alibaba_cloud_id}" inputmode="numeric" pattern="[0-9]*" @input="profile.alibaba_cloud_id = profile.alibaba_cloud_id.replace(/[^0-9]/g, '')" placeholder="Cth: 5921721919160498">
+                        <template x-if="profileErrors.alibaba_cloud_id">
+                            <small class="text-danger" x-text="profileErrors.alibaba_cloud_id"></small>
                         </template>
                     </div>
 
                     <div class="col-12">
                         <label class="form-label mb-0">Alibaba Account Screenshot <span class="text-danger">*</span></label>
                         <small class="mb-2 d-block">Lihat contoh screenshoot <a href="https://image.web.id/images/contoh_akun_alibabacloud.jpg" target="_blank">DI SINI</a></small>
-                        <input type="file" class="form-control" accept="image/*" @change="handleProfileScreenshot($event)" :class="{'is-invalid': profileErrors.alibabacloud_screenshot}">
-                        <template x-if="profile.alibabacloud_screenshot">
-                            <div class="mt-2 small text-muted">Tersimpan: <span x-text="profile.alibabacloud_screenshot"></span></div>
+                        <input type="file" class="form-control" accept="image/*" @change="handleProfileScreenshot($event)" :class="{'is-invalid': profileErrors.alibaba_cloud_screenshot}">
+                        <template x-if="profile.alibaba_cloud_screenshot">
+                            <div class="mt-2 small text-muted">Tersimpan: <span x-text="profile.alibaba_cloud_screenshot"></span></div>
                         </template>
                         <template x-if="profileErrors.alibaba_cloud_screenshot">
                             <small class="text-danger" x-text="profileErrors.alibaba_cloud_screenshot"></small>
