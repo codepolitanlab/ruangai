@@ -169,9 +169,7 @@ if (!function_exists('scholarship_registration_url')) {
         }
         
         // Determine base URL based on environment
-        $baseUrl = ENVIRONMENT === 'development' 
-            ? 'https://ruangai-scholarship-git-dev-codepolitan.vercel.app/registration'
-            : 'https://ruangai.id/registration';
+        $baseUrl = 'https://ruangai.id/registration';
         
         return $baseUrl . '?token=' . $token;
     }
