@@ -108,7 +108,7 @@ class ChallengeRules
     /**
      * Check if user already has active submission
      */
-    public function one_submission_per_user(string $userId, string $field, array $data, string &$error = null): bool
+    public function one_submission_per_user(string $userId, string $field, array $data, ?string &$error = null): bool
     {
         $model = new \Challenge\Models\ChallengeAlibabaModel();
         
