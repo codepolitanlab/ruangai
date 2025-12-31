@@ -35,7 +35,7 @@ class PageController extends BaseController
         // Check if user is scholarship participant
         if (! function_exists('is_scholarship_participant')) helper('scholarship');
         $this->data['is_scholarship_participant'] = \is_scholarship_participant($jwt->user_id);
-        $this->data['scholarship_url'] = scholarship_registration_url();
+        $this->data['scholarship_url'] = scholarship_registration_url($jwt->user_id);
 
         // Get course
         // if (! $course = cache('course_' . $id)) {
