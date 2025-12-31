@@ -29,7 +29,7 @@
 
 				<!-- Card jika tidak ada beasiswa -->
 				<template x-if="!data.scholarships || data.scholarships.length === 0">
-					<a :href="data.scholarship_url || 'https://ruangai.id'" target="_blank" class="text-decoration-none">
+					<a :href="data?.scholarship_url || 'https://ruangai.id'" target="_blank" class="text-decoration-none">
 						<div class="card shadow-sm overflow-hidden mb-3 bg-white">
 							<div class="card-body p-4 text-center">
 								<h5 class="fw-bold mb-2 text-dark">Belum Ada Beasiswa Aktif</h5>

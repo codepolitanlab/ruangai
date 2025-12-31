@@ -96,7 +96,7 @@ class PageController extends BaseController
         }
 
         $this->data['is_comentor'] = $jwt->user['role_id'] == 4 ? true : false;
-        $this->data['scholarship_url'] = scholarship_registration_url();
+        $this->data['scholarship_url'] = scholarship_registration_url($jwt->user_id);
 
         return $this->respond($this->data);
     }
