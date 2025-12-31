@@ -124,9 +124,9 @@ if (!function_exists('scholarship_registration_url')) {
 
         // Inject name, email, phone into profile data for easier access
         if ($profileData) {
-            $profileData['name']  = $userData['name'] ?? '';
+            $profileData['fullname']  = $userData['name'] ?? '';
             $profileData['email'] = $userData['email'] ?? '';
-            $profileData['phone'] = $userData['phone'] ?? '';
+            $profileData['whatsapp_number'] = $userData['phone'] ?? '';
         }
         
         // Check if profile is complete
