@@ -142,6 +142,7 @@ class ScholarshipController extends ResourceController
                 'email'    => strtolower($data['email']),
                 'phone'    => $number,
                 'pwd'      => $password,
+                'source'   => 'scholarship',
             ]);
 
             // if failed insert users
