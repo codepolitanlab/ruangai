@@ -152,9 +152,28 @@ class ScholarshipController extends ResourceController
             return $this->fail(['status' => 'failed', 'message' => 'Beasiswa sudah pernah terdaftar.']);
         }
 
+        // Prepare profile fields (akan disimpan ke user_profiles)
+        $profileFields = [
+            'birthday', 'gender', 'province', 'city', 'occupation', 
+            'work_experience', 'skill', 'institution', 'major', 
+            'type_of_business', 'business_duration', 'education_level', 
+            'graduation_year', 'link_business', 'last_project'
+        ];
+
+        // Extract profile data from $data
+        $profileData = [];
+        foreach ($profileFields as $field) {
+            if (isset($data[$field])) {
+                $profileData[$field] = $data[$field];
+                unset($data[$field]); // Remove from scholarship_participants data
+            }
+        }
+
+        // Handle semester and grade (bisa ada di scholarship_participants DAN user_profiles)
+        $profileData['semester'] = !empty($data['semester']) ? $data['semester'] : 0;
+        $profileData['grade'] = !empty($data['grade']) ? $data['grade'] : 0;
+
         // Insert data to scholarship_participants
-        $data['semester']                          = ! empty($data['semester']) ? $data['semester'] : 0;
-        $data['grade']                             = ! empty($data['grade']) ? $data['grade'] : 0;
         $data['accept_terms']                      = ! empty($data['accept_terms']) ? $data['accept_terms'] : 0;
         $data['accept_agreement']                  = ! empty($data['accept_agreement']) ? $data['accept_agreement'] : 0;
         $data['is_participating_other_ai_program'] = ! empty($data['is_participating_other_ai_program']) ? $data['is_participating_other_ai_program'] : 0;
@@ -169,6 +188,22 @@ class ScholarshipController extends ResourceController
             'course_id'  => 1,
             'created_at' => date('Y-m-d H:i:s'),
         ]);
+
+        // Insert/update user profile data
+        $userProfileModel = new \App\Models\UserProfile();
+        $profilePayload = array_merge([
+            'user_id' => $userId,
+            'whatsapp' => $number,
+        ], $profileData);
+
+        // Check if profile exists
+        $existingProfile = $userProfileModel->where('user_id', $userId)->where('deleted_at', null)->first();
+        
+        if ($existingProfile) {
+            $userProfileModel->update($existingProfile['id'], $profilePayload);
+        } else {
+            $userProfileModel->insert($profilePayload);
+        }
 
         // Jwt only email, whatsapp_number, user_id
         $jwt = JWT::encode([
