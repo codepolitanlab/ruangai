@@ -121,6 +121,13 @@ if (!function_exists('scholarship_registration_url')) {
             ->where('deleted_at', null)
             ->get()
             ->getRowArray();
+
+        // Inject name, email, phone into profile data for easier access
+        if ($profileData) {
+            $profileData['name']  = $userData['name'] ?? '';
+            $profileData['email'] = $userData['email'] ?? '';
+            $profileData['phone'] = $userData['phone'] ?? '';
+        }
         
         // Check if profile is complete
         $isProfileComplete = false;
@@ -138,6 +145,7 @@ if (!function_exists('scholarship_registration_url')) {
         
         // Prepare token payload
         $tokenPayload = [
+            'user_id' => $user_id,
             'participant' => $userData['name'] ?? '',
             'is_scholarship_participant' => $isScholarshipParticipant,
             'is_profile_complete' => $isProfileComplete,
@@ -151,6 +159,14 @@ if (!function_exists('scholarship_registration_url')) {
             config('Heroic')->jwtKey['secret'],
             'HS256'
         );
+        
+        // Debug: verify token format
+        $segmentCount = substr_count($token, '.');
+        log_message('debug', 'Generated token segments: ' . $segmentCount . ', Token length: ' . strlen($token));
+        
+        if ($segmentCount !== 2) {
+            log_message('error', 'Invalid JWT generated! Token preview: ' . substr($token, 0, 100));
+        }
         
         // Determine base URL based on environment
         $baseUrl = ENVIRONMENT === 'development' 

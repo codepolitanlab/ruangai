@@ -88,6 +88,9 @@ class Router
         '/challenge/submit' => [],
         '/workshop' => [],
         '/prompt' => [],
-        '/scholarship' => []
+        '/scholarship' => [
+            'preload' => true,
+            'handler' => '[isLoggedIn]',
+        ]
     ];
 }

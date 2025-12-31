@@ -65,6 +65,10 @@ class ScholarshipController extends ResourceController
         $data   = $this->request->getPost();
         $Heroic = new \App\Libraries\Heroic();
 
+        // Check if user already logged in (has JWT from scholarship URL or normal login)
+        $jwt = $Heroic->decodeScholarshipToken();
+        $userId = $jwt->user_id ?? null;
+
         // Minimum validate
         if (! isset($data['fullname'], $data['email'])) {
             return $this->failValidationErrors(['message' => 'Mohon untuk melengkapi data.']);
@@ -97,47 +101,53 @@ class ScholarshipController extends ResourceController
             $data['reference'] = null;
         }
 
-        // Get JWT from headers
-        // $jwt = $this->checkToken();
-
-        // Compare JWT with data otp_whatsapps
-        // $otpModel = new OtpWhatsappModel();
-        // $isRegistered = $otpModel->where('whatsapp_number', $Heroic->normalizePhoneNumber($jwt->whatsapp_number))->first();
-
-        // if (!$isRegistered) {
-        //     return $this->fail(['status' => 'failed', 'message' => 'Autentikasi gagal.']);
-        // }
-
         $number = $Heroic->normalizePhoneNumber($data['whatsapp_number']);
-
         $userModel = new UserModel();
-        $user      = $userModel->groupStart()
-            ->where('LOWER(email)', strtolower($data['email']))
-            ->orWhere('phone', $number)
-            ->groupEnd()
-            ->where('deleted_at', null)
-            ->first();
 
-        if ($user) {
-            return $this->fail(['status' => 'failed', 'message' => 'Akun sudah pernah terdaftar.']);
-        }
+        // If user has JWT, use existing account
+        if ($userId) {
+            // User already logged in, verify the account exists
+            $user = $userModel->find($userId);
+            
+            if (!$user) {
+                return $this->fail(['status' => 'failed', 'message' => 'Akun tidak ditemukan.']);
+            }
+            
+            // Check if already registered for scholarship
+            $participant = $participantModel->where('user_id', $userId)->where('deleted_at', null)->first();
+            if ($participant) {
+                return $this->fail(['status' => 'failed', 'message' => 'Beasiswa sudah pernah terdaftar.']);
+            }
+        } else {
+            // No JWT, create new account
+            $user = $userModel->groupStart()
+                ->where('LOWER(email)', strtolower($data['email']))
+                ->orWhere('phone', $number)
+                ->groupEnd()
+                ->where('deleted_at', null)
+                ->first();
 
-        // Get username from fullname, remove space and lowercase all with sufix random
-        $username = str_replace(' ', '', strtolower($data['fullname'])) . '_' . bin2hex(random_bytes(4));
+            if ($user) {
+                return $this->fail(['status' => 'failed', 'message' => 'Akun sudah pernah terdaftar.']);
+            }
 
-        $Phpass   = new \App\Libraries\Phpass();
-        $password = $Phpass->HashPassword($data['password']);
-        $userId   = $userModel->insert([
-            'name'     => $data['fullname'],
-            'username' => $username,
-            'email'    => strtolower($data['email']),
-            'phone'    => $number,
-            'pwd'      => $password,
-        ]);
+            // Get username from fullname, remove space and lowercase all with sufix random
+            $username = str_replace(' ', '', strtolower($data['fullname'])) . '_' . bin2hex(random_bytes(4));
 
-        // if failed insert users
-        if (! $userId) {
-            return $this->fail(['status' => 'failed', 'message' => 'Registrasi gagal.']);
+            $Phpass   = new \App\Libraries\Phpass();
+            $password = $Phpass->HashPassword($data['password']);
+            $userId   = $userModel->insert([
+                'name'     => $data['fullname'],
+                'username' => $username,
+                'email'    => strtolower($data['email']),
+                'phone'    => $number,
+                'pwd'      => $password,
+            ]);
+
+            // if failed insert users
+            if (! $userId) {
+                return $this->fail(['status' => 'failed', 'message' => 'Registrasi gagal.']);
+            }
         }
 
         $data['user_id']       = $userId;

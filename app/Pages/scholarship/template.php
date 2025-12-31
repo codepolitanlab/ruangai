@@ -1,4 +1,4 @@
-<div id="courses" x-data="courses()">
+<div id="scholarship" x-data="scholarship()">
 	<?= $this->include('_bottommenu') ?>
 
 	<style>
@@ -28,7 +28,7 @@
 			<div class="">
 
 				<!-- Card jika tidak ada beasiswa -->
-				<template x-if="!data.scholarships || data.scholarships.length === 0">
+				<template x-if="!data?.scholarships || data?.scholarships.length === 0">
 					<a :href="data?.scholarship_url || 'https://ruangai.id'" target="_blank" class="text-decoration-none">
 						<div class="card shadow-sm overflow-hidden mb-3 bg-white">
 							<div class="card-body p-4 text-center">
@@ -91,5 +91,5 @@
 
 	</div>
 
-	<?= $this->include('courses/script') ?>
+	<?= $this->include('scholarship/script') ?>
 </div>
