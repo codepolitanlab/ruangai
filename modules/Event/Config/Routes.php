@@ -3,8 +3,12 @@
 /**
  * Event Module Routes
  */
+helper('heroicsetting');
 
-$routes->group('heroic/event', ['namespace' => 'Event\Controllers'], function ($routes) {
+$routes->group
+    (setting_item('Heroicadmin.urlScope') . '/event', 
+    ['namespace' => 'Event\Controllers'], 
+    function ($routes) {
     // CRUD routes
     $routes->get('/', 'Event::index');
     $routes->get('add', 'Event::add');

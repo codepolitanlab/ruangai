@@ -50,6 +50,7 @@ class Autoload extends AutoloadConfig
         'Referral'    => ROOTPATH . 'modules/Referral',
         'Challenge'   => ROOTPATH . 'modules/Challenge',
         'Mahasiswi'   => ROOTPATH . 'modules/Mahasiswi',
+        'Event'       => ROOTPATH . 'modules/Event',
     ];
 
     /**

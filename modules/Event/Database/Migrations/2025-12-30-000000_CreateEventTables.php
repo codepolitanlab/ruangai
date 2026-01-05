@@ -194,7 +194,6 @@ class CreateEventTables extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addKey('slug');
         $this->forge->addKey('event_type');
         $this->forge->addKey('status');
         $this->forge->addKey('start_date');

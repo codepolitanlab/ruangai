@@ -2,28 +2,36 @@
 
 namespace Event\Controllers;
 
-use App\Controllers\BaseController;
+use Heroicadmin\Controllers\AdminController;
 use Heroicadmin\Modules\Entry\Entry;
 use Symfony\Component\Yaml\Yaml;
 
-class Event extends BaseController
+class Event extends AdminController
 {
     protected $Entry;
     protected $db;
     
     public function __construct()
     {
+        $this->data['page_title'] = 'Event';
+        $this->data['module']     = 'event';
+        $this->data['submodule']  = 'event';
+
         $this->Entry = new Entry(Yaml::parseFile(__DIR__ . '/../Entries/event.yml'));
         $this->db = \Config\Database::connect();
     }
 
     public function index()
     {
+        // Response with table body via ajax
         if ($this->request->getGet('tableBody')) {
             return $this->Entry->tableBody();
         }
-        
-        return $this->Entry->index();
+
+        // Deliver table template
+        $this->data['table'] = $this->Entry->table();
+
+        return view('Event\Views\index', $this->data);
     }
 
     public function add()

@@ -1,24 +1,23 @@
 name: Event
 title: Manajemen Event
-base_url: heroic/event
+base_url: /event
 description: Kelola event online, offline, dan hybrid dengan sistem peserta dan sertifikat
 icon: bi-calendar-event
 table: events
 primary_key: id
 
-# Konfigurasi tampilan tabel
-table:
-  show_on_table: [title, event_type, category, start_date, max_participants, status]
-  hideable: [description, organizer_name, organizer_email]
-  searchable: [title, description, organizer_name, city]
-  sortable: [title, start_date, created_at]
-  default_sorting:
-    column: start_date
-    order: DESC
+show_on_table: [title, event_type, category, start_date, max_participants, status]
+hideable: [title, event_type, category, start_date, max_participants, status]
+searchable: [title, event_type, category, status]
+sortable: [title, event_type, category, start_date, max_participants]
+default_sorting:
+  column: start_date
+  order: DESC
 
 # Definisi field
 fields:
   title:
+    name: title
     type: text
     label: Judul Event
     description: Nama lengkap event
@@ -28,6 +27,7 @@ fields:
     searchable: true
 
   slug:
+    name: slug
     type: text
     label: Slug
     description: URL-friendly identifier (otomatis dari judul jika kosong)
@@ -35,6 +35,7 @@ fields:
     show_on_table: false
 
   description:
+    name: description
     type: textarea
     label: Deskripsi
     description: Detail lengkap tentang event
@@ -43,6 +44,7 @@ fields:
     rows: 5
 
   event_type:
+    name: event_type
     type: select
     label: Tipe Event
     description: Pilih mode pelaksanaan event
@@ -56,10 +58,11 @@ fields:
     sortable: true
 
   category:
+    name: category
     type: select
     label: Kategori
     description: Jenis event
-    rules: permit_empty|in_list[workshop,seminar,webinar,conference,meetup,training,bootcamp,competition]
+    rules: permit_empty
     options:
       workshop: Workshop
       seminar: Seminar
@@ -73,6 +76,7 @@ fields:
     hideable: true
 
   start_date:
+    name: start_date
     type: datetime-local
     label: Tanggal Mulai
     description: Waktu mulai event
@@ -81,6 +85,7 @@ fields:
     sortable: true
 
   end_date:
+    name: end_date
     type: datetime-local
     label: Tanggal Selesai
     description: Waktu selesai event
@@ -88,6 +93,7 @@ fields:
     show_on_table: false
 
   registration_start:
+    name: registration_start
     type: datetime-local
     label: Buka Registrasi
     description: Waktu mulai pendaftaran
@@ -95,6 +101,7 @@ fields:
     show_on_table: false
 
   registration_end:
+    name: registration_end
     type: datetime-local
     label: Tutup Registrasi
     description: Waktu tutup pendaftaran
@@ -102,6 +109,7 @@ fields:
     show_on_table: false
 
   max_participants:
+    name: max_participants
     type: number
     label: Kuota Peserta
     description: Jumlah maksimal peserta (kosongkan untuk unlimited)
@@ -110,6 +118,7 @@ fields:
     hideable: true
 
   is_free:
+    name: is_free
     type: checkbox
     label: Event Gratis
     description: Centang jika event gratis
@@ -118,6 +127,7 @@ fields:
     show_on_table: false
 
   price:
+    name: price
     type: number
     label: Harga Tiket
     description: Harga dalam Rupiah (jika berbayar)
@@ -127,6 +137,7 @@ fields:
 
   # Location fields (offline/hybrid)
   venue_name:
+    name: venue_name
     type: text
     label: Nama Venue
     description: Nama tempat pelaksanaan (untuk offline/hybrid)
@@ -134,6 +145,7 @@ fields:
     show_on_table: false
 
   venue_address:
+    name: venue_address
     type: textarea
     label: Alamat Venue
     description: Alamat lengkap venue
@@ -142,6 +154,7 @@ fields:
     rows: 3
 
   city:
+    name: city
     type: text
     label: Kota
     description: Kota pelaksanaan event
@@ -150,6 +163,7 @@ fields:
     searchable: true
 
   province:
+    name: province
     type: text
     label: Provinsi
     description: Provinsi pelaksanaan event
@@ -158,6 +172,7 @@ fields:
 
   # Online meeting fields (online/hybrid)
   meeting_platform:
+    name: meeting_platform
     type: select
     label: Platform Meeting
     description: Platform untuk event online
@@ -172,6 +187,7 @@ fields:
     show_on_table: false
 
   meeting_url:
+    name: meeting_url
     type: url
     label: Link Meeting
     description: URL meeting online
@@ -179,6 +195,7 @@ fields:
     show_on_table: false
 
   meeting_id:
+    name: meeting_id
     type: text
     label: Meeting ID
     description: ID meeting (jika diperlukan)
@@ -186,6 +203,7 @@ fields:
     show_on_table: false
 
   meeting_password:
+    name: meeting_password
     type: text
     label: Meeting Password
     description: Password meeting (jika diperlukan)
@@ -194,6 +212,7 @@ fields:
 
   # Media
   thumbnail:
+    name: thumbnail
     type: file
     label: Thumbnail
     description: Gambar thumbnail event (800x600px)
@@ -202,6 +221,7 @@ fields:
     accept: image/*
 
   banner:
+    name: banner
     type: file
     label: Banner
     description: Banner event (1920x1080px)
@@ -211,6 +231,7 @@ fields:
 
   # Organizer
   organizer_name:
+    name: organizer_name
     type: text
     label: Nama Penyelenggara
     description: Nama organisasi/individu penyelenggara
@@ -220,6 +241,7 @@ fields:
     searchable: true
 
   organizer_email:
+    name: organizer_email
     type: email
     label: Email Penyelenggara
     description: Email kontak penyelenggara
@@ -228,6 +250,7 @@ fields:
     hideable: true
 
   organizer_phone:
+    name: organizer_phone
     type: tel
     label: Telepon Penyelenggara
     description: Nomor telepon penyelenggara
@@ -235,6 +258,7 @@ fields:
     show_on_table: false
 
   created_by:
+    name: created_by
     type: select
     label: Dibuat Oleh
     description: User yang membuat event
@@ -248,6 +272,7 @@ fields:
 
   # Certificate
   has_certificate:
+    name: has_certificate
     type: checkbox
     label: Ada Sertifikat
     description: Centang jika event menerbitkan sertifikat
@@ -256,6 +281,7 @@ fields:
     show_on_table: false
 
   certificate_template:
+    name: certificate_template
     type: select
     label: Template Sertifikat
     description: Pilih template sertifikat (jika ada)
@@ -264,6 +290,7 @@ fields:
     # Options akan diload dari CertificateTemplateLibrary
 
   attendance_required:
+    name: attendance_required
     type: checkbox
     label: Wajib Hadir
     description: Peserta harus hadir untuk mendapat sertifikat
@@ -273,6 +300,7 @@ fields:
 
   # Status
   status:
+    name: status
     type: select
     label: Status
     description: Status event
@@ -289,6 +317,7 @@ fields:
     sortable: true
 
   is_active:
+    name: is_active
     type: checkbox
     label: Aktif
     description: Status aktif event
