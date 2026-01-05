@@ -43,6 +43,10 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
     $routes->get('scholarship/settings', 'ScholarshipController::frontendSettings');
     $routes->get('scholarship/syncGraduatedB1', 'ScholarshipController::syncGraduatedB1');
 
+    // Route challenge alibaba
+    $routes->get('challenge', 'ChallengeController::index');
+    $routes->post('challenge', 'ChallengeController::register');
+
     // Bulk generate user token has been graduated
     $routes->get('generateTokenUserGraduate', 'ScholarshipController::generateTokenUserGraduate');
 

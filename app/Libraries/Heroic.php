@@ -131,6 +131,54 @@ class Heroic
         return $decodedToken;
     }
 
+    /**
+     * Decode scholarship registration token from query param or header
+     * Returns null if invalid, doesn't exit with 401
+     * 
+     * @return object|null
+     */
+    public function decodeScholarshipToken()
+    {
+        $headers  = getallheaders();
+        $request  = service('request');
+
+        // Check query param first (from URL)
+        $token = $request->getGet('token') ?? null;
+        
+        // If not in query, check Authorization header
+        if (!$token) {
+            $authHeader = $headers['Authorization'] ?? null;
+            
+            if ($authHeader) {
+                // Handle both "Bearer <token>" and direct "<token>" format
+                if (stripos($authHeader, 'Bearer ') === 0) {
+                    // Remove "Bearer " prefix
+                    $token = substr($authHeader, 7);
+                } else {
+                    // Direct token without Bearer prefix
+                    $token = $authHeader;
+                }
+            }
+        }
+
+        if (!$token) {
+            log_message('debug', 'No token found in request');
+            return null;
+        }
+
+        // Trim whitespace
+        $token = trim($token);
+        
+        try {
+            $key = config('Heroic')->jwtKey['secret'];
+            $decodedToken = JWT::decode($token, new Key($key, 'HS256'));
+            return $decodedToken;
+        } catch (Exception $e) {
+            log_message('error', 'JWT decode error: ' . $e->getMessage());
+            return null;
+        }
+    }
+
     public function normalizePhoneNumber($phone)
     {
         $phone = substr($phone, 0, 1) === '0'

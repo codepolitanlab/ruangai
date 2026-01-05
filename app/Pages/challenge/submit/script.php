@@ -26,21 +26,17 @@ function challengeSubmit() {
         profile: {
             name: '',
             email: '',
-            alibabacloud_id: '',
-            alibabacloud_screenshot: null,
-            profession: '',
-            job_title: '',
-            company: '',
+            alibaba_cloud_id: '',
+            alibaba_cloud_screenshot: null,
+            occupation: '',
+            institution: '',
             whatsapp: '',
-            address: '',
             gender: '',
-            industry: '',
-            referral_code: '',
             agreed_terms: false,
             agreed_terms_1: false,
             agreed_terms_2: false,
             agreed_terms_3: false,
-            birth_date: '',
+            birthday: '',
             x_profile_url: '',
         },
         teamMembers: [
@@ -81,40 +77,20 @@ function challengeSubmit() {
                 
                 // Pre-fill first team member with user data
                 if (result.user) {
-                    this.profile.name = result.user.name || '';
-                    this.profile.email = result.user.email || '';
+                    const u = result.user || {};
 
-                    this.teamMembers[0].name = result.user.name;
-                    this.teamMembers[0].email = result.user.email;
-                    // fill profile
-                    this.profile.name = result.user.name || '';
-                    this.profile.email = result.user.email || '';
-                    this.profile.alibabacloud_id = result.user.alibabacloud_id || '';
-                    this.profile.alibabacloud_screenshot = result.user.alibabacloud_screenshot || null;
-                    this.profile.profession = result.user.profession || '';
-                    this.profile.job_title = result.user.job_title || '';
-                    this.profile.company = result.user.company || '';
-                    this.profile.whatsapp = result.user.phone ||result.user.whatsapp;
-                    this.profile.address = result.user.address || '';
-                    this.profile.gender = result.user.gender || '';
-                    this.profile.industry = result.user.industry || '';
-                    this.profile.referral_code = result.user.referral_code || '';
-                    this.profile.agreed_terms = result.user.agreed_terms == 1 ? true : false;
-                    this.profile.birth_date = result.user.birth_date || '';
-                    this.profile.x_profile_url = result.user.x_profile_url || '';
-                    // this.profile.alibabacloud_id = result.user.alibabacloud_id || '123123123';
-                    // this.profile.alibabacloud_screenshot = result.user.alibabacloud_screenshot || null;
-                    // this.profile.profession = result.user.profession || '';
-                    // this.profile.job_title = result.user.job_title || '';
-                    // this.profile.company = result.user.company || 'PT CODEPOLITAN';
-                    // this.profile.whatsapp = result.user.whatsapp || '6285624865055';
-                    // this.profile.address = result.user.address || '';
-                    // this.profile.gender = result.user.gender || '';
-                    // this.profile.industry = result.user.industry || '';
-                    // this.profile.referral_code = result.user.referral_code || '';
-                    // this.profile.agreed_terms = result.user.agreed_terms == 1 ? true : false;
-                    // this.profile.birth_date = result.user.birth_date || '2000-01-01';
-                    // this.profile.x_profile_url = result.user.x_profile_url || 'https://x.com/username';
+                    this.profile.name = u.name || '';
+                    this.profile.email = u.email || '';
+
+                    // fill profile from getData fields only
+                    this.profile.alibaba_cloud_id = u.alibaba_cloud_id || '';
+                    this.profile.alibaba_cloud_screenshot = u.alibaba_cloud_screenshot || null;
+                    this.profile.occupation = u.occupation || '';
+                    this.profile.institution = u.institution || '';
+                    this.profile.whatsapp = u.phone || '';
+                    this.profile.gender = u.gender || '';
+                    this.profile.birthday = u.birthday || '';
+                    this.profile.x_profile_url = u.x_profile_url || '';
                 }
 
                 // Pre-fill existing submission if present and editable
@@ -133,16 +109,6 @@ function challengeSubmit() {
                         this.profile.agreed_terms_3 = true;
                     }
 
-                    // team members
-                    try {
-                        const members = JSON.parse(result.existing_submission.team_members || '[]');
-                        if (Array.isArray(members) && members.length) {
-                            this.teamMembers = members;
-                        }
-                    } catch (e) {
-                        this.teamMembers = [{ name: '', email: '', role: 'leader' }];
-                    }
-
                     // existing files (display only until replaced)
                     this.existingFiles.prompt_file = result.existing_submission.prompt_file || null;
                 } else if (result.existing_submission && !result.can_edit) {
@@ -153,22 +119,6 @@ function challengeSubmit() {
                 }
             } catch (error) {
                 this.showAlert('error', 'Gagal memuat data. Silakan refresh halaman.');
-            }
-        },
-
-        addMember() {
-            if (this.teamMembers.length < 3) {
-                this.teamMembers.push({
-                    name: '',
-                    email: '',
-                    role: 'member'
-                });
-            }
-        },
-
-        removeMember(index) {
-            if (index > 0) {
-                this.teamMembers.splice(index, 1);
             }
         },
 
@@ -200,7 +150,7 @@ function challengeSubmit() {
                 // Validate file type (only images)
                 const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
                 if (!allowedTypes.includes(file.type)) {
-                    this.profileErrors.alibabacloud_screenshot = 'File harus berupa gambar (JPG, PNG, GIF, WEBP)';
+                    this.profileErrors.alibaba_cloud_screenshot = 'File harus berupa gambar (JPG, PNG, GIF, WEBP)';
                     event.target.value = ''; // Clear input
                     $heroicHelper.toastr('File harus berupa gambar (JPG, PNG, GIF, WEBP)', 'danger', 'bottom');
                     return;
@@ -209,17 +159,17 @@ function challengeSubmit() {
                 // Validate file size (max 1MB)
                 const maxSize = 1 * 1024 * 1024; // 1MB in bytes
                 if (file.size > maxSize) {
-                    this.profileErrors.alibabacloud_screenshot = 'Ukuran file maksimal 1MB';
+                    this.profileErrors.alibaba_cloud_screenshot = 'Ukuran file maksimal 1MB';
                     event.target.value = ''; // Clear input
                     $heroicHelper.toastr('Ukuran file maksimal 1MB', 'danger', 'bottom');
                     return;
                 }
                 
                 // show filename, actual upload happens on submitProfile
-                this.profile.alibabacloud_screenshot = file.name;
+                this.profile.alibaba_cloud_screenshot = file.name;
                 this.profile._screenshot_file = file;
                 // Clear error if any
-                delete this.profileErrors.alibabacloud_screenshot;
+                delete this.profileErrors.alibaba_cloud_screenshot;
             }
         },
 
@@ -228,7 +178,7 @@ function challengeSubmit() {
             if (this.config && this.config.userDefaults) {
                 Object.assign(this.profile, this.config.userDefaults);
             } else {
-                this.profile = { name: '', email: '', alibabacloud_id: '', alibabacloud_screenshot: null, profession: '', job_title: '', company: '' };
+                this.profile = { name: '', email: '', alibaba_cloud_id: '', alibaba_cloud_screenshot: null, occupation: '', institution: '' };
             }
         },
 
@@ -255,10 +205,10 @@ function challengeSubmit() {
             }
 
             // Validasi Tanggal Lahir
-            if (!this.profile.birth_date || this.profile.birth_date.trim() === '') {
-                this.profileErrors.birth_date = 'Tanggal lahir wajib diisi';
+            if (!this.profile.birthday || this.profile.birthday.trim() === '') {
+                this.profileErrors.birthday = 'Tanggal lahir wajib diisi';
             } else {
-                const birthDate = new Date(this.profile.birth_date);
+                const birthDate = new Date(this.profile.birthday);
                 const today = new Date();
                 let age = today.getFullYear() - birthDate.getFullYear();
                 const monthDiff = today.getMonth() - birthDate.getMonth();
@@ -266,7 +216,7 @@ function challengeSubmit() {
                     age--;
                 }
                 if (age < 17) {
-                    this.profileErrors.birth_date = 'Usia minimal 17 tahun';
+                    this.profileErrors.birthday = 'Usia minimal 17 tahun';
                 }
             }
 
@@ -283,8 +233,8 @@ function challengeSubmit() {
             }
 
             // Validasi Profesi
-            if (!this.profile.profession || this.profile.profession.trim() === '') {
-                this.profileErrors.profession = 'Profesi wajib diisi';
+            if (!this.profile.occupation || this.profile.occupation.trim() === '') {
+                this.profileErrors.occupation = 'Profesi wajib diisi';
             }
 
             // Validasi Job Title
@@ -293,8 +243,8 @@ function challengeSubmit() {
             // }
 
             // Validasi Company
-            if (!this.profile.company || this.profile.company.trim() === '') {
-                this.profileErrors.company = 'Instansi/Perusahaan wajib diisi';
+            if (!this.profile.institution || this.profile.institution.trim() === '') {
+                this.profileErrors.institution = 'Instansi/Perusahaan wajib diisi';
             }
 
             // Validasi Industry
@@ -310,17 +260,17 @@ function challengeSubmit() {
             }
 
             // Validasi AlibabaCloud ID
-            if (!this.profile.alibabacloud_id || this.profile.alibabacloud_id.trim() === '') {
-                this.profileErrors.alibabacloud_id = 'AlibabaCloud ID wajib diisi';
-            } else if (!/^\d+$/.test(this.profile.alibabacloud_id)) {
-                this.profileErrors.alibabacloud_id = 'AlibabaCloud ID harus berupa angka';
-            } else if (this.profile.alibabacloud_id.length < 15) {
-                this.profileErrors.alibabacloud_id = 'AlibabaCloud ID minimal 15 karakter';
+            if (!this.profile.alibaba_cloud_id || this.profile.alibaba_cloud_id.trim() === '') {
+                this.profileErrors.alibaba_cloud_id = 'AlibabaCloud ID wajib diisi';
+            } else if (!/^\d+$/.test(this.profile.alibaba_cloud_id)) {
+                this.profileErrors.alibaba_cloud_id = 'AlibabaCloud ID harus berupa angka';
+            } else if (this.profile.alibaba_cloud_id.length < 15) {
+                this.profileErrors.alibaba_cloud_id = 'AlibabaCloud ID minimal 15 karakter';
             }
 
             // Validasi Screenshot
-            if (!this.profile.alibabacloud_screenshot && !this.profile._screenshot_file) {
-                this.profileErrors.alibabacloud_screenshot = 'Screenshot Alibaba Account wajib diupload';
+            if (!this.profile.alibaba_cloud_screenshot && !this.profile._screenshot_file) {
+                this.profileErrors.alibaba_cloud_screenshot = 'Screenshot Alibaba Account wajib diupload';
             }
 
             return Object.keys(this.profileErrors).length === 0;
@@ -332,7 +282,13 @@ function challengeSubmit() {
 
             // Validate form
             if (!this.validateProfileForm()) {
-                $heroicHelper.toastr('Mohon periksa kembali form yang diisi', 'danger', 'bottom');
+                const errorMessages = Object.values(this.profileErrors).join(', ');
+                $heroicHelper.toastr(errorMessages || 'Mohon periksa kembali form yang diisi', 'danger', 'bottom');
+                const firstErrorField = Object.keys(this.profileErrors)[0];
+                if (firstErrorField) {
+                    const el = document.querySelector(`[x-model="profile.${firstErrorField}"]`) || document.querySelector(`[name="${firstErrorField}"]`);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
                 return;
             }
 
@@ -342,22 +298,17 @@ function challengeSubmit() {
                 name: this.profile.name,
                 email: this.profile.email,
                 whatsapp: this.profile.whatsapp,
-                address: this.profile.address,
                 gender: this.profile.gender,
-                profession: this.profile.profession,
-                job_title: this.profile.job_title,
-                company: this.profile.company,
-                industry: this.profile.industry,
-                alibabacloud_id: this.profile.alibabacloud_id,
-                referral_code: this.profile.referral_code,
-                agreed_terms: this.profile.agreed_terms ? '1' : '0',
-                birth_date: this.profile.birth_date,
+                occupation: this.profile.occupation,
+                institution: this.profile.institution,
+                alibaba_cloud_id: this.profile.alibaba_cloud_id,
+                birthday: this.profile.birthday,
                 x_profile_url: this.profile.x_profile_url,
             };
 
             // include screenshot file if present
             if (this.profile._screenshot_file) {
-                data.alibabacloud_screenshot = this.profile._screenshot_file;
+                data.alibaba_cloud_screenshot = this.profile._screenshot_file;
             }
 
             try {
@@ -422,7 +373,13 @@ function challengeSubmit() {
 
         async submitForm() {
             if (!this.validateForm()) {
-                $heroicHelper.toastr('Mohon periksa kembali form yang diisi', 'danger', 'bottom');
+                const errorMessages = Object.values(this.errors).join(', ');
+                $heroicHelper.toastr(errorMessages || 'Mohon periksa kembali form yang diisi', 'danger', 'bottom');
+                const firstErrorField = Object.keys(this.errors)[0];
+                if (firstErrorField) {
+                    const el = document.querySelector(`[name="${firstErrorField}"]`) || document.querySelector(`[x-model="form.${firstErrorField}"]`) || document.querySelector(`[x-model="profile.${firstErrorField}"]`);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
                 return;
             }
 

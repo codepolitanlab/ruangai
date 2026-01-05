@@ -95,12 +95,82 @@ if (!function_exists('get_student_course_data')) {
 
 if (!function_exists('scholarship_registration_url')) {
     /**
-     * Get URL untuk pendaftaran beasiswa
+     * Get URL untuk pendaftaran beasiswa dengan JWT token
      * 
+     * @param int $user_id
      * @return string
      */
-    function scholarship_registration_url()
+    function scholarship_registration_url($user_id)
     {
-        return 'https://ruangai.id';
+        $db = \Config\Database::connect();
+        
+        // Check if user is scholarship participant
+        $isScholarshipParticipant = is_scholarship_participant($user_id);
+        
+        // Get user data from users table
+        $userData = $db->table('users')
+            ->select('name, email, phone')
+            ->where('id', $user_id)
+            ->where('deleted_at', null)
+            ->get()
+            ->getRowArray();
+        
+        // Get user profile data
+        $profileData = $db->table('user_profiles')
+            ->where('user_id', $user_id)
+            ->where('deleted_at', null)
+            ->get()
+            ->getRowArray();
+
+        // Inject name, email, phone into profile data for easier access
+        if ($profileData) {
+            $profileData['fullname']  = $userData['name'] ?? '';
+            $profileData['email'] = $userData['email'] ?? '';
+            $profileData['whatsapp_number'] = $userData['phone'] ?? '';
+        }
+        
+        // Check if profile is complete
+        $isProfileComplete = false;
+        if ($userData && $profileData) {
+            $isProfileComplete = 
+                !empty($userData['name']) &&
+                !empty($userData['email']) &&
+                !empty($userData['phone']) &&
+                !empty($profileData['birthday']) &&
+                !empty($profileData['gender']) &&
+                !empty($profileData['province']) &&
+                !empty($profileData['city']) &&
+                !empty($profileData['occupation']);
+        }
+        
+        // Prepare token payload
+        $tokenPayload = [
+            'user_id' => $user_id,
+            'participant' => $userData['name'] ?? '',
+            'is_scholarship_participant' => $isScholarshipParticipant,
+            'is_profile_complete' => $isProfileComplete,
+            'profile' => $profileData ?? [],
+            'exp' => time() + (60 * 60 * 24) // 24 hours expiration
+        ];
+        
+        // Generate JWT token
+        $token = \Firebase\JWT\JWT::encode(
+            $tokenPayload,
+            config('Heroic')->jwtKey['secret'],
+            'HS256'
+        );
+        
+        // Debug: verify token format
+        $segmentCount = substr_count($token, '.');
+        log_message('debug', 'Generated token segments: ' . $segmentCount . ', Token length: ' . strlen($token));
+        
+        if ($segmentCount !== 2) {
+            log_message('error', 'Invalid JWT generated! Token preview: ' . substr($token, 0, 100));
+        }
+        
+        // Determine base URL based on environment
+        $baseUrl = 'https://ruangai.id/registration';
+        
+        return $baseUrl . '?token=' . $token;
     }
 }

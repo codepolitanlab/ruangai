@@ -98,7 +98,7 @@
                         href="https://www.youtube.com/watch?v=lFLDUMHjEfc" 
                         class="btn btn-outline-primary py-4 px-3 d-flex align-items-top rounded-3 mb-1 justify-content-start fs-6 text-start">
                         <i class="bi bi-play-circle fs-3 me-2 pt-1"></i>
-                        Panduang Pendaftaran Akun Alibaba Cloud
+                        Panduan Pendaftaran Akun Alibaba Cloud
                     </a>
                     <a 
                         native 

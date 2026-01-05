@@ -1,8 +1,8 @@
 <script>
-  Alpine.data("courses", function() {
+  Alpine.data("scholarship", function() {
     let base = $heroic({
       title: `<?= $page_title ?>`,
-      url: `/courses/data`,
+      url: `/scholarship/data`,
       meta: {
         expandDesc: false,
         graduate: false,
@@ -12,20 +12,15 @@
 
     return {
       ...base,
-      title: "courses",
+      title: "scholarship",
       errorMessage: null,
 
       init() {
         base.init.call(this);
         this.$watch('data', (value) => {
-          // console.log('okok')
+          console.log('okok')
         });
       },
-
-      setVideoTeaser(url) {
-        this.meta.videoTeaser = url;
-      }
-
     };
   });
 </script>

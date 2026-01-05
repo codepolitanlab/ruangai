@@ -79,10 +79,10 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
 
                     <div class="col-md-6">
                         <label class="form-label">Tanggal Lahir <span class="text-danger">*</span></label>
-                        <input type="date" class="form-control" x-model="profile.birth_date" :class="{'is-invalid': profileErrors.birth_date}">
+                        <input type="date" class="form-control" x-model="profile.birthday" :class="{'is-invalid': profileErrors.birthday}">
                         <small class="form-text text-muted">Minimal usia 17 tahun</small>
-                        <template x-if="profileErrors.birth_date">
-                            <small class="text-danger d-block" x-text="profileErrors.birth_date"></small>
+                        <template x-if="profileErrors.birthday">
+                            <small class="text-danger d-block" x-text="profileErrors.birthday"></small>
                         </template>
                     </div>
 
@@ -100,7 +100,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
 
                     <div class="col-md-6">
                         <label class="form-label">Profesi <span class="text-danger">*</span></label>
-                        <select class="form-select" x-model="profile.profession" :class="{'is-invalid': profileErrors.profession}">
+                        <select class="form-select" x-model="profile.occupation" :class="{'is-invalid': profileErrors.occupation}">
                             <option value="">-Pilih-</option>
                             <option value="jobseeker">Job Seeker / Pencari Kerja</option>
                             <option value="college_student">Mahasiswa</option>
@@ -111,16 +111,16 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                             <option value="fresh_graduate">Fresh Graduate</option>
                         </select>
 
-                        <template x-if="profileErrors.profession">
-                            <small class="text-danger" x-text="profileErrors.profession"></small>
+                        <template x-if="profileErrors.occupation">
+                            <small class="text-danger" x-text="profileErrors.occupation"></small>
                         </template>
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label">Instansi / Perusahaan <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" x-model="profile.company" :class="{'is-invalid': profileErrors.company}">
-                        <template x-if="profileErrors.company">
-                            <small class="text-danger" x-text="profileErrors.company"></small>
+                        <input type="text" class="form-control" x-model="profile.institution" :class="{'is-invalid': profileErrors.institution}">
+                        <template x-if="profileErrors.institution">
+                            <small class="text-danger" x-text="profileErrors.institution"></small>
                         </template>
                     </div>
 
@@ -136,21 +136,21 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                     <div class="col-md-6">
                         <label class="form-label mb-0">AlibabaCloud ID <span class="text-danger">*</span></label>
                         <small class="mb-2 d-block">Daftar akun Alibaba Cloud dan WAN Model Studio <a href="https://s.id/WanModelStudio" target="_blank">DI SINI</a></small>
-                        <input type="text" class="form-control" x-model="profile.alibabacloud_id" :class="{'is-invalid': profileErrors.alibabacloud_id}" inputmode="numeric" pattern="[0-9]*" @input="profile.alibabacloud_id = profile.alibabacloud_id.replace(/[^0-9]/g, '')" placeholder="Cth: 5921721919160498">
-                        <template x-if="profileErrors.alibabacloud_id">
-                            <small class="text-danger" x-text="profileErrors.alibabacloud_id"></small>
+                        <input type="text" class="form-control" x-model="profile.alibaba_cloud_id" :class="{'is-invalid': profileErrors.alibaba_cloud_id}" inputmode="numeric" pattern="[0-9]*" @input="profile.alibaba_cloud_id = profile.alibaba_cloud_id.replace(/[^0-9]/g, '')" placeholder="Cth: 5921721919160498">
+                        <template x-if="profileErrors.alibaba_cloud_id">
+                            <small class="text-danger" x-text="profileErrors.alibaba_cloud_id"></small>
                         </template>
                     </div>
 
                     <div class="col-12">
                         <label class="form-label mb-0">Alibaba Account Screenshot <span class="text-danger">*</span></label>
                         <small class="mb-2 d-block">Lihat contoh screenshoot <a href="https://image.web.id/images/contoh_akun_alibabacloud.jpg" target="_blank">DI SINI</a></small>
-                        <input type="file" class="form-control" accept="image/*" @change="handleProfileScreenshot($event)" :class="{'is-invalid': profileErrors.alibabacloud_screenshot}">
-                        <template x-if="profile.alibabacloud_screenshot">
-                            <div class="mt-2 small text-muted">Tersimpan: <span x-text="profile.alibabacloud_screenshot"></span></div>
+                        <input type="file" class="form-control" accept="image/*" @change="handleProfileScreenshot($event)" :class="{'is-invalid': profileErrors.alibaba_cloud_screenshot}">
+                        <template x-if="profile.alibaba_cloud_screenshot">
+                            <div class="mt-2 small text-muted">Tersimpan: <span x-text="profile.alibaba_cloud_screenshot"></span></div>
                         </template>
-                        <template x-if="profileErrors.alibabacloud_screenshot">
-                            <small class="text-danger" x-text="profileErrors.alibabacloud_screenshot"></small>
+                        <template x-if="profileErrors.alibaba_cloud_screenshot">
+                            <small class="text-danger" x-text="profileErrors.alibaba_cloud_screenshot"></small>
                         </template>
                     </div>
                 </div>
