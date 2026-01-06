@@ -58,9 +58,10 @@
                                     <td>
                                         <?= $meeting['id'] ?><br>
                                         <div class="badge text-bg-light mb-1"><?= $meeting['meeting_code'] ?? 'code not set' ?></div>
-                                        <div class="badge rounded-pill bg-<?= $meeting['status'] === 'completed' ? 'success' : ($meeting['status'] === 'ongoing' ? 'warning' : 'secondary') ?>">
+                                        <!-- Bg danger for canceled -->
+                                        <div class="badge rounded-pill bg-<?= $meeting['status'] === 'completed' ? 'success' : ($meeting['status'] === 'ongoing' ? 'warning' : ($meeting['status'] === 'canceled' ? 'danger' : 'secondary')) ?>">
                                             <?= $meeting['status'] ?>
-                                        </d>
+                                        </div>
                                     </td>
                                     <td>
                                         <div class="h6 mb-1"><?= $meeting['title'] ?></div>

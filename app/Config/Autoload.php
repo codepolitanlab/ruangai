@@ -49,6 +49,8 @@ class Autoload extends AutoloadConfig
         'Logviewer'   => ROOTPATH . 'modules/Logviewer',
         'Referral'    => ROOTPATH . 'modules/Referral',
         'Challenge'   => ROOTPATH . 'modules/Challenge',
+        'Mahasiswi'   => ROOTPATH . 'modules/Mahasiswi',
+        'Event'       => ROOTPATH . 'modules/Event',
     ];
 
     /**

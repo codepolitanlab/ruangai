@@ -12,6 +12,15 @@ class Certificate extends BaseConfig
     // Path to store generated certificates
     public $certificatePath = WRITEPATH . 'certificates/';
 
+    // Certificate type
+    public $certificateTypes = [
+        'course' => 'Course',
+        'training'  => 'Training',
+        'workshop'  => 'Workshop',
+        'challenge' => 'Challenge',
+        'event' => 'Event',
+    ];
+
     // Default template name
     public $defaultTemplate = 'default';
 
@@ -19,6 +28,7 @@ class Certificate extends BaseConfig
     public $availableTemplates = [
         'default'  => \Certificate\Libraries\DefaultCertificateTemplate::class,
         'comentor' => \Certificate\Libraries\ComentorCertificateTemplate::class,
+        'workshop_avpn' => \Certificate\Libraries\WorkshopAVPNCertificateTemplate::class,
         // Add more templates here as needed
     ];
 }

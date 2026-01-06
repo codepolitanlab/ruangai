@@ -55,10 +55,6 @@
                     if (newData?.status === 'failed') {
                         this.$router.navigate('/notfound');
                     }
-
-                    if (!newData?.is_feedback) {
-                        this.$router.navigate(`/courses/claim_certificate/${newData?.claimer?.entity_id}`);
-                    }
                 });
                 
                 // Preload fonts saat init
@@ -111,13 +107,16 @@
                 });
 
                 // Data mapping global
+                const claimer = this.data.claimer || {};
                 const map = {
-                    url: this.data.claimer.url ?? '',
-                    name: this.data.claimer.name ?? '',
-                    course: this.data.claimer.course ?? '',
-                    publishDate: this.data.claimer.publishDate ?? '',
-                    expiredDate: `${this.data.claimer.expiredDate ?? ''}`,
-                    code: `No: ${this.data.claimer.number ?? ''}`,
+                    ...claimer,
+                    // pastikan field-field utama selalu tersedia dengan default
+                    url: claimer.url ?? '',
+                    name: claimer.name ?? '',
+                    course: claimer.course ?? '',
+                    publishDate: claimer.publishDate ?? '',
+                    expiredDate: claimer.expiredDate ? `${claimer.expiredDate}` : '',
+                    code: claimer.number ? `No: ${claimer.number}` : ''
                 };
 
                 // Pre-build QR (pakai sama di semua halaman; bisa override per halaman kalau mau)

@@ -57,6 +57,7 @@
                                     <option value="scheduled" <?= (isset($meeting['status']) && $meeting['status'] === 'scheduled') ? 'selected' : '' ?>>Scheduled</option>
                                     <option value="ongoing" <?= (isset($meeting['status']) && $meeting['status'] === 'ongoing') ? 'selected' : '' ?>>Ongoing</option>
                                     <option value="completed" <?= (isset($meeting['status']) && $meeting['status'] === 'completed') ? 'selected' : '' ?>>Completed</option>
+                                    <option value="canceled" <?= (isset($meeting['status']) && $meeting['status'] === 'canceled') ? 'selected' : '' ?>>Canceled</option>
                                 </select>
                             </div>
                             <div class="mb-3">
