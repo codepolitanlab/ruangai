@@ -21,7 +21,9 @@ function challengeSubmit() {
             video_title: '',
             video_description: '',
             other_tools: '',
-            ethical_statement_agreed: false
+            ethical_statement_agreed: false,
+            is_followed_account_codepolitan: false,
+            is_followed_account_alibaba: false
         },
         profile: {
             name: '',
@@ -102,6 +104,8 @@ function challengeSubmit() {
                     this.form.video_description = result.existing_submission.video_description || '';
                     this.form.other_tools = result.existing_submission.other_tools || '';
                     this.form.ethical_statement_agreed = result.existing_submission.ethical_statement_agreed == 1 ? true : false;
+                    this.form.is_followed_account_codepolitan = result.existing_submission.is_followed_account_codepolitan == 1 ? true : false;
+                    this.form.is_followed_account_alibaba = result.existing_submission.is_followed_account_alibaba == 1 ? true : false;
                     // Map ethical_statement_agreed to checkboxes
                     if (result.existing_submission.ethical_statement_agreed == 1) {
                         this.profile.agreed_terms_1 = true;
@@ -347,6 +351,14 @@ function challengeSubmit() {
                 this.errors.prompt_file = 'Prompt file wajib diupload';
             }
 
+            // Validate follow accounts
+            if (!this.form.is_followed_account_codepolitan) {
+                this.errors.is_followed_account_codepolitan = 'Anda harus mengikuti akun @codepolitan';
+            }
+            if (!this.form.is_followed_account_alibaba) {
+                this.errors.is_followed_account_alibaba = 'Anda harus mengikuti akun @alibaba_cloud';
+            }
+
             // Validate agreed terms
             if (!this.profile.agreed_terms_1) {
                 this.errors.agreed_terms_1 = 'Anda harus menyetujui pernyataan ini';
@@ -379,7 +391,9 @@ function challengeSubmit() {
                 twitter_post_url: this.form.twitter_post_url,
                 video_title: this.form.video_title,
                 video_description: this.form.video_description,
-                ethical_statement_agreed: (this.profile.agreed_terms_1 && this.profile.agreed_terms_2 && this.profile.agreed_terms_3) ? '1' : '0'
+                ethical_statement_agreed: (this.profile.agreed_terms_1 && this.profile.agreed_terms_2 && this.profile.agreed_terms_3) ? '1' : '0',
+                is_followed_account_codepolitan: this.form.is_followed_account_codepolitan ? '1' : '0',
+                is_followed_account_alibaba: this.form.is_followed_account_alibaba ? '1' : '0'
             };
 
             if (this.isEdit && this.submissionId) {
