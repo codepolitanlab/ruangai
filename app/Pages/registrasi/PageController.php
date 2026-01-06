@@ -121,6 +121,20 @@ class PageController extends BaseController
             'active'     => 0,
             'created_at' => date('Y-m-d H:i:s'),
         ];
+
+        // Accept `source` from POST (preferred) or GET and include it if the `users` table has that column
+        $source = $request->getPost('source');
+        if ($source === null || $source === '') {
+            $source = $request->getGet('source');
+        }
+        if ($source !== null && $source !== '') {
+            $source = substr(trim($source), 0, 100); // limit length
+            $fields = $db->getFieldData('users');
+            $fieldNames = array_map(function($f) { return $f->name; }, $fields);
+            if (in_array('source', $fieldNames)) {
+                $userData['source'] = $source;
+            }
+        }
         
         $db->table('users')->insert($userData);
         $id = $db->insertID();

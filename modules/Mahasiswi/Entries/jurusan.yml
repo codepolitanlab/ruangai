@@ -1,0 +1,25 @@
+name: jurusan
+title: Jurusan
+base_url: /mahasiswi/jurusan
+description: Daftar Nama Jurusan
+table: mhs_jurusan
+primary_key: id
+show_on_table: [id,nama_jurusan,kode_jurusan]
+hideable: [nama_jurusan,kode_jurusan]
+searchable: [nama_jurusan,kode_jurusan]
+sortable: [id,nama_jurusan,kode_jurusan]
+default_sorting: [id,desc]
+fields:
+    id:
+        name: id
+        label: ID
+    nama_jurusan:
+        name: nama_jurusan
+        type: text
+        label: Nama Jurusan
+        rules: required|min_length[5]
+    kode_jurusan:
+        name: kode_jurusan
+        type: text
+        label: Kode Jurusan
+        rules: required

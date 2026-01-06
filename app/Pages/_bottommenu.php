@@ -38,12 +38,12 @@ $bottommenu = [
         'icon'   => 'bi bi-gift',
         'module' => 'reward'
     ],
-    // [
-    //     'label'  => 'Sertifikat',
-    //     'url'    => '/certificate',
-    //     'icon'   => 'bi bi-award',
-    //     'module' => 'certificate'
-    // ],
+    [
+        'label'  => 'Sertifikat',
+        'url'    => '/certificate',
+        'icon'   => 'bi bi-award',
+        'module' => 'certificate'
+    ],
     [
         'label'  => 'Prompt',
         'url'    => '/prompt',

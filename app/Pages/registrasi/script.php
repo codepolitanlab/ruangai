@@ -19,6 +19,7 @@
         repeat_password: "",
         logo: "",
         sitename: "",
+        source: "",
       },
       errors: {
         fullname: "",
@@ -35,11 +36,19 @@
         this.data.logo = Alpine.store('core').settings.auth_logo;
         this.data.sitename = Alpine.store('core').settings.app_title;
 
-        // Read redirect parameter from URL
+        // Read redirect and source parameters from URL
         const params = new URLSearchParams(window.location.search);
         const r = params.get('redirect');
         if (r) {
           this.redirect = decodeURIComponent(r);
+        }
+        const s = params.get('source');
+        if (s) {
+          try {
+            this.data.source = decodeURIComponent(s).slice(0, 100);
+          } catch (e) {
+            this.data.source = String(s).slice(0, 100);
+          }
         }
 
         // Wait for grecaptcha to be ready and render widget
@@ -120,6 +129,7 @@
         formData.append("password", this.data.password ?? "");
         formData.append("repeat_password", this.data.repeat_password ?? "");
         formData.append("recaptcha", this.recaptcha);
+        formData.append("source", this.data.source ?? "");
         
         axios
           .post("/registrasi", formData, {

@@ -1,0 +1,49 @@
+name: mahasiswi
+title: Mahasiswi
+base_url: /mahasiswi
+description: Daftar Nama Mahasiswi
+icon: people
+table: mhs_mahasiswa
+show_on_table: [id,nama,nomor_induk,jenis_kelamin,nama_jurusan]
+hideable: [nama,nomor_induk,jenis_kelamin,nama_jurusan]
+searchable: [nama,nomor_induk,jenis_kelamin,nama_jurusan]
+sortable: [id,nama,nomor_induk,jenis_kelamin,nama_jurusan]
+default_sorting: [nama,asc]
+fields:
+    id:
+        name: id
+        label: ID
+    nama:
+        name: nama
+        type: text
+        label: Nama
+        description: Nama lengkap mahasiswi
+        rules: required|min_length[5]
+    nomor_induk:
+        name: nomor_induk
+        type: text
+        label: Nomor Induk
+        rules: required|numeric
+    jenis_kelamin:
+        name: jenis_kelamin
+        type: select
+        label: Jenis Kelamin
+        options:
+            L: Laki-laki
+            P: Perempuan
+        rules: required
+    jurusan_id:
+        name: jurusan_id
+        type: select
+        label: Jurusan
+        relation:
+            table: mhs_jurusan
+            foreignKey: id
+            label: nama_jurusan
+    nama_jurusan:
+        name: nama_jurusan
+        label: Jurusan
+        relation:
+            table: mhs_jurusan
+            foreignKey: id
+            localKey: jurusan_id

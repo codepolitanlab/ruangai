@@ -1,0 +1,337 @@
+name: Event
+title: Manajemen Event
+base_url: heroic/event
+description: Kelola event online, offline, dan hybrid dengan sistem peserta dan sertifikat
+icon: bi-calendar-event
+table: events
+primary_key: id
+
+# Konfigurasi tampilan tabel
+table:
+  show_on_table: [title, event_type, category, start_date, max_participants, status]
+  hideable: [description, organizer_name, organizer_email]
+  searchable: [title, description, organizer_name, city]
+  sortable: [title, start_date, created_at]
+  default_sorting:
+    column: start_date
+    order: DESC
+
+# Definisi field
+fields:
+  title:
+    type: text
+    label: Judul Event
+    description: Nama lengkap event
+    rules: required|min_length[5]|max_length[255]
+    show_on_table: true
+    sortable: true
+    searchable: true
+
+  slug:
+    type: text
+    label: Slug
+    description: URL-friendly identifier (otomatis dari judul jika kosong)
+    rules: permit_empty|alpha_dash|max_length[255]|is_unique[events.slug,id,{id}]
+    show_on_table: false
+
+  description:
+    type: textarea
+    label: Deskripsi
+    description: Detail lengkap tentang event
+    rules: permit_empty
+    show_on_table: false
+    rows: 5
+
+  event_type:
+    type: select
+    label: Tipe Event
+    description: Pilih mode pelaksanaan event
+    rules: required|in_list[online,offline,hybrid]
+    options:
+      online: Online
+      offline: Offline
+      hybrid: Hybrid
+    show_on_table: true
+    hideable: true
+    sortable: true
+
+  category:
+    type: select
+    label: Kategori
+    description: Jenis event
+    rules: permit_empty|in_list[workshop,seminar,webinar,conference,meetup,training,bootcamp,competition]
+    options:
+      workshop: Workshop
+      seminar: Seminar
+      webinar: Webinar
+      conference: Conference
+      meetup: Meetup
+      training: Training
+      bootcamp: Bootcamp
+      competition: Competition
+    show_on_table: true
+    hideable: true
+
+  start_date:
+    type: datetime-local
+    label: Tanggal Mulai
+    description: Waktu mulai event
+    rules: required|valid_date
+    show_on_table: true
+    sortable: true
+
+  end_date:
+    type: datetime-local
+    label: Tanggal Selesai
+    description: Waktu selesai event
+    rules: required|valid_date
+    show_on_table: false
+
+  registration_start:
+    type: datetime-local
+    label: Buka Registrasi
+    description: Waktu mulai pendaftaran
+    rules: permit_empty|valid_date
+    show_on_table: false
+
+  registration_end:
+    type: datetime-local
+    label: Tutup Registrasi
+    description: Waktu tutup pendaftaran
+    rules: permit_empty|valid_date
+    show_on_table: false
+
+  max_participants:
+    type: number
+    label: Kuota Peserta
+    description: Jumlah maksimal peserta (kosongkan untuk unlimited)
+    rules: permit_empty|integer|greater_than[0]
+    show_on_table: true
+    hideable: true
+
+  is_free:
+    type: checkbox
+    label: Event Gratis
+    description: Centang jika event gratis
+    rules: permit_empty|in_list[0,1]
+    default: 1
+    show_on_table: false
+
+  price:
+    type: number
+    label: Harga Tiket
+    description: Harga dalam Rupiah (jika berbayar)
+    rules: permit_empty|decimal|greater_than_equal_to[0]
+    show_on_table: false
+    step: 0.01
+
+  # Location fields (offline/hybrid)
+  venue_name:
+    type: text
+    label: Nama Venue
+    description: Nama tempat pelaksanaan (untuk offline/hybrid)
+    rules: permit_empty|max_length[255]
+    show_on_table: false
+
+  venue_address:
+    type: textarea
+    label: Alamat Venue
+    description: Alamat lengkap venue
+    rules: permit_empty
+    show_on_table: false
+    rows: 3
+
+  city:
+    type: text
+    label: Kota
+    description: Kota pelaksanaan event
+    rules: permit_empty|max_length[100]
+    show_on_table: false
+    searchable: true
+
+  province:
+    type: text
+    label: Provinsi
+    description: Provinsi pelaksanaan event
+    rules: permit_empty|max_length[100]
+    show_on_table: false
+
+  # Online meeting fields (online/hybrid)
+  meeting_platform:
+    type: select
+    label: Platform Meeting
+    description: Platform untuk event online
+    rules: permit_empty|in_list[zoom,google_meet,microsoft_teams,webex,jitsi,custom]
+    options:
+      zoom: Zoom
+      google_meet: Google Meet
+      microsoft_teams: Microsoft Teams
+      webex: Webex
+      jitsi: Jitsi Meet
+      custom: Custom/Lainnya
+    show_on_table: false
+
+  meeting_url:
+    type: url
+    label: Link Meeting
+    description: URL meeting online
+    rules: permit_empty|valid_url|max_length[500]
+    show_on_table: false
+
+  meeting_id:
+    type: text
+    label: Meeting ID
+    description: ID meeting (jika diperlukan)
+    rules: permit_empty|max_length[100]
+    show_on_table: false
+
+  meeting_password:
+    type: text
+    label: Meeting Password
+    description: Password meeting (jika diperlukan)
+    rules: permit_empty|max_length[100]
+    show_on_table: false
+
+  # Media
+  thumbnail:
+    type: file
+    label: Thumbnail
+    description: Gambar thumbnail event (800x600px)
+    rules: permit_empty|ext_in[thumbnail,jpg,jpeg,png,webp]|max_size[thumbnail,2048]
+    show_on_table: false
+    accept: image/*
+
+  banner:
+    type: file
+    label: Banner
+    description: Banner event (1920x1080px)
+    rules: permit_empty|ext_in[banner,jpg,jpeg,png,webp]|max_size[banner,5120]
+    show_on_table: false
+    accept: image/*
+
+  # Organizer
+  organizer_name:
+    type: text
+    label: Nama Penyelenggara
+    description: Nama organisasi/individu penyelenggara
+    rules: permit_empty|max_length[255]
+    show_on_table: false
+    hideable: true
+    searchable: true
+
+  organizer_email:
+    type: email
+    label: Email Penyelenggara
+    description: Email kontak penyelenggara
+    rules: permit_empty|valid_email|max_length[255]
+    show_on_table: false
+    hideable: true
+
+  organizer_phone:
+    type: tel
+    label: Telepon Penyelenggara
+    description: Nomor telepon penyelenggara
+    rules: permit_empty|max_length[20]
+    show_on_table: false
+
+  created_by:
+    type: select
+    label: Dibuat Oleh
+    description: User yang membuat event
+    rules: permit_empty|is_not_unique[users.id]
+    show_on_table: false
+    relation:
+      table: users
+      foreignKey: id
+      label: name
+      localKey: created_by
+
+  # Certificate
+  has_certificate:
+    type: checkbox
+    label: Ada Sertifikat
+    description: Centang jika event menerbitkan sertifikat
+    rules: permit_empty|in_list[0,1]
+    default: 0
+    show_on_table: false
+
+  certificate_template:
+    type: select
+    label: Template Sertifikat
+    description: Pilih template sertifikat (jika ada)
+    rules: permit_empty|max_length[50]
+    show_on_table: false
+    # Options akan diload dari CertificateTemplateLibrary
+
+  attendance_required:
+    type: checkbox
+    label: Wajib Hadir
+    description: Peserta harus hadir untuk mendapat sertifikat
+    rules: permit_empty|in_list[0,1]
+    default: 1
+    show_on_table: false
+
+  # Status
+  status:
+    type: select
+    label: Status
+    description: Status event
+    rules: required|in_list[draft,published,ongoing,completed,cancelled]
+    options:
+      draft: Draft
+      published: Published
+      ongoing: Ongoing
+      completed: Completed
+      cancelled: Cancelled
+    default: draft
+    show_on_table: true
+    hideable: true
+    sortable: true
+
+  is_active:
+    type: checkbox
+    label: Aktif
+    description: Status aktif event
+    rules: permit_empty|in_list[0,1]
+    default: 1
+    show_on_table: false
+
+# Actions
+actions:
+  view: true
+  edit: true
+  delete: true
+  custom:
+    - name: participants
+      label: Peserta
+      icon: bi-people
+      url: heroic/event/participants/{id}
+      class: btn-info btn-sm
+    - name: sessions
+      label: Sesi
+      icon: bi-clock-history
+      url: heroic/event/sessions/{id}
+      class: btn-secondary btn-sm
+    - name: certificates
+      label: Sertifikat
+      icon: bi-award
+      url: heroic/event/certificates/{id}
+      class: btn-success btn-sm
+
+# Filters
+filters:
+  - field: event_type
+    type: select
+    label: Tipe Event
+  - field: category
+    type: select
+    label: Kategori
+  - field: status
+    type: select
+    label: Status
+  - field: has_certificate
+    type: select
+    label: Ada Sertifikat
+    options:
+      1: Ya
+      0: Tidak

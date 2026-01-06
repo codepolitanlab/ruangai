@@ -127,6 +127,8 @@
 
                 <div class="d-flex justify-content-center mb-3" id="grecaptcha-register" x-show="showRecaptcha"></div>
 
+                <input type="hidden" id="source" x-model="data.source">
+
                 <div class="mt-4 mb-4">
                     <button type="button" x-on:click="register" class="btn btn-lg btn-register w-100 d-flex align-items-center justify-content-center" :disabled="buttonSubmitting">
                         <span class="spinner-border spinner-border-sm me-2" x-show="buttonSubmitting" aria-hidden="true"></span>
@@ -134,10 +136,8 @@
                     </button>
                 </div>
 
-                <div class="text-center">
-                    <p style="color: #718096; font-size: 1rem; margin: 0;">
-                        Sudah punya akun? <a href="/masuk" style="color: #5CADC9; text-decoration: none; font-weight: 600;">Masuk</a>
-                    </p>
+                <div class="text-center mt-3">
+                    <a href="/masuk" class="btn btn-link text-primary fs-6">Sudah punya akun? Masuk di sini</a>
                 </div>
             </div>
         </div>

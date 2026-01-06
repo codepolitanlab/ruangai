@@ -9,7 +9,7 @@
 
         <template x-if="data?.status !== 'failed'">
             <div class="appContent" style="min-height:90vh;">
-                <a href="/courses" class="mb-4 d-flex align-items-center gap-2">
+                <a href="/certificate" class="mb-4 d-flex align-items-center gap-2">
                     <i class="bi bi-arrow-left-circle-fill fs-2 text-secondary"></i>
                     <h4 class="m-0">Kembali</h4>
                 </a>

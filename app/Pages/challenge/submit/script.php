@@ -286,7 +286,13 @@ function challengeSubmit() {
 
             // Validate form
             if (!this.validateProfileForm()) {
-                $heroicHelper.toastr('Mohon periksa kembali form yang diisi', 'danger', 'bottom');
+                const errorMessages = Object.values(this.profileErrors).join(', ');
+                $heroicHelper.toastr(errorMessages || 'Mohon periksa kembali form yang diisi', 'danger', 'bottom');
+                const firstErrorField = Object.keys(this.profileErrors)[0];
+                if (firstErrorField) {
+                    const el = document.querySelector(`[x-model="profile.${firstErrorField}"]`) || document.querySelector(`[name="${firstErrorField}"]`);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
                 return;
             }
 
@@ -379,7 +385,13 @@ function challengeSubmit() {
 
         async submitForm() {
             if (!this.validateForm()) {
-                $heroicHelper.toastr('Mohon periksa kembali form yang diisi', 'danger', 'bottom');
+                const errorMessages = Object.values(this.errors).join(', ');
+                $heroicHelper.toastr(errorMessages || 'Mohon periksa kembali form yang diisi', 'danger', 'bottom');
+                const firstErrorField = Object.keys(this.errors)[0];
+                if (firstErrorField) {
+                    const el = document.querySelector(`[name="${firstErrorField}"]`) || document.querySelector(`[x-model="form.${firstErrorField}"]`) || document.querySelector(`[x-model="profile.${firstErrorField}"]`);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
                 return;
             }
 
