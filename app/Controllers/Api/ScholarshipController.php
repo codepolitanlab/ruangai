@@ -239,8 +239,7 @@ class ScholarshipController extends ResourceController
         $leader = $participantModel
             ->select('scholarship_participants.*, events.title as program_title, events.telegram_link, events.date_start')
             ->join('events', 'events.code = scholarship_participants.program', 'left')
-            ->where('scholarship_participants.whatsapp', $jwt->whatsapp_number)
-            ->orWhere('scholarship_participants.whatsapp', $Heroic->normalizePhoneNumber($jwt->whatsapp_number))
+            ->where('scholarship_participants.user_id', $jwt->user_id)
             ->where('scholarship_participants.deleted_at', null)
             ->orderBy('scholarship_participants.created_at', 'DESC')
             ->first();
