@@ -95,18 +95,18 @@
                     <a 
                         native 
                         target="_blank" 
-                        href="https://www.youtube.com/watch?v=lFLDUMHjEfc" 
-                        class="btn btn-outline-primary py-4 px-3 d-flex align-items-top rounded-3 mb-1 justify-content-start fs-6 text-start">
+                        href="https://youtu.be/lFLDUMHjEfc?si=iN20ukMCLgqWCYIG" 
+                        class="btn hover btn-primary p-4 d-flex align-items-top rounded-3 mb-3 justify-content-start fs-6 text-start">
                         <i class="bi bi-play-circle fs-3 me-2 pt-1"></i>
-                        Panduan Pendaftaran Akun Alibaba Cloud
+                        Panduan Pendaftaran Akun Alibaba Cloud & Tutorial Generate Video di WAN Model Studio
                     </a>
                     <a 
                         native 
                         target="_blank" 
-                        href="https://youtu.be/lFLDUMHjEfc?si=EYjraLUuhAJLXgvL&t=373" 
-                        class="btn btn-outline-primary py-4 px-3 d-flex align-items-top rounded-3 mb-1 justify-content-start fs-6 text-start">
+                        href="https://youtu.be/A1GsOOJNQPo" 
+                        class="btn hover btn-primary p-4 d-flex align-items-top rounded-3 mb-1 justify-content-start fs-6 text-start">
                         <i class="bi bi-play-circle fs-3 me-2 pt-1"></i>
-                        Tutorial Generate Video di WAN Model Studio
+                        Tutorial Submit Karya
                     </a>
                 </div>
             </div>
