@@ -70,7 +70,7 @@ class PageController extends BaseController
             ->getResultArray();
 
         // Filter live sessions berdasarkan reference_comentor
-        if ($participant && isset($participant->reference_comentor) && $participant->reference_comentor === 'CO-Sheli') {
+        if ($participant && isset($participant->reference_comentor) && $participant->reference_comentor === 'co-sheli') {
             // Jika CO-Sheli, hanya tampilkan Batch Comentor Followup
             $live_sessions = array_filter($live_sessions, function($session) {
                 return $session['batch_name'] === 'Batch Comentor Followup';
