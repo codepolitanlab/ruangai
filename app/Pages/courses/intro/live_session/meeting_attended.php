@@ -1,4 +1,4 @@
-<template x-for="(attended, attendedIndex) in data.attended">
+<template x-for="(attended, attendedIndex) in data?.attended">
     <div 
         class="card pe-3 p-2 rounded-4 shadow-sm mb-3 bg-opacity-10 border"
         :class="attended.status == 1 ? 'bg-success border-success' : 'bg-warning border-warning'"
