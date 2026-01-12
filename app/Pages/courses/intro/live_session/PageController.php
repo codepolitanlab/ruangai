@@ -51,8 +51,15 @@ class PageController extends BaseController
             }
         }
 
+        // Ambil data participant untuk pengecekan reference_comentor
+        $participant = $db->table('scholarship_participants')
+            ->select('reference_comentor, is_reference_followup, program, is_participating_other_ai_program')
+            ->where('user_id', $jwt->user_id)
+            ->get()
+            ->getRow();
+
         $live_sessions = $db->table('live_meetings')
-            ->select('live_meetings.*')
+            ->select('live_meetings.*, live_batch.name as batch_name')
             ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
             ->where('live_batch.status', 'ongoing')
             ->where('live_batch.course_id', $course_id)
@@ -61,6 +68,21 @@ class PageController extends BaseController
             ->orderBy('meeting_time', 'ASC')
             ->get()
             ->getResultArray();
+
+        // Filter live sessions berdasarkan reference_comentor
+        if ($participant && isset($participant->reference_comentor) && $participant->reference_comentor === 'CO-Sheli') {
+            // Jika CO-Sheli, hanya tampilkan Batch Comentor Followup
+            $live_sessions = array_filter($live_sessions, function($session) {
+                return $session['batch_name'] === 'Batch Comentor Followup';
+            });
+            $this->data['is_followup'] = true;
+        } else {
+            // Jika bukan CO-Sheli, tampilkan yang bukan Batch Comentor Followup
+            $live_sessions = array_filter($live_sessions, function($session) {
+                return $session['batch_name'] !== 'Batch Comentor Followup';
+            });
+            $this->data['is_followup'] = false;
+        }
 
         $this->data['live_sessions'] = [];
 
@@ -136,13 +158,6 @@ class PageController extends BaseController
             ->where('id', $jwt->user_id)
             ->get()
             ->getRowArray();
-
-        // Ambil data participant berdasarkan user_id dengan null safety
-        $participant = $db->table('scholarship_participants')
-            ->select('reference_comentor, is_reference_followup, program, is_participating_other_ai_program')
-            ->where('user_id', $jwt->user_id)
-            ->get()
-            ->getRow();
 
         $this->data['is_mentor'] = $jwt->user['role_id'] == 5 ? true : false;
         $this->data['is_comentor'] = $jwt->user['role_id'] == 4 ? true : false;
