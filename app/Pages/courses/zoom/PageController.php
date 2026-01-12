@@ -48,21 +48,9 @@ class PageController extends BaseController
         // Check if user should access this meeting based on reference_comentor
         if ($participant && isset($participant->reference_comentor) && $participant->reference_comentor == 'co-sheli') {
             // Jika CO-Sheli, hanya bisa akses Batch Comentor Followup
-            if ($meeting['batch_name'] !== 'Batch Comentor Followup') {
-                return $this->respond([
-                    'status'  => 'error',
-                    'message' => 'Anda tidak memiliki akses ke meeting ini'
-                ]);
-            }
             $this->data['is_followup'] = true;
         } else {
             // Jika bukan CO-Sheli, tidak bisa akses Batch Comentor Followup
-            if ($meeting['batch_name'] === 'Batch Comentor Followup') {
-                return $this->respond([
-                    'status'  => 'error',
-                    'message' => 'Anda tidak memiliki akses ke meeting ini'
-                ]);
-            }
             $this->data['is_followup'] = false;
         }
 
