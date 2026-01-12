@@ -108,8 +108,11 @@
             <template x-if="data?.student?.program == 'RuangAI2025B2' && !data?.group_comentor">
                 <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%208476.png" width="35%" alt="">
             </template>
-            <template x-if="data?.student?.program == Alpine.store('core').activeProgram">
-                <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%209476.png?updatedAt=1760359599371" width="35%" alt="">
+            <template x-if="data?.student?.program == 'RuangAI2025B3' && !data?.group_comentor">
+                <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%209476.png" width="35%" alt="">
+            </template>
+            <template x-if="data?.student?.program == 'RuangAI2025B4' && !data?.group_comentor">
+                <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%2010480.png" width="35%" alt="">
             </template>
             <!-- <div class="d-flex flex-column ms-2">
 						<div class="mb-2">Berakhir dalam</div>
