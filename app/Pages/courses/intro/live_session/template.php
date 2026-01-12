@@ -85,9 +85,9 @@
 			<div class="card my-4 rounded-4 shadow-none">
 				<div class="card-body">
 					<h4 class="h5"
-						x-show="data.course?.course_title"
+						x-show="data?.course?.course_title"
 						x-transition
-						x-text="`Live Session - ` + data.course?.course_title"></h4>
+						x-text="`Live Session - ` + data?.course?.course_title"></h4>
 
 					<!-- <div class="card bg-light-secondary pe-3 p-2 rounded-4 border shadow-none">
 						<div class="d-flex gap-2 align-items-center">
@@ -106,7 +106,7 @@
 			</div>
 
 			<!-- Show Expire Alert -->
-			<template x-if="data.is_expire">
+			<template x-if="data?.is_expire">
 				<div class="card bg-warning-2 rounded-4 mb-3 shadow-none">
 					<div class="card-body d-flex gap-3">
 						<i class="bi bi-stopwatch-fill text-white display-3 shaky-icon"></i>
@@ -134,7 +134,7 @@
 						<div class="card-body">
 
 							<!-- Check if no live session -->
-							<template x-if="data.live_sessions?.scheduled.length < 1" x-transition>
+							<template x-if="data?.live_sessions?.scheduled.length < 1" x-transition>
 								<div class="row g-3">
 									<div class="col">
 										<div class="d-flex justify-content-between align-items-start">
@@ -153,17 +153,17 @@
 
 							<!-- tampil jika is_reference_followup true ATAU user role_id = 1 atau 3 -->
 							<div x-show="(data?.is_reference_followup && data?.student.graduate == '0') || [1,3].includes(+data?.user?.role_id) || data?.program === 'RuangAI2025B4'" x-transition>
-								<div class="mb-5" x-show="data.live_sessions?.ongoing.length > 0" x-transition>
+								<div class="mb-5" x-show="data?.live_sessions?.ongoing.length > 0" x-transition>
 									<h4 class="border-bottom pb-2 opacity-75">Event Hari Ini</h4>
 									<?= $this->include('courses/intro/live_session/meeting_ongoing') ?>
 								</div>
 	
-								<div class="mb-5" x-show="data.live_sessions?.scheduled.length > 0" x-transition>
+								<div class="mb-5" x-show="data?.live_sessions?.scheduled.length > 0" x-transition>
 									<h4 class="border-bottom pb-2 opacity-75">Event Mendatang</h4>
 									<?= $this->include('courses/intro/live_session/meeting_scheduled') ?>
 								</div>
 	
-								<div x-show="data.live_sessions?.completed.length > 0" x-transition>
+								<div x-show="data?.live_sessions?.completed.length > 0" x-transition>
 									<h4 class="border-bottom pb-2 opacity-75">Sudah Selesai</h4>
 									<?= $this->include('courses/intro/live_session/meeting_completed') ?>
 								</div>
