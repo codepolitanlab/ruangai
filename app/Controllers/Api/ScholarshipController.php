@@ -544,6 +544,7 @@ class ScholarshipController extends ResourceController
             ->where('sp.program', $program)
             ->where('sp.deleted_at', null)
             ->groupBy('sp.id, sp.fullname, sp.referral_code')
+            ->having('COUNT(DISTINCT CASE WHEN cs.graduate = 1 THEN referred.id END) >', 0)
             ->orderBy('total_referral_lulus', 'DESC')
             ->limit($perPage, $offset)
             ->get()
