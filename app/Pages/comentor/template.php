@@ -262,7 +262,7 @@
 															class="small"
 															x-text="member.whatsapp"></a>
 														<br>
-														<span x-text="member.jobs || '-'"></span>
+														<span x-text="member.occupation || '-'"></span>
 													</div>
 												</div>
 											</div>
