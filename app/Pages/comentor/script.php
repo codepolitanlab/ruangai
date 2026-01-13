@@ -108,7 +108,7 @@
               member.fullname,
               member.email,
               member.whatsapp || '',
-              member.occupation || '-',
+              member.occupation || member.jobs,
               pesertaDari,
               tanggalBergabung,
               tanggalLulus,

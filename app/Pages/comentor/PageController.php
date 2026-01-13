@@ -40,8 +40,9 @@ class PageController extends BaseController
 
         $participantModel = new \App\Models\ScholarshipParticipantModel();
         $leader = $participantModel
-            ->select('scholarship_participants.*, users.role_id')
+            ->select('scholarship_participants.*, users.role_id, user_profiles.occupation as jobs')
             ->join('users', 'users.id = scholarship_participants.user_id')
+            ->join('user_profiles', 'user_profiles.user_id = scholarship_participants.user_id', 'left')
             ->where('scholarship_participants.user_id', $jwt->user_id)
             ->where('scholarship_participants.deleted_at', null)
             ->first();
