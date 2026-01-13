@@ -295,15 +295,15 @@
 											<i class="bi h3 m-0" :class="data.live_attendance > 0 ? 'bi-check-circle text-success' : 'bi-camera-video text-secondary'"></i>
 										</div>
 										<div
-											:class="data.course_completed ? 'd-flex' : 'd-none'"
+											:class="data?.lesson_completed == data?.total_lessons ? 'd-flex' : 'd-none'"
 											class="d-flex align-items-end gap-2 mt-3 mb-4">
 											<h1 class="mb-0 display-6 fw-bold" x-text="data?.live_attendance"></h1>
 											<p class="mb-1">Live session diikuti</p>
 										</div>
-										<div x-show="!data.course_completed">
+										<div x-show="Math.round(data.lesson_completed/data.total_lessons*100) < 100">
 											<div class="mb-1 position-relative">Selesaikan materi untuk dapat mengikuti sesi live</div>
 										</div>
-										<a :href="`/courses/intro/${data?.course?.id}/${data?.course?.slug}/live_session`" class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6" :class="{'disabled': !data.course_completed}">Lihat Jadwal</a>
+										<a :href="`/courses/intro/${data?.course?.id}/${data?.course?.slug}/live_session`" class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6" :class="{'disabled': data?.lesson_completed == data?.total_lessons}">Lihat Jadwal</a>
 										<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
 									</div>
 								</div>
