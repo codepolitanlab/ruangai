@@ -516,4 +516,42 @@ class ScholarshipController extends ResourceController
             ]);
         }
     }
+
+    public function leaderboard()
+    {
+        $db = \Config\Database::connect();
+
+        // Default event status on going from events table
+        $activeProgram = $db->table('events')
+                ->select('code')
+                ->where('status', 'ongoing')
+                ->get()
+                ->getRowArray()['code'] ?? null;
+
+        // Get program from query param or default to RuangAI2025B4
+        $program = $this->request->getGet('program') ?? $activeProgram;
+
+        // perpage and page
+        $perPage = $this->request->getGet('per_page') ? (int) $this->request->getGet('per_page') : 20;
+        $page    = $this->request->getGet('page') ? (int) $this->request->getGet('page') : 1;
+        $offset  = ($page - 1) * $perPage;
+
+        // Get participants from RuangAI2025B4 with their referral graduates count
+        $leaderboard = $db->table('scholarship_participants as sp')
+            ->select('sp.fullname, sp.referral_code, COUNT(DISTINCT CASE WHEN cs.graduate = 1 THEN referred.id END) as total_referral_lulus')
+            ->join('scholarship_participants as referred', 'LOWER(referred.reference) = LOWER(sp.referral_code) AND referred.deleted_at IS NULL', 'left')
+            ->join('course_students as cs', 'cs.user_id = referred.user_id AND cs.course_id = 1 AND cs.deleted_at IS NULL', 'left')
+            ->where('sp.program', $program)
+            ->where('sp.deleted_at', null)
+            ->groupBy('sp.id, sp.fullname, sp.referral_code')
+            ->orderBy('total_referral_lulus', 'DESC')
+            ->limit($perPage, $offset)
+            ->get()
+            ->getResultArray();
+
+        return $this->respond([
+            'status' => 'success',
+            'data' => $leaderboard
+        ]);
+    }
 }

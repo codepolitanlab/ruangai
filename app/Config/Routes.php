@@ -51,6 +51,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
     $routes->get('generateTokenUserGraduate', 'ScholarshipController::generateTokenUserGraduate');
 
     $routes->get('referral', 'ScholarshipController::userReferral');
+    $routes->get('leaderboard', 'ScholarshipController::leaderboard');
     $routes->post('user/profile/update', 'UserController::saveProfile');
     $routes->get('program', 'ScholarshipController::program');
 
