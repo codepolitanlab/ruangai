@@ -303,7 +303,7 @@
 										<div x-show="Math.round(data.lesson_completed/data.total_lessons*100) < 100">
 											<div class="mb-1 position-relative">Selesaikan materi untuk dapat mengikuti sesi live</div>
 										</div>
-										<a :href="`/courses/intro/${data?.course?.id}/${data?.course?.slug}/live_session`" class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6" :class="{'disabled': data?.lesson_completed == data?.total_lessons}">Lihat Jadwal</a>
+										<a :href="`/courses/intro/${data?.course?.id}/${data?.course?.slug}/live_session`" class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6" :class="{'disabled': data?.lesson_completed != data?.total_lessons}">Lihat Jadwal</a>
 										<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
 									</div>
 								</div>
