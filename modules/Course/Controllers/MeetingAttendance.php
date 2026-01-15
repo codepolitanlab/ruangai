@@ -384,16 +384,28 @@ class MeetingAttendance extends AdminController
         // Update attendance table
         // while iterating, check if user minimum duration is pass and user has submit feedback
         $participantEmails = array_keys($participants);
+        
+        // Normalize emails to lowercase for case-insensitive matching
+        $participantEmailsLower = array_map('strtolower', $participantEmails);
+        
+        // Create email mapping (lowercase => original) to retrieve duration later
+        $emailMapping = array_combine($participantEmailsLower, $participantEmails);
+        
         $UserModel = model('Heroicadmin\Modules\User\Models\UserModel');
         $users = $UserModel
-            ->select('users.id, email, progress, graduate')
+            ->select('users.id, users.email, course_students.progress, course_students.graduate')
             ->join('course_students', 'course_students.user_id = users.id AND course_students.course_id = ' . $course_id)
-            ->whereIn('email', $participantEmails)
+            ->whereIn('LOWER(users.email)', $participantEmailsLower)
             ->findAll();
         if (! $users) {
             return $this->respond([
-                'status'  => 'success',
+                'status'  => 'error',
                 'message' => 'Tidak ada partisipan di daftar user',
+                'debug'   => [
+                    'participant_emails' => $participantEmails,
+                    'course_id'          => $course_id,
+                    'total_participants' => count($participantEmails),
+                ],
             ]);
         }
 
@@ -408,10 +420,14 @@ class MeetingAttendance extends AdminController
                 ->get()
                 ->getRowArray();
 
+            // Get duration using lowercase email and mapping to original case from Zoom
+            $userEmailLower = strtolower($user['email']);
+            $originalEmail = $emailMapping[$userEmailLower] ?? $user['email'];
+
             $validParticipant['user_id']             = $user['id'];
             $validParticipant['course_id']           = $course_id;
             $validParticipant['live_meeting_id']     = $live_meeting_id;
-            $validParticipant['duration']            = $participants[$user['email']] ?? 0;
+            $validParticipant['duration']            = $participants[$originalEmail] ?? 0;
             $validParticipant['meeting_feedback_id'] = $feedback['id'] ?? null;
             $validParticipant['status']              = ($validParticipant['duration'] >= 1800) ? '1' : '0';
 
