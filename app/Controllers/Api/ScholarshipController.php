@@ -407,12 +407,18 @@ class ScholarshipController extends ResourceController
                 ->where('prev_chapter !=', 'RuangAI2025CM')
                 ->countAllResults();
 
+            $graduatedB4 = $db->table('view_participants')
+                ->where('program', 'RuangAI2025B4')
+                ->where('graduate', 1)
+                ->countAllResults();
+
             $data['user_registered'] = $user_registered ?? 0;
             $data['user_progress']   = $count_user_progress;
             $data['graduated']       = (object) [
                 'RuangAI2025B1' => $graduatedB1 ?? 0,
                 'RuangAI2025B2' => $graduatedB2 ?? 0,
                 'RuangAI2025B3' => $graduatedB3 ?? 0,
+                'RuangAI2025B4' => $graduatedB4 ?? 0,
             ];
         }
 
