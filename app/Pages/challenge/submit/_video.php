@@ -157,13 +157,20 @@
                 </template>
 
                 <div class="mt-3 d-flex justify-content-end">
-                    <button type="button" class="btn btn-success" @click="submitForm()" :disabled="isSubmitting">
+                    <button type="button" class="btn btn-success" @click="submitForm()" :disabled="isSubmitting || !isProfileComplete()">
                         <template x-if="isSubmitting">
                             <span class="spinner-border spinner-border-sm me-2"></span>
                         </template>
                         <span x-text="isSubmitting ? 'Mengirim...' : 'Submit Challenge'"></span>
                     </button>
                 </div>
+                
+                <template x-if="!isProfileComplete()">
+                    <div class="alert alert-warning mt-3 mb-0">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <strong>Perhatian:</strong> Harap lengkapi profil Anda terlebih dahulu sebelum submit challenge.
+                    </div>
+                </template>
             </div>
         </div>
     </div>

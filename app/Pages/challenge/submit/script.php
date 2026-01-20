@@ -222,6 +222,19 @@ function challengeSubmit() {
             }
         },
 
+        isProfileComplete() {
+            return (
+                this.profile.whatsapp && this.profile.whatsapp.trim() !== '' &&
+                this.profile.birthday && this.profile.birthday.trim() !== '' &&
+                this.profile.gender && this.profile.gender !== '' &&
+                this.profile.occupation && this.profile.occupation.trim() !== '' &&
+                this.profile.institution && this.profile.institution.trim() !== '' &&
+                this.profile.x_profile_url && this.profile.x_profile_url.trim() !== '' &&
+                this.profile.alibaba_cloud_id && this.profile.alibaba_cloud_id.trim() !== '' &&
+                (this.profile.alibaba_cloud_screenshot || this.profile._screenshot_file)
+            );
+        },
+
         validateProfileForm() {
             this.profileErrors = {};
 
@@ -420,6 +433,22 @@ function challengeSubmit() {
         prevStep() {},
 
         async submitForm() {
+            // Check if profile is complete first
+            if (!this.isProfileComplete()) {
+                $heroicHelper.toastr('Harap lengkapi profil Anda terlebih dahulu sebelum submit challenge', 'warning', 'bottom');
+                // Scroll to profile accordion
+                const profileAccordion = document.querySelector('#collapseProfile');
+                if (profileAccordion) {
+                    profileAccordion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Open the profile accordion if closed
+                    if (!profileAccordion.classList.contains('show')) {
+                        const profileButton = document.querySelector('[data-bs-target="#collapseProfile"]');
+                        if (profileButton) profileButton.click();
+                    }
+                }
+                return;
+            }
+
             if (!this.validateForm()) {
                 const errorMessages = Object.values(this.errors).join(', ');
                 $heroicHelper.toastr(errorMessages || 'Mohon periksa kembali form yang diisi', 'danger', 'bottom');

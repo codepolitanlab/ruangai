@@ -386,7 +386,7 @@ class PageController extends BaseController
         $existingProfile = $profileModel->where('user_id', $jwt->user_id)->where('deleted_at', null)->first();
         
         $screenshot = $this->request->getFile('alibaba_cloud_screenshot');
-        $hasScreenshot = ($existingProfile && $existingProfile['alibaba_cloud_screenshot']) || ($screenshot && $screenshot->isValid());
+        $hasScreenshot = ($existingProfile && !empty($existingProfile['alibaba_cloud_screenshot'])) || ($screenshot && $screenshot->isValid());
         
         if (!$hasScreenshot) {
             return $this->respond([
@@ -431,7 +431,7 @@ class PageController extends BaseController
             $profilePayload['alibaba_cloud_screenshot'] = $fileName;
             
             // Delete old screenshot if exists
-            if ($existingProfile && $existingProfile['alibaba_cloud_screenshot']) {
+            if ($existingProfile && !empty($existingProfile['alibaba_cloud_screenshot'])) {
                 $oldFile = $uploadPath . $existingProfile['alibaba_cloud_screenshot'];
                 if (file_exists($oldFile)) {
                     @unlink($oldFile);
