@@ -23,6 +23,32 @@ class MeetingAttendance extends AdminController
         $this->model = model('Course\Models\LiveAttendanceModel');
     }
 
+    /**
+     * Update scholarship participant program to ongoing event
+     * 
+     * @param int $user_id
+     * @return bool
+     */
+    private function updateScholarshipProgram($user_id)
+    {
+        $db = \Config\Database::connect();
+        
+        // Get ongoing event code
+        $ongoingEvent = $db->table('events')
+            ->select('code')
+            ->where('status', 'ongoing')
+            ->get()
+            ->getRowArray();
+        
+        if ($ongoingEvent) {
+            return $db->table('scholarship_participants')
+                ->where('user_id', $user_id)
+                ->update(['program' => $ongoingEvent['code']]);
+        }
+        
+        return false;
+    }
+
     public function index($meeting_id = null)
     {
         $data['page_title'] = 'Live Session Attendance';
@@ -451,6 +477,7 @@ class MeetingAttendance extends AdminController
 
             if ($validAttendance && $progressCompleted && $notGraduated) {
                 $courseStudentModel->markAsGraduate($user['id'], $course_id);
+                $this->updateScholarshipProgram($user['id']);
             }
         }
 
@@ -716,6 +743,7 @@ class MeetingAttendance extends AdminController
                 $student = $CourseStudentModel->where('user_id', $user_id)->where('course_id', $course_id)->first();
                 if ($student && (int) ($student['progress'] ?? 0) === 100) {
                     $CourseStudentModel->markAsGraduate($user_id, $course_id);
+                    $this->updateScholarshipProgram($user_id);
                 }
             }
 
