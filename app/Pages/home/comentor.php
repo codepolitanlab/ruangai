@@ -100,21 +100,6 @@
             </div>
         </div>
 
-        <!-- Download Handbook -->
-        <div x-show="data?.student?.reference_comentor == 'rai-tdagarut'" class="p-4 mb-3 rounded-4 bg-white shadow-sm">
-            <div class="d-flex flex-column flex-md-row gap-3 align-items-center justify-content-between">
-                <div class="d-flex align-items-center gap-3">
-                    <div>
-                        <h5 class="mb-1 fw-semibold">Handbook</h5>
-                        <p class="mb-0 text-muted">Buku Saku AI di Sekitar Kita - RuangAI Luring</p>
-                    </div>
-                </div>
-                <a href="https://ik.imagekit.io/56xwze9cy/ruangai/BUKU%20SAKU%20AI%20di%20Sekitar%20Kita%20-%20RuangAI%20Luring.pdf" target="_blank" class="btn btn-primary rounded-pill px-4">
-                    <i class="bi bi-download me-2"></i>Download Handbook
-                </a>
-            </div>
-        </div>
-
         <!-- Join Grup -->
         <div class="p-3 mb-3 rounded-4 bg-white d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
             <span>Belum gabung Komunitas RuangAI?</span>
