@@ -101,7 +101,7 @@
         </div>
 
         <!-- Download Handbook -->
-        <div x-show="data?.student?.reference_comentor === 'rai-tdagarut'" class="p-4 mb-3 rounded-4 bg-white shadow-sm">
+        <div x-show="data?.student?.reference_comentor == 'rai-tdagarut'" class="p-4 mb-3 rounded-4 bg-white shadow-sm">
             <div class="d-flex flex-column flex-md-row gap-3 align-items-center justify-content-between">
                 <div class="d-flex align-items-center gap-3">
                     <div>
