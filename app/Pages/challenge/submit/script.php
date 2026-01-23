@@ -14,8 +14,8 @@ function countdown() {
         },
         
         updateCountdown() {
-            // Target date: January 31, 2026 23:59:59 WIB (UTC+7)
-            const targetDate = new Date('2026-01-31T23:59:59+07:00').getTime();
+            // Target date: February 8, 2026 23:59:59 WIB (UTC+7)
+            const targetDate = new Date('2026-02-08T23:59:59+07:00').getTime();
             const now = new Date().getTime();
             const distance = targetDate - now;
             
