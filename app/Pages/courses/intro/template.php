@@ -320,7 +320,7 @@
 									<p class="mb-0 text-muted">Buku Saku AI di Sekitar Kita - RuangAI Luring</p>
 								</div>
 							</div>
-							<a href="https://ik.imagekit.io/56xwze9cy/ruangai/BUKU%20SAKU%20AI%20di%20Sekitar%20Kita%20-%20RuangAI%20Luring.pdf" target="_blank" class="btn btn-primary rounded-pill px-4">
+							<a href="https://ik.imagekit.io/56xwze9cy/ruangai/BUKU%20SAKU%20AI%20di%20Sekitar%20Kita%20-%20RuangAI%20Luring.pdf" target="_blank" class="btn btn-primary rounded-pill px-4" disabled>
 								<i class="bi bi-download me-2"></i>Download Handbook
 							</a>
 						</div>
