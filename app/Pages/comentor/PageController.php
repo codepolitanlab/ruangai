@@ -40,8 +40,9 @@ class PageController extends BaseController
 
         $participantModel = new \App\Models\ScholarshipParticipantModel();
         $leader = $participantModel
-            ->select('scholarship_participants.*, users.role_id')
+            ->select('scholarship_participants.*, users.role_id, user_profiles.occupation as jobs')
             ->join('users', 'users.id = scholarship_participants.user_id')
+            ->join('user_profiles', 'user_profiles.user_id = scholarship_participants.user_id', 'left')
             ->where('scholarship_participants.user_id', $jwt->user_id)
             ->where('scholarship_participants.deleted_at', null)
             ->first();
@@ -82,8 +83,10 @@ class PageController extends BaseController
         //     ->get();
 
         // Get memberQuery from view_participants
-        $members = $db->table('view_participants')
-            ->where('reference_comentor', $leader['referral_code_comentor'])
+        $members = $db->table('view_participants as vp')
+            ->select('vp.*, user_profiles.occupation as jobs')
+            ->join('user_profiles', 'user_profiles.user_id = vp.user_id', 'left')
+            ->where('vp.reference_comentor', $leader['referral_code_comentor'])
             ->get()
             ->getResultArray();
 
@@ -112,8 +115,8 @@ class PageController extends BaseController
             $members[$key]['progress'] = (int) $member['progress'];
             $members[$key]['total_live_session'] = (int) $member['total_live_attendance'];
             
-            // Translate occupation to Indonesian
-            $occupation = $member['occupation'] ?? '';
+            // Prioritize user_profiles.occupation (jobs), fallback to view_participants.occupation
+            $occupation = !empty($member['jobs']) ? $member['jobs'] : ($member['occupation'] ?? '');
             $members[$key]['occupation'] = $occupationMap[$occupation] ?? $occupation;
 
             // Flagging berdasarkan is_reference_followup

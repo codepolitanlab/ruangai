@@ -23,6 +23,32 @@ class MeetingAttendance extends AdminController
         $this->model = model('Course\Models\LiveAttendanceModel');
     }
 
+    /**
+     * Update scholarship participant program to ongoing event
+     * 
+     * @param int $user_id
+     * @return bool
+     */
+    private function updateScholarshipProgram($user_id)
+    {
+        $db = \Config\Database::connect();
+        
+        // Get ongoing event code
+        $ongoingEvent = $db->table('events')
+            ->select('code')
+            ->where('status', 'ongoing')
+            ->get()
+            ->getRowArray();
+        
+        if ($ongoingEvent) {
+            return $db->table('scholarship_participants')
+                ->where('user_id', $user_id)
+                ->update(['program' => $ongoingEvent['code']]);
+        }
+        
+        return false;
+    }
+
     public function index($meeting_id = null)
     {
         $data['page_title'] = 'Live Session Attendance';
@@ -384,16 +410,28 @@ class MeetingAttendance extends AdminController
         // Update attendance table
         // while iterating, check if user minimum duration is pass and user has submit feedback
         $participantEmails = array_keys($participants);
+        
+        // Normalize emails to lowercase for case-insensitive matching
+        $participantEmailsLower = array_map('strtolower', $participantEmails);
+        
+        // Create email mapping (lowercase => original) to retrieve duration later
+        $emailMapping = array_combine($participantEmailsLower, $participantEmails);
+        
         $UserModel = model('Heroicadmin\Modules\User\Models\UserModel');
         $users = $UserModel
-            ->select('users.id, email, progress, graduate')
+            ->select('users.id, users.email, course_students.progress, course_students.graduate')
             ->join('course_students', 'course_students.user_id = users.id AND course_students.course_id = ' . $course_id)
-            ->whereIn('email', $participantEmails)
+            ->whereIn('LOWER(users.email)', $participantEmailsLower)
             ->findAll();
         if (! $users) {
             return $this->respond([
-                'status'  => 'success',
+                'status'  => 'error',
                 'message' => 'Tidak ada partisipan di daftar user',
+                'debug'   => [
+                    'participant_emails' => $participantEmails,
+                    'course_id'          => $course_id,
+                    'total_participants' => count($participantEmails),
+                ],
             ]);
         }
 
@@ -408,12 +446,16 @@ class MeetingAttendance extends AdminController
                 ->get()
                 ->getRowArray();
 
+            // Get duration using lowercase email and mapping to original case from Zoom
+            $userEmailLower = strtolower($user['email']);
+            $originalEmail = $emailMapping[$userEmailLower] ?? $user['email'];
+
             $validParticipant['user_id']             = $user['id'];
             $validParticipant['course_id']           = $course_id;
             $validParticipant['live_meeting_id']     = $live_meeting_id;
-            $validParticipant['duration']            = $participants[$user['email']] ?? 0;
+            $validParticipant['duration']            = $participants[$originalEmail] ?? 0;
             $validParticipant['meeting_feedback_id'] = $feedback['id'] ?? null;
-            $validParticipant['status']              = ($validParticipant['duration'] >= 1800) && null !== $validParticipant['meeting_feedback_id'] ? '1' : '0';
+            $validParticipant['status']              = ($validParticipant['duration'] >= 1800) ? '1' : '0';
 
             // Check if user is already in attendance table
             $exist = $liveAttendancModel->where('user_id', $user['id'])
@@ -435,6 +477,7 @@ class MeetingAttendance extends AdminController
 
             if ($validAttendance && $progressCompleted && $notGraduated) {
                 $courseStudentModel->markAsGraduate($user['id'], $course_id);
+                $this->updateScholarshipProgram($user['id']);
             }
         }
 
@@ -683,7 +726,7 @@ class MeetingAttendance extends AdminController
                     'live_meeting_id'     => $live_meeting_id,
                     'duration'            => $duration,
                     'meeting_feedback_id' => $meeting_feedback_id,
-                    'status'              => 1,
+                    'status'              => ($duration >= 1800) ? 1 : 0,
                 ];
 
                 if ($existingAttendance) {
@@ -700,6 +743,7 @@ class MeetingAttendance extends AdminController
                 $student = $CourseStudentModel->where('user_id', $user_id)->where('course_id', $course_id)->first();
                 if ($student && (int) ($student['progress'] ?? 0) === 100) {
                     $CourseStudentModel->markAsGraduate($user_id, $course_id);
+                    $this->updateScholarshipProgram($user_id);
                 }
             }
 

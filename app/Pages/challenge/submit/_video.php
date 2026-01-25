@@ -18,11 +18,17 @@
                     <h5 class="mb-2">Panduan Pengumpulan Karya</h5>
                     <ol class="mb-0">
                         <li>Buat video berdurasi minimal 15 detik (tanpa batas durasi maksimal) menggunakan WAN Model Studio dari Alibaba Cloud.</li>
-                        <li>Panduan penggunaan WAN Model Studio dapat diakses melalui <strong><a target="_blank" href="https://www.youtube.com/watch?v=lFLDUMHjEfc">video tutorial berikut</a></strong>.</li>
+                        <li>Panduan penggunaan WAN Model Studio dapat diakses melalui <a class="fw-bold" target="_blank" href="https://www.youtube.com/watch?v=lFLDUMHjEfc">video tutorial berikut</a>.</li>
+                        <li>Peserta wajib mengikuti akun X <strong><a class="fw-bold" target="_blank" href="https://x.com/alibaba_cloud">@alibaba_cloud</a></strong> dan <a class="fw-bold" target="_blank" href="https://x.com/codepolitan">@codepolitan</a>.</li>
+                        <li>Postingan wajib menyertakan 
+                            <strong>#WanAVideo</strong> 
+                            <strong>#GenAIVideoFest</strong> 
+                            <strong>@CODEPOLITAN</strong>
+                            <strong>@Alibaba_cloud</strong>
+                        </li>
                         <li>Unggah video karya Anda ke platform X dengan pengaturan publik, lalu salin URL postingan video dan tempelkan pada kolom <strong>URL Post X</strong>.</li>
                         <li>Isi kolom <strong>Judul Video</strong> dan <strong>Deskripsi Video</strong> secara singkat, jelas, dan relevan dengan isi video.</li>
-                        <li>Isi kolom <strong>Tools Lain yang Digunakan (selain WAN Model Studio)</strong> apabila menggunakan tools AI atau tools tambahan lainnya. Biarkan kolom ini kosong jika tidak ada.</li>
-                        <li>Unduh Template <strong>Dokumen Prompt</strong> <a native target="_blank" href="https://docs.google.com/document/d/1bmLNpP-GLsdntfIkvMaMUC4DvjoDQPx9pUuSofM4-js/copy">DI SINI</a>, isi sesuai petunjuk, dan unggah kembali dokumen tersebut dalam format <strong>PDF</strong> melalui kolom unggah yang tersedia.</li>
+                        <li>Unduh Template <strong>Dokumen Prompt</strong> <a class="fw-bold" native target="_blank" href="https://docs.google.com/document/d/1bmLNpP-GLsdntfIkvMaMUC4DvjoDQPx9pUuSofM4-js/copy">DI SINI</a>, isi sesuai petunjuk, dan unggah kembali dokumen tersebut dalam format <strong>PDF</strong> melalui kolom unggah yang tersedia.</li>
                     </ol>
                 </div>
 
@@ -72,7 +78,7 @@
 
                 <div class="col-12 mb-4">
                     <label class="form-label d-block mb-0">Dokumen Prompt <span class="text-danger">*</span></label>
-                    <small class="d-block mb-2">Unduh Template dokumen <a native target="_blank" href="https://docs.google.com/document/d/1bmLNpP-GLsdntfIkvMaMUC4DvjoDQPx9pUuSofM4-js/copy">DI SINI</a></small>
+                    <small class="d-block mb-2">Unduh Template dokumen <a class="fw-bold" native target="_blank" href="https://docs.google.com/document/d/1bmLNpP-GLsdntfIkvMaMUC4DvjoDQPx9pUuSofM4-js/copy">DI SINI</a></small>
                     <input type="file" class="form-control" @change="handleFileUpload($event, 'prompt_file')"
                         accept=".pdf,.txt">
                     <template x-if="errors.prompt_file">
@@ -83,6 +89,30 @@
                     </template>
                     <template x-if="!files.prompt_file && existingFiles.prompt_file">
                         <div class="badge bg-info mt-1" x-text="existingFiles.prompt_file"></div>
+                    </template>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" type="checkbox" x-model="form.is_followed_account_codepolitan" id="followCodepolitan" :class="{'is-invalid': errors.is_followed_account_codepolitan}">
+                        <label class="form-check-label" for="followCodepolitan">
+                            Saya sudah mengikuti akun X <a class="fw-bold" target="_blank" href="https://x.com/codepolitan">@codepolitan</a> <span class="text-danger">*</span>
+                        </label>
+                    </div>
+                    <template x-if="errors.is_followed_account_codepolitan">
+                        <small class="text-danger" x-text="errors.is_followed_account_codepolitan"></small>
+                    </template>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" type="checkbox" x-model="form.is_followed_account_alibaba" id="followAlibaba" :class="{'is-invalid': errors.is_followed_account_alibaba}">
+                        <label class="form-check-label" for="followAlibaba">
+                            Saya sudah mengikuti akun X <a class="fw-bold" target="_blank" href="https://x.com/alibaba_cloud">@alibaba_cloud</a > <span class="text-danger">*</span>
+                        </label>
+                    </div>
+                    <template x-if="errors.is_followed_account_alibaba">
+                        <small class="text-danger" x-text="errors.is_followed_account_alibaba"></small>
                     </template>
                 </div>
 
@@ -127,13 +157,20 @@
                 </template>
 
                 <div class="mt-3 d-flex justify-content-end">
-                    <button type="button" class="btn btn-success" @click="submitForm()" :disabled="isSubmitting">
+                    <button type="button" class="btn btn-success" @click="submitForm()" :disabled="isSubmitting || !isProfileComplete()">
                         <template x-if="isSubmitting">
                             <span class="spinner-border spinner-border-sm me-2"></span>
                         </template>
                         <span x-text="isSubmitting ? 'Mengirim...' : 'Submit Challenge'"></span>
                     </button>
                 </div>
+                
+                <template x-if="!isProfileComplete()">
+                    <div class="alert alert-warning mt-3 mb-0">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <strong>Perhatian:</strong> Harap lengkapi profil Anda terlebih dahulu sebelum submit challenge.
+                    </div>
+                </template>
             </div>
         </div>
     </div>

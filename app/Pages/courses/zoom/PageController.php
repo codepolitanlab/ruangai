@@ -20,19 +20,38 @@ class PageController extends BaseController
         $this->data['name']         = $jwt->user['name'];
         $this->data['meeting_code'] = $meeting_code;
 
-        // Get meeting detail
-        $MeetingModel = model('Course\Models\LiveMeetingModel');
-        $meeting      = $MeetingModel
-            ->select('id,title,meeting_date,meeting_time,live_batch_id,status')
-            ->where('meeting_code', $meeting_code)
-            ->where('zoom_meeting_id !=', null)
-            ->first();
+        $db = \Config\Database::connect();
+        
+        // Ambil data participant untuk pengecekan reference_comentor
+        $participant = $db->table('scholarship_participants')
+            ->select('reference_comentor, is_reference_followup, program, is_participating_other_ai_program')
+            ->where('user_id', $jwt->user_id)
+            ->get()
+            ->getRow();
+
+        // Get meeting detail with batch name
+        $meeting = $db->table('live_meetings')
+            ->select('live_meetings.id, live_meetings.title, live_meetings.meeting_date, live_meetings.meeting_time, live_meetings.live_batch_id, live_meetings.status, live_batch.name as batch_name')
+            ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
+            ->where('live_meetings.meeting_code', $meeting_code)
+            ->where('live_meetings.zoom_meeting_id !=', null)
+            ->get()
+            ->getRowArray();
         
         if(! $meeting) {
             return $this->respond([
                 'status'  => 'error',
                 'message' => 'Meeting not found'
             ]);
+        }
+
+        // Check if user should access this meeting based on reference_comentor
+        if ($participant && isset($participant->reference_comentor) && $participant->reference_comentor == 'co-sheli') {
+            // Jika CO-Sheli, hanya bisa akses Batch Comentor Followup
+            $this->data['is_followup'] = true;
+        } else {
+            // Jika bukan CO-Sheli, tidak bisa akses Batch Comentor Followup
+            $this->data['is_followup'] = false;
         }
 
         // Get course detail
@@ -45,7 +64,6 @@ class PageController extends BaseController
         $this->data['course'] = $course;
 
         // Check if user has already completed the course
-        $db = \Config\Database::connect();
         $completedLessons = $db->table('course_lessons')
             ->select('count(course_lessons.id) as total_lessons, count(course_lesson_progress.user_id) as completed')
             ->join('course_lesson_progress', 'course_lesson_progress.lesson_id = course_lessons.id AND user_id = ' . $jwt->user_id, 'left')
@@ -73,27 +91,20 @@ class PageController extends BaseController
         $this->data['meeting'] = $meeting;
         $this->data['zoom_join_link'] = $attendance ? $attendance['zoom_join_link'] : null;
 
-        // Ambil data participant berdasarkan user_id dengan null safety
-        $participant = $db->table('scholarship_participants')
-            ->select('reference, program, is_participating_other_ai_program')
-            ->where('user_id', $jwt->user_id)
-            ->get()
-            ->getRow();
-
         $this->data['is_mentor'] = $jwt->user['role_id'] == 5 ? true : false;
         $this->data['is_comentor'] = $jwt->user['role_id'] == 4 ? true : false;
         $this->data['is_mentee_comentor'] = false;
+        $this->data['is_reference_followup'] = $participant && $participant->is_reference_followup == 1 ? true : false;
         $this->data['is_participating_other_ai_program'] = $participant && $participant->is_participating_other_ai_program == 1 ? true : false;
         $this->data['comentor'] = null;
         $this->data['program'] = $participant ? $participant->program : null;
         
         if ($participant) {
-            // Cek apakah reference mengandung "CO-" atau "co-"
-            if (isset($participant->reference) && preg_match('/co\-/i', $participant->reference)) {
+            if (isset($participant->reference_comentor)) {
                 $this->data['is_mentee_comentor'] = true;
                 $comentorData = $db->table('scholarship_participants')
                     ->select('fullname')
-                    ->where('scholarship_participants.referral_code_comentor', $participant->reference)
+                    ->where('scholarship_participants.referral_code_comentor', $participant->reference_comentor)
                     ->get()
                     ->getRow();
                 $this->data['comentor'] = $comentorData ? $comentorData->fullname : null;

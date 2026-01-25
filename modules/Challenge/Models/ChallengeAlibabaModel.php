@@ -22,6 +22,8 @@ class ChallengeAlibabaModel extends Model
         'alibaba_screenshot',
         'twitter_follow_screenshot',
         'ethical_statement_agreed',
+        'is_followed_account_codepolitan',
+        'is_followed_account_alibaba',
         'admin_notes',
         'status',
         'submitted_at',

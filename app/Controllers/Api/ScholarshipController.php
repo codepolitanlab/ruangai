@@ -239,8 +239,7 @@ class ScholarshipController extends ResourceController
         $leader = $participantModel
             ->select('scholarship_participants.*, events.title as program_title, events.telegram_link, events.date_start')
             ->join('events', 'events.code = scholarship_participants.program', 'left')
-            ->where('scholarship_participants.whatsapp', $jwt->whatsapp_number)
-            ->orWhere('scholarship_participants.whatsapp', $Heroic->normalizePhoneNumber($jwt->whatsapp_number))
+            ->where('scholarship_participants.user_id', $jwt->user_id)
             ->where('scholarship_participants.deleted_at', null)
             ->orderBy('scholarship_participants.created_at', 'DESC')
             ->first();
@@ -408,12 +407,18 @@ class ScholarshipController extends ResourceController
                 ->where('prev_chapter !=', 'RuangAI2025CM')
                 ->countAllResults();
 
+            $graduatedB4 = $db->table('view_participants')
+                ->where('program', 'RuangAI2025B4')
+                ->where('graduate', 1)
+                ->countAllResults();
+
             $data['user_registered'] = $user_registered ?? 0;
             $data['user_progress']   = $count_user_progress;
             $data['graduated']       = (object) [
                 'RuangAI2025B1' => $graduatedB1 ?? 0,
                 'RuangAI2025B2' => $graduatedB2 ?? 0,
                 'RuangAI2025B3' => $graduatedB3 ?? 0,
+                'RuangAI2025B4' => $graduatedB4 ?? 0,
             ];
         }
 
@@ -516,5 +521,44 @@ class ScholarshipController extends ResourceController
                 'message' => $bulkGenerate['total_generated'] . ' peserta ' .  $program . ' Course ' . $course['course_title'] . ' berhasil mendapatkan token dari kelulusan'
             ]);
         }
+    }
+
+    public function leaderboard()
+    {
+        $db = \Config\Database::connect();
+
+        // Default event status on going from events table
+        $activeProgram = $db->table('events')
+                ->select('code')
+                ->where('status', 'ongoing')
+                ->get()
+                ->getRowArray()['code'] ?? null;
+
+        // Get program from query param or default to RuangAI2025B4
+        $program = $this->request->getGet('program') ?? $activeProgram;
+
+        // perpage and page
+        $perPage = $this->request->getGet('per_page') ? (int) $this->request->getGet('per_page') : 20;
+        $page    = $this->request->getGet('page') ? (int) $this->request->getGet('page') : 1;
+        $offset  = ($page - 1) * $perPage;
+
+        // Get participants from RuangAI2025B4 with their referral graduates count
+        $leaderboard = $db->table('scholarship_participants as sp')
+            ->select('sp.fullname, sp.referral_code, COUNT(DISTINCT CASE WHEN cs.graduate = 1 THEN referred.id END) as total_referral_lulus')
+            ->join('scholarship_participants as referred', 'LOWER(referred.reference) = LOWER(sp.referral_code) AND referred.deleted_at IS NULL', 'left')
+            ->join('course_students as cs', 'cs.user_id = referred.user_id AND cs.course_id = 1 AND cs.deleted_at IS NULL', 'left')
+            ->where('sp.program', $program)
+            ->where('sp.deleted_at', null)
+            ->groupBy('sp.id, sp.fullname, sp.referral_code')
+            ->having('COUNT(DISTINCT CASE WHEN cs.graduate = 1 THEN referred.id END) >', 0)
+            ->orderBy('total_referral_lulus', 'DESC')
+            ->limit($perPage, $offset)
+            ->get()
+            ->getResultArray();
+
+        return $this->respond([
+            'status' => 'success',
+            'data' => $leaderboard
+        ]);
     }
 }

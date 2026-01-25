@@ -259,7 +259,7 @@
 							</template> -->
 
 							<!-- Card Live Session Khusus Co-Mentor -->
-							<template x-if="data?.group_comentor && ! data.course_completed && !data.student.is_reference_followup">
+							<!-- <template x-if="data?.group_comentor && ! data.course_completed && !data.student.is_reference_followup">
 								<div class="col-md-6 mb-3">
 									<div id="card-progress-live"
 										class="card border-0 shadow-none rounded-4  p-3 d-flex flex-column justify-content-between position-relative"
@@ -281,10 +281,10 @@
 										<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
 									</div>
 								</div>
-							</template>
+							</template> -->
 							
 							<!-- Card Live Session Program Reguler -->
-							<template x-if="data.course?.has_live_sessions === '1' && (	!data?.group_comentor || data.course_completed || data.student.is_reference_followup)">
+							<template x-if="data.course?.has_live_sessions === '1'">
 								<div class="col-md-6 mb-3">
 									<div id="card-progress-live"
 										class="card border-0 shadow-none rounded-4  p-3 d-flex flex-column justify-content-between position-relative"
@@ -295,7 +295,7 @@
 											<i class="bi h3 m-0" :class="data.live_attendance > 0 ? 'bi-check-circle text-success' : 'bi-camera-video text-secondary'"></i>
 										</div>
 										<div
-											:class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'd-flex' : 'd-none'"
+											:class="data?.lesson_completed == data?.total_lessons ? 'd-flex' : 'd-none'"
 											class="d-flex align-items-end gap-2 mt-3 mb-4">
 											<h1 class="mb-0 display-6 fw-bold" x-text="data?.live_attendance"></h1>
 											<p class="mb-1">Live session diikuti</p>
@@ -303,11 +303,26 @@
 										<div x-show="Math.round(data.lesson_completed/data.total_lessons*100) < 100">
 											<div class="mb-1 position-relative">Selesaikan materi untuk dapat mengikuti sesi live</div>
 										</div>
-										<a :href="`/courses/intro/${data?.course?.id}/${data?.course?.slug}/live_session`" class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6">Lihat Jadwal</a>
+										<a :href="`/courses/intro/${data?.course?.id}/${data?.course?.slug}/live_session`" class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6" :class="{'disabled': data?.lesson_completed != data?.total_lessons}">Lihat Jadwal</a>
 										<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
 									</div>
 								</div>
 							</template>
+						</div>
+					</div>
+
+					<!-- Download Handbook -->
+					<div x-show="data?.student?.reference == 'rai-tdagarut'" class="p-4 mb-3 rounded-4 bg-white shadow-sm">
+						<div class="d-flex flex-column flex-md-row gap-3 align-items-center justify-content-between">
+							<div class="d-flex align-items-center gap-3">
+								<div>
+									<h5 class="mb-1 fw-semibold">Handbook</h5>
+									<p class="mb-0 text-muted">Buku Saku AI di Sekitar Kita - RuangAI Luring</p>
+								</div>
+							</div>
+							<a href="https://ik.imagekit.io/56xwze9cy/ruangai/BUKU%20SAKU%20AI%20di%20Sekitar%20Kita%20-%20RuangAI%20Luring.pdf" target="_blank" class="btn btn-primary rounded-pill px-4 disabled">
+								<i class="bi bi-download me-2"></i>Download Handbook
+							</a>
 						</div>
 					</div>
 

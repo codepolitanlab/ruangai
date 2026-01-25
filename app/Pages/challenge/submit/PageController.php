@@ -244,7 +244,8 @@ class PageController extends BaseController
             'other_tools' => !empty($this->request->getPost('other_tools')) ? $this->request->getPost('other_tools') : null,
             'prompt_file' => $uploadedFiles['prompt_file'],
             'ethical_statement_agreed' => $this->request->getPost('ethical_statement_agreed') == '1' ? 1 : 0,
-            'submitted_at' => date('Y-m-d H:i:s'),
+            'is_followed_account_codepolitan' => $this->request->getPost('is_followed_account_codepolitan') == '1' ? 1 : 0,
+            'is_followed_account_alibaba' => $this->request->getPost('is_followed_account_alibaba') == '1' ? 1 : 0,
         ];
 
         if ($isUpdate) {
@@ -268,6 +269,7 @@ class PageController extends BaseController
             $data['user_id'] = $jwt->user_id;
             $data['challenge_id'] = $this->config->challengeId;
             $data['status'] = 'pending';
+            $data['submitted_at'] = date('Y-m-d H:i:s');
 
             $newSubmissionId = $this->model->insert($data);
 
@@ -384,7 +386,7 @@ class PageController extends BaseController
         $existingProfile = $profileModel->where('user_id', $jwt->user_id)->where('deleted_at', null)->first();
         
         $screenshot = $this->request->getFile('alibaba_cloud_screenshot');
-        $hasScreenshot = ($existingProfile && $existingProfile['alibaba_cloud_screenshot']) || ($screenshot && $screenshot->isValid());
+        $hasScreenshot = ($existingProfile && !empty($existingProfile['alibaba_cloud_screenshot'])) || ($screenshot && $screenshot->isValid());
         
         if (!$hasScreenshot) {
             return $this->respond([
@@ -429,7 +431,7 @@ class PageController extends BaseController
             $profilePayload['alibaba_cloud_screenshot'] = $fileName;
             
             // Delete old screenshot if exists
-            if ($existingProfile && $existingProfile['alibaba_cloud_screenshot']) {
+            if ($existingProfile && !empty($existingProfile['alibaba_cloud_screenshot'])) {
                 $oldFile = $uploadPath . $existingProfile['alibaba_cloud_screenshot'];
                 if (file_exists($oldFile)) {
                     @unlink($oldFile);

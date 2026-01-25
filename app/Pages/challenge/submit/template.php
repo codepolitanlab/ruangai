@@ -25,6 +25,61 @@
             margin: 0 auto;
             padding: 0;;
         }
+        .countdown-wrapper {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+            display: inline-block;
+            min-width: 280px;
+        }
+        .countdown-main {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .countdown-subtitle {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        @media (max-width: 576px) {
+            .countdown-wrapper {
+                padding: 1.25rem 1.5rem;
+                min-width: 240px;
+            }
+            .countdown-main {
+                font-size: 1.5rem;
+            }
+            .countdown-subtitle {
+                font-size: 0.875rem;
+                letter-spacing: 1.5px;
+            }
+            .card-body h5 {
+                font-size: 1rem !important;
+            }
+            .card-body small {
+                font-size: 0.7rem !important;
+            }
+        }
+        @media (max-width: 380px) {
+            .countdown-wrapper {
+                padding: 1rem 1.25rem;
+                min-width: 200px;
+            }
+            .countdown-main {
+                font-size: 1.25rem;
+            }
+            .countdown-subtitle {
+                font-size: 0.75rem;
+                letter-spacing: 1px;
+            }
+        }
     </style>
 
     <div id="appCapsule">
@@ -34,6 +89,22 @@
                     <h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>
                 </button>
                 <h4 class="m-0 fw-bold">GenAI Video Fest Submission</h4>
+            </div>
+
+            <!-- Countdown Timer -->
+            <div class="card mb-3">
+                <div class="card-body text-center px-2 py-3">
+                    <h5 class="mb-3 fw-bold text-primary">Waktu Tersisa Untuk Submit</h5>
+                    <div class="d-flex justify-content-center" x-data="countdown()">
+                        <div class="countdown-wrapper text-center">
+                            <div class="countdown-main">
+                                <span x-text="days">00</span> Hari : <span x-text="hours">00</span>:<span x-text="minutes">00</span>:<span x-text="seconds">00</span>
+                            </div>
+                            <div class="countdown-subtitle">Tersisa</div>
+                        </div>
+                    </div>
+                    <p class="text-muted mt-3 mb-0"><small>Batas akhir: 08 Februari 2026, 23:59 WIB</small></p>
+                </div>
             </div>
 
             <!-- Alert Messages -->

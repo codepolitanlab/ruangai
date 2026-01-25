@@ -1,6 +1,96 @@
-<div class="appContent pt-2 pb-4" style="min-height:90vh">
 
-<!-- Header -->
+<div class="appContent pt-2 pb-4" style="min-height:90vh">
+    <style>
+            
+        /* Mobile adjustments to reduce vertical spacing */
+        @media (max-width: 767.98px) {
+            .menu-grid {
+                row-gap: 0.25rem !important;
+            }
+            .menu-card {
+                padding: 10px 8px;
+                min-height: 82px;
+                gap: 6px;
+            }
+            .menu-icon-wrapper {
+                width: 44px;
+                height: 44px;
+            }
+            .menu-icon {
+                width: 44px;
+                height: 44px;
+            }
+            .menu-text {
+                font-size: 11px;
+            }
+        }
+
+        .menu-card {
+            border-radius: 16px;
+            padding: 14px 10px;
+            min-height: 95px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.2s ease;
+            background: transparent;
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-2px);
+            background: rgba(0, 0, 0, 0.02);
+        }
+        
+        .menu-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .menu-icon {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+        
+        .menu-text {
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.2;
+            margin: 0;
+        }
+        
+        /* Desktop styles */
+        @media (min-width: 768px) {
+
+            .menu-card {
+                border-radius: 22px;
+                padding: 18px 12px;
+                min-height: 120px;
+            }
+            
+            .menu-icon-wrapper {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .menu-icon {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .menu-text {
+                font-size: 15px;
+                font-weight: 500;
+            }
+        }
+    </style>
+
+    <!-- Header -->
     <div class="p-4 px-3 mb-3 bg-white rounded-4 position-relative" style="min-height:110px">
         <div class="d-flex align-items-center gap-3 position-relative" style="z-index: 99; position: absolute !important; bottom: 10px;">
             <div class="avatar">
@@ -18,8 +108,11 @@
             <template x-if="data?.student?.program == 'RuangAI2025B2' && !data?.group_comentor">
                 <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%208476.png" width="35%" alt="">
             </template>
-            <template x-if="data?.student?.program == Alpine.store('core').activeProgram">
-                <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%209476.png?updatedAt=1760359599371" width="35%" alt="">
+            <template x-if="data?.student?.program == 'RuangAI2025B3' && !data?.group_comentor">
+                <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%209476.png" width="35%" alt="">
+            </template>
+            <template x-if="data?.student?.program == 'RuangAI2025B4' && !data?.group_comentor">
+                <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%2010480.png" width="35%" alt="">
             </template>
             <!-- <div class="d-flex flex-column ms-2">
 						<div class="mb-2">Berakhir dalam</div>
@@ -152,96 +245,6 @@
         </div>
     </div>
 
-    <style>
-        
-        /* Mobile adjustments to reduce vertical spacing */
-        @media (max-width: 767.98px) {
-            .menu-grid {
-                row-gap: 0.25rem !important;
-            }
-            .menu-card {
-                padding: 10px 8px;
-                min-height: 82px;
-                gap: 6px;
-            }
-            .menu-icon-wrapper {
-                width: 44px;
-                height: 44px;
-            }
-            .menu-icon {
-                width: 44px;
-                height: 44px;
-            }
-            .menu-text {
-                font-size: 11px;
-            }
-        }
-
-        .menu-card {
-            border-radius: 16px;
-            padding: 14px 10px;
-            min-height: 95px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: transform 0.2s ease;
-            background: transparent;
-        }
-        
-        .menu-card:hover {
-            transform: translateY(-2px);
-            background: rgba(0, 0, 0, 0.02);
-        }
-        
-        .menu-icon-wrapper {
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .menu-icon {
-            width: 48px;
-            height: 48px;
-            object-fit: contain;
-        }
-        
-        .menu-text {
-            font-size: 12px;
-            font-weight: 500;
-            line-height: 1.2;
-            margin: 0;
-        }
-        
-        /* Desktop styles */
-        @media (min-width: 768px) {
-
-            .menu-card {
-                border-radius: 22px;
-                padding: 18px 12px;
-                min-height: 120px;
-            }
-            
-            .menu-icon-wrapper {
-                width: 60px;
-                height: 60px;
-            }
-            
-            .menu-icon {
-                width: 60px;
-                height: 60px;
-            }
-            
-            .menu-text {
-                font-size: 15px;
-                font-weight: 500;
-            }
-        }
-    </style>
-
     <div x-show="!meta.isValidEmail" class="rounded-20 p-3 py-4 bg-white my-4">
         <div class="row justify-content-center">
             <div class="col-lg-10">
@@ -259,6 +262,12 @@
     <div class="p-3 mb-3 rounded-4 bg-primary d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
         <span class="text-white">Tutorial Belajar dan misi Beasiswa Ruang AI</span>
         <button @click="setVideoTutorial(videoTutorial)" type="button" class="btn bg-white rounded-pill" data-bs-toggle="modal" data-bs-target="#modalTutorial">Lihat Tutorial <i class="bi bi-camera-video ms-2"></i></button>
+    </div>
+
+    <!-- Referral -->
+    <div class="p-3 mb-3 rounded-4 bg-white d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
+        <span>Pengen dapet hadiah menarik?</span>
+        <a href="https://ruangai.id/referral" target="_blank" class="btn btn-success rounded-pill"><i class="bi bi-coin"></i> Program Referral</a>
     </div>
 
     <!-- Show Expire Alert -->

@@ -1,4 +1,40 @@
 <script>
+function countdown() {
+    return {
+        days: '00',
+        hours: '00',
+        minutes: '00',
+        seconds: '00',
+        
+        init() {
+            this.updateCountdown();
+            setInterval(() => {
+                this.updateCountdown();
+            }, 1000);
+        },
+        
+        updateCountdown() {
+            // Target date: February 8, 2026 23:59:59 WIB (UTC+7)
+            const targetDate = new Date('2026-02-08T23:59:59+07:00').getTime();
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+            
+            if (distance < 0) {
+                this.days = '00';
+                this.hours = '00';
+                this.minutes = '00';
+                this.seconds = '00';
+                return;
+            }
+            
+            this.days = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0');
+            this.hours = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+            this.minutes = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+            this.seconds = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
+        }
+    };
+}
+
 function challengeSubmit() {
     return {
         data:{
@@ -21,7 +57,9 @@ function challengeSubmit() {
             video_title: '',
             video_description: '',
             other_tools: '',
-            ethical_statement_agreed: false
+            ethical_statement_agreed: false,
+            is_followed_account_codepolitan: false,
+            is_followed_account_alibaba: false
         },
         profile: {
             name: '',
@@ -102,6 +140,8 @@ function challengeSubmit() {
                     this.form.video_description = result.existing_submission.video_description || '';
                     this.form.other_tools = result.existing_submission.other_tools || '';
                     this.form.ethical_statement_agreed = result.existing_submission.ethical_statement_agreed == 1 ? true : false;
+                    this.form.is_followed_account_codepolitan = result.existing_submission.is_followed_account_codepolitan == 1 ? true : false;
+                    this.form.is_followed_account_alibaba = result.existing_submission.is_followed_account_alibaba == 1 ? true : false;
                     // Map ethical_statement_agreed to checkboxes
                     if (result.existing_submission.ethical_statement_agreed == 1) {
                         this.profile.agreed_terms_1 = true;
@@ -180,6 +220,19 @@ function challengeSubmit() {
             } else {
                 this.profile = { name: '', email: '', alibaba_cloud_id: '', alibaba_cloud_screenshot: null, occupation: '', institution: '' };
             }
+        },
+
+        isProfileComplete() {
+            return (
+                this.profile.whatsapp && this.profile.whatsapp.trim() !== '' &&
+                this.profile.birthday && this.profile.birthday.trim() !== '' &&
+                this.profile.gender && this.profile.gender !== '' &&
+                this.profile.occupation && this.profile.occupation.trim() !== '' &&
+                this.profile.institution && this.profile.institution.trim() !== '' &&
+                this.profile.x_profile_url && this.profile.x_profile_url.trim() !== '' &&
+                this.profile.alibaba_cloud_id && this.profile.alibaba_cloud_id.trim() !== '' &&
+                (this.profile.alibaba_cloud_screenshot || this.profile._screenshot_file)
+            );
         },
 
         validateProfileForm() {
@@ -353,6 +406,14 @@ function challengeSubmit() {
                 this.errors.prompt_file = 'Prompt file wajib diupload';
             }
 
+            // Validate follow accounts
+            if (!this.form.is_followed_account_codepolitan) {
+                this.errors.is_followed_account_codepolitan = 'Anda harus mengikuti akun @codepolitan';
+            }
+            if (!this.form.is_followed_account_alibaba) {
+                this.errors.is_followed_account_alibaba = 'Anda harus mengikuti akun @alibaba_cloud';
+            }
+
             // Validate agreed terms
             if (!this.profile.agreed_terms_1) {
                 this.errors.agreed_terms_1 = 'Anda harus menyetujui pernyataan ini';
@@ -372,6 +433,22 @@ function challengeSubmit() {
         prevStep() {},
 
         async submitForm() {
+            // Check if profile is complete first
+            if (!this.isProfileComplete()) {
+                $heroicHelper.toastr('Harap lengkapi profil Anda terlebih dahulu sebelum submit challenge', 'warning', 'bottom');
+                // Scroll to profile accordion
+                const profileAccordion = document.querySelector('#collapseProfile');
+                if (profileAccordion) {
+                    profileAccordion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Open the profile accordion if closed
+                    if (!profileAccordion.classList.contains('show')) {
+                        const profileButton = document.querySelector('[data-bs-target="#collapseProfile"]');
+                        if (profileButton) profileButton.click();
+                    }
+                }
+                return;
+            }
+
             if (!this.validateForm()) {
                 const errorMessages = Object.values(this.errors).join(', ');
                 $heroicHelper.toastr(errorMessages || 'Mohon periksa kembali form yang diisi', 'danger', 'bottom');
@@ -391,7 +468,9 @@ function challengeSubmit() {
                 twitter_post_url: this.form.twitter_post_url,
                 video_title: this.form.video_title,
                 video_description: this.form.video_description,
-                ethical_statement_agreed: (this.profile.agreed_terms_1 && this.profile.agreed_terms_2 && this.profile.agreed_terms_3) ? '1' : '0'
+                ethical_statement_agreed: (this.profile.agreed_terms_1 && this.profile.agreed_terms_2 && this.profile.agreed_terms_3) ? '1' : '0',
+                is_followed_account_codepolitan: this.form.is_followed_account_codepolitan ? '1' : '0',
+                is_followed_account_alibaba: this.form.is_followed_account_alibaba ? '1' : '0'
             };
 
             if (this.isEdit && this.submissionId) {

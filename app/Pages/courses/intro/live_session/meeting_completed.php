@@ -1,5 +1,5 @@
 <div class="accordion bg-transparent border-0" id="accordion-livesession-completed">
-    <template x-for="(live_session, meetingIndex) in data.live_sessions?.completed">
+    <template x-for="(live_session, meetingIndex) in data?.live_sessions?.completed">
         <div class="accordion-item p-2 rounded-4 mb-3" :class="live_session.status_date">
             <div class="accordion-header rounded-4 py-2">
                 <button class="accordion-button d-flex flex-column flex-md-row gap-3 align-items-md-center" type="button" data-bs-toggle="collapse" :data-bs-target="`#live_`+live_session.id" aria-expanded="true" :aria-controls="`live_`+live_session.id">
@@ -43,12 +43,12 @@
                             </p>
 
                             <p class="px-3 py-2 bg-info bg-opacity-50 rounded-2"
-                                x-show="live_session.theme_code && data.attendedCode.includes(live_session.theme_code)">
+                                x-show="live_session.theme_code && data?.attendedCode.includes(live_session.theme_code)">
                                 <i class="bi bi-hand-thumbs-up"></i>
                                 Kamu sudah mengikuti sesi dengan judul ini
                             </p>
 
-                            <template x-if="data.enable_live_recording">
+                            <template x-if="data?.enable_live_recording">
                                 <a
                                     :href="live_session.recording_link"
                                     target="_blank"

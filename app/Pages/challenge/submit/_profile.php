@@ -40,7 +40,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
 
                 <!-- Teks panduan -->
                 <div class="card p-3 shadow-none border mb-4 panduan">
-                    <h5 class="mb-2">Panduan Pendaftaran & Aktivasi</h5>
+                    <h5 class="mb-2">Panduan Pendaftaran &amp; Aktivasi</h5>
                     <ol class="mb-0">
                         <li><strong>GenAI Video Fest</strong> tidak dipungut biaya (gratis).</li>
                         <li>Peserta wajib memasukkan kartu Debit/Kredit pada akun Alibaba Cloud untuk mengaktifkan trial <a target="_blank" class="fw-bold" href="https://s.id/WanModelStudio">Alibaba Cloud Model Studio</a>.</li>
