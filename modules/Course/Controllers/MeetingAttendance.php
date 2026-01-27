@@ -614,6 +614,10 @@ class MeetingAttendance extends AdminController
         $inserted = 0;
         $updated  = 0;
         $skipped  = 0;
+        $emptyEmails = 0;
+        $notFound = 0;
+        $graduated = 0;
+        $totalRows = 0;
         $errors   = [];
 
         // Open and parse CSV safely
@@ -661,10 +665,29 @@ class MeetingAttendance extends AdminController
 
             // Process each row
             while (($row = fgetcsv($handle)) !== false) {
-                // Skip empty lines
+                $totalRows++;
+                
+                // Skip empty lines (check if all columns are empty)
+                $isEmptyRow = true;
+                foreach ($row as $cell) {
+                    if (trim((string) $cell) !== '') {
+                        $isEmptyRow = false;
+                        break;
+                    }
+                }
+                if ($isEmptyRow) { 
+                    $skipped++; 
+                    continue; 
+                }
+                
+                // Skip if email is empty
                 $emailRaw = $row[$map['email']] ?? '';
                 $email    = strtolower(trim((string) $emailRaw));
-                if ($email === '') { $skipped++; continue; }
+                if ($email === '') { 
+                    $emptyEmails++; 
+                    $skipped++; 
+                    continue; 
+                }
 
                 $ratingRaw   = $row[$map['rating']] ?? '';
                 $durationRaw = $row[$map['duration']] ?? '';
@@ -677,6 +700,7 @@ class MeetingAttendance extends AdminController
                 // Find user by email
                 $user = $UserModel->where('LOWER(email)', $email)->where('deleted_at', null)->first();
                 if (! $user) {
+                    $notFound++;
                     $skipped++;
                     $errors[] = 'User tidak ditemukan: ' . $email;
                     continue;
@@ -686,64 +710,71 @@ class MeetingAttendance extends AdminController
                 $live_meeting_id = (int) $meeting['id'];
                 $course_id       = (int) $meeting['course_id'];
 
-                // Upsert feedback
-                $existingFeedback = $LiveMeetingFeedbackModel
-                    ->where('user_id', $user_id)
-                    ->where('live_meeting_id', $live_meeting_id)
-                    ->where('deleted_at', null)
-                    ->first();
+                // Upsert feedback with error handling
+                try {
+                    $existingFeedback = $LiveMeetingFeedbackModel
+                        ->where('user_id', $user_id)
+                        ->where('live_meeting_id', $live_meeting_id)
+                        ->where('deleted_at', null)
+                        ->first();
 
-                $contentObj = (object) [
-                    'rate'    => $rating,
-                    'content' => $comment,
-                ];
+                    $contentObj = (object) [
+                        'rate'    => $rating,
+                        'content' => $comment,
+                    ];
 
-                if ($existingFeedback) {
-                    $LiveMeetingFeedbackModel->update($existingFeedback['id'], [
-                        'content'    => json_encode($contentObj),
-                        'updated_at' => date('Y-m-d H:i:s'),
-                    ]);
-                    $meeting_feedback_id = (int) $existingFeedback['id'];
-                } else {
-                    $meeting_feedback_id = (int) $LiveMeetingFeedbackModel->insert([
-                        'user_id'         => $user_id,
-                        'live_meeting_id' => $live_meeting_id,
-                        'content'         => json_encode($contentObj),
-                        'created_at'      => date('Y-m-d H:i:s'),
-                    ]);
-                }
+                    if ($existingFeedback) {
+                        $LiveMeetingFeedbackModel->update($existingFeedback['id'], [
+                            'content'    => json_encode($contentObj),
+                            'updated_at' => date('Y-m-d H:i:s'),
+                        ]);
+                        $meeting_feedback_id = (int) $existingFeedback['id'];
+                    } else {
+                        $meeting_feedback_id = (int) $LiveMeetingFeedbackModel->insert([
+                            'user_id'         => $user_id,
+                            'live_meeting_id' => $live_meeting_id,
+                            'content'         => json_encode($contentObj),
+                            'created_at'      => date('Y-m-d H:i:s'),
+                        ]);
+                    }
 
-                // Upsert attendance
-                $existingAttendance = $LiveAttendanceModel
-                    ->where('user_id', $user_id)
-                    ->where('live_meeting_id', $live_meeting_id)
-                    ->where('deleted_at', null)
-                    ->first();
+                    // Upsert attendance
+                    $existingAttendance = $LiveAttendanceModel
+                        ->where('user_id', $user_id)
+                        ->where('live_meeting_id', $live_meeting_id)
+                        ->where('deleted_at', null)
+                        ->first();
 
-                $attendanceData = [
-                    'user_id'             => $user_id,
-                    'course_id'           => $course_id,
-                    'live_meeting_id'     => $live_meeting_id,
-                    'duration'            => $duration,
-                    'meeting_feedback_id' => $meeting_feedback_id,
-                    'status'              => ($duration >= 1800) ? 1 : 0,
-                ];
+                    $attendanceData = [
+                        'user_id'             => $user_id,
+                        'course_id'           => $course_id,
+                        'live_meeting_id'     => $live_meeting_id,
+                        'duration'            => $duration,
+                        'meeting_feedback_id' => $meeting_feedback_id,
+                        'status'              => ($duration >= 1800) ? 1 : 0,
+                    ];
 
-                if ($existingAttendance) {
-                    $attendanceData['updated_at'] = date('Y-m-d H:i:s');
-                    $LiveAttendanceModel->update($existingAttendance['id'], $attendanceData);
-                    $updated++;
-                } else {
-                    $attendanceData['created_at'] = date('Y-m-d H:i:s');
-                    $LiveAttendanceModel->insert($attendanceData);
-                    $inserted++;
-                }
+                    if ($existingAttendance) {
+                        $attendanceData['updated_at'] = date('Y-m-d H:i:s');
+                        $LiveAttendanceModel->update($existingAttendance['id'], $attendanceData);
+                        $updated++;
+                    } else {
+                        $attendanceData['created_at'] = date('Y-m-d H:i:s');
+                        $LiveAttendanceModel->insert($attendanceData);
+                        $inserted++;
+                    }
 
-                // Graduation check: progress = 100, attendance status = 1, feedback exists
-                $student = $CourseStudentModel->where('user_id', $user_id)->where('course_id', $course_id)->first();
-                if ($student && (int) ($student['progress'] ?? 0) === 100) {
-                    $CourseStudentModel->markAsGraduate($user_id, $course_id);
-                    $this->updateScholarshipProgram($user_id);
+                    // Graduation check: progress = 100, attendance status = 1, feedback exists
+                    $student = $CourseStudentModel->where('user_id', $user_id)->where('course_id', $course_id)->first();
+                    if ($student && (int) ($student['progress'] ?? 0) === 100) {
+                        $CourseStudentModel->markAsGraduate($user_id, $course_id);
+                        $this->updateScholarshipProgram($user_id);
+                        $graduated++;
+                    }
+                } catch (\Exception $e) {
+                    $skipped++;
+                    $errors[] = 'Error memproses ' . $email . ': ' . $e->getMessage();
+                    continue;
                 }
             }
 
@@ -753,11 +784,37 @@ class MeetingAttendance extends AdminController
             return redirect()->to(site_url(urlScope() . '/course/live/meeting/' . $slug . '/attendant/import'));
         }
 
-        $message = sprintf('Import selesai. Ditambahkan: %d, Diperbarui: %d, Dilewati: %d', $inserted, $updated, $skipped);
+        // Calculate processed vs total
+        $processed = $inserted + $updated;
+        $message = sprintf(
+            '<strong>Import selesai!</strong><br><br>' .
+            '<strong>Total baris di CSV:</strong> %d<br>' .
+            '<strong>Berhasil diproses:</strong> %d (Ditambahkan: %d, Diperbarui: %d)<br>' .
+            '<strong>Dilewati:</strong> %d<br>' .
+            '&nbsp;&nbsp;- Email kosong: %d<br>' .
+            '&nbsp;&nbsp;- User tidak ditemukan: %d<br>' .
+            '&nbsp;&nbsp;- Error lainnya: %d<br>' .
+            '<strong>Marking lulus:</strong> %d',
+            $totalRows,
+            $processed,
+            $inserted,
+            $updated,
+            $skipped,
+            $emptyEmails,
+            $notFound,
+            ($skipped - $emptyEmails - $notFound),
+            $graduated
+        );
+        
         if (! empty($errors)) {
-            $message .= '<br><br><strong>Catatan:</strong><ul class="mb-0 mt-2">';
-            foreach ($errors as $error) {
+            $message .= '<br><br><strong>Detail Error:</strong><ul class="mb-0 mt-2">';
+            // Limit errors to first 50 to avoid overwhelming the UI
+            $displayErrors = array_slice($errors, 0, 50);
+            foreach ($displayErrors as $error) {
                 $message .= '<li>' . esc($error) . '</li>';
+            }
+            if (count($errors) > 50) {
+                $message .= '<li><em>... dan ' . (count($errors) - 50) . ' error lainnya</em></li>';
             }
             $message .= '</ul>';
         }
