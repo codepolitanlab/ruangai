@@ -618,8 +618,7 @@ class MeetingAttendance extends AdminController
         $notFound = 0;
         $graduated = 0;
         $notGraduated = 0;
-        $nonRaiTdagarut = 0;
-        $nonRaiTdagarutEmails = [];
+        $notGraduatedEmails = [];
         $totalRows = 0;
         $errors   = [];
 
@@ -713,18 +712,6 @@ class MeetingAttendance extends AdminController
                 $live_meeting_id = (int) $meeting['id'];
                 $course_id       = (int) $meeting['course_id'];
 
-                // Check scholarship participant reference_comentor
-                $db = \Config\Database::connect();
-                $scholarshipParticipant = $db->table('scholarship_participants')
-                    ->where('user_id', $user_id)
-                    ->get()
-                    ->getRowArray();
-                
-                if ($scholarshipParticipant && $scholarshipParticipant['reference_comentor'] !== 'rai-tdagarut') {
-                    $nonRaiTdagarut++;
-                    $nonRaiTdagarutEmails[] = $email;
-                }
-
                 // Upsert feedback with error handling
                 try {
                     $existingFeedback = $LiveMeetingFeedbackModel
@@ -788,6 +775,7 @@ class MeetingAttendance extends AdminController
                     } else {
                         // Student belum lulus karena progress < 100 atau tidak terdaftar di course
                         $notGraduated++;
+                        $notGraduatedEmails[] = $email;
                     }
                 } catch (\Exception $e) {
                     $skipped++;
@@ -814,9 +802,7 @@ class MeetingAttendance extends AdminController
             '&nbsp;&nbsp;- Error lainnya: %d<br><br>' .
             '<strong>Status Kelulusan:</strong><br>' .
             '&nbsp;&nbsp;- Marking lulus: %d<br>' .
-            '&nbsp;&nbsp;- Belum lulus (progress < 100%%): %d<br><br>' .
-            '<strong>Reference Comentor:</strong><br>' .
-            '&nbsp;&nbsp;- Peserta dengan reference_comentor != rai-tdagarut: %d',
+            '&nbsp;&nbsp;- Belum lulus (progress < 100%%): %d',
             $totalRows,
             $processed,
             $inserted,
@@ -826,14 +812,13 @@ class MeetingAttendance extends AdminController
             $notFound,
             ($skipped - $emptyEmails - $notFound),
             $graduated,
-            $notGraduated,
-            $nonRaiTdagarut
+            $notGraduated
         );
         
-        // Add list of non rai-tdagarut emails
-        if ($nonRaiTdagarut > 0) {
-            $message .= '<br><br><strong>List Email Peserta (reference_comentor != rai-tdagarut):</strong><ul class="mb-0 mt-2">';
-            foreach ($nonRaiTdagarutEmails as $emailItem) {
+        // Add list of not graduated emails
+        if ($notGraduated > 0 && !empty($notGraduatedEmails)) {
+            $message .= '<br><br><strong>List Email Peserta Belum Lulus (progress < 100%):</strong><ul class="mb-0 mt-2">';
+            foreach ($notGraduatedEmails as $emailItem) {
                 $message .= '<li>' . esc($emailItem) . '</li>';
             }
             $message .= '</ul>';
