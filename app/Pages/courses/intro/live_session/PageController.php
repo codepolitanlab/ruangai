@@ -53,7 +53,7 @@ class PageController extends BaseController
 
         // Ambil data participant untuk pengecekan reference_comentor
         $participant = $db->table('scholarship_participants')
-            ->select('reference_comentor, is_reference_followup, program, is_participating_other_ai_program')
+            ->select('reference_comentor, is_reference_followup, program, prev_chapter, is_participating_other_ai_program')
             ->where('user_id', $jwt->user_id)
             ->get()
             ->getRow();
@@ -166,9 +166,10 @@ class PageController extends BaseController
         $this->data['is_participating_other_ai_program'] = $participant && $participant->is_participating_other_ai_program == 1 ? true : false;
         $this->data['comentor'] = null;
         $this->data['program'] = $participant ? $participant->program : null;
+        $this->data['prev_chapter'] = $participant ? $participant->prev_chapter : null;
         
         if ($participant) {
-            if (isset($participant->reference_comentor)) {
+            if (isset($participant->reference_comentor) && trim($participant->reference_comentor) !== '') {
                 $this->data['is_mentee_comentor'] = true;
                 $comentorData = $db->table('scholarship_participants')
                     ->select('fullname')
