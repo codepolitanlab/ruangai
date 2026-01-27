@@ -770,10 +770,10 @@ class MeetingAttendance extends AdminController
                     if ($student && (int) ($student['progress'] ?? 0) === 100) {
                         $CourseStudentModel->markAsGraduate($user_id, $course_id);
                         $this->updateScholarshipProgram($user_id);
-                      else {
+                        $graduated++;
+                    } else {
                         // Student belum lulus karena progress < 100 atau tidak terdaftar di course
                         $notGraduated++;
-                    }   $graduated++;
                     }
                 } catch (\Exception $e) {
                     $skipped++;
@@ -793,7 +793,11 @@ class MeetingAttendance extends AdminController
         $message = sprintf(
             '<strong>Import selesai!</strong><br><br>' .
             '<strong>Total baris di CSV:</strong> %d<br>' .
-            '<strong>Berhasil diproses:</strong><br>' .
+            '<strong>Berhasil diproses:</strong> %d (Ditambahkan: %d, Diperbarui: %d)<br>' .
+            '<strong>Dilewati:</strong> %d<br>' .
+            '&nbsp;&nbsp;- Email kosong: %d<br>' .
+            '&nbsp;&nbsp;- User tidak ditemukan: %d<br>' .
+            '&nbsp;&nbsp;- Error lainnya: %d<br><br>' .
             '<strong>Status Kelulusan:</strong><br>' .
             '&nbsp;&nbsp;- Marking lulus: %d<br>' .
             '&nbsp;&nbsp;- Belum lulus (progress < 100%%): %d',
@@ -806,11 +810,7 @@ class MeetingAttendance extends AdminController
             $notFound,
             ($skipped - $emptyEmails - $notFound),
             $graduated,
-            $notGkipped,
-            $emptyEmails,
-            $notFound,
-            ($skipped - $emptyEmails - $notFound),
-            $graduated
+            $notGraduated
         );
         
         if (! empty($errors)) {
