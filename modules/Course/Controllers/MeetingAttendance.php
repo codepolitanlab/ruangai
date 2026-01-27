@@ -618,6 +618,8 @@ class MeetingAttendance extends AdminController
         $notFound = 0;
         $graduated = 0;
         $notGraduated = 0;
+        $nonRaiTdagarut = 0;
+        $nonRaiTdagarutEmails = [];
         $totalRows = 0;
         $errors   = [];
 
@@ -711,6 +713,18 @@ class MeetingAttendance extends AdminController
                 $live_meeting_id = (int) $meeting['id'];
                 $course_id       = (int) $meeting['course_id'];
 
+                // Check scholarship participant reference_comentor
+                $db = \Config\Database::connect();
+                $scholarshipParticipant = $db->table('scholarship_participants')
+                    ->where('user_id', $user_id)
+                    ->get()
+                    ->getRowArray();
+                
+                if ($scholarshipParticipant && $scholarshipParticipant['reference_comentor'] !== 'rai-tdagarut') {
+                    $nonRaiTdagarut++;
+                    $nonRaiTdagarutEmails[] = $email;
+                }
+
                 // Upsert feedback with error handling
                 try {
                     $existingFeedback = $LiveMeetingFeedbackModel
@@ -800,7 +814,9 @@ class MeetingAttendance extends AdminController
             '&nbsp;&nbsp;- Error lainnya: %d<br><br>' .
             '<strong>Status Kelulusan:</strong><br>' .
             '&nbsp;&nbsp;- Marking lulus: %d<br>' .
-            '&nbsp;&nbsp;- Belum lulus (progress < 100%%): %d',
+            '&nbsp;&nbsp;- Belum lulus (progress < 100%%): %d<br><br>' .
+            '<strong>Reference Comentor:</strong><br>' .
+            '&nbsp;&nbsp;- Peserta dengan reference_comentor != rai-tdagarut: %d',
             $totalRows,
             $processed,
             $inserted,
@@ -810,8 +826,18 @@ class MeetingAttendance extends AdminController
             $notFound,
             ($skipped - $emptyEmails - $notFound),
             $graduated,
-            $notGraduated
+            $notGraduated,
+            $nonRaiTdagarut
         );
+        
+        // Add list of non rai-tdagarut emails
+        if ($nonRaiTdagarut > 0) {
+            $message .= '<br><br><strong>List Email Peserta (reference_comentor != rai-tdagarut):</strong><ul class="mb-0 mt-2">';
+            foreach ($nonRaiTdagarutEmails as $emailItem) {
+                $message .= '<li>' . esc($emailItem) . '</li>';
+            }
+            $message .= '</ul>';
+        }
         
         if (! empty($errors)) {
             $message .= '<br><br><strong>Detail Error:</strong><ul class="mb-0 mt-2">';
