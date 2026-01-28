@@ -51,38 +51,37 @@ class PageController extends BaseController
             }
         }
 
-        // Ambil data participant untuk pengecekan reference_comentor
+        // Ambil data participant untuk pengecekan reference
         $participant = $db->table('scholarship_participants')
-            ->select('reference_comentor, is_reference_followup, program, prev_chapter, is_participating_other_ai_program')
+            ->select('reference, reference_comentor, is_reference_followup, program, prev_chapter, is_participating_other_ai_program')
             ->where('user_id', $jwt->user_id)
             ->get()
             ->getRow();
 
-        $live_sessions = $db->table('live_meetings')
+        // Query live sessions berdasarkan reference
+        $liveMeetingsQuery = $db->table('live_meetings')
             ->select('live_meetings.*, live_batch.name as batch_name')
             ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
             ->where('live_batch.status', 'ongoing')
             ->where('live_batch.course_id', $course_id)
-            ->where('live_meetings.deleted_at', null)
+            ->where('live_meetings.deleted_at', null);
+
+        if ($participant && isset($participant->reference) && $participant->reference == '965f40') {
+            // Jika reference 965F40, hanya ambil Batch Comentor Followup dengan meeting_code UNINDRA
+            $liveMeetingsQuery->where('live_batch.name', 'Batch Comentor Followup');
+            $liveMeetingsQuery->where('live_meetings.meeting_code', 'UNINDRA');
+            $this->data['is_followup'] = true;
+        } else {
+            // Jika bukan reference 965F40, ambil yang bukan Batch Comentor Followup
+            $liveMeetingsQuery->where('live_batch.name !=', 'Batch Comentor Followup');
+            $this->data['is_followup'] = false;
+        }
+
+        $live_sessions = $liveMeetingsQuery
             ->orderBy('meeting_date', 'ASC')
             ->orderBy('meeting_time', 'ASC')
             ->get()
             ->getResultArray();
-
-        // Filter live sessions berdasarkan reference_comentor
-        if ($participant && isset($participant->reference_comentor) && $participant->reference_comentor == 'co-sheli') {
-            // Jika CO-Sheli, hanya tampilkan Batch Comentor Followup
-            $live_sessions = array_filter($live_sessions, function($session) {
-                return $session['batch_name'] === 'Batch Comentor Followup';
-            });
-            $this->data['is_followup'] = true;
-        } else {
-            // Jika bukan CO-Sheli, tampilkan yang bukan Batch Comentor Followup
-            $live_sessions = array_filter($live_sessions, function($session) {
-                return $session['batch_name'] !== 'Batch Comentor Followup';
-            });
-            $this->data['is_followup'] = false;
-        }
 
         $this->data['live_sessions'] = [];
 
