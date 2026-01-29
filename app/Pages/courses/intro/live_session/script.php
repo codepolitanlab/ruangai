@@ -30,8 +30,8 @@
                     //     window.location.replace(`${base_url}/courses/intro/1/dasar-dan-penggunaan-generative-ai/`);
                     // }
                     
-                    // Cek apakah peserta B4 (program atau prev_chapter)
-                    const isPesertaB4 = value?.program === 'RuangAI2025B4' && value?.prev_chapter === 'RuangAI2025B4';
+                    // Cek apakah peserta B4 (program)
+                    const isPesertaB4 = value?.program === 'RuangAI2025B4';
                     
                     // Cek apakah user memiliki akses ke live session
                     const hasAccess = (value?.is_reference_followup && value?.student.graduate == '0') || 
