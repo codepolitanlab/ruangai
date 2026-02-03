@@ -753,7 +753,7 @@ class MeetingAttendance extends AdminController
                         'live_meeting_id'     => $live_meeting_id,
                         'duration'            => $duration,
                         'meeting_feedback_id' => $meeting_feedback_id,
-                        'status'              => ($duration >= 1800) ? 1 : 0,
+                        'status'              => ($duration >= 900) ? 1 : 0,
                     ];
 
                     if ($existingAttendance) {
