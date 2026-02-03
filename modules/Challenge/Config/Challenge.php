@@ -17,7 +17,7 @@ class Challenge extends BaseConfig
      */
     // public string $registrationStart = '2025-12-17 17:00:00';
     public string $registrationStart = '2025-12-10 00:00:00';
-    public string $registrationEnd = '2026-01-31 23:59:59';
+    public string $registrationEnd = '2026-03-13 23:59:59';
     public string $judgingStart = '2026-02-01 00:00:00';
     public string $judgingEnd = '2026-02-07 23:59:59';
     public string $announcementDate = '2026-02-08 00:00:00';

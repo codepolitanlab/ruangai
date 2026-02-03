@@ -36,14 +36,14 @@ class PageController extends BaseController
         $jwt = $Heroic->checkToken(true);
 
         // Check if registration is open
-        // if (!$this->config->isRegistrationOpen()) {
-        //     return $this->respond([
-        //         'success' => 0,
-        //         'message' => 'Pendaftaran belum dibuka atau sudah ditutup',
-        //         'registration_start' => $this->config->registrationStart,
-        //         'registration_end' => $this->config->registrationEnd,
-        //     ]);
-        // }
+        if (!$this->config->isRegistrationOpen()) {
+            return $this->respond([
+                'success' => 0,
+                'message' => 'Pendaftaran belum dibuka atau sudah ditutup',
+                'registration_start' => $this->config->registrationStart,
+                'registration_end' => $this->config->registrationEnd,
+            ]);
+        }
 
         // Check if user has an existing submission (we will still allow edit if status is pending)
         $existingSubmission = $this->model->getUserSubmission($jwt->user_id);
