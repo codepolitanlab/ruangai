@@ -15,7 +15,7 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "abordage/html-min": "^0.2.2",
-        "codeigniter4/framework": "^4.0",
+        "codeigniter4/framework": "4.6.x",
         "codeigniter4/settings": "^2.2",
         "endroid/qr-code": "^5.0",
         "firebase/php-jwt": "^6.11",
