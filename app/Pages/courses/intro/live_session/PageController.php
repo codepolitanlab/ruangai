@@ -66,16 +66,16 @@ class PageController extends BaseController
             ->where('live_batch.course_id', $course_id)
             ->where('live_meetings.deleted_at', null);
 
-        if ($participant && isset($participant->reference) && $participant->reference == '965f40') {
-            // Jika reference 965F40, hanya ambil Batch Comentor Followup dengan meeting_code UNINDRA
-            $liveMeetingsQuery->where('live_batch.name', 'Batch Comentor Followup');
-            $liveMeetingsQuery->where('live_meetings.meeting_code', 'UNINDRA');
-            $this->data['is_followup'] = true;
-        } else {
-            // Jika bukan reference 965F40, ambil yang bukan Batch Comentor Followup
-            $liveMeetingsQuery->where('live_batch.name !=', 'Batch Comentor Followup');
+        // if ($participant && isset($participant->reference) && $participant->reference == '965f40') {
+        //     // Jika reference 965F40, hanya ambil Batch Comentor Followup dengan meeting_code UNINDRA
+        //     $liveMeetingsQuery->where('live_batch.name', 'Batch Comentor Followup');
+        //     $liveMeetingsQuery->where('live_meetings.meeting_code', 'UNINDRA');
+        //     $this->data['is_followup'] = true;
+        // } else {
+        //     // Jika bukan reference 965F40, ambil yang bukan Batch Comentor Followup
+        //     $liveMeetingsQuery->where('live_batch.name !=', 'Batch Comentor Followup');
+        // }
             $this->data['is_followup'] = false;
-        }
 
         $live_sessions = $liveMeetingsQuery
             ->orderBy('meeting_date', 'ASC')
