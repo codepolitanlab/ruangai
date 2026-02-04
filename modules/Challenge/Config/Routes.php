@@ -7,6 +7,7 @@ $routes->group(
     ['namespace' => 'Challenge\Controllers'],
     static function ($routes) {
         $routes->get('submissions', 'Submissions::index');
+        $routes->post('submissions', 'Submissions::index');
         $routes->get('submissions/detail/(:num)', 'Submissions::detail/$1');
         $routes->post('submissions/approve/(:num)', 'Submissions::approve/$1');
         $routes->post('submissions/reject/(:num)', 'Submissions::reject/$1');

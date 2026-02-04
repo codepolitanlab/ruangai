@@ -88,7 +88,7 @@ $(document).ready(function() {
         processing: true,
         serverSide: true,
         ajax: {
-            url: '<?= site_url('challenge/submissions') ?>',
+            url: '<?= site_url('ruangpanel/challenge/submissions') ?>',
             type: 'POST',
             data: function(d) {
                 d.status = statusFilter;

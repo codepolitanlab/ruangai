@@ -39,11 +39,11 @@ class Submissions extends AdminController
     {
         $request = $this->request;
         
-        $draw   = $request->getPost('draw');
-        $start  = $request->getPost('start') ?? 0;
-        $length = $request->getPost('length') ?? 10;
+        $draw   = (int) $request->getPost('draw');
+        $start  = (int) ($request->getPost('start') ?? 0);
+        $length = (int) ($request->getPost('length') ?? 10);
         $search = $request->getPost('search')['value'] ?? '';
-        $status = $request->getGet('status') ?? '';
+        $status = $request->getPost('status') ?? '';
 
         $builder = $this->model->select('challenge_alibaba.*, users.name as user_name, users.email as user_email')
             ->join('users', 'users.id = challenge_alibaba.user_id', 'left');
@@ -80,7 +80,7 @@ class Submissions extends AdminController
                 'video_title' => $row['video_title'],
                 'status' => $row['status'],
                 'submitted_at' => $row['submitted_at'] ? date('d M Y H:i', strtotime($row['submitted_at'])) : '-',
-                'actions' => '<a href="' . site_url('challenge/submissions/detail/' . $row['id']) . '" class="btn btn-sm btn-info">Detail</a>',
+                'actions' => '<a href="' . site_url('ruangpanel/challenge/submissions/detail/' . $row['id']) . '" class="btn btn-sm btn-info">Detail</a>',
             ];
         }
 
