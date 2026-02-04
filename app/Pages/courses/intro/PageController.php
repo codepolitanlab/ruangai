@@ -85,7 +85,7 @@ class PageController extends BaseController
 
             // Get course_students
             $this->data['student'] = $db->table('course_students')
-                ->select('progress, expire_at, scholarship_participants.reference_comentor as reference, scholarship_participants.is_reference_followup as is_reference_followup')
+                ->select('progress, expire_at, graduate, scholarship_participants.reference_comentor as reference, scholarship_participants.is_reference_followup as is_reference_followup')
                 ->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id', 'left')
                 ->where('course_students.course_id', $id)
                 ->where('course_students.user_id', $jwt->user_id)
@@ -101,6 +101,7 @@ class PageController extends BaseController
             $this->data['certificate_id'] = $certificate ? $certificate['id'] : false;
 
             if ($this->data['student']) {
+                $this->data['graduate']         = $this->data['student']['graduate'] === '1' ? true : false;
                 $this->data['course_completed'] = $this->data['total_lessons'] === $this->data['lesson_completed'] && $this->data['live_attendance'] > 0 ? true : false;
                 $this->data['is_enrolled']      = $db->table('course_students')->where('course_id', $id)->where('user_id', $jwt->user_id)->countAllResults() > 0 ? true : false;
                 $this->data['is_expire']        = (isset($this->data['student']['expire_at']) && $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s')) ? true : false;
@@ -207,7 +208,7 @@ class PageController extends BaseController
         if ($courseStudent['graduate'] !== '1') {
             // Update field program in scholarship_participants to Active program
             $activeProgram = $db->table('events')
-                ->select('code')
+                ->select('code, title')
                 ->where('status', 'ongoing')
                 ->get()
                 ->getRowArray()['code'] ?? null;
@@ -222,6 +223,7 @@ class PageController extends BaseController
         return $this->respond([
             'response_code'    => 200,
             'response_message' => 'Success',
+            'active_program'   => $activeProgram ?? null,
         ]);
     }
 }

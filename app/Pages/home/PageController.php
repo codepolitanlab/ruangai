@@ -67,7 +67,7 @@ class PageController extends BaseController
 
         // Get course_students - safe for non-scholarship users
         $this->data['student'] = $db->table('course_students')
-            ->select('progress, expire_at, scholarship_participants.program, scholarship_participants.reference, scholarship_participants.reference_comentor, certificates.cert_claim_date, certificates.cert_code')
+            ->select('progress, expire_at, graduate, scholarship_participants.program, scholarship_participants.reference, scholarship_participants.reference_comentor, certificates.cert_claim_date, certificates.cert_code')
             ->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id', 'left')
             ->join('certificates', 'certificates.user_id = course_students.user_id AND certificates.entity_id = course_students.course_id', 'left')
             ->where('course_students.course_id', 1)
@@ -76,16 +76,13 @@ class PageController extends BaseController
             ->getRowArray();
 
         // Safe null handling untuk user kompetisi
-        $this->data['event'] = null;
-        $this->data['group_comentor'] = null;
+        $this->data['event'] = $db->table('events')
+            ->select('date_start, date_end, code')
+            ->where('status', 'ongoing')
+            ->get()
+            ->getRowArray();
         
-        if ($this->data['student'] && isset($this->data['student']['program'])) {
-            $this->data['event'] = $db->table('events')
-                ->select('date_start, date_end, code')
-                ->where('code', $this->data['student']['program'])
-                ->get()
-                ->getRowArray();
-        }
+        $this->data['group_comentor'] = null;
 
         $this->data['is_expire'] = ($this->data['student'] && isset($this->data['student']['expire_at']) && $this->data['student']['expire_at'] < date('Y-m-d H:i:s')) ? true : false;
 
@@ -98,6 +95,7 @@ class PageController extends BaseController
 
         $this->data['is_comentor'] = $jwt->user['role_id'] == 4 ? true : false;
         $this->data['scholarship_url'] = scholarship_registration_url($jwt->user_id);
+        $this->data['student']['graduate'] = $this->data['student'] && isset($this->data['student']['graduate']) && $this->data['student']['graduate'] === '1' ? true : false;
 
         return $this->respond($this->data);
     }
