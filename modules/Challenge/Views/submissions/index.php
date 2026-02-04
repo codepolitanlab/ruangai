@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-12 col-md-6 order-md-1 order-last">
                 <h3>Challenge Submissions</h3>
-                <p class="text-subtitle text-muted">Manage WAN Vision Clash submissions</p>
+                <p class="text-subtitle text-muted">Manage WAN Vision Clash submission</p>
             </div>
             <div class="col-12 col-md-6 order-md-2 order-first">
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
