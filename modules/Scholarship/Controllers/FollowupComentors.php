@@ -212,7 +212,7 @@ class FollowupComentors extends AdminController
                 }
                 
                 // Cek apakah reference_comentor masih null atau is_reference_followup = 1
-                if (empty($participant['reference_comentor']) || $participant['is_reference_followup'] == 1) {
+                // if (empty($participant['reference_comentor']) || $participant['is_reference_followup'] == 1) {
                     
                     // Update data peserta dengan kode comentor
                     $updateData = [
@@ -231,15 +231,15 @@ class FollowupComentors extends AdminController
                         $failedCount++;
                         $failedEmails[] = $email . ' (gagal update)';
                     }
-                } else {
-                    // Peserta sudah punya comentor atau is_reference_followup bukan 1
-                    $failedCount++;
-                    if (!empty($participant['reference_comentor'])) {
-                        $failedEmails[] = $email . ' (sudah memiliki comentor: ' . $participant['reference_comentor'] . ')';
-                    } else {
-                        $failedEmails[] = $email . ' (is_reference_followup bukan 1)';
-                    }
-                }
+                // } else {
+                //     // Peserta sudah punya comentor atau is_reference_followup bukan 1
+                //     $failedCount++;
+                //     if (!empty($participant['reference_comentor'])) {
+                //         $failedEmails[] = $email . ' (sudah memiliki comentor: ' . $participant['reference_comentor'] . ')';
+                //     } else {
+                //         $failedEmails[] = $email . ' (is_reference_followup bukan 1)';
+                //     }
+                // }
             } else {
                 $failedCount++;
                 $failedEmails[] = $email . ' (tidak ditemukan)';

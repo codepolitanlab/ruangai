@@ -54,7 +54,7 @@
 <div class="page-heading">
     <div class="row align-items-center">
         <div class="col-12 col-md-6 order-md-1 order-last">
-            <h3>Import Peserta Followup</h3>
+            <h3>Import Peserta Followup RuangAI</h3>
             <nav aria-label="breadcrumb" class="breadcrumb-header">
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="/admin"><i class="bi bi-house-fill"></i></a></li>
