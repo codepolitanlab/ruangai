@@ -43,7 +43,8 @@ if (!function_exists('challenge_status_badge')) {
     {
         $badges = [
             'pending' => '<span class="badge bg-warning">Pending</span>',
-            'validated' => '<span class="badge bg-info">Validated</span>',
+            'review' => '<span class="badge bg-info">Review</span>',
+            'validated' => '<span class="badge bg-info">Review</span>',
             'approved' => '<span class="badge bg-success">Approved</span>',
             'rejected' => '<span class="badge bg-danger">Rejected</span>',
         ];

@@ -41,7 +41,12 @@ function challengeSubmit() {
             module: 'challenge',
         },
 
-        // Single-page form (not step-based)
+        // Stepper wizard state
+        currentStep: 1,
+        hasSubmission: false,
+        submissionStatus: null,
+        submissionNotes: null,
+        canEditSubmission: false,
         isEdit: false,
         submissionId: null,
         isSubmitting: false,
@@ -57,6 +62,8 @@ function challengeSubmit() {
             video_title: '',
             video_description: '',
             other_tools: '',
+            tools_wan_video: false,
+            tools_wan_model: false,
             ethical_statement_agreed: false,
             is_followed_account_codepolitan: false,
             is_followed_account_alibaba: false
@@ -131,18 +138,34 @@ function challengeSubmit() {
                     this.profile.x_profile_url = u.x_profile_url || '';
                 }
 
-                // Pre-fill existing submission if present and editable
-                if (result.existing_submission && result.can_edit) {
-                    this.isEdit = true;
+                this.hasSubmission = !!result.existing_submission;
+                this.submissionStatus = result.existing_submission?.status || null;
+                this.submissionNotes = result.existing_submission?.notes || result.existing_submission?.admin_notes || null;
+                this.canEditSubmission = result.can_edit === true;
+
+                // Pre-fill existing submission if present
+                if (result.existing_submission) {
                     this.submissionId = result.existing_submission.id;
                     this.form.twitter_post_url = result.existing_submission.twitter_post_url || '';
                     this.form.video_title = result.existing_submission.video_title || '';
                     this.form.video_description = result.existing_submission.video_description || '';
                     this.form.other_tools = result.existing_submission.other_tools || '';
+                    if (this.form.other_tools) {
+                        const toolsText = this.form.other_tools;
+                        this.form.tools_wan_video = toolsText.includes('WAN Video');
+                        this.form.tools_wan_model = toolsText.includes('WAN Model');
+                        if (toolsText.includes('Lainnya:')) {
+                            this.form.other_tools = toolsText.split('Lainnya:').pop().trim();
+                        }
+                    }
                     this.form.ethical_statement_agreed = result.existing_submission.ethical_statement_agreed == 1 ? true : false;
                     this.form.is_followed_account_codepolitan = result.existing_submission.is_followed_account_codepolitan == 1 ? true : false;
                     this.form.is_followed_account_alibaba = result.existing_submission.is_followed_account_alibaba == 1 ? true : false;
-                    // Map ethical_statement_agreed to checkboxes
+
+                    if (result.can_edit) {
+                        this.isEdit = true;
+                    }
+
                     if (result.existing_submission.ethical_statement_agreed == 1) {
                         this.profile.agreed_terms_1 = true;
                         this.profile.agreed_terms_2 = true;
@@ -151,12 +174,9 @@ function challengeSubmit() {
 
                     // existing files (display only until replaced)
                     this.existingFiles.prompt_file = result.existing_submission.prompt_file || null;
-                } else if (result.existing_submission && !result.can_edit) {
-                    // User has an existing non-editable submission, show a message and redirect
-                    this.showAlert('error', 'Anda sudah memiliki submission aktif dan tidak dapat diubah.');
-                    setTimeout(() => { window.location.href = '/challenge'; }, 2500);
-                    return;
                 }
+
+                this.setInitialStep();
             } catch (error) {
                 this.showAlert('error', 'Gagal memuat data. Silakan refresh halaman.');
             }
@@ -233,6 +253,72 @@ function challengeSubmit() {
                 this.profile.alibaba_cloud_id && this.profile.alibaba_cloud_id.trim() !== '' &&
                 (this.profile.alibaba_cloud_screenshot || this.profile._screenshot_file)
             );
+        },
+
+        setInitialStep() {
+            if (!this.isProfileComplete()) {
+                this.currentStep = 1;
+                return;
+            }
+
+            if (!this.hasSubmission) {
+                this.currentStep = 2;
+                return;
+            }
+            if (!this.submissionStatus || this.submissionStatus === 'pending') {
+                this.currentStep = 1;
+                return;
+            }
+
+            this.currentStep = 3;
+        },
+
+        normalizedStatus() {
+            if (!this.submissionStatus || this.submissionStatus === 'pending' || this.submissionStatus === 'validated') {
+                return 'review';
+            }
+
+            return this.submissionStatus;
+        },
+
+        statusLabel() {
+            const status = this.normalizedStatus();
+            const labels = {
+                pending: 'Pending',
+                review: 'Review',
+                approved: 'Approved',
+                rejected: 'Rejected'
+            };
+
+            return labels[status] || 'Pending';
+        },
+
+        statusClass() {
+            const status = this.normalizedStatus();
+            return `status-${status}`;
+        },
+
+        stepClass(step) {
+            if (this.currentStep === step) return 'active';
+            if (step < this.currentStep) return 'completed';
+            if (this.isStepLocked(step)) return 'locked';
+            return '';
+        },
+
+        isStepLocked(step) {
+            if (step === 1) return false;
+            if (!this.isProfileComplete()) return true;
+            if (step === 3 && !this.hasSubmission) return true;
+            return false;
+        },
+
+        goToStep(step) {
+            if (this.isStepLocked(step)) {
+                $heroicHelper.toastr('Lengkapi data diri terlebih dahulu sebelum lanjut.', 'warning', 'bottom');
+                return;
+            }
+
+            this.currentStep = step;
         },
 
         validateProfileForm() {
@@ -369,6 +455,7 @@ function challengeSubmit() {
                 if (res.data && res.data.success) {
                     this.profileErrors = {};
                     $heroicHelper.toastr('Data profil berhasil disimpan', 'success', 'bottom');
+                    this.setInitialStep();
                     // optionally refresh defaults
                 } else {
                     // Handle server-side validation errors
@@ -399,6 +486,10 @@ function challengeSubmit() {
             }
             if (!this.form.video_description || this.form.video_description.length < 10) {
                 this.errors.video_description = 'Deskripsi minimal 10 karakter';
+            }
+
+            if (!this.form.tools_wan_video && !this.form.tools_wan_model) {
+                this.errors.tools_required = 'Pilih minimal satu tools wajib (WAN Video AI atau WAN Model Studio AI)';
             }
 
             // Validate files - either new file is uploaded or existing file present (for edit)
@@ -449,6 +540,12 @@ function challengeSubmit() {
                 return;
             }
 
+            if (this.hasSubmission && !this.canEditSubmission) {
+                $heroicHelper.toastr('Submission Anda sudah final dan tidak dapat diubah.', 'warning', 'bottom');
+                this.currentStep = 3;
+                return;
+            }
+
             if (!this.validateForm()) {
                 const errorMessages = Object.values(this.errors).join(', ');
                 $heroicHelper.toastr(errorMessages || 'Mohon periksa kembali form yang diisi', 'danger', 'bottom');
@@ -468,10 +565,21 @@ function challengeSubmit() {
                 twitter_post_url: this.form.twitter_post_url,
                 video_title: this.form.video_title,
                 video_description: this.form.video_description,
+                other_tools: null,
                 ethical_statement_agreed: (this.profile.agreed_terms_1 && this.profile.agreed_terms_2 && this.profile.agreed_terms_3) ? '1' : '0',
                 is_followed_account_codepolitan: this.form.is_followed_account_codepolitan ? '1' : '0',
                 is_followed_account_alibaba: this.form.is_followed_account_alibaba ? '1' : '0'
             };
+
+            const toolsUsed = [];
+            if (this.form.tools_wan_video) toolsUsed.push('WAN Video AI');
+            if (this.form.tools_wan_model) toolsUsed.push('WAN Model Studio AI');
+            if (this.form.other_tools && this.form.other_tools.trim() !== '') {
+                toolsUsed.push(`Lainnya: ${this.form.other_tools.trim()}`);
+            }
+            if (toolsUsed.length) {
+                data.other_tools = toolsUsed.join(', ');
+            }
 
             if (this.isEdit && this.submissionId) {
                 data.submission_id = this.submissionId;
@@ -490,9 +598,12 @@ function challengeSubmit() {
 
                 if (result.success === 1) {
                     $heroicHelper.toastr(result.message, 'success', 'bottom');
-                    setTimeout(() => {
-                        window.location.href = '/challenge';
-                    }, 2000);
+                    this.submissionId = result.submission_id || this.submissionId;
+                    this.hasSubmission = true;
+                    this.submissionStatus = result.status || 'review';
+                    this.canEditSubmission = true;
+                    this.isEdit = true;
+                    this.currentStep = 3;
                 } else {
                     this.errors = result.errors || {};
                     if (result.errors && result.errors.general) {

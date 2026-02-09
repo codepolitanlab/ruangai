@@ -80,17 +80,17 @@
                             <form action="<?= site_url('challenge/submissions/validateSubmission/' . $submission['id']) ?>" method="post" class="mb-2">
                                 <?= csrf_field() ?>
                                 <div class="mb-2">
-                                    <textarea name="admin_notes" class="form-control" rows="2" placeholder="Optional notes..."></textarea>
+                                    <textarea name="notes" class="form-control" rows="2" placeholder="Optional notes..."></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-info w-100">Validate Submission</button>
+                                <button type="submit" class="btn btn-info w-100">Mark as Review</button>
                             </form>
                         <?php endif; ?>
 
-                        <?php if (in_array($submission['status'], ['pending', 'validated'])): ?>
+                        <?php if (in_array($submission['status'], ['pending', 'review', 'validated'])): ?>
                             <form action="<?= site_url('challenge/submissions/approve/' . $submission['id']) ?>" method="post" class="mb-2">
                                 <?= csrf_field() ?>
                                 <div class="mb-2">
-                                    <textarea name="admin_notes" class="form-control" rows="2" placeholder="Optional notes..."></textarea>
+                                    <textarea name="notes" class="form-control" rows="2" placeholder="Optional notes..."></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-success w-100">Approve</button>
                             </form>
@@ -98,16 +98,17 @@
                             <form action="<?= site_url('challenge/submissions/reject/' . $submission['id']) ?>" method="post" onsubmit="return confirm('Are you sure want to reject this submission?')">
                                 <?= csrf_field() ?>
                                 <div class="mb-2">
-                                    <textarea name="admin_notes" class="form-control" rows="2" placeholder="Reason for rejection (required)" required></textarea>
+                                    <textarea name="notes" class="form-control" rows="2" placeholder="Reason for rejection (required)" required></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-danger w-100">Reject</button>
                             </form>
                         <?php endif; ?>
 
-                        <?php if (!empty($submission['admin_notes'])): ?>
+                        <?php $notes = $submission['notes'] ?? ($submission['admin_notes'] ?? null); ?>
+                        <?php if (!empty($notes)): ?>
                             <div class="alert alert-info mt-3">
                                 <strong>Admin Notes:</strong><br>
-                                <?= nl2br(esc($submission['admin_notes'])) ?>
+                                <?= nl2br(esc($notes)) ?>
                             </div>
                         <?php endif; ?>
                     </div>

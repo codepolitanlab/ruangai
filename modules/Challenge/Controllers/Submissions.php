@@ -119,7 +119,7 @@ class Submissions extends AdminController
      */
     public function approve($id)
     {
-        $notes = $this->request->getPost('admin_notes');
+        $notes = $this->request->getPost('notes');
 
         if ($this->model->updateStatus($id, 'approved', $notes)) {
             return redirect()->to('/challenge/submissions/detail/' . $id)
@@ -134,13 +134,27 @@ class Submissions extends AdminController
      */
     public function reject($id)
     {
-        $notes = $this->request->getPost('admin_notes');
+        $notes = $this->request->getPost('notes');
 
         if (empty($notes)) {
             return redirect()->back()->with('error', 'Alasan penolakan harus diisi');
         }
 
         if ($this->model->updateStatus($id, 'rejected', $notes)) {
+            $submission = $this->model->getWithUserInfo($id);
+            if (!empty($submission['user_email'])) {
+                $name = $submission['user_name'] ?? 'Peserta';
+                $reason = $notes ?: 'Tidak ada catatan tambahan.';
+                $message = '<p>Halo ' . esc($name) . ',</p>'
+                    . '<p>Terima kasih sudah mengikuti GenAI Video Fest. Mohon maaf, submission Anda belum dapat kami terima.</p>'
+                    . '<p><strong>Alasan penolakan:</strong><br>' . nl2br(esc($reason)) . '</p>'
+                    . '<p>Anda masih bisa melihat detail submission di dashboard kompetisi.</p>'
+                    . '<p><a href="' . site_url('challenge/submit') . '">Buka Dashboard Kompetisi</a></p>'
+                    . '<p>Salam,<br>Tim GenAI Video Fest</p>';
+
+                $Heroic = new \App\Libraries\Heroic();
+                $Heroic->sendEmail($submission['user_email'], 'Submission Anda Ditolak - GenAI Video Fest', $message);
+            }
             return redirect()->to('/challenge/submissions/detail/' . $id)
                 ->with('success', 'Submission berhasil ditolak');
         }
@@ -153,9 +167,9 @@ class Submissions extends AdminController
      */
     public function validateSubmission($id)
     {
-        $notes = $this->request->getPost('admin_notes');
+        $notes = $this->request->getPost('notes');
 
-        if ($this->model->updateStatus($id, 'validated', $notes)) {
+        if ($this->model->updateStatus($id, 'review', $notes)) {
             return redirect()->to('/challenge/submissions/detail/' . $id)
                 ->with('success', 'Submission berhasil divalidasi');
         }

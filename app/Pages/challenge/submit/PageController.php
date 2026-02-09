@@ -35,8 +35,10 @@ class PageController extends BaseController
         $Heroic = new \App\Libraries\Heroic();
         $jwt = $Heroic->checkToken(true);
 
-        // Check if registration is open
-        if (!$this->config->isRegistrationOpen()) {
+        // Check if user has an existing submission (include rejected for status display)
+        $existingSubmission = $this->model->getLatestSubmission($jwt->user_id);
+
+        if (!$this->config->isRegistrationOpen() && !$existingSubmission) {
             return $this->respond([
                 'success' => 0,
                 'message' => 'Pendaftaran belum dibuka atau sudah ditutup',
@@ -45,21 +47,9 @@ class PageController extends BaseController
             ]);
         }
 
-        // Check if user has an existing submission (we will still allow edit if status is pending)
-        $existingSubmission = $this->model->getUserSubmission($jwt->user_id);
-
         if ($existingSubmission) {
-            // If not pending, we block new submissions
-            if ($existingSubmission['status'] !== 'pending') {
-                return $this->respond([
-                    'success' => 0,
-                    'message' => 'Anda sudah memiliki submission aktif. Satu akun hanya boleh submit satu kali.',
-                    'existing_submission' => $existingSubmission,
-                ]);
-            }
-
             $this->data['existing_submission'] = $existingSubmission;
-            $this->data['can_edit'] = true;
+            $this->data['can_edit'] = in_array(($existingSubmission['status'] ?? 'pending'), ['pending', 'review'], true);
         } else {
             $this->data['existing_submission'] = null;
             $this->data['can_edit'] = false;
@@ -127,8 +117,8 @@ class PageController extends BaseController
             }
             $isUpdate = true;
         } else {
-            // For new submissions, ensure there's no active (non-rejected) submission
-            $existingSubmission = $this->model->getUserSubmission($jwt->user_id);
+            // For new submissions, ensure there's no existing submission
+            $existingSubmission = $this->model->getLatestSubmission($jwt->user_id);
             if ($existingSubmission) {
                 return $this->respond([
                     'success' => 0,
@@ -250,6 +240,7 @@ class PageController extends BaseController
 
         if ($isUpdate) {
             // Update existing submission
+            $data['status'] = 'review';
             $success = $this->model->update($submissionId, $data);
             
             if (!$success) {
@@ -263,12 +254,13 @@ class PageController extends BaseController
                 'success' => 1,
                 'message' => 'Submission berhasil diupdate!',
                 'submission_id' => $submissionId,
+                'status' => 'review',
             ]);
         } else {
             // Create new submission
             $data['user_id'] = $jwt->user_id;
             $data['challenge_id'] = $this->config->challengeId;
-            $data['status'] = 'pending';
+            $data['status'] = 'review';
             $data['submitted_at'] = date('Y-m-d H:i:s');
 
             $newSubmissionId = $this->model->insert($data);
@@ -291,6 +283,7 @@ class PageController extends BaseController
                 'success' => 1,
                 'message' => 'Submission berhasil dikirim!',
                 'submission_id' => $newSubmissionId,
+                'status' => 'review',
             ]);
         }
 

@@ -24,7 +24,7 @@ class ChallengeAlibabaModel extends Model
         'ethical_statement_agreed',
         'is_followed_account_codepolitan',
         'is_followed_account_alibaba',
-        'admin_notes',
+        'notes',
         'status',
         'submitted_at',
     ];
@@ -102,13 +102,23 @@ class ChallengeAlibabaModel extends Model
     }
 
     /**
+     * Get latest submission for user (including rejected)
+     */
+    public function getLatestSubmission($userId)
+    {
+        return $this->where('user_id', $userId)
+            ->orderBy('created_at', 'DESC')
+            ->first();
+    }
+
+    /**
      * Check if submission can be edited (status = pending)
      */
     public function canEdit($id, $userId)
     {
         $submission = $this->where('id', $id)
             ->where('user_id', $userId)
-            ->where('status', 'pending')
+            ->whereIn('status', ['pending', 'review'])
             ->first();
 
         return !empty($submission);
@@ -137,7 +147,7 @@ class ChallengeAlibabaModel extends Model
         $data = ['status' => $status];
         
         if ($adminNotes !== null) {
-            $data['admin_notes'] = $adminNotes;
+            $data['notes'] = $adminNotes;
         }
 
         return $this->update($id, $data);
