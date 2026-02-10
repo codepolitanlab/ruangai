@@ -161,7 +161,7 @@
                 <div class="card-body d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center">
                     <div>
                         <h5 class="mb-2 fw-bold">GenAI Video Fest</h5>
-                        <p class="text-muted mb-2">Lengkapi profil, submit karya, lalu pantau status review. Semua proses dibuat ringkas lewat stepper 3 langkah.</p>
+                        <p class="text-muted mb-2">Ikuti lomba dalam 3 langkah mudah: lengkapi profil, submit karya, dan pantau status review hingga hasil diumumkan.</p>
                         <div class="d-flex flex-wrap gap-2">
                             <span class="badge bg-light text-dark">Satu akun satu submission</span>
                             <span class="badge bg-light text-dark">Wajib WAN Model Studio / WAN Video AI</span>
@@ -245,7 +245,7 @@
                             </template>
 
                             <template x-if="hasSubmission && normalizedStatus() === 'review'">
-                                <div class="alert alert-info">
+                                <div class="alert alert-success">
                                     <strong>Sedang Direview</strong><br>
                                     Tim kami sedang meninjau karya Anda. Anda masih bisa memperbarui submission di Step 2.
                                 </div>
