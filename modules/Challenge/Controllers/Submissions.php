@@ -100,7 +100,7 @@ class Submissions extends AdminController
         $submission = $this->model->getWithUserInfo($id);
 
         if (!$submission) {
-            return redirect()->to('/challenge/submissions')->with('error', 'Submission tidak ditemukan');
+            return redirect()->to('ruangpanel/challenge/submissions')->with('error', 'Submission tidak ditemukan');
         }
 
         // Parse team members
@@ -122,7 +122,7 @@ class Submissions extends AdminController
         $notes = $this->request->getPost('notes');
 
         if ($this->model->updateStatus($id, 'approved', $notes)) {
-            return redirect()->to('/challenge/submissions/detail/' . $id)
+            return redirect()->to('ruangpanel/challenge/submissions/detail/' . $id)
                 ->with('success', 'Submission berhasil disetujui');
         }
 
@@ -155,7 +155,7 @@ class Submissions extends AdminController
                 $Heroic = new \App\Libraries\Heroic();
                 $Heroic->sendEmail($submission['user_email'], 'Submission Anda Ditolak - GenAI Video Fest', $message);
             }
-            return redirect()->to('/challenge/submissions/detail/' . $id)
+            return redirect()->to('ruangpanel/challenge/submissions/detail/' . $id)
                 ->with('success', 'Submission berhasil ditolak');
         }
 
@@ -170,7 +170,7 @@ class Submissions extends AdminController
         $notes = $this->request->getPost('notes');
 
         if ($this->model->updateStatus($id, 'review', $notes)) {
-            return redirect()->to('/challenge/submissions/detail/' . $id)
+            return redirect()->to('ruangpanel/challenge/submissions/detail/' . $id)
                 ->with('success', 'Submission berhasil divalidasi');
         }
 
@@ -236,7 +236,7 @@ class Submissions extends AdminController
     public function delete($id)
     {
         if ($this->model->delete($id)) {
-            return redirect()->to('/challenge/submissions')
+            return redirect()->to('ruangpanel/challenge/submissions')
                 ->with('success', 'Submission berhasil dihapus');
         }
 

@@ -14,7 +14,7 @@
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="<?= site_url('dashboard') ?>">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="<?= site_url('challenge/submissions') ?>">Submissions</a></li>
+                        <li class="breadcrumb-item"><a href="<?= site_url('ruangpanel/challenge/submissions') ?>">Submissions</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Detail</li>
                     </ol>
                 </nav>
@@ -77,7 +77,7 @@
                     </div>
                     <div class="card-body">
                         <?php if ($submission['status'] === 'pending'): ?>
-                            <form action="<?= site_url('challenge/submissions/validateSubmission/' . $submission['id']) ?>" method="post" class="mb-2">
+                            <form action="<?= site_url('ruangpanel/challenge/submissions/validate/' . $submission['id']) ?>" method="post" class="mb-2">
                                 <?= csrf_field() ?>
                                 <div class="mb-2">
                                     <textarea name="notes" class="form-control" rows="2" placeholder="Optional notes..."></textarea>
@@ -87,7 +87,7 @@
                         <?php endif; ?>
 
                         <?php if (in_array($submission['status'], ['pending', 'review', 'validated'])): ?>
-                            <form action="<?= site_url('challenge/submissions/approve/' . $submission['id']) ?>" method="post" class="mb-2">
+                            <form action="<?= site_url('ruangpanel/challenge/submissions/approve/' . $submission['id']) ?>" method="post" class="mb-2">
                                 <?= csrf_field() ?>
                                 <div class="mb-2">
                                     <textarea name="notes" class="form-control" rows="2" placeholder="Optional notes..."></textarea>
@@ -95,7 +95,7 @@
                                 <button type="submit" class="btn btn-success w-100">Approve</button>
                             </form>
 
-                            <form action="<?= site_url('challenge/submissions/reject/' . $submission['id']) ?>" method="post" onsubmit="return confirm('Are you sure want to reject this submission?')">
+                            <form action="<?= site_url('ruangpanel/challenge/submissions/reject/' . $submission['id']) ?>" method="post" onsubmit="return confirm('Are you sure want to reject this submission?')">
                                 <?= csrf_field() ?>
                                 <div class="mb-2">
                                     <textarea name="notes" class="form-control" rows="2" placeholder="Reason for rejection (required)" required></textarea>
