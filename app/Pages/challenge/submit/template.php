@@ -45,8 +45,9 @@
         }
         .stepper-item.active {
             border-color: #0f957c;
-            color: #0f957c;
-            box-shadow: 0 6px 18px rgba(15, 149, 124, 0.15);
+            background: #0f957c;
+            color: #fff;
+            box-shadow: 0 8px 22px rgba(15, 149, 124, 0.25);
         }
         .stepper-item.completed {
             border-color: #198754;
@@ -67,7 +68,7 @@
             font-weight: 700;
         }
         .stepper-item.active .step-number {
-            background: #0f957c;
+            background: rgba(255, 255, 255, 0.18);
             color: #fff;
         }
         .stepper-item.completed .step-number {
@@ -226,7 +227,7 @@
                 </div>
 
                 <div x-show="currentStep === 2" x-cloak>
-                    <div class="alert alert-warning" x-show="hasSubmission && !canEditSubmission" x-cloak>
+                    <div class="alert alert-warning mb-3" x-show="hasSubmission && !canEditSubmission" x-cloak>
                         Submission Anda sudah final dan tidak dapat diubah.
                     </div>
                     <?= $this->include('challenge/submit/_video'); ?>
@@ -239,20 +240,20 @@
                             <p class="text-muted mb-4">Pantau proses review dan update karya bila status masih review.</p>
 
                             <template x-if="!hasSubmission">
-                                <div class="alert alert-warning mb-0">
+                                <div class="alert alert-warning mb-3">
                                     Anda belum mengirimkan karya. Silakan selesaikan Step 2 terlebih dahulu.
                                 </div>
                             </template>
 
                             <template x-if="hasSubmission && normalizedStatus() === 'review'">
-                                <div class="alert alert-success">
+                                <div class="alert alert-success mb-3">
                                     <strong>Sedang Direview</strong><br>
                                     Tim kami sedang meninjau karya Anda. Anda masih bisa memperbarui submission di Step 2.
                                 </div>
                             </template>
 
                             <template x-if="hasSubmission && normalizedStatus() === 'rejected'">
-                                <div class="alert alert-danger">
+                                <div class="alert alert-danger mb-3">
                                     <strong>Submission Ditolak</strong><br>
                                     <span x-text="submissionNotes || 'Tidak ada catatan tambahan.'"></span>
                                 </div>
@@ -260,7 +261,7 @@
 
                             <template x-if="hasSubmission && normalizedStatus() === 'approved'">
                                 <div>
-                                    <div class="alert alert-success">
+                                    <div class="alert alert-success mb-3">
                                         <strong>Submission Disetujui</strong><br>
                                         Selamat! Anda berhak mendapatkan sertifikat keikutsertaan.
                                     </div>

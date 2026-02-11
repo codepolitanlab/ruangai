@@ -4,6 +4,7 @@ namespace Challenge\Controllers;
 
 use Heroicadmin\Controllers\AdminController;
 use Challenge\Models\ChallengeAlibabaModel;
+use CodeIgniter\Exceptions\PageNotFoundException;
 
 class Submissions extends AdminController
 {
@@ -228,6 +229,26 @@ class Submissions extends AdminController
         }
 
         return $this->response->download($filePath, null);
+    }
+
+    /**
+     * Display stored Alibaba profile screenshot inline
+     */
+    public function profileScreenshot($userId, $filename)
+    {
+        $safeFilename = basename($filename);
+        $filePath = profile_upload_path($userId) . $safeFilename;
+
+        if (!is_file($filePath)) {
+            throw PageNotFoundException::forPageNotFound('Screenshot tidak ditemukan');
+        }
+
+        $mime = mime_content_type($filePath) ?: 'application/octet-stream';
+
+        return $this->response
+            ->setHeader('Content-Type', $mime)
+            ->setHeader('Content-Disposition', 'inline; filename="' . $safeFilename . '"')
+            ->setBody(file_get_contents($filePath));
     }
 
     /**

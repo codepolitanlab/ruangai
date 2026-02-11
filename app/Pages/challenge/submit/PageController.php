@@ -148,8 +148,8 @@ class PageController extends BaseController
             'video_description' => [
                 'rules' => 'required|min_length[10]',
                 'errors' => [
-                    'required' => 'Deskripsi video wajib diisi',
-                    'min_length' => 'Deskripsi video minimal 10 karakter',
+                    'required' => 'Prompt wajib diisi',
+                    'min_length' => 'Prompt minimal 10 karakter',
                 ],
             ],
         ]);
@@ -173,57 +173,10 @@ class PageController extends BaseController
             ]);
         }
 
-        // Handle file uploads
-        $uploadedFiles = [];
-        $uploadPath = ensure_upload_directory($jwt->user_id);
-
-        // For update, fetch existing submission files
-        $existingFiles = [];
+        $existingPromptFile = null;
         if ($isUpdate) {
-            $existing = $this->model->find($submissionId);
-            $existingFiles = [
-                'prompt_file' => $existing['prompt_file'] ?? null,
-            ];
-        }
-
-        try {
-            // Upload prompt file (PDF/TXT)
-            $promptFile = $this->request->getFile('prompt_file');
-            if ($promptFile && $promptFile->isValid() && !$promptFile->hasMoved()) {
-                // Validate file size (max 1MB)
-                if ($promptFile->getSize() > 1048576) { // 1MB = 1048576 bytes
-                    throw new \Exception('Ukuran file maksimal 1MB');
-                }
-                
-                // Replace old file on update
-                if ($isUpdate && !empty($existingFiles['prompt_file'])) {
-                    $oldFile = $uploadPath . $existingFiles['prompt_file'];
-                    if (file_exists($oldFile)) {
-                        unlink($oldFile);
-                    }
-                }
-                $promptFileName = $promptFile->getRandomName();
-                $promptFile->move($uploadPath, $promptFileName);
-                $uploadedFiles['prompt_file'] = $promptFileName;
-            } elseif ($isUpdate && !empty($existingFiles['prompt_file'])) {
-                // Keep existing prompt file if not re-uploaded
-                $uploadedFiles['prompt_file'] = $existingFiles['prompt_file'];
-            } else {
-                throw new \Exception('Prompt file wajib diupload');
-            }
-
-        } catch (\Exception $e) {
-            // Clean up any uploaded files on error
-            foreach ($uploadedFiles as $file) {
-                if (file_exists($uploadPath . $file)) {
-                    unlink($uploadPath . $file);
-                }
-            }
-
-            return $this->respond([
-                'success' => 0,
-                'errors' => ['files' => $e->getMessage()],
-            ]);
+            $existingSubmission = $this->model->find($submissionId);
+            $existingPromptFile = $existingSubmission['prompt_file'] ?? null;
         }
 
         // Prepare data for database
@@ -232,7 +185,7 @@ class PageController extends BaseController
             'video_title' => $this->request->getPost('video_title'),
             'video_description' => $this->request->getPost('video_description'),
             'other_tools' => !empty($this->request->getPost('other_tools')) ? $this->request->getPost('other_tools') : null,
-            'prompt_file' => $uploadedFiles['prompt_file'],
+            'prompt_file' => $existingPromptFile,
             'ethical_statement_agreed' => $this->request->getPost('ethical_statement_agreed') == '1' ? 1 : 0,
             'is_followed_account_codepolitan' => $this->request->getPost('is_followed_account_codepolitan') == '1' ? 1 : 0,
             'is_followed_account_alibaba' => $this->request->getPost('is_followed_account_alibaba') == '1' ? 1 : 0,
@@ -266,13 +219,6 @@ class PageController extends BaseController
             $newSubmissionId = $this->model->insert($data);
 
             if (!$newSubmissionId) {
-                // Clean up uploaded files
-                foreach ($uploadedFiles as $file) {
-                    if ($file && file_exists($uploadPath . $file)) {
-                        unlink($uploadPath . $file);
-                    }
-                }
-
                 return $this->respond([
                     'success' => 0,
                     'errors' => ['general' => 'Gagal menyimpan submission. Silakan coba lagi.'],

@@ -91,12 +91,6 @@ function challengeSubmit() {
                 role: 'leader'
             }
         ],
-        files: {
-            prompt_file: null,
-        },
-        existingFiles: {
-            prompt_file: null,
-        },
         errors: {},
         profileErrors: {},
         config: {},
@@ -172,35 +166,12 @@ function challengeSubmit() {
                         this.profile.agreed_terms_3 = true;
                     }
 
-                    // existing files (display only until replaced)
-                    this.existingFiles.prompt_file = result.existing_submission.prompt_file || null;
+                    // legacy prompt file values are ignored but kept server-side
                 }
 
                 this.setInitialStep();
             } catch (error) {
                 this.showAlert('error', 'Gagal memuat data. Silakan refresh halaman.');
-            }
-        },
-
-        handleFileUpload(event, fieldName) {
-            const file = event.target.files[0];
-            if (file) {
-                // Validate file size (max 1MB)
-                const maxSize = 1 * 1024 * 1024; // 1MB in bytes
-                if (file.size > maxSize) {
-                    this.errors[fieldName] = 'Ukuran file maksimal 1MB';
-                    event.target.value = ''; // Clear input
-                    $heroicHelper.toastr('Ukuran file maksimal 1MB', 'danger', 'bottom');
-                    return;
-                }
-                
-                this.files[fieldName] = file;
-                // Clear error if any
-                delete this.errors[fieldName];
-                // If replacing existing file, clear its name so valiation relies on this.files
-                if (this.existingFiles[fieldName]) {
-                    this.existingFiles[fieldName] = null;
-                }
             }
         },
 
@@ -485,16 +456,11 @@ function challengeSubmit() {
                 this.errors.video_title = 'Judul video minimal 5 karakter';
             }
             if (!this.form.video_description || this.form.video_description.length < 10) {
-                this.errors.video_description = 'Deskripsi minimal 10 karakter';
+                this.errors.video_description = 'Prompt minimal 10 karakter';
             }
 
             if (!this.form.tools_wan_video && !this.form.tools_wan_model) {
                 this.errors.tools_required = 'Pilih minimal satu tools wajib (WAN Video AI atau WAN Model Studio AI)';
-            }
-
-            // Validate files - either new file is uploaded or existing file present (for edit)
-            if (!this.files.prompt_file && !this.existingFiles.prompt_file) {
-                this.errors.prompt_file = 'Prompt file wajib diupload';
             }
 
             // Validate follow accounts
@@ -583,13 +549,6 @@ function challengeSubmit() {
 
             if (this.isEdit && this.submissionId) {
                 data.submission_id = this.submissionId;
-            }
-
-            // Add files to data object
-            for (let key in this.files) {
-                if (this.files[key]) {
-                    data[key] = this.files[key];
-                }
             }
 
             try {

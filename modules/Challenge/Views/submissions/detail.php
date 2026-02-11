@@ -66,6 +66,23 @@
                                 <td><strong>Submitted:</strong></td>
                                 <td><?= $submission['submitted_at'] ? date('d M Y H:i', strtotime($submission['submitted_at'])) : '-' ?></td>
                             </tr>
+                            <tr>
+                                <td><strong>Alibaba Cloud ID:</strong></td>
+                                <td><?= $submission['alibaba_cloud_id'] ?></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Alibaba Account Screenshot:</strong></td>
+                                <td>
+                                    <?php if (!empty($submission['alibaba_cloud_screenshot'])): ?>
+                                        <?php $screenshotUrl = site_url('ruangpanel/challenge/submissions/profile-screenshot/' . $submission['user_id'] . '/' . rawurlencode($submission['alibaba_cloud_screenshot'])); ?>
+                                        <a href="<?= esc($screenshotUrl) ?>" target="_blank" rel="noopener">
+                                            <img src="<?= esc($screenshotUrl) ?>" alt="Alibaba Cloud Screenshot" class="img-fluid rounded border" style="max-width: 240px;">
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="text-muted">Tidak ada file</span>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>

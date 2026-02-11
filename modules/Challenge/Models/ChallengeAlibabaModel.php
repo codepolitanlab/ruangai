@@ -40,8 +40,9 @@ class ChallengeAlibabaModel extends Model
      */
     public function getWithUserInfo($id = null)
     {
-        $builder = $this->select('challenge_alibaba.*, users.name as user_name, users.email as user_email, users.phone as user_phone')
-            ->join('users', 'users.id = challenge_alibaba.user_id', 'left');
+        $builder = $this->select('challenge_alibaba.*, users.name as user_name, users.email as user_email, users.phone as user_phone, user_profiles.alibaba_cloud_id, alibaba_cloud_screenshot')
+            ->join('users', 'users.id = challenge_alibaba.user_id', 'left')
+            ->join('user_profiles', 'user_profiles.user_id = users.id', 'left');
 
         if ($id !== null) {
             return $builder->where('challenge_alibaba.id', $id)->first();
