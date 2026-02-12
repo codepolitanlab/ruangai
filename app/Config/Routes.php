@@ -45,6 +45,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
 
     // Route challenge alibaba
     $routes->get('challenge', 'ChallengeController::index');
+    $routes->get('challenge/statistics', 'ChallengeController::statistics');
     $routes->post('challenge', 'ChallengeController::register');
 
     // Bulk generate user token has been graduated

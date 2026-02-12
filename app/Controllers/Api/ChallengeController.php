@@ -179,6 +179,24 @@ class ChallengeController extends ResourceController
         ]);
     }
 
+    public function statistics()
+    {
+        $ChallengeAlibabaModel = new ChallengeAlibabaModel();
+
+        $totalParticipants = $ChallengeAlibabaModel->where('deleted_at', null)->countAllResults();
+        $totalSubmitted = $ChallengeAlibabaModel
+                        ->where('twitter_post_url IS NOT NULL')
+                        ->where('twitter_post_url !=', '')
+                        ->where('deleted_at IS NULL')
+                        ->countAllResults();
+
+        return $this->respond([
+            'status'             => 'success',
+            'total_participants' => $totalParticipants,
+            'total_submitted'    => $totalSubmitted,
+        ]);
+    }
+
     public function isDisallowedDomain($email)
     {
         // Pisahkan email menjadi username dan domain
