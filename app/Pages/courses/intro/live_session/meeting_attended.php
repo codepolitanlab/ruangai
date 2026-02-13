@@ -27,11 +27,11 @@
                     <p 
                         class="bg-white bg-opacity-50 py-1 px-2 rounded-4 mt-3 mb-0"
                         x-show="attended.duration < 1">
-                        <span x-show="attended.duration == null">
+                        <span x-show="attended.duration == null && moment().isBefore(moment(attended.meeting_date + ' ' + attended.meeting_end, 'YYYY-MM-DD HH:mm:ss').add(1, 'hours'))">
                             <i class="bi bi-arrow-repeat"></i>
                             Data kehadiran sedang diproses
                         </span>
-                        <span x-show="attended.duration == 0">
+                        <span x-show="attended.duration == 0 || (attended.duration == null && moment().isAfter(moment(attended.meeting_date + ' ' + attended.meeting_end, 'YYYY-MM-DD HH:mm:ss').add(1, 'hours')))">
                             <i class="bi bi-exclamation-triangle"></i>
                             Kamu tidak mengikuti sesi
                         </span>
