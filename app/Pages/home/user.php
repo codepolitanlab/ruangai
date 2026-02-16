@@ -204,7 +204,7 @@
                     <div class="menu-icon-wrapper">
                         <img src="<?= base_url('mobilekit/assets/icon/Kompetisi.svg') ?>" class="menu-icon" alt="Kompetisi">
                     </div>
-                    <p class="menu-text text-dark">Kompetisi</p>
+                    <p class="menu-text text-dark">Lomba GenAI</p>
                 </div>
             </a>
         </div>
