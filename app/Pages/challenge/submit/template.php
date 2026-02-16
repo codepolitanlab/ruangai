@@ -198,8 +198,8 @@
                 </div>
             </template>
 
-            <!-- Combined Card: Stepper + Form Content -->
-            <div class="card mb-3 border-0 shadow-sm" style="position: relative;">
+            <!-- Wrapper for Stepper and Form Content -->
+            <div style="position: relative;">
                 <!-- Global Locked Overlay -->
                 <template x-if="emailNotVerified" x-cloak>
                     <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 100; background: rgba(255,255,255,0.9); backdrop-filter: blur(3px); border-radius: 0.5rem;">
@@ -215,103 +215,109 @@
                 </template>
 
                 <div :style="emailNotVerified ? 'opacity: 0.35; pointer-events: none;' : ''">
-                <div class="card-body">
-                    <div class="stepper-nav">
-                        <button type="button" class="stepper-item" :class="stepClass(1)" @click="goToStep(1)" :disabled="isStepLocked(1)">
-                            <span class="step-number">1</span>
-                            <span>Lengkapi Data Diri</span>
-                        </button>
-                        <button type="button" class="stepper-item" :class="stepClass(2)" @click="goToStep(2)" :disabled="isStepLocked(2)">
-                            <span class="step-number">2</span>
-                            <span>Submit Karya</span>
-                        </button>
-                        <button type="button" class="stepper-item" :class="stepClass(3)" @click="goToStep(3)" :disabled="isStepLocked(3)">
-                            <span class="step-number">3</span>
-                            <span>Review / Selesai</span>
-                        </button>
-                    </div>
-                    <div class="alert alert-warning mt-3 mb-0" x-show="currentStep === 1 && !isProfileComplete() && !emailNotVerified" x-cloak>
-                        <i class="bi bi-exclamation-triangle me-2"></i>
-                        Step 2 dan 3 akan terbuka setelah data diri Anda lengkap.
-                    </div>
-                    <div class="alert alert-info mt-3 mb-0" x-show="emailNotVerified && hasSubmission" x-cloak>
-                        <i class="bi bi-info-circle me-2"></i>
-                        Anda memiliki submission yang sedang direview, namun untuk mengakses status review dan mengupdate submission, Anda harus verifikasi email terlebih dahulu.
-                    </div>
-                </div>
-
-            <!-- Alert Messages -->
-            <div class="mx-3 mt-2" x-show="alert.show" x-cloak>
-                <div class="alert" :class="alert.type === 'error' ? 'alert-danger' : 'alert-success'" role="alert">
-                    <span x-text="alert.message"></span>
-                </div>
-            </div>
-
-            <!-- Step Content -->
-            <div class="mt-3">
-                <template x-if="isEdit">
-                    <div class="alert bg-warning bg-opacity-10 mb-2">
-                        Anda masih dapat mengedit submission sebelum batas akhir pendaftaran.
-                    </div>
-                </template>
-
-                <div x-show="currentStep === 1" x-cloak>
-                    <?= $this->include('challenge/submit/_profile'); ?>
-                </div>
-
-                <div x-show="currentStep === 2" x-cloak>
-                    <div class="alert alert-warning mb-3" x-show="hasSubmission && !canEditSubmission" x-cloak>
-                        Submission Anda sudah final dan tidak dapat diubah.
-                    </div>
-                    <?= $this->include('challenge/submit/_video'); ?>
-                </div>
-
-                <div x-show="currentStep === 3" x-cloak>
-                    <div class="card border-0 shadow-sm">
+                    <!-- Stepper Card -->
+                    <div class="card mb-3 border-0 shadow-sm">
                         <div class="card-body">
-                            <h5 class="fw-bold mb-2">Status Submission</h5>
-                            <p class="text-muted mb-4" x-show="normalizedStatus() != 'approved'">Silahkan pantau status submisi karya mu di sini</p>
+                            <div class="stepper-nav">
+                                <button type="button" class="stepper-item" :class="stepClass(1)" @click="goToStep(1)" :disabled="isStepLocked(1)">
+                                    <span class="step-number">1</span>
+                                    <span>Lengkapi Data Diri</span>
+                                </button>
+                                <button type="button" class="stepper-item" :class="stepClass(2)" @click="goToStep(2)" :disabled="isStepLocked(2)">
+                                    <span class="step-number">2</span>
+                                    <span>Submit Karya</span>
+                                </button>
+                                <button type="button" class="stepper-item" :class="stepClass(3)" @click="goToStep(3)" :disabled="isStepLocked(3)">
+                                    <span class="step-number">3</span>
+                                    <span>Review / Selesai</span>
+                                </button>
+                            </div>
+                            <div class="alert alert-warning mt-3 mb-0" x-show="currentStep === 1 && !isProfileComplete() && !emailNotVerified" x-cloak>
+                                <i class="bi bi-exclamation-triangle me-2"></i>
+                                Step 2 dan 3 akan terbuka setelah data diri Anda lengkap.
+                            </div>
+                            <div class="alert alert-info mt-3 mb-0" x-show="emailNotVerified && hasSubmission" x-cloak>
+                                <i class="bi bi-info-circle me-2"></i>
+                                Anda memiliki submission yang sedang direview, namun untuk mengakses status review dan mengupdate submission, Anda harus verifikasi email terlebih dahulu.
+                            </div>
+                        </div>
+                    </div>
 
-                            <template x-if="!hasSubmission">
-                                <div class="alert alert-warning mb-3">
-                                    Anda belum mengirimkan karya. Silakan selesaikan Step 2 terlebih dahulu.
+                    <!-- Form Content Card -->
+                    <div class="card mb-3 border-0 shadow-sm">
+                        <!-- Alert Messages -->
+                        <div class="mx-3 mt-3" x-show="alert.show" x-cloak>
+                            <div class="alert" :class="alert.type === 'error' ? 'alert-danger' : 'alert-success'" role="alert">
+                                <span x-text="alert.message"></span>
+                            </div>
+                        </div>
+
+                        <!-- Step Content -->
+                        <div class="p-3">
+                            <template x-if="isEdit">
+                                <div class="alert bg-warning bg-opacity-10 mb-2">
+                                    Anda masih dapat mengedit submission sebelum batas akhir pendaftaran.
                                 </div>
                             </template>
 
-                            <template x-if="hasSubmission && normalizedStatus() === 'review'">
-                                <div class="alert alert-success mb-3">
-                                    <strong class="fw-bold">Sedang Direview</strong><br>
-                                    Admin akan melakukan review dari submission kamu, selama dalam status ini kamu masih dapat update informasi data diri dan karya mu
-                                </div>
-                            </template>
+                            <div x-show="currentStep === 1" x-cloak>
+                                <?= $this->include('challenge/submit/_profile'); ?>
+                            </div>
 
-                            <template x-if="hasSubmission && normalizedStatus() === 'rejected'">
-                                <div class="alert alert-danger mb-3">
-                                    <strong class="fw-bold">Submission kamu ditolak, silahkan perbaiki sesuai feedback.</strong><br>
-                                    <span x-text="submissionNotes || 'Tidak ada catatan tambahan.'"></span>
+                            <div x-show="currentStep === 2" x-cloak>
+                                <div class="alert alert-warning mb-3" x-show="hasSubmission && !canEditSubmission" x-cloak>
+                                    Submission Anda sudah final dan tidak dapat diubah.
                                 </div>
-                            </template>
+                                <?= $this->include('challenge/submit/_video'); ?>
+                            </div>
 
-                            <template x-if="hasSubmission && normalizedStatus() === 'approved'">
-                                <div>
-                                    <div class="alert alert-success mb-3">
-                                        <strong class="fw-bold">Submission Disetujui</strong><br>
-                                        Data diri dan karya mu sudah lolos review, silahkan cek email dan tunggu informasi pengumuman pemenangnya; Pastikan karyamu mendapatkan banyak views dan komentar untuk menambah poin penilaian
+                            <div x-show="currentStep === 3" x-cloak>
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="fw-bold mb-2">Status Submission</h5>
+                                        <p class="text-muted mb-4" x-show="normalizedStatus() != 'approved'">Silahkan pantau status submisi karya mu di sini</p>
+
+                                        <template x-if="!hasSubmission">
+                                            <div class="alert alert-warning mb-3">
+                                                Anda belum mengirimkan karya. Silakan selesaikan Step 2 terlebih dahulu.
+                                            </div>
+                                        </template>
+
+                                        <template x-if="hasSubmission && normalizedStatus() === 'review'">
+                                            <div class="alert alert-success mb-3">
+                                                <strong class="fw-bold">Sedang Direview</strong><br>
+                                                Admin akan melakukan review dari submission kamu, selama dalam status ini kamu masih dapat update informasi data diri dan karya mu
+                                            </div>
+                                        </template>
+
+                                        <template x-if="hasSubmission && normalizedStatus() === 'rejected'">
+                                            <div class="alert alert-danger mb-3">
+                                                <strong class="fw-bold">Submission kamu ditolak, silahkan perbaiki sesuai feedback.</strong><br>
+                                                <span x-text="submissionNotes || 'Tidak ada catatan tambahan.'"></span>
+                                            </div>
+                                        </template>
+
+                                        <template x-if="hasSubmission && normalizedStatus() === 'approved'">
+                                            <div>
+                                                <div class="alert alert-success mb-3">
+                                                    <strong class="fw-bold">Submission Disetujui</strong><br>
+                                                    Data diri dan karya mu sudah lolos review, silahkan cek email dan tunggu informasi pengumuman pemenangnya; Pastikan karyamu mendapatkan banyak views dan komentar untuk menambah poin penilaian
+                                                </div>
+                                                <div class="card border-0 shadow-sm">
+                                                    <img src="https://placehold.co/1200x720/png" alt="Sertifikat" class="w-100 rounded-4">
+                                                    <div class="card-body text-end">
+                                                        <a class="btn btn-primary" href="https://www.codepolitan.com/c/FTVJ30Q/" target="_blank">Klaim Sertifikat</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+
                                     </div>
-                                    <div class="card border-0 shadow-sm">
-                                        <img src="https://placehold.co/1200x720/png" alt="Sertifikat" class="w-100 rounded-4">
-                                        <div class="card-body text-end">
-                                            <a class="btn btn-primary" href="https://www.codepolitan.com/c/FTVJ30Q/" target="_blank">Klaim Sertifikat</a>
-                                        </div>
-                                    </div>
                                 </div>
-                            </template>
-
+                            </div>
                         </div>
                     </div>
                 </div>
-                </div>
-            </div>
             </div>
         </div>
     </div>
