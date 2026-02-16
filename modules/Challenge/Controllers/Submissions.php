@@ -123,6 +123,25 @@ class Submissions extends AdminController
         $notes = $this->request->getPost('notes');
 
         if ($this->model->updateStatus($id, 'approved', $notes)) {
+            // Ambil data submission untuk mengirim email ke peserta
+            $submission = $this->model->getWithUserInfo($id);
+
+            if (!empty($submission['user_email'])) {
+                $name = $submission['user_name'] ?? 'Peserta';
+
+                $body = [
+                    'name' => $name,
+                    'video_title' => $submission['video_title'] ?? null,
+                    'dashboard_url' => site_url('challenge/submit'),
+                    'page_title' => 'Submission Disetujui',
+                ];
+
+                // Render HTML dari view template lalu kirim lewat Heroic
+                $message = view('emails/challenge_submission_approved', $body);
+                $Heroic = new \App\Libraries\Heroic();
+                $Heroic->sendEmail($submission['user_email'], 'Submission Anda Disetujui - RuangAI', $message);
+            }
+
             return redirect()->to('ruangpanel/challenge/submissions/detail/' . $id)
                 ->with('success', 'Submission berhasil disetujui');
         }
@@ -146,15 +165,19 @@ class Submissions extends AdminController
             if (!empty($submission['user_email'])) {
                 $name = $submission['user_name'] ?? 'Peserta';
                 $reason = $notes ?: 'Tidak ada catatan tambahan.';
-                $message = '<p>Halo ' . esc($name) . ',</p>'
-                    . '<p>Terima kasih sudah mengikuti GenAI Video Fest. Mohon maaf, submission Anda belum dapat kami terima.</p>'
-                    . '<p><strong>Alasan penolakan:</strong><br>' . nl2br(esc($reason)) . '</p>'
-                    . '<p>Anda masih bisa melihat detail submission di dashboard kompetisi.</p>'
-                    . '<p><a href="' . site_url('challenge/submit') . '">Buka Dashboard Kompetisi</a></p>'
-                    . '<p>Salam,<br>Tim GenAI Video Fest</p>';
 
+                $body = [
+                    'name' => $name,
+                    'reason' => $reason,
+                    'video_title' => $submission['video_title'] ?? null,
+                    'dashboard_url' => site_url('challenge/submit'),
+                    'page_title' => 'Submission Ditolak',
+                ];
+
+                // Render HTML dari view template dan kirim lewat Heroic
+                $message = view('emails/challenge_submission_rejected', $body);
                 $Heroic = new \App\Libraries\Heroic();
-                $Heroic->sendEmail($submission['user_email'], 'Submission Anda Ditolak - GenAI Video Fest', $message);
+                $Heroic->sendEmail($submission['user_email'], 'Submission Anda Ditolak - RuangAI', $message);
             }
             return redirect()->to('ruangpanel/challenge/submissions/detail/' . $id)
                 ->with('success', 'Submission berhasil ditolak');

@@ -113,13 +113,14 @@ class ChallengeAlibabaModel extends Model
     }
 
     /**
-     * Check if submission can be edited (status = pending)
+     * Check if submission can be edited
+     * Allowed statuses for editing: pending, review, rejected
      */
     public function canEdit($id, $userId)
     {
         $submission = $this->where('id', $id)
             ->where('user_id', $userId)
-            ->whereIn('status', ['pending', 'review'])
+            ->whereIn('status', ['pending', 'review', 'rejected'])
             ->first();
 
         return !empty($submission);

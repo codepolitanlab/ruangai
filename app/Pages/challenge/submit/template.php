@@ -237,7 +237,7 @@
                     <div class="card border-0 shadow-sm">
                         <div class="card-body">
                             <h5 class="fw-bold mb-2">Status Submission</h5>
-                            <p class="text-muted mb-4">Pantau proses review dan update karya bila status masih review.</p>
+                            <p class="text-muted mb-4" x-show="normalizedStatus() != 'approved'">Silahkan pantau status submisi karya mu di sini</p>
 
                             <template x-if="!hasSubmission">
                                 <div class="alert alert-warning mb-3">
@@ -247,14 +247,14 @@
 
                             <template x-if="hasSubmission && normalizedStatus() === 'review'">
                                 <div class="alert alert-success mb-3">
-                                    <strong>Sedang Direview</strong><br>
-                                    Tim kami sedang meninjau karya Anda. Anda masih bisa memperbarui submission di Step 2.
+                                    <strong class="fw-bold">Sedang Direview</strong><br>
+                                    Admin akan melakukan review dari submission kamu, selama dalam status ini kamu masih dapat update informasi data diri dan karya mu
                                 </div>
                             </template>
 
                             <template x-if="hasSubmission && normalizedStatus() === 'rejected'">
                                 <div class="alert alert-danger mb-3">
-                                    <strong>Submission Ditolak</strong><br>
+                                    <strong class="fw-bold">Submission kamu ditolak, silahkan perbaiki sesuai feedback.</strong><br>
                                     <span x-text="submissionNotes || 'Tidak ada catatan tambahan.'"></span>
                                 </div>
                             </template>
@@ -262,8 +262,8 @@
                             <template x-if="hasSubmission && normalizedStatus() === 'approved'">
                                 <div>
                                     <div class="alert alert-success mb-3">
-                                        <strong>Submission Disetujui</strong><br>
-                                        Selamat! Anda berhak mendapatkan sertifikat keikutsertaan.
+                                        <strong class="fw-bold">Submission Disetujui</strong><br>
+                                        Data diri dan karya mu sudah lolos review, silahkan cek email dan tunggu informasi pengumuman pemenangnya; Pastikan karyamu mendapatkan banyak views dan komentar untuk menambah poin penilaian
                                     </div>
                                     <div class="card border-0 shadow-sm">
                                         <img src="https://placehold.co/1200x720/png" alt="Sertifikat" class="w-100 rounded-4">

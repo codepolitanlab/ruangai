@@ -49,7 +49,8 @@ class PageController extends BaseController
 
         if ($existingSubmission) {
             $this->data['existing_submission'] = $existingSubmission;
-            $this->data['can_edit'] = in_array(($existingSubmission['status'] ?? 'pending'), ['pending', 'review'], true);
+            // Allow editing for pending, review and rejected submissions
+            $this->data['can_edit'] = in_array(($existingSubmission['status'] ?? 'pending'), ['pending', 'review', 'rejected'], true);
         } else {
             $this->data['existing_submission'] = null;
             $this->data['can_edit'] = false;
@@ -203,6 +204,22 @@ class PageController extends BaseController
                 ]);
             }
 
+            // Kirim email pemberitahuan: submission sedang dalam tahap review (pakai EmailSender)
+            $userEmail = $jwt->user['email'] ?? null;
+            if (!empty($userEmail)) {
+                $name = $jwt->user['name'] ?? 'Peserta';
+                $body = [
+                    'name' => $name,
+                    'video_title' => $data['video_title'] ?? null,
+                    'dashboard_url' => site_url('challenge/submit'),
+                    'page_title' => 'Submission Sedang Direview',
+                ];
+
+                // Render HTML dari view template lalu kirim lewat Heroic
+                $message = view('emails/challenge_submission_review', $body);
+                $Heroic->sendEmail($userEmail, 'Submission Anda Sedang Direview - RuangAI', $message);
+            }
+
             return $this->respond([
                 'success' => 1,
                 'message' => 'Submission berhasil diupdate!',
@@ -223,6 +240,22 @@ class PageController extends BaseController
                     'success' => 0,
                     'errors' => ['general' => 'Gagal menyimpan submission. Silakan coba lagi.'],
                 ]);
+            }
+
+            // Kirim email pemberitahuan: submission sedang dalam tahap review (pakai EmailSender)
+            $userEmail = $jwt->user['email'] ?? null;
+            if (!empty($userEmail)) {
+                $name = $jwt->user['name'] ?? 'Peserta';
+                $body = [
+                    'name' => $name,
+                    'video_title' => $data['video_title'] ?? null,
+                    'dashboard_url' => site_url('challenge/submit'),
+                    'page_title' => 'Submission Sedang Direview',
+                ];
+
+                // Render HTML dari view template lalu kirim lewat Heroic
+                $message = view('emails/challenge_submission_review', $body);
+                $Heroic->sendEmail($userEmail, 'Submission Anda Sedang Direview - WAN Vision Clash', $message);
             }
 
             return $this->respond([

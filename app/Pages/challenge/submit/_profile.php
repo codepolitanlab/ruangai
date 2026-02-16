@@ -24,7 +24,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
 <!-- End Meta Pixel Code -->
 
 <div class="row g-4">
-    <div class="col-12 col-lg-8">
+    <div class="col-12 col-lg-7 order-lg-first order-last">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
                 <div class="d-flex flex-column flex-md-row align-items-md-center gap-2 mb-3">
@@ -149,17 +149,24 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
             </div>
         </div>
     </div>
-    <div class="col-12 col-lg-4">
+    <div class="col-12 col-lg-5 order-first order-lg-last">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body panduan">
-                <h5 class="mb-3">Panduan Pendaftaran &amp; Aktivasi</h5>
+                <h5 class="mb-3">Panduan Pendaftaran</h5>
                 <ol class="mb-0 ps-3">
-                    <li><strong>GenAI Video Fest</strong> tidak dipungut biaya (gratis).</li>
-                    <li>Peserta wajib memasukkan kartu Debit/Kredit pada akun Alibaba Cloud untuk mengaktifkan trial <a target="_blank" class="fw-bold" href="https://s.id/WanModelStudio">Alibaba Cloud Model Studio</a>.</li>
-                    <li>Panduan registrasi akun Alibaba Cloud tersedia dalam <a class="fw-bold" target="_blank" href="https://www.youtube.com/watch?v=lFLDUMHjEfc">video tutorial berikut</a>.</li>
-                    <li>Peserta yang tidak memiliki kartu kredit dapat menggunakan kartu debit fisik berlogo Visa atau Mastercard.</li>
-                    <li>Pastikan kartu memiliki saldo minimal Rp100.000 dan pernah digunakan untuk transaksi sebelumnya.</li>
-                    <li>Proses verifikasi kartu akan dilakukan melalui simulasi transaksi sebesar USD 1 dan saldo akan dikembalikan otomatis.</li>
+                    <li>Melakukan Verifikasi Email akunmu;</li>
+                    <li>Masukkan ID Alibaba Cloud aktif kamu (<a target="_blank" href="https://account.alibabacloud.com/login/login.htm?oauth_callback=https%3A%2F%2Fmodelstudio.console.alibabacloud.com%2Fap-southeast-1%2F%3Fsource_channel%3DCodePolitan%26tab%3Ddashboard%23%2Fefm%2Fmodel_experience_center%2Fvision%3FcurrentTab%3DvideoGenerate&clearRedirectCookie=1">buat akun Alibaba Cloud</a>);</li>
+                    <li>Masukkan Link Profil akun X yang kamu gunakan untuk submit karya;</li>
+                    <li>Upload screenshot halaman ID Alibabacloud (untuk verifikasi);</li>
+                    <li>
+                        Untuk Panduan lainnya, akses link berikut:
+                        <ul class="mt-2">
+                            <li>Link Video/Artikel buat akun alibaba: <a href="#" target="_blank">Link</a></li>
+                            <li>Link Video/Artikel buat video di wan.video: <a href="#" target="_blank">Link</a></li>
+                            <li>Link Video/Artikel cara buat video di WAN Model Studio: <a href="#" target="_blank">Link</a></li>
+                            <li>Panduan membuat video kreatif yang mengkombinasikan beberapa tools AI selain WAN: <a href="#" target="_blank">Link Rekaman Video ruangAI (wan + suno)</a></li>
+                        </ul>
+                    </li>
                 </ol>
             </div>
         </div>

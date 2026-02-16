@@ -62,11 +62,8 @@ function challengeSubmit() {
             video_title: '',
             video_description: '',
             other_tools: '',
-            tools_wan_video: false,
-            tools_wan_model: false,
             ethical_statement_agreed: false,
-            is_followed_account_codepolitan: false,
-            is_followed_account_alibaba: false
+            is_followed_accounts: false
         },
         profile: {
             name: '',
@@ -94,6 +91,12 @@ function challengeSubmit() {
         errors: {},
         profileErrors: {},
         config: {},
+        modalTnc: {
+            is_followed_accounts: false,
+            agreed_terms_1: false,
+            agreed_terms_2: false,
+            agreed_terms_3: false
+        },
 
         async init() {
             try {
@@ -145,16 +148,15 @@ function challengeSubmit() {
                     this.form.video_description = result.existing_submission.video_description || '';
                     this.form.other_tools = result.existing_submission.other_tools || '';
                     if (this.form.other_tools) {
+                        // If stored as "Lainnya: ...", keep only the 'other' text for the free-text field
                         const toolsText = this.form.other_tools;
-                        this.form.tools_wan_video = toolsText.includes('WAN Video');
-                        this.form.tools_wan_model = toolsText.includes('WAN Model');
                         if (toolsText.includes('Lainnya:')) {
                             this.form.other_tools = toolsText.split('Lainnya:').pop().trim();
                         }
                     }
                     this.form.ethical_statement_agreed = result.existing_submission.ethical_statement_agreed == 1 ? true : false;
-                    this.form.is_followed_account_codepolitan = result.existing_submission.is_followed_account_codepolitan == 1 ? true : false;
-                    this.form.is_followed_account_alibaba = result.existing_submission.is_followed_account_alibaba == 1 ? true : false;
+                    // combined follow checkbox — prefill true only when user previously followed both accounts
+                    this.form.is_followed_accounts = (result.existing_submission.is_followed_account_codepolitan == 1 && result.existing_submission.is_followed_account_alibaba == 1) ? true : false;
 
                     if (result.can_edit) {
                         this.isEdit = true;
@@ -459,16 +461,11 @@ function challengeSubmit() {
                 this.errors.video_description = 'Prompt minimal 10 karakter';
             }
 
-            if (!this.form.tools_wan_video && !this.form.tools_wan_model) {
-                this.errors.tools_required = 'Pilih minimal satu tools wajib (WAN Video AI atau WAN Model Studio AI)';
-            }
 
-            // Validate follow accounts
-            if (!this.form.is_followed_account_codepolitan) {
-                this.errors.is_followed_account_codepolitan = 'Anda harus mengikuti akun @codepolitan';
-            }
-            if (!this.form.is_followed_account_alibaba) {
-                this.errors.is_followed_account_alibaba = 'Anda harus mengikuti akun @alibaba_cloud';
+
+            // Validate follow accounts (single combined checkbox)
+            if (!this.form.is_followed_accounts) {
+                this.errors.is_followed_accounts = 'Anda harus mengikuti akun @alibaba_cloud dan @codepolitan';
             }
 
             // Validate agreed terms
@@ -523,6 +520,12 @@ function challengeSubmit() {
                 return;
             }
 
+            // Close modal if open
+            const modal = bootstrap.Modal.getInstance(document.getElementById('tncModal'));
+            if (modal) {
+                modal.hide();
+            }
+
             this.isSubmitting = true;
             this.errors = {};
 
@@ -533,18 +536,12 @@ function challengeSubmit() {
                 video_description: this.form.video_description,
                 other_tools: null,
                 ethical_statement_agreed: (this.profile.agreed_terms_1 && this.profile.agreed_terms_2 && this.profile.agreed_terms_3) ? '1' : '0',
-                is_followed_account_codepolitan: this.form.is_followed_account_codepolitan ? '1' : '0',
-                is_followed_account_alibaba: this.form.is_followed_account_alibaba ? '1' : '0'
+                is_followed_account_codepolitan: this.form.is_followed_accounts ? '1' : '0',
+                is_followed_account_alibaba: this.form.is_followed_accounts ? '1' : '0'
             };
 
-            const toolsUsed = [];
-            if (this.form.tools_wan_video) toolsUsed.push('WAN Video AI');
-            if (this.form.tools_wan_model) toolsUsed.push('WAN Model Studio AI');
             if (this.form.other_tools && this.form.other_tools.trim() !== '') {
-                toolsUsed.push(`Lainnya: ${this.form.other_tools.trim()}`);
-            }
-            if (toolsUsed.length) {
-                data.other_tools = toolsUsed.join(', ');
+                data.other_tools = this.form.other_tools.trim();
             }
 
             if (this.isEdit && this.submissionId) {
@@ -589,6 +586,42 @@ function challengeSubmit() {
             setTimeout(() => {
                 this.alert.show = false;
             }, 5000);
+        },
+
+        showTncModal() {
+            // Pre-fill modal checkboxes with current form values
+            this.modalTnc.is_followed_accounts = this.form.is_followed_accounts;
+            this.modalTnc.agreed_terms_1 = this.profile.agreed_terms_1;
+            this.modalTnc.agreed_terms_2 = this.profile.agreed_terms_2;
+            this.modalTnc.agreed_terms_3 = this.profile.agreed_terms_3;
+
+            // Show the modal
+            const modalElement = document.getElementById('tncModal');
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        },
+
+        allTncChecked() {
+            return this.modalTnc.is_followed_accounts && 
+                   this.modalTnc.agreed_terms_1 && 
+                   this.modalTnc.agreed_terms_2 && 
+                   this.modalTnc.agreed_terms_3;
+        },
+
+        confirmAndSubmit() {
+            if (!this.allTncChecked()) {
+                $heroicHelper.toastr('Harap centang semua persyaratan', 'warning', 'bottom');
+                return;
+            }
+
+            // Update form values with modal values
+            this.form.is_followed_accounts = this.modalTnc.is_followed_accounts;
+            this.profile.agreed_terms_1 = this.modalTnc.agreed_terms_1;
+            this.profile.agreed_terms_2 = this.modalTnc.agreed_terms_2;
+            this.profile.agreed_terms_3 = this.modalTnc.agreed_terms_3;
+
+            // Call the actual submit function
+            this.submitForm();
         }
     }
 }
