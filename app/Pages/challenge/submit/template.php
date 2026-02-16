@@ -272,7 +272,7 @@
                             </div>
 
                             <div x-show="currentStep === 3" x-cloak>
-                                <div class="card border-0 shadow-sm">
+                                <div class="">
                                     <div class="card-body">
                                         <h5 class="fw-bold mb-2">Status Submission</h5>
                                         <p class="text-muted mb-4" x-show="normalizedStatus() != 'approved'">Silahkan pantau status submisi karya mu di sini</p>
@@ -303,8 +303,8 @@
                                                     <strong class="fw-bold">Submission Disetujui</strong><br>
                                                     Data diri dan karya mu sudah lolos review, silahkan cek email dan tunggu informasi pengumuman pemenangnya; Pastikan karyamu mendapatkan banyak views dan komentar untuk menambah poin penilaian
                                                 </div>
-                                                <div class="card border-0 shadow-sm">
-                                                    <img src="https://placehold.co/1200x720/png" alt="Sertifikat" class="w-100 rounded-4">
+                                                <div class="">
+                                                    <!-- <img src="https://placehold.co/1200x720/png" alt="Sertifikat" class="w-50 mx-auto d-block rounded-4"> -->
                                                     <div class="card-body text-end">
                                                         <a class="btn btn-primary" href="https://www.codepolitan.com/c/FTVJ30Q/" target="_blank">Klaim Sertifikat</a>
                                                     </div>
