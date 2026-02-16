@@ -303,12 +303,12 @@
                                                     <strong class="fw-bold">Submission Disetujui</strong><br>
                                                     Data diri dan karya mu sudah lolos review, silahkan cek email dan tunggu informasi pengumuman pemenangnya; Pastikan karyamu mendapatkan banyak views dan komentar untuk menambah poin penilaian
                                                 </div>
-                                                <div class="">
-                                                    <!-- <img src="https://placehold.co/1200x720/png" alt="Sertifikat" class="w-50 mx-auto d-block rounded-4"> -->
+                                                <!-- <div class="">
+                                                    <img src="https://placehold.co/1200x720/png" alt="Sertifikat" class="w-50 mx-auto d-block rounded-4">
                                                     <div class="card-body text-end">
                                                         <a class="btn btn-primary" href="https://www.codepolitan.com/c/FTVJ30Q/" target="_blank">Klaim Sertifikat</a>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </template>
 
