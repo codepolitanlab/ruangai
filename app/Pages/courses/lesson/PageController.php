@@ -333,6 +333,18 @@ class PageController extends BaseController
     {
         $db = \Config\Database::connect();
 
+        // Get student data
+        $existingStudent = $db->table('course_students')
+            ->where('user_id', $user_id)
+            ->where('course_id', $course_id)
+            ->get()
+            ->getRowArray();
+
+        // Kalau status graduate = 1 maka jangan update progress, karena sudah dianggap selesai
+        if ($existingStudent && $existingStudent['graduate'] == 1) {
+            return true;
+        }
+
         // Hitung progress course (hanya lesson mandatory)
         $totalQuery = $db->table('course_lessons')
             ->select('course_lessons.id, course_lesson_progress.lesson_id')
@@ -355,12 +367,6 @@ class PageController extends BaseController
         $progress = min(($completedLessons / $totalLessons) * 100, 100);
 
         // Update atau insert ke course_students
-        $existingStudent = $db->table('course_students')
-            ->where('user_id', $user_id)
-            ->where('course_id', $course_id)
-            ->get()
-            ->getRowArray();
-
         $studentData = [
             'user_id'         => $user_id,
             'course_id'       => $course_id,
