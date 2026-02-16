@@ -12,10 +12,10 @@
 
                 <div class="row g-3">
                     <div class="col-12 mb-1">
-                        <label class="form-label d-block mb-0">URL Post X <span class="text-danger">*</span></label>
+                        <label class="form-label d-block mb-0">URL Karya <span class="text-danger">*</span></label>
                         <small class="d-block mb-2">Submit video di X.com dan salin tautannya di sini</small>
                         <input type="url" class="form-control" x-model="form.twitter_post_url"
-                            placeholder="Masukkan URL Post X Kamu">
+                            placeholder="Masukkan URL Post X Kamu" :disabled="emailNotVerified">
                         <small class="form-text text-muted">Contoh: https://x.com/username/status/123456</small>
 
                         <template x-if="errors.twitter_post_url">
@@ -26,7 +26,7 @@
                     <div class="col-12">
                         <label class="form-label">Judul Video <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" x-model="form.video_title"
-                            placeholder="Judul video Anda">
+                            placeholder="Judul video Anda" :disabled="emailNotVerified">
 
                         <template x-if="errors.video_title">
                             <small class="text-danger" x-text="errors.video_title"></small>
@@ -34,9 +34,24 @@
                     </div>
 
                     <div class="col-12">
+                        <label class="form-label">Kategori Video <span class="text-danger">*</span></label>
+                        <select class="form-select" x-model="form.video_category" :class="{'is-invalid': errors.video_category}" :disabled="emailNotVerified">
+                            <option value="">-- Pilih Kategori --</option>
+                            <option value="Hiburan">Hiburan</option>
+                            <option value="Sains">Sains</option>
+                            <option value="Kemanusiaan">Kemanusiaan</option>
+                            <option value="Olahraga">Olahraga</option>
+                        </select>
+
+                        <template x-if="errors.video_category">
+                            <small class="text-danger" x-text="errors.video_category"></small>
+                        </template>
+                    </div>
+
+                    <div class="col-12">
                         <label class="form-label">Prompt yang Digunakan <span class="text-danger">*</span></label>
                         <textarea class="form-control" rows="4" x-model="form.video_description"
-                            placeholder="Tuliskan prompt yang kamu gunakan secara lengkap"></textarea>
+                            placeholder="Tuliskan prompt yang kamu gunakan secara lengkap" :disabled="emailNotVerified"></textarea>
 
                         <template x-if="errors.video_description">
                             <small class="text-danger" x-text="errors.video_description"></small>
@@ -48,7 +63,7 @@
                     <div class="col-12">
                         <label class="form-label">Tools Lainnya (Jika Ada)</label>
                         <input type="text" class="form-control" x-model="form.other_tools"
-                            placeholder="Contoh: Adobe Premiere, After Effects, Capcut, dll.">
+                            placeholder="Contoh: Adobe Premiere, After Effects, Capcut, dll." :disabled="emailNotVerified">
                     </div>
                 </div>
 
@@ -57,7 +72,7 @@
                 </template>
 
                 <div class="mt-3 d-flex justify-content-end">
-                    <button type="button" class="btn btn-success" @click="showTncModal()" :disabled="isSubmitting || !isProfileComplete() || (hasSubmission && !canEditSubmission)">
+                    <button type="button" class="btn btn-success" @click="showTncModal()" :disabled="isSubmitting || !isProfileComplete() || (hasSubmission && !canEditSubmission) || emailNotVerified">
                         <template x-if="isSubmitting">
                             <span class="spinner-border spinner-border-sm me-2"></span>
                         </template>
@@ -84,11 +99,11 @@
                     <li>Buat postingan di akun X kamu, upload karya video yang telah dibuat.</li>
                     <li>Berikan tagar <strong>#WanAVideo #GenAIVideoFest</strong> dan mention akun X <strong>@CODEPOLITAN</strong> dan <strong>@Alibaba_cloud</strong>.</li>
                     <li>Salin link postingan kamu, dan masukkan ke bagian <em>URL Karya</em>.</li>
-                    <li>Pilih Kategori Video yang kamu submit (Hiburan, Science, Kemanusiaan, Olahraga).</li>
+                    <li>Pilih Kategori Video yang kamu submit (Hiburan, Sains, Kemanusiaan, Olahraga).</li>
                     <li>Masukkan Judul Video.</li>
                     <li>Masukkan semua prompt yang kamu gunakan di tools WAN.video dan juga tools lainnya.</li>
                     <li>Masukkan tools lainnya yang kamu gunakan untuk membuat video karya (jika ada).</li>
-                    <li>Setelah semua lengkap, klik <strong>Submit</strong> dan setujui persyaratan kompetisi.</li>
+                    <li>Setelah semua lengkap, klik <strong class="fw-bold">Submit Karya</strong> dan setujui persyaratan kompetisi.</li>
                 </ul>
             </div>
         </div>
@@ -134,7 +149,7 @@
                     </label>
                 </div>
 
-                <div class="alert alert-info mb-0" x-show="!allTncChecked()">
+                <div class="alert alert-warning mb-0" x-show="!allTncChecked()">
                     <i class="bi bi-info-circle me-2"></i>
                     Anda harus mencentang semua persyaratan untuk melanjutkan.
                 </div>

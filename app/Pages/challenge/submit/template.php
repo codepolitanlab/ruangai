@@ -184,7 +184,37 @@
                 </div>
             </div>
 
-            <div class="card mb-3 border-0 shadow-sm">
+            <!-- Email Verification Warning -->
+            <template x-if="emailNotVerified" x-cloak>
+                <div class="alert alert-danger d-flex align-items-center mb-3" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
+                    <div class="flex-grow-1">
+                        <h6 class="alert-heading mb-1"><strong>Email Belum Terverifikasi!</strong></h6>
+                        <p class="mb-0">Silakan verifikasi email Anda terlebih dahulu untuk dapat mengisi form dan submit karya. Cek inbox atau folder spam email Anda.</p>
+                    </div>
+                    <a href="/verify_email?callback=/challenge/submit" class="btn btn-danger ms-3">
+                        <i class="bi bi-envelope-check me-2"></i>Verifikasi Email
+                    </a>
+                </div>
+            </template>
+
+            <!-- Combined Card: Stepper + Form Content -->
+            <div class="card mb-3 border-0 shadow-sm" style="position: relative;">
+                <!-- Global Locked Overlay -->
+                <template x-if="emailNotVerified" x-cloak>
+                    <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 100; background: rgba(255,255,255,0.9); backdrop-filter: blur(3px); border-radius: 0.5rem;">
+                        <div class="text-center">
+                            <i class="bi bi-lock-fill" style="font-size: 4rem; color: #dc3545; margin-bottom: 1rem;"></i>
+                            <h4 class="fw-bold text-danger mb-2">Form Terkunci</h4>
+                            <p class="text-muted mb-3">Silakan verifikasi email terlebih dahulu untuk<br>melanjutkan pendaftaran</p>
+                            <a href="/verify_email?callback=/challenge/submit" class="btn btn-danger">
+                                <i class="bi bi-envelope-check me-2"></i>Verifikasi Email Sekarang
+                            </a>
+                        </div>
+                    </div>
+                </template>
+
+                <div :style="emailNotVerified ? 'opacity: 0.35; pointer-events: none;' : ''">
                 <div class="card-body">
                     <div class="stepper-nav">
                         <button type="button" class="stepper-item" :class="stepClass(1)" @click="goToStep(1)" :disabled="isStepLocked(1)">
@@ -200,15 +230,18 @@
                             <span>Review / Selesai</span>
                         </button>
                     </div>
-                    <div class="alert alert-warning mt-3 mb-0" x-show="currentStep === 1 && !isProfileComplete()" x-cloak>
+                    <div class="alert alert-warning mt-3 mb-0" x-show="currentStep === 1 && !isProfileComplete() && !emailNotVerified" x-cloak>
                         <i class="bi bi-exclamation-triangle me-2"></i>
                         Step 2 dan 3 akan terbuka setelah data diri Anda lengkap.
                     </div>
+                    <div class="alert alert-info mt-3 mb-0" x-show="emailNotVerified && hasSubmission" x-cloak>
+                        <i class="bi bi-info-circle me-2"></i>
+                        Anda memiliki submission yang sedang direview, namun untuk mengakses status review dan mengupdate submission, Anda harus verifikasi email terlebih dahulu.
+                    </div>
                 </div>
-            </div>
 
             <!-- Alert Messages -->
-            <div class="mt-2" x-show="alert.show" x-cloak>
+            <div class="mx-3 mt-2" x-show="alert.show" x-cloak>
                 <div class="alert" :class="alert.type === 'error' ? 'alert-danger' : 'alert-success'" role="alert">
                     <span x-text="alert.message"></span>
                 </div>
@@ -276,6 +309,7 @@
 
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
             </div>

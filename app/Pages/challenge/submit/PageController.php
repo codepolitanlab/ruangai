@@ -146,6 +146,13 @@ class PageController extends BaseController
                     'max_length' => 'Judul video maksimal 255 karakter',
                 ],
             ],
+            'video_category' => [
+                'rules' => 'required|in_list[Hiburan,Sains,Kemanusiaan,Olahraga]',
+                'errors' => [
+                    'required' => 'Kategori video wajib dipilih',
+                    'in_list' => 'Kategori video tidak valid',
+                ],
+            ],
             'video_description' => [
                 'rules' => 'required|min_length[10]',
                 'errors' => [
@@ -184,6 +191,7 @@ class PageController extends BaseController
         $data = [
             'twitter_post_url' => $this->request->getPost('twitter_post_url'),
             'video_title' => $this->request->getPost('video_title'),
+            'video_category' => $this->request->getPost('video_category'),
             'video_description' => $this->request->getPost('video_description'),
             'other_tools' => !empty($this->request->getPost('other_tools')) ? $this->request->getPost('other_tools') : null,
             'prompt_file' => $existingPromptFile,

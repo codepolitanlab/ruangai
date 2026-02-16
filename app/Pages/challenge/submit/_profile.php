@@ -62,7 +62,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
 
                     <div class="col-md-6">
                         <label class="form-label">Tanggal Lahir <span class="text-danger">*</span></label>
-                        <input type="date" class="form-control" x-model="profile.birthday" :class="{'is-invalid': profileErrors.birthday}">
+                        <input type="date" class="form-control" x-model="profile.birthday" :class="{'is-invalid': profileErrors.birthday}" :disabled="emailNotVerified">
                         <small class="form-text text-muted">Minimal usia 17 tahun</small>
                         <template x-if="profileErrors.birthday">
                             <small class="text-danger d-block" x-text="profileErrors.birthday"></small>
@@ -71,7 +71,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
 
                     <div class="col-md-6">
                         <label class="form-label">Jenis Kelamin <span class="text-danger">*</span></label>
-                        <select class="form-select" x-model="profile.gender" :class="{'is-invalid': profileErrors.gender}">
+                        <select class="form-select" x-model="profile.gender" :class="{'is-invalid': profileErrors.gender}" :disabled="emailNotVerified">
                             <option value="">-Pilih-</option>
                             <option value="male">Pria</option>
                             <option value="female">Wanita</option>
@@ -83,7 +83,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
 
                     <div class="col-md-6">
                         <label class="form-label">Profesi <span class="text-danger">*</span></label>
-                        <select class="form-select" x-model="profile.occupation" :class="{'is-invalid': profileErrors.occupation}">
+                        <select class="form-select" x-model="profile.occupation" :class="{'is-invalid': profileErrors.occupation}" :disabled="emailNotVerified">
                             <option value="">-Pilih-</option>
                             <option value="jobseeker">Job Seeker / Pencari Kerja</option>
                             <option value="college_student">Mahasiswa</option>
@@ -101,7 +101,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
 
                     <div class="col-md-6">
                         <label class="form-label">Instansi / Perusahaan <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" x-model="profile.institution" :class="{'is-invalid': profileErrors.institution}">
+                        <input type="text" class="form-control" x-model="profile.institution" :class="{'is-invalid': profileErrors.institution}" :disabled="emailNotVerified">
                         <template x-if="profileErrors.institution">
                             <small class="text-danger" x-text="profileErrors.institution"></small>
                         </template>
@@ -109,7 +109,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
 
                     <div class="col-md-6">
                         <label class="form-label">Link Profil X <span class="text-danger">*</span></label>
-                        <input type="url" class="form-control" x-model="profile.x_profile_url" placeholder="Masukkan URL Profil X Kamu" :class="{'is-invalid': profileErrors.x_profile_url}">
+                        <input type="url" class="form-control" x-model="profile.x_profile_url" placeholder="Masukkan URL Profil X Kamu" :class="{'is-invalid': profileErrors.x_profile_url}" :disabled="emailNotVerified">
                         <small class="form-text text-muted">Contoh: https://x.com/username</small>
                         <template x-if="profileErrors.x_profile_url">
                             <small class="text-danger d-block" x-text="profileErrors.x_profile_url"></small>
@@ -119,7 +119,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                     <div class="col-md-6">
                         <label class="form-label mb-0">AlibabaCloud ID <span class="text-danger">*</span></label>
                         <small class="mb-2 d-block">Daftar akun Alibaba Cloud dan WAN Model Studio <a href="https://s.id/WanModelStudio" target="_blank">DI SINI</a></small>
-                        <input type="text" class="form-control" x-model="profile.alibaba_cloud_id" :class="{'is-invalid': profileErrors.alibaba_cloud_id}" inputmode="numeric" pattern="[0-9]*" @input="profile.alibaba_cloud_id = profile.alibaba_cloud_id.replace(/[^0-9]/g, '')" placeholder="Cth: 5921721919160498">
+                        <input type="text" class="form-control" x-model="profile.alibaba_cloud_id" :class="{'is-invalid': profileErrors.alibaba_cloud_id}" inputmode="numeric" pattern="[0-9]*" @input="profile.alibaba_cloud_id = profile.alibaba_cloud_id.replace(/[^0-9]/g, '')" placeholder="Cth: 5921721919160498" :disabled="emailNotVerified">
                         <template x-if="profileErrors.alibaba_cloud_id">
                             <small class="text-danger" x-text="profileErrors.alibaba_cloud_id"></small>
                         </template>
@@ -128,7 +128,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                     <div class="col-12">
                         <label class="form-label mb-0">Alibaba Account Screenshot <span class="text-danger">*</span></label>
                         <small class="mb-2 d-block">Lihat contoh screenshoot <a href="https://image.web.id/images/contoh_akun_alibabacloud.jpg" target="_blank">DI SINI</a></small>
-                        <input type="file" class="form-control" accept="image/*" @change="handleProfileScreenshot($event)" :class="{'is-invalid': profileErrors.alibaba_cloud_screenshot}">
+                        <input type="file" class="form-control" accept="image/*" @change="handleProfileScreenshot($event)" :class="{'is-invalid': profileErrors.alibaba_cloud_screenshot}" :disabled="emailNotVerified">
                         <template x-if="profile.alibaba_cloud_screenshot">
                             <div class="mt-2 small text-muted">Tersimpan: <span x-text="profile.alibaba_cloud_screenshot"></span></div>
                         </template>
@@ -139,7 +139,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                 </div>
 
                 <div class="mt-3 d-flex justify-content-end">
-                    <button type="button" class="btn btn-success" @click="trackSaveProfile({email: profile.email, name: profile.name}); saveProfile()" :disabled="isSavingProfile">
+                    <button type="button" class="btn btn-success" @click="trackSaveProfile({email: profile.email, name: profile.name}); saveProfile()" :disabled="isSavingProfile || emailNotVerified">
                         <template x-if="isSavingProfile">
                             <span class="spinner-border spinner-border-sm me-2"></span>
                         </template>
