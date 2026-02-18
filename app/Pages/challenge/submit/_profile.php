@@ -161,9 +161,20 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                     <li>
                         Untuk Panduan lainnya, akses link berikut:
                         <ul class="mt-2">
-                            <li>Link Video/Artikel buat akun alibaba: <a href="#" target="_blank">Link</a></li>
-                            <li>Link Video/Artikel buat video di wan.video: <a href="#" target="_blank">Link</a></li>
-                            <li>Link Video/Artikel cara buat video di WAN Model Studio: <a href="#" target="_blank">Link</a></li>
+                            <li>
+                                Panduan buat akun Alibaba Cloud &amp; buat video di WAN Model Studio:
+                                <ul class="mt-1">
+                                    <li>🎬 Video: <a href="https://www.youtube.com/watch?v=lFLDUMHjEfc" target="_blank">Tonton di YouTube</a></li>
+                                    <li>📄 Artikel: <a href="https://www.codepolitan.com/blog/panduan-mendaftar-akun-alibaba-cloud" target="_blank">Baca Artikel</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                Panduan buat video di wan.video:
+                                <ul class="mt-1">
+                                    <li>🎬 Video: <a href="#" target="_blank">Segera Hadir</a></li>
+                                    <li>📄 Artikel: <a href="https://www.codepolitan.com/blog/panduan-membuat-video-ai-di-wanvideo" target="_blank">Baca Artikel</a></li>
+                                </ul>
+                            </li>
                             <li>Panduan membuat video kreatif yang mengkombinasikan beberapa tools AI selain WAN: <a href="#" target="_blank">Link Rekaman Video ruangAI (wan + suno)</a></li>
                         </ul>
                     </li>

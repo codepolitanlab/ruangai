@@ -103,7 +103,7 @@
                             </form>
                         <?php endif; ?>
 
-                        <?php if (in_array($submission['status'], ['pending', 'review', 'validated'])): ?>
+                        <?php if (in_array($submission['status'], ['pending', 'review', 'validated', 'rejected'])): ?>
                             <form action="<?= site_url('ruangpanel/challenge/submissions/approve/' . $submission['id']) ?>" method="post" class="mb-2">
                                 <?= csrf_field() ?>
                                 <div class="mb-2">

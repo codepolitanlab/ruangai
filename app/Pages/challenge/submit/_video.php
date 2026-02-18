@@ -129,13 +129,6 @@
                 </div>
 
                 <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" x-model="modalTnc.agreed_terms_1" id="modalAgreeTerms1">
-                    <label class="form-check-label" for="modalAgreeTerms1">
-                        Saya menyatakan bahwa karya ini adalah hasil saya sendiri, tidak melanggar hak cipta pihak ketiga <span class="text-danger">*</span>
-                    </label>
-                </div>
-
-                <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" x-model="modalTnc.agreed_terms_2" id="modalAgreeTerms2">
                     <label class="form-check-label" for="modalAgreeTerms2">
                         Saya menggunakan WAN.video atau WAN Model Studio <span class="text-danger">*</span>
@@ -145,7 +138,7 @@
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" x-model="modalTnc.agreed_terms_3" id="modalAgreeTerms3">
                     <label class="form-check-label" for="modalAgreeTerms3">
-                        Saya menyetujui syarat dan ketentuan yang berlaku (<a href="/terms" target="_blank">Lihat Syarat</a>) <span class="text-danger">*</span>
+                        Saya menyetujui syarat dan ketentuan yang berlaku (<a href="https://docs.google.com/document/d/1FUh1c2fzrCZCA8TjVwo_JRwyie6992ja4vaRwuBe1JA/edit?usp=sharing" target="_blank">Lihat Syarat</a>) <span class="text-danger">*</span>
                     </label>
                 </div>
 

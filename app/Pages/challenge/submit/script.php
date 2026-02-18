@@ -491,9 +491,6 @@ function challengeSubmit() {
             }
 
             // Validate agreed terms
-            if (!this.profile.agreed_terms_1) {
-                this.errors.agreed_terms_1 = 'Anda harus menyetujui pernyataan ini';
-            }
             if (!this.profile.agreed_terms_2) {
                 this.errors.agreed_terms_2 = 'Anda harus menyetujui pernyataan ini';
             }
@@ -654,7 +651,7 @@ function challengeSubmit() {
 
             // Pre-fill modal checkboxes with current form values
             this.modalTnc.is_followed_accounts = this.form.is_followed_accounts;
-            this.modalTnc.agreed_terms_1 = this.profile.agreed_terms_1;
+            this.modalTnc.agreed_terms_1 = true;
             this.modalTnc.agreed_terms_2 = this.profile.agreed_terms_2;
             this.modalTnc.agreed_terms_3 = this.profile.agreed_terms_3;
 
@@ -666,7 +663,6 @@ function challengeSubmit() {
 
         allTncChecked() {
             return this.modalTnc.is_followed_accounts && 
-                   this.modalTnc.agreed_terms_1 && 
                    this.modalTnc.agreed_terms_2 && 
                    this.modalTnc.agreed_terms_3;
         },
@@ -679,7 +675,7 @@ function challengeSubmit() {
 
             // Update form values with modal values
             this.form.is_followed_accounts = this.modalTnc.is_followed_accounts;
-            this.profile.agreed_terms_1 = this.modalTnc.agreed_terms_1;
+            this.profile.agreed_terms_1 = true;
             this.profile.agreed_terms_2 = this.modalTnc.agreed_terms_2;
             this.profile.agreed_terms_3 = this.modalTnc.agreed_terms_3;
 
