@@ -52,7 +52,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                         </template>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6" x-show="!profile.whatsapp">
                         <label class="form-label">WhatsApp <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" x-model="profile.whatsapp" placeholder="62812xxxx" :class="{'is-invalid': profileErrors.whatsapp}" disabled>
                         <template x-if="profileErrors.whatsapp">
@@ -60,7 +60,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                         </template>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6" x-show="!savedProfile.birthday">
                         <label class="form-label">Tanggal Lahir <span class="text-danger">*</span></label>
                         <input type="date" class="form-control" x-model="profile.birthday" :class="{'is-invalid': profileErrors.birthday}" :disabled="emailNotVerified">
                         <small class="form-text text-muted">Minimal usia 17 tahun</small>
@@ -69,7 +69,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                         </template>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6" x-show="!savedProfile.gender">
                         <label class="form-label">Jenis Kelamin <span class="text-danger">*</span></label>
                         <select class="form-select" x-model="profile.gender" :class="{'is-invalid': profileErrors.gender}" :disabled="emailNotVerified">
                             <option value="">-Pilih-</option>
@@ -81,7 +81,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                         </template>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6" x-show="!savedProfile.occupation">
                         <label class="form-label">Profesi <span class="text-danger">*</span></label>
                         <select class="form-select" x-model="profile.occupation" :class="{'is-invalid': profileErrors.occupation}" :disabled="emailNotVerified">
                             <option value="">-Pilih-</option>
@@ -99,15 +99,15 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                         </template>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6" x-show="!savedProfile.institution">
                         <label class="form-label">Instansi / Perusahaan <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" x-model="profile.institution" :class="{'is-invalid': profileErrors.institution}" :disabled="emailNotVerified">
+                        <input type="text" class="form-control" x-model="profile.institution" placeholder="Masukan nama instansi / perusahaan" :class="{'is-invalid': profileErrors.institution}" :disabled="emailNotVerified">
                         <template x-if="profileErrors.institution">
                             <small class="text-danger" x-text="profileErrors.institution"></small>
                         </template>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6" x-show="!savedProfile.x_profile_url">
                         <label class="form-label">Link Profil X <span class="text-danger">*</span></label>
                         <input type="url" class="form-control" x-model="profile.x_profile_url" placeholder="Masukkan URL Profil X Kamu" :class="{'is-invalid': profileErrors.x_profile_url}" :disabled="emailNotVerified">
                         <small class="form-text text-muted">Contoh: https://x.com/username</small>

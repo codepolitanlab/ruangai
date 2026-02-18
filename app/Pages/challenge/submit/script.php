@@ -92,6 +92,7 @@ function challengeSubmit() {
         ],
         errors: {},
         profileErrors: {},
+        savedProfile: {},
         config: {},
         modalTnc: {
             is_followed_accounts: false,
@@ -131,6 +132,15 @@ function challengeSubmit() {
                     this.profile.gender = u.gender || '';
                     this.profile.birthday = u.birthday || '';
                     this.profile.x_profile_url = u.x_profile_url || '';
+
+                    // Snapshot of saved values (used to determine which fields to show)
+                    this.savedProfile = {
+                        birthday: this.profile.birthday,
+                        gender: this.profile.gender,
+                        occupation: this.profile.occupation,
+                        institution: this.profile.institution,
+                        x_profile_url: this.profile.x_profile_url,
+                    };
                 }
 
                 this.hasSubmission = !!result.existing_submission;
