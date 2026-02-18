@@ -151,6 +151,11 @@
                         </div>
 
                         <div class="mb-3">
+                            <label class="form-label"><strong>Video Category:</strong></label>
+                            <p><?= esc($submission['video_category'] ?? '-') ?></p>
+                        </div>
+
+                        <div class="mb-3">
                             <label class="form-label"><strong>Twitter Post URL:</strong></label>
                             <p><a href="<?= esc($submission['twitter_post_url']) ?>" target="_blank"><?= esc($submission['twitter_post_url']) ?></a></p>
                         </div>
