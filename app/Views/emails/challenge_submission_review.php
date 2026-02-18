@@ -23,7 +23,7 @@ $logoUrl        = 'https://www.ruangai.id/logo-ruangai.svg';
           <table class="email-container" cellpadding="0" cellspacing="0">
 
             <tr>
-              <td style="padding:20px 0 10px 20px;"><img src="<?= $logoUrl ?>" alt="Logo" style="height:40px;"></td>
+              <td style="padding:20px 0 10px 20px;"><img src="https://www.ruangai.id/logo-ruangai.svg" alt="Logo" style="height:40px;"></td>
             </tr>
 
             <tr>
