@@ -1,7 +1,7 @@
 <?php
 // Email template: Submission disetujui
 $primaryColor   = '#164252';
-$logoUrl        = 'https://www.ruangai.id/logo-ruangai.svg';
+$logoUrl        = 'https://image.web.id/images/clipboard-image-1753328088.png';
 ?>
 
 <!DOCTYPE html>
