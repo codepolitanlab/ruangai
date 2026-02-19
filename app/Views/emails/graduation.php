@@ -2,7 +2,7 @@
 // Variabel tema
 $primaryColor   = '#164252';     // Warna utama
 $secondaryColor = '#E7E725';     // Warna aksen
-$logoUrl        = 'https://www.ruangai.id/logo-ruangai.svg';
+$logoUrl        = 'https://image.web.id/images/clipboard-image-1753328088.png';
 ?>
 
 <!DOCTYPE html>

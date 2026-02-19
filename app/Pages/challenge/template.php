@@ -1,8 +1,10 @@
 <div
+    class="container-large"
     id="challenge"
     x-data="challenge()">
 
-    <div id="appCapsule">
+    <div id="appCapsule" class="appCapsule-lg" style="padding-top: 0;">
+        <div class="container-fluid px-0 px-lg-3" style="max-width: 1150px;">
 
         <style>
             /* Bootstrap 5 Accordion Custom Styling */
@@ -146,7 +148,7 @@
                    class="btn btn-lg w-100 d-flex align-items-center justify-content-center" 
                    :class="!data || data.isValidEmail === false ? 'disabled' : ''"
                    style="background:#ff6b35; border:none; color:#fff; font-size: 1.1rem; font-weight: 700; padding: 1rem 2rem; border-radius: 2rem;">
-                    SUBMIT KARYA
+                    DAFTAR KOMPETISI
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="ms-2">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                         <polyline points="12 5 19 12 12 19"></polyline>
@@ -167,6 +169,8 @@
         <!-- Small footer note -->
         <!-- <div class="text-center text-muted small mb-4">Untuk informasi lengkap dan syarat detail, klik "Lihat Selengkapnya"</div> -->
     <?= $this->include('challenge/script') ?>
+
+        </div>
 
     </div>
 

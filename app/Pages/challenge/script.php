@@ -10,7 +10,7 @@
       title: "Challenge",
 
       init() {
-        base.init.call(this);
+        window.location.href = '/challenge/submit';
       },
 
       handleUnverifiedClick(event) {
