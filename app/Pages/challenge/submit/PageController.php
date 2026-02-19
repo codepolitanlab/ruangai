@@ -35,8 +35,10 @@ class PageController extends BaseController
         $Heroic = new \App\Libraries\Heroic();
         $jwt = $Heroic->checkToken(true);
 
-        // Check if registration is open
-        if (!$this->config->isRegistrationOpen()) {
+        // Check if user has an existing submission (include rejected for status display)
+        $existingSubmission = $this->model->getLatestSubmission($jwt->user_id);
+
+        if (!$this->config->isRegistrationOpen() && !$existingSubmission) {
             return $this->respond([
                 'success' => 0,
                 'message' => 'Pendaftaran belum dibuka atau sudah ditutup',
@@ -45,21 +47,10 @@ class PageController extends BaseController
             ]);
         }
 
-        // Check if user has an existing submission (we will still allow edit if status is pending)
-        $existingSubmission = $this->model->getUserSubmission($jwt->user_id);
-
         if ($existingSubmission) {
-            // If not pending, we block new submissions
-            if ($existingSubmission['status'] !== 'pending') {
-                return $this->respond([
-                    'success' => 0,
-                    'message' => 'Anda sudah memiliki submission aktif. Satu akun hanya boleh submit satu kali.',
-                    'existing_submission' => $existingSubmission,
-                ]);
-            }
-
             $this->data['existing_submission'] = $existingSubmission;
-            $this->data['can_edit'] = true;
+            // Allow editing for pending, review and rejected submissions
+            $this->data['can_edit'] = in_array(($existingSubmission['status'] ?? 'pending'), ['pending', 'review', 'rejected'], true);
         } else {
             $this->data['existing_submission'] = null;
             $this->data['can_edit'] = false;
@@ -127,8 +118,8 @@ class PageController extends BaseController
             }
             $isUpdate = true;
         } else {
-            // For new submissions, ensure there's no active (non-rejected) submission
-            $existingSubmission = $this->model->getUserSubmission($jwt->user_id);
+            // For new submissions, ensure there's no existing submission
+            $existingSubmission = $this->model->getLatestSubmission($jwt->user_id);
             if ($existingSubmission) {
                 return $this->respond([
                     'success' => 0,
@@ -155,11 +146,18 @@ class PageController extends BaseController
                     'max_length' => 'Judul video maksimal 255 karakter',
                 ],
             ],
+            'video_category' => [
+                'rules' => 'required|in_list[Hiburan,Sains,Kemanusiaan,Olahraga]',
+                'errors' => [
+                    'required' => 'Kategori video wajib dipilih',
+                    'in_list' => 'Kategori video tidak valid',
+                ],
+            ],
             'video_description' => [
                 'rules' => 'required|min_length[10]',
                 'errors' => [
-                    'required' => 'Deskripsi video wajib diisi',
-                    'min_length' => 'Deskripsi video minimal 10 karakter',
+                    'required' => 'Prompt wajib diisi',
+                    'min_length' => 'Prompt minimal 10 karakter',
                 ],
             ],
         ]);
@@ -183,66 +181,20 @@ class PageController extends BaseController
             ]);
         }
 
-        // Handle file uploads
-        $uploadedFiles = [];
-        $uploadPath = ensure_upload_directory($jwt->user_id);
-
-        // For update, fetch existing submission files
-        $existingFiles = [];
+        $existingPromptFile = null;
         if ($isUpdate) {
-            $existing = $this->model->find($submissionId);
-            $existingFiles = [
-                'prompt_file' => $existing['prompt_file'] ?? null,
-            ];
-        }
-
-        try {
-            // Upload prompt file (PDF/TXT)
-            $promptFile = $this->request->getFile('prompt_file');
-            if ($promptFile && $promptFile->isValid() && !$promptFile->hasMoved()) {
-                // Validate file size (max 1MB)
-                if ($promptFile->getSize() > 1048576) { // 1MB = 1048576 bytes
-                    throw new \Exception('Ukuran file maksimal 1MB');
-                }
-                
-                // Replace old file on update
-                if ($isUpdate && !empty($existingFiles['prompt_file'])) {
-                    $oldFile = $uploadPath . $existingFiles['prompt_file'];
-                    if (file_exists($oldFile)) {
-                        unlink($oldFile);
-                    }
-                }
-                $promptFileName = $promptFile->getRandomName();
-                $promptFile->move($uploadPath, $promptFileName);
-                $uploadedFiles['prompt_file'] = $promptFileName;
-            } elseif ($isUpdate && !empty($existingFiles['prompt_file'])) {
-                // Keep existing prompt file if not re-uploaded
-                $uploadedFiles['prompt_file'] = $existingFiles['prompt_file'];
-            } else {
-                throw new \Exception('Prompt file wajib diupload');
-            }
-
-        } catch (\Exception $e) {
-            // Clean up any uploaded files on error
-            foreach ($uploadedFiles as $file) {
-                if (file_exists($uploadPath . $file)) {
-                    unlink($uploadPath . $file);
-                }
-            }
-
-            return $this->respond([
-                'success' => 0,
-                'errors' => ['files' => $e->getMessage()],
-            ]);
+            $existingSubmission = $this->model->find($submissionId);
+            $existingPromptFile = $existingSubmission['prompt_file'] ?? null;
         }
 
         // Prepare data for database
         $data = [
             'twitter_post_url' => $this->request->getPost('twitter_post_url'),
             'video_title' => $this->request->getPost('video_title'),
+            'video_category' => $this->request->getPost('video_category'),
             'video_description' => $this->request->getPost('video_description'),
             'other_tools' => !empty($this->request->getPost('other_tools')) ? $this->request->getPost('other_tools') : null,
-            'prompt_file' => $uploadedFiles['prompt_file'],
+            'prompt_file' => $existingPromptFile,
             'ethical_statement_agreed' => $this->request->getPost('ethical_statement_agreed') == '1' ? 1 : 0,
             'is_followed_account_codepolitan' => $this->request->getPost('is_followed_account_codepolitan') == '1' ? 1 : 0,
             'is_followed_account_alibaba' => $this->request->getPost('is_followed_account_alibaba') == '1' ? 1 : 0,
@@ -250,6 +202,7 @@ class PageController extends BaseController
 
         if ($isUpdate) {
             // Update existing submission
+            $data['status'] = 'review';
             $success = $this->model->update($submissionId, $data);
             
             if (!$success) {
@@ -259,38 +212,65 @@ class PageController extends BaseController
                 ]);
             }
 
+            // Kirim email pemberitahuan: submission sedang dalam tahap review (pakai EmailSender)
+            $userEmail = $jwt->user['email'] ?? null;
+            if (!empty($userEmail)) {
+                $name = $jwt->user['name'] ?? 'Peserta';
+                $body = [
+                    'name' => $name,
+                    'video_title' => $data['video_title'] ?? null,
+                    'dashboard_url' => site_url('challenge/submit'),
+                    'page_title' => 'Submission Sedang Direview',
+                ];
+
+                // Render HTML dari view template lalu kirim lewat Heroic
+                $message = view('emails/challenge_submission_review', $body);
+                $Heroic->sendEmail($userEmail, 'Submission Anda Sedang Direview - RuangAI', $message);
+            }
+
             return $this->respond([
                 'success' => 1,
                 'message' => 'Submission berhasil diupdate!',
                 'submission_id' => $submissionId,
+                'status' => 'review',
             ]);
         } else {
             // Create new submission
             $data['user_id'] = $jwt->user_id;
             $data['challenge_id'] = $this->config->challengeId;
-            $data['status'] = 'pending';
+            $data['status'] = 'review';
             $data['submitted_at'] = date('Y-m-d H:i:s');
 
             $newSubmissionId = $this->model->insert($data);
 
             if (!$newSubmissionId) {
-                // Clean up uploaded files
-                foreach ($uploadedFiles as $file) {
-                    if ($file && file_exists($uploadPath . $file)) {
-                        unlink($uploadPath . $file);
-                    }
-                }
-
                 return $this->respond([
                     'success' => 0,
                     'errors' => ['general' => 'Gagal menyimpan submission. Silakan coba lagi.'],
                 ]);
             }
 
+            // Kirim email pemberitahuan: submission sedang dalam tahap review (pakai EmailSender)
+            $userEmail = $jwt->user['email'] ?? null;
+            if (!empty($userEmail)) {
+                $name = $jwt->user['name'] ?? 'Peserta';
+                $body = [
+                    'name' => $name,
+                    'video_title' => $data['video_title'] ?? null,
+                    'dashboard_url' => site_url('challenge/submit'),
+                    'page_title' => 'Submission Sedang Direview',
+                ];
+
+                // Render HTML dari view template lalu kirim lewat Heroic
+                $message = view('emails/challenge_submission_review', $body);
+                $Heroic->sendEmail($userEmail, 'Submission Anda Sedang Direview - WAN Vision Clash', $message);
+            }
+
             return $this->respond([
                 'success' => 1,
                 'message' => 'Submission berhasil dikirim!',
                 'submission_id' => $newSubmissionId,
+                'status' => 'review',
             ]);
         }
 

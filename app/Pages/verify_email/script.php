@@ -18,6 +18,12 @@
       resendCooldown: 0,
       resendTimer: null,
 
+      getCallbackUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const callback = urlParams.get('callback');
+        return callback || '/'; // Default to root if no callback
+      },
+
       init() {
         base.init.call(this);
 
@@ -29,7 +35,7 @@
           if (this.data.isValidEmail === true) {
             $heroicHelper.toastr('Email Anda sudah terverifikasi', 'success', 'bottom');
             setTimeout(() => {
-              window.location.href = '/challenge';
+              window.location.href = this.getCallbackUrl();
             }, 800);
             return;
           }
@@ -44,7 +50,7 @@
 
           if (value.isValidEmail === true) {
             $heroicHelper.toastr('Email Anda sudah terverifikasi', 'success', 'bottom');
-            setTimeout(() => window.location.href = '/challenge', 800);
+            setTimeout(() => window.location.href = this.getCallbackUrl(), 800);
           }
         });
       },
@@ -166,7 +172,7 @@
               // Persist new token and do a full-page redirect to ensure all pages pick up the new JWT
               localStorage.setItem('heroic_token', response.data.jwt);
               await Prompts.alert(response.data.message);
-              window.location.href = '/challenge';
+              window.location.href = this.getCallbackUrl();
             } else {
               this.errorMessage = response.data.message || "Kode OTP tidak valid.";
             }

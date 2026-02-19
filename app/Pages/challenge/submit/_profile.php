@@ -23,33 +23,16 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
 
-<div class="accordion rounded-4 mb-3" id="profileAccordion">
-    <div class="accordion-item rounded-4 border-0 shadow-sm">
-        <h2 class="accordion-header" id="headingProfile">
-            <button
-                class="fs-6 fw-bold accordion-button accordion-button-green"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseProfile" aria-expanded="true"
-                aria-controls="collapseProfile">
-                1. Lengkapi Data Diri
-            </button>
-        </h2>
-        <div id="collapseProfile" class="accordion-collapse collapse show" aria-labelledby="headingProfile" data-bs-parent="#profileAccordion">
-            <div class="accordion-body">
-
-                <!-- Teks panduan -->
-                <div class="card p-3 shadow-none border mb-4 panduan">
-                    <h5 class="mb-2">Panduan Pendaftaran &amp; Aktivasi</h5>
-                    <ol class="mb-0">
-                        <li><strong>GenAI Video Fest</strong> tidak dipungut biaya (gratis).</li>
-                        <li>Peserta wajib memasukkan kartu Debit/Kredit pada akun Alibaba Cloud untuk mengaktifkan trial <a target="_blank" class="fw-bold" href="https://s.id/WanModelStudio">Alibaba Cloud Model Studio</a>.</li>
-                        <li>Panduan registrasi akun Alibaba Cloud tersedia dalam <a class="fw-bold" target="_blank" href="https://www.youtube.com/watch?v=lFLDUMHjEfc">video tutorial berikut</a>.</li>
-                        <li>Peserta yang tidak memiliki kartu kredit dapat menggunakan kartu debit fisik berlogo Visa atau Mastercard, seperti BCA, Mandiri, Jenius, Jago, atau bank lainnya yang mendukung transaksi internasional.</li>
-                        <li>Pastikan fitur transaksi online dan internasional pada kartu debit telah aktif.</li>
-                        <li>Pastikan kartu memiliki saldo minimal Rp100.000 dan pernah digunakan untuk transaksi sebelumnya (misalnya pembelian pulsa, belanja online, atau pembayaran QRIS) guna meminimalkan risiko verifikasi gagal.</li>
-                        <li>Proses verifikasi kartu akan dilakukan melalui simulasi transaksi sebesar USD 1 dan saldo akan dikembalikan secara otomatis dalam beberapa jam setelah proses verifikasi berhasil.</li>
-                    </ol>
+<div class="row g-4">
+    <div class="col-12 col-lg-7 order-lg-first order-last">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex flex-column flex-md-row align-items-md-center gap-2 mb-3">
+                    <div>
+                        <h5 class="fw-bold mb-1">Step 1 - Lengkapi Data Diri</h5>
+                        <p class="text-muted mb-0">Pastikan data profil sesuai agar proses verifikasi berjalan lancar.</p>
+                    </div>
+                    <span class="badge bg-success ms-md-auto" x-show="isProfileComplete()" x-cloak>Profil Lengkap</span>
                 </div>
 
                 <div class="row g-3">
@@ -69,7 +52,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                         </template>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6" x-show="!profile.whatsapp">
                         <label class="form-label">WhatsApp <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" x-model="profile.whatsapp" placeholder="62812xxxx" :class="{'is-invalid': profileErrors.whatsapp}" disabled>
                         <template x-if="profileErrors.whatsapp">
@@ -77,18 +60,18 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                         </template>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6" x-show="!savedProfile.birthday">
                         <label class="form-label">Tanggal Lahir <span class="text-danger">*</span></label>
-                        <input type="date" class="form-control" x-model="profile.birthday" :class="{'is-invalid': profileErrors.birthday}">
+                        <input type="date" class="form-control" x-model="profile.birthday" :class="{'is-invalid': profileErrors.birthday}" :disabled="emailNotVerified">
                         <small class="form-text text-muted">Minimal usia 17 tahun</small>
                         <template x-if="profileErrors.birthday">
                             <small class="text-danger d-block" x-text="profileErrors.birthday"></small>
                         </template>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6" x-show="!savedProfile.gender">
                         <label class="form-label">Jenis Kelamin <span class="text-danger">*</span></label>
-                        <select class="form-select" x-model="profile.gender" :class="{'is-invalid': profileErrors.gender}">
+                        <select class="form-select" x-model="profile.gender" :class="{'is-invalid': profileErrors.gender}" :disabled="emailNotVerified">
                             <option value="">-Pilih-</option>
                             <option value="male">Pria</option>
                             <option value="female">Wanita</option>
@@ -98,9 +81,9 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                         </template>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6" x-show="!savedProfile.occupation">
                         <label class="form-label">Profesi <span class="text-danger">*</span></label>
-                        <select class="form-select" x-model="profile.occupation" :class="{'is-invalid': profileErrors.occupation}">
+                        <select class="form-select" x-model="profile.occupation" :class="{'is-invalid': profileErrors.occupation}" :disabled="emailNotVerified">
                             <option value="">-Pilih-</option>
                             <option value="jobseeker">Job Seeker / Pencari Kerja</option>
                             <option value="college_student">Mahasiswa</option>
@@ -116,17 +99,17 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                         </template>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6" x-show="!savedProfile.institution">
                         <label class="form-label">Instansi / Perusahaan <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" x-model="profile.institution" :class="{'is-invalid': profileErrors.institution}">
+                        <input type="text" class="form-control" x-model="profile.institution" placeholder="Masukan nama instansi / perusahaan" :class="{'is-invalid': profileErrors.institution}" :disabled="emailNotVerified">
                         <template x-if="profileErrors.institution">
                             <small class="text-danger" x-text="profileErrors.institution"></small>
                         </template>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6" x-show="!savedProfile.x_profile_url">
                         <label class="form-label">Link Profil X <span class="text-danger">*</span></label>
-                        <input type="url" class="form-control" x-model="profile.x_profile_url" placeholder="Masukkan URL Profil X Kamu" :class="{'is-invalid': profileErrors.x_profile_url}">
+                        <input type="url" class="form-control" x-model="profile.x_profile_url" placeholder="Masukkan URL Profil X Kamu" :class="{'is-invalid': profileErrors.x_profile_url}" :disabled="emailNotVerified">
                         <small class="form-text text-muted">Contoh: https://x.com/username</small>
                         <template x-if="profileErrors.x_profile_url">
                             <small class="text-danger d-block" x-text="profileErrors.x_profile_url"></small>
@@ -136,7 +119,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                     <div class="col-md-6">
                         <label class="form-label mb-0">AlibabaCloud ID <span class="text-danger">*</span></label>
                         <small class="mb-2 d-block">Daftar akun Alibaba Cloud dan WAN Model Studio <a href="https://s.id/WanModelStudio" target="_blank">DI SINI</a></small>
-                        <input type="text" class="form-control" x-model="profile.alibaba_cloud_id" :class="{'is-invalid': profileErrors.alibaba_cloud_id}" inputmode="numeric" pattern="[0-9]*" @input="profile.alibaba_cloud_id = profile.alibaba_cloud_id.replace(/[^0-9]/g, '')" placeholder="Cth: 5921721919160498">
+                        <input type="text" class="form-control" x-model="profile.alibaba_cloud_id" :class="{'is-invalid': profileErrors.alibaba_cloud_id}" inputmode="numeric" pattern="[0-9]*" @input="profile.alibaba_cloud_id = profile.alibaba_cloud_id.replace(/[^0-9]/g, '')" placeholder="Cth: 5921721919160498" :disabled="emailNotVerified">
                         <template x-if="profileErrors.alibaba_cloud_id">
                             <small class="text-danger" x-text="profileErrors.alibaba_cloud_id"></small>
                         </template>
@@ -145,7 +128,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                     <div class="col-12">
                         <label class="form-label mb-0">Alibaba Account Screenshot <span class="text-danger">*</span></label>
                         <small class="mb-2 d-block">Lihat contoh screenshoot <a href="https://image.web.id/images/contoh_akun_alibabacloud.jpg" target="_blank">DI SINI</a></small>
-                        <input type="file" class="form-control" accept="image/*" @change="handleProfileScreenshot($event)" :class="{'is-invalid': profileErrors.alibaba_cloud_screenshot}">
+                        <input type="file" class="form-control" accept="image/*" @change="handleProfileScreenshot($event)" :class="{'is-invalid': profileErrors.alibaba_cloud_screenshot}" :disabled="emailNotVerified">
                         <template x-if="profile.alibaba_cloud_screenshot">
                             <div class="mt-2 small text-muted">Tersimpan: <span x-text="profile.alibaba_cloud_screenshot"></span></div>
                         </template>
@@ -156,13 +139,52 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                 </div>
 
                 <div class="mt-3 d-flex justify-content-end">
-                    <button type="button" class="btn btn-success" @click="trackSaveProfile({email: profile.email, name: profile.name}); saveProfile()" :disabled="isSavingProfile">
+                    <button type="button" class="btn btn-success" @click="trackSaveProfile({email: profile.email, name: profile.name}); saveProfile()" :disabled="isSavingProfile || emailNotVerified">
                         <template x-if="isSavingProfile">
                             <span class="spinner-border spinner-border-sm me-2"></span>
                         </template>
                         <span x-text="isSavingProfile ? 'Menyimpan...' : 'Simpan Data'"></span>
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-5 order-first order-lg-last">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body panduan">
+                <h5 class="mb-3">Panduan Pendaftaran</h5>
+                <ol class="mb-0 ps-3">
+                    <li>Melakukan Verifikasi Email akunmu;</li>
+                    <li>Masukkan ID Alibaba Cloud aktif kamu (<a target="_blank" href="https://account.alibabacloud.com/login/login.htm?oauth_callback=https%3A%2F%2Fmodelstudio.console.alibabacloud.com%2Fap-southeast-1%2F%3Fsource_channel%3DCodePolitan%26tab%3Ddashboard%23%2Fefm%2Fmodel_experience_center%2Fvision%3FcurrentTab%3DvideoGenerate&clearRedirectCookie=1">buat akun Alibaba Cloud</a>);</li>
+                    <li>Masukkan Link Profil akun X yang kamu gunakan untuk submit karya;</li>
+                    <li>Upload screenshot halaman ID Alibabacloud (untuk verifikasi);</li>
+                    <li>
+                        Untuk Panduan lainnya, akses link berikut:
+                        <ul class="mt-2">
+                            <li>
+                                Panduan buat akun Alibaba Cloud:
+                                <ul class="mt-1">
+                                    <li>🎬 Video: <a href="https://www.youtube.com/watch?v=lFLDUMHjEfc" target="_blank">Tonton di YouTube</a></li>
+                                    <li>📄 Artikel: <a href="https://www.codepolitan.com/blog/panduan-mendaftar-akun-alibaba-cloud" target="_blank">Baca Artikel</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                Panduan buat video di wan.video:
+                                <ul class="mt-1">
+                                    <li>🎬 Video: <a href="#" target="_blank">Segera Hadir</a></li>
+                                    <li>📄 Artikel: <a href="https://www.codepolitan.com/blog/panduan-membuat-video-ai-di-wanvideo" target="_blank">Baca Artikel</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                (Alternatif) Buat video dengan WAN Model Studio:
+                                <ul class="mt-1">
+                                    <li>🎬 Video: <a href="https://www.youtube.com/watch?v=lFLDUMHjEfc" target="_blank">Tonton di YouTube</a></li>
+                                </ul>
+                            </li>
+                            <li>Panduan membuat video kreatif yang mengkombinasikan beberapa tools AI selain WAN: <a href="#" target="_blank">Link Rekaman Video ruangAI (wan + suno)</a></li>
+                        </ul>
+                    </li>
+                </ol>
             </div>
         </div>
     </div>

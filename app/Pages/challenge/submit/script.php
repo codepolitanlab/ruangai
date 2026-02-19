@@ -41,12 +41,18 @@ function challengeSubmit() {
             module: 'challenge',
         },
 
-        // Single-page form (not step-based)
+        // Stepper wizard state
+        currentStep: 1,
+        hasSubmission: false,
+        submissionStatus: null,
+        submissionNotes: null,
+        canEditSubmission: false,
         isEdit: false,
         submissionId: null,
         isSubmitting: false,
         isSavingProfile: false,
         redirecting: false,
+        emailNotVerified: false,
         alert: {
             show: false,
             type: 'success',
@@ -55,11 +61,11 @@ function challengeSubmit() {
         form: {
             twitter_post_url: '',
             video_title: '',
+            video_category: '',
             video_description: '',
             other_tools: '',
             ethical_statement_agreed: false,
-            is_followed_account_codepolitan: false,
-            is_followed_account_alibaba: false
+            is_followed_accounts: false
         },
         profile: {
             name: '',
@@ -84,31 +90,28 @@ function challengeSubmit() {
                 role: 'leader'
             }
         ],
-        files: {
-            prompt_file: null,
-        },
-        existingFiles: {
-            prompt_file: null,
-        },
         errors: {},
         profileErrors: {},
+        savedProfile: {},
         config: {},
+        modalTnc: {
+            is_followed_accounts: false,
+            agreed_terms_1: false,
+            agreed_terms_2: false,
+            agreed_terms_3: false
+        },
 
         async init() {
             try {
                 const response = await $heroicHelper.fetch('challenge/submit/data');
                 const result = response.data;
 
-                // If user's email is not yet verified, block access to submit page
+                // If user's email is not yet verified, show warning but don't redirect
                 if (result.user && result.user.email_valid != 1) {
-                    // Prevent duplicate alerts/redirects
-                    if (this.redirecting) return;
-                    this.redirecting = true;
-
-                    // Use native alert then redirect
-                    alert('Silakan verifikasi email Anda terlebih dahulu.');
-                    window.location.href = '/challenge';
-                    return;
+                    this.emailNotVerified = true;
+                    // Continue loading data but forms will be disabled
+                } else {
+                    this.emailNotVerified = false;
                 }
 
                 this.config = result.config;
@@ -129,58 +132,57 @@ function challengeSubmit() {
                     this.profile.gender = u.gender || '';
                     this.profile.birthday = u.birthday || '';
                     this.profile.x_profile_url = u.x_profile_url || '';
+
+                    // Snapshot of saved values (used to determine which fields to show)
+                    this.savedProfile = {
+                        birthday: this.profile.birthday,
+                        gender: this.profile.gender,
+                        occupation: this.profile.occupation,
+                        institution: this.profile.institution,
+                        x_profile_url: this.profile.x_profile_url,
+                    };
                 }
 
-                // Pre-fill existing submission if present and editable
-                if (result.existing_submission && result.can_edit) {
-                    this.isEdit = true;
+                this.hasSubmission = !!result.existing_submission;
+                this.submissionStatus = result.existing_submission?.status || null;
+                this.submissionNotes = result.existing_submission?.notes || result.existing_submission?.admin_notes || null;
+                this.canEditSubmission = result.can_edit === true;
+
+                // Pre-fill existing submission if present
+                if (result.existing_submission) {
                     this.submissionId = result.existing_submission.id;
                     this.form.twitter_post_url = result.existing_submission.twitter_post_url || '';
                     this.form.video_title = result.existing_submission.video_title || '';
+                    this.form.video_category = result.existing_submission.video_category || '';
                     this.form.video_description = result.existing_submission.video_description || '';
                     this.form.other_tools = result.existing_submission.other_tools || '';
+                    if (this.form.other_tools) {
+                        // If stored as "Lainnya: ...", keep only the 'other' text for the free-text field
+                        const toolsText = this.form.other_tools;
+                        if (toolsText.includes('Lainnya:')) {
+                            this.form.other_tools = toolsText.split('Lainnya:').pop().trim();
+                        }
+                    }
                     this.form.ethical_statement_agreed = result.existing_submission.ethical_statement_agreed == 1 ? true : false;
-                    this.form.is_followed_account_codepolitan = result.existing_submission.is_followed_account_codepolitan == 1 ? true : false;
-                    this.form.is_followed_account_alibaba = result.existing_submission.is_followed_account_alibaba == 1 ? true : false;
-                    // Map ethical_statement_agreed to checkboxes
+                    // combined follow checkbox — prefill true only when user previously followed both accounts
+                    this.form.is_followed_accounts = (result.existing_submission.is_followed_account_codepolitan == 1 && result.existing_submission.is_followed_account_alibaba == 1) ? true : false;
+
+                    if (result.can_edit) {
+                        this.isEdit = true;
+                    }
+
                     if (result.existing_submission.ethical_statement_agreed == 1) {
                         this.profile.agreed_terms_1 = true;
                         this.profile.agreed_terms_2 = true;
                         this.profile.agreed_terms_3 = true;
                     }
 
-                    // existing files (display only until replaced)
-                    this.existingFiles.prompt_file = result.existing_submission.prompt_file || null;
-                } else if (result.existing_submission && !result.can_edit) {
-                    // User has an existing non-editable submission, show a message and redirect
-                    this.showAlert('error', 'Anda sudah memiliki submission aktif dan tidak dapat diubah.');
-                    setTimeout(() => { window.location.href = '/challenge'; }, 2500);
-                    return;
+                    // legacy prompt file values are ignored but kept server-side
                 }
+
+                this.setInitialStep();
             } catch (error) {
                 this.showAlert('error', 'Gagal memuat data. Silakan refresh halaman.');
-            }
-        },
-
-        handleFileUpload(event, fieldName) {
-            const file = event.target.files[0];
-            if (file) {
-                // Validate file size (max 1MB)
-                const maxSize = 1 * 1024 * 1024; // 1MB in bytes
-                if (file.size > maxSize) {
-                    this.errors[fieldName] = 'Ukuran file maksimal 1MB';
-                    event.target.value = ''; // Clear input
-                    $heroicHelper.toastr('Ukuran file maksimal 1MB', 'danger', 'bottom');
-                    return;
-                }
-                
-                this.files[fieldName] = file;
-                // Clear error if any
-                delete this.errors[fieldName];
-                // If replacing existing file, clear its name so valiation relies on this.files
-                if (this.existingFiles[fieldName]) {
-                    this.existingFiles[fieldName] = null;
-                }
             }
         },
 
@@ -233,6 +235,82 @@ function challengeSubmit() {
                 this.profile.alibaba_cloud_id && this.profile.alibaba_cloud_id.trim() !== '' &&
                 (this.profile.alibaba_cloud_screenshot || this.profile._screenshot_file)
             );
+        },
+
+        setInitialStep() {
+            // If email not verified, always start at step 1
+            if (this.emailNotVerified) {
+                this.currentStep = 1;
+                return;
+            }
+
+            if (!this.isProfileComplete()) {
+                this.currentStep = 1;
+                return;
+            }
+
+            if (!this.hasSubmission) {
+                this.currentStep = 2;
+                return;
+            }
+            if (!this.submissionStatus || this.submissionStatus === 'pending') {
+                this.currentStep = 1;
+                return;
+            }
+
+            this.currentStep = 3;
+        },
+
+        normalizedStatus() {
+            if (!this.submissionStatus || this.submissionStatus === 'pending' || this.submissionStatus === 'validated') {
+                return 'review';
+            }
+
+            return this.submissionStatus;
+        },
+
+        statusLabel() {
+            const status = this.normalizedStatus();
+            const labels = {
+                pending: 'Pending',
+                review: 'Review',
+                approved: 'Approved',
+                rejected: 'Rejected'
+            };
+
+            return labels[status] || 'Pending';
+        },
+
+        statusClass() {
+            const status = this.normalizedStatus();
+            return `status-${status}`;
+        },
+
+        stepClass(step) {
+            if (this.currentStep === step) return 'active';
+            if (step < this.currentStep) return 'completed';
+            if (this.isStepLocked(step)) return 'locked';
+            return '';
+        },
+
+        isStepLocked(step) {
+            if (step === 1) return false; // Step 1 always accessible but form disabled if email not verified
+            
+            // Lock all steps (2 and 3) if email not verified
+            if (this.emailNotVerified) return true;
+            
+            if (!this.isProfileComplete()) return true;
+            if (step === 3 && !this.hasSubmission) return true;
+            return false;
+        },
+
+        goToStep(step) {
+            if (this.isStepLocked(step)) {
+                $heroicHelper.toastr('Lengkapi data diri terlebih dahulu sebelum lanjut.', 'warning', 'bottom');
+                return;
+            }
+
+            this.currentStep = step;
         },
 
         validateProfileForm() {
@@ -369,6 +447,7 @@ function challengeSubmit() {
                 if (res.data && res.data.success) {
                     this.profileErrors = {};
                     $heroicHelper.toastr('Data profil berhasil disimpan', 'success', 'bottom');
+                    this.setInitialStep();
                     // optionally refresh defaults
                 } else {
                     // Handle server-side validation errors
@@ -397,27 +476,21 @@ function challengeSubmit() {
             if (!this.form.video_title || this.form.video_title.length < 5) {
                 this.errors.video_title = 'Judul video minimal 5 karakter';
             }
+            if (!this.form.video_category) {
+                this.errors.video_category = 'Kategori video wajib dipilih';
+            }
             if (!this.form.video_description || this.form.video_description.length < 10) {
-                this.errors.video_description = 'Deskripsi minimal 10 karakter';
+                this.errors.video_description = 'Prompt minimal 10 karakter';
             }
 
-            // Validate files - either new file is uploaded or existing file present (for edit)
-            if (!this.files.prompt_file && !this.existingFiles.prompt_file) {
-                this.errors.prompt_file = 'Prompt file wajib diupload';
-            }
 
-            // Validate follow accounts
-            if (!this.form.is_followed_account_codepolitan) {
-                this.errors.is_followed_account_codepolitan = 'Anda harus mengikuti akun @codepolitan';
-            }
-            if (!this.form.is_followed_account_alibaba) {
-                this.errors.is_followed_account_alibaba = 'Anda harus mengikuti akun @alibaba_cloud';
+
+            // Validate follow accounts (single combined checkbox)
+            if (!this.form.is_followed_accounts) {
+                this.errors.is_followed_accounts = 'Anda harus mengikuti akun @alibaba_cloud dan @codepolitan';
             }
 
             // Validate agreed terms
-            if (!this.profile.agreed_terms_1) {
-                this.errors.agreed_terms_1 = 'Anda harus menyetujui pernyataan ini';
-            }
             if (!this.profile.agreed_terms_2) {
                 this.errors.agreed_terms_2 = 'Anda harus menyetujui pernyataan ini';
             }
@@ -449,6 +522,12 @@ function challengeSubmit() {
                 return;
             }
 
+            if (this.hasSubmission && !this.canEditSubmission) {
+                $heroicHelper.toastr('Submission Anda sudah final dan tidak dapat diubah.', 'warning', 'bottom');
+                this.currentStep = 3;
+                return;
+            }
+
             if (!this.validateForm()) {
                 const errorMessages = Object.values(this.errors).join(', ');
                 $heroicHelper.toastr(errorMessages || 'Mohon periksa kembali form yang diisi', 'danger', 'bottom');
@@ -460,6 +539,12 @@ function challengeSubmit() {
                 return;
             }
 
+            // Close modal if open
+            const modal = bootstrap.Modal.getInstance(document.getElementById('tncModal'));
+            if (modal) {
+                modal.hide();
+            }
+
             this.isSubmitting = true;
             this.errors = {};
 
@@ -467,21 +552,20 @@ function challengeSubmit() {
             const data = {
                 twitter_post_url: this.form.twitter_post_url,
                 video_title: this.form.video_title,
+                video_category: this.form.video_category,
                 video_description: this.form.video_description,
-                ethical_statement_agreed: (this.profile.agreed_terms_1 && this.profile.agreed_terms_2 && this.profile.agreed_terms_3) ? '1' : '0',
-                is_followed_account_codepolitan: this.form.is_followed_account_codepolitan ? '1' : '0',
-                is_followed_account_alibaba: this.form.is_followed_account_alibaba ? '1' : '0'
+                other_tools: '',
+                ethical_statement_agreed: (this.modalTnc.agreed_terms_1 && this.modalTnc.agreed_terms_2 && this.modalTnc.agreed_terms_3) ? '1' : '0',
+                is_followed_account_codepolitan: this.modalTnc.is_followed_accounts ? '1' : '0',
+                is_followed_account_alibaba: this.modalTnc.is_followed_accounts ? '1' : '0'
             };
+
+            if (this.form.other_tools && this.form.other_tools.trim() !== '') {
+                data.other_tools = this.form.other_tools.trim();
+            }
 
             if (this.isEdit && this.submissionId) {
                 data.submission_id = this.submissionId;
-            }
-
-            // Add files to data object
-            for (let key in this.files) {
-                if (this.files[key]) {
-                    data[key] = this.files[key];
-                }
             }
 
             try {
@@ -490,9 +574,12 @@ function challengeSubmit() {
 
                 if (result.success === 1) {
                     $heroicHelper.toastr(result.message, 'success', 'bottom');
-                    setTimeout(() => {
-                        window.location.href = '/challenge';
-                    }, 2000);
+                    this.submissionId = result.submission_id || this.submissionId;
+                    this.hasSubmission = true;
+                    this.submissionStatus = result.status || 'review';
+                    this.canEditSubmission = true;
+                    this.isEdit = true;
+                    this.currentStep = 3;
                 } else {
                     this.errors = result.errors || {};
                     if (result.errors && result.errors.general) {
@@ -519,6 +606,81 @@ function challengeSubmit() {
             setTimeout(() => {
                 this.alert.show = false;
             }, 5000);
+        },
+
+        showTncModal() {
+            // Check if profile is complete first
+            if (!this.isProfileComplete()) {
+                $heroicHelper.toastr('Harap lengkapi profil Anda terlebih dahulu sebelum submit challenge', 'warning', 'bottom');
+                return;
+            }
+
+            if (this.hasSubmission && !this.canEditSubmission) {
+                $heroicHelper.toastr('Submission Anda sudah final dan tidak dapat diubah.', 'warning', 'bottom');
+                return;
+            }
+
+            // Validate form before showing modal
+            this.errors = {};
+
+            // Validate basic fields
+            if (!this.form.twitter_post_url) {
+                this.errors.twitter_post_url = 'URL Twitter wajib diisi';
+            }
+            if (!this.form.video_title || this.form.video_title.length < 5) {
+                this.errors.video_title = 'Judul video minimal 5 karakter';
+            }
+            if (!this.form.video_category) {
+                this.errors.video_category = 'Kategori video wajib dipilih';
+            }
+            if (!this.form.video_description || this.form.video_description.length < 10) {
+                this.errors.video_description = 'Prompt minimal 10 karakter';
+            }
+
+            // If there are validation errors, show them and don't open modal
+            if (Object.keys(this.errors).length > 0) {
+                const errorMessages = Object.values(this.errors).join(', ');
+                $heroicHelper.toastr(errorMessages || 'Mohon periksa kembali form yang diisi', 'danger', 'bottom');
+                const firstErrorField = Object.keys(this.errors)[0];
+                if (firstErrorField) {
+                    const el = document.querySelector(`[x-model="form.${firstErrorField}"]`);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return;
+            }
+
+            // Pre-fill modal checkboxes with current form values
+            this.modalTnc.is_followed_accounts = this.form.is_followed_accounts;
+            this.modalTnc.agreed_terms_1 = true;
+            this.modalTnc.agreed_terms_2 = this.profile.agreed_terms_2;
+            this.modalTnc.agreed_terms_3 = this.profile.agreed_terms_3;
+
+            // Show the modal
+            const modalElement = document.getElementById('tncModal');
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        },
+
+        allTncChecked() {
+            return this.modalTnc.is_followed_accounts && 
+                   this.modalTnc.agreed_terms_2 && 
+                   this.modalTnc.agreed_terms_3;
+        },
+
+        confirmAndSubmit() {
+            if (!this.allTncChecked()) {
+                $heroicHelper.toastr('Harap centang semua persyaratan', 'warning', 'bottom');
+                return;
+            }
+
+            // Update form values with modal values
+            this.form.is_followed_accounts = this.modalTnc.is_followed_accounts;
+            this.profile.agreed_terms_1 = true;
+            this.profile.agreed_terms_2 = this.modalTnc.agreed_terms_2;
+            this.profile.agreed_terms_3 = this.modalTnc.agreed_terms_3;
+
+            // Call the actual submit function
+            this.submitForm();
         }
     }
 }
