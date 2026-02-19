@@ -171,7 +171,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                             <li>
                                 Panduan buat video di wan.video:
                                 <ul class="mt-1">
-                                    <li>🎬 Video: <a href="#" target="_blank">Segera Hadir</a></li>
+                                    <li>🎬 Video: <a href="https://youtu.be/1IEzLGEFgzU" target="_blank">Tonton di YouTube</a></li>
                                     <li>📄 Artikel: <a href="https://www.codepolitan.com/blog/panduan-membuat-video-ai-di-wanvideo" target="_blank">Baca Artikel</a></li>
                                 </ul>
                             </li>
