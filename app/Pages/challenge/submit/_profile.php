@@ -164,7 +164,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                             <li>
                                 Panduan buat akun Alibaba Cloud:
                                 <ul class="mt-1">
-                                    <li>🎬 Video: <a href="https://www.youtube.com/watch?v=lFLDUMHjEfc" target="_blank">Tonton di YouTube</a></li>
+                                    <li>🎬 Video: <a href="https://youtu.be/tFK67VhO8Io" target="_blank">Tonton di YouTube</a></li>
                                     <li>📄 Artikel: <a href="https://www.codepolitan.com/blog/panduan-mendaftar-akun-alibaba-cloud" target="_blank">Baca Artikel</a></li>
                                 </ul>
                             </li>
@@ -181,7 +181,7 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                                     <li>🎬 Video: <a href="https://www.youtube.com/watch?v=lFLDUMHjEfc" target="_blank">Tonton di YouTube</a></li>
                                 </ul>
                             </li>
-                            <li>Panduan membuat video kreatif yang mengkombinasikan beberapa tools AI selain WAN: <a href="#" target="_blank">Link Rekaman Video ruangAI (wan + suno)</a></li>
+                            <li>Panduan membuat video kreatif yang mengkombinasikan beberapa tools AI selain WAN: <a href="https://youtu.be/2ofYBkK8l_s" target="_blank">Link Rekaman Bikin Konten Visual Pakai Alibaba AI (Qwen + WAN)</a></li>
                         </ul>
                     </li>
                 </ol>
