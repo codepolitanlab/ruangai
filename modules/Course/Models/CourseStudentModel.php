@@ -84,7 +84,7 @@ class CourseStudentModel extends Model
 
         return $this->where('user_id', $userId)
             ->where('course_id', $courseId)
-            ->set(['graduate' => 1])
+            ->set(['graduate' => 1, 'progress' => 100])
             ->update();
     }
 

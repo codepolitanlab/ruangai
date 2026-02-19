@@ -766,18 +766,12 @@ class MeetingAttendance extends AdminController
                         $inserted++;
                     }
 
-                    // Graduation check: mark as graduate if student exists in course and progress is 100
+                    // Graduation check: mark as graduate if student exists in course (bypass progress check)
                     $student = $CourseStudentModel->where('user_id', $user_id)->where('course_id', $course_id)->first();
                     if ($student) {
-                        if ((int) $student['progress'] == 100) {
-                            $CourseStudentModel->markAsGraduate($user_id, $course_id);
-                            $this->updateScholarshipProgram($user_id);
-                            $graduated++;
-                        } else {
-                            // Student progress belum 100%
-                            $notGraduated++;
-                            $notGraduatedEmails[] = $email;
-                        }
+                        $CourseStudentModel->markAsGraduate($user_id, $course_id);
+                        $this->updateScholarshipProgram($user_id);
+                        $graduated++;
                     } else {
                         // Student tidak terdaftar di course
                         $notGraduated++;
