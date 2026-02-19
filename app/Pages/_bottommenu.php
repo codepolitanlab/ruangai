@@ -16,20 +16,20 @@ $menus = [
         'position' => ['bottom', 'sidebar']
     ],
     [
-        'label'  => 'Kompetisi',
+        'label'  => 'Lomba GenAI',
         'url'    => '/challenge/submit',
         'icon'   => 'bi bi-trophy',
         'module' => 'challenge',
         'position' => ['bottom', 'sidebar'],
         'badge'  => ['warning', 'NEW'],
     ],
-    [
-        'label'  => 'Kelas Saya',
-        'url'    => '/courses',
-        'icon'   => 'bi bi-book',
-        'module' => 'courses',
-        'position' => ['bottom', 'sidebar']
-    ],
+    // [
+    //     'label'  => 'Kelas Saya',
+    //     'url'    => '/courses',
+    //     'icon'   => 'bi bi-book',
+    //     'module' => 'courses',
+    //     'position' => ['bottom', 'sidebar']
+    // ],
     // [
     //     'label'  => 'Workshop',
     //     'url'    => '/workshop',
@@ -37,29 +37,29 @@ $menus = [
     //     'module' => 'workshop'
     // 'position' => ['bottom', 'sidebar']
     // ],
-    [
-        'label'  => 'Reward',
-        'url'    => '/courses/reward',
-        'icon'   => 'bi bi-gift',
-        'module' => 'reward',
-        'position' => ['sidebar']
-    ],
-    [
-        'label'  => 'Sertifikat',
-        'url'    => '/certificate',
-        'icon'   => 'bi bi-award',
-        'module' => 'certificate',
-        'position' => ['sidebar']
-    ],
-    [
-        'label'  => 'Prompt',
-        'url'    => '/prompt',
-        'icon'   => 'bi bi-input-cursor-text',
-        'module' => 'prompt',
-        'position' => ['sidebar'],
-        'target' => '_blank',
-        'badge'  => ['warning', 'NEW'],
-    ],
+    // [
+    //     'label'  => 'Reward',
+    //     'url'    => '/courses/reward',
+    //     'icon'   => 'bi bi-gift',
+    //     'module' => 'reward',
+    //     'position' => ['sidebar']
+    // ],
+    // [
+    //     'label'  => 'Sertifikat',
+    //     'url'    => '/certificate',
+    //     'icon'   => 'bi bi-award',
+    //     'module' => 'certificate',
+    //     'position' => ['sidebar']
+    // ],
+    // [
+    //     'label'  => 'Prompt',
+    //     'url'    => '/prompt',
+    //     'icon'   => 'bi bi-input-cursor-text',
+    //     'module' => 'prompt',
+    //     'position' => ['sidebar'],
+    //     'target' => '_blank',
+    //     'badge'  => ['warning', 'NEW'],
+    // ],
     [
         'label'  => 'Keluar',
         'url'    => '/logout',

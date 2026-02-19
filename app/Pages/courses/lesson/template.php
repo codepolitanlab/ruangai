@@ -166,7 +166,6 @@
             font-weight: 700;
             margin-bottom: 1.5rem;
             color: #212529;
-            line-height: 4;
         }
         .lesson-content h2, .lesson-content h3 {
             font-weight: 600;
@@ -372,50 +371,29 @@
 
                             <div class="lesson-topic-label" x-text="data.lesson?.topic_title"></div>
                             <h2 class="lesson-title" x-text="data.lesson?.lesson_title"></h2>
+
                             
                             <template x-if="data.lesson?.text">
-                                <div class="lesson-content" x-html="data.lesson?.text" x-init="$nextTick(() => setNativeLinks())"></div>
+                                <div>
+                                    <!-- Action Buttons -->
+                                    <div class="mb-5">
+                                        <?= $this->include('courses/lesson/_navigation') ?>
+                                    </div>
+                                    
+                                    <div class="lesson-content" x-html="data.lesson?.text" x-init="$nextTick(() => setNativeLinks())"></div>
+                                </div>
                             </template>
 
                             <!-- Quiz container -->
                             <template x-if="data.lesson?.quiz">
                                 <?= $this->include('courses/lesson/quiz') ?>
                             </template>
+                            
+                            <!-- Action Buttons -->
+                            <div class="mt-5">
+                                <?= $this->include('courses/lesson/_navigation') ?>
+                            </div>
                         </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="d-flex gap-3 mb-5">
-                        <template x-if="data.lesson?.prev_lesson">
-                            <a :href="`/courses/${data.lesson.course_id}/lesson/${data.lesson?.prev_lesson.id}`" 
-                               class="btn btn-outline-secondary rounded-pill px-4">
-                                <i class="bi bi-arrow-left me-2"></i>
-                                Sebelumnya
-                            </a>
-                        </template>
-
-                        <template x-if="!data.lesson?.is_completed && data.lesson?.type == 'theory'">
-                            <button @click="markAsComplete(data.lesson?.course_id, data.lesson?.id, data.lesson?.next_lesson?.id)" 
-                                    class="btn btn-success rounded-pill px-4 ms-auto" 
-                                    :class="{'disabled': !showButtonPaham || buttonSubmitting}" 
-                                    :disabled="buttonSubmitting">
-                                <template x-if="!buttonSubmitting">
-                                    <i class="bi bi-check-circle me-2"></i>
-                                </template>
-                                <template x-if="buttonSubmitting">
-                                    <span class="spinner-border spinner-border-sm me-2"></span>
-                                </template>
-                                <span x-text="buttonSubmitting ? 'Memproses...' : 'Saya Sudah Paham'"></span>
-                            </button>
-                        </template>
-
-                        <template x-if="data.lesson?.is_completed && data.lesson?.next_lesson">
-                            <a :href="`/courses/${data?.lesson?.course_id}/lesson/${data?.lesson?.next_lesson.id}`" 
-                               class="btn btn-primary rounded-pill px-4 ms-auto">
-                                Selanjutnya
-                                <i class="bi bi-arrow-right ms-2"></i>
-                            </a>
-                        </template>
                     </div>
                 </div>
 

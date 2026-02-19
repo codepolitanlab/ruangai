@@ -214,18 +214,20 @@
 
 						<div class="row">
 							<template x-if="data.course?.has_modules === '1'">
-								<div class="col-md-6 mb-3">
+								<div class="col-md-12 mb-3">
 									<div id="card-progress-lesson"
 										class="card border-0 shadow-none rounded-4 p-3 d-flex flex-column justify-content-between position-relative"
 										:class="{'lesson-completed bg-success bg-opacity-50': Math.round(data.lesson_completed/data.total_lessons*100) == 100, 
 								'bg-light-primary': Math.round(data.lesson_completed/data.total_lessons*100) < 100}"
-										style="min-height: 210px">
-										<div class="me-3 bg-white text-dark rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
-											<i class="bi h3 m-0" :class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'bi-check-circle text-success' : 'bi-journal-text'"></i>
-										</div>
-										<div class="d-flex align-items-end gap-2 mt-3 text-dark">
-											<h1 class="mb-0 display-6 fw-bold" x-text="data?.lesson_completed "></h1>
-											<p class="mb-1">dari <span x-text="data?.total_lessons"></span> modul selesai</p>
+										style="min-height: 160px">
+										<div class="d-flex">
+											<div class="me-3 bg-white text-dark rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
+												<i class="bi h3 m-0" :class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'bi-check-circle text-success' : 'bi-journal-text'"></i>
+											</div>
+											<div class="d-flex align-items-end gap-2 text-dark">
+												<h1 class="mb-0 display-6 fw-bold" x-text="data?.lesson_completed "></h1>
+												<p class="mb-1">dari <span x-text="data?.total_lessons"></span> modul selesai</p>
+											</div>
 										</div>
 										<div class="d-flex align-items-center">
 											<div class="progress flex-grow-1 me-2 " style="height: 5px;">
@@ -242,7 +244,7 @@
 							</template>
 
 							<!-- <template x-if="data.is_comentor">
-								<div class="col-md-6 mb-3">
+								<div class="col-md-12 mb-3">
 									<a href="/comentor">
 										<div class="class-card h-100 p-3 d-flex flex-column justify-content-between position-relative" style="min-height: 220px;">
 											<div class="me-3 bg-white text-dark rounded p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
@@ -285,23 +287,26 @@
 							
 							<!-- Card Live Session Program Reguler -->
 							<template x-if="data.course?.has_live_sessions === '1'">
-								<div class="col-md-6 mb-3">
+								<div class="col-md-12 mb-3">
+									<h4 class="mb-3 mt-3">Sesi Live</h4>
 									<div id="card-progress-live"
 										class="card border-0 shadow-none rounded-4  p-3 d-flex flex-column justify-content-between position-relative"
-										style="min-height: 210px"
+										style="min-height: 160px"
 										:class="{'live-completed bg-success bg-opacity-50': data.live_attendance > 0, 
 								'bg-light-secondary': data.live_attendance == 0}">
-										<div class="me-3 bg-white rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
-											<i class="bi h3 m-0" :class="data.live_attendance > 0 ? 'bi-check-circle text-success' : 'bi-camera-video text-secondary'"></i>
-										</div>
-										<div
-											:class="data?.lesson_completed == data?.total_lessons ? 'd-flex' : 'd-none'"
-											class="d-flex align-items-end gap-2 mt-3 mb-4">
-											<h1 class="mb-0 display-6 fw-bold" x-text="data?.live_attendance"></h1>
-											<p class="mb-1">Live session diikuti</p>
-										</div>
-										<div x-show="Math.round(data.lesson_completed/data.total_lessons*100) < 100">
-											<div class="mb-1 position-relative">Selesaikan materi untuk dapat mengikuti sesi live</div>
+										<div class="d-flex">
+											<div class="me-3 bg-white rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
+												<i class="bi h3 m-0" :class="data.live_attendance > 0 ? 'bi-check-circle text-success' : 'bi-camera-video text-secondary'"></i>
+											</div>
+											<div
+												:class="data?.lesson_completed == data?.total_lessons ? 'd-flex' : 'd-none'"
+												class="d-flex align-items-end gap-2 mt-3 mb-4">
+												<h1 class="mb-0 display-6 fw-bold" x-text="data?.live_attendance"></h1>
+												<p class="mb-1">Live session diikuti</p>
+											</div>
+											<div x-show="Math.round(data.lesson_completed/data.total_lessons*100) < 100">
+												<div class="mb-1 position-relative">Selesaikan materi untuk dapat mengikuti sesi live</div>
+											</div>
 										</div>
 										<a :href="`/courses/intro/${data?.course?.id}/${data?.course?.slug}/live_session`" class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6" :class="{'disabled': data?.lesson_completed != data?.total_lessons}">Lihat Jadwal</a>
 										<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
