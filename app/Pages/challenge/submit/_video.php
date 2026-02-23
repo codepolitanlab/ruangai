@@ -95,7 +95,7 @@
                 <h5 class="mb-3">Panduan Singkat</h5>
                 <ul class="mb-0 ps-3">
                     <li>FOLLOW akun X resmi <a href="https://x.com/codepolitan" target="_blank">@codepolitan</a> dan <a href="https://x.com/alibaba_cloud" target="_blank">@alibaba_cloud</a>.</li>
-                    <li>Buat video minimal 10 detik dengan <a href="https://wan.video" target="_blank">WAN.video</a> atau WAN MODEL STUDIO (<a href="https://s.id/WanModelStudio" target="_blank">https://s.id/WanModelStudio</a>).</li>
+                    <li>Buat video minimal 10 detik dengan <a href="https://wan.video" target="_blank">WAN.video</a> atau WAN MODEL STUDIO (<a href="https://s.id/WanModelStudio" target="_blank">https://s.id/WanModelStudio</a>). Daftar dan dapatkan <strong>30 kredit gratis</strong> = 15 detik video AI!</li>
                     <li>Buat postingan di akun X kamu, upload karya video yang telah dibuat.</li>
                     <li>Berikan tagar <strong>#WanAVideo #GenAIVideoFest</strong> dan mention akun X <strong>@CODEPOLITAN</strong> dan <strong>@Alibaba_cloud</strong>.</li>
                     <li>Salin link postingan kamu, dan masukkan ke bagian <em>URL Karya</em>.</li>
