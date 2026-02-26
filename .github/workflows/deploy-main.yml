@@ -45,4 +45,9 @@ jobs:
           chmod +x deployer.phar
 
       - name: Deploy Production
-        run: php deployer.phar deploy production -vvv --no-interaction
+        run: |
+          # Tulis private key ke file sementara
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > deploy_key
+          chmod 600 deploy_key
+          # Jalankan deployer dengan menunjuk file key tersebut secara eksplisit
+          php deployer.phar deploy production -vvv -o "ssh_arguments=[-i $(pwd)/deploy_key, -o StrictHostKeyChecking=no, -o UserKnownHostsFile=/dev/null]"
