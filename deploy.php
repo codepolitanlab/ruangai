@@ -18,28 +18,14 @@ host('production')
     ->setHostname('ruangai-staging.appdata.id')
     ->setRemoteUser('root')
     ->setDeployPath('/var/www/ruangai.codepolitan.com')
-    ->set('branch', 'main')
-    ->set('ssh_multiplexing', false)
-    ->set('ssh_arguments', function () {
-        // Jika file deploy_key ada (dibuat oleh CI), gunakan itu. 
-        // Jika tidak ada (running manual dari laptop), gunakan default.
-        if (file_exists(__DIR__ . '/deploy_key')) {
-            return [
-                '-i ' . __DIR__ . '/deploy_key',
-                '-o StrictHostKeyChecking=no',
-                '-o UserKnownHostsFile=/dev/null',
-            ];
-        }
-        return [];
-    });
+    ->set('branch', 'main');
 
 // Staging
 host('staging')
     ->setHostname('ruangai-staging.appdata.id')
     ->setRemoteUser('root')
     ->setDeployPath('/var/www/ruangai-staging.appdata.id')
-    ->set('branch', 'dev')
-    ->set('ssh_multiplexing', false);
+    ->set('branch', 'dev');
 
 // Custom Tasks
 desc('Update heroic settings');

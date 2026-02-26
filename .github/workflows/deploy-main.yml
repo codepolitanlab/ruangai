@@ -1,5 +1,3 @@
-name: Deploy Production
-
 on:
   push:
     branches: ["main"]
@@ -15,35 +13,30 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.3" # Sesuaikan dengan server (log kamu tadi pakai 8.3)
-          tools: composer:v2
+          php-version: "8.3"
 
       - name: Install dependencies
-        run: composer install --no-dev --optimize-autoloader
+        run: composer install --prefer-dist --no-progress --no-interaction
 
-      # Action ini otomatis menangani ssh-agent dan SSH_AUTH_SOCK
       - name: Start ssh-agent and add key
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      # Jalankan untuk mendapatkan known-host server manual: ssh-keyscan -t rsa,ecdsa,ed25519 <SSH_HOST> dan tambahkan ke known_hosts
       - name: Add known_hosts (host key)
         run: |
           mkdir -p ~/.ssh
-          # Scan berdasarkan hostname dan IP sekaligus
-          ssh-keyscan -H ruangai-staging.appdata.id >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
+          echo "ruangai-staging.appdata.id ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK+1nU9zPceEObzTj42oaYX9gVDBRBxiAJipk8kfaCIo" >> ~/.ssh/known_hosts
 
-      - name: Install Deployer
-        run: |
-          curl -LO https://deployer.org/releases/v7.5.12/deployer.phar
-          chmod +x deployer.phar
+      # - name: Sanity check - list keys loaded
+      #   run: ssh-add -l
 
-      - name: Deploy Production
-        run: |
-          # Buat file kunci dari secret
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > deploy_key
-          chmod 600 deploy_key
-          
-          # Jalankan deploy secara standar
-          php deployer.phar deploy production -vvv --no-interaction
+      # - name: Sanity check - try SSH to server (no command)
+      #   run: |
+      #     ssh -vvv -o StrictHostKeyChecking=yes -p "${{ secrets.SSH_PORT }}" \
+      #       "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" true
+
+      - name: Deploy (vendor/bin/dep)
+        run: php vendor/bin/dep deploy main --no-interaction
+
