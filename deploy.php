@@ -19,7 +19,19 @@ host('production')
     ->setRemoteUser('root')
     ->setDeployPath('/var/www/ruangai.codepolitan.com')
     ->set('branch', 'main')
-    ->set('ssh_multiplexing', false);
+    ->set('ssh_multiplexing', false)
+    ->set('ssh_arguments', function () {
+        // Jika file deploy_key ada (dibuat oleh CI), gunakan itu. 
+        // Jika tidak ada (running manual dari laptop), gunakan default.
+        if (file_exists(__DIR__ . '/deploy_key')) {
+            return [
+                '-i ' . __DIR__ . '/deploy_key',
+                '-o StrictHostKeyChecking=no',
+                '-o UserKnownHostsFile=/dev/null',
+            ];
+        }
+        return [];
+    });
 
 // Staging
 host('staging')
