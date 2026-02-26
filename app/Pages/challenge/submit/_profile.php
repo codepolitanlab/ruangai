@@ -158,32 +158,6 @@ src="https://www.facebook.com/tr?id=745152591506359&ev=PageView&noscript=1"
                     <li>Masukkan ID Alibaba Cloud aktif kamu (<a target="_blank" href="https://account.alibabacloud.com/login/login.htm?oauth_callback=https%3A%2F%2Fmodelstudio.console.alibabacloud.com%2Fap-southeast-1%2F%3Fsource_channel%3DCodePolitan%26tab%3Ddashboard%23%2Fefm%2Fmodel_experience_center%2Fvision%3FcurrentTab%3DvideoGenerate&clearRedirectCookie=1">buat akun Alibaba Cloud</a>);</li>
                     <li>Masukkan Link Profil akun X yang kamu gunakan untuk submit karya;</li>
                     <li>Upload screenshot halaman ID Alibabacloud (untuk verifikasi);</li>
-                    <li>
-                        Untuk Panduan lainnya, akses link berikut:
-                        <ul class="mt-2">
-                            <li>
-                                Panduan buat akun Alibaba Cloud:
-                                <ul class="mt-1">
-                                    <li>🎬 Video: <a href="https://www.youtube.com/watch?v=lFLDUMHjEfc" target="_blank">Tonton di YouTube</a></li>
-                                    <li>📄 Artikel: <a href="https://www.codepolitan.com/blog/panduan-mendaftar-akun-alibaba-cloud" target="_blank">Baca Artikel</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                Panduan buat video di wan.video:
-                                <ul class="mt-1">
-                                    <li>🎬 Video: <a href="#" target="_blank">Segera Hadir</a></li>
-                                    <li>📄 Artikel: <a href="https://www.codepolitan.com/blog/panduan-membuat-video-ai-di-wanvideo" target="_blank">Baca Artikel</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                (Alternatif) Buat video dengan WAN Model Studio:
-                                <ul class="mt-1">
-                                    <li>🎬 Video: <a href="https://www.youtube.com/watch?v=lFLDUMHjEfc" target="_blank">Tonton di YouTube</a></li>
-                                </ul>
-                            </li>
-                            <li>Panduan membuat video kreatif yang mengkombinasikan beberapa tools AI selain WAN: <a href="#" target="_blank">Link Rekaman Video ruangAI (wan + suno)</a></li>
-                        </ul>
-                    </li>
                 </ol>
             </div>
         </div>

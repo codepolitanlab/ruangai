@@ -215,6 +215,72 @@
                 </template>
 
                 <div :style="emailNotVerified ? 'opacity: 0.35; pointer-events: none;' : ''">
+
+                    <!-- Panduan Card -->
+                    <div class="card mb-3 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center gap-2 mb-3">
+                                <i class="bi bi-play-circle text-danger fs-5"></i>
+                                <h5 class="fw-bold mb-0">Video &amp; Artikel Panduan</h5>
+                            </div>
+                            <div class="accordion accordion-flush border-0" id="panduanAccordion">
+
+                                    <!-- Panduan Akun Alibaba Cloud -->
+                                    <div class="accordion-item border rounded mb-2">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button px-3 rounded" type="button" data-bs-toggle="collapse" data-bs-target="#accordionAlibaba" aria-expanded="true" aria-controls="accordionAlibaba" style="background:#f8f9fa; font-weight:600; font-size:0.9rem;">
+                                                <i class="bi bi-person-plus me-2 text-primary"></i> Panduan Daftar Akun Alibaba Cloud (Step 1)
+                                            </button>
+                                        </h2>
+                                        <div id="accordionAlibaba" class="accordion-collapse collapse">
+                                            <div class="accordion-body pt-0 px-3">
+                                                <ul class="mb-0 ps-3">
+                                                    <li>🎬 Video: <a href="https://youtu.be/tFK67VhO8Io" target="_blank">Tonton di YouTube</a></li>
+                                                    <li>📄 Artikel: <a href="https://www.codepolitan.com/blog/panduan-mendaftar-akun-alibaba-cloud" target="_blank">Baca Artikel</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Panduan Video & Tutorial Lainnya -->
+                                    <div class="accordion-item border rounded mb-2">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button py-2 px-3 rounded" type="button" data-bs-toggle="collapse" data-bs-target="#accordionVideo" aria-expanded="true" aria-controls="accordionVideo" style="background:#f8f9fa; font-weight:600; font-size:0.9rem;">
+                                                <i class="bi bi-camera-video me-2 text-success"></i> Panduan Buat Video & Submit Karya (Step 2)
+                                            </button>
+                                        </h2>
+                                        <div id="accordionVideo" class="accordion-collapse collapse">
+                                            <div class="accordion-body pt-0 px-3">
+                                                <ul class="mb-0 ps-3">
+                                                    <li>
+                                                        Panduan buat video di wan.video:
+                                                        <ul class="mt-1">
+                                                            <li>🎬 Video: <a href="https://youtu.be/1IEzLGEFgzU" target="_blank">Tonton di YouTube</a></li>
+                                                            <li>📄 Artikel: <a href="https://www.codepolitan.com/blog/panduan-membuat-video-ai-di-wanvideo" target="_blank">Baca Artikel</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        (Alternatif) Buat video dengan WAN Model Studio:
+                                                        <ul class="mt-1">
+                                                            <li>🎬 Video: <a href="https://www.youtube.com/watch?v=lFLDUMHjEfc" target="_blank">Tonton di YouTube</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        Panduan generate video WAN versi mobile (30 kredit gratis = 15 detik video AI):
+                                                        <ul class="mt-1">
+                                                            <li>🎬 Video: <a href="https://youtu.be/mN4Yvw_mmOc" target="_blank">Tonton di YouTube</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>Panduan membuat video kreatif yang mengkombinasikan beberapa tools AI selain WAN: <a href="https://youtu.be/2ofYBkK8l_s" target="_blank">Link Rekaman Bikin Konten Visual Pakai Alibaba AI (Qwen + WAN)</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Stepper Card -->
                     <div class="card mb-3 border-0 shadow-sm">
                         <div class="card-body">
