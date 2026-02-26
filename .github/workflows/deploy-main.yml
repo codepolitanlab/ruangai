@@ -24,14 +24,22 @@ jobs:
 
     # Step Tambahan: Inisialisasi SSH Agent secara manual
     - name: Install SSH Key
-      uses: shivammathur/setup-php@v2 # Re-use setup untuk tool SSH
-    - run: |
+      run: |
         mkdir -p ~/.ssh
+        # Simpan private key ke file
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
+        
+        # Jalankan ssh-agent dan langsung daftarkan env-nya ke GITHUB_ENV
         ssh-agent -a /tmp/ssh_agent.sock > /dev/null
         echo "SSH_AUTH_SOCK=/tmp/ssh_agent.sock" >> $GITHUB_ENV
-        ssh-add ~/.ssh/id_ed25519
+        
+        # Tambahkan key ke agent menggunakan socket yang baru dibuat
+        SSH_AUTH_SOCK=/tmp/ssh_agent.sock ssh-add ~/.ssh/id_ed25519
+        
+        # Tambahkan known_hosts agar tidak ditanya fingerprint lagi
+        echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+        chmod 644 ~/.ssh/known_hosts
 
     - name: Deploy with Deployer
       uses: deployphp/action@v1
