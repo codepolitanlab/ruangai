@@ -39,4 +39,3 @@ jobs:
 
       - name: Deploy (vendor/bin/dep)
         run: php vendor/bin/dep deploy production -vvv --no-interaction
-
