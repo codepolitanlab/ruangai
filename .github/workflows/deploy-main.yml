@@ -38,5 +38,5 @@ jobs:
       #       "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" true
 
       - name: Deploy (vendor/bin/dep)
-        run: php vendor/bin/dep deploy main --no-interaction
+        run: php vendor/bin/dep deploy production --no-interaction
 
