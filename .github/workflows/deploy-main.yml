@@ -27,7 +27,7 @@ jobs:
       - name: Add known_hosts (host key)
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -t rsa,ecdsa,ed25519 "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+          echo "ruangai-staging.appdata.id ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK+1nU9zPceEObzTj42oaYX9gVDBRBxiAJipk8kfaCIo" >> ~/.ssh/known_hosts
 
 
       # - name: Sanity check - list keys loaded
