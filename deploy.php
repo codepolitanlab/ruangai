@@ -14,14 +14,14 @@ add('writable_dirs', []);
 
 // Hosts
 // Production
-host('production')
+host('main')
     ->setHostname('ruangai-staging.appdata.id')
     ->setRemoteUser('root')
     ->setDeployPath('/var/www/ruangai.codepolitan.com')
     ->set('branch', 'main');
 
 // Staging
-host('staging')
+host('dev')
     ->setHostname('ruangai-staging.appdata.id')
     ->setRemoteUser('root')
     ->setDeployPath('/var/www/ruangai-staging.appdata.id')

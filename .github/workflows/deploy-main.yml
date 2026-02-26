@@ -1,6 +1,6 @@
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "dev"]
   workflow_dispatch:
 
 jobs:
@@ -27,7 +27,8 @@ jobs:
       - name: Add known_hosts (host key)
         run: |
           mkdir -p ~/.ssh
-          echo "ruangai-staging.appdata.id ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK+1nU9zPceEObzTj42oaYX9gVDBRBxiAJipk8kfaCIo" >> ~/.ssh/known_hosts
+          ssh-keyscan -t rsa,ecdsa,ed25519 "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+
 
       # - name: Sanity check - list keys loaded
       #   run: ssh-add -l
@@ -38,4 +39,7 @@ jobs:
       #       "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" true
 
       - name: Deploy (vendor/bin/dep)
-        run: php vendor/bin/dep deploy production -vvv --no-interaction
+        run: |
+          BRANCH_NAME=$(echo "${GITHUB_REF}" | sed 's/refs\/heads\///')
+          echo "Deploying branch: $BRANCH_NAME"
+          php vendor/bin/dep deploy ${BRANCH_NAME} -vvv --no-interaction
