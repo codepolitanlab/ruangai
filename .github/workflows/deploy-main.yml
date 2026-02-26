@@ -19,7 +19,7 @@ jobs:
           tools: composer:v2
 
       - name: Install dependencies
-        run: composer install --no-dev --optimize-autoloader
+        run: composer install
 
       # Action ini otomatis menangani ssh-agent dan SSH_AUTH_SOCK
       - name: Start ssh-agent and add key
@@ -40,7 +40,7 @@ jobs:
           private-key: ${{ secrets.PRIVATE_KEY }}
           dep: deploy
 
-      #- name: Deploy with Deployer
+      - name: Deploy with Deployer
         # Kita panggil vendor/bin/dep karena sudah install composer di atas
         # Jika pakai deployer.phar, ganti jadi: php deployer.phar deploy production
-      #  run: vendor/bin/dep deploy production -vvv --no-interaction
+        run: vendor/bin/dep deploy production -vvv --no-interaction
