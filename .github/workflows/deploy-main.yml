@@ -1,35 +1,45 @@
-name: Deploy Project CI4
-
 on:
   push:
-    branches: [ "main" ] # Trigger hanya saat push ke branch main
+    branches: ["main", "dev"]
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.3' # Sesuaikan dengan versi PHP server Anda
-        extensions: mbstring, xml, intl, curl, zip, gd
-        tools: composer
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
 
-    - name: Install Dependencies
-      run: composer install --no-dev --optimize-autoloader
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
 
-    - name: Deploy with Deployer
-      uses: deployphp/action@v1
-      with:
-        # Menggunakan private key untuk autentikasi SSH
-        private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-        # Mencegah error "Host key verification failed"
-        known-hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
-        # Menjalankan perintah deploy (asumsi file adalah deploy.php)
-        dep: deploy
-        # Jika butuh verbosity tinggi untuk debugging:
-        # verbosity: -vvv
+      - name: Start ssh-agent and add key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # Jalankan untuk mendapatkan known-host server manual: ssh-keyscan -t rsa,ecdsa,ed25519 <SSH_HOST> dan tambahkan ke known_hosts
+      - name: Add known_hosts (host key)
+        run: |
+          mkdir -p ~/.ssh
+          echo "ruangai-staging.appdata.id ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK+1nU9zPceEObzTj42oaYX9gVDBRBxiAJipk8kfaCIo" >> ~/.ssh/known_hosts
+
+
+      # - name: Sanity check - list keys loaded
+      #   run: ssh-add -l
+
+      # - name: Sanity check - try SSH to server (no command)
+      #   run: |
+      #     ssh -vvv -o StrictHostKeyChecking=yes -p "${{ secrets.SSH_PORT }}" \
+      #       "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" true
+
+      - name: Deploy (vendor/bin/dep)
+        run: |
+          BRANCH_NAME=$(echo "${GITHUB_REF}" | sed 's/refs\/heads\///')
+          echo "Deploying branch: $BRANCH_NAME"
+          php vendor/bin/dep deploy ${BRANCH_NAME} -vvv --no-interaction
