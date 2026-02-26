@@ -1,0 +1,35 @@
+name: Deploy Project CI4
+
+on:
+  push:
+    branches: [ "main" ] # Trigger hanya saat push ke branch main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3' # Sesuaikan dengan versi PHP server Anda
+        extensions: mbstring, xml, intl, curl, zip, gd
+        tools: composer
+
+    - name: Install Dependencies
+      run: composer install --no-dev --optimize-autoloader
+
+    - name: Deploy with Deployer
+      uses: deployphp/action@v1
+      with:
+        # Menggunakan private key untuk autentikasi SSH
+        private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        # Mencegah error "Host key verification failed"
+        known-hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+        # Menjalankan perintah deploy (asumsi file adalah deploy.php)
+        dep: deploy
+        # Jika butuh verbosity tinggi untuk debugging:
+        # verbosity: -vvv
