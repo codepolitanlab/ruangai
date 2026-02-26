@@ -19,7 +19,7 @@ jobs:
           tools: composer:v2
 
       - name: Install dependencies
-        run: composer install --optimize-autoloader
+        run: composer install --no-dev --optimize-autoloader
 
       # Action ini otomatis menangani ssh-agent dan SSH_AUTH_SOCK
       - name: Start ssh-agent and add key
