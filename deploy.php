@@ -18,14 +18,16 @@ host('production')
     ->setHostname('ruangai-staging.appdata.id')
     ->setRemoteUser('root')
     ->setDeployPath('/var/www/ruangai.codepolitan.com')
-    ->set('branch', 'main');
+    ->set('branch', 'main')
+    ->set('ssh_multiplexing', false);
 
 // Staging
 host('staging')
     ->setHostname('ruangai-staging.appdata.id')
     ->setRemoteUser('root')
     ->setDeployPath('/var/www/ruangai-staging.appdata.id')
-    ->set('branch', 'dev');
+    ->set('branch', 'dev')
+    ->set('ssh_multiplexing', false);
 
 // Tasks
 desc('Run heroic commands.');
