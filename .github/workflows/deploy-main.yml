@@ -30,6 +30,6 @@ jobs:
         # Mencegah error "Host key verification failed"
         known-hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
         # Menjalankan perintah deploy (asumsi file adalah deploy.php)
-        dep: deploy
+        dep: deploy production -vvv
         # Jika butuh verbosity tinggi untuk debugging:
         # verbosity: -vvv
