@@ -27,6 +27,11 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Sanity check SSH
+        run: |
+          ssh-add -l # Melihat apakah ada key yang ter-load
+          ssh -o StrictHostKeyChecking=no root@ruangai-staging.appdata.id "echo 'SSH ke Server Berhasil dari Runner!'"
+
       - name: Add known_hosts (host key)
         run: |
           mkdir -p ~/.ssh
