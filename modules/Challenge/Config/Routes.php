@@ -11,7 +11,8 @@ $routes->group(
         $routes->get('submissions/detail/(:num)', 'Submissions::detail/$1');
         $routes->post('submissions/approve/(:num)', 'Submissions::approve/$1');
         $routes->post('submissions/reject/(:num)', 'Submissions::reject/$1');
-        $routes->post('submissions/validate/(:num)', 'Submissions::validate/$1');
+        $routes->post('submissions/validate/(:num)', 'Submissions::validateSubmission/$1');
+        $routes->get('submissions/profile-screenshot/(:num)/(:any)', 'Submissions::profileScreenshot/$1/$2');
         $routes->get('submissions/download/(:num)/(:any)', 'Submissions::download/$1/$2');
         $routes->get('submissions/export', 'Submissions::export');
     }

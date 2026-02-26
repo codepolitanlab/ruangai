@@ -17,7 +17,7 @@ $menus = [
     ],
     [
         'label'  => 'Lomba GenAI',
-        'url'    => '/challenge',
+        'url'    => '/challenge/submit',
         'icon'   => 'bi bi-trophy',
         'module' => 'challenge',
         'position' => ['bottom', 'sidebar'],

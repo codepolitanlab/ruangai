@@ -14,7 +14,7 @@
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="<?= site_url('dashboard') ?>">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="<?= site_url('challenge/submissions') ?>">Submissions</a></li>
+                        <li class="breadcrumb-item"><a href="<?= site_url('ruangpanel/challenge/submissions') ?>">Submissions</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Detail</li>
                     </ol>
                 </nav>
@@ -66,6 +66,23 @@
                                 <td><strong>Submitted:</strong></td>
                                 <td><?= $submission['submitted_at'] ? date('d M Y H:i', strtotime($submission['submitted_at'])) : '-' ?></td>
                             </tr>
+                            <tr>
+                                <td><strong>Alibaba Cloud ID:</strong></td>
+                                <td><?= $submission['alibaba_cloud_id'] ?></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Alibaba Account Screenshot:</strong></td>
+                                <td>
+                                    <?php if (!empty($submission['alibaba_cloud_screenshot'])): ?>
+                                        <?php $screenshotUrl = site_url('ruangpanel/challenge/submissions/profile-screenshot/' . $submission['user_id'] . '/' . rawurlencode($submission['alibaba_cloud_screenshot'])); ?>
+                                        <a href="<?= esc($screenshotUrl) ?>" target="_blank" rel="noopener">
+                                            <img src="<?= esc($screenshotUrl) ?>" alt="Alibaba Cloud Screenshot" class="img-fluid rounded border" style="max-width: 240px;">
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="text-muted">Tidak ada file</span>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>
@@ -77,37 +94,38 @@
                     </div>
                     <div class="card-body">
                         <?php if ($submission['status'] === 'pending'): ?>
-                            <form action="<?= site_url('challenge/submissions/validateSubmission/' . $submission['id']) ?>" method="post" class="mb-2">
+                            <form action="<?= site_url('ruangpanel/challenge/submissions/validate/' . $submission['id']) ?>" method="post" class="mb-2">
                                 <?= csrf_field() ?>
                                 <div class="mb-2">
-                                    <textarea name="admin_notes" class="form-control" rows="2" placeholder="Optional notes..."></textarea>
+                                    <textarea name="notes" class="form-control" rows="2" placeholder="Optional notes..."></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-info w-100">Validate Submission</button>
+                                <button type="submit" class="btn btn-info w-100">Mark as Review</button>
                             </form>
                         <?php endif; ?>
 
-                        <?php if (in_array($submission['status'], ['pending', 'validated'])): ?>
-                            <form action="<?= site_url('challenge/submissions/approve/' . $submission['id']) ?>" method="post" class="mb-2">
+                        <?php if (in_array($submission['status'], ['pending', 'review', 'validated', 'rejected'])): ?>
+                            <form action="<?= site_url('ruangpanel/challenge/submissions/approve/' . $submission['id']) ?>" method="post" class="mb-2">
                                 <?= csrf_field() ?>
                                 <div class="mb-2">
-                                    <textarea name="admin_notes" class="form-control" rows="2" placeholder="Optional notes..."></textarea>
+                                    <textarea name="notes" class="form-control" rows="2" placeholder="Optional notes..."></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-success w-100">Approve</button>
                             </form>
 
-                            <form action="<?= site_url('challenge/submissions/reject/' . $submission['id']) ?>" method="post" onsubmit="return confirm('Are you sure want to reject this submission?')">
+                            <form action="<?= site_url('ruangpanel/challenge/submissions/reject/' . $submission['id']) ?>" method="post" onsubmit="return confirm('Are you sure want to reject this submission?')">
                                 <?= csrf_field() ?>
                                 <div class="mb-2">
-                                    <textarea name="admin_notes" class="form-control" rows="2" placeholder="Reason for rejection (required)" required></textarea>
+                                    <textarea name="notes" class="form-control" rows="2" placeholder="Reason for rejection (required)" required></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-danger w-100">Reject</button>
                             </form>
                         <?php endif; ?>
 
-                        <?php if (!empty($submission['admin_notes'])): ?>
+                        <?php $notes = $submission['notes'] ?? ($submission['admin_notes'] ?? null); ?>
+                        <?php if (!empty($notes)): ?>
                             <div class="alert alert-info mt-3">
                                 <strong>Admin Notes:</strong><br>
-                                <?= nl2br(esc($submission['admin_notes'])) ?>
+                                <?= nl2br(esc($notes)) ?>
                             </div>
                         <?php endif; ?>
                     </div>
@@ -130,6 +148,11 @@
                         <div class="mb-3">
                             <label class="form-label"><strong>Video Description:</strong></label>
                             <p><?= nl2br(esc($submission['video_description'])) ?></p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Video Category:</strong></label>
+                            <p><?= esc($submission['video_category'] ?? '-') ?></p>
                         </div>
 
                         <div class="mb-3">

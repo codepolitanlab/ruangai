@@ -13,6 +13,7 @@ class ChallengeAlibabaModel extends Model
         'challenge_id',
         'twitter_post_url',
         'video_title',
+        'video_category',
         'video_description',
         'other_tools',
         'team_members',
@@ -24,7 +25,7 @@ class ChallengeAlibabaModel extends Model
         'ethical_statement_agreed',
         'is_followed_account_codepolitan',
         'is_followed_account_alibaba',
-        'admin_notes',
+        'notes',
         'status',
         'submitted_at',
     ];
@@ -40,8 +41,9 @@ class ChallengeAlibabaModel extends Model
      */
     public function getWithUserInfo($id = null)
     {
-        $builder = $this->select('challenge_alibaba.*, users.name as user_name, users.email as user_email, users.phone as user_phone')
-            ->join('users', 'users.id = challenge_alibaba.user_id', 'left');
+        $builder = $this->select('challenge_alibaba.*, users.name as user_name, users.email as user_email, users.phone as user_phone, user_profiles.alibaba_cloud_id, alibaba_cloud_screenshot')
+            ->join('users', 'users.id = challenge_alibaba.user_id', 'left')
+            ->join('user_profiles', 'user_profiles.user_id = users.id', 'left');
 
         if ($id !== null) {
             return $builder->where('challenge_alibaba.id', $id)->first();
@@ -102,13 +104,24 @@ class ChallengeAlibabaModel extends Model
     }
 
     /**
-     * Check if submission can be edited (status = pending)
+     * Get latest submission for user (including rejected)
+     */
+    public function getLatestSubmission($userId)
+    {
+        return $this->where('user_id', $userId)
+            ->orderBy('created_at', 'DESC')
+            ->first();
+    }
+
+    /**
+     * Check if submission can be edited
+     * Allowed statuses for editing: pending, review, rejected
      */
     public function canEdit($id, $userId)
     {
         $submission = $this->where('id', $id)
             ->where('user_id', $userId)
-            ->where('status', 'pending')
+            ->whereIn('status', ['pending', 'review', 'rejected'])
             ->first();
 
         return !empty($submission);
@@ -137,7 +150,7 @@ class ChallengeAlibabaModel extends Model
         $data = ['status' => $status];
         
         if ($adminNotes !== null) {
-            $data['admin_notes'] = $adminNotes;
+            $data['notes'] = $adminNotes;
         }
 
         return $this->update($id, $data);

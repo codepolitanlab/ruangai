@@ -52,7 +52,7 @@
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-outline-secondary filter-status" data-status="">All</button>
                         <button type="button" class="btn btn-outline-warning filter-status" data-status="pending">Pending</button>
-                        <button type="button" class="btn btn-outline-info filter-status" data-status="validated">Validated</button>
+                        <button type="button" class="btn btn-outline-info filter-status" data-status="review">Review</button>
                         <button type="button" class="btn btn-outline-success filter-status" data-status="approved">Approved</button>
                         <button type="button" class="btn btn-outline-danger filter-status" data-status="rejected">Rejected</button>
                     </div>
@@ -104,7 +104,8 @@ $(document).ready(function() {
                 render: function(data) {
                     const badges = {
                         'pending': '<span class="badge bg-warning">Pending</span>',
-                        'validated': '<span class="badge bg-info">Validated</span>',
+                        'review': '<span class="badge bg-info">Review</span>',
+                        'validated': '<span class="badge bg-info">Review</span>',
                         'approved': '<span class="badge bg-success">Approved</span>',
                         'rejected': '<span class="badge bg-danger">Rejected</span>'
                     };

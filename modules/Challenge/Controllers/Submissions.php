@@ -4,6 +4,7 @@ namespace Challenge\Controllers;
 
 use Heroicadmin\Controllers\AdminController;
 use Challenge\Models\ChallengeAlibabaModel;
+use CodeIgniter\Exceptions\PageNotFoundException;
 
 class Submissions extends AdminController
 {
@@ -100,7 +101,7 @@ class Submissions extends AdminController
         $submission = $this->model->getWithUserInfo($id);
 
         if (!$submission) {
-            return redirect()->to('/challenge/submissions')->with('error', 'Submission tidak ditemukan');
+            return redirect()->to('ruangpanel/challenge/submissions')->with('error', 'Submission tidak ditemukan');
         }
 
         // Parse team members
@@ -119,10 +120,29 @@ class Submissions extends AdminController
      */
     public function approve($id)
     {
-        $notes = $this->request->getPost('admin_notes');
+        $notes = $this->request->getPost('notes');
 
         if ($this->model->updateStatus($id, 'approved', $notes)) {
-            return redirect()->to('/challenge/submissions/detail/' . $id)
+            // Ambil data submission untuk mengirim email ke peserta
+            $submission = $this->model->getWithUserInfo($id);
+
+            if (!empty($submission['user_email'])) {
+                $name = $submission['user_name'] ?? 'Peserta';
+
+                $body = [
+                    'name' => $name,
+                    'video_title' => $submission['video_title'] ?? null,
+                    'dashboard_url' => site_url('challenge/submit'),
+                    'page_title' => 'Submission Disetujui',
+                ];
+
+                // Render HTML dari view template lalu kirim lewat Heroic
+                $message = view('emails/challenge_submission_approved', $body);
+                $Heroic = new \App\Libraries\Heroic();
+                $Heroic->sendEmail($submission['user_email'], 'Submission Anda Disetujui - RuangAI', $message);
+            }
+
+            return redirect()->to('ruangpanel/challenge/submissions/detail/' . $id)
                 ->with('success', 'Submission berhasil disetujui');
         }
 
@@ -134,14 +154,32 @@ class Submissions extends AdminController
      */
     public function reject($id)
     {
-        $notes = $this->request->getPost('admin_notes');
+        $notes = $this->request->getPost('notes');
 
         if (empty($notes)) {
             return redirect()->back()->with('error', 'Alasan penolakan harus diisi');
         }
 
         if ($this->model->updateStatus($id, 'rejected', $notes)) {
-            return redirect()->to('/challenge/submissions/detail/' . $id)
+            $submission = $this->model->getWithUserInfo($id);
+            if (!empty($submission['user_email'])) {
+                $name = $submission['user_name'] ?? 'Peserta';
+                $reason = $notes ?: 'Tidak ada catatan tambahan.';
+
+                $body = [
+                    'name' => $name,
+                    'reason' => $reason,
+                    'video_title' => $submission['video_title'] ?? null,
+                    'dashboard_url' => site_url('challenge/submit'),
+                    'page_title' => 'Submission Ditolak',
+                ];
+
+                // Render HTML dari view template dan kirim lewat Heroic
+                $message = view('emails/challenge_submission_rejected', $body);
+                $Heroic = new \App\Libraries\Heroic();
+                $Heroic->sendEmail($submission['user_email'], 'Submission Anda Ditolak - RuangAI', $message);
+            }
+            return redirect()->to('ruangpanel/challenge/submissions/detail/' . $id)
                 ->with('success', 'Submission berhasil ditolak');
         }
 
@@ -153,10 +191,10 @@ class Submissions extends AdminController
      */
     public function validateSubmission($id)
     {
-        $notes = $this->request->getPost('admin_notes');
+        $notes = $this->request->getPost('notes');
 
-        if ($this->model->updateStatus($id, 'validated', $notes)) {
-            return redirect()->to('/challenge/submissions/detail/' . $id)
+        if ($this->model->updateStatus($id, 'review', $notes)) {
+            return redirect()->to('ruangpanel/challenge/submissions/detail/' . $id)
                 ->with('success', 'Submission berhasil divalidasi');
         }
 
@@ -217,12 +255,32 @@ class Submissions extends AdminController
     }
 
     /**
+     * Display stored Alibaba profile screenshot inline
+     */
+    public function profileScreenshot($userId, $filename)
+    {
+        $safeFilename = basename($filename);
+        $filePath = profile_upload_path($userId) . $safeFilename;
+
+        if (!is_file($filePath)) {
+            throw PageNotFoundException::forPageNotFound('Screenshot tidak ditemukan');
+        }
+
+        $mime = mime_content_type($filePath) ?: 'application/octet-stream';
+
+        return $this->response
+            ->setHeader('Content-Type', $mime)
+            ->setHeader('Content-Disposition', 'inline; filename="' . $safeFilename . '"')
+            ->setBody(file_get_contents($filePath));
+    }
+
+    /**
      * Delete submission (soft delete)
      */
     public function delete($id)
     {
         if ($this->model->delete($id)) {
-            return redirect()->to('/challenge/submissions')
+            return redirect()->to('ruangpanel/challenge/submissions')
                 ->with('success', 'Submission berhasil dihapus');
         }
 

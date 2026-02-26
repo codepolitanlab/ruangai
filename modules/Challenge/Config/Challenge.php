@@ -56,7 +56,7 @@ class Challenge extends BaseConfig
      */
     public array $statusOptions = [
         'pending' => 'Pending Review',
-        'validated' => 'Validated',
+        'review' => 'Review',
         'approved' => 'Approved',
         'rejected' => 'Rejected',
     ];
