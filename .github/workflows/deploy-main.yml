@@ -1,51 +1,40 @@
-name: Deploy Project CI4
+name: Deploy Production
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.3'
-        extensions: mbstring, xml, intl, curl, zip, gd
-        tools: composer
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3" # Sesuaikan dengan server (log kamu tadi pakai 8.3)
+          tools: composer:v2
 
-    - name: Install Dependencies
-      run: composer install --no-dev --optimize-autoloader
+      - name: Install dependencies
+        run: composer install --no-dev --optimize-autoloader
 
-    # Step Tambahan: Inisialisasi SSH Agent secara manual
-    - name: Install SSH Key
-      run: |
-        mkdir -p ~/.ssh
-        # Simpan private key ke file
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-        chmod 600 ~/.ssh/id_ed25519
-        
-        # Jalankan ssh-agent dan langsung daftarkan env-nya ke GITHUB_ENV
-        ssh-agent -a /tmp/ssh_agent.sock > /dev/null
-        echo "SSH_AUTH_SOCK=/tmp/ssh_agent.sock" >> $GITHUB_ENV
-        
-        # Tambahkan key ke agent menggunakan socket yang baru dibuat
-        SSH_AUTH_SOCK=/tmp/ssh_agent.sock ssh-add ~/.ssh/id_ed25519
-        
-        # Tambahkan known_hosts agar tidak ditanya fingerprint lagi
-        echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
-        chmod 644 ~/.ssh/known_hosts
+      # Action ini otomatis menangani ssh-agent dan SSH_AUTH_SOCK
+      - name: Start ssh-agent and add key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Deploy with Deployer
-      uses: deployphp/action@v1
-      with:
-        # Kita tetap masukkan ini sebagai fallback
-        private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-        known-hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
-        # Pastikan "production" tertulis eksplisit
-        dep: deploy production -vvv
+      - name: Add known_hosts (host key)
+        run: |
+          mkdir -p ~/.ssh
+          # Scan berdasarkan hostname dan IP sekaligus
+          ssh-keyscan -H ruangai-staging.appdata.id >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Deploy with Deployer
+        # Kita panggil vendor/bin/dep karena sudah install composer di atas
+        # Jika pakai deployer.phar, ganti jadi: php deployer.phar deploy production
+        run: vendor/bin/dep deploy production -vvv --no-interaction
