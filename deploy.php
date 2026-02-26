@@ -19,7 +19,11 @@ host('production')
     ->setRemoteUser('root')
     ->setDeployPath('/var/www/ruangai.codepolitan.com')
     ->set('branch', 'main')
-    ->set('ssh_multiplexing', false);
+    ->set('ssh_multiplexing', false)
+    ->set('ssh_arguments', [
+        '-o StrictHostKeyChecking=no',
+        '-o UserKnownHostsFile=/dev/null',
+    ]);
 
 // Staging
 host('staging')
@@ -27,7 +31,11 @@ host('staging')
     ->setRemoteUser('root')
     ->setDeployPath('/var/www/ruangai-staging.appdata.id')
     ->set('branch', 'dev')
-    ->set('ssh_multiplexing', false);
+    ->set('ssh_multiplexing', false)
+    ->set('ssh_arguments', [
+        '-o StrictHostKeyChecking=no',
+        '-o UserKnownHostsFile=/dev/null',
+    ]);
 
 // Custom Tasks
 desc('Update heroic settings');
