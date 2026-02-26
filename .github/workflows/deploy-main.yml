@@ -34,7 +34,10 @@ jobs:
           ssh-keyscan -H ruangai-staging.appdata.id >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
-      - name: Deploy with Deployer
-        # Kita panggil vendor/bin/dep karena sudah install composer di atas
-        # Jika pakai deployer.phar, ganti jadi: php deployer.phar deploy production
-        run: vendor/bin/dep deploy production -vvv --no-interaction
+      - name: Install Deployer
+        run: |
+          curl -LO https://deployer.org/deployer.phar
+          chmod +x deployer.phar
+
+      - name: Deploy Production
+        run: php deployer.phar deploy production -vvv --no-interaction
