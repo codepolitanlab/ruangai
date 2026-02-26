@@ -19,7 +19,7 @@ jobs:
           tools: composer:v2
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-interaction
+        run: composer install --no-dev --optimize-autoloader
 
       # Action ini otomatis menangani ssh-agent dan SSH_AUTH_SOCK
       - name: Start ssh-agent and add key
@@ -34,13 +34,10 @@ jobs:
           ssh-keyscan -H ruangai-staging.appdata.id >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
-      - name: Deploy
-        uses: deployphp/action@v1
-        with:
-          private-key: ${{ secrets.PRIVATE_KEY }}
-          dep: deploy
+      - name: Install Deployer
+        run: |
+          curl -LO https://deployer.org/releases/v7.5.12/deployer.phar
+          chmod +x deployer.phar
 
-      - name: Deploy with Deployer
-        # Kita panggil vendor/bin/dep karena sudah install composer di atas
-        # Jika pakai deployer.phar, ganti jadi: php deployer.phar deploy production
-        run: vendor/bin/dep deploy production -vvv --no-interaction
+      - name: Deploy Production
+        run: php deployer.phar deploy production -vvv --no-interaction
