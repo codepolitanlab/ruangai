@@ -14,36 +14,37 @@ add('writable_dirs', []);
 
 // Hosts
 // Production
-host('production')
+host('main')
     ->setHostname('ruangai-staging.appdata.id')
     ->setRemoteUser('root')
     ->setDeployPath('/var/www/ruangai.codepolitan.com')
     ->set('branch', 'main');
 
 // Staging
-host('staging')
+host('dev')
     ->setHostname('ruangai-staging.appdata.id')
     ->setRemoteUser('root')
     ->setDeployPath('/var/www/ruangai-staging.appdata.id')
     ->set('branch', 'dev');
 
-// Tasks
-desc('Run heroic commands.');
-task('spark:heroic:update', spark('heroic:update'));
+// Custom Tasks
+desc('Update heroic settings');
+task('spark:heroic:update', function () {
+    run('{{bin/php}} {{release_path}}/spark heroic:update');
+});
 
 /**
- * Main deploy task.
+ * Hooks: Mengatur urutan task tanpa merusak flow asli CI4 recipe
  */
-desc('Deploys your project');
-task('deploy', [
-    'deploy:prepare',
-    'deploy:vendors',
-    'spark:optimize',
-    'spark:migrate',
-    'spark:heroic:update',
-    'deploy:publish',
-]);
 
-// Hooks
+// Jalankan migrasi setelah vendor terinstall
+after('deploy:vendors', 'spark:migrate');
 
+// Jalankan update heroic setelah migrasi selesai
+after('spark:migrate', 'spark:heroic:update');
+
+// Pastikan symlink diperbarui dan cache dioptimasi di akhir
+after('deploy:publish', 'spark:optimize');
+
+// Unlock jika gagal agar tidak nyangkut saat deploy berikutnya
 after('deploy:failed', 'deploy:unlock');
