@@ -75,8 +75,11 @@
                                 <input type="url" name="zoom_link" id="zoom_link" class="form-control" value="<?= $meeting['zoom_link'] ?? '' ?>">
                             </div>
                             <div class="mb-3">
-                                <label for="recording_link" class="form-label">Link Recording</label>
-                                <input type="url" name="recording_link" id="recording_link" class="form-control" value="<?= $meeting['recording_link'] ?? '' ?>">
+                                <label for="recording_link" class="form-label">
+                                    Link Recording <br>
+                                    <small class="text-muted">Masukkan Video ID dari Bunny CDN (contoh: 613ebf1a-6fee-4f81-81ae-85f026ffcbe9)</small>
+                                </label>
+                                <input type="text" name="recording_link" id="recording_link" class="form-control" value="<?= $meeting['recording_link'] ?? '' ?>" placeholder="613ebf1a-6fee-4f81-81ae-85f026ffcbe9">
                             </div>
                             <div class="mb-3">
                                 <label for="module_url" class="form-label">Link Modul</label>

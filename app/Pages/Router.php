@@ -46,6 +46,11 @@ class Router
             'preload' => true,
             'handler' => '[isLoggedIn]',
         ],
+        '/courses/intro/:course_id/:slug/live_session/record/:meeting_id' => [
+            'template' => '/courses/recording/template',
+            'preload' => true,
+            'handler' => '[isLoggedIn]',
+        ],
         '/courses/intro/:course_id/:slug/live_session/:live_id' => [
             'template' => '/courses/intro/live_session/detail/template',
             'preload' => true,

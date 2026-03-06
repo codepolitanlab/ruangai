@@ -50,13 +50,13 @@
 
                             <template x-if="data?.enable_live_recording">
                                 <a
-                                    :href="live_session.recording_link"
-                                    target="_blank"
-                                    class="btn btn-danger rounded-3"
-                                    x-show="['attended','completed'].includes(live_session.status_date)"
-                                    :class="! live_session.recording_link ? 'disabled' : ''">
+                                    :href="`/courses/intro/${$params.course_id}/${$params.slug}/live_session/record/${live_session.id}`"
+                                    class="btn btn-sm btn-primary rounded-3"
+                                    x-show="['attended','completed'].includes(live_session.status_date) && 
+                                           live_session.recording_link && 
+                                           data?.attended?.some(att => att.live_meeting_id == live_session.id && att.status == 1)">
                                     <i class="bi bi-play-circle-fill"></i>
-                                    <span x-text="! live_session.recording_link ? 'Rekaman belum tersedia' : 'Rekaman Video'"></span>
+                                    <span>Lihat Rekaman</span>
                                 </a>
                             </template>
                             <!-- <button class="btn btn-outline-secondary rounded-3"> <i class="bi bi-person-check-fill"></i> Isi Presensi</button> -->

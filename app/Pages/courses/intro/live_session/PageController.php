@@ -34,7 +34,7 @@ class PageController extends BaseController
             ->select('live_meeting_id, live_meetings.meeting_code, live_meetings.title, 
             live_meetings.subtitle, live_meetings.theme_code, duration, meeting_feedback_id, 
             meeting_date, meeting_time, live_batch.name as batch_title, 
-            live_attendance.status, ADDTIME(meeting_time, SEC_TO_TIME(meeting_duration * 60)) AS meeting_end')
+            live_attendance.status, live_meetings.recording_link, ADDTIME(meeting_time, SEC_TO_TIME(meeting_duration * 60)) AS meeting_end')
             ->join('live_meetings', 'live_meetings.id = live_attendance.live_meeting_id')
             ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
             ->where('live_attendance.course_id', $course_id)
@@ -126,7 +126,7 @@ class PageController extends BaseController
             }
         }
 
-        $this->data['enable_live_recording'] = service('settings')->get('Course.enableLiveRecording');
+        $this->data['enable_live_recording'] = true;
 
         $this->data['attended']     = $attended;
         $this->data['attendedCode'] = $attendedCode ?? [];
