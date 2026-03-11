@@ -15,5 +15,10 @@ $routes->group(
         $routes->get('submissions/profile-screenshot/(:num)/(:any)', 'Submissions::profileScreenshot/$1/$2');
         $routes->get('submissions/download/(:num)/(:any)', 'Submissions::download/$1/$2');
         $routes->get('submissions/export', 'Submissions::export');
+        
+        // Importer routes
+        $routes->get('importer', 'Importer::index');
+        $routes->post('importer/process', 'Importer::process');
+        $routes->get('importer/download-template', 'Importer::downloadTemplate');
     }
 );

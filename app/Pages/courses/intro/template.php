@@ -79,13 +79,13 @@
 			</div>
 
 			<!-- Show Expire Alert -->
-			<template x-if="data.is_expire">
+			<template x-if="data.is_expire && data?.student?.program !== 'RuangAI2026WSGenAI'">
 				<div class="card bg-secondary rounded-4 mb-3 shadow-none">
 					<div class="card-body d-flex gap-3">
 						<i class="bi bi-stopwatch-fill text-white display-3"></i>
 						<div>
-							<h4 class="text-white">Program Belajar Chapter 3 Sudah Ditutup</h4>
-							<p class="mb-3 text-white">Pendaftaran untuk Chapter 3 telah ditutup. Nantikan informasi untuk chapter berikutnya.</p>
+							<h4 class="text-white">Program Belajar Chapter 4 Sudah Ditutup</h4>
+							<p class="mb-3 text-white">Pendaftaran untuk Chapter 4 telah ditutup. Nantikan informasi untuk chapter berikutnya.</p>
 						</div>
 					</div>
 				</div>
@@ -206,7 +206,7 @@
 						:class="{'lesson-not-complete': Math.round(data.lesson_completed/data.total_lessons*100) < 100}">
 						<h4 class="mb-3">Progres Belajar</h4>
 
-						<div x-show="data?.is_expire">
+						<div x-show="data?.is_expire && data?.student?.program !== 'RuangAI2026WSGenAI'">
 							<div class="position-absolute d-flex align-items-center justify-content-center rounded-4 top-0 start-0 end-0 bottom-0" style="z-index: 100;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.5);">
 								<i class="bi bi-lock-fill text-white display-3"></i>
 							</div>

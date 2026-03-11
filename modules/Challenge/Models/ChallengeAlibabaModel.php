@@ -11,6 +11,9 @@ class ChallengeAlibabaModel extends Model
     protected $allowedFields = [
         'user_id',
         'challenge_id',
+        'fullname',
+        'email',
+        'whatsapp',
         'twitter_post_url',
         'video_title',
         'video_category',
