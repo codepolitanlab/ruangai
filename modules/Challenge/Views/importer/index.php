@@ -68,7 +68,7 @@
                                 <ul class="mb-0 mt-2">
                                     <li>File CSV harus memiliki header sesuai template</li>
                                     <li>Email yang sudah terdaftar tidak akan dibuat ulang</li>
-                                    <li>Password default untuk user baru: <code>122333!</code></li>
+                                    <li>Password default untuk user baru: <code>BelajarAI@2026</code></li>
                                     <li>Kolom <code>source</code> akan digunakan sebagai sumber registrasi</li>
                                     <li>Province dan City ID akan dikonversi ke nama</li>
                                     <li>User otomatis didaftarkan ke beasiswa & course</li>
