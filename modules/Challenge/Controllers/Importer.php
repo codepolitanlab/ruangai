@@ -40,6 +40,7 @@ class Importer extends AdminController
      */
     public function process()
     {
+        set_time_limit(0); // Set unlimited execution time for large imports
         $validationRule = [
             'csv_file' => [
                 'label' => 'CSV File',
