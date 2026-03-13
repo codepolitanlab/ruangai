@@ -198,7 +198,7 @@ class CreateEventTables extends Migration
         $this->forge->addKey('status');
         $this->forge->addKey('start_date');
         $this->forge->addForeignKey('created_by', 'users', 'id', 'SET NULL', 'CASCADE');
-        $this->forge->createTable('scholarship_events');
+        $this->forge->createTable('events');
 
         // Table: event_participants
         $this->forge->addField([
@@ -338,6 +338,6 @@ class CreateEventTables extends Migration
     {
         $this->forge->dropTable('event_sessions');
         $this->forge->dropTable('event_participants');
-        $this->forge->dropTable('scholarship_events');
+        $this->forge->dropTable('events');
     }
 }
