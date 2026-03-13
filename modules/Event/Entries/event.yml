@@ -3,7 +3,7 @@ title: Manajemen Event
 base_url: /event
 description: Kelola event online, offline, dan hybrid dengan sistem peserta dan sertifikat
 icon: bi-calendar-event
-table: events
+table: scholarship_events
 primary_key: id
 
 show_on_table: [title, event_type, category, start_date, max_participants, status]

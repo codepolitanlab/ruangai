@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class Events extends Model
 {
-    protected $table                  = 'events';
+    protected $table                  = 'scholarship_events';
     protected $primaryKey             = 'id';
     protected $useAutoIncrement       = true;
     protected $returnType             = 'array';

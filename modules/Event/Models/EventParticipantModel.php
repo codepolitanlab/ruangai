@@ -32,7 +32,7 @@ class EventParticipantModel extends Model
 
     // Validation
     protected $validationRules = [
-        'event_id' => 'required|is_not_unique[events.id]',
+        'event_id' => 'required|is_not_unique[scholarship_events.id]',
         'user_id' => 'required|is_not_unique[users.id]',
     ];
     protected $validationMessages = [];

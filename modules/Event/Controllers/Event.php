@@ -113,7 +113,7 @@ class Event extends AdminController
      */
     public function participants($eventId)
     {
-        $event = $this->db->table('events')->where('id', $eventId)->get()->getRowArray();
+        $event = $this->db->table('scholarship_events')->where('id', $eventId)->get()->getRowArray();
         
         if (!$event) {
             return redirect()->to(base_url('heroic/event'))
@@ -162,7 +162,7 @@ class Event extends AdminController
         }
         
         // Cek kuota
-        $event = $this->db->table('events')->where('id', $eventId)->get()->getRowArray();
+        $event = $this->db->table('scholarship_events')->where('id', $eventId)->get()->getRowArray();
         if ($event && $event['max_participants']) {
             $currentCount = $this->db->table('event_participants')
                 ->where('event_id', $eventId)
@@ -252,8 +252,8 @@ class Event extends AdminController
         }
         
         $participant = $this->db->table('event_participants')
-            ->select('event_participants.*, events.*, users.name as participant_name')
-            ->join('events', 'events.id = event_participants.event_id')
+            ->select('event_participants.*, scholarship_events.*, users.name as participant_name')
+            ->join('scholarship_events', 'scholarship_events.id = event_participants.event_id')
             ->join('users', 'users.id = event_participants.user_id')
             ->where('event_participants.id', $participantId)
             ->get()
@@ -347,7 +347,7 @@ class Event extends AdminController
             
             // Hapus file lama jika update
             if ($id) {
-                $oldData = $this->db->table('events')->where('id', $id)->get()->getRowArray();
+                $oldData = $this->db->table('scholarship_events')->where('id', $id)->get()->getRowArray();
                 if ($oldData && $oldData['thumbnail'] && file_exists(FCPATH . $oldData['thumbnail'])) {
                     unlink(FCPATH . $oldData['thumbnail']);
                 }
@@ -363,7 +363,7 @@ class Event extends AdminController
             
             // Hapus file lama jika update
             if ($id) {
-                $oldData = $this->db->table('events')->where('id', $id)->get()->getRowArray();
+                $oldData = $this->db->table('scholarship_events')->where('id', $id)->get()->getRowArray();
                 if ($oldData && $oldData['banner'] && file_exists(FCPATH . $oldData['banner'])) {
                     unlink(FCPATH . $oldData['banner']);
                 }
@@ -378,7 +378,7 @@ class Event extends AdminController
      */
     public function sessions($eventId)
     {
-        $event = $this->db->table('events')->where('id', $eventId)->get()->getRowArray();
+        $event = $this->db->table('scholarship_events')->where('id', $eventId)->get()->getRowArray();
         
         if (!$event) {
             return redirect()->to(base_url('heroic/event'))
