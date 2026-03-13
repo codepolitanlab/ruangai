@@ -68,7 +68,7 @@
                                 <ul class="mb-0 mt-2">
                                     <li>File CSV harus memiliki header sesuai template</li>
                                     <li>Email yang sudah terdaftar tidak akan dibuat ulang</li>
-                                    <li>Password default untuk user baru: <code>122333!</code></li>
+                                    <li>Password default untuk user baru: <code>BelajarAI@2026</code></li>
                                     <li>Kolom <code>source</code> akan digunakan sebagai sumber registrasi</li>
                                     <li>Province dan City ID akan dikonversi ke nama</li>
                                     <li>User otomatis didaftarkan ke beasiswa & course</li>
@@ -85,6 +85,21 @@
                                 </a>
                             </div>
                         </form>
+                    </div>
+                </div>
+
+                <!-- Navigation to Submission Import -->
+                <div class="mt-3">
+                    <div class="alert alert-success">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h6 class="mb-1"><i class="bi bi-file-earmark-check"></i> Import Submission</h6>
+                                <small>Sync data submission challenge dari CSV</small>
+                            </div>
+                            <a href="<?= site_url('ruangpanel/challenge/importer/submission') ?>" class="btn btn-success btn-sm">
+                                Import Submission <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

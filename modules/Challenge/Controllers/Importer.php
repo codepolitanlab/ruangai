@@ -5,6 +5,7 @@ namespace Challenge\Controllers;
 use Heroicadmin\Controllers\AdminController;
 use App\Models\UserModel;
 use App\Models\UserProfile;
+use App\Models\UserToken;
 use Challenge\Models\ChallengeAlibabaModel;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 
@@ -13,6 +14,7 @@ class Importer extends AdminController
     protected $userModel;
     protected $userProfileModel;
     protected $challengeModel;
+    protected $userTokenModel;
     protected $db;
 
     public function __construct()
@@ -24,6 +26,7 @@ class Importer extends AdminController
         $this->userModel        = new UserModel();
         $this->userProfileModel = new UserProfile();
         $this->challengeModel   = new ChallengeAlibabaModel();
+        $this->userTokenModel   = new UserToken();
         $this->db               = \Config\Database::connect();
     }
 
@@ -468,6 +471,232 @@ class Importer extends AdminController
         } catch (\Exception $e) {
             return null;
         }
+    }
+
+    /**
+     * Display submission upload form
+     */
+    public function submission()
+    {
+        return view('Challenge\Views\importer\submission', $this->data);
+    }
+
+    /**
+     * Process submission CSV import
+     */
+    public function processSubmission()
+    {
+        $validationRule = [
+            'csv_file' => [
+                'label' => 'CSV File',
+                'rules' => 'uploaded[csv_file]|ext_in[csv_file,csv]|max_size[csv_file,10240]',
+            ],
+        ];
+
+        if (!$this->validate($validationRule)) {
+            return redirect()->back()->with('error', implode('<br>', $this->validator->getErrors()));
+        }
+
+        $file = $this->request->getFile('csv_file');
+        
+        if (!$file->isValid()) {
+            return redirect()->back()->with('error', 'File upload gagal: ' . $file->getErrorString());
+        }
+
+        // Parse CSV
+        $csvData = $this->parseCSV($file);
+        
+        if (empty($csvData)) {
+            return redirect()->back()->with('error', 'File CSV kosong atau format tidak valid');
+        }
+
+        // Process import
+        $result = $this->importSubmissionData($csvData);
+
+        // Prepare result message
+        $message = sprintf(
+            'Import submission selesai!<br>Updated: %d<br>Not Found: %d<br>Gagal: %d',
+            $result['updated'],
+            $result['not_found'],
+            $result['failed_rows']
+        );
+
+        if (!empty($result['errors'])) {
+            $message .= '<br><br>Detail Error:<br>' . implode('<br>', array_slice($result['errors'], 0, 10));
+            if (count($result['errors']) > 10) {
+                $message .= '<br>... dan ' . (count($result['errors']) - 10) . ' error lainnya';
+            }
+        }
+
+        return redirect()->back()->with($result['failed_rows'] > 0 ? 'warning' : 'success', $message);
+    }
+
+    /**
+     * Import submission data from CSV
+     */
+    private function importSubmissionData(array $csvData)
+    {
+        set_time_limit(0);
+        $stats = [
+            'updated'     => 0,
+            'not_found'   => 0,
+            'failed_rows' => 0,
+            'errors'      => [],
+        ];
+
+        foreach ($csvData as $index => $row) {
+            $rowNumber = $index + 2;
+            
+            try {
+                $this->db->transStart();
+
+                $result = $this->processSubmissionRow($row);
+                
+                if ($result['status'] === 'updated') {
+                    $stats['updated']++;
+                } elseif ($result['status'] === 'not_found') {
+                    $stats['not_found']++;
+                }
+
+                $this->db->transComplete();
+
+                if ($this->db->transStatus() === false) {
+                    throw new \Exception('Transaction failed');
+                }
+
+            } catch (\Exception $e) {
+                $stats['failed_rows']++;
+                $stats['errors'][] = "Baris {$rowNumber} ({$row['email']}): " . $e->getMessage();
+                
+                if ($this->db->transStatus() === false) {
+                    $this->db->transRollback();
+                }
+
+                log_message('error', "Submission Import Error - Row {$rowNumber}: " . $e->getMessage());
+            }
+        }
+
+        log_message('info', sprintf(
+            'Submission Import Summary - Updated: %d, Not Found: %d, Failed: %d',
+            $stats['updated'],
+            $stats['not_found'],
+            $stats['failed_rows']
+        ));
+
+        return $stats;
+    }
+
+    /**
+     * Process single submission row
+     */
+    private function processSubmissionRow(array $row)
+    {
+        $email = trim($row['email'] ?? '');
+        
+        if (empty($email)) {
+            throw new \Exception('Email kosong');
+        }
+
+        // Validate email format
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new \Exception('Format email tidak valid');
+        }
+
+        // Find participant by email in challenge_alibaba
+        $participant = $this->challengeModel
+            ->where('email', $email)
+            ->where('challenge_id', 'wan-vision-clash-2025')
+            ->where('deleted_at', null)
+            ->first();
+
+        if (!$participant) {
+            return ['status' => 'not_found'];
+        }
+
+        $userId = $participant['user_id'];
+
+        // 1. Update user_profiles dengan alibaba_cloud_id dan alibaba_cloud_screenshot
+        $alibabaCloudId = trim($row['alibaba_cloud_id'] ?? '');
+        $alibabaCloudScreenshot = trim($row['alibaba_cloud_screenshot'] ?? '');
+        
+        if (!empty($alibabaCloudId) || !empty($alibabaCloudScreenshot)) {
+            $profileData = [];
+            if (!empty($alibabaCloudId)) {
+                $profileData['alibaba_cloud_id'] = $alibabaCloudId;
+            }
+            if (!empty($alibabaCloudScreenshot)) {
+                $profileData['alibaba_cloud_screenshot'] = $alibabaCloudScreenshot;
+            }
+            $profileData['updated_at'] = date('Y-m-d H:i:s');
+
+            // Check if profile exists
+            $existingProfile = $this->userProfileModel->where('user_id', $userId)->first();
+            if ($existingProfile) {
+                $this->userProfileModel->update($existingProfile['id'], $profileData);
+            }
+        }
+
+        // 2. Prepare submission data untuk challenge_alibaba
+        $submissionData = [
+            'twitter_post_url'   => trim($row['twitter_post_url'] ?? ''),
+            'video_title'        => trim($row['video_title'] ?? ''),
+            'video_description'  => trim($row['video_description'] ?? ''),
+            'video_category'     => trim($row['video_category'] ?? ''),
+            'other_tools'        => trim($row['other_tools'] ?? ''),
+            'updated_at'         => date('Y-m-d H:i:s'),
+        ];
+
+        // Update if has submission data
+        if (!empty($submissionData['twitter_post_url']) || !empty($submissionData['video_title'])) {
+            // Update status to 'review' if has submission
+            $submissionData['status'] = 'review';
+            $submissionData['submitted_at'] = date('Y-m-d H:i:s');
+            
+            $this->challengeModel->update($participant['id'], $submissionData);
+            
+            // 3. Generate token 'genaivideofest' untuk user yang berhasil
+            if (!$this->userTokenModel->isExists($userId, 'genaivideofest')) {
+                $this->userTokenModel->generate($userId, 'genaivideofest');
+            }
+            
+            return ['status' => 'updated'];
+        }
+
+        return ['status' => 'not_found'];
+    }
+
+    /**
+     * Download submission CSV template
+     */
+    public function downloadSubmissionTemplate()
+    {
+        $csv = implode('\t', [
+            'email',
+            'alibaba_cloud_id',
+            'alibaba_cloud_screenshot',
+            'twitter_post_url',
+            'video_title',
+            'video_category',
+            'video_description',
+            'other_tools',
+        ]) . "\n";
+
+        // Add sample data
+        $csv .= implode('\t', [
+            'john@example.com',
+            'alibaba123456',
+            'https://example.com/screenshot.png',
+            'https://twitter.com/username/status/123456789',
+            'Video Tutorial AI',
+            'Tutorial',
+            'Tutorial lengkap menggunakan AI untuk pemula',
+            'ChatGPT, Midjourney',
+        ]) . "\n";
+
+        return $this->response
+            ->setHeader('Content-Type', 'text/csv')
+            ->setHeader('Content-Disposition', 'attachment; filename="challenge_submission_template.csv"')
+            ->setBody($csv);
     }
 
     /**
