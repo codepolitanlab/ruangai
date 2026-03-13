@@ -20,5 +20,10 @@ $routes->group(
         $routes->get('importer', 'Importer::index');
         $routes->post('importer/process', 'Importer::process');
         $routes->get('importer/download-template', 'Importer::downloadTemplate');
+        
+        // Submission Importer routes
+        $routes->get('importer/submission', 'Importer::submission');
+        $routes->post('importer/process-submission', 'Importer::processSubmission');
+        $routes->get('importer/download-submission-template', 'Importer::downloadSubmissionTemplate');
     }
 );
