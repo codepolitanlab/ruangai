@@ -209,7 +209,7 @@ class PageController extends BaseController
 
         if ($courseStudent['graduate'] !== '1') {
             // Update field program in scholarship_participants to Active program
-            $activeProgram = $db->table('events')
+            $activeProgram = $db->table('scholarship_events')
                 ->select('code, title')
                 ->where('status', 'ongoing')
                 ->get()
