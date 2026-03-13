@@ -179,7 +179,7 @@
                                 <div class="countdown-subtitle">Tersisa</div>
                             </div>
                         </div>
-                        <small class="text-muted d-block mt-2">Batas akhir: 13 Maret 2026, 23:59 WIB</small>
+                        <small class="text-muted d-block mt-2">Batas akhir: 13 Maret 2026, 15:00 WIB</small>
                     </div>
                 </div>
             </div>
