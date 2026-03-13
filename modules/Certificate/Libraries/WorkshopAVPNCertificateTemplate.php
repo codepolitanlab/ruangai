@@ -6,7 +6,7 @@ class WorkshopAVPNCertificateTemplate extends CertificateTemplate
 {
     public function getName(): string
     {
-        return 'workshop';
+        return 'workshop_avpn';
     }
 
     public function getPrefix(): string
@@ -16,7 +16,7 @@ class WorkshopAVPNCertificateTemplate extends CertificateTemplate
 
     public function getDescription(): string
     {
-        return 'Template sertifikat khusus untuk workshop';
+        return 'Workshop AVPN';
     }
 
     /**

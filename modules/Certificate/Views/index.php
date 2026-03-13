@@ -7,9 +7,14 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0"><?= esc($title) ?></h5>
-                    <a href="<?= admin_url() ?>certificates/create" class="btn btn-primary btn-sm">
-                        <i class="bi bi-plus me-1"></i> Buat Sertifikat
-                    </a>
+                    <div>
+                        <a href="<?= admin_url() ?>certificates/create" class="btn btn-primary btn-sm">
+                            <i class="bi bi-plus me-1"></i> Create
+                        </a>
+                        <a href="<?= admin_url() ?>certificates/generate" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-plus me-1"></i> Generate
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Filters -->

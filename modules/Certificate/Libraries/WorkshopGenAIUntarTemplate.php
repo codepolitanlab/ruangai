@@ -2,21 +2,21 @@
 
 namespace Certificate\Libraries;
 
-class ComentorCertificateTemplate extends CertificateTemplate
+class WorkshopGenAIUntarTemplate extends CertificateTemplate
 {
     public function getName(): string
     {
-        return 'comentor';
+        return 'workshop_genai_untar';
     }
 
     public function getPrefix(): string
     {
-        return 'TR'; // Certificate code prefix for cert_code
+        return 'WS'; // Certificate code prefix for cert_code
     }
 
     public function getDescription(): string
     {
-        return 'Training for Co-mentor';
+        return 'Workshop GenAI FTI Untar';
     }
 
     /**
@@ -25,8 +25,8 @@ class ComentorCertificateTemplate extends CertificateTemplate
     protected function getQrConfig(): array
     {
         return [
-            'xPct'   => 89,
-            'yPct'   => 76,
+            'xPct'   => 85,
+            'yPct'   => 73,
             'sizeMm' => 36,
             'ecl'    => 'M',
             'dark'   => '#000000',
@@ -42,21 +42,31 @@ class ComentorCertificateTemplate extends CertificateTemplate
             'pages' => [
                 // Halaman 1 - Indonesia
                 $this->createPage(
-                    base_url('certificates/tpl/comentor-min.jpg'),
+                    base_url('certificates/tpl/template-untar-min.png'),
                     [
                         'name' => $this->createPosition(
-                            xPct: 28,
-                            yPct: 38,
+                            xPct: 7,
+                            yPct: 45,
                             maxWidthPct: 70,
-                            fontMm: 10,
+                            fontMm: 12,
                             minFontMm: 5.5,
                             weight: 'bold',
                             align: 'left',
                             color: '#174658',
                             autoshrink: true
                         ),
+                        // 'course' => $this->createPosition(
+                        //     xPct: 31,
+                        //     yPct: 57.7,
+                        //     maxWidthPct: 80,
+                        //     fontMm: 5.3,
+                        //     minFontMm: 3.0,
+                        //     weight: 'bold',
+                        //     align: 'left',
+                        //     autoshrink: true
+                        // ),
                         'publishDate' => $this->createPosition(
-                            xPct: 28,
+                            xPct: 7,
                             yPct: 70,
                             maxWidthPct: 30,
                             fontMm: 5,
@@ -65,24 +75,24 @@ class ComentorCertificateTemplate extends CertificateTemplate
                             align: 'left'
                         ),
                         'code' => $this->createPosition(
-                            xPct: 95,
-                            yPct: 88,
+                            xPct: 7,
+                            yPct: 21,
                             maxWidthPct: 30,
                             fontMm: 5,
                             minFontMm: 3.5,
                             weight: 'normal',
-                            align: 'right'
+                            align: 'left'
                         ),
-                        'expiredDate' => $this->createPosition(
-                            xPct: 95,
-                            yPct: 91,
-                            maxWidthPct: 30,
-                            fontMm: 5,
-                            minFontMm: 3.0,
-                            weight: 'normal',
-                            align: 'right',
-                            prefix: 'Berlaku hingga '
-                        ),
+                        // 'expiredDate' => $this->createPosition(
+                        //     xPct: 95,
+                        //     yPct: 90,
+                        //     maxWidthPct: 30,
+                        //     fontMm: 5,
+                        //     minFontMm: 3.0,
+                        //     weight: 'normal',
+                        //     align: 'right',
+                        //     prefix: 'Berlaku hingga '
+                        // ),
                     ]
                 ),
             ],

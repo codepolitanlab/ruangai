@@ -16,12 +16,8 @@ class CertificateTemplateLibrary
      */
     protected function loadTemplates()
     {
-        // Load all template classes from Libraries directory
-        $templateClasses = [
-            DefaultCertificateTemplate::class,
-            ComentorCertificateTemplate::class,
-            WorkshopAVPNCertificateTemplate::class,
-        ];
+        // Load all template classes from configuration
+        $templateClasses = config('Certificate')->availableTemplates;
 
         foreach ($templateClasses as $class) {
             if (class_exists($class)) {
