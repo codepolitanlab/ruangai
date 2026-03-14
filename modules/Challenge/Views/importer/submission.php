@@ -129,6 +129,8 @@
                             <code class="text-warning">video_description</code>
                             <code class="text-muted">&nbsp;&nbsp;[TAB]&nbsp;&nbsp;</code>
                             <code class="text-warning">other_tools</code>
+                            <code class="text-muted">&nbsp;&nbsp;[TAB]&nbsp;&nbsp;</code>
+                            <code class="text-warning">submitted_at</code>
                         </div>
                         <table class="table table-sm table-bordered small">
                             <thead class="table-dark">
@@ -143,6 +145,7 @@
                                 <tr><td><code>video_category</code></td><td>Kategori video</td></tr>
                                 <tr><td><code>video_description</code></td><td>Deskripsi video</td></tr>
                                 <tr><td><code>other_tools</code></td><td>Tools AI lain yang digunakan</td></tr>
+                                <tr><td><code>submitted_at</code></td><td>Waktu submit (format: Y-m-d H:i:s), jika kosong pakai waktu import</td></tr>
                             </tbody>
                         </table>
 

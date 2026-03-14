@@ -650,7 +650,7 @@ class Importer extends AdminController
         if (!empty($submissionData['twitter_post_url']) || !empty($submissionData['video_title'])) {
             // Update status to 'review' if has submission
             $submissionData['status'] = 'review';
-            $submissionData['submitted_at'] = date('Y-m-d H:i:s');
+            $submissionData['submitted_at'] = !empty($row['submitted_at']) ? trim($row['submitted_at']) : date('Y-m-d H:i:s');
             
             $this->challengeModel->update($participant['id'], $submissionData);
             
@@ -679,6 +679,7 @@ class Importer extends AdminController
             'video_category',
             'video_description',
             'other_tools',
+            'submitted_at',
         ]) . "\n";
 
         // Add sample data
@@ -691,6 +692,7 @@ class Importer extends AdminController
             'Tutorial',
             'Tutorial lengkap menggunakan AI untuk pemula',
             'ChatGPT, Midjourney',
+            date('Y-m-d H:i:s'),
         ]) . "\n";
 
         return $this->response
