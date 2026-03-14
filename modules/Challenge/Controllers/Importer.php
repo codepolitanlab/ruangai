@@ -474,6 +474,26 @@ class Importer extends AdminController
     }
 
     /**
+     * Parse submitted_at from CSV format DD/MM/YYYY H:i:s to Y-m-d H:i:s
+     */
+    private function parseSubmittedAt($value)
+    {
+        $value = trim($value);
+        if (empty($value)) {
+            return date('Y-m-d H:i:s');
+        }
+
+        // Handle DD/MM/YYYY H:i:s format (e.g. 12/03/2026 9:30:27)
+        if (preg_match('#^(\d{1,2})/(\d{1,2})/(\d{4})\s+(\d{1,2}:\d{2}:\d{2})$#', $value, $m)) {
+            return sprintf('%s-%02d-%02d %s', $m[3], $m[2], $m[1], $m[4]);
+        }
+
+        // Fallback: try strtotime
+        $timestamp = strtotime($value);
+        return $timestamp !== false ? date('Y-m-d H:i:s', $timestamp) : date('Y-m-d H:i:s');
+    }
+
+    /**
      * Display submission upload form
      */
     public function submission()
@@ -650,7 +670,7 @@ class Importer extends AdminController
         if (!empty($submissionData['twitter_post_url']) || !empty($submissionData['video_title'])) {
             // Update status to 'review' if has submission
             $submissionData['status'] = 'review';
-            $submissionData['submitted_at'] = !empty($row['submitted_at']) ? trim($row['submitted_at']) : date('Y-m-d H:i:s');
+            $submissionData['submitted_at'] = $this->parseSubmittedAt($row['submitted_at'] ?? '');
             
             $this->challengeModel->update($participant['id'], $submissionData);
             

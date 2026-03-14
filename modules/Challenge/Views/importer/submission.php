@@ -112,7 +112,7 @@
 
                         <hr>
 
-                        <h6>Format Header CSV (Tab-separated):</h6>
+                        <h6>Format Header CSV (Tab-separateds):</h6>
                         <div class="bg-dark text-light rounded p-2 mb-2" style="font-size:11px; word-break:break-all;">
                             <code class="text-warning">email</code>
                             <code class="text-muted">&nbsp;&nbsp;[TAB]&nbsp;&nbsp;</code>
@@ -145,7 +145,7 @@
                                 <tr><td><code>video_category</code></td><td>Kategori video</td></tr>
                                 <tr><td><code>video_description</code></td><td>Deskripsi video</td></tr>
                                 <tr><td><code>other_tools</code></td><td>Tools AI lain yang digunakan</td></tr>
-                                <tr><td><code>submitted_at</code></td><td>Waktu submit (format: Y-m-d H:i:s), jika kosong pakai waktu import</td></tr>
+                                <tr><td><code>submitted_at</code></td><td>Waktu submit (format: <code>12/03/2026 9:30:27</code>), jika kosong pakai waktu import</td></tr>
                             </tbody>
                         </table>
 
