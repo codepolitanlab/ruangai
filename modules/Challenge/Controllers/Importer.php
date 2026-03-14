@@ -686,6 +686,22 @@ class Importer extends AdminController
             ->where('deleted_at', null)
             ->first();
 
+        // Fallback: cari via users table → user_id (jika email di challenge_alibaba null)
+        if (!$participant) {
+            $user = $this->userModel
+                ->where('email', $email)
+                ->where('deleted_at', null)
+                ->first();
+
+            if ($user) {
+                $participant = $this->challengeModel
+                    ->where('user_id', $user['id'])
+                    ->where('challenge_id', 'wan-vision-clash-2025')
+                    ->where('deleted_at', null)
+                    ->first();
+            }
+        }
+
         if (!$participant) {
             return ['status' => 'not_found'];
         }
