@@ -170,13 +170,48 @@ class CertificateModel extends Model
         $certPrefix = $config->certPrefix ?? 'CPJS';
 
         // Get certificate type prefix
-        $CertTemplate = \Certificate\Libraries\CertificateTemplateFactory::getTemplate($certificate['entity_type'] ?? 'default');
+        $CertTemplate = \Certificate\Libraries\CertificateTemplateFactory::getTemplate($certificate['template_name'] ?? 'default');
         $typePrefix   = $CertTemplate->getPrefix();
 
         $prefix = $certPrefix . '-' . strtoupper($typePrefix);
         $number = str_pad($certificate['cert_increment'], 4, '0', STR_PAD_LEFT);
 
         return "{$prefix}/{$year}/{$romanMonth}/{$number}";
+    }
+
+    /**
+     * Create general certificate (for backward compatibility, defaults to course certificate)
+     * Params: user_id, entity_type, entity_id, participant_name, title, template_name, additional_data, cert_claim_date
+     */
+    public function createCertificate(array $data): int
+    {
+        $certClaimDate     = $data['cert_claim_date'] ?? date('Y-m-d H:i:s');
+        $year              = date('Y', strtotime($certClaimDate));
+        $nextCertIncrement = $this->getNextCertIncrement($data['entity_type'], $year);
+
+        $certificateData = [
+            'cert_code'   => $this->generateUniqueCertCode(),
+            'cert_number' => $this->formatCertificateNumber([
+                'cert_claim_date' => $certClaimDate,
+                'template_name'   => $data['template_name'] ?? 'default',
+                'cert_increment'  => $nextCertIncrement,
+            ]),
+            'cert_increment'   => $nextCertIncrement,
+            'cert_claim_date'  => $certClaimDate,
+            'user_id'          => $data['user_id'],
+            'entity_type'      => $data['entity_type'],
+            'entity_id'        => $data['entity_id'],
+            'participant_name' => $data['participant_name'],
+            'title'            => $data['title'],
+            'template_name'    => $data['template_name'] ?? 'default',
+            'additional_data'  => ($data['additional_data'] ?? null) ? json_encode($data['additional_data']) : null,
+        ];
+
+        if(! $certificateData['additional_data']) {
+            unset($certificateData['additional_data']);
+        }
+
+        return $this->insert($certificateData);
     }
 
     /**
@@ -203,69 +238,13 @@ class CertificateModel extends Model
             'participant_name' => $data['participant_name'],
             'title'            => $data['course_title'],
             'template_name'    => $data['template_name'] ?? 'default',
-            'additional_data'  => json_encode($data['additional_data'] ?? []),
+            'additional_data'  => ($data['additional_data'] ?? null) ? json_encode($data['additional_data']) : null,
         ];
+        if(empty($certificateData['additional_data'])) {
+            unset($certificateData['additional_data']);
+        }
 
         return $this->insert($certificateData);
     }
 
-    /**
-     * Create certificate for training completion
-     */
-    public function createTrainingCertificate(array $data): int
-    {
-        $certClaimDate     = $data['cert_claim_date'] ?? date('Y-m-d H:i:s');
-        $year              = date('Y', strtotime($certClaimDate));
-        $nextCertIncrement = $this->getNextCertIncrement('course', $year);
-
-        $certificateData = [
-            'cert_code'   => $this->generateUniqueCertCode(),
-            'cert_number' => $this->formatCertificateNumber([
-                'cert_claim_date' => $certClaimDate,
-                'entity_type'     => 'training',
-                'cert_increment'  => $nextCertIncrement,
-            ]),
-            'cert_increment'   => $this->getNextCertIncrement('training', $year),
-            'cert_claim_date'  => $certClaimDate,
-            'user_id'          => $data['user_id'],
-            'entity_type'      => 'training',
-            'entity_id'        => $data['training_id'],
-            'participant_name' => $data['participant_name'],
-            'title'            => $data['training_title'],
-            'template_name'    => $data['template_name'] ?? 'training',
-            'additional_data'  => json_encode($data['additional_data'] ?? []),
-        ];
-
-        return $this->insert($certificateData);
-    }
-
-    /**
-     * Create certificate for event participation
-     */
-    public function createEventCertificate(array $data): int
-    {
-        $certClaimDate     = $data['cert_claim_date'] ?? date('Y-m-d H:i:s');
-        $year              = date('Y', strtotime($certClaimDate));
-        $nextCertIncrement = $this->getNextCertIncrement('event', $year);
-
-        $certificateData = [
-            'cert_code'   => $this->generateUniqueCertCode(),
-            'cert_number' => $this->formatCertificateNumber([
-                'cert_claim_date' => $certClaimDate,
-                'entity_type'     => 'event',
-                'cert_increment'  => $nextCertIncrement,
-            ]),
-            'cert_increment'   => $nextCertIncrement,
-            'cert_claim_date'  => $certClaimDate,
-            'user_id'          => $data['user_id'],
-            'entity_type'      => 'event',
-            'entity_id'        => $data['event_id'],
-            'participant_name' => $data['participant_name'],
-            'title'            => $data['event_title'],
-            'template_name'    => $data['template_name'] ?? 'event',
-            'additional_data'  => json_encode($data['additional_data'] ?? []),
-        ];
-
-        return $this->insert($certificateData);
-    }
 }

@@ -36,7 +36,7 @@ Modul manajemen event untuk RuangAI dengan dukungan event online, offline, dan h
 
 ## 🗄️ Struktur Database
 
-### Table: `events`
+### Table: `scholarship_events`
 ```sql
 - id (INT, PK, AUTO_INCREMENT)
 - title (VARCHAR 255) - Judul event

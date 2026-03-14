@@ -31,11 +31,11 @@ class Events extends Migration
 
         $this->forge->addKey('id', true);
         $this->forge->addUniqueKey('slug');
-        $this->forge->createTable('events', true);
+        $this->forge->createTable('scholarship_events', true);
     }
 
     public function down()
     {
-        $this->forge->dropTable('events');
+        $this->forge->dropTable('scholarship_events');
     }
 }

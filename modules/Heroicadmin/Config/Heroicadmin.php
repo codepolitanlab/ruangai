@@ -29,6 +29,12 @@ class Heroicadmin extends BaseConfig
             'url' => 'challenge/submissions'
         ],
         [
+            'label' => 'Certificate',
+            'icon' => 'bi bi-award',
+            'module' => 'certificate',
+            'url' => 'certificates'
+        ],
+        [
             'label'    => 'User Management',
             'icon'     => 'bi bi-lock-fill',
             'url'      => '#',

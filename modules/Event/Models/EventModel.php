@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class EventModel extends Model
 {
-    protected $table = 'events';
+    protected $table = 'scholarship_events';
     protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
@@ -58,7 +58,7 @@ class EventModel extends Model
     // Validation
     protected $validationRules = [
         'title' => 'required|min_length[5]|max_length[255]',
-        'slug' => 'permit_empty|alpha_dash|max_length[255]|is_unique[events.slug,id,{id}]',
+        'slug' => 'permit_empty|alpha_dash|max_length[255]|is_unique[scholarship_events.slug,id,{id}]',
         'event_type' => 'required|in_list[online,offline,hybrid]',
         'start_date' => 'required|valid_date',
         'end_date' => 'required|valid_date',
@@ -107,29 +107,29 @@ class EventModel extends Model
     public function getEventsWithParticipantCount($filters = [])
     {
         $builder = $this->builder();
-        $builder->select('events.*, COUNT(event_participants.id) as participant_count');
-        $builder->join('event_participants', 'event_participants.event_id = events.id', 'left');
-        $builder->groupBy('events.id');
+        $builder->select('scholarship_events.*, COUNT(event_participants.id) as participant_count');
+        $builder->join('event_participants', 'event_participants.event_id = scholarship_events.id', 'left');
+        $builder->groupBy('scholarship_events.id');
 
         // Apply filters
         if (!empty($filters['event_type'])) {
-            $builder->where('events.event_type', $filters['event_type']);
+            $builder->where('scholarship_events.event_type', $filters['event_type']);
         }
         if (!empty($filters['category'])) {
-            $builder->where('events.category', $filters['category']);
+            $builder->where('scholarship_events.category', $filters['category']);
         }
         if (!empty($filters['status'])) {
-            $builder->where('events.status', $filters['status']);
+            $builder->where('scholarship_events.status', $filters['status']);
         }
         if (!empty($filters['search'])) {
             $builder->groupStart()
-                ->like('events.title', $filters['search'])
-                ->orLike('events.description', $filters['search'])
-                ->orLike('events.organizer_name', $filters['search'])
+                ->like('scholarship_events.title', $filters['search'])
+                ->orLike('scholarship_events.description', $filters['search'])
+                ->orLike('scholarship_events.organizer_name', $filters['search'])
                 ->groupEnd();
         }
 
-        $builder->orderBy('events.start_date', 'DESC');
+        $builder->orderBy('scholarship_events.start_date', 'DESC');
         return $builder->get()->getResultArray();
     }
 

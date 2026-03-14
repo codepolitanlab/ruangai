@@ -23,7 +23,7 @@ class Events extends AdminController
             base_url: /scholarship/events
             description: Events
             icon: people
-            table: events
+            table: scholarship_events
             show_on_table: [ title, slug, code, description, date_start, date_end, quota, total_participant, organizer, telegram_link, status, publish_at, is_featured, banner_image]
             hideable: [ title, slug, code, description, date_start, date_end, quota, total_participant, organizer, telegram_link, status, publish_at, is_featured, banner_image]
             searchable: [ title, slug, code, description, date_start, date_end, quota, total_participant, organizer, telegram_link, status, publish_at, is_featured, banner_image]

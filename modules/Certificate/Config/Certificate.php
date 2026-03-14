@@ -15,8 +15,6 @@ class Certificate extends BaseConfig
     // Certificate type
     public $certificateTypes = [
         'course' => 'Course',
-        'training'  => 'Training',
-        'workshop'  => 'Workshop',
         'challenge' => 'Challenge',
         'event' => 'Event',
     ];
@@ -26,9 +24,10 @@ class Certificate extends BaseConfig
 
     // Available templates
     public $availableTemplates = [
-        'default'  => \Certificate\Libraries\DefaultCertificateTemplate::class,
-        'comentor' => \Certificate\Libraries\ComentorCertificateTemplate::class,
-        'workshop_avpn' => \Certificate\Libraries\WorkshopAVPNCertificateTemplate::class,
+        'default'              => \Certificate\Libraries\DefaultCertificateTemplate::class,
+        'comentor'             => \Certificate\Libraries\ComentorCertificateTemplate::class,
+        'workshop_avpn'        => \Certificate\Libraries\WorkshopAVPNCertificateTemplate::class,
+        'workshop_genai_untar' => \Certificate\Libraries\WorkshopGenAIUntarTemplate::class,
         // Add more templates here as needed
     ];
 }

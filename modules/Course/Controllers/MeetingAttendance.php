@@ -34,7 +34,7 @@ class MeetingAttendance extends AdminController
         $db = \Config\Database::connect();
         
         // Get ongoing event code
-        $ongoingEvent = $db->table('events')
+        $ongoingEvent = $db->table('scholarship_events')
             ->select('code')
             ->where('status', 'ongoing')
             ->get()

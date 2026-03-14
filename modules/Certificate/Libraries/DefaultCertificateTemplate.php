@@ -16,7 +16,7 @@ class DefaultCertificateTemplate extends CertificateTemplate
 
     public function getDescription(): string
     {
-        return 'Template sertifikat default untuk course';
+        return 'Course RuangAI';
     }
 
     public function getConfig(): array
