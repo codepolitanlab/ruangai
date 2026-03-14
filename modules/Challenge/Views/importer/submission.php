@@ -45,6 +45,15 @@
                             </div>
                         <?php endif; ?>
 
+                        <?php if (session()->get('submission_report_file')): ?>
+                            <div class="alert alert-secondary d-flex align-items-center justify-content-between" role="alert">
+                                <span><i class="bi bi-file-earmark-arrow-down"></i> Laporan lengkap import tersedia — kolom <code>sync_status</code>: <code>updated</code> / <code>not_found</code> / <code>failed</code></span>
+                                <a href="<?= site_url('ruangpanel/challenge/importer/download-notfound-report') ?>" class="btn btn-sm btn-dark ms-3 text-nowrap">
+                                    <i class="bi bi-download"></i> Download Laporan
+                                </a>
+                            </div>
+                        <?php endif; ?>
+
                         <?php if (session()->getFlashdata('error')): ?>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 <?= session()->getFlashdata('error') ?>

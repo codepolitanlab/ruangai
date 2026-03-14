@@ -548,7 +548,58 @@ class Importer extends AdminController
             }
         }
 
+        // Write full report CSV for download
+        $filename = 'submission_report_' . date('Ymd_His') . '_' . uniqid() . '.csv';
+        $this->writeReportCsv(WRITEPATH . 'uploads/' . $filename, $result['report_rows']);
+        session()->set('submission_report_file', $filename);
+
         return redirect()->back()->with($result['failed_rows'] > 0 ? 'warning' : 'success', $message);
+    }
+
+    /**
+     * Write all report rows to a CSV file with a sync_status column
+     */
+    private function writeReportCsv(string $path, array $rows): void
+    {
+        if (empty($rows)) {
+            return;
+        }
+        $handle = fopen($path, 'w');
+        if (!$handle) {
+            return;
+        }
+        fputcsv($handle, array_keys($rows[0]), "\t");
+        foreach ($rows as $row) {
+            fputcsv($handle, $row, "\t");
+        }
+        fclose($handle);
+    }
+
+    /**
+     * Download the full submission import report CSV
+     */
+    public function downloadNotFoundReport()
+    {
+        $filename = session()->get('submission_report_file');
+
+        if (empty($filename)) {
+            return redirect()->back()->with('error', 'Tidak ada laporan import yang tersedia.');
+        }
+
+        // Sanitize: only allow safe filenames (no path traversal)
+        $filename = basename($filename);
+        $filepath = WRITEPATH . 'uploads/' . $filename;
+
+        if (!file_exists($filepath)) {
+            return redirect()->back()->with('error', 'File laporan tidak ditemukan.');
+        }
+
+        session()->remove('submission_report_file');
+
+        return $this->response
+            ->setHeader('Content-Type', 'text/csv')
+            ->setHeader('Content-Disposition', 'attachment; filename="submission_import_report.csv"')
+            ->setBody(file_get_contents($filepath));
     }
 
     /**
@@ -562,15 +613,18 @@ class Importer extends AdminController
             'not_found'   => 0,
             'failed_rows' => 0,
             'errors'      => [],
+            'report_rows' => [],
         ];
 
         foreach ($csvData as $index => $row) {
             $rowNumber = $index + 2;
+            $rowStatus = 'failed';
             
             try {
                 $this->db->transStart();
 
                 $result = $this->processSubmissionRow($row);
+                $rowStatus = $result['status'];
                 
                 if ($result['status'] === 'updated') {
                     $stats['updated']++;
@@ -585,6 +639,7 @@ class Importer extends AdminController
                 }
 
             } catch (\Exception $e) {
+                $rowStatus = 'failed';
                 $stats['failed_rows']++;
                 $stats['errors'][] = "Baris {$rowNumber} ({$row['email']}): " . $e->getMessage();
                 
@@ -594,6 +649,8 @@ class Importer extends AdminController
 
                 log_message('error', "Submission Import Error - Row {$rowNumber}: " . $e->getMessage());
             }
+
+            $stats['report_rows'][] = array_merge($row, ['sync_status' => $rowStatus]);
         }
 
         log_message('info', sprintf(
