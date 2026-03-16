@@ -262,7 +262,7 @@ class CreateEventTables extends Migration
         $this->forge->addKey('id', true);
         $this->forge->addKey(['event_id', 'user_id']);
         $this->forge->addKey('attendance_status');
-        $this->forge->addForeignKey('event_id', 'scholarship_events', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('event_id', 'events', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('certificate_id', 'certificates', 'id', 'SET NULL', 'CASCADE');
         $this->forge->createTable('event_participants');
@@ -330,7 +330,7 @@ class CreateEventTables extends Migration
         $this->forge->addKey('id', true);
         $this->forge->addKey('event_id');
         $this->forge->addKey('session_order');
-        $this->forge->addForeignKey('event_id', 'scholarship_events', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('event_id', 'events', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('event_sessions');
     }
 
