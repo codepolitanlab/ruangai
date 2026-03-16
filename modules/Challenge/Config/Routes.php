@@ -25,5 +25,6 @@ $routes->group(
         $routes->get('importer/submission', 'Importer::submission');
         $routes->post('importer/process-submission', 'Importer::processSubmission');
         $routes->get('importer/download-submission-template', 'Importer::downloadSubmissionTemplate');
+        $routes->get('importer/download-notfound-report', 'Importer::downloadNotFoundReport');
     }
 );

@@ -45,6 +45,15 @@
                             </div>
                         <?php endif; ?>
 
+                        <?php if (session()->get('submission_report_file')): ?>
+                            <div class="alert alert-secondary d-flex align-items-center justify-content-between" role="alert">
+                                <span><i class="bi bi-file-earmark-arrow-down"></i> Laporan lengkap import tersedia — kolom <code>sync_status</code>: <code>updated</code> / <code>not_found</code> / <code>failed</code></span>
+                                <a href="<?= site_url('ruangpanel/challenge/importer/download-notfound-report') ?>" class="btn btn-sm btn-dark ms-3 text-nowrap">
+                                    <i class="bi bi-download"></i> Download Laporan
+                                </a>
+                            </div>
+                        <?php endif; ?>
+
                         <?php if (session()->getFlashdata('error')): ?>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 <?= session()->getFlashdata('error') ?>
@@ -112,7 +121,7 @@
 
                         <hr>
 
-                        <h6>Format Header CSV (Tab-separated):</h6>
+                        <h6>Format Header CSV (Tab-separateds):</h6>
                         <div class="bg-dark text-light rounded p-2 mb-2" style="font-size:11px; word-break:break-all;">
                             <code class="text-warning">email</code>
                             <code class="text-muted">&nbsp;&nbsp;[TAB]&nbsp;&nbsp;</code>
@@ -129,6 +138,8 @@
                             <code class="text-warning">video_description</code>
                             <code class="text-muted">&nbsp;&nbsp;[TAB]&nbsp;&nbsp;</code>
                             <code class="text-warning">other_tools</code>
+                            <code class="text-muted">&nbsp;&nbsp;[TAB]&nbsp;&nbsp;</code>
+                            <code class="text-warning">submitted_at</code>
                         </div>
                         <table class="table table-sm table-bordered small">
                             <thead class="table-dark">
@@ -143,6 +154,7 @@
                                 <tr><td><code>video_category</code></td><td>Kategori video</td></tr>
                                 <tr><td><code>video_description</code></td><td>Deskripsi video</td></tr>
                                 <tr><td><code>other_tools</code></td><td>Tools AI lain yang digunakan</td></tr>
+                                <tr><td><code>submitted_at</code></td><td>Waktu submit (format: <code>12/03/2026 9:30:27</code>), jika kosong pakai waktu import</td></tr>
                             </tbody>
                         </table>
 
