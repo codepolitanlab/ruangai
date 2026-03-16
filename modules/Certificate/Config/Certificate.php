@@ -28,6 +28,8 @@ class Certificate extends BaseConfig
         'comentor'             => \Certificate\Libraries\ComentorCertificateTemplate::class,
         'workshop_avpn'        => \Certificate\Libraries\WorkshopAVPNCertificateTemplate::class,
         'workshop_genai_untar' => \Certificate\Libraries\WorkshopGenAIUntarTemplate::class,
+        'workshop_genai_aptiknas' => \Certificate\Libraries\WorkshopGenAIAptiknasTemplate::class,
+        'workshop_genai_teladan_rasul' => \Certificate\Libraries\WorkshopGenAITeladanRasulTemplate::class,
         // Add more templates here as needed
     ];
 }
