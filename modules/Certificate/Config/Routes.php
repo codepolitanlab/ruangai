@@ -10,7 +10,6 @@ $routes->group(
     $routes->get('create', 'CertificateController::create');
     $routes->get('generate', 'CertificateController::generate');
     $routes->post('generate', 'CertificateController::doGenerate');
-    $routes->get('download-failed-emails', 'CertificateController::downloadFailedEmails');
     $routes->post('store', 'CertificateController::store');
     $routes->get('edit/(:num)', 'CertificateController::edit/$1');
     $routes->post('update/(:num)', 'CertificateController::update/$1');

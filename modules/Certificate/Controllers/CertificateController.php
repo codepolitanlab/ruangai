@@ -431,38 +431,4 @@ class CertificateController extends AdminController
         
         return $result;
     }
-
-    /**
-     * Download failed emails as CSV
-     */
-    public function downloadFailedEmails()
-    {
-        $failedEmails = session()->getFlashdata('failed_emails');
-        
-        if (!$failedEmails || empty($failedEmails)) {
-            return redirect()->to(admin_url() . 'certificates/generate')
-                ->with('error', 'Tidak ada data email yang gagal untuk diunduh');
-        }
-
-        // Generate CSV content
-        $filename = 'failed-emails-' . date('Y-m-d-His') . '.csv';
-        
-        header('Content-Type: text/csv');
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
-        header('Pragma: no-cache');
-        header('Expires: 0');
-        
-        $output = fopen('php://output', 'w');
-        
-        // Header CSV
-        fputcsv($output, ['Email', 'Tanggal Generate']);
-        
-        // Data rows
-        foreach ($failedEmails as $email) {
-            fputcsv($output, [$email, date('Y-m-d H:i:s')]);
-        }
-        
-        fclose($output);
-        exit;
-    }
 }
