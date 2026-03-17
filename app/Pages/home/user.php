@@ -97,11 +97,7 @@
                 <img :src="data?.user?.avatar && data?.user?.avatar != '' ? data?.user?.avatar : `https://ui-avatars.com/api/?name=${data?.name ?? 'El'}&background=79B2CD&color=FFF`" alt="avatar" class="imaged w48 rounded-circle">
             </div>
             <div>
-<<<<<<< HEAD
                 <h4 class="mb-0 text-muted fw-normal">Selamat belajar,</h4>
-=======
-                <h4 class="mb-0 text-muted fw-normal">Selamat Pembelajar,</h4>
->>>>>>> newbeasiswa
                 <h5 class="mb-0" x-text="data?.name"></h5>
             </div>
         </div>
