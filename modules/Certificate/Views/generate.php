@@ -42,6 +42,44 @@
                         </div>
                     <?php endif; ?>
 
+                    <?php $failedEmails = session()->getFlashdata('failed_emails'); ?>
+                    <?php if ($failedEmails && !empty($failedEmails)): ?>
+                        <?php if (count($failedEmails) > 10): ?>
+                            <!-- Jika lebih dari 10, tampilkan tombol download CSV -->
+                            <div class="alert alert-info d-flex justify-content-between align-items-center mb-4" role="alert">
+                                <div>
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <strong><?= count($failedEmails) ?> email gagal/dilewati.</strong> 
+                                    Unduh CSV untuk melihat daftar lengkap email yang perlu ditindaklanjuti.
+                                </div>
+                                <a href="<?= admin_url() ?>certificates/download-failed-emails" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-download me-1"></i> Unduh CSV
+                                </a>
+                            </div>
+                        <?php else: ?>
+                            <!-- Jika 10 atau kurang, tampilkan langsung di halaman -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-danger text-white">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        Email yang Gagal/Dilewati (<?= count($failedEmails) ?>)
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <p class="mb-2"><strong>Daftar email untuk ditindaklanjuti:</strong></p>
+                                    <ul class="list-unstyled mb-0">
+                                        <?php foreach ($failedEmails as $email): ?>
+                                            <li class="mb-1">
+                                                <i class="fas fa-envelope text-danger me-2"></i>
+                                                <code><?= esc($email) ?></code>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    <?php endif; ?>
+
                     <?php $results = session()->getFlashdata('generate_results'); ?>
                     <?php if ($results): ?>
                         <div class="card mb-4">

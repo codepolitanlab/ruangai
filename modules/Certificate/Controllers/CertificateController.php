@@ -146,6 +146,7 @@ class CertificateController extends AdminController
         $results  = [];
         $success  = 0;
         $failed   = 0;
+        $failedEmails = []; // Array untuk menyimpan email yang gagal
 
         foreach ($emails as $email) {
             // Find user by email
@@ -157,6 +158,7 @@ class CertificateController extends AdminController
 
             if (!$user) {
                 $results[] = ['email' => $email, 'status' => 'failed', 'message' => 'User tidak ditemukan'];
+                $failedEmails[] = $email;
                 $failed++;
                 continue;
             }
@@ -170,6 +172,7 @@ class CertificateController extends AdminController
 
             if ($exists) {
                 $results[] = ['email' => $email, 'status' => 'skipped', 'message' => 'Sertifikat sudah ada (' . $exists['cert_code'] . ')'];
+                $failedEmails[] = $email;
                 $failed++;
                 continue;
             }
@@ -195,6 +198,7 @@ class CertificateController extends AdminController
                 $success++;
             } else {
                 $results[] = ['email' => $email, 'status' => 'failed', 'message' => 'Gagal menyimpan sertifikat'];
+                $failedEmails[] = $email;
                 $failed++;
             }
         }
@@ -205,6 +209,7 @@ class CertificateController extends AdminController
             'success' => $success,
             'failed'  => $failed,
         ]);
+        session()->setFlashdata('failed_emails', $failedEmails);
 
         return redirect()->to(admin_url() . 'certificates/generate')->withInput();
     }
@@ -425,5 +430,39 @@ class CertificateController extends AdminController
         }
         
         return $result;
+    }
+
+    /**
+     * Download failed emails as CSV
+     */
+    public function downloadFailedEmails()
+    {
+        $failedEmails = session()->getFlashdata('failed_emails');
+        
+        if (!$failedEmails || empty($failedEmails)) {
+            return redirect()->to(admin_url() . 'certificates/generate')
+                ->with('error', 'Tidak ada data email yang gagal untuk diunduh');
+        }
+
+        // Generate CSV content
+        $filename = 'failed-emails-' . date('Y-m-d-His') . '.csv';
+        
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+        
+        $output = fopen('php://output', 'w');
+        
+        // Header CSV
+        fputcsv($output, ['Email', 'Tanggal Generate']);
+        
+        // Data rows
+        foreach ($failedEmails as $email) {
+            fputcsv($output, [$email, date('Y-m-d H:i:s')]);
+        }
+        
+        fclose($output);
+        exit;
     }
 }
