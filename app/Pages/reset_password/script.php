@@ -18,6 +18,13 @@
 
             this.logo = Alpine.store('core').settings.auth_logo
 
+            // Prefill email from query params
+            const urlParams = new URLSearchParams(window.location.search);
+            const emailParam = urlParams.get('email');
+            if (emailParam) {
+                this.model.email = emailParam;
+            }
+
             // Call google recaptcha
             this.recaptchaWidget = grecaptcha.render('grecaptcha', {
                 'sitekey' : recaptchaSiteKey
