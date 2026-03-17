@@ -48,8 +48,8 @@
             <div class="card-body d-flex gap-3">
                 <i class="bi bi-stopwatch-fill text-white display-3"></i>
                 <div>
-                    <h4 class="text-white">Program Belajar Chapter 3 Sudah Ditutup</h4>
-                    <p class="mb-3 text-white">Pendaftaran untuk Chapter 3 telah ditutup. Nantikan informasi untuk chapter berikutnya.</p>
+                    <h4 class="text-white">Program Belajar Chapter 4 Sudah Ditutup</h4>
+                    <p class="mb-3 text-white">Pendaftaran untuk Chapter 4 telah ditutup. Nantikan informasi untuk chapter berikutnya.</p>
                 </div>
             </div>
         </div>

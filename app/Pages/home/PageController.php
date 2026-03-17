@@ -76,7 +76,7 @@ class PageController extends BaseController
             ->getRowArray();
 
         // Safe null handling untuk user kompetisi
-        $this->data['event'] = $db->table('events')
+        $this->data['event'] = $db->table('scholarship_events')
             ->select('date_start, date_end, code')
             ->where('status', 'ongoing')
             ->get()

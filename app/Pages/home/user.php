@@ -97,7 +97,11 @@
                 <img :src="data?.user?.avatar && data?.user?.avatar != '' ? data?.user?.avatar : `https://ui-avatars.com/api/?name=${data?.name ?? 'El'}&background=79B2CD&color=FFF`" alt="avatar" class="imaged w48 rounded-circle">
             </div>
             <div>
+<<<<<<< HEAD
                 <h4 class="mb-0 text-muted fw-normal">Selamat belajar,</h4>
+=======
+                <h4 class="mb-0 text-muted fw-normal">Selamat Pembelajar,</h4>
+>>>>>>> newbeasiswa
                 <h5 class="mb-0" x-text="data?.name"></h5>
             </div>
         </div>
@@ -141,16 +145,16 @@
     </div>
 
     <!-- Show Expire Alert -->
-    <template x-if="data?.is_scholarship_participant && (data.is_expire || !data?.student?.graduate) && data?.student?.program !== data?.event?.code">
+    <template x-if="data?.is_scholarship_participant && (data.is_expire || !data?.student?.graduate) && data?.student?.program !== data?.event?.code && data?.student?.program !== 'RuangAI2026WSGenAI'">
         <div class="card bg-secondary rounded-4 mb-3 shadow-none">
             <div class="card-body d-flex gap-3">
                 <i class="bi bi-stopwatch-fill text-white display-3"></i>
                 <div>
-                    <h4 class="text-white">Program Belajar Chapter 3 Sudah Ditutup</h4>
-                    <p class="mb-3 text-white">Pendaftaran untuk Chapter 3 telah ditutup. Nantikan informasi untuk chapter berikutnya.</p>
-                    <button @click="heregister()" class="btn btn-warning rounded-pill">
+                    <h4 class="text-white">Program Belajar Chapter 4 Sudah Ditutup</h4>
+                    <p class="mb-3 text-white">Pendaftaran untuk Chapter 4 telah ditutup. Nantikan informasi untuk chapter berikutnya.</p>
+                    <!-- <button @click="heregister()" class="btn btn-warning rounded-pill">
                         <i class="bi bi-arrow-repeat"></i> Daftar Ulang
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>

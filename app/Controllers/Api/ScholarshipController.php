@@ -91,7 +91,7 @@ class ScholarshipController extends ResourceController
             }
 
             // Add this user to active program
-            $activeProgram = $this->db->table('events')
+            $activeProgram = $this->db->table('scholarship_events')
                 ->select('code')
                 ->where('status', 'ongoing')
                 ->get()
@@ -237,8 +237,8 @@ class ScholarshipController extends ResourceController
         $Heroic           = new \App\Libraries\Heroic();
 
         $leader = $participantModel
-            ->select('scholarship_participants.*, events.title as program_title, events.telegram_link, events.date_start')
-            ->join('events', 'events.code = scholarship_participants.program', 'left')
+            ->select('scholarship_participants.*, scholarship_events.title as program_title, scholarship_events.telegram_link, scholarship_events.date_start')
+            ->join('scholarship_events', 'scholarship_events.code = scholarship_participants.program', 'left')
             ->where('scholarship_participants.user_id', $jwt->user_id)
             ->where('scholarship_participants.deleted_at', null)
             ->orderBy('scholarship_participants.created_at', 'DESC')
@@ -351,7 +351,7 @@ class ScholarshipController extends ResourceController
             ->countAllResults();
 
         $db = \Config\Database::connect();
-        $activeProgram = $db->table('events')
+        $activeProgram = $db->table('scholarship_events')
                 ->select('code')
                 ->where('status', 'ongoing')
                 ->get()
@@ -527,8 +527,8 @@ class ScholarshipController extends ResourceController
     {
         $db = \Config\Database::connect();
 
-        // Default event status on going from events table
-        $activeProgram = $db->table('events')
+        // Default event status on going from scholarship_events table
+        $activeProgram = $db->table('scholarship_events')
                 ->select('code')
                 ->where('status', 'ongoing')
                 ->get()

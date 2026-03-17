@@ -56,7 +56,15 @@
                         </button>
                         <a :href="`/courses/feedback/${attended.meeting_code}`" class="fw-bold ms-2 btn btn-sm btn-outline-primary">Isi Feedback</a>
                     </p>
-            </div>
+                </div>
+                <div x-show="attended.status == 1 && attended.recording_link" class="mt-3">
+                    <a
+                        :href="`/courses/intro/${$params.course_id}/${$params.slug}/live_session/record/${attended.live_meeting_id}`"
+                        class="btn btn-sm btn-primary btn-sm rounded-3">
+                        <i class="bi bi-play-circle-fill"></i>
+                        Lihat Rekaman
+                    </a>
+                </div>
             </div>
         </div>
     </div>

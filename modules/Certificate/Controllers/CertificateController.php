@@ -16,6 +16,8 @@ class CertificateController extends AdminController
         $this->db = \Config\Database::connect();
 
         $this->data['page_title'] = 'Kelola Sertifikat';
+        $this->data['module']     = 'certificate';
+        $this->data['submodule']  = 'certificate';
     }
 
     /**
@@ -92,6 +94,124 @@ class CertificateController extends AdminController
         return view('Certificate\Views\create', $this->data);
     }
 
+    public function generate()
+    {
+        $data = [
+            'title'        => 'Generate Sertifikat',
+            'entity_types' => $this->getEntityTypes(),
+            'templates'    => $this->getTemplates(),
+        ];
+
+        $this->data = array_merge($this->data, $data);
+        return view('Certificate\Views\generate', $this->data);
+    }
+
+    public function doGenerate()
+    {
+        $rules = [
+            'entity_type'   => 'required',
+            'entity_id'     => 'required|integer',
+            'template_name' => 'required',
+            'title'         => 'required|max_length[500]',
+            'emails'        => 'required',
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $entityType    = $this->request->getPost('entity_type');
+        $entityId      = (int) $this->request->getPost('entity_id');
+        $templateName  = $this->request->getPost('template_name');
+        $title         = $this->request->getPost('title');
+        $emailsRaw     = $this->request->getPost('emails');
+        $certClaimDate = date('Y-m-d H:i:s');
+
+        // Validate template exists
+        $templateLibrary = new \Certificate\Libraries\CertificateTemplateLibrary();
+        if (!$templateLibrary->hasTemplate($templateName)) {
+            return redirect()->back()->withInput()->with('error', 'Template tidak ditemukan');
+        }
+
+        // Parse email list
+        $emails = array_filter(
+            array_map('trim', preg_split('/[\r\n,]+/', $emailsRaw)),
+            fn($e) => $e !== ''
+        );
+
+        if (empty($emails)) {
+            return redirect()->back()->withInput()->with('error', 'Tidak ada email yang valid');
+        }
+
+        $results  = [];
+        $success  = 0;
+        $failed   = 0;
+        $notFoundEmails = []; // Array untuk menyimpan email yang user not found
+
+        foreach ($emails as $email) {
+            // Find user by email
+            $user = $this->db->table('users')
+                ->select('id, name')
+                ->where('email', $email)
+                ->get()
+                ->getRowArray();
+
+            if (!$user) {
+                $results[] = ['email' => $email, 'status' => 'failed', 'message' => 'User tidak ditemukan'];
+                $notFoundEmails[] = $email; // Hanya simpan yang not found
+                $failed++;
+                continue;
+            }
+
+            // Check for duplicate certificate
+            $exists = $this->certificateModel
+                ->where('user_id', $user['id'])
+                ->where('entity_type', $entityType)
+                ->where('entity_id', $entityId)
+                ->first();
+
+            if ($exists) {
+                $results[] = ['email' => $email, 'status' => 'skipped', 'message' => 'Sertifikat sudah ada (' . $exists['cert_code'] . ')'];
+                $failed++;
+                continue;
+            }
+
+            $year              = date('Y');
+            $nextCertIncrement = $this->certificateModel->getNextCertIncrement($entityType, $year);
+
+            $certificateData = [
+                'cert_increment'  => $nextCertIncrement,
+                'cert_claim_date' => $certClaimDate,
+                'user_id'         => $user['id'],
+                'entity_type'     => $entityType,
+                'entity_id'       => $entityId,
+                'participant_name' => $user['name'],
+                'title'           => $title,
+                'template_name'   => $templateName,
+                'additional_data' => [],
+                'is_active'       => 1,
+            ];
+
+            if ($this->certificateModel->createCertificate($certificateData)) {
+                $results[] = ['email' => $email, 'status' => 'success', 'message' => 'Sertifikat berhasil dibuat untuk ' . esc($user['name'])];
+                $success++;
+            } else {
+                $results[] = ['email' => $email, 'status' => 'failed', 'message' => 'Gagal menyimpan sertifikat'];
+                $failed++;
+            }
+        }
+
+        session()->setFlashdata('generate_results', $results);
+        session()->setFlashdata('generate_summary', [
+            'total'   => count($emails),
+            'success' => $success,
+            'failed'  => $failed,
+        ]);
+        session()->setFlashdata('not_found_emails', $notFoundEmails);
+
+        return redirect()->to(admin_url() . 'certificates/generate')->withInput();
+    }
+
     /**
      * Store new certificate
      */
@@ -132,7 +252,7 @@ class CertificateController extends AdminController
             'is_active' => $this->request->getPost('is_active') ? 1 : 0,
         ];
 
-        if ($this->certificateModel->insert($data)) {
+        if ($this->certificateModel->createCertificate($data)) {
             return redirect()->to('/admin/certificates')->with('success', 'Sertifikat berhasil dibuat');
         }
 

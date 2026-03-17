@@ -8,7 +8,7 @@ class AddColumnTelegramLinkEvents extends Migration
 {
     public function up()
     {
-        $this->forge->addColumn('events', [
+        $this->forge->addColumn('scholarship_events', [
             'telegram_link' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '255',
@@ -21,6 +21,6 @@ class AddColumnTelegramLinkEvents extends Migration
 
     public function down()
     {
-        $this->forge->dropColumn('events', ['telegram_link']);
+        $this->forge->dropColumn('scholarship_events', ['telegram_link']);
     }
 }

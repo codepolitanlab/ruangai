@@ -46,6 +46,7 @@ class FormBuilder
 
             $type  = $field['type'] ?? 'text';
             $class = $this->resolveFieldClass($type);
+            // if($type == 'url') dd($class);
 
             if (! class_exists($class)) {
                 throw new RuntimeException("Field type '{$type}' not found for field '{$field['name']}'. \nMake sure the class exists: {$class}");

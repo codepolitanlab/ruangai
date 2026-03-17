@@ -77,7 +77,7 @@ fields:
 
   start_date:
     name: start_date
-    type: datetime-local
+    type: datetime
     label: Tanggal Mulai
     description: Waktu mulai event
     rules: required|valid_date
@@ -86,7 +86,7 @@ fields:
 
   end_date:
     name: end_date
-    type: datetime-local
+    type: datetime
     label: Tanggal Selesai
     description: Waktu selesai event
     rules: required|valid_date
@@ -94,7 +94,7 @@ fields:
 
   registration_start:
     name: registration_start
-    type: datetime-local
+    type: datetime
     label: Buka Registrasi
     description: Waktu mulai pendaftaran
     rules: permit_empty|valid_date
@@ -102,7 +102,7 @@ fields:
 
   registration_end:
     name: registration_end
-    type: datetime-local
+    type: datetime
     label: Tutup Registrasi
     description: Waktu tutup pendaftaran
     rules: permit_empty|valid_date
@@ -251,7 +251,7 @@ fields:
 
   organizer_phone:
     name: organizer_phone
-    type: tel
+    type: phone
     label: Telepon Penyelenggara
     description: Nomor telepon penyelenggara
     rules: permit_empty|max_length[20]

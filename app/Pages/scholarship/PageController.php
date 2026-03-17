@@ -23,8 +23,8 @@ class PageController extends BaseController
         
         // Get user's scholarships from scholarship_participants
         $this->data['scholarships'] = $db->table('scholarship_participants')
-            ->select('scholarship_participants.*, events.title, events.date_start, events.date_end')
-            ->join('events', 'events.code = scholarship_participants.program', 'left')
+            ->select('scholarship_participants.*, scholarship_events.title, scholarship_events.date_start, scholarship_events.date_end')
+            ->join('scholarship_events', 'scholarship_events.code = scholarship_participants.program', 'left')
             ->where('scholarship_participants.user_id', $jwt->user_id)
             ->where('scholarship_participants.deleted_at', null)
             ->get()

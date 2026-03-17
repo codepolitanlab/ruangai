@@ -8,6 +8,8 @@ $routes->group(
     function ($routes) {
     $routes->get('/', 'CertificateController::index');
     $routes->get('create', 'CertificateController::create');
+    $routes->get('generate', 'CertificateController::generate');
+    $routes->post('generate', 'CertificateController::doGenerate');
     $routes->post('store', 'CertificateController::store');
     $routes->get('edit/(:num)', 'CertificateController::edit/$1');
     $routes->post('update/(:num)', 'CertificateController::update/$1');

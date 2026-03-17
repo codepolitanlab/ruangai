@@ -26,6 +26,9 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">All Submissions</h5>
                 <div>
+                    <a href="<?= site_url('ruangpanel/challenge/importer') ?>" class="btn btn-sm btn-primary me-2">
+                        <i class="bi bi-upload"></i> Import CSV
+                    </a>
                     <a href="<?= site_url('challenge/submissions/export') ?>" class="btn btn-sm btn-success">
                         <i class="bi bi-download"></i> Export CSV
                     </a>

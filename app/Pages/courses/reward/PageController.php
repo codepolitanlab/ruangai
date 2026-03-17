@@ -21,6 +21,7 @@ class PageController extends BaseController
 
         $this->data['premium_courses'] = $db->table('courses')
             ->where('id !=', 1)
+            ->where('status', 'published')
             ->where('deleted_at', null)
             ->get()
             ->getResult();

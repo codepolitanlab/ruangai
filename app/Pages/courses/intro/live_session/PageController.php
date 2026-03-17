@@ -34,7 +34,7 @@ class PageController extends BaseController
             ->select('live_meeting_id, live_meetings.meeting_code, live_meetings.title, 
             live_meetings.subtitle, live_meetings.theme_code, duration, meeting_feedback_id, 
             meeting_date, meeting_time, live_batch.name as batch_title, 
-            live_attendance.status, ADDTIME(meeting_time, SEC_TO_TIME(meeting_duration * 60)) AS meeting_end')
+            live_attendance.status, live_meetings.recording_link, ADDTIME(meeting_time, SEC_TO_TIME(meeting_duration * 60)) AS meeting_end')
             ->join('live_meetings', 'live_meetings.id = live_attendance.live_meeting_id')
             ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
             ->where('live_attendance.course_id', $course_id)
@@ -126,20 +126,23 @@ class PageController extends BaseController
             }
         }
 
-        $this->data['enable_live_recording'] = service('settings')->get('Course.enableLiveRecording');
+        $this->data['enable_live_recording'] = true;
 
         $this->data['attended']     = $attended;
         $this->data['attendedCode'] = $attendedCode ?? [];
 
         // Get course_students
         $this->data['student'] = $db->table('course_students')
-            ->select('course_students.progress, course_students.graduate, certificates.cert_claim_date, certificates.cert_code, course_students.expire_at')
+            ->select('course_students.progress, course_students.graduate, certificates.cert_claim_date, certificates.cert_code, course_students.expire_at, scholarship_participants.program')
             ->join('certificates', 'certificates.user_id = course_students.user_id AND certificates.entity_id = course_students.course_id', 'left')
+            ->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id', 'left')
             ->where('course_students.course_id', $course_id)
             ->where('course_students.user_id', $jwt->user_id)
             ->get()
             ->getRowArray();
-        $this->data['is_expire'] = $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false;
+        // Peserta RuangAI2026WSGenAI tidak pernah expire
+        $isWSGenAI = isset($this->data['student']['program']) && $this->data['student']['program'] === 'RuangAI2026WSGenAI';
+        $this->data['is_expire'] = $isWSGenAI ? false : ($this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false);
 
         // Check if user has already completed the course
         $completedLessons = $db->table('course_lessons')

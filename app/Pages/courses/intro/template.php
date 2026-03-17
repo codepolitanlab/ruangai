@@ -79,13 +79,13 @@
 			</div>
 
 			<!-- Show Expire Alert -->
-			<template x-if="data.is_expire">
+			<template x-if="data.is_expire && data?.student?.program !== 'RuangAI2026WSGenAI'">
 				<div class="card bg-secondary rounded-4 mb-3 shadow-none">
 					<div class="card-body d-flex gap-3">
 						<i class="bi bi-stopwatch-fill text-white display-3"></i>
 						<div>
-							<h4 class="text-white">Program Belajar Chapter 3 Sudah Ditutup</h4>
-							<p class="mb-3 text-white">Pendaftaran untuk Chapter 3 telah ditutup. Nantikan informasi untuk chapter berikutnya.</p>
+							<h4 class="text-white">Program Belajar Chapter 4 Sudah Ditutup</h4>
+							<p class="mb-3 text-white">Pendaftaran untuk Chapter 4 telah ditutup. Nantikan informasi untuk chapter berikutnya.</p>
 						</div>
 					</div>
 				</div>
@@ -206,7 +206,7 @@
 						:class="{'lesson-not-complete': Math.round(data.lesson_completed/data.total_lessons*100) < 100}">
 						<h4 class="mb-3">Progres Belajar</h4>
 
-						<div x-show="data?.is_expire">
+						<div x-show="data?.is_expire && data?.student?.program !== 'RuangAI2026WSGenAI'">
 							<div class="position-absolute d-flex align-items-center justify-content-center rounded-4 top-0 start-0 end-0 bottom-0" style="z-index: 100;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.5);">
 								<i class="bi bi-lock-fill text-white display-3"></i>
 							</div>
@@ -214,7 +214,7 @@
 
 						<div class="row">
 							<template x-if="data.course?.has_modules === '1'">
-								<div class="col-md-12 mb-3">
+								<div class="mb-3" :class="data.course?.id === '1' ? 'col-md-6' : 'col-md-12'">
 									<div id="card-progress-lesson"
 										class="card border-0 shadow-none rounded-4 p-3 d-flex flex-column justify-content-between position-relative"
 										:class="{'lesson-completed bg-success bg-opacity-50': Math.round(data.lesson_completed/data.total_lessons*100) == 100, 
@@ -224,10 +224,7 @@
 											<div class="me-3 bg-white text-dark rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
 												<i class="bi h3 m-0" :class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'bi-check-circle text-success' : 'bi-journal-text'"></i>
 											</div>
-											<div class="d-flex align-items-end gap-2 text-dark">
-												<h1 class="mb-0 display-6 fw-bold" x-text="data?.lesson_completed "></h1>
-												<p class="mb-1">dari <span x-text="data?.total_lessons"></span> modul selesai</p>
-											</div>
+											<h3 class="text-white">Modul Video</h3>
 										</div>
 										<div class="d-flex align-items-center">
 											<div class="progress flex-grow-1 me-2 " style="height: 5px;">
@@ -237,8 +234,29 @@
 										</div>
 										<a href="javascript:void(0)"
 											@click.prevent="navigateToTargetLesson()"
-											class="btn btn-primary hover rounded-pill p-1 fs-6">Lihat Materi</a>
-										<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
+											class="btn btn-primary hover rounded-pill p-1 fs-6">Buka Kelas</a>
+										<img src="https://image.web.id/images/icon-bg-video.th.png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="90" alt="">
+									</div>
+								</div>
+							</template>
+							
+							<template x-if="data.course?.id === '1'">
+								<div class="col-md-6 mb-3">
+									<div id="card-progress-lesson"
+										class="card border-0 shadow-none rounded-4 p-3 d-flex flex-column justify-content-between position-relative"
+										:class="{'lesson-completed bg-success bg-opacity-50': Math.round(data.lesson_completed/data.total_lessons*100) == 100, 
+								'bg-light-primary': Math.round(data.lesson_completed/data.total_lessons*100) < 100}"
+										style="min-height: 160px">
+										<div class="d-flex">
+											<div class="me-3 bg-white text-dark rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
+												<i class="bi h3 m-0" :class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'bi-check-circle text-success' : 'bi-journal-text'"></i>
+											</div>
+											<h3 class="text-white">Modul PDF</h3>
+										</div>
+										<a href="javascript:void(0)"
+											@click.prevent="navigateToTargetLesson()"
+											class="btn btn-primary hover rounded-pill p-1 fs-6">Buka Modul</a>
+										<img src="https://image.web.id/images/icon-bg-book.th.png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="90" alt="">
 									</div>
 								</div>
 							</template>

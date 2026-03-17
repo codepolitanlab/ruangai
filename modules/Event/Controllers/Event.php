@@ -64,7 +64,7 @@ class Event extends AdminController
                 ->with('errors', $this->Entry->errors());
         }
         
-        return $this->Entry->create();
+        return $this->Entry->form();
     }
 
     public function edit($id)

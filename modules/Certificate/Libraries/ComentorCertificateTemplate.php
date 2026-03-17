@@ -16,7 +16,7 @@ class ComentorCertificateTemplate extends CertificateTemplate
 
     public function getDescription(): string
     {
-        return 'Template sertifikat khusus untuk comentor';
+        return 'Training for Co-mentor';
     }
 
     /**

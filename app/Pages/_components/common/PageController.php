@@ -30,8 +30,8 @@ class PageController extends BaseController
             ];
         }
 
-        // Get active program from table events
-        $activeProgram = $db->table('events')
+        // Get active program from table scholarship_events
+        $activeProgram = $db->table('scholarship_events')
             ->select('code')
             ->where('status', 'ongoing')
             ->get()

@@ -34,6 +34,14 @@ class Router
         '/certificate/:code' => [
             'template' => '/certificate/detail/template',
         ],
+        '/beasiswa' => [
+            'preload' => true,
+            'handler' => '[isLoggedIn]',
+        ],
+        '/beasiswa/intro' => [
+            'preload' => true,
+            'handler' => '[isLoggedIn]',
+        ],
         '/courses' => [
             'preload' => true,
             'handler' => '[isLoggedIn]',
@@ -43,6 +51,11 @@ class Router
             'handler' => '[isLoggedIn]',
         ],
         '/courses/intro/:course_id/:slug/live_session' => [
+            'preload' => true,
+            'handler' => '[isLoggedIn]',
+        ],
+        '/courses/intro/:course_id/:slug/live_session/record/:meeting_id' => [
+            'template' => '/courses/recording/template',
             'preload' => true,
             'handler' => '[isLoggedIn]',
         ],

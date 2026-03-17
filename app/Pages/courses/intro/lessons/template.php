@@ -80,7 +80,7 @@
 			</div>
 
 			<!-- Show Expire Alert -->
-			<template x-if="data.is_expire">
+			<template x-if="data.is_expire && data?.student?.program !== 'RuangAI2026WSGenAI'">
 				<div class="card bg-warning-2 rounded-4 mb-3 shadow-none">
 					<div class="card-body d-flex gap-3">
 						<i class="bi bi-stopwatch-fill text-white display-3 shaky-icon"></i>
