@@ -34,6 +34,14 @@ class Router
         '/certificate/:code' => [
             'template' => '/certificate/detail/template',
         ],
+        '/beasiswa' => [
+            'preload' => true,
+            'handler' => '[isLoggedIn]',
+        ],
+        '/beasiswa/intro' => [
+            'preload' => true,
+            'handler' => '[isLoggedIn]',
+        ],
         '/courses' => [
             'preload' => true,
             'handler' => '[isLoggedIn]',

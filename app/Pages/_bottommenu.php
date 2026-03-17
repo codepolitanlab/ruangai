@@ -10,7 +10,7 @@ $menus = [
     ],
     [
         'label'  => 'Misi Beasiswa',
-        'url'    => '/courses/intro/1/dasar-dan-penggunaan-generative-ai',
+        'url'    => '/beasiswa/intro',
         'icon'   => 'bi bi-journal-check',
         'module' => 'misi_beasiswa',
         'position' => ['bottom', 'sidebar']
