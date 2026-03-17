@@ -146,6 +146,7 @@ class CertificateController extends AdminController
         $results  = [];
         $success  = 0;
         $failed   = 0;
+        $notFoundEmails = []; // Array untuk menyimpan email yang user not found
 
         foreach ($emails as $email) {
             // Find user by email
@@ -157,6 +158,7 @@ class CertificateController extends AdminController
 
             if (!$user) {
                 $results[] = ['email' => $email, 'status' => 'failed', 'message' => 'User tidak ditemukan'];
+                $notFoundEmails[] = $email; // Hanya simpan yang not found
                 $failed++;
                 continue;
             }
@@ -205,6 +207,7 @@ class CertificateController extends AdminController
             'success' => $success,
             'failed'  => $failed,
         ]);
+        session()->setFlashdata('not_found_emails', $notFoundEmails);
 
         return redirect()->to(admin_url() . 'certificates/generate')->withInput();
     }
