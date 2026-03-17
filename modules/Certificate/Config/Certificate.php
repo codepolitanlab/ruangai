@@ -30,6 +30,7 @@ class Certificate extends BaseConfig
         'workshop_genai_untar' => \Certificate\Libraries\WorkshopGenAIUntarTemplate::class,
         'workshop_genai_aptiknas' => \Certificate\Libraries\WorkshopGenAIAptiknasTemplate::class,
         'workshop_genai_teladan_rasul' => \Certificate\Libraries\WorkshopGenAITeladanRasulTemplate::class,
+        'workshop_alibabacloud' => \Certificate\Libraries\WorkshopAlibabaCloudTemplate::class,
         // Add more templates here as needed
     ];
 }
