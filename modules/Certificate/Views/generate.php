@@ -42,19 +42,19 @@
                         </div>
                     <?php endif; ?>
 
-                    <?php $failedEmails = session()->getFlashdata('failed_emails'); ?>
-                    <?php if ($failedEmails && !empty($failedEmails)): ?>
+                    <?php $notFoundEmails = session()->getFlashdata('not_found_emails'); ?>
+                    <?php if ($notFoundEmails && !empty($notFoundEmails)): ?>
                         <div class="card mb-4">
                             <div class="card-header bg-danger text-white">
                                 <h6 class="mb-0">
-                                    <i class="fas fa-exclamation-triangle me-2"></i>
-                                    Email yang Gagal/Dilewati (<?= count($failedEmails) ?>)
+                                    <i class="fas fa-user-slash me-2"></i>
+                                    Email User Tidak Ditemukan (<?= count($notFoundEmails) ?>)
                                 </h6>
                             </div>
                             <div class="card-body">
-                                <p class="mb-2"><strong>Daftar email untuk ditindaklanjuti:</strong></p>
+                                <p class="mb-2"><strong>Daftar email yang perlu ditindaklanjuti (user tidak terdaftar):</strong></p>
                                 <ul class="list-unstyled mb-0">
-                                    <?php foreach ($failedEmails as $email): ?>
+                                    <?php foreach ($notFoundEmails as $email): ?>
                                         <li class="mb-1">
                                             <i class="fas fa-envelope text-danger me-2"></i>
                                             <code><?= esc($email) ?></code>

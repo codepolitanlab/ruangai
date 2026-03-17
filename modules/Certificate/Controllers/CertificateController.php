@@ -146,7 +146,7 @@ class CertificateController extends AdminController
         $results  = [];
         $success  = 0;
         $failed   = 0;
-        $failedEmails = []; // Array untuk menyimpan email yang gagal
+        $notFoundEmails = []; // Array untuk menyimpan email yang user not found
 
         foreach ($emails as $email) {
             // Find user by email
@@ -158,7 +158,7 @@ class CertificateController extends AdminController
 
             if (!$user) {
                 $results[] = ['email' => $email, 'status' => 'failed', 'message' => 'User tidak ditemukan'];
-                $failedEmails[] = $email;
+                $notFoundEmails[] = $email; // Hanya simpan yang not found
                 $failed++;
                 continue;
             }
@@ -172,7 +172,6 @@ class CertificateController extends AdminController
 
             if ($exists) {
                 $results[] = ['email' => $email, 'status' => 'skipped', 'message' => 'Sertifikat sudah ada (' . $exists['cert_code'] . ')'];
-                $failedEmails[] = $email;
                 $failed++;
                 continue;
             }
@@ -198,7 +197,6 @@ class CertificateController extends AdminController
                 $success++;
             } else {
                 $results[] = ['email' => $email, 'status' => 'failed', 'message' => 'Gagal menyimpan sertifikat'];
-                $failedEmails[] = $email;
                 $failed++;
             }
         }
@@ -209,7 +207,7 @@ class CertificateController extends AdminController
             'success' => $success,
             'failed'  => $failed,
         ]);
-        session()->setFlashdata('failed_emails', $failedEmails);
+        session()->setFlashdata('not_found_emails', $notFoundEmails);
 
         return redirect()->to(admin_url() . 'certificates/generate')->withInput();
     }
