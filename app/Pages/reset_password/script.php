@@ -25,12 +25,26 @@
                 this.model.email = emailParam;
             }
 
-            // Call google recaptcha
-            this.recaptchaWidget = grecaptcha.render('grecaptcha', {
-                'sitekey' : recaptchaSiteKey
-            });
-            if(this.recaptchaWidget === null)
-                window.location.href = '/reset_password'
+            // Call google recaptcha with retry mechanism
+            this.initRecaptcha(recaptchaSiteKey);
+        },
+
+        initRecaptcha(siteKey) {
+            // Check if grecaptcha is available
+            if (typeof grecaptcha !== 'undefined' && grecaptcha.render) {
+                try {
+                    this.recaptchaWidget = grecaptcha.render('grecaptcha', {
+                        'sitekey': siteKey
+                    });
+                } catch (error) {
+                    console.error('Failed to render reCAPTCHA:', error);
+                    // Retry after a short delay
+                    setTimeout(() => this.initRecaptcha(siteKey), 500);
+                }
+            } else {
+                // grecaptcha not loaded yet, retry after a short delay
+                setTimeout(() => this.initRecaptcha(siteKey), 100);
+            }
         },
 
         sendTo(to) {
@@ -39,6 +53,13 @@
 
         confirm(){
             this.sending = true
+
+            // Check if recaptcha widget is initialized
+            if (this.recaptchaWidget === null || typeof grecaptcha === 'undefined') {
+                $heroicHelper.toastr('Recaptcha belum siap, mohon tunggu sebentar.', 'warning');
+                this.sending = false;
+                return;
+            }
 
             // Gain javascript form validation
             if(this.model.sendto == 'phone' && this.model.phone == ''){
