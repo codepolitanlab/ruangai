@@ -420,7 +420,7 @@ class ScholarshipController extends ResourceController
                 'RuangAI2025B3' => $graduatedB3 ?? 0,
                 'RuangAI2025B4' => $graduatedB4 ?? 0,
             ];
-            $data['total_graduated']    = $graduatedB1 + $graduatedB2 + $graduatedB3 + $graduatedB4;
+            $data['total_graduated'] = $db->table('view_participants')->where('graduate', 1)->countAllResults();
         }
 
         return $this->respond($data);
