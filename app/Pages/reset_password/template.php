@@ -77,7 +77,14 @@
     }
 </style>
 
-<div id="member-reset-password" x-data="reset_password(`<?= config('Heroic')->recaptcha['siteKey'] ?>`)">
+<div id="member-reset-password" 
+    x-data="reset_password(`<?= config('Heroic')->recaptcha['siteKey'] ?>`)"
+    @recaptcha-ready.window="
+        grecaptcha.render('grecaptcha', {
+            'sitekey': '<?= config('Heroic')->recaptcha['siteKey'] ?>'
+        });
+        loaded = true;
+     ">
 
     <a href="javascript:void()" onclick="history.back()" class="back-button">
         <i class="bi bi-chevron-left" style="font-size: 1.5rem;"></i>
@@ -106,7 +113,7 @@
                     <input type="text" class="form-control form-control-lg input-field" id="email" placeholder="email@example.com" autocomplete="new-password" x-model="model.email" required>
                 </div>
 
-                <div class="d-flex justify-content-center mb-3" id="grecaptcha"></div>
+                <div class="d-flex justify-content-center mb-3" id="grecaptcha" x-ref="recaptchaContainer"></div>
 
                 <div class="mt-4">
                     <button type="button" x-on:click="confirm" class="btn btn-lg btn-reset w-100 d-flex align-items-center justify-content-center" :disabled="sending || (model.phone.length < 10 && model.email.length < 10)">

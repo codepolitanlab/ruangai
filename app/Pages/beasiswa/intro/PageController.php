@@ -102,17 +102,25 @@ class PageController extends BaseController
             $this->data['certificate_id'] = $certificate ? $certificate['id'] : false;
 
             if ($this->data['student']) {
-                $this->data['graduate']         = $this->data['student']['graduate'] === '1' ? true : false;
-                $this->data['pdf_read']         = $this->data['student']['progress'] == 100;
-                $this->data['course_completed'] = $this->data['graduate'] && $this->data['total_lessons'] === $this->data['lesson_completed'];
-                $this->data['is_enrolled']      = $db->table('course_students')->where('course_id', $id)->where('user_id', $jwt->user_id)->countAllResults() > 0 ? true : false;
+                $this->data['graduate']             = $this->data['student']['graduate'] === '1' ? true : false;
+                $this->data['pdf_read']             = $this->data['student']['progress'] == 100;
+                $this->data['course_completed']     = $this->data['graduate'] && $this->data['total_lessons'] === $this->data['lesson_completed'];
+                $this->data['is_enrolled']          = $db->table('course_students')->where('course_id', $id)->where('user_id', $jwt->user_id)->countAllResults() > 0 ? true : false;
+                $this->data['has_valid_live_session'] = $db->table('live_attendance')
+                    ->where('user_id', $jwt->user_id)
+                    ->where('course_id', $id)
+                    ->where('status', 1)
+                    ->where('duration >=', 1800)
+                    ->where('deleted_at', null)
+                    ->countAllResults() > 0;
                 // Peserta RuangAI2026WSGenAI tidak pernah expire
                 $isWSGenAI = isset($this->data['student']['program']) && $this->data['student']['program'] === 'RuangAI2026WSGenAI';
-                $this->data['is_expire']        = $isWSGenAI ? false : ((isset($this->data['student']['expire_at']) && $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s')) ? true : false);
+                $this->data['is_expire']            = $isWSGenAI ? false : ((isset($this->data['student']['expire_at']) && $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s')) ? true : false);
             } else {
                 $this->data['course_completed'] = false;
                 $this->data['pdf_read']         = false;
                 $this->data['is_enrolled']      = false;
+                $this->data['has_valid_live_session'] = false;
                 $this->data['is_expire']        = false;
             }
 

@@ -101,8 +101,12 @@ class PageController extends BaseController
             $this->data['certificate_id'] = $certificate ? $certificate['id'] : false;
 
             if ($this->data['student']) {
+                // Check if user source contains 'wsgenai'
+                $userSource = isset($jwt->user['source']) ? strtolower($jwt->user['source']) : '';
+                $isWSGenAISource = str_contains($userSource, 'wsgenai');
+                
                 $this->data['graduate']         = $this->data['student']['graduate'] === '1' ? true : false;
-                $this->data['course_completed'] = $this->data['total_lessons'] === $this->data['lesson_completed'] && $this->data['live_attendance'] > 0 ? true : false;
+                $this->data['course_completed'] = $isWSGenAISource || ($this->data['total_lessons'] === $this->data['lesson_completed'] && $this->data['live_attendance'] > 0);
                 $this->data['is_enrolled']      = $db->table('course_students')->where('course_id', $id)->where('user_id', $jwt->user_id)->countAllResults() > 0 ? true : false;
                 // Peserta RuangAI2026WSGenAI tidak pernah expire
                 $isWSGenAI = isset($this->data['student']['program']) && $this->data['student']['program'] === 'RuangAI2026WSGenAI';
