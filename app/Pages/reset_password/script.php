@@ -47,6 +47,13 @@
         confirm() {
             this.sending = true
 
+            // Check if recaptcha widget is initialized
+            if (this.recaptchaWidget === null || typeof grecaptcha === 'undefined') {
+                $heroicHelper.toastr('Recaptcha belum siap, mohon tunggu sebentar.', 'warning');
+                this.sending = false;
+                return;
+            }
+
             // Gain javascript form validation
             if (this.model.sendto == 'phone' && this.model.phone == '') {
                 $heroicHelper.toastr('Nomor WhatsApp tidak boleh kosong.', 'warning')
