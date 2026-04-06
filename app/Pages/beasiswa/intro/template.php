@@ -184,6 +184,21 @@
 						<h4 class="mb-3">Jadwal Webinar</h4>
 
 						<div class="row">
+							<!-- Modul PDF -->
+							<div class="col-md-4 mb-3">
+								<div id="card-progress-lesson"
+									class="card bg-light-primary border-0 shadow-none rounded-4 p-3 d-flex flex-column justify-content-between position-relative"
+									style="min-height: 160px">
+									<div class="d-flex">
+										<h4 class="opacity-75">Modul PDF</h4>
+									</div>
+									<a href="javascript:void(0)"
+										@click.prevent="navigateToTargetLesson()"
+										class="btn btn-primary hover rounded-pill p-1 fs-6">Buka Modul</a>
+									<img src="https://image.web.id/images/icon-bg-book.th.png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="90" alt="">
+								</div>
+							</div>
+
 							<!-- Card Live Session Program Reguler -->
 							<template x-if="data.course?.has_live_sessions === '1'">
 								<div class="col-md-8 mb-3">
@@ -204,20 +219,6 @@
 										</div>
 									</div>
 							</template>
-
-							<div class="col-md-4 mb-3">
-								<div id="card-progress-lesson"
-									class="card bg-light-primary border-0 shadow-none rounded-4 p-3 d-flex flex-column justify-content-between position-relative"
-									style="min-height: 160px">
-									<div class="d-flex">
-										<h4 class="opacity-75">Modul PDF</h4>
-									</div>
-									<a href="javascript:void(0)"
-										@click.prevent="navigateToTargetLesson()"
-										class="btn btn-primary hover rounded-pill p-1 fs-6">Buka Modul</a>
-									<img src="https://image.web.id/images/icon-bg-book.th.png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="90" alt="">
-								</div>
-							</div>
 						</div>
 					</div>
 
@@ -254,31 +255,31 @@
 
 
 					<!-- Certificate -->
-						<div class="section p-3 mb-3 pb-4 bg-white rounded-4">
-							<h4 class="fw-bold mb-3" style="color: #222;">Klaim Sertifikat</h4>
+					<div class="section p-3 mb-3 pb-4 bg-white rounded-4">
+						<h4 class="fw-bold mb-3" style="color: #222;">Klaim Sertifikat</h4>
 
-							<div class="card border-0 rounded-4 bg-dark bg-opacity-10 cursor-pointer"
-								@click="claimCertificate()"
-								:class="data.course_completed ? 'bg-secondary' : 'bg-dark bg-opacity-10'">
-								<div class="card-body d-flex align-items-center gap-3 p-4">
-									<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
-										style="min-width: 64px; height: 64px;">
-										<i class="bi bi-award text-dark opacity-50 display-5"></i>
-									</div>
-									<div class="flex-grow-1">
-										<h5 x-show="!data.course_completed" class="h6 opacity-50 mb-0">Selesaikan materi dan sesi live wajib untuk mendapatkan sertifikat.</h5>
-										<div x-show="data.course_completed">
-											<h3
-												class="fw-bold mb-1"
-												style="font-size:1.2rem; color:#fff;"
-												x-text="data.student.cert_code ? `Unduh Sertifikat` : `Klaim Sertifikat`"></h3>
-											<p class="text-white mb-1" x-show="!data.student.cert_code">Klik untuk mengklaim dan mengunduh sertifikat</p>
-										</div>
+						<div class="card border-0 rounded-4 bg-dark bg-opacity-10 cursor-pointer"
+							@click="claimCertificate()"
+							:class="data.course_completed ? 'bg-secondary' : 'bg-dark bg-opacity-10'">
+							<div class="card-body d-flex align-items-center gap-3 p-4">
+								<div class="rounded-3 d-flex align-items-center justify-content-center bg-white"
+									style="min-width: 64px; height: 64px;">
+									<i class="bi bi-award text-dark opacity-50 display-5"></i>
+								</div>
+								<div class="flex-grow-1">
+									<h5 x-show="!data.course_completed" class="h6 opacity-50 mb-0">Selesaikan materi dan sesi live wajib untuk mendapatkan sertifikat.</h5>
+									<div x-show="data.course_completed">
+										<h3
+											class="fw-bold mb-1"
+											style="font-size:1.2rem; color:#fff;"
+											x-text="data.student.cert_code ? `Unduh Sertifikat` : `Klaim Sertifikat`"></h3>
+										<p class="text-white mb-1" x-show="!data.student.cert_code">Klik untuk mengklaim dan mengunduh sertifikat</p>
 									</div>
 								</div>
 							</div>
 						</div>
-						
+					</div>
+
 				</div>
 			</template>
 
@@ -302,32 +303,32 @@
 						</a>
 					</template> -->
 
+			<!-- Klaim Reward, khusus untuk course campaign -->
+			<template x-if="data.course?.id === '1'">
+				<div class="section p-3 mb-3 bg-white rounded-4">
+					<h4 class="fw-bold mb-3" style="color: #222;">Reward Beasiswa</h4>
+
+					<div class="card bg-primary border-0 rounded-4 cursor-pointer"
+						@click="claimReward()">
+						<div class="card-body d-flex align-items-center gap-3 p-4">
+							<div class="rounded-3 d-flex align-items-center justify-content-center px-3" style="min-width:64px;height:64px;background:#fff;">
+								<i class="bi bi-gift fs-2" style="font-size:2.5rem; color:#e91e95;"></i>
+							</div>
+							<div class="flex-grow-1 text-white">
+								<h5 class="h6 mb-0" style="font-size:1rem;">
+									Pilih salah satu dari 5 kelas lanjutan yang paling cocok buatmu
+								</h5>
+							</div>
+						</div>
+					</div>
+				</div>
+			</template>
 		</div>
 
 		<template x-if="!data.is_enrolled && $params.course_id == 1">
 			<a href="/courses/reward" class="btn btn-secondary rounded-pill p-1 w-100 fs-6 mb-3">Klaim Kelas</a>
 		</template>
 
-		<!-- Klaim Reward, khusus untuk course campaign -->
-		<template x-if="data.course?.id === '1'">
-			<div class="section p-3 mb-3 bg-white rounded-4">
-				<h4 class="fw-bold mb-3" style="color: #222;">Reward Beasiswa</h4>
-
-				<div class="card bg-primary border-0 rounded-4 cursor-pointer"
-					@click="claimReward()">
-					<div class="card-body d-flex align-items-center gap-3 p-4">
-						<div class="rounded-3 d-flex align-items-center justify-content-center px-3" style="min-width:64px;height:64px;background:#fff;">
-							<i class="bi bi-gift fs-2" style="font-size:2.5rem; color:#e91e95;"></i>
-						</div>
-						<div class="flex-grow-1 text-white">
-							<h5 class="h6 mb-0" style="font-size:1rem;">
-								Pilih salah satu dari 5 kelas lanjutan yang paling cocok buatmu
-							</h5>
-						</div>
-					</div>
-				</div>
-			</div>
-		</template>
 	</div>
 
 	<?= $this->include('_bottommenu') ?>
