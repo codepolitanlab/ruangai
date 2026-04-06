@@ -1,5 +1,5 @@
 <script>
-  Alpine.data("courseIntro", function() {
+  Alpine.data("beasiswaIntro", function(course_id = 1) {
     let base = $heroic({
       title: `<?= $page_title ?>`,
       url: `/beasiswa/intro/data`,
@@ -56,72 +56,6 @@
         }
       },
 
-      async navigateToTargetLesson() {
-        try {
-          // First, get intro data to find starting lesson
-          const introRes = await $heroicHelper.fetch(`/beasiswa/intro/data/${meta.course_id}`);
-          const introData = introRes.data;
-          
-          if (!introData || !introData.course) {
-            const slug = this.data.course?.slug || '';
-            this.$router.navigate(`/beasiswa/intro/${meta.course_id}/${slug}/lessons`);
-            return;
-          }
-
-          // Determine starting lesson: last_progress or first lesson
-          let startLessonId = null;
-          
-          if (introData.last_progress_lesson_id) {
-            startLessonId = introData.last_progress_lesson_id;
-          } else {
-            // Get first lesson from grouped structure
-            const lessons = introData.course?.lessons;
-            if (lessons && typeof lessons === 'object') {
-              for (const topic in lessons) {
-                if (Array.isArray(lessons[topic]) && lessons[topic].length > 0) {
-                  startLessonId = lessons[topic][0].id;
-                  break;
-                }
-              }
-            }
-          }
-
-          if (!startLessonId) {
-            const slug = introData.course?.slug || '';
-            this.$router.navigate(`/beasiswa/intro/${meta.course_id}/${slug}/lessons`);
-            return;
-          }
-
-          // Fetch lesson detail to get complete lesson structure with is_completed flags
-          const lessonRes = await $heroicHelper.fetch(`/courses/lesson/data/${meta.course_id}/${startLessonId}`);
-          const lessonData = lessonRes.data;
-
-          if (!lessonData || !lessonData.course || !lessonData.course.lessons) {
-            // Fallback: just navigate to the starting lesson
-            this.$router.navigate(`/courses/${meta.course_id}/lesson/${startLessonId}`);
-            return;
-          }
-
-          // Find next uncompleted lesson from lesson data structure
-          const allLessons = lessonData.course.lessons;
-          const nextLesson = allLessons.find(l => !l.is_completed);
-          
-          if (nextLesson) {
-            this.$router.navigate(`/courses/${meta.course_id}/lesson/${nextLesson.id}`);
-            return;
-          }
-
-          // If all completed, use last_progress or first lesson
-          const targetId = lessonData.course.last_progress_lesson_id || startLessonId;
-          this.$router.navigate(`/courses/${meta.course_id}/lesson/${targetId}`);
-
-        } catch (err) {
-          console.error('navigateToTargetLesson error', err);
-          const slug = this.data.course?.slug || '';
-          this.$router.navigate(`/beasiswa/intro/${meta.course_id}/${slug}/lessons`);
-        }
-      },
-
       claimCertificate() {
         if (!this.meta.isValidEmail) {
           $heroicHelper.toastr("Kamu belum melakukan verifikasi email nih, silahkan lakukan verifikasi email terlebih dahulu untuk klaim sertifikat.", "warning", "bottom");
@@ -158,6 +92,72 @@
         this.meta.videoTeaser = url;
       },
 
+      async navigateToTargetLesson() {
+        try {
+          // First, get intro data to find starting lesson
+          const introRes = await $heroicHelper.fetch(`/courses/intro/data/${course_id}`);
+          const introData = introRes.data;
+          
+          if (!introData || !introData.course) {
+            const slug = this.data.course?.slug || '';
+            this.$router.navigate(`/courses/intro/${course_id}/${slug}/lessons`);
+            return;
+          }
+
+          // Determine starting lesson: last_progress or first lesson
+          let startLessonId = null;
+          
+          if (introData.last_progress_lesson_id) {
+            startLessonId = introData.last_progress_lesson_id;
+          } else {
+            // Get first lesson from grouped structure
+            const lessons = introData.course?.lessons;
+            if (lessons && typeof lessons === 'object') {
+              for (const topic in lessons) {
+                if (Array.isArray(lessons[topic]) && lessons[topic].length > 0) {
+                  startLessonId = lessons[topic][0].id;
+                  break;
+                }
+              }
+            }
+          }
+
+          if (!startLessonId) {
+            const slug = introData.course?.slug || '';
+            this.$router.navigate(`/courses/intro/${course_id}/${slug}/lessons`);
+            return;
+          }
+
+          // Fetch lesson detail to get complete lesson structure with is_completed flags
+          const lessonRes = await $heroicHelper.fetch(`/courses/lesson/data/${course_id}/${startLessonId}`);
+          const lessonData = lessonRes.data;
+
+          if (!lessonData || !lessonData.course || !lessonData.course.lessons) {
+            // Fallback: just navigate to the starting lesson
+            this.$router.navigate(`/courses/${course_id}/lesson/${startLessonId}`);
+            return;
+          }
+
+          // Find next uncompleted lesson from lesson data structure
+          const allLessons = lessonData.course.lessons;
+          const nextLesson = allLessons.find(l => !l.is_completed);
+          
+          if (nextLesson) {
+            this.$router.navigate(`/courses/${course_id}/lesson/${nextLesson.id}`);
+            return;
+          }
+
+          // If all completed, use last_progress or first lesson
+          const targetId = lessonData.course.last_progress_lesson_id || startLessonId;
+          this.$router.navigate(`/courses/${course_id}/lesson/${targetId}`);
+
+        } catch (err) {
+          console.error('navigateToTargetLesson error', err);
+          const slug = this.data.course?.slug || '';
+          this.$router.navigate(`/courses/intro/${course_id}/${slug}/lessons`);
+        }
+      },
+
       // Find next uncompleted lesson id from lessonsCompleted
       nextLessonFromCompleted(lessonsCompleted) {
         if (!lessonsCompleted || !Array.isArray(lessonsCompleted)) return null;
@@ -179,6 +179,10 @@
         } catch (e) {
           return null;
         }
+      },
+
+      navigateToPdf() {
+        this.$router.navigate('/beasiswa/intro/pdf_viewer/');
       },
 
       // Compute target lesson id: prefer next uncompleted, else last progress (if any), else first lesson

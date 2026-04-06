@@ -1,7 +1,7 @@
 <div
 	class="header-mobile-only"
 	id="course_intro"
-	x-data="courseIntro()"
+	x-data="beasiswaIntro()"
 	x-effect="loadPage(`/beasiswa/intro/data`)">
 
 	<style>
@@ -79,7 +79,7 @@
 			</div>
 
 			<!-- Show Expire Alert -->
-			<template x-if="data.is_expire && data?.student?.program !== 'RuangAI2026WSGenAI'">
+			<!-- <template x-if="data.is_expire && data?.student?.program !== 'RuangAI2026WSGenAI'">
 				<div class="card bg-secondary rounded-4 mb-3 shadow-none">
 					<div class="card-body d-flex gap-3">
 						<i class="bi bi-stopwatch-fill text-white display-3"></i>
@@ -89,7 +89,7 @@
 						</div>
 					</div>
 				</div>
-			</template>
+			</template> -->
 
 			<!-- Card Kelas -->
 			<div class="bg-white rounded-4 mb-3 overflow-hidden">
@@ -179,7 +179,7 @@
 				<div>
 					<!-- Progress Stats -->
 					<div class="p-3 pb-2 bg-white rounded-4 mb-3 position-relative"
-						:class="{'lesson-not-complete': Math.round(data.lesson_completed/data.total_lessons*100) < 100}">
+						:class="{'lesson-not-complete': !data.pdf_read}">
 
 						<h4 class="mb-3">Jadwal Webinar</h4>
 
@@ -199,7 +199,7 @@
 											</div>
 											<a :href="`/beasiswa/intro/${data?.course?.id}/${data?.course?.slug}/live_session`"
 												class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6"
-												:class="{'disabled': data?.lesson_completed != data?.total_lessons}">Daftar Webinar</a>
+												:class="{'disabled': !data?.pdf_read}">Daftar Webinar</a>
 											<img src="https://image.web.id/images/icon-bg-webinar.th.png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="90" alt="">
 										</div>
 									</div>
@@ -213,7 +213,7 @@
 										<h4 class="opacity-75">Modul PDF</h4>
 									</div>
 									<a href="javascript:void(0)"
-										@click.prevent="navigateToTargetLesson()"
+										@click.prevent="navigateToPdf()"
 										class="btn btn-primary hover rounded-pill p-1 fs-6">Buka Modul</a>
 									<img src="https://image.web.id/images/icon-bg-book.th.png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="90" alt="">
 								</div>
@@ -226,12 +226,12 @@
 						<div class="mb-3">
 							<div id="card-progress-lesson"
 								class="card border-0 shadow-none rounded-4 p-3 d-flex flex-column justify-content-between position-relative"
-								:class="{'lesson-completed bg-success bg-opacity-50': Math.round(data.lesson_completed/data.total_lessons*100) == 100, 
-							'bg-light-primary': Math.round(data.lesson_completed/data.total_lessons*100) < 100}"
+								:class="{'lesson-completed bg-success bg-opacity-50': data.graduate, 
+							'bg-light-primary': !data.graduate}"
 								style="min-height: 160px">
 								<div class="d-flex">
 									<div class="me-3 bg-white text-dark rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
-										<i class="bi h3 m-0" :class="Math.round(data.lesson_completed/data.total_lessons*100) == 100 ? 'bi-check-circle text-success' : 'bi-journal-text'"></i>
+										<i class="bi h3 m-0" :class="data.graduate ? 'bi-check-circle text-success' : 'bi-journal-text'"></i>
 									</div>
 									<div>
 										<h5 class="text-light opacity-75 mb-0">Modul Video</h5>

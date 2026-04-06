@@ -103,13 +103,15 @@ class PageController extends BaseController
 
             if ($this->data['student']) {
                 $this->data['graduate']         = $this->data['student']['graduate'] === '1' ? true : false;
-                $this->data['course_completed'] = $this->data['total_lessons'] === $this->data['lesson_completed'] && $this->data['live_attendance'] > 0 ? true : false;
+                $this->data['pdf_read']         = $this->data['student']['progress'] == 100;
+                $this->data['course_completed'] = $this->data['graduate'] && $this->data['total_lessons'] === $this->data['lesson_completed'];
                 $this->data['is_enrolled']      = $db->table('course_students')->where('course_id', $id)->where('user_id', $jwt->user_id)->countAllResults() > 0 ? true : false;
                 // Peserta RuangAI2026WSGenAI tidak pernah expire
                 $isWSGenAI = isset($this->data['student']['program']) && $this->data['student']['program'] === 'RuangAI2026WSGenAI';
                 $this->data['is_expire']        = $isWSGenAI ? false : ((isset($this->data['student']['expire_at']) && $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s')) ? true : false);
             } else {
                 $this->data['course_completed'] = false;
+                $this->data['pdf_read']         = false;
                 $this->data['is_enrolled']      = false;
                 $this->data['is_expire']        = false;
             }
@@ -228,5 +230,30 @@ class PageController extends BaseController
             'response_message' => 'Success',
             'active_program'   => $activeProgram ?? null,
         ]);
+    }
+
+    public function postMarkPdfRead()
+    {
+        $Heroic = new \App\Libraries\Heroic();
+        $jwt    = $Heroic->checkToken();
+
+        $db = \Config\Database::connect();
+        $courseId = 1; // Assuming course id is 1 for beasiswa
+
+        // Update progress to 100
+        $db->table('course_students')
+            ->where('user_id', $jwt->user_id)
+            ->where('course_id', $courseId)
+            ->update(['progress' => 100]);
+
+        return $this->respond([
+            'response_code'    => 200,
+            'response_message' => 'PDF marked as read',
+        ]);
+    }
+
+    public function getPdfViewer()
+    {
+        return redirect('/beasiswa/intro/pdf_viewer/');
     }
 }

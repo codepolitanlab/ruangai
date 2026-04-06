@@ -42,6 +42,10 @@ class Router
             'preload' => true,
             'handler' => '[isLoggedIn]',
         ],
+        '/beasiswa/intro/pdf_viewer' => [
+            'preload' => true,
+            'handler' => '[isLoggedIn]',
+        ],
         '/courses' => [
             'preload' => true,
             'handler' => '[isLoggedIn]',
