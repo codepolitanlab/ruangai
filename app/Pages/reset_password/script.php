@@ -1,4 +1,9 @@
 <script>
+    // 2. Buat fungsi global untuk menangkap event load
+    window.onRecaptchaLoad = function() {
+        window.dispatchEvent(new CustomEvent('recaptcha-ready'));
+    };
+
     Alpine.data('reset_password', (recaptchaSiteKey) => ({
         title: "Reset Kata Sandi",
         logo: '',
@@ -12,42 +17,58 @@
         error: '',
         sending: false,
 
-        init(){
+        init() {
             document.title = this.title
             Alpine.store('core').currentPage = 'reset_password'
 
             this.logo = Alpine.store('core').settings.auth_logo
 
+            // Prefill email from query params
+            const urlParams = new URLSearchParams(window.location.search);
+            const emailParam = urlParams.get('email');
+            if (emailParam) {
+                this.model.email = emailParam;
+            }
+
             // Call google recaptcha
-            this.recaptchaWidget = grecaptcha.render('grecaptcha', {
-                'sitekey' : recaptchaSiteKey
-            });
-            if(this.recaptchaWidget === null)
-                window.location.href = '/reset_password'
+            // this.$nextTick(() => {
+                this.recaptchaWidget = grecaptcha.render('grecaptcha', {
+                    'sitekey': recaptchaSiteKey
+                });
+                if (this.recaptchaWidget === null)
+                    window.location.href = '/reset_password'
+            // })
         },
 
         sendTo(to) {
             this.model.sendto = to
         },
 
-        confirm(){
+        confirm() {
             this.sending = true
 
+            // Check if recaptcha widget is initialized
+            if (this.recaptchaWidget === null || typeof grecaptcha === 'undefined') {
+                $heroicHelper.toastr('Recaptcha belum siap, mohon tunggu sebentar.', 'warning');
+                this.sending = false;
+                return;
+            }
+
             // Gain javascript form validation
-            if(this.model.sendto == 'phone' && this.model.phone == ''){
+            if (this.model.sendto == 'phone' && this.model.phone == '') {
                 $heroicHelper.toastr('Nomor WhatsApp tidak boleh kosong.', 'warning')
                 this.sending = false
                 return;
             }
-            if(this.model.sendto == 'email' && this.model.email == ''){
+            if (this.model.sendto == 'email' && this.model.email == '') {
                 $heroicHelper.toastr('Nomor WhatsApp tidak boleh kosong.', 'warning')
                 this.sending = false
                 return;
             }
 
             this.recaptcha = grecaptcha.getResponse(this.recaptchaWidget);
-            if(this.recaptcha == '') {
-                $heroicHelper.toastr('Ceklis dulu Recaptcha.','warning')
+            if (this.recaptcha == '') {
+                $heroicHelper.toastr('Ceklis dulu Recaptcha.', 'warning')
                 this.sending = false
                 return;
             }
@@ -55,21 +76,21 @@
             // Check register_confirm using axios post
             const formData = new FormData();
             $heroicHelper.post('/reset_password', {
-                recaptcha: this.recaptcha,
-                phone: this.model.phone,
-                email: this.model.email,
-                sendto: this.model.sendto,
-            })
-            .then(response => {
-                if(response.data.success == 1){
-                    let token = response.data.token + '_' + response.data.id + 'X' + Math.random().toString(36).substring(7)
-                    window.PineconeRouter.navigate('/reset_password/change/' + token)
-                } else {
-                    $heroicHelper.toastr(response.data.message, 'danger')
-                    grecaptcha.reset(this.recaptchaWidget)
-                    this.sending = false
-                }
-            })
+                    recaptcha: this.recaptcha,
+                    phone: this.model.phone,
+                    email: this.model.email,
+                    sendto: this.model.sendto,
+                })
+                .then(response => {
+                    if (response.data.success == 1) {
+                        let token = response.data.token + '_' + response.data.id + 'X' + Math.random().toString(36).substring(7)
+                        window.PineconeRouter.navigate('/reset_password/change/' + token)
+                    } else {
+                        $heroicHelper.toastr(response.data.message, 'danger')
+                        grecaptcha.reset(this.recaptchaWidget)
+                        this.sending = false
+                    }
+                })
         },
 
     }))
