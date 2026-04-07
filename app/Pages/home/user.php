@@ -189,7 +189,7 @@
             </a>
         </div>
         <div class="col-3">
-            <a href="https://ruangai.id" target="_blank" class="text-decoration-none">
+            <a href="/beasiswa/intro" class="text-decoration-none">
                 <div class="menu-card text-center">
                     <div class="menu-icon-wrapper">
                         <img src="<?= base_url('mobilekit/assets/icon/Beasiswa.svg') ?>" class="menu-icon" alt="Beasiswa">
@@ -281,9 +281,9 @@
     </div>
 
     <!-- Referral -->
-    <div class="p-3 mb-3 rounded-4 bg-white d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
+    <!-- <div class="p-3 mb-3 rounded-4 bg-white d-flex flex-column flex-md-row gap-2 justify-content-between align-items-center">
         <span>Pengen dapet hadiah menarik?</span>
         <a href="https://ruangai.id/referral" target="_blank" class="btn btn-success rounded-pill"><i class="bi bi-coin"></i> Program Referral</a>
-    </div>
+    </div> -->
 
 </div>

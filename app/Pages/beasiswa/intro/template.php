@@ -189,11 +189,15 @@
 								<div id="card-progress-lesson"
 									class="card bg-light-primary border-0 shadow-none rounded-4 p-3 d-flex flex-column justify-content-between position-relative"
 									style="min-height: 160px">
+									<!-- Status indicator -->
+									<div class="position-absolute top-0 end-0 mt-2 me-2" x-show="data.pdf_read" style="z-index: 10;">
+										<i class="bi bi-check-circle-fill text-success fs-5"></i>
+									</div>
 									<div class="d-flex">
 										<h4 class="opacity-75">Modul PDF</h4>
 									</div>
 									<a href="javascript:void(0)"
-								@click.prevent="navigateToPdf()"
+										@click.prevent="navigateToPdf()"
 										class="btn btn-primary hover rounded-pill p-1 fs-6">Buka Modul</a>
 									<img src="https://image.web.id/images/icon-bg-book.th.png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="90" alt="">
 								</div>
@@ -204,20 +208,48 @@
 								<div class="col-md-8 mb-3">
 									<div id="card-progress-live"
 										class="card border-0 bg-light-secondary shadow-none rounded-4  p-3 d-flex flex-column justify-content-between position-relative"
+										:class="{'live-completed': data.next_live_session?.is_registered}"
 										style="min-height: 160px">
 										<div class="d-flex flex-column gap-2">
-											<h4 class="opacity-75 mb-0">Cara Mudah Bikin Video Keren Dari Nol Dengan Wan.Video & Flow</h4>
-											<!-- Tampilkan tanggal webinar beserta ikon kalender -->
-											<div class="">
-												<i class="bi bi-calendar-event text-muted"></i>
-												<span class="text-muted">28 September 2024, 19.00 WIB</span>
-											</div>
-											<a :href="`/beasiswa/intro/${data?.course?.id}/${data?.course?.slug}/live_session`"
-												class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6"
-												:class="{'disabled': !data?.pdf_read}">Daftar Webinar</a>
+											<h4 class="opacity-75 mb-0" x-text="data.next_live_session?.title || 'Live session belum tersedia.'"></h4>
+											<template x-if="data.next_live_session">
+												<div class="">
+													<i class="bi bi-calendar-event text-muted"></i>
+													<span class="text-muted" x-text="`${$heroicHelper.formatDate(data.next_live_session.meeting_date)}, ${data.next_live_session.meeting_time.substring(0, 5)} WIB`"></span>
+												</div>
+											</template>
+											<template x-if="!data.next_live_session">
+												<div class="text-muted">Belum ada jadwal live session terdekat.</div>
+											</template>
+											<template x-if="!data.pdf_read">
+												<div class="text-dark small p-2 rounded-3 bg-warning lh-base">Silakan pelajari dulu materi di modul PDF untuk dapat mengikuti webinar</div>
+											</template>
+											<template x-if="data.next_live_session?.is_registered">
+												<div class="text-white bg-success p-1 ps-3 rounded-3 small">Anda sudah terdaftar sebagai peserta</div>
+											</template>
+											<template x-if="data?.next_live_session">
+												<div>
+													<a x-show="data.next_live_session?.is_registered"
+													:href="data.next_live_session.zoom_join_link"
+													class="btn btn-success hover rounded-pill p-1 w-100 fs-6"
+													target="_blank">
+													Masuk Zoom
+													</a>
+
+													<button x-show="!data.next_live_session?.is_registered"
+													type="button"
+													@click.prevent="registerLiveSession()"
+													class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6"
+													:class="{'disabled': !data?.pdf_read}"
+													:disabled="!data?.pdf_read">
+													Daftar Webinar
+													</button>
+												</div>
+											</template>
 											<img src="https://image.web.id/images/icon-bg-webinar.th.png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="90" alt="">
 										</div>
 									</div>
+								</div>
 							</template>
 
 						</div>
@@ -238,7 +270,7 @@
 								<div>
 									<h5 class="text-light opacity-75 mb-0">Modul Video</h5>
 									<h4 class="fw-bold text-white">Dasar-dasar dan Penggunaan Generative AI</h4>
-									<p class="text-white opacity-75 mb-0" x-show="!data.has_valid_live_session">Kunci sampai kamu ikuti live session valid ≥ 30 menit.</p>
+									<p class="text-white mb-0 badge bg-warning" x-show="!data.has_valid_live_session">Modul video dapat diakses setelah kamu mengikuti live session</p>
 									</div>
 								</div>
 								<div class="d-flex align-items-center">

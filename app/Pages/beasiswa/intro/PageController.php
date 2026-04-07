@@ -124,6 +124,47 @@ class PageController extends BaseController
                 $this->data['is_expire']        = false;
             }
 
+            $today = date('Y-m-d');
+            $now   = date('H:i:s');
+            $nextLiveSession = $db->table('live_meetings')
+                ->select('live_meetings.*, live_batch.name as batch_name, live_meetings.zoom_link, live_meetings.zoom_meeting_id, live_meetings.meeting_duration')
+                ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
+                ->where('live_batch.course_id', $id)
+                ->where('live_batch.status', 'ongoing')
+                ->where('live_meetings.deleted_at', null)
+                ->groupStart()
+                    ->where('live_meetings.meeting_date >', $today)
+                    ->orWhere('live_meetings.meeting_date', $today)
+                ->groupEnd()
+                ->orderBy('live_meetings.meeting_date', 'ASC')
+                ->orderBy('live_meetings.meeting_time', 'ASC')
+                ->get()
+                ->getResultArray();
+
+            $this->data['next_live_session'] = null;
+            if ($nextLiveSession) {
+                foreach ($nextLiveSession as $session) {
+                    $duration = isset($session['meeting_duration']) ? intval($session['meeting_duration']) : 120;
+                    $meetingEndTime = date('H:i:s', strtotime('+' . $duration . ' minutes', strtotime($session['meeting_time'])));
+
+                    if ($session['meeting_date'] === $today && $now > $meetingEndTime) {
+                        continue;
+                    }
+
+                    $attendance = $db->table('live_attendance')
+                        ->where('user_id', $jwt->user_id)
+                        ->where('live_meeting_id', $session['id'])
+                        ->where('deleted_at', null)
+                        ->get()
+                        ->getRowArray();
+
+                    $session['is_registered'] = $attendance ? true : false;
+                    $session['zoom_join_link'] = $attendance['zoom_join_link'] ?? $session['zoom_link'] ?? null;
+                    $this->data['next_live_session'] = $session;
+                    break;
+                }
+            }
+
 
             // Get completed lessons for current user
             $completed = $db->table('course_lesson_progress')

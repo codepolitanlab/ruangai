@@ -116,7 +116,7 @@ class PageController extends BaseController
 
     public function postRegister() 
     {
-        $meeting_code = $this->request->getPost('meeting_code');
+        $meeting_code = $this->request->getVar('meeting_code');
         $Heroic = new \App\Libraries\Heroic();
         $jwt = $Heroic->checkToken();
 
@@ -129,7 +129,10 @@ class PageController extends BaseController
                         ->where('meeting_code', $meeting_code)
                         ->first();
         if ($registered) {
-            return redirect()->to($registered['zoom_join_link']);
+            return $this->respond([
+                'status' => 'success',
+                'zoom_join_link' => $registered['zoom_join_link']
+            ]);
 
         } else {
             // Get user by user_id
@@ -142,6 +145,15 @@ class PageController extends BaseController
                                                 ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
                                                 ->where('meeting_code', $meeting_code)
                                                 ->first();
+
+            if (!$liveMeeting) {
+                return $this->respond([
+                    'meeting_code' => $meeting_code,
+                    'status' => 'error',
+                    'message' => 'Meeting not found'
+                ]);
+            }
+
             $zoom_meeting_id  = $liveMeeting['zoom_meeting_id'] ?? null;
 
             // Register user to Zoom Meeting

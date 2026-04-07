@@ -5,6 +5,25 @@
 	x-init="init()">
 
 	<style>
+		#appCapsule {
+			max-width: 50% !important;
+		}
+		@media (max-width: 768px) {
+			#appCapsule {
+				max-width: 100% !important;
+			}
+		}
+
+		#pdf-progress-bar {
+			position: fixed;
+			top: 0;
+			left: 0;
+			height: 4px;
+			background-color: #79b2cd;
+			z-index: 1000;
+			transition: width 0.1s ease;
+		}
+
 		#pdf-container {
 			width: 100%;
 			background-color: white;
@@ -48,21 +67,23 @@
 		}
 	</style>
 
+	<div id="pdf-progress-bar" :style="`width: ${scrollProgress}%`"></div>
+
 	<div id="appCapsule">
 		<div class="appContent py-4">
-			<div class="mb-3">
+			<div class="mb-3 d-flex align-items-center gap-3">
 				<button @click="history.back()" class="btn rounded-4 px-2 btn-white bg-white text-primary">
 					<h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>
 				</button>
+				<h4 class="m-0">Modul PDF</h4>
 			</div>
 
 			<div class="bg-white rounded-4 p-3 mb-3">
-				<h4 class="mb-3">Modul PDF</h4>
 				<div id="pdf-container"></div>
 			</div>
 
 			<div class="p-3 mb-4">
-				<button id="understand-btn" @click="markPdfRead()" :disabled="!isScrolledToBottom" class="btn rounded-4">Saya sudah paham</button>
+				<button id="understand-btn" @click="markPdfRead()" :disabled="!isScrolledToBottom" class="btn btn-primary hover rounded-pill p-1 fs-6">Saya sudah paham</button>
 			</div>
 		</div>
 	</div>

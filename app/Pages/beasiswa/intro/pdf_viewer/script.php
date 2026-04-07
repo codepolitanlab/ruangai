@@ -2,6 +2,7 @@
   Alpine.data("pdfViewer", function() {
     return {
       isScrolledToBottom: false,
+      scrollProgress: 0,
       pdfUrl: '/pdf/Modul Belajar Dasar dan Penggunaan Kecerdasan Buatan - RuangAI.pdf',
       pdfLoaded: false,
 
@@ -85,6 +86,10 @@
           const scrollTop = window.scrollY;
           const docHeight = document.documentElement.scrollHeight;
           const winHeight = window.innerHeight;
+          const totalScroll = docHeight - winHeight;
+
+          // Calculate scroll progress percentage
+          this.scrollProgress = totalScroll > 0 ? Math.round((scrollTop / totalScroll) * 100) : 0;
 
           this.isScrolledToBottom = (scrollTop + winHeight >= docHeight - 50);
         });
@@ -106,7 +111,7 @@
 
           const data = await response.json();
           if (data.response_code === 200) {
-            $heroicHelper.toastr("PDF berhasil ditandai sebagai sudah dibaca!", "success", "bottom");
+            $heroicHelper.toastr("Modul PDF berhasil ditandai sebagai telah dibaca", "success", "bottom");
             setTimeout(() => {
               window.location.href = '/beasiswa/intro';
             }, 1000);

@@ -16,6 +16,7 @@
       ...base,
       title: "course intro",
       errorMessage: null,
+      registeringLiveSession: false,
 
       init() {
         base.init.call(this);
@@ -86,6 +87,61 @@
             this.data.is_expire = false
           }
         })
+      },
+
+      async registerLiveSession() {
+        if (!this.data.next_live_session || !this.data.next_live_session.meeting_code) {
+          return;
+        }
+
+        if (!this.data.pdf_read) {
+          $heroicHelper.toastr('Silakan selesaikan modul PDF terlebih dahulu sebelum mendaftar webinar.', 'warning', 'bottom');
+          return;
+        }
+
+        this.registeringLiveSession = true;
+        const token = localStorage.getItem('heroic_token');
+
+        axios.post('/beasiswa/zoom/register',
+          {
+            meeting_code: this.data.next_live_session.meeting_code
+          },
+          {
+            headers: {
+              Authorization: `${token}`
+            }
+          }
+        )
+        .then((response) => {
+          if (response.data.status === 'success') {
+            this.data.next_live_session.is_registered = true;
+            this.data.next_live_session.zoom_join_link =
+              response.data.zoom_join_link || this.data.next_live_session.zoom_join_link;
+
+            $heroicHelper.toastr(
+              'Berhasil daftar webinar. Link Zoom telah disiapkan.',
+              'success',
+              'bottom'
+            );
+          } else {
+            $heroicHelper.toastr(
+              response.data.message || 'Gagal mendaftar webinar.',
+              'error',
+              'bottom'
+            );
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          $heroicHelper.toastr(
+            'Gagal mendaftar webinar, silakan coba lagi.',
+            'error',
+            'bottom'
+          );
+        })
+        .finally(() => {
+          this.registeringLiveSession = false;
+        });
       },
 
       setVideoTeaser(url) {

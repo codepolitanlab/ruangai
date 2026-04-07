@@ -120,7 +120,7 @@
 
                         if (emailVerified) {
                             // Email terverifikasi, redirect ke pendaftaran
-                            this.$router.navigate(`/courses/zoom/${this.data.live_sessions[eventStatus][meetingIndex].meeting_code}`)
+                            this.$router.navigate(`/beasiswa/zoom/${this.data.live_sessions[eventStatus][meetingIndex].meeting_code}`)
                         } else {
                             // Tampilkan toast jika email belum diverifikasi
                             $heroicHelper.toastr('Silakan verifikasi email Anda terlebih dahulu.', 'warning', 'bottom');
