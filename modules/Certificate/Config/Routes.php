@@ -16,4 +16,6 @@ $routes->group(
     $routes->post('delete/(:num)', 'CertificateController::delete/$1');
     $routes->get('view/(:num)', 'CertificateController::view/$1');
     $routes->post('toggle-status/(:num)', 'CertificateController::toggleStatus/$1');
+    $routes->get('generate-codepolitan', 'CertificateController::generateCodepolitan');
+    $routes->post('generate-codepolitan', 'CertificateController::doGenerateCodepolitan');
 });

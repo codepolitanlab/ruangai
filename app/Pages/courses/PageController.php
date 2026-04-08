@@ -76,6 +76,22 @@ class PageController extends BaseController
 
         $this->data['premium_courses'] = $db->table('courses')->where('id !=', 1)->get()->getResult();
 
+        // Check if user has attended any live session for course_id = 1
+        $this->data['has_attended_live_session'] = $db->table('live_attendance')
+            ->where('user_id', $jwt->user_id)
+            ->where('course_id', 1)
+            ->where('deleted_at', null)
+            ->countAllResults() > 0;
+
+        // Check if user has a valid live session (duration >= 1800 seconds)
+        $this->data['has_valid_live_session'] = $db->table('live_attendance')
+            ->where('user_id', $jwt->user_id)
+            ->where('course_id', 1)
+            ->where('status', 1)
+            ->where('duration >=', 1800)
+            ->where('deleted_at', null)
+            ->countAllResults() > 0;
+
         return $this->respond($this->data);
     }
 }

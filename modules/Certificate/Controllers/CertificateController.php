@@ -406,6 +406,125 @@ class CertificateController extends AdminController
     }
 
     /**
+     * Show Codepolitan certificate generation form
+     */
+    public function generateCodepolitan()
+    {
+        $data = [
+            'title' => 'Generate Sertifikat via Codepolitan',
+        ];
+
+        $this->data = array_merge($this->data, $data);
+        return view('Certificate\Views\generate', $this->data);
+    }
+
+    /**
+     * Process Codepolitan certificate generation — reads name & email from uploaded CSV,
+     * hits Codepolitan API directly without any local DB lookup.
+     */
+    public function doGenerateCodepolitan()
+    {
+        // Prevent PHP timeout when processing large CSV files
+        set_time_limit(0);
+
+        $rules = [
+            'template_name' => 'required',
+            'title'         => 'required|max_length[500]',
+            'csv_file'      => 'uploaded[csv_file]|ext_in[csv_file,csv]|max_size[csv_file,2048]',
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('cp_errors', $this->validator->getErrors());
+        }
+
+        $entityId     = $this->request->getPost('entity_id') ?: null;
+        $templateName = $this->request->getPost('template_name');
+        $title        = $this->request->getPost('title');
+
+        // Parse CSV — expects header row with "name" and "email" columns
+        $file    = $this->request->getFile('csv_file');
+        $handle  = fopen($file->getTempName(), 'r');
+        $headers = array_map('strtolower', array_map('trim', fgetcsv($handle)));
+
+        $nameIdx  = array_search('name', $headers);
+        $emailIdx = array_search('email', $headers);
+
+        if ($nameIdx === false || $emailIdx === false) {
+            fclose($handle);
+            return redirect()->back()->withInput()->with('cp_error', 'CSV harus memiliki kolom "name" dan "email"');
+        }
+
+        $participants = [];
+        while (($row = fgetcsv($handle)) !== false) {
+            $name  = trim($row[$nameIdx] ?? '');
+            $email = strtolower(trim($row[$emailIdx] ?? ''));
+            if ($name !== '' && $email !== '') {
+                $participants[] = compact('name', 'email');
+            }
+        }
+        fclose($handle);
+
+        if (empty($participants)) {
+            return redirect()->back()->withInput()->with('cp_error', 'Tidak ada data peserta yang valid di CSV');
+        }
+
+        $results = [];
+        $success = 0;
+        $failed  = 0;
+
+        $client = new \GuzzleHttp\Client([
+            'base_uri' => 'https://app.codepolitan.com',
+            'timeout'  => 10,
+            'headers'  => [
+                'Client-Code' => 'DH',
+                'Appkey'      => '03ccebe8b6db653c255b6ec0e2097600f56cccf9b58bcdd8fc65f092611c67bf',
+            ],
+        ]);
+
+        foreach ($participants as $p) {
+            try {
+                $response = $client->post('/api/certificate/generate', [
+                    'form_params' => [
+                        'entity_id'         => 1,
+                        'entity_type'       => 'scholarship',
+                        'participant_name'  => $p['name'],
+                        'participant_email' => $p['email'],
+                        'title'             => $title,
+                        'template_name'     => $templateName,
+                    ],
+                ]);
+
+                $result = json_decode($response->getBody()->getContents(), true);
+
+                if (empty($result) || ($result['status'] ?? '') !== 'success') {
+                    $results[] = ['name' => $p['name'], 'email' => $p['email'], 'status' => 'failed', 'message' => $result['message'] ?? 'Unknown error dari Codepolitan'];
+                    $failed++;
+                    continue;
+                }
+
+                $results[] = ['name' => $p['name'], 'email' => $p['email'], 'status' => 'success', 'message' => 'Berhasil'];
+                $success++;
+
+            } catch (\GuzzleHttp\Exception\RequestException $e) {
+                $msg = $e->hasResponse()
+                    ? 'HTTP ' . $e->getResponse()->getStatusCode() . ': ' . $e->getResponse()->getBody()->getContents()
+                    : $e->getMessage();
+                $results[] = ['name' => $p['name'], 'email' => $p['email'], 'status' => 'failed', 'message' => $msg];
+                $failed++;
+            }
+        }
+
+        session()->setFlashdata('cp_generate_results', $results);
+        session()->setFlashdata('cp_generate_summary', [
+            'total'   => count($participants),
+            'success' => $success,
+            'failed'  => $failed,
+        ]);
+
+        return redirect()->to(admin_url() . 'certificates/generate-codepolitan');
+    }
+
+    /**
      * Get available entity types
      */
     private function getEntityTypes()

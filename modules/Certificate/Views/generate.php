@@ -2,6 +2,122 @@
 
 <?php $this->section('main') ?>
 <div class="container-fluid py-4">
+
+    <!-- Card: Generate via Codepolitan API -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-certificate me-2"></i> Generate Sertifikat via Codepolitan
+                    </h5>
+                    <span class="badge bg-light text-primary">Codepolitan API</span>
+                </div>
+
+                <div class="card-body">
+                    <?php if (session()->getFlashdata('cp_error')): ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <?= session()->getFlashdata('cp_error') ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (session()->getFlashdata('cp_errors')): ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <ul class="mb-0">
+                                <?php foreach (session()->getFlashdata('cp_errors') as $err): ?>
+                                    <li><?= esc($err) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php $cpSummary = session()->getFlashdata('cp_generate_summary'); ?>
+                    <?php if ($cpSummary): ?>
+                        <div class="alert alert-<?= $cpSummary['failed'] === 0 ? 'success' : ($cpSummary['success'] === 0 ? 'danger' : 'warning') ?> alert-dismissible fade show" role="alert">
+                            <strong>Hasil Generate Codepolitan:</strong>
+                            <?= $cpSummary['success'] ?> berhasil,
+                            <?= $cpSummary['failed'] ?> gagal
+                            dari total <?= $cpSummary['total'] ?> email.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php $cpResults = session()->getFlashdata('cp_generate_results'); ?>
+                    <?php if ($cpResults): ?>
+                        <div class="card mb-4">
+                            <div class="card-header"><h6 class="mb-0">Detail Hasil Generate Codepolitan</h6></div>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered mb-0">
+                                    <thead class="table-light">
+                                        <tr><th>#</th><th>Nama</th><th>Email</th><th>Status</th><th>Keterangan</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($cpResults as $i => $r): ?>
+                                            <tr>
+                                                <td><?= $i + 1 ?></td>
+                                                <td><?= esc($r['name']) ?></td>
+                                                <td><?= esc($r['email']) ?></td>
+                                                <td>
+                                                    <?php if ($r['status'] === 'success'): ?>
+                                                        <span class="badge bg-success">Berhasil</span>
+                                                    <?php else: ?>
+                                                        <span class="badge bg-danger">Gagal</span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td><?= esc($r['message']) ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <form action="<?= admin_url() ?>certificates/generate-codepolitan" method="post" enctype="multipart/form-data">
+                        <?= csrf_field() ?>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Entity ID <small class="text-muted">(opsional)</small></label>
+                                    <input type="number" name="entity_id" class="form-control" value="<?= old('entity_id') ?>" min="1">
+                                    <small class="text-muted">ID course / event / challenge di Codepolitan</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Template Name <span class="text-danger">*</span></label>
+                                    <input type="text" name="template_name" class="form-control" value="<?= old('template_name', 'devhandal2026') ?>" required>
+                                    <small class="text-muted">Nama template di Codepolitan (contoh: devhandal2026)</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Judul Sertifikat <span class="text-danger">*</span></label>
+                            <input type="text" name="title" class="form-control" value="<?= old('title', 'Program DevHandal 2026') ?>" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Upload CSV Peserta <span class="text-danger">*</span></label>
+                            <input type="file" name="csv_file" class="form-control" accept=".csv" required>
+                            <small class="text-muted">CSV harus memiliki header kolom <code>name</code> dan <code>email</code>.</small>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-1"></i> Generate via Codepolitan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card: Generate Internal -->
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -108,17 +224,6 @@
                         <?= csrf_field() ?>
 
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Tipe Entity <span class="text-danger">*</span></label>
-                                    <select name="entity_type" class="form-select" required>
-                                        <option value="">Pilih Tipe</option>
-                                        <?php foreach ($entity_types as $key => $label): ?>
-                                            <option value="<?= $key ?>" <?= old('entity_type') == $key ? 'selected' : '' ?>><?= esc($label) ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                            </div>
 
                             <div class="col-md-6">
                                 <div class="mb-3">
@@ -129,15 +234,6 @@
                             </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Template <span class="text-danger">*</span></label>
-                            <select name="template_name" class="form-select" required>
-                                <option value="">Pilih Template</option>
-                                <?php foreach ($templates as $key => $label): ?>
-                                    <option value="<?= $key ?>" <?= old('template_name') == $key ? 'selected' : '' ?>><?= esc($label) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
 
                         <div class="mb-3">
                             <label class="form-label">Judul <span class="text-danger">*</span></label>
@@ -162,6 +258,7 @@
                     </form>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </div>
