@@ -114,7 +114,7 @@
 
                 <div class="text-center">
                     <p style="color: #718096; font-size: 1rem; margin: 0;">
-                        Belum punya akun? <a href="/registrasi" style="color: #5CADC9; text-decoration: none; font-weight: 600;">Daftar</a>
+                        Belum punya akun? <a href="https://www.ruangai.id/registration" style="color: #5CADC9; text-decoration: none; font-weight: 600;">Daftar</a>
                     </p>
                 </div>
             </div>
