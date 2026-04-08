@@ -47,6 +47,7 @@
 			box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
 			margin: 0;
 			text-align: center;
+			z-index: 1000;
 		}
 		
 		#understand-btn {
