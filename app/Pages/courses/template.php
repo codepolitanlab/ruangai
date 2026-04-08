@@ -37,23 +37,35 @@
 					<div class="bg-white px-3 py-4 rounded-4 mb-4">
 						<h5 class="fw-bold mb-3">Kelas yang kamu miliki</h5>
 						<template x-for="course in data.courses">
-							<a :href="`/courses/intro/${course.id}/${course.slug}`" class="link">
-								<div class="card shadow-none overflow-hidden mb-3" style="background:#112f3d">
-									<div class="d-flex align-items-center overflow-hidden">
-										<img :src="course.thumbnail" class="rounded-3 img-course" alt="thumbnail kelas">
-										<div class="flex-grow-1 ms-3 p-3">
-											<p class="fw-bold h5 text-white" x-text="course.course_title"></p>
-											<div class="d-flex justify-content-between align-items-center text-white">
-												<p class="mb-1"><span class="fs-4" style="color: #7BD5FF" x-text="course.total_completed"></span> dari <span x-text="course.total_module"></span> materi selesai</p>
-												<p class="fw-bold mb-1" x-text="Math.round(course?.total_completed/course?.total_module*100) + '%'"></p>
-											</div>
-											<div class="progress" style="background: #343434">
-												<div class="progress-bar" role="progressbar" :style="`width: ${Math.round(course.total_completed/course.total_module*100)}%; background: #7BD5FF`" aria-valuenow="Math.round(course?.total_completed/course?.total_module*100)" aria-valuemin="0" aria-valuemax="100"></div>
+							<div class="position-relative">
+								<template x-if="Math.round(course?.total_completed/course?.total_module*100) < 100">
+									<div class="position-absolute top-0 start-0 end-0 bottom-0 d-flex align-items-center justify-content-center bg-dark bg-opacity-75 rounded-3" style="z-index: 10;">
+										<div class="text-center text-white">
+											<i class="bi bi-lock-fill display-4 mb-2"></i>
+											<p class="mb-0 fw-bold">Belum bisa diakses</p>
+											<small class="d-block mb-3">Selesaikan materi untuk membuka akses</small>
+											<a href="/beasiswa/intro/pdf_viewer" class="btn btn-primary btn-sm">Buka Modul PDF</a>
+										</div>
+									</div>
+								</template>
+								<a :href="`/courses/intro/${course.id}/${course.slug}`" class="link" :class="{'pointer-events-none': Math.round(course?.total_completed/course?.total_module*100) < 100}">
+									<div class="card shadow-none overflow-hidden mb-3" style="background:#112f3d">
+										<div class="d-flex align-items-center overflow-hidden">
+											<img :src="course.thumbnail" class="rounded-3 img-course" alt="thumbnail kelas">
+											<div class="flex-grow-1 ms-3 p-3">
+												<p class="fw-bold h5 text-white" x-text="course.course_title"></p>
+												<div class="d-flex justify-content-between align-items-center text-white">
+													<p class="mb-1"><span class="fs-4" style="color: #7BD5FF" x-text="course.total_completed"></span> dari <span x-text="course.total_module"></span> materi selesai</p>
+													<p class="fw-bold mb-1" x-text="Math.round(course?.total_completed/course?.total_module*100) + '%'"></p>
+												</div>
+												<div class="progress" style="background: #343434">
+													<div class="progress-bar" role="progressbar" :style="`width: ${Math.round(course.total_completed/course.total_module*100)}%; background: #7BD5FF`" aria-valuenow="Math.round(course?.total_completed/course?.total_module*100)" aria-valuemin="0" aria-valuemax="100"></div>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-							</a>
+								</a>
+							</div>
 						</template>
 					</div>
 				</template>
