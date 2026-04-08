@@ -15,10 +15,10 @@
 		}
 
 		#pdf-progress-bar {
-			position: fixed;
+			position: absolute;
 			top: 0;
 			left: 0;
-			height: 4px;
+			height: 5px;
 			background-color: #79b2cd;
 			z-index: 1000;
 			transition: width 0.1s ease;
@@ -42,7 +42,7 @@
 			bottom: 0;
 			left: 0;
 			width: 100%;
-			padding: 10px;
+			padding: 20px 20px 15px;
 			background-color: white;
 			box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
 			margin: 0;
@@ -81,8 +81,6 @@
 		}
 	</style>
 
-	<div id="pdf-progress-bar" :style="`width: ${scrollProgress}%`"></div>
-
 	<div id="appCapsule">
 		<div class="appContent py-4">
 			<div class="mb-3 d-flex align-items-center gap-3">
@@ -96,7 +94,9 @@
 				<div id="pdf-container"></div>
 			</div>
 
-			<div class="p-3" id="understand-btn-container">
+			<div id="understand-btn-container">
+				<div id="pdf-progress-bar" :style="`width: ${scrollProgress}%`"></div>
+
 				<span @click="!isScrolledToBottom && $heroicHelper.toastr('Baca modul sampai slide terakhir terlebih dahulu', 'warning', 'bottom')" style="display:inline-block; width:100%">
 					<button id="understand-btn" @click="markPdfRead()" :disabled="!isScrolledToBottom" class="btn btn-primary hover rounded-pill p-1 fs-6">Saya sudah paham</button>
 				</span>
