@@ -38,7 +38,7 @@
 						<h5 class="fw-bold mb-3">Kelas yang kamu miliki</h5>
 						<template x-for="course in data.courses">
 							<div class="position-relative">
-								<template x-if="Math.round(course?.total_completed/course?.total_module*100) < 100">
+								<template x-if="course.id == 1 && course.progress < 100">
 									<div class="position-absolute top-0 start-0 end-0 bottom-0 d-flex align-items-center justify-content-center bg-dark bg-opacity-75 rounded-3" style="z-index: 10;">
 										<div class="text-center text-white">
 											<i class="bi bi-lock-fill display-4 mb-2"></i>
@@ -48,7 +48,7 @@
 										</div>
 									</div>
 								</template>
-								<a :href="`/courses/intro/${course.id}/${course.slug}`" class="link" :class="{'pointer-events-none': Math.round(course?.total_completed/course?.total_module*100) < 100}">
+								<a href="#" @click.prevent="navigateToTargetLesson(course.id, course.slug)" class="link" :class="{'pointer-events-none': course.id == 1 && Math.round(course?.total_completed/course?.total_module*100) < 100}">
 									<div class="card shadow-none overflow-hidden mb-3" style="background:#112f3d">
 										<div class="d-flex align-items-center overflow-hidden">
 											<img :src="course.thumbnail" class="rounded-3 img-course" alt="thumbnail kelas">
