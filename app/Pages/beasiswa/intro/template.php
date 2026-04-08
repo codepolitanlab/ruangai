@@ -212,6 +212,7 @@
 										style="min-height: 160px">
 										<div class="d-flex flex-column gap-2">
 											<h4 class="opacity-75 mb-0" x-text="data.next_live_session?.title || 'Live session belum tersedia.'"></h4>
+											<h5 class="text-muted mb-1" x-show="data.pdf_read" x-text="data.next_live_session?.subtitle || ''"></h5>
 											<template x-if="data.next_live_session">
 												<div class="">
 													<i class="bi bi-calendar-event text-muted"></i>
@@ -230,19 +231,19 @@
 											<template x-if="data?.next_live_session">
 												<div>
 													<a x-show="data.next_live_session?.is_registered"
-													:href="data.next_live_session.zoom_join_link"
-													class="btn btn-success hover rounded-pill p-1 w-100 fs-6"
-													target="_blank">
-													Masuk Zoom
+														:href="data.next_live_session.zoom_join_link"
+														class="btn btn-success hover rounded-pill p-1 w-100 fs-6"
+														target="_blank">
+														Masuk Zoom
 													</a>
 
 													<button x-show="!data.next_live_session?.is_registered"
-													type="button"
-													@click.prevent="registerLiveSession()"
-													class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6"
-													:class="{'disabled': !data?.pdf_read}"
-													:disabled="!data?.pdf_read">
-													Daftar Webinar
+														type="button"
+														@click.prevent="registerLiveSession()"
+														class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6"
+														:class="{'disabled': !data?.pdf_read}"
+														:disabled="!data?.pdf_read">
+														Daftar Webinar
 													</button>
 												</div>
 											</template>
@@ -264,16 +265,13 @@
 							'bg-light-primary': !data.graduate}"
 								style="min-height: 160px">
 								<div class="d-flex">
-									<div class="me-3 bg-white text-dark rounded-4 p-2 d-flex align-items-center  justify-content-center" style="width: 50px;height: 50px">
-									<i class="bi h3 m-0" :class="data.has_valid_live_session ? 'bi-check-circle text-success' : 'bi-lock-fill'"></i>
-								</div>
-								<div>
-									<h5 class="text-light opacity-75 mb-0">Modul Video</h5>
-									<h4 class="fw-bold text-white">Dasar-dasar dan Penggunaan Generative AI</h4>
-									<p class="text-white mb-0 badge bg-warning" x-show="!data.has_valid_live_session">Modul video dapat diakses setelah kamu mengikuti live session</p>
+									<div>
+										<h5 class="opacity-75 mb-0">Modul Video</h5>
+										<h4 class="fw-bold">Dasar-dasar dan Penggunaan Generative AI</h4>
+										<p class="text-dark small p-2 rounded-3 bg-warning lh-base" x-show="!data.has_valid_live_session">Modul video dapat diakses setelah kamu mengikuti live session</p>
 									</div>
 								</div>
-								<div class="d-flex align-items-center">
+								<div class="d-flex align-items-center" :class="data.has_valid_live_session ? 'd-flex' : 'd-none'">
 									<div class="progress flex-grow-1 me-2 " style="height: 5px;">
 										<div class="progress-bar" role="progressbar" :style="`width: ${Math.round(data.lesson_completed/data.total_lessons*100)}%`"></div>
 									</div>

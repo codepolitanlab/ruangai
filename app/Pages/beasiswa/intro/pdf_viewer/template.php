@@ -6,7 +6,7 @@
 
 	<style>
 		#appCapsule {
-			max-width: 50% !important;
+			max-width: 780px !important;
 		}
 		@media (max-width: 768px) {
 			#appCapsule {
@@ -37,16 +37,29 @@
 			height: auto;
 		}
 
+		#understand-btn-container {
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			padding: 10px;
+			background-color: white;
+			box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+			margin: 0;
+			text-align: center;
+		}
+		
 		#understand-btn {
 			padding: 12px 24px;
 			background-color: #007bff;
 			color: white;
 			border: none;
 			border-radius: 8px;
-			cursor: not-allowed;
 			font-size: 16px;
 			font-weight: 500;
 			width: 100%;
+			max-width: 400px;
+			margin: 0 auto;
 			transition: all 0.3s ease;
 		}
 
@@ -82,8 +95,10 @@
 				<div id="pdf-container"></div>
 			</div>
 
-			<div class="p-3 mb-4">
-				<button id="understand-btn" @click="markPdfRead()" :disabled="!isScrolledToBottom" class="btn btn-primary hover rounded-pill p-1 fs-6">Saya sudah paham</button>
+			<div class="p-3" id="understand-btn-container">
+				<span @click="!isScrolledToBottom && $heroicHelper.toastr('Baca modul sampai slide terakhir terlebih dahulu', 'warning', 'bottom')" style="display:inline-block; width:100%">
+					<button id="understand-btn" @click="markPdfRead()" :disabled="!isScrolledToBottom" class="btn btn-primary hover rounded-pill p-1 fs-6">Saya sudah paham</button>
+				</span>
 			</div>
 		</div>
 	</div>
