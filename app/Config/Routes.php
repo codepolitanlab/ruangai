@@ -41,6 +41,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
     $routes->get('scholarship', 'ScholarshipController::index');
     $routes->post('scholarship', 'ScholarshipController::register');
     $routes->get('scholarship/settings', 'ScholarshipController::frontendSettings');
+    $routes->get('scholarship/live-meetings/nearest', 'ScholarshipController::nearestLiveMeeting');
     $routes->get('scholarship/syncGraduatedB1', 'ScholarshipController::syncGraduatedB1');
 
     // Route challenge alibaba
