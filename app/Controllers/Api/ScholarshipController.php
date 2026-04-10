@@ -454,7 +454,7 @@ class ScholarshipController extends ResourceController
         $now      = date('Y-m-d H:i:s');
 
         $meeting = $this->db->table('live_meetings')
-            ->select('live_meetings.id, live_meetings.meeting_code, live_meetings.title, live_meetings.subtitle, live_meetings.mentor_name, live_meetings.meeting_date, live_meetings.meeting_time, live_meetings.meeting_duration, live_meetings.status, live_meetings.zoom_link, live_meetings.zoom_meeting_id, live_meetings.thumbnail, live_meetings.whatsapp_group, live_batch.id as live_batch_id, live_batch.name as batch_name, live_batch.course_id')
+            ->select('live_meetings.meeting_code, live_meetings.title, live_meetings.subtitle, live_meetings.mentor_name, live_meetings.meeting_date, live_meetings.meeting_time, live_meetings.meeting_duration, live_meetings.status, live_meetings.zoom_link, live_meetings.zoom_meeting_id, live_meetings.thumbnail, live_meetings.whatsapp_group, live_batch.name as batch_name')
             ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
             ->where('live_batch.course_id', $courseId)
             ->where('live_batch.status', 'ongoing')
