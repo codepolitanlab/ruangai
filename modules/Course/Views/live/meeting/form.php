@@ -75,6 +75,14 @@
                                 <input type="url" name="zoom_link" id="zoom_link" class="form-control" value="<?= $meeting['zoom_link'] ?? '' ?>">
                             </div>
                             <div class="mb-3">
+                                <label for="thumbnail" class="form-label">Thumbnail URL</label>
+                                <input type="url" name="thumbnail" id="thumbnail" class="form-control" value="<?= $meeting['thumbnail'] ?? '' ?>" placeholder="https://...">
+                            </div>
+                            <div class="mb-3">
+                                <label for="whatsapp_group" class="form-label">WhatsApp Group URL</label>
+                                <input type="url" name="whatsapp_group" id="whatsapp_group" class="form-control" value="<?= $meeting['whatsapp_group'] ?? '' ?>" placeholder="https://chat.whatsapp.com/...">
+                            </div>
+                            <div class="mb-3">
                                 <label for="recording_link" class="form-label">
                                     Link Recording <br>
                                     <small class="text-muted">Masukkan Video ID dari Bunny CDN (contoh: 613ebf1a-6fee-4f81-81ae-85f026ffcbe9)</small>

@@ -44,6 +44,8 @@
                                 <th width="20%">Mentor</th>
                                 <th width="25%" class="text-nowrap">Meeting Time</th>
                                 <th width="20%">Zoom Meeting ID/Link</th>
+                                <th width="20%">Thumbnail</th>
+                                <th width="20%">WhatsApp Group</th>
                                 <th width="20%">Recording URL</th>
                                 <th width="20%">Feedback URL</th>
                                 <th width="20%">Module URL</th>
@@ -87,6 +89,20 @@
                                                 <span class="text-muted">Meeting code not set</span>
                                             <?php endif; ?>
                                         </div>
+                                    </td>
+                                    <td>
+                                        <?php if (!empty($meeting['thumbnail'])): ?>
+                                            <a href="<?= $meeting['thumbnail'] ?>" target="_blank">Open thumbnail</a>
+                                        <?php else: ?>
+                                            <span class="text-muted">Not available</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <?php if (!empty($meeting['whatsapp_group'])): ?>
+                                            <a href="<?= $meeting['whatsapp_group'] ?>" target="_blank">Join group</a>
+                                        <?php else: ?>
+                                            <span class="text-muted">Not available</span>
+                                        <?php endif; ?>
                                     </td>
                                     <td>
                                         <?php if ($meeting['recording_link']): ?>
