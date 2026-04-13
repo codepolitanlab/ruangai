@@ -198,7 +198,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-3">
+        <!-- <div class="col-3">
             <a href="#" class="text-decoration-none">
                 <div class="menu-card text-center">
                     <div class="menu-icon-wrapper">
@@ -207,7 +207,7 @@
                     <p class="menu-text text-dark">Lomba GenAI</p>
                 </div>
             </a>
-        </div>
+        </div> -->
         <div class="col-3">
             <a href="/courses/reward" class="text-decoration-none">
                 <div class="menu-card text-center">
