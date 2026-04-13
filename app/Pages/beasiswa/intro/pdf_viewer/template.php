@@ -30,11 +30,18 @@
 			margin-bottom: 20px;
 		}
 
-		#pdf-container canvas {
+		#pdf-container .pdf-image-link {
+			display: block;
+			margin: 0;
+			text-decoration: none;
+		}
+
+		#pdf-container .pdf-image {
 			display: block;
 			margin: 10px auto;
 			max-width: 100%;
 			height: auto;
+			border-radius: 8px;
 		}
 
 		#understand-btn-container {
@@ -87,7 +94,7 @@
 				<button @click="history.back()" class="btn rounded-4 px-2 btn-white bg-white text-primary">
 					<h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>
 				</button>
-				<h4 class="m-0">Modul PDF</h4>
+				<h4 class="m-0">Modul</h4>
 			</div>
 
 			<div class="bg-white rounded-4 p-3 mb-3">
