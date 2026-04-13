@@ -15,14 +15,14 @@ $menus = [
         'module' => 'misi_beasiswa',
         'position' => ['bottom', 'sidebar']
     ],
-    [
-        'label'  => 'Lomba GenAI',
-        'url'    => '/challenge/submit',
-        'icon'   => 'bi bi-trophy',
-        'module' => 'challenge',
-        'position' => ['bottom', 'sidebar'],
-        'badge'  => ['warning', 'NEW'],
-    ],
+    // [
+    //     'label'  => 'Lomba GenAI',
+    //     'url'    => '/challenge/submit',
+    //     'icon'   => 'bi bi-trophy',
+    //     'module' => 'challenge',
+    //     'position' => ['bottom', 'sidebar'],
+    //     'badge'  => ['warning', 'NEW'],
+    // ],
     // [
     //     'label'  => 'Kelas Saya',
     //     'url'    => '/courses',
