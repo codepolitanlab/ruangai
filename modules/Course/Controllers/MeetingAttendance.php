@@ -118,12 +118,39 @@ class MeetingAttendance extends AdminController
                     $this->model->where('course_students.graduate', '0');
                 }
             }
-        } else {
-            $this->model->orderBy('live_attendance.created_at', 'desc');
         }
 
+        // Sorting
+        $allowedSortColumns = [
+            'name'        => 'users.name',
+            'email'       => 'users.email',
+            'duration'    => 'live_attendance.duration',
+            'status'      => 'live_attendance.status',
+            'graduate'    => 'course_students.graduate',
+            'graduate_at' => 'course_students.graduate_at',
+            'comentor'    => 'reference_comentor',
+            'created_at'  => 'live_attendance.created_at',
+        ];
+
+        $sortBy = (string) $this->request->getGet('sort_by');
+        $sortOrder = strtolower((string) $this->request->getGet('sort_order'));
+
+        if (! isset($allowedSortColumns[$sortBy])) {
+            $sortBy = 'created_at';
+        }
+
+        if (! in_array($sortOrder, ['asc', 'desc'], true)) {
+            $sortOrder = 'desc';
+        }
+
+        $this->model->orderBy($allowedSortColumns[$sortBy], $sortOrder);
+
         // Get perpage value from request, default to 10
-        $perpage = (int) $this->request->getGet('perpage') ?: 10;
+        $allowedPerPage = [10, 25, 50, 100];
+        $perpage = (int) $this->request->getGet('perpage');
+        if (! in_array($perpage, $allowedPerPage, true)) {
+            $perpage = 10;
+        }
 
         // Paginate results
         $data['attenders'] = $this->model->asObject()->paginate($perpage);
@@ -139,6 +166,8 @@ class MeetingAttendance extends AdminController
         // Pass filter values and perpage to view
         $data['filter']       = $filter;
         $data['per_page']     = $perpage;
+        $data['sort_by']      = $sortBy;
+        $data['sort_order']   = $sortOrder;
         $data['current_page'] = $this->request->getGet('page') ?? 1;
         $data['live_meeting'] = model('Course\Models\LiveMeetingModel')->where('id', $meeting_id)->first();
 
