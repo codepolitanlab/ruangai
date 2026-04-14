@@ -1,6 +1,7 @@
 <script>
 	Alpine.data('login', (redirect) => {
 		return {
+			defaultRedirect: "/beasiswa/intro",
 			title: "Login",
 			showPwd: false,
 			errorMessage: null,
@@ -56,7 +57,7 @@
 							Alpine.store('core').sessionToken = localStorage.getItem("heroic_token");
 
 							setTimeout(() => {
-							let target = '/';
+							let target = this.defaultRedirect;
 							if (this.redirect) {
 								const r = String(this.redirect).trim();
 								if (/^https?:\/\//i.test(r)) {
