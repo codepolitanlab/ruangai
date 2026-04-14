@@ -541,12 +541,13 @@ class MeetingAttendance extends AdminController
         $liveAttendanceModel = new \App\Models\LiveAttendance();
 
         //Get all data live attendance by meeting id
-        $liveAttendanceModel->select('users.name, users.phone, users.email, live_attendance.duration, IF(live_attendance.duration > 1800, 1, NULL) AS duration_valid, live_attendance.meeting_feedback_id, live_attendance.status as attendance_valid, course_students.graduate, live_attendance.created_at');
+        $liveAttendanceModel->select('users.name, users.phone, users.email, live_attendance.duration, IF(live_attendance.duration > 1800, 1, NULL) AS duration_valid, live_attendance.meeting_feedback_id, course_students.graduate, course_students.graduate_at, reference_comentor, live_attendance.created_at');
         $liveAttendanceModel->join('users', 'users.id = live_attendance.user_id');
+        $liveAttendanceModel->join('scholarship_participants', 'scholarship_participants.user_id = live_attendance.user_id');
         $liveAttendanceModel->join('course_students', 'course_students.user_id = users.id  AND live_attendance.course_id = course_students.course_id');
         $liveAttendanceModel->join('live_meetings', 'live_meetings.id = live_attendance.live_meeting_id');
         $liveAttendanceModel->where('live_meetings.id', $meeting_id);
-        $liveAttendanceModel->groupBy('live_attendance.id, users.name, users.phone, users.email, live_attendance.duration, course_students.graduate, live_attendance.status, live_attendance.created_at, live_attendance.meeting_feedback_id');
+        $liveAttendanceModel->groupBy('live_attendance.id, users.name, users.phone, users.email, live_attendance.duration, course_students.graduate, course_students.graduate_at, reference_comentor, live_attendance.status, live_attendance.created_at, live_attendance.meeting_feedback_id');
         $participants = $liveAttendanceModel->findAll();
 
         // Name file export
