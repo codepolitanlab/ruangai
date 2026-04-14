@@ -76,6 +76,7 @@
                                 <th>Status Hadir</th>
                                 <th>Graduate</th>
                                 <th>Tanggal Lulus</th>
+                                <th>Comentor</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -106,6 +107,7 @@
                                             <option value="0" <?= @$filter['graduate'] === '0' ? 'selected' : '' ?>>Belum Lulus</option>
                                         </select>
                                     </td>
+                                    <td></td>
                                     <td></td>
                                     <td>
                                         <div class="btn-group">
@@ -138,7 +140,7 @@
                                     <td><?= ($attender->status ?? '0') === '1' ? '✅' : '❌' ?></td>
                                     <td><?= ($attender->graduate ?? '0') === '1' ? '✅' : '❌' ?></td>
                                     <td><?= ($attender->graduate_at ?? null) ? date('d F Y H:i', strtotime($attender->graduate_at)) : '-' ?></td>
-
+                                    <td><?= $attender->reference_comentor ?? '-' ?></td>
                                     <td class="text-end">
                                         <div class="btn-group" role="group">
                                             <a href="<?= site_url(urlScope() . '/course/live/meeting/' . $live_meeting['id'] . '/attendant/' . $attender->id . '/edit'); ?>"
