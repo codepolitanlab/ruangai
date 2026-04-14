@@ -73,9 +73,9 @@
                                 <th>Email</th>
                                 <th>Zoom Join Link</th>
                                 <th>Duration (s)</th>
-                                <th>Feedback</th>
-                                <th>Status</th>
+                                <th>Status Hadir</th>
                                 <th>Graduate</th>
+                                <th>Tanggal Lulus</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -93,13 +93,6 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <select name="filter[feedback]" class="form-select form-select-sm">
-                                            <option value="">Semua</option>
-                                            <option value="1" <?= @$filter['feedback'] === '1' ? 'selected' : '' ?>>Mengisi</option>
-                                            <option value="0" <?= @$filter['feedback'] === '0' ? 'selected' : '' ?>>Belum Mengisi</option>
-                                        </select>
-                                    </td>
-                                    <td>
                                         <select name="filter[status]" class="form-select form-select-sm">
                                             <option value="">Semua</option>
                                             <option value="1" <?= @$filter['status'] === '1' ? 'selected' : '' ?>>Valid</option>
@@ -113,6 +106,7 @@
                                             <option value="0" <?= @$filter['graduate'] === '0' ? 'selected' : '' ?>>Belum Lulus</option>
                                         </select>
                                     </td>
+                                    <td></td>
                                     <td>
                                         <div class="btn-group">
                                             <button type="submit" class="btn btn-primary">Filter</button>
@@ -141,24 +135,10 @@
                                         </span>
                                     </td>
                                     <td class="<?= $attender->duration >= 1800 ? 'text-success' : 'text-danger' ?>"><?= $attender->duration ?? '-' ?></td>
-                                    <td>
-                                        <?php if ($attender->meeting_feedback_id ?? null): ?>
-                                            ✅
-                                            <button
-                                                type="button"
-                                                class="btn btn-sm btn-link text-nowrap"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#feedbackModal"
-                                                data-feedback='<?= json_encode($attender->feedback_content, JSON_HEX_APOS | JSON_HEX_QUOT) ?>'>
-                                                <span class="bi bi-search"></span> Lihat
-                                            </button>
-                                        <?php else: ?>
-                                            ❌
-                                        <?php endif ?>
-                                    </td>
-
                                     <td><?= ($attender->status ?? '0') === '1' ? '✅' : '❌' ?></td>
                                     <td><?= ($attender->graduate ?? '0') === '1' ? '✅' : '❌' ?></td>
+                                    <td><?= ($attender->graduate_at ?? null) ? date('d F Y H:i', strtotime($attender->graduate_at)) : '-' ?></td>
+
                                     <td class="text-end">
                                         <div class="btn-group" role="group">
                                             <a href="<?= site_url(urlScope() . '/course/live/meeting/' . $live_meeting['id'] . '/attendant/' . $attender->id . '/edit'); ?>"
