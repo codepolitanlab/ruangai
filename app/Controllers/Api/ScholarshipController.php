@@ -448,6 +448,32 @@ class ScholarshipController extends ResourceController
         return $this->respond($data);
     }
 
+    public function nearestLiveMeeting()
+    {
+        $courseId = (int) ($this->request->getGet('course_id') ?? 1);
+        $now      = date('Y-m-d H:i:s');
+
+        $meetings = $this->db->table('live_meetings')
+            ->select('live_meetings.meeting_code, live_meetings.title, live_meetings.subtitle, live_meetings.mentor_name, live_meetings.meeting_date, live_meetings.meeting_time, live_meetings.meeting_duration, live_meetings.status, live_meetings.zoom_link, live_meetings.zoom_meeting_id, live_meetings.thumbnail, live_meetings.whatsapp_group, live_batch.name as batch_name')
+            ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
+            ->where('live_batch.course_id', $courseId)
+            ->where('live_batch.status', 'ongoing')
+            ->where('live_batch.deleted_at', null)
+            ->where('live_meetings.deleted_at', null)
+            ->where("CONCAT(live_meetings.meeting_date, ' ', live_meetings.meeting_time) >=", $now)
+            ->whereNotIn('live_meetings.status', ['completed', 'canceled'])
+            ->orderBy('live_meetings.meeting_date', 'ASC')
+            ->orderBy('live_meetings.meeting_time', 'ASC')
+            ->limit(5)
+            ->get()
+            ->getResultArray();
+
+        return $this->respond([
+            'status' => 'success',
+            'data' => $meetings,
+        ]);
+    }
+
     public function syncGraduatedB1()
     {
         // Get course_students yang progressnya sudah 100 tapi graduate masih 0

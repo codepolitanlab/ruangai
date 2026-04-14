@@ -3,83 +3,104 @@
     return {
       isScrolledToBottom: false,
       scrollProgress: 0,
-      pdfUrl: '/pdf/Modul Belajar Dasar dan Penggunaan Kecerdasan Buatan - RuangAI.pdf',
-      pdfLoaded: false,
+      imageBasePath: '/module-pdf',
+      totalImages: 76,
+      imagesLoaded: false,
 
       init() {
         this.setupScrollListener();
-        this.loadPdfJs().then(() => {
-          if (!this.pdfLoaded) {
-            this.pdfLoaded = true;
-            this.loadPdf();
+        this.loadFancyboxAssets().then(() => {
+          if (!this.imagesLoaded) {
+            this.imagesLoaded = true;
+            this.renderImages();
           }
         });
       },
 
-      loadPdfJs() {
+      loadFancyboxAssets() {
         return new Promise((resolve) => {
-          if (typeof pdfjsLib !== 'undefined') {
+          const cssId = 'fancybox-css';
+          const jsId = 'fancybox-js';
+
+          const hasCss = document.getElementById(cssId);
+          const hasJs = document.getElementById(jsId);
+
+          if (typeof Fancybox !== 'undefined' && hasCss && hasJs) {
             resolve();
             return;
           }
-          const script = document.createElement('script');
-          // ← Ganti ke cdnjs
-          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-          script.onload = () => {
-            // ← Worker dari cdnjs juga, versi harus sama
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-            resolve();
-          };
-          document.head.appendChild(script);
+
+          if (!hasCss) {
+            const css = document.createElement('link');
+            css.id = cssId;
+            css.rel = 'stylesheet';
+            css.href = 'https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css';
+            document.head.appendChild(css);
+          }
+
+          if (!hasJs) {
+            const script = document.createElement('script');
+            script.id = jsId;
+            script.src = 'https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js';
+            script.onload = () => {
+              resolve();
+            };
+            document.head.appendChild(script);
+          } else {
+            const checkFancybox = () => {
+              if (typeof Fancybox !== 'undefined') {
+                resolve();
+              } else {
+                requestAnimationFrame(checkFancybox);
+              }
+            };
+            checkFancybox();
+          }
         });
       },
 
-      loadPdf() {
-        const url = this.pdfUrl;
+      renderImages() {
         const container = document.getElementById('pdf-container');
-
-        // Clear container sebelum render
         container.innerHTML = '';
 
-        pdfjsLib.getDocument(url).promise.then((pdf) => {
-          let renderedPages = 0;
-          const totalPages = pdf.numPages;
+        for (let index = 1; index <= this.totalImages; index++) {
+          const imagePath = `${this.imageBasePath}/${index}.png`;
 
-          const renderPage = (pageNum) => {
-            pdf.getPage(pageNum).then((page) => {
-              const containerWidth = container.clientWidth;
+          const link = document.createElement('a');
+          link.href = imagePath;
+          link.className = 'pdf-image-link';
+          link.setAttribute('data-fancybox', 'module-images');
+          link.setAttribute('data-caption', `Halaman ${index}`);
 
-              // Hitung scale otomatis berdasarkan lebar container
-              const viewport = page.getViewport({ scale: 1 });
-              const scale = containerWidth / viewport.width;
-              const scaledViewport = page.getViewport({ scale: scale });
+          const image = document.createElement('img');
+          image.src = imagePath;
+          image.alt = `Modul halaman ${index}`;
+          image.className = 'pdf-image';
+          image.loading = 'lazy';
 
-              const canvas = document.createElement('canvas');
-              const context = canvas.getContext('2d');
-              canvas.height = scaledViewport.height;
-              canvas.width = scaledViewport.width;
-
-              // Biar canvas responsive
-              canvas.style.width = '100%';
-              canvas.style.display = 'block';
-              canvas.style.marginBottom = '4px';
-
-              page.render({ canvasContext: context, viewport: scaledViewport }).promise.then(() => {
-                container.appendChild(canvas);
-                renderedPages++;
-                if (renderedPages < totalPages) {
-                  renderPage(pageNum + 1);
-                }
-              });
-            });
+          image.onerror = () => {
+            link.remove();
           };
 
-          renderPage(1);
-        }).catch((error) => {
-          console.error('Error loading PDF:', error);
-          container.innerHTML = '<p class="p-3 text-danger">Error loading PDF. Please try again.</p>';
-        });
-        },
+          link.appendChild(image);
+          container.appendChild(link);
+        }
+
+        if (typeof Fancybox !== 'undefined') {
+          Fancybox.bind('[data-fancybox="module-images"]', {
+            dragToClose: false,
+            Toolbar: {
+              display: {
+                left: ['infobar'],
+                middle: [],
+                right: ['zoomIn', 'zoomOut', 'toggle1to1', 'close']
+              }
+            }
+          });
+        } else {
+          container.innerHTML = '<p class="p-3 text-danger">Gagal memuat fitur zoom gambar. Silakan refresh halaman.</p>';
+        }
+      },
 
       setupScrollListener() {
         window.addEventListener('scroll', () => {
@@ -111,7 +132,7 @@
 
           const data = await response.json();
           if (data.response_code === 200) {
-            $heroicHelper.toastr("Modul PDF berhasil ditandai sebagai telah dibaca", "success", "bottom");
+            $heroicHelper.toastr("Modul berhasil ditandai sebagai telah dibaca", "success", "bottom");
             setTimeout(() => {
               window.location.href = '/beasiswa/intro';
             }, 1000);

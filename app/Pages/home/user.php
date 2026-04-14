@@ -198,8 +198,8 @@
                 </div>
             </a>
         </div>
-        <div class="col-3">
-            <a href="/challenge" class="text-decoration-none">
+        <!-- <div class="col-3">
+            <a href="#" class="text-decoration-none">
                 <div class="menu-card text-center">
                     <div class="menu-icon-wrapper">
                         <img src="<?= base_url('mobilekit/assets/icon/Kompetisi.svg') ?>" class="menu-icon" alt="Kompetisi">
@@ -207,7 +207,7 @@
                     <p class="menu-text text-dark">Lomba GenAI</p>
                 </div>
             </a>
-        </div>
+        </div> -->
         <div class="col-3">
             <a href="/courses/reward" class="text-decoration-none">
                 <div class="menu-card text-center">
