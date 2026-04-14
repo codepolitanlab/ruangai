@@ -65,7 +65,7 @@
 
         if (this.data.course_completed) {
           if (!this.data.certificate_id) {
-            this.$router.navigate(`/courses/claim_certificate/${this.data.course.id}`)
+            this.$router.navigate(`/beasiswa/claim_certificate/${this.data.course.id}`)
           } else {
             window.location.href = `/certificate`;
           }
@@ -75,7 +75,7 @@
       },
 
       claimReward() {
-        this.$router.navigate(`/courses/reward`)
+        this.$router.navigate(`/beasiswa/reward`)
       },
 
       heregister() {

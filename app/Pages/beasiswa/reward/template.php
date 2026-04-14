@@ -9,45 +9,11 @@
 		}
     })">
 
-	<style>
-		.disabled {
-			pointer-events: none;
-			opacity: 0.6;
-			cursor: not-allowed;
-		}
-
-		.lesson-item {
-			background-color: #F6F6F6;
-		}
-
-		.lesson-item.completed {
-			background-color: #7BCC94 !important;
-			color: #eee;
-		}
-
-		.lesson-item.active.completed {
-			border: 0 !important;
-		}
-
-		.lesson-item.active {
-			border: 2px solid #79B2CD !important;
-		}
-
-		.lesson-item.completed h4,
-		.lesson-item.completed h5,
-		.lesson-item.completed .bi {
-			color: #fff !important;
-		}
-
-		.bg-warning-2 {
-			background-color: #fe9500;
-		}
-
-	</style>
+	<style>.disabled{pointer-events: none;opacity: 0.6;cursor: not-allowed;}.lesson-item{background-color: #F6F6F6;}.lesson-item.completed{background-color: #7BCC94 !important;color: #eee;}.lesson-item.active.completed{border: 0 !important;}.lesson-item.active{border: 2px solid #79B2CD !important;}.lesson-item.completed h4,.lesson-item.completed h5,.lesson-item.completed .bi{color: #fff !important;}.bg-warning-2{background-color: #fe9500;}</style>
 
 	<div id="appCapsule" class="">
 		<div id="course-features" class="d-flex gap-2 px-3 pt-4 pb-1">
-			<a :href="`/beasiswa/intro/${data.course.id}/${data.course.slug}`"
+			<a :href="`/beasiswa/intro`"
 				class="btn rounded-4 px-2"
 				:class="data.active_page == 'intro' ? `btn-primary` : `btn-white bg-white text-primary`">
 				<h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>

@@ -62,11 +62,6 @@
                             <!-- <button class="btn btn-outline-secondary rounded-3"> <i class="bi bi-person-check-fill"></i> Isi Presensi</button> -->
                         </div>
                     </template>
-                    <template x-if="!data?.completed">
-                        <div class="alert alert-warning">
-                            Harap bereskan kursus sebelum mengikuti live session
-                        </div>
-                    </template>
                 </div>
             </div>
         </div>

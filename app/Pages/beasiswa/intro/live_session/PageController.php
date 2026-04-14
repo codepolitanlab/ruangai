@@ -12,8 +12,9 @@ class PageController extends BaseController
         'active_page' => 'live',
     ];
 
-    public function getData($course_id)
+    public function getData()
     {
+        $course_id = 1;
         helper('scholarship');
         
         $Heroic = new \App\Libraries\Heroic();

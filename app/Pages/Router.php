@@ -46,6 +46,25 @@ class Router
             'preload' => true,
             'handler' => '[isLoggedIn]',
         ],
+        '/beasiswa/intro/live_session' => [
+            'preload' => true,
+            'handler' => '[isLoggedIn]',
+        ],
+        '/beasiswa/intro/live_session/:live_id' => [
+            'template' => '/beasiswa/intro/live_session/detail/template',
+            'preload' => true,
+            'handler' => '[isLoggedIn]',
+        ],
+        '/beasiswa/reward' => [
+            'template' => '/beasiswa/reward/template',
+            'handler' => '[isLoggedIn]',
+        ],
+        '/beasiswa/reward/claim' => [
+            'template' => '/beasiswa/reward/claim/template',
+            'handler' => '[isLoggedIn]',
+        ],
+
+
         '/courses' => [
             'preload' => true,
             'handler' => '[isLoggedIn]',

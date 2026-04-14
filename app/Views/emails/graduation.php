@@ -74,13 +74,9 @@ $logoUrl        = 'https://image.web.id/images/clipboard-image-1753328088.png';
               <td class="content">
                 <p>Halo <?= $name ?? '{NAMA_SISWA}' ?>,</p>
 
-                <p>Selamat! 🎉</p>
+                <p>Kami ucapkan selamat karena kamu telah <strong>berhasil menyelesaikan pembelajaran</strong> di <strong>RuangAI</strong>.</p>
 
-                <p>Kami dengan bangga mengumumkan bahwa kamu telah <strong>berhasil menyelesaikan pembelajaran</strong> di <strong>RuangAI</strong>.</p>
-
-                <div class="highlight">
-                  Kamu telah resmi dinyatakan LULUS!
-                </div>
+                <div>Kamu dapat mengklaim sertifikat dan mempelajari lebih dalam tentang materi AI Generatif melalui modul video yang telah kami sediakan. Silakan akses beranda member RuangAI melalui tautan berikut ini: <a href="https://ruangai.codepolitan.com/beasiswa/intro">Beranda Member</a>.</div>
 
                 <p>Terima kasih atas semangat belajar dan dedikasimu selama mengikuti program ini. Kami harap ilmu yang kamu dapatkan bisa menjadi bekal berharga untuk langkah selanjutnya.</p>
 

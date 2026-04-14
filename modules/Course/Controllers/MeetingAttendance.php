@@ -272,6 +272,8 @@ class MeetingAttendance extends AdminController
                     $student = $courseStudentModel->where('user_id', $user_id)->where('course_id', $course_id)->first();
                     if ($student['progress'] == 100) {
                         $courseStudentModel->markAsGraduate($user_id, $course_id);
+                        // Send email graduate
+                        $this->sendGraduateEmail($user['id'], $course_id);
 
                         // Generate token reward if not exist
                         $userTokenModel = model('UserToken');
@@ -326,6 +328,8 @@ class MeetingAttendance extends AdminController
                     $student = $courseStudentModel->where('user_id', $user_id)->where('course_id', $course_id)->first();
                     if ($student['progress'] == 100) {
                         $courseStudentModel->markAsGraduate($user_id, $course_id);
+                        // Send email graduate
+                        $this->sendGraduateEmail($user['id'], $course_id);
                     }
                 }
 
@@ -475,8 +479,11 @@ class MeetingAttendance extends AdminController
             $progressCompleted  = (int) $user['progress'] == 100;
             $notGraduated       = (int) $user['graduate'] == 0;
 
+            
             if ($validAttendance && $progressCompleted && $notGraduated) {
                 $courseStudentModel->markAsGraduate($user['id'], $course_id);
+                // Send email graduate
+                $this->sendGraduateEmail($user['id'], $course_id);
                 $this->updateScholarshipProgram($user['id']);
             }
         }
@@ -770,6 +777,8 @@ class MeetingAttendance extends AdminController
                     $student = $CourseStudentModel->where('user_id', $user_id)->where('course_id', $course_id)->first();
                     if ($student) {
                         $CourseStudentModel->markAsGraduate($user_id, $course_id);
+                        // Send email graduate
+                        $this->sendGraduateEmail($user['id'], $course_id);
                         $this->updateScholarshipProgram($user_id);
                         $graduated++;
                     } else {
@@ -839,5 +848,31 @@ class MeetingAttendance extends AdminController
 
         session()->setFlashdata('success_message', $message);
         return redirect()->to(site_url(urlScope() . '/course/live/meeting/' . $slug . '/attendant/import'));
+    }
+
+    public function sendGraduateEmail($user_id, $course_id)
+    {
+        $UserModel = model('App\Models\UserModel');
+        $CourseModel = model('Course\Models\CourseModel');
+
+        // Cek apakah kelas ini menyediakan sertifikat
+        $course = $CourseModel->find($course_id);
+        if (! $course || ! $course['has_certificate']) {
+            return; // Jika tidak ada sertifikat, tidak perlu kirim email
+        }
+
+        $user = $UserModel->find($user_id);
+        if (! $user || empty($user['email'])) {
+            return; // Jika user tidak ditemukan atau email kosong, tidak bisa kirim email
+        }
+
+        $body = [
+            'name' => $user['name'] ?? 'Siswa',
+            'course_title' => $course['title'] ?? 'Kelas',
+        ];
+
+        $EmailSender = new \App\Libraries\EmailSender();
+        $EmailSender->setTemplate('graduation', $body);
+        $EmailSender->send($user['email'], 'Selamat Telah Menyelesaikan Kelas');
     }
 }

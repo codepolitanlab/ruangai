@@ -12,7 +12,7 @@ class CourseStudentModel extends Model
     protected $returnType             = 'array';
     protected $useSoftDeletes         = false;
     protected $protectFields          = true;
-    protected $allowedFields          = ['user_id', 'course_id', 'progress', 'graduate', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allowedFields          = ['user_id', 'course_id', 'progress', 'graduate', 'graduate_at', 'created_at', 'updated_at', 'deleted_at'];
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
     protected array $casts            = [];
@@ -84,7 +84,12 @@ class CourseStudentModel extends Model
 
         return $this->where('user_id', $userId)
             ->where('course_id', $courseId)
-            ->set(['graduate' => 1, 'progress' => 100])
+            ->set([
+                'graduate' => 1, 
+                'progress' => 100,
+                'graduate_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+                ])
             ->update();
     }
 
