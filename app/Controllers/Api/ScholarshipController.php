@@ -120,15 +120,30 @@ class ScholarshipController extends ResourceController
             }
         } else {
             // No JWT, create new account
-            $user = $userModel->groupStart()
-                ->where('LOWER(email)', strtolower($data['email']))
-                ->orWhere('phone', $number)
-                ->groupEnd()
+            $existingByEmail = $userModel->where('LOWER(email)', strtolower($data['email']))
                 ->where('deleted_at', null)
                 ->first();
 
-            if ($user) {
+            if ($existingByEmail) {
                 return $this->fail(['status' => 'failed', 'message' => 'Akun sudah pernah terdaftar.']);
+            }
+
+            $existingByPhone = $userModel->where('phone', $number)
+                ->where('deleted_at', null)
+                ->first();
+
+            if ($existingByPhone) {
+                $activeEnrollment = $this->db->table('course_students')
+                    ->where('user_id', $existingByPhone['id'])
+                    ->where('course_id', 1)
+                    ->where('deleted_at', null)
+                    ->where('expire_at', null)
+                    ->countAllResults();
+
+                // Allow re-registration only when previous enrollments are already expired.
+                if ($activeEnrollment > 0) {
+                    return $this->fail(['status' => 'failed', 'message' => 'Akun sudah pernah terdaftar.']);
+                }
             }
 
             // Get username from fullname, remove space and lowercase all with sufix random
