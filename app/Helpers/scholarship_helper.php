@@ -93,6 +93,57 @@ if (!function_exists('get_student_course_data')) {
     }
 }
 
+if (!function_exists('sync_scholarship_course_expiry')) {
+    /**
+     * Sinkronkan status batas belajar beasiswa 30 hari dari tanggal daftar.
+     *
+     * Jika peserta belum graduate dan waktu sudah lewat, set expire_at untuk
+     * menandai aksesnya diblok.
+     *
+     * @param int $user_id
+     * @param int $course_id
+     * @return array|null
+     */
+    function sync_scholarship_course_expiry($user_id, $course_id = 1)
+    {
+        $db = \Config\Database::connect();
+
+        $student = $db->table('course_students')
+            ->select('id, user_id, course_id, created_at, expire_at, graduate')
+            ->where('user_id', $user_id)
+            ->where('course_id', $course_id)
+            ->get()
+            ->getRowArray();
+
+        if (!$student) {
+            return null;
+        }
+
+        $registeredAt = $student['created_at'] ?? null;
+        $countdownEndsAt = $registeredAt ? date('Y-m-d H:i:s', strtotime($registeredAt . ' +30 days')) : null;
+        $isGraduate = (int) ($student['graduate'] ?? 0) === 1;
+        $remainingSeconds = $countdownEndsAt ? strtotime($countdownEndsAt) - time() : null;
+        $expiredByCountdown = !$isGraduate && $remainingSeconds !== null && $remainingSeconds < 0;
+
+        if ($expiredByCountdown && empty($student['expire_at'])) {
+            $student['expire_at'] = date('Y-m-d H:i:s');
+
+            $db->table('course_students')
+                ->where('id', $student['id'])
+                ->update([
+                    'expire_at' => $student['expire_at'],
+                ]);
+        }
+
+        $student['countdown_start_at'] = $registeredAt;
+        $student['countdown_end_at'] = $countdownEndsAt;
+        $student['countdown_remaining_seconds'] = $remainingSeconds;
+        $student['countdown_is_expired'] = $expiredByCountdown;
+
+        return $student;
+    }
+}
+
 if (!function_exists('scholarship_registration_url')) {
     /**
      * Get URL untuk pendaftaran beasiswa dengan JWT token

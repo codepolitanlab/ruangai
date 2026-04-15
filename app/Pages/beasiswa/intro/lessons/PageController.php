@@ -14,6 +14,8 @@ class PageController extends BaseController
 
     public function getData($id)
     {
+        helper('scholarship');
+
         $Heroic = new \App\Libraries\Heroic();
         $jwt    = $Heroic->checkToken();
 
@@ -100,16 +102,30 @@ class PageController extends BaseController
 
             // Get course_students
             $this->data['student'] = $db->table('course_students')
-                ->select('course_students.progress, certificates.cert_claim_date, certificates.cert_code, course_students.expire_at, scholarship_participants.program')
+                ->select('course_students.progress, course_students.created_at, certificates.cert_claim_date, certificates.cert_code, course_students.expire_at, course_students.graduate, scholarship_participants.program')
                 ->join('certificates', 'certificates.user_id = course_students.user_id AND certificates.entity_id = course_students.course_id', 'left')
                 ->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id', 'left')
                 ->where('course_students.course_id', $id)
                 ->where('course_students.user_id', $jwt->user_id)
                 ->get()
                 ->getRowArray();
+
+            $countdownStudent = sync_scholarship_course_expiry($jwt->user_id, (int) $id);
+
+            if ($this->data['student'] && $countdownStudent) {
+                $this->data['student'] = array_merge($this->data['student'], [
+                    'created_at' => $countdownStudent['created_at'] ?? ($this->data['student']['created_at'] ?? null),
+                    'expire_at' => $countdownStudent['expire_at'] ?? ($this->data['student']['expire_at'] ?? null),
+                    'graduate' => $countdownStudent['graduate'] ?? ($this->data['student']['graduate'] ?? 0),
+                    'countdown_end_at' => $countdownStudent['countdown_end_at'] ?? null,
+                    'countdown_is_expired' => $countdownStudent['countdown_is_expired'] ?? false,
+                ]);
+            }
+
             // Peserta RuangAI2026WSGenAI tidak pernah expire
             $isWSGenAI = isset($this->data['student']['program']) && $this->data['student']['program'] === 'RuangAI2026WSGenAI';
-            $this->data['is_expire'] = $isWSGenAI ? false : ($this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false);
+            $countdownExpired = !empty($this->data['student']['countdown_is_expired']);
+            $this->data['is_expire'] = $isWSGenAI ? false : ($countdownExpired || ($this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s') ? true : false));
 
             return $this->respond($this->data);
         }

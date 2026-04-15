@@ -17,6 +17,14 @@
       title: "course intro",
       errorMessage: null,
       registeringLiveSession: false,
+      countdown: {
+        days: '00',
+        hours: '00',
+        minutes: '00',
+        seconds: '00'
+      },
+      countdownInterval: null,
+      hasCountdownExpired: false,
 
       init() {
         base.init.call(this);
@@ -25,6 +33,8 @@
           if (value && value.has_scholarship === false) {
             window.location.replace('/scholarship');
           }
+
+          this.syncCountdown(value);
           // if (!value.is_enrolled) {
           //   alert("Kamu belum terdaftar di kelas. Silahkan daftar terlebih dahulu.")
           //   window.location.replace(`https://www.ruangai.id/registration`)
@@ -55,6 +65,111 @@
             }
           });
         }
+
+        this.$nextTick(() => {
+          this.syncCountdown(this.data);
+        });
+      },
+
+      shouldShowCountdown(source = this.data) {
+        return !!(
+          source?.is_enrolled &&
+          !source?.is_expire &&
+          source?.student?.countdown_end_at &&
+          Number(source?.student?.graduate || 0) !== 1
+        );
+      },
+
+      syncCountdown(value) {
+        if (!value || !this.shouldShowCountdown(value)) {
+          this.resetCountdown();
+          return;
+        }
+
+        this.hasCountdownExpired = false;
+        this.updateCountdown(value);
+
+        if (this.countdownInterval) {
+          clearInterval(this.countdownInterval);
+        }
+
+        this.countdownInterval = setInterval(() => {
+          this.updateCountdown();
+        }, 1000);
+      },
+
+      updateCountdown(source = this.data) {
+        const deadline = source?.student?.countdown_end_at;
+
+        if (!deadline) {
+          this.resetCountdown();
+          return;
+        }
+
+        const targetTime = new Date(deadline.replace(' ', 'T') + '+07:00').getTime();
+        const now = new Date().getTime();
+        const distance = targetTime - now;
+
+        if (distance <= 0) {
+          this.countdown.days = '00';
+          this.countdown.hours = '00';
+          this.countdown.minutes = '00';
+          this.countdown.seconds = '00';
+
+          if (!this.hasCountdownExpired) {
+            this.hasCountdownExpired = true;
+            this.loadPage('/beasiswa/intro/data');
+          }
+          return;
+        }
+
+        this.countdown.days = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0');
+        this.countdown.hours = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+        this.countdown.minutes = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+        this.countdown.seconds = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
+      },
+
+      resetCountdown() {
+        if (this.countdownInterval) {
+          clearInterval(this.countdownInterval);
+          this.countdownInterval = null;
+        }
+
+        this.countdown.days = '00';
+        this.countdown.hours = '00';
+        this.countdown.minutes = '00';
+        this.countdown.seconds = '00';
+      },
+
+      formatCountdownStart() {
+        const start = this.data?.student?.countdown_start_at;
+        if (!start) {
+          return '-';
+        }
+
+        return new Intl.DateTimeFormat('id-ID', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+          timeZone: 'Asia/Jakarta'
+        }).format(new Date(start.replace(' ', 'T') + '+07:00'));
+      },
+
+      formatCountdownDeadline() {
+        const deadline = this.data?.student?.countdown_end_at;
+        if (!deadline) {
+          return '-';
+        }
+
+        return new Intl.DateTimeFormat('id-ID', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+          timeZone: 'Asia/Jakarta'
+        }).format(new Date(deadline.replace(' ', 'T') + '+07:00')) + ' WIB';
       },
 
       claimCertificate() {

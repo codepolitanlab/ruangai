@@ -5,6 +5,10 @@
 	x-effect="loadPage(`/beasiswa/intro/data`)">
 
 	<style>
+		[x-cloak] {
+			display: none !important;
+		}
+
 		.cover {
 			object-fit: cover;
 			width: 100%;
@@ -68,6 +72,62 @@
 			color: white;
 			background: #EAF8FF;
 		}
+
+		.countdown-card {
+			background: #ff9867;
+			border-radius: 24px;
+			color: white;
+		}
+
+		.countdown-grid {
+			display: grid;
+			grid-template-columns: repeat(4, minmax(68px, 1fr));
+			gap: 0.75rem;
+		}
+
+		.countdown-unit {
+			background: rgba(255, 255, 255, 0.16);
+			border: 1px solid rgba(255, 255, 255, 0.18);
+			border-radius: 18px;
+			padding: 0.85rem 0.7rem;
+			text-align: center;
+			backdrop-filter: blur(6px);
+		}
+
+		.countdown-value {
+			display: block;
+			font-size: 2rem;
+			font-weight: 800;
+			line-height: 1;
+			letter-spacing: 0.04em;
+			font-variant-numeric: tabular-nums;
+			font-feature-settings: 'tnum';
+		}
+
+		.countdown-label {
+			display: block;
+			margin-top: 0.45rem;
+			font-size: 0.72rem;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.12em;
+			color: rgba(255, 255, 255, 0.78);
+		}
+
+		.countdown-meta {
+			color: rgba(255, 255, 255, 0.8);
+			font-size: 0.875rem;
+		}
+
+		@media (max-width: 576px) {
+			.countdown-grid {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
+
+			.countdown-value {
+				font-size: 1.6rem;
+			}
+		}
 	</style>
 
 	<div id="appCapsule">
@@ -77,6 +137,39 @@
 					<h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>
 				</button>
 			</div>
+
+			<template x-if="shouldShowCountdown()" x-cloak>
+				<div class="countdown-card p-4 mb-3 shadow-sm">
+					<div class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center justify-content-between">
+						<div>
+							<div class="text-uppercase fw-semibold countdown-meta mb-2">Batas Akses Beasiswa</div>
+							<h4 class="mb-2 text-white">Selesaikan program dalam 30 hari dari tanggal pendaftaran</h4>
+							<p class="mb-0 countdown-meta">Jika belum lulus sampai waktunya habis, akses beasiswa akan diblok otomatis.</p>
+						</div>
+						<div class="w-100" style="max-width: 420px;">
+							<div class="countdown-grid">
+								<div class="countdown-unit">
+									<span class="countdown-value" x-text="countdown.days">00</span>
+									<span class="countdown-label">Hari</span>
+								</div>
+								<div class="countdown-unit">
+									<span class="countdown-value" x-text="countdown.hours">00</span>
+									<span class="countdown-label">Jam</span>
+								</div>
+								<div class="countdown-unit">
+									<span class="countdown-value" x-text="countdown.minutes">00</span>
+									<span class="countdown-label">Menit</span>
+								</div>
+								<div class="countdown-unit">
+									<span class="countdown-value" x-text="countdown.seconds">00</span>
+									<span class="countdown-label">Detik</span>
+								</div>
+							</div>
+							<div class="countdown-meta mt-3 text-lg-end">Deadline: <span x-text="formatCountdownDeadline()"></span></div>
+						</div>
+					</div>
+				</div>
+			</template>
 
 			<!-- Show Expire Alert -->
 			<template x-if="data.is_expire">

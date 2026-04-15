@@ -86,12 +86,26 @@ class PageController extends BaseController
 
             // Get course_students
             $this->data['student'] = $db->table('course_students')
-                ->select('progress, expire_at, graduate, scholarship_participants.reference_comentor as reference, scholarship_participants.is_reference_followup as is_reference_followup, scholarship_participants.program')
+                ->select('course_students.progress, course_students.created_at, course_students.expire_at, course_students.graduate, scholarship_participants.reference_comentor as reference, scholarship_participants.is_reference_followup as is_reference_followup, scholarship_participants.program')
                 ->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id', 'left')
                 ->where('course_students.course_id', $id)
                 ->where('course_students.user_id', $jwt->user_id)
                 ->get()
                 ->getRowArray();
+
+            $countdownStudent = sync_scholarship_course_expiry($jwt->user_id, $id);
+
+            if ($this->data['student'] && $countdownStudent) {
+                $this->data['student'] = array_merge($this->data['student'], [
+                    'created_at' => $countdownStudent['created_at'] ?? ($this->data['student']['created_at'] ?? null),
+                    'expire_at' => $countdownStudent['expire_at'] ?? ($this->data['student']['expire_at'] ?? null),
+                    'graduate' => $countdownStudent['graduate'] ?? ($this->data['student']['graduate'] ?? 0),
+                    'countdown_start_at' => $countdownStudent['countdown_start_at'] ?? null,
+                    'countdown_end_at' => $countdownStudent['countdown_end_at'] ?? null,
+                    'countdown_remaining_seconds' => $countdownStudent['countdown_remaining_seconds'] ?? null,
+                    'countdown_is_expired' => $countdownStudent['countdown_is_expired'] ?? false,
+                ]);
+            }
 
             $certificate = $db->table('certificates')
                 ->where('user_id', $jwt->user_id)
@@ -115,7 +129,8 @@ class PageController extends BaseController
                     ->countAllResults() > 0;
                 // Peserta RuangAI2026WSGenAI tidak pernah expire
                 $isWSGenAI = isset($this->data['student']['program']) && $this->data['student']['program'] === 'RuangAI2026WSGenAI';
-                $this->data['is_expire']            = $isWSGenAI ? false : ((isset($this->data['student']['expire_at']) && $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s')) ? true : false);
+                $countdownExpired = !empty($this->data['student']['countdown_is_expired']);
+                $this->data['is_expire']            = $isWSGenAI ? false : ($countdownExpired || ((isset($this->data['student']['expire_at']) && $this->data['student']['expire_at'] && $this->data['student']['expire_at'] < date('Y-m-d H:i:s')) ? true : false));
             } else {
                 $this->data['course_completed'] = false;
                 $this->data['pdf_read']         = false;
