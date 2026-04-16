@@ -2,7 +2,7 @@
   Alpine.data("certificate_claim", function(course_id) {
     let base = $heroic({
       title: `<?= $page_title ?>`,
-      url: `/courses/claim_certificate/data/${course_id}`,
+      url: `/beasiswa/claim_certificate/data/${course_id}`,
       meta: {
         course_id: course_id
       }
@@ -48,7 +48,7 @@
         // }
 
         this.submitting = true;
-        $heroicHelper.post(`/courses/claim_certificate`, {
+        $heroicHelper.post(`/beasiswa/claim_certificate`, {
             course_id: this.meta.course_id,
             comment: this.data.comment,
             rating: this.data.rating,
