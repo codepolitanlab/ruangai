@@ -64,7 +64,7 @@ class Router
             'handler' => '[isLoggedIn]',
         ],
         '/beasiswa/claim_certificate/:course_id' => [
-            'template' => '/beasiswa/reward/claim/template',
+            'template' => '/beasiswa/claim_certificate/template',
             'handler' => '[isLoggedIn]',
         ],
 
