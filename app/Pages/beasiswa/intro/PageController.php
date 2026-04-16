@@ -118,7 +118,7 @@ class PageController extends BaseController
             if ($this->data['student']) {
                 $this->data['graduate']             = $this->data['student']['graduate'] === '1' ? true : false;
                 $this->data['pdf_read']             = $this->data['student']['progress'] == 100;
-                $this->data['course_completed']     = $this->data['graduate'] && $this->data['total_lessons'] === $this->data['lesson_completed'];
+                $this->data['course_completed']     = $this->data['graduate'] && $this->data['pdf_read'] ? true : false;
                 $this->data['is_enrolled']          = $db->table('course_students')->where('course_id', $id)->where('user_id', $jwt->user_id)->countAllResults() > 0 ? true : false;
                 $this->data['has_valid_live_session'] = $db->table('live_attendance')
                     ->where('user_id', $jwt->user_id)
