@@ -154,6 +154,22 @@ class PageController extends BaseController
                 ]);
             }
 
+            // Check if user has completed the course (progress == 100)
+            $db = \Config\Database::connect();
+            $courseStudent = $db->table('course_students')
+                ->select('progress')
+                ->where('course_id', $liveMeeting['course_id'])
+                ->where('user_id', $jwt->user_id)
+                ->get()
+                ->getRowArray();
+
+            if (!$courseStudent || $courseStudent['progress'] < 100) {
+                return $this->respond([
+                    'status' => 'error',
+                    'message' => 'Kamu harus menyelesaikan seluruh materi modul PDF terlebih dahulu sebelum bisa mendaftar webinar zoom.'
+                ]);
+            }
+
             $zoom_meeting_id  = $liveMeeting['zoom_meeting_id'] ?? null;
 
             // Register user to Zoom Meeting
