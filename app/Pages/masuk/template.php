@@ -90,7 +90,7 @@
                 <div class="mb-3">
                     <label class="fw-semibold mb-2" for="identity" style="color: #2D3748; font-size: 1rem;">Email</label>
                     <input type="text" class="form-control form-control-lg input-field" id="identity" x-model="data.username" 
-                        placeholder="aldi@codepolitan.com">
+                        placeholder="">
                 </div>
 
                 <div class="mb-4">
