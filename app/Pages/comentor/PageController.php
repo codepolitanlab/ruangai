@@ -112,7 +112,7 @@ class PageController extends BaseController
             
             $members[$key]['status'] = $member['graduate'] == 1 ? 'lulus' : 'terdaftar';
             $members[$key]['progress'] = (int) $member['progress'];
-            $members[$key]['total_live_session'] = (int) $member['total_live_attendance'];
+            $members[$key]['total_live_session'] = (int) $member['total_live_session'];
             
             // Prioritize user_profiles.occupation (jobs), fallback to view_participants.occupation
             $occupation = !empty($member['occupation']) ? $member['occupation'] : ($member['occupation'] ?? '');
