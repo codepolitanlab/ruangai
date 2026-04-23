@@ -141,20 +141,26 @@ class PageController extends BaseController
 
             $today = date('Y-m-d');
             $now   = date('H:i:s');
-            $nextLiveSession = $db->table('live_meetings')
+            $isMentorFelisha = isset($this->data['student']['reference']) && $this->data['student']['reference'] === 'Mentor-Felisha';
+            $nextLiveSessionQuery = $db->table('live_meetings')
                 ->select('live_meetings.*, live_batch.name as batch_name, live_meetings.zoom_link, live_meetings.zoom_meeting_id, live_meetings.meeting_duration')
                 ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
                 ->where('live_batch.course_id', $id)
-                ->where('live_batch.status', 'ongoing')
                 ->where('live_meetings.deleted_at', null)
                 ->groupStart()
                     ->where('live_meetings.meeting_date >', $today)
                     ->orWhere('live_meetings.meeting_date', $today)
                 ->groupEnd()
                 ->orderBy('live_meetings.meeting_date', 'ASC')
-                ->orderBy('live_meetings.meeting_time', 'ASC')
-                ->get()
-                ->getResultArray();
+                ->orderBy('live_meetings.meeting_time', 'ASC');
+
+            if ($isMentorFelisha) {
+                $nextLiveSessionQuery->where('live_meetings.live_batch_id', 12);
+            } else {
+                $nextLiveSessionQuery->where('live_batch.status', 'ongoing');
+            }
+
+            $nextLiveSession = $nextLiveSessionQuery->get()->getResultArray();
 
             $this->data['next_live_session'] = null;
             if ($nextLiveSession) {
