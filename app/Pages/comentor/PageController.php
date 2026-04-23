@@ -83,10 +83,9 @@ class PageController extends BaseController
         //     ->get();
 
         // Get memberQuery from view_participants
-        $members = $db->table('view_participants as vp')
-            ->select('vp.*, user_profiles.occupation as jobs')
-            ->join('user_profiles', 'user_profiles.user_id = vp.user_id', 'left')
-            ->where('vp.reference_comentor', $leader['referral_code_comentor'])
+        $members = $db->table('view_participants')
+            ->select('view_participants.*')
+            ->where('view_participants.reference_comentor', $leader['referral_code_comentor'])
             ->get()
             ->getResultArray();
 
@@ -116,7 +115,7 @@ class PageController extends BaseController
             $members[$key]['total_live_session'] = (int) $member['total_live_attendance'];
             
             // Prioritize user_profiles.occupation (jobs), fallback to view_participants.occupation
-            $occupation = !empty($member['jobs']) ? $member['jobs'] : ($member['occupation'] ?? '');
+            $occupation = !empty($member['occupation']) ? $member['occupation'] : ($member['occupation'] ?? '');
             $members[$key]['occupation'] = $occupationMap[$occupation] ?? $occupation;
 
             // Flagging berdasarkan is_reference_followup
