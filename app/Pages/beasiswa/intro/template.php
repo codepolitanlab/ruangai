@@ -339,9 +339,10 @@
 																type="button"
 																@click.prevent="registerLiveSession()"
 																class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6"
-																:class="{'disabled': !data?.pdf_read}"
-																:disabled="!data?.pdf_read">
-																Daftar Webinar
+																:class="{'disabled': !data?.pdf_read || registeringLiveSession}"
+																:disabled="!data?.pdf_read || registeringLiveSession">
+																<span x-show="registeringLiveSession" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+																<span x-text="registeringLiveSession ? 'Mendaftar...' : 'Daftar Webinar'"></span>
 															</button>
 														</div>
 													</template>

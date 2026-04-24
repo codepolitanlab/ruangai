@@ -205,6 +205,8 @@
       },
 
       async registerLiveSession() {
+        if (this.registeringLiveSession) return;
+
         if (!this.data.next_live_session || !this.data.next_live_session.meeting_code) {
           return;
         }
