@@ -122,6 +122,10 @@ class Zoom
     {
         $url = 'https://api.zoom.us/v2/meetings/' . $zoom_meeting_id . '/registrants';
 
+        $nameParts  = explode(' ', $name, 2);
+        $firstName  = $nameParts[0];
+        $lastName   = $nameParts[1] ?? '';
+
         // CURL using guzzleHTTP with Bearer access token to post participant
         $client   = new \GuzzleHttp\Client();
         $response = $client->request('POST', $url, [
@@ -130,8 +134,9 @@ class Zoom
                 'Authorization' => 'Bearer ' . $this->getAccessToken(),
             ],
             'json' => [
-                'email' => $email,
-                'first_name' => $name,
+                'email'      => $email,
+                'first_name' => $firstName,
+                'last_name'  => $lastName,
             ],
         ]);
 
