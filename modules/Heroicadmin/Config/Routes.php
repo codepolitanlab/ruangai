@@ -15,6 +15,8 @@ $routes->group(
         $routes->addRedirect('/', $scope . '/' . $rootPanelUrl);
 
         $routes->get('dashboard', 'Dashboard::index');
+        $routes->get('dashboard/alibaba-import', 'Dashboard::alibabaCsvImport');
+        $routes->post('dashboard/alibaba-import', 'Dashboard::alibabaCsvImportProcess');
     }
 );
 
