@@ -188,7 +188,7 @@ class CertificateController extends AdminController
                 'participant_name' => $user['name'],
                 'title'           => $title,
                 'template_name'   => $templateName,
-                'additional_data' => [],
+                'additional_data' => null,
                 'is_active'       => 1,
             ];
 
@@ -230,7 +230,7 @@ class CertificateController extends AdminController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        $additionalData = [];
+        $additionalData = null;
         
         // Parse additional data if exists
         if ($this->request->getPost('additional_data')) {
@@ -247,13 +247,13 @@ class CertificateController extends AdminController
             'participant_name' => $this->request->getPost('participant_name'),
             'title' => $this->request->getPost('title'),
             'template_name' => $this->request->getPost('template_name'),
-            'additional_data' => json_encode($additionalData),
+            'additional_data' => $additionalData !== null ? json_encode($additionalData) : null,
             'cert_claim_date' => date('Y-m-d H:i:s'),
             'is_active' => $this->request->getPost('is_active') ? 1 : 0,
         ];
 
         if ($this->certificateModel->createCertificate($data)) {
-            return redirect()->to('/admin/certificates')->with('success', 'Sertifikat berhasil dibuat');
+            return redirect()->to(admin_url('certificates'))->with('success', 'Sertifikat berhasil dibuat');
         }
 
         return redirect()->back()->withInput()->with('error', 'Gagal membuat sertifikat');
@@ -267,7 +267,7 @@ class CertificateController extends AdminController
         $certificate = $this->certificateModel->find($id);
 
         if (!$certificate) {
-            return redirect()->to('/admin/certificates')->with('error', 'Sertifikat tidak ditemukan');
+            return redirect()->to(admin_url('certificates'))->with('error', 'Sertifikat tidak ditemukan');
         }
 
         // Parse additional_data JSON
@@ -294,7 +294,7 @@ class CertificateController extends AdminController
         $certificate = $this->certificateModel->find($id);
 
         if (!$certificate) {
-            return redirect()->to('/admin/certificates')->with('error', 'Sertifikat tidak ditemukan');
+            return redirect()->to(admin_url('certificates'))->with('error', 'Sertifikat tidak ditemukan');
         }
 
         $rules = [
@@ -309,7 +309,7 @@ class CertificateController extends AdminController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        $additionalData = [];
+        $additionalData = null;
         
         // Parse additional data if exists
         if ($this->request->getPost('additional_data')) {
@@ -325,12 +325,12 @@ class CertificateController extends AdminController
             'participant_name' => $this->request->getPost('participant_name'),
             'title' => $this->request->getPost('title'),
             'template_name' => $this->request->getPost('template_name'),
-            'additional_data' => json_encode($additionalData),
+            'additional_data' => $additionalData !== null ? json_encode($additionalData) : null,
             'is_active' => $this->request->getPost('is_active') ? 1 : 0,
         ];
 
         if ($this->certificateModel->update($id, $data)) {
-            return redirect()->to('/admin/certificates')->with('success', 'Sertifikat berhasil diupdate');
+            return redirect()->to(admin_url('certificates'))->with('success', 'Sertifikat berhasil diupdate');
         }
 
         return redirect()->back()->withInput()->with('error', 'Gagal mengupdate sertifikat');
@@ -367,7 +367,7 @@ class CertificateController extends AdminController
             ->getRowArray();
 
         if (!$certificate) {
-            return redirect()->to('/admin/certificates')->with('error', 'Sertifikat tidak ditemukan');
+            return redirect()->to(admin_url('certificates'))->with('error', 'Sertifikat tidak ditemukan');
         }
 
         // Parse additional_data

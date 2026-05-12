@@ -24,13 +24,14 @@ class Certificate extends BaseConfig
 
     // Available templates
     public $availableTemplates = [
-        'default'              => \Certificate\Libraries\DefaultCertificateTemplate::class,
-        'comentor'             => \Certificate\Libraries\ComentorCertificateTemplate::class,
-        'workshop_avpn'        => \Certificate\Libraries\WorkshopAVPNCertificateTemplate::class,
-        'workshop_genai_untar' => \Certificate\Libraries\WorkshopGenAIUntarTemplate::class,
-        'workshop_genai_aptiknas' => \Certificate\Libraries\WorkshopGenAIAptiknasTemplate::class,
+        'default'                      => \Certificate\Libraries\DefaultCertificateTemplate::class,
+        'comentor'                     => \Certificate\Libraries\ComentorCertificateTemplate::class,
+        'workshop_avpn'                => \Certificate\Libraries\WorkshopAVPNCertificateTemplate::class,
+        'workshop_genai_untar'         => \Certificate\Libraries\WorkshopGenAIUntarTemplate::class,
+        'workshop_genai_aptiknas'      => \Certificate\Libraries\WorkshopGenAIAptiknasTemplate::class,
         'workshop_genai_teladan_rasul' => \Certificate\Libraries\WorkshopGenAITeladanRasulTemplate::class,
-        'workshop_alibabacloud' => \Certificate\Libraries\WorkshopAlibabaCloudTemplate::class,
+        'workshop_alibabacloud'        => \Certificate\Libraries\WorkshopAlibabaCloudTemplate::class,
+        'genai_video_fest'             => \Certificate\Libraries\GenaiVideoFestTemplate::class,
         // Add more templates here as needed
     ];
 }
