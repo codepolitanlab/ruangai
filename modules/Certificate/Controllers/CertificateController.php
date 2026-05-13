@@ -247,7 +247,7 @@ class CertificateController extends AdminController
             'participant_name' => $this->request->getPost('participant_name'),
             'title' => $this->request->getPost('title'),
             'template_name' => $this->request->getPost('template_name'),
-            'additional_data' => $additionalData !== null ? json_encode($additionalData) : null,
+            'additional_data' => $additionalData,
             'cert_claim_date' => date('Y-m-d H:i:s'),
             'is_active' => $this->request->getPost('is_active') ? 1 : 0,
         ];
@@ -327,6 +327,7 @@ class CertificateController extends AdminController
             'template_name' => $this->request->getPost('template_name'),
             'additional_data' => $additionalData !== null ? json_encode($additionalData) : null,
             'is_active' => $this->request->getPost('is_active') ? 1 : 0,
+
         ];
 
         if ($this->certificateModel->update($id, $data)) {
