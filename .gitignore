@@ -128,4 +128,3 @@ nb-configuration.xml
 
 # Certificate
 !public/certificates/tpl/*
-public/certificates/*.jpg
