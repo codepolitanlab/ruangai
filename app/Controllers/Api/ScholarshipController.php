@@ -151,13 +151,14 @@ class ScholarshipController extends ResourceController
 
             $Phpass   = new \App\Libraries\Phpass();
             $password = $Phpass->HashPassword($data['password']);
+            $source   = ! empty($data['source']) ? $data['source'] : 'scholarship';
             $userId   = $userModel->insert([
                 'name'     => $data['fullname'],
                 'username' => $username,
                 'email'    => strtolower($data['email']),
                 'phone'    => $number,
                 'pwd'      => $password,
-                'source'   => 'scholarship',
+                'source'   => $source,
             ]);
 
             // if failed insert users
