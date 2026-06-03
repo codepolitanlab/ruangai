@@ -73,8 +73,9 @@ class MeetingAttendance extends AdminController
             WHERE live_meeting_id = ' . $meeting_id)->getRowArray();
 
         // Base query with joins and subqueries
-        $this->model->select('live_attendance.id, users.name, users.email, users.phone, live_attendance.duration, zoom_join_link, meeting_feedback_id, live_attendance.status, course_students.graduate, course_students.graduate_at, reference_comentor, live_meeting_feedback.content as feedback_content');
+        $this->model->select('live_attendance.id, users.name, users.email, users.phone, user_profiles.occupation, live_attendance.duration, zoom_join_link, meeting_feedback_id, live_attendance.status, course_students.graduate, course_students.graduate_at, reference_comentor, live_meeting_feedback.content as feedback_content');
         $this->model->join('users', 'users.id = live_attendance.user_id');
+        $this->model->join('user_profiles', 'user_profiles.user_id = users.id', 'left');
         $this->model->join('scholarship_participants', 'scholarship_participants.user_id = live_attendance.user_id');
         $this->model->join('course_students', 'course_students.user_id = live_attendance.user_id AND course_students.course_id = live_attendance.course_id', 'left');
         $this->model->join('live_meeting_feedback', 'live_meeting_feedback.id = live_attendance.meeting_feedback_id', 'left');
@@ -124,6 +125,7 @@ class MeetingAttendance extends AdminController
         $allowedSortColumns = [
             'name'        => 'users.name',
             'email'       => 'users.email',
+            'occupation'  => 'user_profiles.occupation',
             'duration'    => 'live_attendance.duration',
             'status'      => 'live_attendance.status',
             'graduate'    => 'course_students.graduate',
@@ -541,13 +543,14 @@ class MeetingAttendance extends AdminController
         $liveAttendanceModel = new \App\Models\LiveAttendance();
 
         //Get all data live attendance by meeting id
-        $liveAttendanceModel->select('users.name, users.phone, users.email, live_attendance.duration, IF(live_attendance.duration > 1800, 1, NULL) AS duration_valid, live_attendance.meeting_feedback_id, course_students.graduate, course_students.graduate_at, reference_comentor, live_attendance.created_at');
+        $liveAttendanceModel->select('users.name, users.phone, users.email, user_profiles.occupation, live_attendance.duration, IF(live_attendance.duration > 1800, 1, NULL) AS duration_valid, live_attendance.meeting_feedback_id, course_students.graduate, course_students.graduate_at, reference_comentor, live_attendance.created_at');
         $liveAttendanceModel->join('users', 'users.id = live_attendance.user_id');
+        $liveAttendanceModel->join('user_profiles', 'user_profiles.user_id = users.id', 'left');
         $liveAttendanceModel->join('scholarship_participants', 'scholarship_participants.user_id = live_attendance.user_id');
         $liveAttendanceModel->join('course_students', 'course_students.user_id = users.id  AND live_attendance.course_id = course_students.course_id');
         $liveAttendanceModel->join('live_meetings', 'live_meetings.id = live_attendance.live_meeting_id');
         $liveAttendanceModel->where('live_meetings.id', $meeting_id);
-        $liveAttendanceModel->groupBy('live_attendance.id, users.name, users.phone, users.email, live_attendance.duration, course_students.graduate, course_students.graduate_at, reference_comentor, live_attendance.status, live_attendance.created_at, live_attendance.meeting_feedback_id');
+        $liveAttendanceModel->groupBy('live_attendance.id, users.name, users.phone, users.email, user_profiles.occupation, live_attendance.duration, course_students.graduate, course_students.graduate_at, reference_comentor, live_attendance.status, live_attendance.created_at, live_attendance.meeting_feedback_id');
         $participants = $liveAttendanceModel->findAll();
 
         // Name file export

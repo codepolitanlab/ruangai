@@ -147,6 +147,11 @@
                                         Email <?= $sortIcon('email') ?>
                                     </a>
                                 </th>
+                                <th>
+                                    <a class="text-decoration-none text-dark" href="<?= esc($sortUrl('occupation')) ?>">
+                                        Occupation <?= $sortIcon('occupation') ?>
+                                    </a>
+                                </th>
                                 <th>Zoom Join Link</th>
                                 <th>
                                     <a class="text-decoration-none text-dark" href="<?= esc($sortUrl('duration')) ?>">
@@ -180,7 +185,8 @@
                                 <tr>
                                     <td></td>
                                     <td><input type="text" class="form-control form-control-sm" name="filter[name]" value="<?= @$filter['name'] ?>" placeholder="filter name"></td>
-                                    <td><input type="text" class="form-control form-control-sm" name="filter[email]" value="<?= @$filter['email'] ?>" placeholder="filter name"></td>
+                                    <td><input type="text" class="form-control form-control-sm" name="filter[email]" value="<?= @$filter['email'] ?>" placeholder="filter email"></td>
+                                    <td></td>
                                     <td></td>
                                     <td>
                                         <select name="filter[durasi]" class="form-select form-select-sm">
@@ -230,6 +236,8 @@
                                     </td>
                                     <td>
                                         <?= $attender->email ?></td>
+                                    <td>
+                                        <?= $attender->occupation ?? '-' ?></td>
                                     <td>
                                         <span class="text-ellipsis" title="<?= $attender->zoom_join_link ?? '-' ?>">
                                             <?= $attender->zoom_join_link ?? null ? '✅' : '❌' ?>
