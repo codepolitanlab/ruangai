@@ -141,7 +141,7 @@ class PageController extends BaseController
 
             $today = date('Y-m-d');
             $now   = date('H:i:s');
-            $isMentorVira = isset($this->data['student']['reference_comentor']) && $this->data['student']['reference_comentor'] === 'Mentor-Vira';
+            $isMentorVira = isset($this->data['student']['reference_comentor']) && $this->data['student']['reference_comentor'] == 'Mentor-Vira';
             $nextLiveSessionQuery = $db->table('live_meetings')
                 ->select('live_meetings.*, live_batch.name as batch_name, live_meetings.zoom_link, live_meetings.zoom_meeting_id, live_meetings.meeting_duration')
                 ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
