@@ -151,7 +151,12 @@ class ScholarshipController extends ResourceController
 
             $Phpass   = new \App\Libraries\Phpass();
             $password = $Phpass->HashPassword($data['password']);
-            $source   = ! empty($data['source']) ? $data['source'] : 'scholarship';
+            $source   = isset($data['source']) && $data['source'] !== '' ? $data['source'] : 'scholarship';
+
+            if ($source === 'RuangAIxMayar') {
+                $data['reference_comentor'] = 'Mentor-Vira';
+            }
+
             $userId   = $userModel->insert([
                 'name'     => $data['fullname'],
                 'username' => $username,
