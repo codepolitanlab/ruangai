@@ -156,10 +156,10 @@ class PageController extends BaseController
 
             if ($isMentorVira) {
                 $nextLiveSessionQuery->where('live_meetings.live_batch_id', 12);
+                $nextLiveSessionQuery->where('live_batch.status', 'upcoming');
             } else {
                 $nextLiveSessionQuery->where('live_batch.status', 'ongoing');
             }
-            $nextLiveSessionQuery->where('live_batch.status', 'ongoing');
 
             $nextLiveSession = $nextLiveSessionQuery->get()->getResultArray();
 
