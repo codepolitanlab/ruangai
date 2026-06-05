@@ -124,6 +124,8 @@ class ScholarshipController extends ResourceController
                 ->where('deleted_at', null)
                 ->first();
 
+            $source = isset($data['source']) && $data['source'] !== '' ? $data['source'] : 'scholarship';
+
             if ($existingByEmail) {
                 return $this->fail(['status' => 'failed', 'message' => 'Akun sudah pernah terdaftar.']);
             }
@@ -132,7 +134,7 @@ class ScholarshipController extends ResourceController
                 ->where('deleted_at', null)
                 ->first();
 
-            if ($existingByPhone && strtolower($existingByPhone['email']) === strtolower($data['email'])) {
+            if ($existingByPhone) {
                 $activeEnrollment = $this->db->table('course_students')
                     ->where('user_id', $existingByPhone['id'])
                     ->where('course_id', 1)
@@ -140,9 +142,16 @@ class ScholarshipController extends ResourceController
                     ->where('expire_at', null)
                     ->countAllResults();
 
-                // Allow re-registration only when previous enrollments are already expired.
+                if ($source === 'RuangAIxMayar') {
+                    return $this->fail(['status' => 'failed', 'message' => 'Harus menggunakan email dan nomor telepon baru.']);
+                }
+
                 if ($activeEnrollment > 0) {
-                    return $this->fail(['status' => 'failed', 'message' => 'Akun sudah pernah terdaftar.']);
+                    return $this->fail(['status' => 'failed', 'message' => 'Nomor telepon sudah digunakan pada akun aktif.']);
+                }
+
+                if (strtolower($existingByPhone['email']) === strtolower($data['email'])) {
+                    return $this->fail(['status' => 'failed', 'message' => 'Gunakan email berbeda untuk akun yang sudah tidak aktif.']);
                 }
             }
 
