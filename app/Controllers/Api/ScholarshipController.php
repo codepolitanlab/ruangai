@@ -244,6 +244,29 @@ class ScholarshipController extends ResourceController
             'user_id'         => $userId,
         ], config('Heroic')->jwtKey['secret'], 'HS256');
 
+        // If registration source is RuangAIxMayar, send onboarding email with WhatsApp group link
+        try {
+            $sourceInput = $this->request->getPost('source') ?? ($data['source'] ?? null);
+            if ($sourceInput === 'RuangAIxMayar') {
+                $to = strtolower($data['email']);
+                $subject = 'Segera Gabung Grup WhatsApp Peserta RuangAI';
+
+                $fullname = isset($data['fullname']) ? $data['fullname'] : '';
+                $body = [
+                    'name' => $fullname,
+                    'group_link' => 'https://chat.whatsapp.com/C6X21W8WIcDH9EJc4eaoiK?s=cl&p=i&ilr=0',
+                    'page_title' => 'Selamat Datang di RuangAI',
+                ];
+
+                $EmailSender = new \App\Libraries\EmailSender();
+                $EmailSender->setTemplate('mayar_onboarding', $body);
+                $EmailSender->send($to, $subject);
+            }
+        } catch (\Throwable $e) {
+            // swallow email exceptions to not block registration
+            log_message('error', 'Failed to send RuangAIxMayar onboarding email: ' . $e->getMessage());
+        }
+
         return $this->respondCreated([
             'status'  => 'success',
             'message' => 'Registrasi berhasil, selamat anda telah mendapatkan Beasiswa RuangAI.',
