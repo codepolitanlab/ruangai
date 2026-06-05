@@ -132,7 +132,7 @@ class ScholarshipController extends ResourceController
                 ->where('deleted_at', null)
                 ->first();
 
-            if ($existingByPhone) {
+            if ($existingByPhone && strtolower($existingByPhone['email']) === strtolower($data['email'])) {
                 $activeEnrollment = $this->db->table('course_students')
                     ->where('user_id', $existingByPhone['id'])
                     ->where('course_id', 1)
