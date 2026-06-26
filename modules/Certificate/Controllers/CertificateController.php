@@ -125,7 +125,7 @@ class CertificateController extends AdminController
         $templateName  = $this->request->getPost('template_name');
         $title         = $this->request->getPost('title');
         $emailsRaw     = $this->request->getPost('emails');
-        $certClaimDate = date('Y-m-d H:i:s');
+        $certClaimDate = null; // Set to null, will be set when user claims the certificate
 
         // Validate template exists
         $templateLibrary = new \Certificate\Libraries\CertificateTemplateLibrary();
@@ -210,6 +210,169 @@ class CertificateController extends AdminController
         session()->setFlashdata('not_found_emails', $notFoundEmails);
 
         return redirect()->to(admin_url() . 'certificates/generate')->withInput();
+    }
+
+    /**
+     * Show bulk create form (create by email)
+     */
+    public function bulkCreate()
+    {
+        // Fetch events for entity_id dropdown (event & challenge types)
+        $events = $this->db->table('events')
+            ->select('id, title, event_type, start_date')
+            ->where('is_active', 1)
+            ->orderBy('start_date', 'DESC')
+            ->get()
+            ->getResultArray();
+
+        $data = [
+            'title'        => 'Buat Sertifikat via Email (Bulk)',
+            'entity_types' => $this->getEntityTypes(),
+            'templates'    => $this->getTemplates(),
+            'events'       => $events,
+        ];
+
+        $this->data = array_merge($this->data, $data);
+        return view('Certificate\Views\bulk_create', $this->data);
+    }
+
+    /**
+     * Process bulk create: look up users by email and create certificates
+     */
+    public function doBulkCreate()
+    {
+        $rules = [
+            'entity_type'   => 'required',
+            'entity_id'     => 'required|integer',
+            'template_name' => 'required',
+            'title'         => 'required|max_length[500]',
+            'emails'        => 'required',
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $entityType    = $this->request->getPost('entity_type');
+        $entityId      = (int) $this->request->getPost('entity_id');
+        $templateName  = $this->request->getPost('template_name');
+        $title         = $this->request->getPost('title');
+        $emailsRaw     = $this->request->getPost('emails');
+        $isActive      = $this->request->getPost('is_active') ? 1 : 0;
+        $certClaimDate = date('Y-m-d H:i:s');
+
+        // Validate template exists
+        $templateLibrary = new \Certificate\Libraries\CertificateTemplateLibrary();
+        if (!$templateLibrary->hasTemplate($templateName)) {
+            return redirect()->back()->withInput()->with('error', 'Template tidak ditemukan');
+        }
+
+        // Parse additional data if exists
+        $additionalData = null;
+        if ($this->request->getPost('additional_data')) {
+            $additionalData = json_decode($this->request->getPost('additional_data'), true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return redirect()->back()->withInput()->with('error', 'Format JSON additional data tidak valid');
+            }
+        }
+
+        // Parse email list
+        $emails = array_filter(
+            array_map('trim', preg_split('/[\r\n,]+/', $emailsRaw)),
+            fn($e) => $e !== ''
+        );
+
+        if (empty($emails)) {
+            return redirect()->back()->withInput()->with('error', 'Tidak ada email yang valid');
+        }
+
+        $results         = [];
+        $success         = 0;
+        $failed          = 0;
+        $notFoundEmails  = [];
+
+        foreach ($emails as $email) {
+            // Find user by email
+            $user = $this->db->table('users')
+                ->select('id, name')
+                ->where('email', $email)
+                ->get()
+                ->getRowArray();
+
+            if (!$user) {
+                $results[] = [
+                    'email'   => $email,
+                    'name'    => '',
+                    'status'  => 'failed',
+                    'message' => 'User tidak ditemukan',
+                ];
+                $notFoundEmails[] = $email;
+                $failed++;
+                continue;
+            }
+
+            // Check for duplicate certificate
+            $exists = $this->certificateModel
+                ->where('user_id', $user['id'])
+                ->where('entity_type', $entityType)
+                ->where('entity_id', $entityId)
+                ->first();
+
+            if ($exists) {
+                $results[] = [
+                    'email'   => $email,
+                    'name'    => $user['name'],
+                    'status'  => 'skipped',
+                    'message' => 'Sertifikat sudah ada (' . $exists['cert_code'] . ')',
+                ];
+                $failed++;
+                continue;
+            }
+
+            $year              = date('Y');
+            $nextCertIncrement = $this->certificateModel->getNextCertIncrement($entityType, $year);
+
+            $certificateData = [
+                'cert_increment'   => $nextCertIncrement,
+                'cert_claim_date'  => $certClaimDate,
+                'user_id'          => $user['id'],
+                'entity_type'      => $entityType,
+                'entity_id'        => $entityId,
+                'participant_name' => $user['name'],
+                'title'            => $title,
+                'template_name'    => $templateName,
+                'additional_data'  => $additionalData !== null ? json_encode($additionalData) : null,
+                'is_active'        => $isActive,
+            ];
+
+            if ($this->certificateModel->createCertificate($certificateData)) {
+                $results[] = [
+                    'email'   => $email,
+                    'name'    => $user['name'],
+                    'status'  => 'success',
+                    'message' => 'Sertifikat berhasil dibuat untuk ' . esc($user['name']),
+                ];
+                $success++;
+            } else {
+                $results[] = [
+                    'email'   => $email,
+                    'name'    => $user['name'],
+                    'status'  => 'failed',
+                    'message' => 'Gagal menyimpan sertifikat',
+                ];
+                $failed++;
+            }
+        }
+
+        session()->setFlashdata('bulk_results', $results);
+        session()->setFlashdata('bulk_summary', [
+            'total'   => count($emails),
+            'success' => $success,
+            'failed'  => $failed,
+        ]);
+        session()->setFlashdata('bulk_not_found_emails', $notFoundEmails);
+
+        return redirect()->to(admin_url() . 'certificates/bulk-create')->withInput();
     }
 
     /**

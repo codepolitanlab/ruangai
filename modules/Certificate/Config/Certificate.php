@@ -32,6 +32,7 @@ class Certificate extends BaseConfig
         'workshop_genai_teladan_rasul' => \Certificate\Libraries\WorkshopGenAITeladanRasulTemplate::class,
         'workshop_alibabacloud'        => \Certificate\Libraries\WorkshopAlibabaCloudTemplate::class,
         'genai_video_fest'             => \Certificate\Libraries\GenaiVideoFestTemplate::class,
+        'workshop_ruangai_mayar'       => \Certificate\Libraries\WorkshopRuangAIMayarTemplate::class,
         // Add more templates here as needed
     ];
 }

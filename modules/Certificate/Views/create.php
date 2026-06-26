@@ -5,11 +5,25 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <h5 class="mb-0"><?= esc($title) ?></h5>
-                    <a href="<?= admin_url() ?>certificates" class="btn btn-secondary btn-sm">
-                        <i class="fas fa-arrow-left me-1"></i> Kembali
-                    </a>
+                    <div class="d-flex align-items-center gap-2">
+                        <ul class="nav nav-pills nav-sm mb-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="<?= admin_url() ?>certificates/create">
+                                    <i class="fas fa-user me-1"></i> Single
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= admin_url() ?>certificates/bulk-create">
+                                    <i class="fas fa-users me-1"></i> Bulk
+                                </a>
+                            </li>
+                        </ul>
+                        <a href="<?= admin_url() ?>certificates" class="btn btn-secondary btn-sm">
+                            <i class="fas fa-arrow-left me-1"></i> Kembali
+                        </a>
+                    </div>
                 </div>
 
                 <div class="card-body">
