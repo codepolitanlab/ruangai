@@ -66,8 +66,8 @@ class WorkshopRuangAIMayarTemplate extends CertificateTemplate
                         //     autoshrink: true
                         // ),
                         'publishDate' => $this->createPosition(
-                            xPct: 6.9,
-                            yPct: 75,
+                            xPct: 84.1,
+                            yPct: 83,
                             maxWidthPct: 30,
                             fontMm: 5.5,
                             minFontMm: 3.0,
