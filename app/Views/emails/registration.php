@@ -10,7 +10,7 @@ $logoUrl        = 'https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-log
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title><?= $page_title ?? '{Template Email}' ?></title>
+    <title><?= esc($page_title ?? '{Template Email}') ?></title>
     <style>
       body {
         margin: 0;
@@ -45,12 +45,12 @@ $logoUrl        = 'https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-log
             <tr>
               <td style="padding:20px;font-family:sans-serif;color:#333;">
                 <p style="margin-top:0;font-size:16px;line-height:1.5;">
-                  Halo <?= $name ?? '{NAME}' ?>,<br><br>
+                  Halo <?= esc($name ?? '{NAME}') ?>,<br><br>
                   Terima kasih telah mendaftar di aplikasi RuangAI <br>
                   Untuk melanjutkan proses pendaftaran, silahkan masukan kode registrasi berikut ini ke dalam aplikasi:
                 </p>
                 <p style="font-size:16px;line-height:1.5;">
-                    <strong><?= $otp ?? '{OTP}' ?></strong>
+                    <strong><?= esc($otp ?? '{OTP}') ?></strong>
                 </p>
                 <p>Salam,<br>
                 <strong>Tim CODEPOLITAN</strong>

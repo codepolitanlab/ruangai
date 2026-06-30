@@ -10,7 +10,7 @@ $logoUrl        = 'https://image.web.id/images/clipboard-image-1753328088.png';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title><?= $page_title ?? 'Selamat! Anda Telah Lulus' ?></title>
+    <title><?= esc($page_title ?? 'Selamat! Anda Telah Lulus') ?></title>
     <style>
       body {
         margin: 0;
@@ -72,7 +72,7 @@ $logoUrl        = 'https://image.web.id/images/clipboard-image-1753328088.png';
             <!-- BODY -->
             <tr>
               <td class="content">
-                <p>Halo <?= $name ?? '{NAMA_SISWA}' ?>,</p>
+                <p>Halo <?= esc($name ?? '{NAMA_SISWA}') ?>,</p>
 
                 <p>Kami ucapkan selamat karena kamu telah <strong>berhasil menyelesaikan pembelajaran</strong> di <strong>RuangAI</strong>.</p>
 

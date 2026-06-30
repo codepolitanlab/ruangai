@@ -12,7 +12,7 @@ $startDate ??= '1 September 2025'; // Tanggal mulai batch
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title><?= $page_title ?? 'Pengingat: Batch Segera Dimulai' ?></title>
+    <title><?= esc($page_title ?? 'Pengingat: Batch Segera Dimulai') ?></title>
     <style>
       body {
         margin: 0;
@@ -84,20 +84,20 @@ $startDate ??= '1 September 2025'; // Tanggal mulai batch
             <!-- BODY -->
             <tr>
               <td class="content">
-                <p>Halo <?= $name ?? '{NAMA_SISWA}' ?>,</p>
+                <p>Halo <?= esc($name ?? '{NAMA_SISWA}') ?>,</p>
 
                 <p>Kabar baik! Batch yang kamu ikuti di <strong>RuangAI</strong> akan segera dimulai.</p>
 
                 <div class="highlight">
-                  <?= $batchName ?><br>
-                  Mulai pada: <strong><?= $startDate ?></strong>
+                  <?= esc($batchName) ?><br>
+                  Mulai pada: <strong><?= esc($startDate) ?></strong>
                 </div>
 
                 <p>Pastikan kamu sudah menyiapkan akun, perangkat, dan waktu luang untuk mengikuti kelas ini secara maksimal.</p>
 
                 <p>Kamu bisa masuk ke aplikasi untuk melihat jadwal lengkap, silabus, dan panduan belajar.</p>
 
-                <a href="<?= $loginUrl ?? '#' ?>" class="btn">Masuk ke Aplikasi</a>
+                <a href="<?= esc($loginUrl ?? '#', 'attr') ?>" class="btn">Masuk ke Aplikasi</a>
 
                 <p>Semangat belajar, dan sampai jumpa di kelas! 🚀</p>
 

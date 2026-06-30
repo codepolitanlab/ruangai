@@ -37,7 +37,7 @@ $logoUrl        = 'https://image.web.id/images/clipboard-image-1753328088.png';
                 </p>
 
                 <p style="font-size:15px;line-height:1.5;">
-                  Anda dapat melihat detail dan status lebih lanjut di <a href="<?= $dashboard_url ?>">Dashboard Kompetisi</a>.
+                  Anda dapat melihat detail dan status lebih lanjut di <a href="<?= esc($dashboard_url, 'attr') ?>">Dashboard Kompetisi</a>.
                 </p>
 
                 <p>Salam,<br>

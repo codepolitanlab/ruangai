@@ -74,6 +74,15 @@ class ScholarshipController extends ResourceController
             return $this->failValidationErrors(['message' => 'Mohon untuk melengkapi data.']);
         }
 
+        // Sanitize nama: strip HTML tags, template syntax, batasi panjang
+        $data['fullname'] = strip_tags($data['fullname']);
+        $data['fullname'] = preg_replace('/\{\{.*?\}\}|\$\{.*?\}|<%.*?%>|\{\%.*?\%\}/', '', $data['fullname']);
+        $data['fullname'] = mb_substr(trim($data['fullname']), 0, 255);
+
+        if ($data['fullname'] === '') {
+            return $this->failValidationErrors(['message' => 'Nama lengkap tidak valid.']);
+        }
+
         if ($this->isDisallowedDomain($data['email'])) {
             return $this->fail(['status' => 'failed', 'message' => 'Domain email tidak diizinkan.']);
         }
