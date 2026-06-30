@@ -139,6 +139,32 @@ class PageController extends BaseController
             ]);
         }
 
+        // === RATE LIMITING: minimum 60 detik cooldown ===
+        $cache = \Config\Services::cache();
+        $cooldownKey = 'otp_cooldown_' . $jwt->user_id;
+        $lastSent = $cache->get($cooldownKey);
+
+        if ($lastSent !== null) {
+            $elapsed = time() - $lastSent;
+            if ($elapsed < 60) {
+                $remaining = 60 - $elapsed;
+                return $this->respond([
+                    'status'  => 'failed',
+                    'message' => "Mohon tunggu {$remaining} detik sebelum mengirim ulang OTP.",
+                ]);
+            }
+        }
+
+        // === RATE LIMITING: max 5 OTP per jam per user ===
+        $hourlyKey = 'otp_hourly_' . $jwt->user_id . '_' . date('YmdH');
+        $hourlyCount = (int) $cache->get($hourlyKey);
+        if ($hourlyCount >= 2) {
+            return $this->respond([
+                'status'  => 'failed',
+                'message' => 'Terlalu banyak permintaan OTP. Silakan coba lagi nanti.',
+            ]);
+        }
+
         // set update otp_email on users
         helper('text');
         $otp    = random_string('numeric', 6);
@@ -154,6 +180,10 @@ class PageController extends BaseController
                 'message' => 'Failed to update OTP',
             ]);
         }
+
+        // Simpan timestamp pengiriman OTP ke cache
+        $cache->save($cooldownKey, time(), 300);
+        $cache->save($hourlyKey, $hourlyCount + 1, 3600);
 
         $body = [
             'name' => $user['name'],
