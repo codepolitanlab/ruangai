@@ -47,10 +47,9 @@
                             <button
                                 class="btn btn-primary rounded-3"
                                 @click.prevent="registerLiveSession(live_session.meeting_code)"
-                                x-show="!live_session.is_registered && ['ongoing','upcoming'].includes(live_session.status_date)"
-                                :class="!live_session.zoom_join_link && !live_session.zoom_link ? 'disabled' : ''">
+                                x-show="!live_session.is_registered && ['ongoing','upcoming'].includes(live_session.status_date)">
                                 <i class="bi bi-camera-video"></i>
-                                <span x-text="!live_session.zoom_join_link && !live_session.zoom_link ? 'Zoom link belum tersedia' : 'Daftar Live Session'"></span>
+                                <span>Daftar Live Session</span>
                             </button>
                             <p
                                 x-show="live_session.status_date == 'completed' && live_session.feedback_submitted"
