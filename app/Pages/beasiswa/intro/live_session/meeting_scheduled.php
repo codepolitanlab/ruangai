@@ -35,25 +35,23 @@
                     </dl>
                     <template x-if="!data?.is_expire">
                         <div class="d-flex gap-2 mt-4">
-                            <template x-if="!live_session.theme_code || !data?.attendedCode?.includes(live_session.theme_code)">
-                                <a
-                                    :href="live_session.zoom_link || live_session.zoom_meeting_id"
-                                    target="_blank"
-                                    class="btn btn-success rounded-3"
-                                    x-show="live_session.is_registered"
-                                    :class="!live_session.zoom_link && !live_session.zoom_meeting_id ? 'disabled' : ''">
-                                    <i class="bi bi-camera-video"></i>
-                                    <span x-text="!live_session.zoom_link && !live_session.zoom_meeting_id ? 'Zoom link belum tersedia' : 'Masuk Zoom'"></span>
-                                </a>
-                                <button
-                                    class="btn btn-primary rounded-3"
-                                    @click.prevent="registerLiveSession(live_session.meeting_code)"
-                                    x-show="!live_session.is_registered && ['ongoing','upcoming'].includes(live_session.status_date)"
-                                    :class="!live_session.zoom_link && !live_session.zoom_meeting_id ? 'disabled' : ''">
-                                    <i class="bi bi-camera-video"></i>
-                                    <span x-text="!live_session.zoom_link && !live_session.zoom_meeting_id ? 'Zoom link belum tersedia' : 'Daftar Live Session'"></span>
-                                </button>
-                            </template>
+                            <a
+                                :href="live_session.zoom_link || live_session.zoom_meeting_id"
+                                target="_blank"
+                                class="btn btn-success rounded-3"
+                                x-show="live_session.is_registered"
+                                :class="!live_session.zoom_link && !live_session.zoom_meeting_id ? 'disabled' : ''">
+                                <i class="bi bi-camera-video"></i>
+                                <span x-text="!live_session.zoom_link && !live_session.zoom_meeting_id ? 'Zoom link belum tersedia' : 'Masuk Zoom'"></span>
+                            </a>
+                            <button
+                                class="btn btn-primary rounded-3"
+                                @click.prevent="registerLiveSession(live_session.meeting_code)"
+                                x-show="!live_session.is_registered && ['ongoing','upcoming'].includes(live_session.status_date)"
+                                :class="!live_session.zoom_link && !live_session.zoom_meeting_id ? 'disabled' : ''">
+                                <i class="bi bi-camera-video"></i>
+                                <span x-text="!live_session.zoom_link && !live_session.zoom_meeting_id ? 'Zoom link belum tersedia' : 'Daftar Live Session'"></span>
+                            </button>
                             <p
                                 x-show="live_session.status_date == 'completed' && live_session.feedback_submitted"
                                 class="border border-success bg-white rounded-3 py-2 px-3">
