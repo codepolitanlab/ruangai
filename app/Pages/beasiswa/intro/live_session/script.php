@@ -88,30 +88,46 @@
                 return sessionDate.getTime() === today.getTime();
             },
 
-            checkEmailIsVerified(meetingIndex, eventStatus) {
+            async registerLiveSession(meetingCode) {
+                if (!meetingCode) return;
+
                 const token = localStorage.getItem('heroic_token');
-                let emailVerified = false;
-
-                if (!this.data.live_sessions[eventStatus][meetingIndex].meeting_code) return; // jika link kosong, jangan lanjutkan
-
-                if (token) {
-                    try {
-                        const payload = JSON.parse(atob(token.split('.')[1]));
-                        emailVerified = +payload.isValidEmail === 1;
-
-                        if (emailVerified) {
-                            // Email terverifikasi, redirect ke pendaftaran
-                            this.$router.navigate(`/beasiswa/zoom/${this.data.live_sessions[eventStatus][meetingIndex].meeting_code}`)
-                        } else {
-                            // Tampilkan toast jika email belum diverifikasi
-                            $heroicHelper.toastr('Silakan verifikasi email Anda terlebih dahulu.', 'warning', 'bottom');
-                        }
-                    } catch (e) {
-                        console.error("Gagal mem-parsing token JWT", e);
-                        $heroicHelper.toastr('Terjadi kesalahan autentikasi.', 'error', 'bottom');
-                    }
-                } else {
+                if (!token) {
                     $heroicHelper.toastr('Anda belum login.', 'error', 'bottom');
+                    return;
+                }
+
+                // Cek verifikasi email dari JWT
+                try {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    const emailVerified = +payload.isValidEmail === 1;
+
+                    if (!emailVerified) {
+                        $heroicHelper.toastr('Silakan verifikasi email Anda terlebih dahulu.', 'warning', 'bottom');
+                        return;
+                    }
+                } catch (e) {
+                    console.error('Gagal mem-parsing token', e);
+                }
+
+                try {
+                    const response = await axios.post('/beasiswa/zoom/register',
+                        { meeting_code: meetingCode },
+                        { headers: { Authorization: token } }
+                    );
+
+                    if (response.data.status === 'success') {
+                        $heroicHelper.toastr('Pendaftaran berhasil! Silakan cek halaman utama untuk link Zoom.', 'success', 'bottom');
+                        // Refresh data untuk update status pendaftaran
+                        this.loadPage(`beasiswa/intro/live_session/data/${$params.course_id}`);
+                    } else if (response.data.status === 'already_registered') {
+                        $heroicHelper.toastr('Kamu sudah terdaftar di sesi ini.', 'info', 'bottom');
+                    } else {
+                        $heroicHelper.toastr(response.data.message || 'Gagal mendaftar.', 'danger', 'bottom');
+                    }
+                } catch (e) {
+                    console.error('Gagal mendaftar live session', e);
+                    $heroicHelper.toastr('Terjadi kesalahan saat mendaftar.', 'error', 'bottom');
                 }
             },
 

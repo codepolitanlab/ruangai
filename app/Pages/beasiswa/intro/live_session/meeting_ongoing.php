@@ -62,7 +62,7 @@
                             <template x-if="(!live_session.theme_code || !data?.attendedCode.includes(live_session.theme_code)) && !data?.is_expire">
                                 <button
                                     class="btn btn-primary rounded-3"
-                                    @click.prevent="checkEmailIsVerified(meetingIndex, 'ongoing')"
+                                    @click.prevent="registerLiveSession(live_session.meeting_code)"
                                     x-show="['ongoing','upcoming'].includes(live_session.status_date)"
                                     :class="!live_session.zoom_link && !live_session.zoom_meeting_id ? 'disabled' : ''">
                                     <i class="bi bi-camera-video"></i>
