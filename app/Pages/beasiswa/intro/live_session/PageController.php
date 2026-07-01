@@ -99,8 +99,16 @@ class PageController extends BaseController
                 $readyLiveSessions[$key]['feedback_submitted'] = $feedbackExists;
 
                 // Cek apakah user sudah daftar di sesi ini
-                $isRegistered = in_array($live_session['id'], array_column($attended, 'live_meeting_id'));
+                $attendanceRecord = null;
+                foreach ($attended as $a) {
+                    if ((int) $a['live_meeting_id'] === (int) $live_session['id']) {
+                        $attendanceRecord = $a;
+                        break;
+                    }
+                }
+                $isRegistered = $attendanceRecord !== null;
                 $readyLiveSessions[$key]['is_registered'] = $isRegistered;
+                $readyLiveSessions[$key]['zoom_join_link'] = $attendanceRecord['zoom_join_link'] ?? null;
 
                 // Cek jika tanggal sudah lewat
                 if (date('Y-m-d') === $live_session['meeting_date']) {

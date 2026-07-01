@@ -117,6 +117,9 @@
                     );
 
                     if (response.data.status === 'success') {
+                        // Update UI langsung: set is_registered = true + zoom_join_link
+                        const zoomJoinLink = response.data.zoom_join_link || null;
+                        this.updateSessionAfterRegister(meetingCode, zoomJoinLink);
                         $heroicHelper.toastr('Pendaftaran berhasil!', 'success', 'bottom');
                     } else if (response.data.status === 'already_registered') {
                         $heroicHelper.toastr('Kamu sudah terdaftar di sesi ini.', 'info', 'bottom');
@@ -125,11 +128,30 @@
                         return;
                     }
 
-                    // Refresh data untuk update status pendaftaran
-                    this.loadPage(`beasiswa/intro/live_session/data/${course_id}`);
+                    // Refresh data dari server
+                    setTimeout(() => {
+                        this.loadPage(`beasiswa/intro/live_session/data/${course_id}`);
+                    }, 500);
                 } catch (e) {
                     console.error('Gagal mendaftar live session', e);
                 }
+            },
+
+            // Update status session di local data agar tombol langsung berubah tanpa nunggu refresh
+            updateSessionAfterRegister(meetingCode, zoomJoinLink) {
+                ['scheduled', 'ongoing', 'completed'].forEach(group => {
+                    const sessions = this.data?.live_sessions?.[group];
+                    if (!sessions) return;
+                    for (let i = 0; i < sessions.length; i++) {
+                        if (sessions[i].meeting_code === meetingCode) {
+                            this.data.live_sessions[group][i].is_registered = true;
+                            if (zoomJoinLink) {
+                                this.data.live_sessions[group][i].zoom_join_link = zoomJoinLink;
+                            }
+                            break;
+                        }
+                    }
+                });
             },
 
             setCurrentFeedbackMeeting(meetingIndex) {
