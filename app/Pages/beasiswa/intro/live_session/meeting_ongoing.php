@@ -57,7 +57,7 @@
                         <dt>Mentor</dt>
                         <dd x-text="live_session.mentor_name"></dd>
                     </dl>
-                    <template x-if="data?.completed">
+                    <template x-if="!data?.is_expire">
                         <div class="d-flex gap-2 mt-4">
                             <template x-if="(!live_session.theme_code || !data?.attendedCode.includes(live_session.theme_code)) && !data?.is_expire">
                                 <button

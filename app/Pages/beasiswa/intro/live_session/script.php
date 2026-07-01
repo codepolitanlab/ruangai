@@ -24,33 +24,14 @@
                 base.init.call(this);
                 this.$watch('data', (value) => {
                     const base_url = window.location.origin;
-                    // if (value?.is_mentee_comentor && !value?.is_reference_followup && value?.student.graduate != 1) {
-                    //     alert(`Maaf, kamu tidak dapat akses halaman live session. Silakan ikuti live session dari Co-Mentor ${value.comentor}.`);
-                    //     const base_url = window.location.origin;
-                    //     window.location.replace(`${base_url}/beasiswa/intro/1/dasar-dan-penggunaan-generative-ai/`);
-                    // }
-                    
-                    // Cek apakah peserta B4 (program)
-                    const isPesertaB4 = value?.program === 'RuangAI2025B4';
                     
                     // Cek apakah user memiliki akses ke live session
-                    const hasAccess = (value?.is_reference_followup && value?.student.graduate == '0') || 
-                                    [1,3].includes(+value?.user?.role_id) || 
-                                    isPesertaB4 || 
-                                    value?.is_followup || 
-                                    (value?.is_mentee_comentor && value?.student.graduate == '0') ||
-                                    value?.is_comentor ||
-                                    value?.is_mentor;
-                    
-                    if (value?.program != Alpine.store('core').activeProgram && !value?.is_comentor && !value?.is_mentor && !(value?.is_reference_followup && value?.student.graduate == '0') && !value?.is_followup && !value?.is_mentee_comentor && !isPesertaB4) {
+                    if (value?.program != Alpine.store('core').activeProgram && !value?.is_comentor && !value?.is_mentor && !value?.is_reference_followup && !value?.is_followup && !value?.is_mentee_comentor) {
                         alert('Maaf, kamu belum terdaftar sebagai peserta program RuangAI Chapter ini. Silakan daftar ulang ya!');
                         window.location.replace(`${base_url}`);
-                    } else if(value?.is_participating_other_ai_program && value?.student.graduate == 1) {
+                    } else if(value?.is_participating_other_ai_program && value?.student?.graduate == 1) {
                         alert('Kamu sudah dinyatakan lulus program ini. Anda tetap dapat mengakses materi pembelajaran lainnya di RuangAI.');
                         window.location.replace(`${base_url}`);
-                    } else if(!hasAccess) {
-                        alert('Kamu sudah dinyatakan lulus. Silakan klaim kelas spesialisasi yang sesuai dengan kebutuhanmu belajarmu di RuangAI.');
-                        window.location.replace(`${base_url}/courses/reward`);
                     }
                 });
             },

@@ -35,8 +35,8 @@
 								</div>
 							</template>
 
-							<!-- tampil jika is_reference_followup true ATAU user role_id = 1 atau 3 -->
-							<div x-show="(data?.is_reference_followup && data?.student.graduate == '0') || [1,3].includes(+data?.user?.role_id) || data?.program === 'RuangAI2025B4' || data?.prev_chapter === 'RuangAI2025B4' || data?.is_followup || data?.is_mentee_comentor" x-transition>
+							<!-- tampilkan live session untuk semua peserta terdaftar -->
+							<div x-transition>
 								<div class="mb-5" x-show="data?.live_sessions?.ongoing.length > 0" x-transition>
 									<h4 class="border-bottom pb-2 opacity-75">Event Hari Ini</h4>
 									<?= $this->include('beasiswa/intro/live_session/meeting_ongoing') ?>
