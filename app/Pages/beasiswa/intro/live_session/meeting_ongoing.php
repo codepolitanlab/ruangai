@@ -59,7 +59,7 @@
                     </dl>
                     <template x-if="!data?.is_expire">
                         <div class="d-flex gap-2 mt-4">
-                            <template x-if="(!live_session.theme_code || !data?.attendedCode.includes(live_session.theme_code)) && !data?.is_expire">
+                            <template x-if="!live_session.theme_code || !data?.attendedCode?.includes(live_session.theme_code)">
                                 <a
                                     :href="live_session.zoom_link || live_session.zoom_meeting_id"
                                     target="_blank"
