@@ -255,11 +255,10 @@ class ScholarshipController extends ResourceController
             $userProfileModel->insert($profilePayload);
         }
 
-        // Jwt only email, whatsapp_number, user_id
+        // Jwt minimal: hanya user_id dengan exp
         $jwt = JWT::encode([
-            'email'           => strtolower($data['email']),
-            'whatsapp_number' => $number,
-            'user_id'         => $userId,
+            'user_id' => $userId,
+            'exp'     => time() + 7 * 24 * 60 * 60,
         ], config('Heroic')->jwtKey['secret'], 'HS256');
 
         // If registration source is RuangAIxMayar, send onboarding email with WhatsApp group link

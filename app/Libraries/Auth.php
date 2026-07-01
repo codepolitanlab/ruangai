@@ -52,13 +52,11 @@ class Auth
 
         $userModel->update($user['id'], ['last_active' => date('Y-m-d H:i:s')]);
 
-        // Buat token
+        // Buat token (hanya essential claims, tanpa PII kecuali flag non-sensitif)
         $user['jwt'] = JWT::encode([
-            'email'           => strtolower($user['email']),
-            'whatsapp_number' => $user['phone'],
-            'user_id'         => $user['id'],
-            'isValidEmail'    => $user['email_valid'],
-            'exp'             => time() + 7 * 24 * 60 * 60,
+            'user_id'      => $user['id'],
+            'isValidEmail' => (int) $user['email_valid'],
+            'exp'          => time() + 7 * 24 * 60 * 60,
         ], config('Heroic')->jwtKey['secret'], 'HS256');
 
         return ['success', '', $user];
@@ -109,13 +107,10 @@ class Auth
         // Buat token JWT untuk sesi pengguna yang dituju.
         // Disarankan untuk memberikan waktu kedaluwarsa yang lebih singkat untuk sesi "login as".
         $target_user['jwt'] = JWT::encode([
-            'email'           => strtolower($target_user['email']),
-            'whatsapp_number' => $target_user['phone'],
-            'user_id'         => $target_user['id'],
-            'isValidEmail'    => $target_user['email_valid'],
-            'is_login_as'     => true, // Penanda bahwa ini adalah sesi "Login As"
-            'admin_user_id'   => $admin_user['id'], // Opsional: Menyimpan ID admin yang melakukan login
-            'exp'             => time() + 2 * 60 * 60, // Token hanya berlaku 2 jam
+            'user_id'       => $target_user['id'],
+            'is_login_as'   => true,
+            'admin_user_id' => $admin_user['id'],
+            'exp'           => time() + 2 * 60 * 60,
         ], config('Heroic')->jwtKey['secret'], 'HS256');
 
         // Kembalikan status sukses beserta data pengguna target

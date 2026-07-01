@@ -35,10 +35,8 @@ class PageController extends BaseController
         // Create JWT
         $userSession = [
             'user_id'      => $id,
-            'email'        => $user->email,
             'isValidEmail' => 1,
             'exp'          => time() + 7 * 24 * 60 * 60,
-            'timestamp'    => time(),
         ];
         $key = config('Heroic')->jwtKey['secret'];
         $jwt = JWT::encode($userSession, $key, 'HS256');

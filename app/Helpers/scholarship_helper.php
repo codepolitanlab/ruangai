@@ -194,13 +194,12 @@ if (!function_exists('scholarship_registration_url')) {
                 !empty($profileData['occupation']);
         }
         
-        // Prepare token payload
+        // Prepare token payload (minimal, tanpa PII detail)
         $tokenPayload = [
             'user_id' => $user_id,
             'participant' => $userData['name'] ?? '',
             'is_scholarship_participant' => $isScholarshipParticipant,
             'is_profile_complete' => $isProfileComplete,
-            'profile' => $profileData ?? [],
             'exp' => time() + (60 * 60 * 24) // 24 hours expiration
         ];
         

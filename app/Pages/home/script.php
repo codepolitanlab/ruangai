@@ -45,7 +45,7 @@
           try {
             const payload = JSON.parse(atob(token.split('.')[1]));
             this.meta.isValidEmail = +payload.isValidEmail === 1 ? true : false;
-            this.meta.email = payload.email;
+            // Email tidak lagi disimpan di JWT, ambil dari data user
           } catch (e) {
             console.error("Failed to parse JWT payload", e);
           }
@@ -209,6 +209,11 @@
       async sendEmailVerification(resend = false) {
         const token = localStorage.getItem('heroic_token');
 
+        if (!this.data?.email) {
+          $heroicHelper.toastr('Data email belum tersedia. Silakan refresh halaman.', 'danger', 'bottom');
+          return;
+        }
+
         if (this.emailSent && !resend) {
           setTimeout(() => {
             if (this.$refs.otp0) {
@@ -222,7 +227,7 @@
         setTimeout(() => {
           $heroicHelper
             .post("/home/sendEmailVerification", {
-              email: this.meta.email
+              email: this.data.email
             })
             .then(async (response) => {
               if (response.data.status == 'success') {
@@ -275,7 +280,7 @@
 
         $heroicHelper
           .post("/home/verifyEmail", {
-            email: this.meta.email,
+            email: this.data?.email || this.meta.email,
             otp: otpCode
           })
           .then(async (response) => {

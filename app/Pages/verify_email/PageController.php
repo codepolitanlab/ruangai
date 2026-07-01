@@ -187,7 +187,6 @@ class PageController extends BaseController
         }
 
         $newJwt = JWT::encode([
-            'email'        => strtolower($email),
             'user_id'      => $user['id'],
             'isValidEmail' => 1,
             'exp'          => time() + 7 * 24 * 60 * 60,

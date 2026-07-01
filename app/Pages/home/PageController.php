@@ -20,6 +20,7 @@ class PageController extends BaseController
         $Heroic = new \App\Libraries\Heroic();
         $jwt = $Heroic->checkToken(true);
         $this->data['name'] = $jwt->user['name'];
+        $this->data['email'] = $jwt->user['email'] ?? '';
 
         $db = \Config\Database::connect();
         
@@ -252,7 +253,6 @@ class PageController extends BaseController
         }
 
         $newJwt = JWT::encode([
-            'email'        => strtolower($user['email']),
             'user_id'      => $user['id'],
             'isValidEmail' => 1,
             'exp'          => time() + 7 * 24 * 60 * 60,

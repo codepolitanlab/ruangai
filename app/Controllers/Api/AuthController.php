@@ -233,7 +233,10 @@ class AuthController extends ResourceController
         return $this->respond([
             'isValid' => true,
             'isExist' => $user ? true : false,
-            'token'   => JWT::encode(['whatsapp_number' => $number], config('Heroic')->jwtKey['secret'], 'HS256'),
+            'token'   => JWT::encode([
+                'user_id' => $user['id'] ?? 0,
+                'exp'     => time() + 60 * 60,
+            ], config('Heroic')->jwtKey['secret'], 'HS256'),
         ]);
     }
 
@@ -319,11 +322,9 @@ class AuthController extends ResourceController
 
         // Send token to user
         $token = JWT::encode([
-            'email'           => strtolower($user['email']),
-            'whatsapp_number' => $user['phone'],
-            'user_id'         => $user['id'],
-            'isValidEmail'    => $user['email_valid'],
-            'exp'             => time() + 7 * 24 * 60 * 60,
+            'user_id'      => $user['id'],
+            'isValidEmail' => 1,
+            'exp'          => time() + 7 * 24 * 60 * 60,
         ], config('Heroic')->jwtKey['secret'], 'HS256');
 
         return $this->respond([
