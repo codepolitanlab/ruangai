@@ -98,6 +98,10 @@ class PageController extends BaseController
 
                 $readyLiveSessions[$key]['feedback_submitted'] = $feedbackExists;
 
+                // Cek apakah user sudah daftar di sesi ini
+                $isRegistered = in_array($live_session['id'], array_column($attended, 'live_meeting_id'));
+                $readyLiveSessions[$key]['is_registered'] = $isRegistered;
+
                 // Cek jika tanggal sudah lewat
                 if (date('Y-m-d') === $live_session['meeting_date']) {
                     // Cek jika waktu sudah lewat 2 jam

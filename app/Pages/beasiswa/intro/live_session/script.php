@@ -117,17 +117,18 @@
                     );
 
                     if (response.data.status === 'success') {
-                        $heroicHelper.toastr('Pendaftaran berhasil! Silakan cek halaman utama untuk link Zoom.', 'success', 'bottom');
-                        // Refresh data untuk update status pendaftaran
-                        this.loadPage(`beasiswa/intro/live_session/data/${$params.course_id}`);
+                        $heroicHelper.toastr('Pendaftaran berhasil!', 'success', 'bottom');
                     } else if (response.data.status === 'already_registered') {
                         $heroicHelper.toastr('Kamu sudah terdaftar di sesi ini.', 'info', 'bottom');
                     } else {
                         $heroicHelper.toastr(response.data.message || 'Gagal mendaftar.', 'danger', 'bottom');
+                        return;
                     }
+
+                    // Refresh data untuk update status pendaftaran
+                    this.loadPage(`beasiswa/intro/live_session/data/${course_id}`);
                 } catch (e) {
                     console.error('Gagal mendaftar live session', e);
-                    $heroicHelper.toastr('Terjadi kesalahan saat mendaftar.', 'error', 'bottom');
                 }
             },
 
