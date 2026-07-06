@@ -22,6 +22,14 @@ class PageController extends BaseController
         $id                 = 1; // Course ID untuk Misi Beasiswa
 
         $db = \Config\Database::connect();
+
+        // Ambil status validasi email langsung dari database (bisa berbeda dengan JWT token)
+        $userValidEmail = $db->table('users')
+            ->select('email_valid')
+            ->where('id', $jwt->user_id)
+            ->get()
+            ->getRowArray();
+        $this->data['isValidEmail'] = $userValidEmail ? (bool) $userValidEmail['email_valid'] : false;
         
         // For scholarship course (course_id = 1), check if user has scholarship
         if ($id == 1) {

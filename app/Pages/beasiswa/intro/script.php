@@ -34,6 +34,11 @@
             window.location.replace('/scholarship');
           }
 
+          // Update isValidEmail dari data API (nilai real-time dari database)
+          if (value && typeof value.isValidEmail !== 'undefined') {
+            this.meta.isValidEmail = value.isValidEmail;
+          }
+
           this.syncCountdown(value);
           // if (!value.is_enrolled) {
           //   alert("Kamu belum terdaftar di kelas. Silahkan daftar terlebih dahulu.")
