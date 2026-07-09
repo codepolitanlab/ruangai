@@ -103,6 +103,7 @@
 						<i class="bi bi-envelope-fill"></i>
 						<span>OTP akan dikirim ke: <strong x-text="meta.email || data?.email || '(email tidak tersedia)'"></strong></span>
 					</div>
+					<p class="small text-muted mb-2">Jika terdapat kesalahan atau typo pada email di atas, silakan perbaiki pada kolom di bawah ini sebelum menekan tombol <strong>Kirim OTP</strong>.</p>
 					<div class="form-group">
 						<div class="input-group">
 							<input type="text" class="form-control" x-model="meta.email" :disabled="emailSent" placeholder="Masukkan email anda">
