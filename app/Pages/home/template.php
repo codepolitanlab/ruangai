@@ -99,9 +99,13 @@
 				</div>
 				<div class="modal-body">
 					<p>Mohon cek kembali email berikut, pastikan sudah benar supaya OTP dapat diterima untuk aktivasi.</p>
+					<div class="alert alert-info d-flex align-items-center gap-2 py-2 mb-3">
+						<i class="bi bi-envelope-fill"></i>
+						<span>OTP akan dikirim ke: <strong x-text="meta.email || data?.email || '(email tidak tersedia)'"></strong></span>
+					</div>
 					<div class="form-group">
 						<div class="input-group">
-							<input type="text" class="form-control" x-model="meta.email" :disabled="emailSent">
+							<input type="text" class="form-control" x-model="meta.email" :disabled="emailSent" placeholder="Masukkan email anda">
 							<button type="button" class="btn btn-primary" x-on:click="sendEmailVerification()" :disabled="meta.loading || emailSent">
 								<span x-show="meta.loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
 								<span x-show="!meta.loading">Kirim OTP</span>

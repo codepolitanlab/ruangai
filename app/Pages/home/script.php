@@ -64,6 +64,9 @@
           //   alert("Kamu belum terdaftar di kelas. Silahkan daftar terlebih dahulu.")
           //   window.location.replace(`https://www.ruangai.id/registration`)
           // }
+          if (value?.email) {
+            this.meta.email = value.email;
+          }
           localStorage.setItem("event_date_end", value.event.date_end);
           if (value?.event?.date_end) {
             this.startCountdown(value.event.date_end);
@@ -203,7 +206,18 @@
       },
 
       showPopupVerification() {
+        // ambil email dari data user (API) dan tampilkan di popup
+        if (this.data?.email) {
+          this.meta.email = this.data.email;
+        }
         this.modalInstance.show();
+        // fokus ke input email atau OTP setelah modal tampil
+        this.$nextTick(() => {
+          if (!this.emailSent && this.$refs.modalVerify) {
+            const input = this.$refs.modalVerify.querySelector('input[type="text"]');
+            if (input) input.focus();
+          }
+        });
       },
 
       async sendEmailVerification(resend = false) {
