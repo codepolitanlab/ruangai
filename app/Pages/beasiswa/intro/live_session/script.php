@@ -26,10 +26,11 @@
                     const base_url = window.location.origin;
                     
                     // Cek apakah user memiliki akses ke live session
-                    if (!value?.is_comentor && !value?.is_mentor && !value?.is_reference_followup && !value?.is_followup && !value?.is_mentee_comentor) {
-                        alert('Maaf, kamu belum terdaftar sebagai peserta program RuangAI Chapter ini. Silakan daftar ulang ya!');
-                        window.location.replace(`${base_url}`);
-                    } else if(value?.is_participating_other_ai_program && value?.student?.graduate == 1) {
+                    // if (value?.program != Alpine.store('core').activeProgram && !value?.is_comentor && !value?.is_mentor && !value?.is_reference_followup && !value?.is_followup && !value?.is_mentee_comentor) {
+                    //     alert('Maaf, kamu belum terdaftar sebagai peserta program RuangAI Chapter ini. Silakan daftar ulang ya!');
+                    //     window.location.replace(`${base_url}`);
+                    // } else 
+                    if(value?.is_participating_other_ai_program && value?.student?.graduate == 1) {
                         alert('Kamu sudah dinyatakan lulus program ini. Anda tetap dapat mengakses materi pembelajaran lainnya di RuangAI.');
                         window.location.replace(`${base_url}`);
                     }
