@@ -222,8 +222,9 @@
 
       async sendEmailVerification(resend = false) {
         const token = localStorage.getItem('heroic_token');
+        const targetEmail = this.meta.email || this.data?.email;
 
-        if (!this.data?.email) {
+        if (!targetEmail) {
           $heroicHelper.toastr('Data email belum tersedia. Silakan refresh halaman.', 'danger', 'bottom');
           return;
         }
@@ -241,7 +242,7 @@
         setTimeout(() => {
           $heroicHelper
             .post("/home/sendEmailVerification", {
-              email: this.data.email
+              email: targetEmail
             })
             .then(async (response) => {
               if (response.data.status == 'success') {
