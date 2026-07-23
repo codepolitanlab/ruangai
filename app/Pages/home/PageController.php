@@ -21,6 +21,7 @@ class PageController extends BaseController
         $jwt = $Heroic->checkToken(true);
         $this->data['name'] = $jwt->user['name'];
         $this->data['email'] = $jwt->user['email'] ?? '';
+        $this->data['isValidEmail'] = (bool) ($jwt->user['email_valid'] ?? false);
 
         $db = \Config\Database::connect();
         

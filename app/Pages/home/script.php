@@ -67,6 +67,9 @@
           if (value?.email) {
             this.meta.email = value.email;
           }
+          if (value?.isValidEmail !== undefined) {
+            this.meta.isValidEmail = value.isValidEmail;
+          }
           localStorage.setItem("event_date_end", value.event.date_end);
           if (value?.event?.date_end) {
             this.startCountdown(value.event.date_end);
