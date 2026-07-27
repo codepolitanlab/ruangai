@@ -175,6 +175,10 @@ class ScholarshipController extends ResourceController
                 $data['reference_comentor'] = 'Mentor-Vira';
             }
 
+            if ($source === 'RuangAIxBetterAndCo') {
+                $data['reference_comentor'] = 'rai-career';
+            }
+
             $userId   = $userModel->insert([
                 'name'     => $data['fullname'],
                 'username' => $username,
