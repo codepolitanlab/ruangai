@@ -103,9 +103,6 @@ class PageController extends BaseController
 
             $countdownStudent = sync_scholarship_course_expiry($jwt->user_id, $id);
 
-            // Simpan expire_at asli dari DB sebelum di-overwrite oleh countdown
-            $originalExpireAt = $this->data['student']['expire_at'] ?? null;
-
             if ($this->data['student'] && $countdownStudent) {
                 $this->data['student'] = array_merge($this->data['student'], [
                     'created_at' => $countdownStudent['created_at'] ?? ($this->data['student']['created_at'] ?? null),
@@ -153,7 +150,7 @@ class PageController extends BaseController
             $today = date('Y-m-d');
             $now   = date('H:i:s');
             $isRAICollaboration = isset($this->data['student']['reference_comentor']) && $this->data['student']['reference_comentor'] == 'rai-career';
-            $isUnlimitedAccess = in_array($this->data['student']['occupation'] ?? '', ['freelance', 'fresh_graduate', 'jobseeker']) && empty($originalExpireAt);
+            $isUnlimitedAccess = in_array($this->data['student']['occupation'] ?? '', ['freelance', 'fresh_graduate', 'jobseeker']);
             $nextLiveSessionQuery = $db->table('live_meetings')
                 ->select('live_meetings.*, live_batch.name as batch_name, live_meetings.zoom_link, live_meetings.zoom_meeting_id, live_meetings.meeting_duration')
                 ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')
