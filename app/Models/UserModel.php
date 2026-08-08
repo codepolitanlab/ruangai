@@ -30,7 +30,7 @@ class UserModel extends Model
 
                 $messageEmail = 'Hai!<br/><br/>';
                 $messageEmail .= 'Sepertinya kamu meminta perubahan password. Satu langkah lagi, silahkan mengklik tautan dibawah ini!<br/>';
-                $messageEmail .= '<a href="' . $callback . '">' . $callback . '</a>';
+                $messageEmail .= '<a href="' . esc($callback, 'attr') . '">' . esc($callback) . '</a>';
                 $messageEmail .= '<br/><br/>Salam,<br/>RuangAI';
 
                 $Heroic->sendEmail($email, 'RuangAI Info - Reset Password', $messageEmail);

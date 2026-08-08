@@ -32,7 +32,7 @@ $logoUrl        = 'https://image.web.id/images/clipboard-image-1753328088.png';
                   Segera gabung grup WhatsApp peserta:
                 </p>
                 <p style="font-size:16px;line-height:1.5;">
-                    <a href="<?= $group_link ?>"><?= $group_link ?></a>
+                    <a href="<?= esc($group_link ?? '#', 'attr') ?>"><?= esc($group_link ?? '#') ?></a>
                 </p>
                 <p>Pastikan kamu join agar tidak ketinggalan info penting.<br>
                 Salam,<br>
