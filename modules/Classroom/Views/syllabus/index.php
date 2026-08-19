@@ -79,7 +79,8 @@
                                             href="/<?= urlScope() ?>/classroom/syllabuses/<?= $s['id'] ?>/materials"
                                             title="Kelola Materi"><span class="bi bi-list-check"></span></a>
                                         <button class="btn btn-sm btn-outline-primary" title="Edit"
-                                            onclick='openSyllabusModal(<?= json_encode($s, JSON_HEX_APOS | JSON_HEX_QUOT) ?>)'>
+                                            data-bs-toggle="modal" data-bs-target="#syllabusModal"
+                                            onclick='openSyllabusModal(<?= json_encode($s, JSON_HEX_APOS) ?>)'>
                                             <span class="bi bi-pencil-square"></span>
                                         </button>
                                         <form method="POST" action="/<?= urlScope() ?>/classroom/syllabuses/<?= $s['id'] ?>/duplicate"

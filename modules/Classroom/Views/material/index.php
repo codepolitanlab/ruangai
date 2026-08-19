@@ -2,6 +2,34 @@
 
 <?php $this->section('main') ?>
 
+<?php
+// Ikon & label pendek per tipe resource (dipakai di daftar materi & preview)
+$resourceTypeIcons = [
+    'text'       => 'bi-file-text',
+    'video'      => 'bi-play-circle',
+    'pdf'        => 'bi-file-earmark-pdf',
+    'slide'      => 'bi-easel',
+    'audio'      => 'bi-music-note-beamed',
+    'url'        => 'bi-link-45deg',
+    'book_ref'   => 'bi-book',
+    'quiz'       => 'bi-patch-question',
+    'submission' => 'bi-upload',
+    'meeting'    => 'bi-camera-video',
+];
+$resourceTypeShortLabels = [
+    'text'       => 'Text',
+    'video'      => 'Video',
+    'pdf'        => 'PDF',
+    'slide'      => 'Slide',
+    'audio'      => 'Audio',
+    'url'        => 'URL',
+    'book_ref'   => 'Buku',
+    'quiz'       => 'Kuis',
+    'submission' => 'Tugas',
+    'meeting'    => 'Meeting',
+];
+?>
+
 <div class="page-heading">
     <div class="page-title">
         <div class="row align-items-center">
@@ -20,13 +48,17 @@
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#materialModal" onclick="materialResetForm()">
                     <i class="bi bi-plus"></i> Tambah Materi
                 </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#resourceModal"
+                    onclick="materialResourceOpen()">
+                    <i class="bi bi-plus"></i> Tambah Resource
+                </button>
             </div>
         </div>
     </div>
 
     <div class="row mt-3">
         <!-- LEFT PANEL: Daftar Materi -->
-        <div class="col-lg-6">
+        <div class="col-lg-5">
             <div class="card card-block rounded-xl shadow">
                 <div class="card-header"><strong>Daftar Materi</strong>
                     <span class="badge text-bg-info ms-2"><?= count($materials) ?> materi</span>
@@ -41,21 +73,18 @@
                             <div class="d-flex align-items-center p-2 bg-light-subtle rounded">
                                 <div class="me-2 text-muted" style="cursor:grab" title="Drag untuk reorder"><i class="bi bi-grip-vertical"></i></div>
                                 <div class="flex-grow-1">
-                                    <div class="fw-bold"><?= esc($material['title']) ?>
+                                    <div class="fw-bold">
+                                        <a href="javascript:void(0)" class="text-decoration-none" title="Klik untuk preview"
+                                            onclick="materialPreview(<?= (int) $material['id'] ?>)"><?= esc($material['title']) ?></a>
                                         <span class="badge text-bg-light border ms-1"><?= esc($material['scoring_type']) ?></span>
                                         <span class="badge text-bg-light border">W: <?= (int) $material['weight'] ?></span>
                                     </div>
                                     <small class="text-muted"><?= esc($material['subtitle']) ?> · <?= count($material['resources']) ?> resource</small>
                                 </div>
                                 <div class="text-nowrap">
-                                    <button type="button" class="btn btn-sm btn-outline-primary"
-                                        onclick='materialEdit(<?= json_encode($material, JSON_HEX_APOS | JSON_HEX_QUOT) ?>)' title="Edit materi"><i class="bi bi-pencil-square"></i></button>
                                     <button type="button" class="btn btn-sm btn-outline-success" title="Tambah resource"
+                                        data-bs-toggle="modal" data-bs-target="#resourceModal"
                                         onclick="materialSelectResource(<?= (int) $material['id'] ?>)"><i class="bi bi-plus-lg"></i></button>
-                                    <form method="POST" action="/<?= urlScope() ?>/classroom/syllabuses/<?= $syllabus['id'] ?>/materials/<?= $material['id'] ?>/delete"
-                                        class="d-inline" onsubmit="return confirm('Hapus materi ini beserta seluruh resource-nya?')">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-                                    </form>
                                 </div>
                             </div>
                             <div class="p-2" style="background:#f8f9fa">
@@ -64,17 +93,23 @@
                                 <?php endif; ?>
                                 <?php foreach ($material['resources'] as $ri => $resource) : ?>
                                     <div class="d-flex align-items-center border-bottom py-1 ps-2">
-                                        <span class="badge text-bg-secondary me-2" style="width:90px"><?= esc($resource['type']) ?></span>
-                                        <span class="flex-grow-1 small"><?= esc($resource['title']) ?>
+                                        <span class="me-2" title="<?= esc($resource['type']) ?>">
+                                            <i class="bi <?= $resourceTypeIcons[$resource['type']] ?? 'bi-question-circle' ?> me-1"></i>
+                                        </span>
+                                        <span class="flex-grow-1 small">
+                                            <a href="javascript:void(0)" class="text-decoration-none" title="Klik untuk preview"
+                                                onclick="resourcePreview(<?= (int) $material['id'] ?>, <?= (int) $resource['id'] ?>)"><?= esc($resource['title']) ?></a>
                                             <?php if ($resource['is_required']) : ?><span class="badge text-bg-warning">wajib</span><?php endif; ?>
                                             <?php if (! $resource['need_review']) : ?><span class="badge text-bg-success">auto-acc</span><?php endif; ?>
                                         </span>
-                                        <button type="button" class="btn btn-sm btn-outline-primary"
-                                            onclick='materialResourceEdit(<?= (int) $material['id'] ?>, <?= json_encode($resource, JSON_HEX_APOS | JSON_HEX_QUOT) ?>)'><i class="bi bi-pencil-square"></i></button>
-                                        <form method="POST" action="/<?= urlScope() ?>/classroom/syllabuses/<?= $syllabus['id'] ?>/materials/<?= $material['id'] ?>/resources/<?= $resource['id'] ?>/delete"
-                                            class="d-inline" onsubmit="return confirm('Hapus resource ini?')">
-                                            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-                                        </form>
+                                        <div class="text-nowrap">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" title="Naikkan urutan"
+                                                onclick="resourceMove(<?= (int) $material['id'] ?>, <?= (int) $resource['id'] ?>, 'up')"
+                                                <?= $ri === 0 ? 'disabled' : '' ?>><i class="bi bi-arrow-up-short"></i></button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" title="Turunkan urutan"
+                                                onclick="resourceMove(<?= (int) $material['id'] ?>, <?= (int) $resource['id'] ?>, 'down')"
+                                                <?= $ri === count($material['resources']) - 1 ? 'disabled' : '' ?>><i class="bi bi-arrow-down-short"></i></button>
+                                        </div>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
@@ -84,36 +119,18 @@
             </div>
         </div>
 
-        <!-- RIGHT PANEL: Info / Form Resource -->
-        <div class="col-lg-6">
+        <!-- RIGHT PANEL: Preview Materi & Resource -->
+        <div class="col-lg-7">
             <div class="card card-block rounded-xl shadow sticky-top" style="top:20px">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <strong>Tambah / Edit Resource</strong>
-                    <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#resourceModal"
-                        onclick="materialResourceOpen()">
-                        <i class="bi bi-plus"></i> Resource Baru
-                    </button>
+                    <strong><i class="bi bi-eye me-1"></i> Preview</strong>
                 </div>
-                <div class="card-body">
-                    <div class="text-muted small">
-                        <p class="mb-1"><i class="bi bi-info-circle"></i> Resource adalah unit belajar dalam materi: video, PDF, kuis, tugas (submission), meeting, dan lain-lain.</p>
-                        <p class="mb-0">Klik tombol <span class="bi bi-plus-lg"></span> di samping materi, atau "Resource Baru" di atas untuk membuka form dinamis.</p>
+                <div class="card-body" id="previewArea">
+                    <div id="previewEmpty" class="text-center text-muted small py-5">
+                        <i class="bi bi-mouse fs-3 d-block mb-2"></i>
+                        Klik judul <strong>materi</strong> atau <strong>resource</strong> di daftar kiri untuk melihat preview.
                     </div>
-                    <hr>
-                    <div class="alert alert-light border small">
-                        <strong>Konten per tipe (JSON):</strong>
-                        <ul class="mb-0">
-                            <li><code>text</code> — html, instructions</li>
-                            <li><code>video</code> — url, platform, duration</li>
-                            <li><code>pdf/audio</code> — file_path, duration</li>
-                            <li><code>slide</code> — embed_url, provider</li>
-                            <li><code>url</code> — url, open_in</li>
-                            <li><code>book_ref</code> — book_title, author, chapter, isbn</li>
-                            <li><code>quiz</code> — pass_score, time_limit_minutes, max_attempts</li>
-                            <li><code>submission</code> — submission_type, allowed_types, max_size_mb</li>
-                            <li><code>meeting</code> — description, duration, mode</li>
-                        </ul>
-                    </div>
+                    <div id="previewContent" style="display:none"></div>
                 </div>
             </div>
         </div>
@@ -170,7 +187,7 @@
 <div class="modal fade modal-xl" id="resourceModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="POST" id="resourceForm" action="">
+            <form method="POST" id="resourceForm" action="" onsubmit="return materialResourceSubmit(this)">
                 <div class="modal-header">
                     <h5 class="modal-title" id="resourceModalTitle">Tambah Resource</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -384,6 +401,7 @@
 <script>
 const URL_SCOPE = '/<?= urlScope() ?>';
 const SYLLABUS_ID = <?= (int) $syllabus['id'] ?>;
+const MATERIALS = <?= json_encode($materials, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?>;
 
 function materialResetForm() {
     const form = document.getElementById('materialForm');
@@ -408,7 +426,11 @@ function materialEdit(material) {
 
 function materialResourceOpen(materialId = null) {
     const form = document.getElementById('resourceForm');
-    form.action = URL_SCOPE + '/classroom/syllabuses/' + SYLLABUS_ID + '/materials/' + (materialId || '') + '/resources/store';
+    // Action dibangun saat submit (lihat materialResourceSubmit) agar selalu
+    // menyertakan material_id yang valid — tombol "Resource Baru" dibuka
+    // tanpa material terpilih, sehingga URL tidak boleh di-hardcode di sini.
+    const mid = materialId || document.getElementById('resource_material_id').value;
+    form.action = URL_SCOPE + '/classroom/syllabuses/' + SYLLABUS_ID + '/materials/' + (mid || '') + '/resources/store';
     document.querySelectorAll('#resourceModal .content-field').forEach(el => el.value = '');
     document.getElementById('resource_completion_criteria').value = 'view';
     document.getElementById('resource_is_required').value = '1';
@@ -424,6 +446,36 @@ function materialResourceOpen(materialId = null) {
 function materialSelectResource(materialId) {
     document.getElementById('resource_material_id').value = materialId;
     materialResourceOpen(materialId);
+}
+
+/**
+ * Bangun URL submit resource berdasarkan materi & mode (store/update)
+ * yang dipilih saat ini. Dipanggil dari onsubmit #resourceForm.
+ */
+function materialResourceSubmit(form) {
+    const materialId = document.getElementById('resource_material_id').value;
+    const resourceId = document.getElementById('resource_id').value;
+    const type = document.getElementById('resource_type').value;
+
+    if (!materialId) {
+        alert('Silakan pilih materi terlebih dahulu.');
+        return false;
+    }
+
+    // Final guard: hanya field konten dari tipe aktif yang ikut terkirim.
+    // Mencegah tabrakan name duplikat (name="url" di blok video & url,
+    // name="file_path" di blok pdf & audio, name="duration" di video/audio/meeting)
+    // yang membuat PHP mengambil nilai kosong dari blok terakhir.
+    document.querySelectorAll('#resourceModal [data-type]').forEach(el => {
+        const isActive = el.dataset.type === type;
+        el.querySelectorAll('.content-field').forEach(field => { field.disabled = !isActive; });
+    });
+
+    form.action = URL_SCOPE + '/classroom/syllabuses/' + SYLLABUS_ID
+        + '/materials/' + materialId
+        + '/resources/' + (resourceId ? resourceId + '/update' : 'store');
+
+    return true;
 }
 
 function materialResourceEdit(materialId, resource) {
@@ -449,8 +501,11 @@ function materialResourceEdit(materialId, resource) {
         submission: ['submission_type', 'deadline_offset_days', 'allowed_types', 'max_size_mb'],
         meeting: ['description', 'duration', 'mode']
     };
+    // Scope pencarian ke blok tipe aktif agar tidak salah isi pada input
+    // dengan name duplikat (mis. name="url" ada di blok video DAN blok url).
+    const typeBlock = document.querySelector(`#resourceModal [data-type="${resource.type}"]`);
     (map[resource.type] || []).forEach(key => {
-        const el = document.querySelector(`#resourceModal [name="${key}"]`);
+        const el = typeBlock ? typeBlock.querySelector(`[name="${key}"]`) : null;
         if (el && content[key] !== undefined) el.value = content[key];
     });
     const instr = document.querySelector('#resourceModal [name=instructions]');
@@ -464,11 +519,27 @@ const RESOURCE_TYPE_LABELS = {
     submission: 'Tugas / Submission', meeting: 'Meeting / Tatap Muka'
 };
 
+const RESOURCE_TYPE_ICONS = {
+    text: 'bi-file-text', video: 'bi-play-circle', pdf: 'bi-file-earmark-pdf',
+    slide: 'bi-easel', audio: 'bi-music-note-beamed', url: 'bi-link-45deg',
+    book_ref: 'bi-book', quiz: 'bi-patch-question', submission: 'bi-upload',
+    meeting: 'bi-camera-video'
+};
+
+const RESOURCE_TYPE_SHORT = {
+    text: 'Text', video: 'Video', pdf: 'PDF', slide: 'Slide', audio: 'Audio',
+    url: 'URL', book_ref: 'Buku', quiz: 'Kuis', submission: 'Tugas', meeting: 'Meeting'
+};
+
 function materialResourceTypeChange() {
     const type = document.getElementById('resource_type').value;
     document.getElementById('resource_type_label').textContent = RESOURCE_TYPE_LABELS[type] || type;
     document.querySelectorAll('#resourceModal [data-type]').forEach(el => {
-        el.style.display = el.dataset.type === type ? '' : 'none';
+        const isActive = el.dataset.type === type;
+        el.style.display = isActive ? '' : 'none';
+        // Nonaktifkan field tipe lain agar tidak ikut terkirim saat submit
+        // (menghindari name duplikat: url, file_path, duration).
+        el.querySelectorAll('.content-field').forEach(field => { field.disabled = !isActive; });
     });
     materialSubmissionTypeChange();
 }
@@ -479,6 +550,173 @@ function materialSubmissionTypeChange() {
     document.querySelectorAll('#resourceModal [data-submission-upload]').forEach(el => {
         el.style.display = isUpload ? '' : 'none';
     });
+}
+
+// ==================== PREVIEW MATERI & RESOURCE ====================
+
+function previewEsc(str) {
+    if (str === null || str === undefined) return '';
+    const div = document.createElement('div');
+    div.textContent = String(str);
+    return div.innerHTML;
+}
+
+function previewNl2br(str) {
+    return String(str).replace(/\n/g, '<br>');
+}
+
+function showPreview(html) {
+    document.getElementById('previewContent').innerHTML = html;
+    document.getElementById('previewContent').style.display = '';
+    document.getElementById('previewEmpty').style.display = 'none';
+}
+
+function materialPreview(materialId) {
+    const m = (MATERIALS || []).find(x => parseInt(x.id, 10) === parseInt(materialId, 10));
+    if (!m) return;
+
+    const resources = m.resources || [];
+    const html = `
+        <div class="d-flex justify-content-between align-items-start mb-2">
+            <div>
+                <h5 class="mb-1">${previewEsc(m.title)}</h5>
+                ${m.subtitle ? `<div class="text-muted small">${previewEsc(m.subtitle)}</div>` : ''}
+            </div>
+            <div class="text-nowrap">
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#materialModal"
+                    onclick="materialEditById(${m.id})"><i class="bi bi-pencil-square"></i> Edit</button>
+                <form method="POST" action="${URL_SCOPE}/classroom/syllabuses/${SYLLABUS_ID}/materials/${m.id}/delete"
+                    class="d-inline" onsubmit="return confirm('Hapus materi ini beserta seluruh resource-nya?')">
+                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i> Hapus</button>
+                </form>
+            </div>
+        </div>
+        <div class="mb-2">
+            <span class="badge text-bg-light border">${previewEsc(m.scoring_type)}</span>
+            <span class="badge text-bg-light border">W: ${parseInt(m.weight, 10) || 0}</span>
+            <span class="badge text-bg-info">${resources.length} resource</span>
+        </div>
+        ${m.description ? `<div class="small mb-3 text-muted">${previewNl2br(previewEsc(m.description))}</div>` : ''}
+    `;
+    showPreview(html);
+}
+
+function resourcePreview(materialId, resourceId) {
+    const m = (MATERIALS || []).find(x => parseInt(x.id, 10) === parseInt(materialId, 10));
+    const r = m ? (m.resources || []).find(x => parseInt(x.id, 10) === parseInt(resourceId, 10)) : null;
+    if (!m || !r) return;
+
+    let content = {};
+    try { content = JSON.parse(r.content || '{}'); } catch (e) {}
+
+    const badges = [
+        `<span class="badge text-bg-secondary" title="${previewEsc(r.type)}"><i class="bi ${RESOURCE_TYPE_ICONS[r.type] || 'bi-question-circle'} me-1"></i>${previewEsc(RESOURCE_TYPE_SHORT[r.type] || r.type)}</span>`,
+        `<span class="badge text-bg-light border">${previewEsc(r.completion_criteria)}</span>`,
+        r.is_required ? '<span class="badge text-bg-warning">wajib</span>' : '',
+        !r.need_review ? '<span class="badge text-bg-success">auto-acc</span>' : ''
+    ].filter(Boolean).join(' ');
+
+    const html = `
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="small text-muted">
+                <a href="javascript:void(0)" class="text-decoration-none" onclick="materialPreview(${m.id})">
+                    <i class="bi bi-arrow-left"></i> ${previewEsc(m.title)}
+                </a>
+            </div>
+            <div class="text-nowrap">
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#resourceModal"
+                    onclick="resourceEdit(${m.id}, ${r.id})"><i class="bi bi-pencil-square"></i> Edit</button>
+                <form method="POST" action="${URL_SCOPE}/classroom/syllabuses/${SYLLABUS_ID}/materials/${m.id}/resources/${r.id}/delete"
+                    class="d-inline" onsubmit="return confirm('Hapus resource ini?')">
+                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i> Hapus</button>
+                </form>
+            </div>
+        </div>
+        <h5 class="mb-1">${previewEsc(r.title)}</h5>
+        <div class="mb-2">${badges}</div>
+        ${resourceDetailRows(r.type, content)}
+        ${content.instructions ? `<div class="alert alert-light border small mt-2 mb-0"><strong>Instruksi:</strong><br>${previewNl2br(previewEsc(content.instructions))}</div>` : ''}
+    `;
+    showPreview(html);
+}
+
+// Edit materi dari preview (membuka modal dengan data materi terpilih)
+function materialEditById(materialId) {
+    const m = (MATERIALS || []).find(x => parseInt(x.id, 10) === parseInt(materialId, 10));
+    if (!m) return;
+    materialEdit(m);
+}
+
+// Edit resource dari preview (membuka modal dengan data resource terpilih)
+function resourceEdit(materialId, resourceId) {
+    const m = (MATERIALS || []).find(x => parseInt(x.id, 10) === parseInt(materialId, 10));
+    const r = m ? (m.resources || []).find(x => parseInt(x.id, 10) === parseInt(resourceId, 10)) : null;
+    if (!m || !r) return;
+    materialResourceEdit(materialId, r);
+}
+
+// Ubah posisi urutan resource (naik/turun) lalu simpan via endpoint reorder
+function resourceMove(materialId, resourceId, direction) {
+    const m = (MATERIALS || []).find(x => parseInt(x.id, 10) === parseInt(materialId, 10));
+    if (!m) return;
+
+    const list = (m.resources || []).slice();
+    const idx = list.findIndex(r => parseInt(r.id, 10) === parseInt(resourceId, 10));
+    if (idx < 0) return;
+
+    const target = direction === 'up' ? idx - 1 : idx + 1;
+    if (target < 0 || target >= list.length) return;
+
+    [list[idx], list[target]] = [list[target], list[idx]];
+
+    const orders = list.map(r => parseInt(r.id, 10));
+
+    const body = new URLSearchParams();
+    body.append('orders', JSON.stringify(orders));
+
+    fetch(URL_SCOPE + '/classroom/syllabuses/' + SYLLABUS_ID + '/materials/' + materialId + '/resources/reorder', {
+        method: 'POST',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        body
+    }).finally(() => location.reload());
+}
+
+function resourceDetailRows(type, content) {
+    if (type === 'text') {
+        return content.html
+            ? `<div class="border rounded p-2 bg-light small mb-0">${content.html}</div>`
+            : '<div class="text-muted small">Tidak ada konten.</div>';
+    }
+
+    const rows = [];
+    const add = (label, val) => {
+        if (val !== undefined && val !== null && val !== '') {
+            rows.push({ label, val });
+        }
+    };
+
+    switch (type) {
+        case 'video': add('URL Video', content.url); add('Platform', content.platform); add('Durasi (menit)', content.duration); break;
+        case 'pdf': add('File Path', content.file_path); break;
+        case 'audio': add('File Path', content.file_path); add('Durasi (menit)', content.duration); break;
+        case 'slide': add('Embed URL', content.embed_url); add('Provider', content.provider); break;
+        case 'url': add('URL', content.url); add('Buka di', content.open_in); break;
+        case 'book_ref':
+            add('Judul Buku', content.book_title); add('Penulis', content.author); add('Bab', content.chapter);
+            add('Halaman', content.page_start && content.page_end ? `${content.page_start}–${content.page_end}` : (content.page_start || content.page_end));
+            add('ISBN', content.isbn);
+            break;
+        case 'quiz': add('Pass Score (%)', content.pass_score); add('Batas Waktu (menit)', content.time_limit_minutes); add('Maks Percobaan', content.max_attempts); break;
+        case 'submission':
+            add('Tipe Pengumpulan', content.submission_type); add('Deadline (hari)', content.deadline_offset_days);
+            add('Allowed Types', content.allowed_types); add('Max Size (MB)', content.max_size_mb);
+            break;
+        case 'meeting': add('Deskripsi', content.description); add('Durasi (menit)', content.duration); add('Mode', content.mode); break;
+    }
+
+    return rows.length
+        ? `<dl class="row mb-0">${rows.map(r => `<dt class="col-sm-5 small text-muted fw-normal">${previewEsc(r.label)}</dt><dd class="col-sm-7 small mb-1">${previewEsc(r.val)}</dd>`).join('')}</dl>`
+        : '<div class="text-muted small">Tidak ada detail konten.</div>';
 }
 </script>
 

@@ -378,6 +378,8 @@ flowchart LR
 - **PHPUnit**: `phpunit.xml.dist`, folder `tests/` (`unit/`, `database/`, `session/`, `_support/`).
 - Jalankan: `composer test` / `vendor/bin/phpunit`.
 
+Untuk tes via browser dapat dilakukan melalui url https://ruangai.test/ruangpanel/user/login dengan username: toha.samba@gmail.com dan password: bismillah123
+
 ---
 
 ## 16. Konvensi Penamaan

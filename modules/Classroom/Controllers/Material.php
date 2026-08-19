@@ -282,6 +282,12 @@ class Material extends AdminController
         $post = $this->request->getPost();
         $payload = [];
 
+        // Helper aman: setara `$post[$key] ?: $default` tetapi TIDAK melempar
+        // "Undefined array key" bila key tidak ada di payload POST.
+        $field = static function (string $key, $default = '') use ($post) {
+            return ($post[$key] ?? null) ?: $default;
+        };
+
         switch ($type) {
             case 'text':
                 $payload['html']         = $post['html'] ?? '';
@@ -290,7 +296,7 @@ class Material extends AdminController
 
             case 'video':
                 $payload['url']          = $post['url'] ?? '';
-                $payload['platform']     = $post['platform'] ?: 'youtube';
+                $payload['platform']     = $field('platform', 'youtube');
                 $payload['duration']     = $post['duration'] ?? null;
                 $payload['instructions'] = $post['instructions'] ?? '';
                 break;
@@ -314,7 +320,7 @@ class Material extends AdminController
 
             case 'url':
                 $payload['url']          = $post['url'] ?? '';
-                $payload['open_in']      = $post['open_in'] ?: 'tab';
+                $payload['open_in']      = $field('open_in', 'tab');
                 $payload['instructions'] = $post['instructions'] ?? '';
                 break;
 
@@ -329,26 +335,26 @@ class Material extends AdminController
                 break;
 
             case 'quiz':
-                $payload['pass_score']        = $post['pass_score'] ?: 70;
-                $payload['time_limit_minutes'] = $post['time_limit_minutes'] ?: 0;
-                $payload['max_attempts']       = $post['max_attempts'] ?: 1;
+                $payload['pass_score']        = $field('pass_score', 70);
+                $payload['time_limit_minutes'] = $field('time_limit_minutes', 0);
+                $payload['max_attempts']       = $field('max_attempts', 1);
                 $payload['instructions']       = $post['instructions'] ?? '';
                 break;
 
             case 'submission':
-                $payload['submission_type']     = $post['submission_type'] ?: 'upload';
+                $payload['submission_type']     = $field('submission_type', 'upload');
                 $payload['instructions']        = $post['instructions'] ?? '';
-                $payload['deadline_offset_days'] = $post['deadline_offset_days'] ?: null;
+                $payload['deadline_offset_days'] = $field('deadline_offset_days', null);
                 if ($payload['submission_type'] === 'upload') {
                     $payload['allowed_types'] = $post['allowed_types'] ?? '';
-                    $payload['max_size_mb']   = $post['max_size_mb'] ?: 10;
+                    $payload['max_size_mb']   = $field('max_size_mb', 10);
                 }
                 break;
 
             case 'meeting':
                 $payload['description']  = $post['description'] ?? '';
                 $payload['duration']     = $post['duration'] ?? null;
-                $payload['mode']         = $post['mode'] ?: 'offline';
+                $payload['mode']         = $field('mode', 'offline');
                 $payload['instructions'] = $post['instructions'] ?? '';
                 break;
         }

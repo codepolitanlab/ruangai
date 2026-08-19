@@ -107,7 +107,7 @@ class Heroicadmin extends BaseConfig
             ],
         ],
         [
-            'label'    => 'Bootcamp / Classroom',
+            'label'    => 'Classroom',
             'icon'     => 'bi bi-mortarboard-fill',
             'url'      => '#',
             'module'   => 'classroom',
