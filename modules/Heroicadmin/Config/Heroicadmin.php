@@ -107,6 +107,32 @@ class Heroicadmin extends BaseConfig
             ],
         ],
         [
+            'label'    => 'Bootcamp / Classroom',
+            'icon'     => 'bi bi-mortarboard-fill',
+            'url'      => '#',
+            'module'   => 'classroom',
+            'children' => [
+                'syllabus' => [
+                    'label'     => 'Silabus',
+                    'icon'      => 'bi bi-journal-text',
+                    'url'       => 'classroom/syllabuses',
+                    'submodule' => 'syllabus',
+                ],
+                'classes' => [
+                    'label'     => 'Kelas',
+                    'icon'      => 'bi bi-easel',
+                    'url'       => 'classroom/classes',
+                    'submodule' => 'classes',
+                ],
+                'memberworks' => [
+                    'label'     => 'Karya Member',
+                    'icon'      => 'bi bi-images',
+                    'url'       => 'classroom/memberworks',
+                    'submodule' => 'memberworks',
+                ],
+            ],
+        ],
+        [
             'label'    => 'Products',
             'icon'     => 'bi bi-bag-fill',
             'url'      => '#',

@@ -51,6 +51,7 @@ class Autoload extends AutoloadConfig
         'Challenge'   => ROOTPATH . 'modules/Challenge',
         'Mahasiswi'   => ROOTPATH . 'modules/Mahasiswi',
         'Event'       => ROOTPATH . 'modules/Event',
+        'Classroom'   => ROOTPATH . 'modules/Classroom',
     ];
 
     /**
