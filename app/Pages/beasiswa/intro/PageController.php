@@ -94,8 +94,9 @@ class PageController extends BaseController
 
             // Get course_students
             $this->data['student'] = $db->table('course_students')
-                ->select('course_students.progress, course_students.created_at, course_students.expire_at, course_students.graduate, scholarship_participants.reference_comentor, scholarship_participants.is_reference_followup as is_reference_followup, scholarship_participants.program, scholarship_participants.occupation')
+                ->select('course_students.progress, course_students.created_at, course_students.expire_at, course_students.graduate, scholarship_participants.reference_comentor, scholarship_participants.is_reference_followup as is_reference_followup, scholarship_participants.program, scholarship_participants.occupation as sp_occupation, user_profiles.occupation as up_occupation')
                 ->join('scholarship_participants', 'scholarship_participants.user_id = course_students.user_id', 'left')
+                ->join('user_profiles', 'user_profiles.user_id = course_students.user_id', 'left')
                 ->where('course_students.course_id', $id)
                 ->where('course_students.user_id', $jwt->user_id)
                 ->get()
@@ -150,7 +151,7 @@ class PageController extends BaseController
             $today = date('Y-m-d');
             $now   = date('H:i:s');
             $isRAICollaboration = isset($this->data['student']['reference_comentor']) && $this->data['student']['reference_comentor'] == 'rai-career';
-            $isUnlimitedAccess = in_array($this->data['student']['occupation'] ?? '', ['freelance', 'fresh_graduate', 'jobseeker']);
+            $isUnlimitedAccess = in_array($this->data['student']['up_occupation'] ?? $this->data['student']['sp_occupation'] ?? '', ['freelance', 'fresh_graduate', 'jobseeker']);
             $nextLiveSessionQuery = $db->table('live_meetings')
                 ->select('live_meetings.*, live_batch.name as batch_name, live_meetings.zoom_link, live_meetings.zoom_meeting_id, live_meetings.meeting_duration')
                 ->join('live_batch', 'live_batch.id = live_meetings.live_batch_id')

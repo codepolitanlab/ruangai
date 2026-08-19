@@ -61,10 +61,10 @@ class PageController extends BaseController
                 ->get()->getRowArray();
             $namaAplikasi = $appSetting['option_value'] ?? null;
 
-            $message = "Halo {$found['name']},<br><br>
-            Kami menerima permintaan penggantian nomor WhatsApp dari akun Anda di aplikasi {$namaAplikasi}.<br>
+            $message = "Halo " . esc($found['name']) . ",<br><br>
+            Kami menerima permintaan penggantian nomor WhatsApp dari akun Anda di aplikasi " . esc($namaAplikasi) . ".<br>
             Untuk melanjutkan, silahkan masukan kode verifikasi berikut ini ke dalam aplikasi:<br><br>
-            <b>{$found['otp_email']}</b><br><br>
+            <b>" . esc($found['otp_email']) . "</b><br><br>
             Salam,";
             $result = $Heroic->sendEmail($email, 'Konfirmasi Penggantian Alamat Email', $message);
             if ($result['success']) {
