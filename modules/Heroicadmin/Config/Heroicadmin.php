@@ -124,12 +124,12 @@ class Heroicadmin extends BaseConfig
                     'url'       => 'classroom/classes',
                     'submodule' => 'classes',
                 ],
-                'memberworks' => [
-                    'label'     => 'Karya Member',
-                    'icon'      => 'bi bi-images',
-                    'url'       => 'classroom/memberworks',
-                    'submodule' => 'memberworks',
-                ],
+                // 'memberworks' => [
+                //     'label'     => 'Karya Member',
+                //     'icon'      => 'bi bi-images',
+                //     'url'       => 'classroom/memberworks',
+                //     'submodule' => 'memberworks',
+                // ],
             ],
         ],
         [
