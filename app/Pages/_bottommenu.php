@@ -91,7 +91,8 @@ $menus = [
 
 <nav class="sidebar position-fixed bg-white">
     <div class="sidebar-logo">
-        <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-logo-transparan.png" width="150" alt="">
+        <!-- <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-logo-transparan.png" width="150" alt=""> -->
+        <img src="https://image.web.id/images/clipboard-image-1753328088.png" width="150" alt="">
     </div>
 
     <ul class="listview flush transparent no-line image-listview mt-2">
