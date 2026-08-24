@@ -105,7 +105,7 @@
         <div
             class="d-flex justify-content-between align-items-start position-absolute px-3"
             style="top: 10px; left: 0; right: 0;">
-            <template x-if="data?.student?.program == 'RuangAI2025B2' && !data?.group_comentor">
+            <!-- <template x-if="data?.student?.program == 'RuangAI2025B2' && !data?.group_comentor">
                 <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%208476.png" width="35%" alt="">
             </template>
             <template x-if="data?.student?.program == 'RuangAI2025B3' && !data?.group_comentor">
@@ -113,7 +113,7 @@
             </template>
             <template x-if="data?.student?.program == 'RuangAI2025B4' && !data?.group_comentor">
                 <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Group%2010480.png" width="35%" alt="">
-            </template>
+            </template> -->
             <!-- <div class="d-flex flex-column ms-2">
 						<div class="mb-2">Berakhir dalam</div>
 						<div class="d-flex gap-4 justify-content-center text-center">
