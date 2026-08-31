@@ -26,6 +26,10 @@
                 if (confirmed) {
                     window.location.href = '/keluar'
                 }
+            },
+            initials(name){
+                if (!name) return 'R';
+                return name.split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
             }
         }
 

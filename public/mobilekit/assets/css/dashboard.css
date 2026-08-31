@@ -1,0 +1,446 @@
+/* ==========================================================================
+   RuangAI — Design Tokens & Dashboard Styles
+   ==========================================================================
+   Satu sumber warna global untuk dashboard user.
+   Untuk mengganti tema, cukup ubah nilai pada blok `:root` di bawah ini.
+   Seluruh komponen dashboard & sidebar hanya memakai variabel ini,
+   sehingga warna tidak perlu diubah satu per satu pada tiap komponen.
+   ========================================================================== */
+
+:root {
+    /* ── Latar / permukaan ─────────────────────────────────────────── */
+    --rd-bg: #020D1C;           /* background halaman */
+    --rd-sidebar: #051426;      /* background sidebar */
+    --rd-surface: #111B2E;      /* permukaan kartu */
+    --rd-surface-2: #1A2740;    /* permukaan kartu hover / elevated */
+
+    /* ── Teks ──────────────────────────────────────────────────────── */
+    --rd-text: #FFFFFF;
+    --rd-text-muted: #8DA2C0;
+
+    /* ── Aksen utama (oranye) ──────────────────────────────────────── */
+    --rd-primary: #FF7A1A;
+    --rd-primary-hover: #FF9650;
+    --rd-primary-soft: rgba(255, 122, 26, 0.14);
+    --rd-primary-contrast: #FFFFFF;
+
+    /* ── Aksen pendukung ───────────────────────────────────────────── */
+    --rd-teal: #17C3B2;
+    --rd-teal-soft: rgba(23, 195, 178, 0.14);
+    --rd-purple: #9B5DE5;
+    --rd-purple-soft: rgba(155, 93, 229, 0.16);
+
+    /* ── Border & bayangan ─────────────────────────────────────────── */
+    --rd-border: rgba(255, 255, 255, 0.08);
+    --rd-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+
+    /* ── Radius ────────────────────────────────────────────────────── */
+    --rd-radius: 20px;
+    --rd-radius-sm: 12px;
+
+    /* ── Background gambar (asset di public/v2) ───────────────────── */
+    --rd-hero-bg: url("/v2/bg-welcome-user.png");
+    --rd-promo-bg: url("/v2/bg-mastery-class.png");
+}
+
+/* ==========================================================================
+   Halaman
+   ========================================================================== */
+/* Body halaman dashboard ikut gelap supaya tidak ada warna biru muda
+   saat halaman di-scroll berlebih (overscroll / rubber-band). */
+body.rd-dashboard-page {
+    background-color: var(--rd-bg) !important;
+}
+
+.rd-page,
+.rd-page #appCapsule {
+    background-color: var(--rd-bg);
+}
+
+.rd-page #appCapsule {
+    min-height: 100vh;
+}
+
+.rd-dashboard {
+    color: var(--rd-text);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-top: 8px;
+    padding-bottom: 32px;
+}
+
+/* ==========================================================================
+   Hero sambutan
+   ========================================================================== */
+.rd-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--rd-radius);
+    background-color: var(--rd-surface);
+    background-image: var(--rd-hero-bg);
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 1px solid var(--rd-border);
+    padding: 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 110px;
+}
+
+.rd-hero-avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--rd-primary);
+    flex-shrink: 0;
+}
+
+.rd-hero-greet {
+    color: var(--rd-text-muted);
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.rd-hero-name {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--rd-text);
+}
+
+/* ==========================================================================
+   Kartu promo
+   ========================================================================== */
+.rd-promo {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--rd-radius);
+    background-color: var(--rd-surface);
+    background-image: var(--rd-promo-bg);
+    background-size: auto 100%;
+    background-position: right center;
+    background-repeat: no-repeat;
+    border: 1px solid var(--rd-border);
+    padding: 26px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    min-height: 210px;
+}
+
+/* Overlay gelap dari kiri agar teks tetap terbaca di atas gambar */
+.rd-promo::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,
+        var(--rd-bg) 0%,
+        rgba(2, 13, 28, 0.85) 35%,
+        rgba(2, 13, 28, 0.45) 65%,
+        rgba(2, 13, 28, 0.1) 100%);
+    pointer-events: none;
+}
+
+.rd-promo-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rd-promo-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin: 0;
+    line-height: 1.2;
+    color: var(--rd-primary);
+}
+
+.rd-promo-sub {
+    color: var(--rd-text);
+    margin: 0;
+    max-width: 340px;
+}
+
+/* ==========================================================================
+   Tombol
+   ========================================================================== */
+.rd-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+    line-height: 1.2;
+}
+
+.rd-btn-primary {
+    background: var(--rd-primary);
+    color: var(--rd-primary-contrast);
+}
+
+.rd-btn-primary:hover {
+    background: var(--rd-primary-hover);
+    color: var(--rd-primary-contrast);
+}
+
+.rd-btn-outline {
+    background: transparent;
+    color: var(--rd-primary);
+    border: 1px solid var(--rd-primary);
+}
+
+.rd-btn-outline:hover {
+    background: var(--rd-primary-soft);
+    color: var(--rd-primary);
+}
+
+/* ==========================================================================
+   Bagian & judul
+   ========================================================================== */
+.rd-section-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 8px 0 14px;
+    color: var(--rd-text);
+}
+
+/* Kartu pembungkus section (mis. "Kelas yang kamu miliki") */
+.rd-section-card {
+    background-color: var(--rd-surface-2);
+    border: 1px solid var(--rd-border);
+    border-radius: var(--rd-radius);
+    padding: 20px;
+}
+
+.rd-section-card .rd-section-title {
+    margin-top: 0;
+}
+
+/* ==========================================================================
+   Kartu kelas
+   ========================================================================== */
+.rd-course-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+.rd-course {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--rd-radius);
+    background-color: var(--rd-surface);
+    background-image:
+        linear-gradient(var(--accent-soft, rgba(255, 255, 255, 0.04)) 1px, transparent 1px),
+        linear-gradient(90deg, var(--accent-soft, rgba(255, 255, 255, 0.04)) 1px, transparent 1px);
+    background-size: 26px 26px;
+    border: 1px solid var(--rd-border);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 190px;
+    text-decoration: none;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.rd-course-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+/* Kartu pertama memanjang penuh + layout banner horizontal */
+.rd-course-wide {
+    grid-column: span 2;
+    flex-direction: row;
+    align-items: center;
+    gap: 18px;
+    min-height: 130px;
+}
+
+.rd-course-wide .rd-course-star {
+    width: 56px;
+    height: 56px;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.rd-course:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+}
+
+.rd-course::before {
+    content: "";
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* Palet aksen per kartu — urutan oranye, teal, ungu (berulang) */
+.rd-course-1 { --accent: var(--rd-primary); --accent-soft: var(--rd-primary-soft); }
+.rd-course-2 { --accent: var(--rd-teal);    --accent-soft: var(--rd-teal-soft); }
+.rd-course-3 { --accent: var(--rd-purple);  --accent-soft: var(--rd-purple-soft); }
+
+.rd-course-star {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--rd-radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-soft);
+    color: var(--rd-text);
+    font-size: 1.2rem;
+}
+
+.rd-course-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.rd-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 999px;
+    line-height: 1.2;
+}
+
+.rd-badge-solid {
+    background: var(--accent);
+    color: var(--rd-primary-contrast);
+}
+
+.rd-badge-outline {
+    border: 1px solid var(--rd-text-muted);
+    color: var(--rd-text-muted);
+    background: transparent;
+}
+
+.rd-course-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.3;
+    color: var(--rd-text);
+}
+
+.rd-course-meta {
+    color: var(--rd-text-muted);
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+}
+
+.rd-course-meta i {
+    color: var(--accent);
+    background: var(--accent-soft);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Voucher
+   ========================================================================== */
+.rd-voucher {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: flex-start;
+    border: 1px solid rgba(255, 122, 26, 0.4);
+    border-radius: var(--rd-radius);
+    padding: 20px 22px;
+    background-color: #171210;
+    background-image:
+        linear-gradient(rgba(255, 122, 26, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 122, 26, 0.06) 1px, transparent 1px);
+    background-size: 26px 26px;
+}
+
+.rd-voucher-text {
+    color: var(--rd-text-muted);
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+@media (min-width: 768px) {
+    .rd-voucher {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+/* ==========================================================================
+   Verifikasi email
+   ========================================================================== */
+.rd-verify {
+    border-radius: var(--rd-radius);
+    background: var(--rd-surface);
+    border: 1px solid var(--rd-border);
+    padding: 18px 20px;
+    color: var(--rd-text);
+}
+
+/* ==========================================================================
+   Sidebar (desktop) — warna diambil dari token agar mudah dirawat
+   ========================================================================== */
+.sidebar {
+    background-color: var(--rd-sidebar) !important;
+    color: var(--rd-text);
+    border-right: 1px solid var(--rd-border);
+}
+
+.sidebar .in {
+    color: var(--rd-text-muted);
+}
+
+.sidebar .image-listview > li a.item {
+    color: var(--rd-text-muted);
+    border-radius: var(--rd-radius-sm);
+}
+
+/* Icon menu tidak aktif tetap putih agar terlihat di atas sidebar gelap */
+.sidebar .image-listview > li a.item .icon-box i {
+    color: var(--rd-text);
+}
+
+.sidebar .image-listview > li a.item.active,
+.sidebar .image-listview > li a.item.active .in {
+    background: var(--rd-primary) !important;
+    color: var(--rd-primary-contrast) !important;
+}
+
+.sidebar .image-listview > li a.item.active .icon-box-transparent i {
+    color: var(--rd-primary-contrast);
+}

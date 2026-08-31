@@ -9,6 +9,7 @@ class PageController extends BaseController
     public $data = [
         'page_title' => 'Profile',
         'module'     => 'profile',
+        'body_class' => 'rd-dashboard-page',
     ];
 
     public function getData()

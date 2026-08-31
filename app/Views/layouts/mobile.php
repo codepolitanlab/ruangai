@@ -21,9 +21,10 @@
 
     <link rel="stylesheet" href="<?= asset_url('mobilekit/assets/css/style.css') ?>">
     <link rel="stylesheet" href="<?= asset_url('mobilekit/assets/css/custom.css') ?>">
+    <link rel="stylesheet" href="<?= asset_url('mobilekit/assets/css/dashboard.css') ?>">
 </head>
 
-<body>
+<body class="<?= $body_class ?? '' ?>">
 
 <!-- <body> -->
     <!-- Content Section -->

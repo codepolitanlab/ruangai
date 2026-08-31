@@ -90,6 +90,17 @@
                 }
             },
             globalHandler(ctx) {
+                // Toggle latar gelap untuk halaman bertema dark (Beranda, Akun & Klaim Voucher).
+                // Dipakai juga saat navigasi SPA (Pinecone) supaya class di body
+                // tidak bocor ke halaman lain yang berlatar terang.
+                const path = (ctx.path || '').replace(/\/+$/, '') || '/';
+                const darkThemedPages = ['/', '/voucher', '/profile', '/profile/edit_info'];
+                if (darkThemedPages.includes(path)) {
+                    document.body.classList.add('rd-dashboard-page');
+                } else {
+                    document.body.classList.remove('rd-dashboard-page');
+                }
+
                 // Show reload alert if the page is in the list
                 if(this.pageWithReloadAlert.includes(ctx.path)){
                     Alpine.store('core').showReloadAlert = true;

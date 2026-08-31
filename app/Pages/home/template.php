@@ -1,5 +1,5 @@
 <div
-	class="header-mobile-only"
+	class="header-mobile-only rd-page"
 	id="home"
 	x-data="home()">
 

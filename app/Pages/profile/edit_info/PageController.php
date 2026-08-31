@@ -9,21 +9,36 @@ class PageController extends BaseController
     public $data = [
         'page_title' => 'Edit Info Profil',
         'module'     => 'profile',
+        'body_class' => 'rd-dashboard-page',
     ];
 
     public function getSupply()
     {
-        // Get database pesantren
         $Heroic = new \App\Libraries\Heroic();
+        $jwt    = $Heroic->checkToken(true);
         $db     = \Config\Database::connect();
 
-        $logoSetting = $db->table('mein_options')
-            ->where('option_name', 'auth_logo')
-            ->where('option_group', 'app')
-            ->get()->getRowArray();
-        $data['logo'] = $logoSetting['option_value'] ?? null;
+        $user = $db->table('users')
+            ->select('id, name, email, phone, gender, birth_date')
+            ->where('id', $jwt->user_id)
+            ->get()
+            ->getRowArray();
 
-        return $data;
+        $profile = $db->table('user_profiles')
+            ->where('user_id', $jwt->user_id)
+            ->where('deleted_at', null)
+            ->get()
+            ->getRowArray();
+
+        $data['profile'] = [
+            'name'       => $user['name'] ?? null,
+            'email'      => $user['email'] ?? null,
+            'gender'     => $profile['gender'] ?? ($user['gender'] ?? null),
+            'birthday'   => $profile['birthday'] ?? null,
+            'occupation' => $profile['occupation'] ?? null,
+        ];
+
+        return $this->respond($data);
     }
 
     public function postIndex()
@@ -31,53 +46,68 @@ class PageController extends BaseController
         $validation = service('validation');
 
         $validation->setRules([
-            'name'              => 'required|min_length[2]',
-            'short_description' => 'max_length[255]',
-            'jobs'              => 'max_length[255]',
+            'name'       => 'required|min_length[2]|max_length[255]',
+            'gender'     => 'permit_empty|in_list[male,female]',
+            'birthday'   => 'permit_empty',
+            'occupation' => 'permit_empty|max_length[255]',
         ]);
 
         if (! $validation->run($this->request->getPost())) {
-            $errors = $validation->getErrors();
-
             return $this->respond([
-                'success' => 0, 'errors' => $errors,
+                'success' => 0,
+                'errors'  => $validation->getErrors(),
             ]);
         }
         $validData = $validation->getValidated();
 
         $Heroic = new \App\Libraries\Heroic();
+        $jwt    = $Heroic->checkToken(true);
         $db     = \Config\Database::connect();
-        $user   = $Heroic->checkToken();
 
-        // Update name
-        $userData = [
-            'name'              => $validData['name'],
-            'short_description' => $validData['short_description'],
-        ];
-        $db->table('users')->where('id', $user->user_id)->update($userData);
+        $birthdayRaw = trim((string) ($validData['birthday'] ?? ''));
+        $birthday    = ($birthdayRaw !== '' && strtotime($birthdayRaw) !== false)
+            ? date('Y-m-d', strtotime($birthdayRaw))
+            : null;
 
-        // Update or insert profile if not exists
-        $profileData = [
-            'user_id'        => $user->user_id,
-            'gender'         => $this->request->getPost('gender'),
-            'birthday'       => date('Y-m-d', strtotime($this->request->getPost('birthday'))),
-            'status_marital' => $this->request->getPost('status_marital'),
-            'jobs'           => $this->request->getPost('jobs'),
+        // Simpan ke tabel users
+        $db->table('users')
+            ->where('id', $jwt->user_id)
+            ->update([
+                'name'       => $validData['name'],
+                'gender'     => $validData['gender'] ?? null,
+                'birth_date' => $birthday,
+            ]);
+
+        // Upsert ke tabel user_profiles
+        $profileModel    = new \App\Models\UserProfile();
+        $existingProfile = $profileModel
+            ->where('user_id', $jwt->user_id)
+            ->where('deleted_at', null)
+            ->first();
+
+        $profilePayload = [
+            'user_id'    => $jwt->user_id,
+            'gender'     => $validData['gender'] ?? null,
+            'birthday'   => $birthday,
+            'occupation' => $validData['occupation'] ?? null,
         ];
-        $db->table('mein_user_profile')->where('user_id', $user->user_id)->update($profileData);
-        if ($db->affectedRows() === 0) {
-            $db->table('mein_user_profile')->insert($profileData);
+
+        if ($existingProfile) {
+            $saved = $profileModel->update($existingProfile['id'], $profilePayload);
+        } else {
+            $saved = $profileModel->insert($profilePayload);
         }
-        if ($db->affectedRows() > 0) {
+
+        if ($saved) {
             return $this->respond([
-                'success' => 1, 'message' => 'Data profil berhasil diperbaharui.',
+                'success' => 1,
+                'message' => 'Data profil berhasil diperbarui.',
             ]);
         }
 
         return $this->respond([
-            'success' => 0, 'message' => 'Gagal memperbaharui profil.',
+            'success' => 0,
+            'message' => 'Gagal memperbarui profil.',
         ]);
-
-        exit;
     }
 }

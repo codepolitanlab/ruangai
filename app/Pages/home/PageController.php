@@ -11,6 +11,7 @@ class PageController extends BaseController
         'page_title'  => 'Homepage',
         'module'      => 'homepage',
         'active_page' => 'homepage',
+        'body_class'  => 'rd-dashboard-page',
     ];
 
     public function getData()
@@ -32,6 +33,41 @@ class PageController extends BaseController
         $this->data['courses'] = $db->table('course_students')
             ->where('user_id', $jwt->user_id)
             ->countAllResults();
+
+        // Daftar kelas yang dimiliki user (untuk dashboard)
+        $myCourses = $db->table('course_students')
+            ->select('courses.id, courses.course_title, courses.slug, courses.cover, courses.description, course_students.progress, course_students.graduate, live_batch.name AS batch_name')
+            ->join('courses', 'courses.id = course_students.course_id')
+            ->join('live_batch', 'live_batch.id = course_students.live_batch_id', 'left')
+            ->where('course_students.user_id', $jwt->user_id)
+            ->where('course_students.deleted_at', null)
+            ->orderBy('course_students.created_at', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        // Jumlah pertemuan live per kelas
+        $meetingCounts = [];
+        if ($myCourses) {
+            $courseIds = array_column($myCourses, 'id');
+            $meetingRows = $db->table('live_meeting_blueprints')
+                ->select('course_id, COUNT(*) AS total')
+                ->whereIn('course_id', $courseIds)
+                ->groupBy('course_id')
+                ->get()
+                ->getResultArray();
+
+            foreach ($meetingRows as $row) {
+                $meetingCounts[$row['course_id']] = (int) $row['total'];
+            }
+        }
+
+        foreach ($myCourses as &$course) {
+            $course['total_meetings'] = $meetingCounts[$course['id']] ?? 9;
+            $course['batch_name']     = $course['batch_name'] ?: 'Batch 1';
+        }
+        unset($course);
+
+        $this->data['my_courses'] = $myCourses;
 
         $this->data['total_live_session'] = $db->table('live_attendance')
             ->where('user_id', $jwt->user_id)

@@ -1,74 +1,72 @@
 <script>
   Alpine.data("profile_edit_info", () => ({
     title: "Edit Info Profil",
-    showPwd: false,
     data: {
       profile: {},
     },
     model: {
       name: "",
-      short_description: "",
       gender: "",
       birthday: "",
-      status_marital: "",
-      jobs: "",
+      occupation: "",
     },
     errors: {
       name: "",
-      short_description: "",
       gender: "",
       birthday: "",
-      status_marital: "",
-      jobs: "",
+      occupation: "",
     },
+    saving: false,
 
     init() {
       document.title = this.title;
-      Alpine.store('core')?.currentPage = "profile";
+      Alpine.store('core').currentPage = "profile";
+      this.load();
+    },
 
-      if ($heroicHelper.cached["profile"]) {
-        this.data = $heroicHelper.cached["profile"];
-        this.prepareModel();
-      } else {
-        fetchPageData("profile/supply", {
-          headers: {
-            Authorization: `Bearer ` + Alpine.store('core').sessionToken,
-          },
-        }).then((data) => {
-          this.data = data;
-          $heroicHelper.cached["profile"] = this.data;
+    load() {
+      $heroicHelper.fetch('profile/edit_info/supply')
+        .then((response) => {
+          this.data = response.data || {};
           this.prepareModel();
+        })
+        .catch((error) => {
+          console.error(error);
         });
-      }
     },
 
     prepareModel() {
-      this.model.name = this.data.profile.name;
-      this.model.short_description = this.data.profile.short_description;
-      this.model.gender = 'l';
-      this.model.birthday = this.data.profile.birthday;
-      this.model.status_marital = this.data.profile.status_marital;
-      this.model.jobs = this.data.profile.jobs;
+      const p = this.data.profile || {};
+      this.model.name = p.name || "";
+      this.model.gender = p.gender || "";
+      this.model.birthday = p.birthday || "";
+      this.model.occupation = p.occupation || "";
     },
 
     save() {
-      this.errors = {
-        name: "",
-        short_description: "",
-        gender: "",
-        birthday: "",
-        status_marital: "",
-        jobs: "",
-      };
+      this.errors = { name: "", gender: "", birthday: "", occupation: "" };
+      this.saving = true;
 
-      postPageData("/profile/edit_info", this.model)
+      $heroicHelper.post('/profile/edit_info', this.model)
         .then((response) => {
-          if (response.success == 1) {
-            toastr('Data info berhasil diperbaharui', 'success', 'bottom');
+          const res = response.data || {};
+          if (res.success == 1) {
+            $heroicHelper.toastr(res.message || "Profil berhasil diperbarui.", "success", "bottom");
+            this.prepareModel();
+          } else if (res.errors) {
+            Object.assign(this.errors, res.errors);
+            $heroicHelper.toastr("Periksa kembali isian formulir.", "danger", "bottom");
           } else {
-            this.errors = response.errors;
+            $heroicHelper.toastr(res.message || "Gagal memperbarui profil.", "danger", "bottom");
           }
+        })
+        .catch((error) => {
+          console.error(error);
+          $heroicHelper.toastr("Terjadi kesalahan. Silakan coba lagi.", "danger", "bottom");
+        })
+        .finally(() => {
+          this.saving = false;
         });
-    }
+    },
   }));
 </script>

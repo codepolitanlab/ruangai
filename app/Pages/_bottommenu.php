@@ -9,10 +9,17 @@ $menus = [
         'position' => ['bottom', 'sidebar']
     ],
     [
-        'label'  => 'Misi Beasiswa',
-        'url'    => '/beasiswa/intro',
-        'icon'   => 'bi bi-journal-check',
-        'module' => 'misi_beasiswa',
+        'label'  => 'Klaim Voucher',
+        'url'    => '/voucher',
+        'icon'   => 'bi bi-ticket-perforated',
+        'module' => 'voucher',
+        'position' => ['bottom', 'sidebar']
+    ],
+    [
+        'label'  => 'Akun',
+        'url'    => '/profile',
+        'icon'   => 'bi bi-person',
+        'module' => 'profile',
         'position' => ['bottom', 'sidebar']
     ],
     // [
@@ -60,14 +67,14 @@ $menus = [
     //     'target' => '_blank',
     //     'badge'  => ['warning', 'NEW'],
     // ],
-    [
-        'label'  => 'Keluar',
-        'url'    => '/logout',
-        'native' => true,
-        'icon'   => 'bi bi-door-closed text-danger',
-        'module' => 'profile',
-        'position' => ['bottom', 'sidebar']
-    ],
+    // [
+    //     'label'  => 'Keluar',
+    //     'url'    => '/logout',
+    //     'native' => true,
+    //     'icon'   => 'bi bi-door-closed text-danger',
+    //     'module' => 'logout',
+    //     'position' => ['bottom', 'sidebar']
+    // ],
 ];
 
 ?>
@@ -89,10 +96,10 @@ $menus = [
 </div>
 
 
-<nav class="sidebar position-fixed bg-white">
+<nav class="sidebar position-fixed" style="z-index: 9999; width: 250px; height: 100vh; overflow-y: auto;">
     <div class="sidebar-logo">
         <!-- <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-logo-transparan.png" width="150" alt=""> -->
-        <img src="https://image.web.id/images/clipboard-image-1753328088.png" width="150" alt="">
+        <img src="/V2/logo-ruangai.png" width="150" alt="">
     </div>
 
     <ul class="listview flush transparent no-line image-listview mt-2">
