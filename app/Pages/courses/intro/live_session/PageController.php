@@ -10,6 +10,7 @@ class PageController extends BaseController
         'page_title'  => 'Live Session',
         'module'      => 'courses',
         'active_page' => 'live',
+        'body_class'  => 'rd-dashboard-page',
     ];
 
     public function getData($course_id)

@@ -7,6 +7,7 @@ class PageController extends BaseController
     public $data = [
         'page_title' => "Sertifikat RuangAI",
         'module'     => 'certificate',
+        'body_class' => 'rd-dashboard-page',
     ];
 
     public function getData()

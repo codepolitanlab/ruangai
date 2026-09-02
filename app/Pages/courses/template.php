@@ -1,25 +1,67 @@
-<div id="courses" x-data="courses()">
+<div id="courses" class="header-mobile-only rd-page" x-data="courses()">
 	<?= $this->include('_bottommenu') ?>
 
 	<style>
-		.card {
+		/* ==============================================================
+		   TEMA GELAP — disamakan dengan dashboard home/user (tanpa ubah logic)
+		   ============================================================== */
+		#courses {
+			background-color: var(--rd-bg);
+			color: var(--rd-text);
+			min-height: 100vh;
+		}
+		#courses #appCapsule {
+			background-color: var(--rd-bg) !important;
+			color: var(--rd-text);
+		}
+		#courses .appContent { color: var(--rd-text); }
+
+		/* Judul halaman */
+		#courses .header-large-title h2 {
+			color: var(--rd-text) !important;
+		}
+
+		/* Kontainer section terang -> permukaan gelap */
+		#courses .bg-white {
+			background-color: var(--rd-surface) !important;
+			border-color: var(--rd-border) !important;
+			color: var(--rd-text) !important;
+		}
+		#courses h5 { color: var(--rd-text) !important; }
+		#courses .text-muted { color: var(--rd-text-muted) !important; }
+
+		/* Kartu kelas */
+		#courses .card {
+			background-color: var(--rd-surface-2) !important;
 			border: none;
 			border-radius: 1rem;
-			/* rounded-4 */
+			box-shadow: none !important;
 		}
+		#courses .card .text-white { color: var(--rd-text) !important; }
 
-		.progress {
+		/* Angka materi selesai (accent) */
+		#courses .card .fs-4 { color: var(--rd-primary) !important; }
+
+		/* Progress bar */
+		#courses .progress {
+			background-color: var(--rd-border) !important;
 			height: 8px;
-			border-radius: 1rem;
+			border-radius: 999px;
+			overflow: hidden;
+		}
+		#courses .progress-bar {
+			background-color: var(--rd-primary) !important;
+			border-radius: 999px;
 		}
 
-		.locked-btn {
-			background-color: #e9ecef;
-			/* Warna tombol locked */
-			color: #6c757d;
-			border: 1px solid #dee2e6;
-			font-size: 0.8rem;
-			padding: 0.25rem 0.75rem;
+		/* Overlay & tombol kelas terkunci */
+		#courses .bg-dark.bg-opacity-75 { background-color: rgba(2, 13, 28, 0.88) !important; }
+		#courses .bg-dark .bi-lock-fill { color: var(--rd-primary) !important; }
+		#courses .btn-primary {
+			background-color: var(--rd-primary) !important;
+			border-color: var(--rd-primary) !important;
+			color: var(--rd-primary-contrast) !important;
+			border-radius: 999px;
 		}
 	</style>
 

@@ -248,6 +248,113 @@
                 align-items: center;
             }
         }
+
+        /* ==============================================================
+           TEMA GELAP — disamakan dengan dashboard home user (tanpa ubah logic)
+           ============================================================== */
+        body { background: var(--rd-bg) !important; }
+        #lesson_detail {
+            background: var(--rd-bg);
+            color: var(--rd-text);
+            min-height: 100vh;
+        }
+        #lesson_detail #appCapsule {
+            background-color: var(--rd-bg) !important;
+            color: var(--rd-text);
+        }
+
+        /* Header mobile (List Materi) */
+        #lesson_detail #app-header {
+            background: var(--rd-surface) !important;
+            border-color: var(--rd-border) !important;
+        }
+        #lesson_detail #app-header .headerButton,
+        #lesson_detail #app-header span { color: var(--rd-text) !important; }
+
+        /* Breadcrumb */
+        #lesson_detail .lesson-breadcrumb { color: var(--rd-text-muted); }
+        #lesson_detail .lesson-breadcrumb a,
+        #lesson_detail .lesson-breadcrumb .text-muted { color: var(--rd-text-muted) !important; }
+
+        /* Kartu & permukaan terang -> gelap */
+        #lesson_detail .course-header,
+        #lesson_detail .lesson-sidebar,
+        #lesson_detail .content-area,
+        #lesson_detail .content-body,
+        #lesson_detail .card,
+        #lesson_detail .card.bg-white {
+            background: var(--rd-surface) !important;
+            color: var(--rd-text) !important;
+            border-color: var(--rd-border) !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+        }
+
+        /* Judul */
+        #lesson_detail .course-header h1,
+        #lesson_detail .lesson-title,
+        #lesson_detail .lesson-sidebar h5,
+        #lesson_detail .lesson-item-title,
+        #lesson_detail .offcanvas-title { color: var(--rd-text) !important; }
+
+        /* Teks muted */
+        #lesson_detail .course-header .subtitle,
+        #lesson_detail .course-meta,
+        #lesson_detail .lesson-topic-title,
+        #lesson_detail .lesson-item-duration,
+        #lesson_detail .lesson-topic-label,
+        #lesson_detail .text-muted { color: var(--rd-text-muted) !important; }
+
+        /* Item daftar materi */
+        #lesson_detail .lesson-item:hover:not(.disabled) { background: var(--rd-surface-2); }
+        #lesson_detail .lesson-item.active {
+            background: var(--rd-primary-soft);
+            border-left-color: var(--rd-primary);
+        }
+        #lesson_detail .lesson-item.completed { background: rgba(34, 197, 94, 0.12); }
+
+        /* Konten video & teks */
+        #lesson_detail .video-container { background: #000; }
+        #lesson_detail .lesson-content { color: var(--rd-text-muted); }
+        #lesson_detail .lesson-content h2,
+        #lesson_detail .lesson-content h3 { color: var(--rd-text); }
+        #lesson_detail .lesson-content p { color: var(--rd-text-muted); }
+        #lesson_detail .lesson-content a { color: var(--rd-primary); }
+
+        /* Tombol */
+        #lesson_detail .btn-primary {
+            background-color: var(--rd-primary) !important;
+            border-color: var(--rd-primary) !important;
+            color: var(--rd-primary-contrast) !important;
+        }
+        #lesson_detail .btn-outline-primary {
+            border-color: var(--rd-primary) !important;
+            color: var(--rd-primary) !important;
+        }
+        #lesson_detail .btn-outline-primary:hover {
+            background-color: var(--rd-primary-soft) !important;
+            color: var(--rd-primary) !important;
+        }
+        #lesson_detail .btn-outline-secondary {
+            border-color: var(--rd-border) !important;
+            color: var(--rd-text) !important;
+        }
+        #lesson_detail .btn-outline-secondary:hover {
+            background-color: var(--rd-surface-2) !important;
+            color: var(--rd-text) !important;
+        }
+        #lesson_detail .btn-success {
+            background-color: var(--rd-green, #22C55E) !important;
+            border-color: var(--rd-green, #22C55E) !important;
+            color: #fff !important;
+        }
+
+        /* Offcanvas daftar materi (mobile) */
+        #lesson_detail .offcanvas {
+            background: var(--rd-surface) !important;
+            color: var(--rd-text) !important;
+        }
+        #lesson_detail .offcanvas-header { border-color: var(--rd-border) !important; }
+        #lesson_detail .btn-close { filter: invert(1); }
     </style>
 
     <div id="appCapsule" class="appCapsule-lg" style="padding-top: 0;">

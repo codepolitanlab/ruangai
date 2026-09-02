@@ -9,7 +9,8 @@ class PageController extends BaseController
 {
     private $certPrefix = 'CPRAI'; // Certificate prefix, e.g., CPJS for "Certificate"
     public $data = [
-        'page_title' => "Sertifikat RuangAI"
+        'page_title' => "Sertifikat RuangAI",
+        'body_class' => 'rd-dashboard-page',
     ];
 
     public function getData($code = null)

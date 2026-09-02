@@ -46,7 +46,7 @@ class SubmissionModel extends Model
             ->select('s.*, u.name AS user_name, u.email AS user_email, r.title AS resource_title')
             ->join('cls_learning_progress p', 'p.id = s.progress_id')
             ->join('cls_learning_resources r', 'r.id = p.resource_id', 'left')
-            ->join('mein_users u', 'u.id = p.user_id', 'left')
+            ->join('users u', 'u.id = p.user_id', 'left')
             ->where('p.class_material_id', $classMaterialId);
 
         return $builder->orderBy('s.submitted_at', 'DESC')->get()->getResultArray();

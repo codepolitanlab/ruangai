@@ -233,7 +233,7 @@ class Schedule extends AdminController
 
         $members = $this->db->table('cls_class_members cm')
             ->select('cm.user_id, u.name AS user_name, u.email')
-            ->join('mein_users u', 'u.id = cm.user_id', 'left')
+            ->join('users u', 'u.id = cm.user_id', 'left')
             ->where('cm.class_id', $classId)
             ->where('cm.status', 'active')
             ->get()->getResultArray();
@@ -282,7 +282,7 @@ class Schedule extends AdminController
             ->select('qr.*, p.user_id, p.resource_id, u.name AS user_name, r.title AS resource_title')
             ->join('cls_learning_progress p', 'p.id = qr.progress_id')
             ->join('cls_learning_resources r', 'r.id = p.resource_id', 'left')
-            ->join('mein_users u', 'u.id = p.user_id', 'left')
+            ->join('users u', 'u.id = p.user_id', 'left')
             ->where('p.class_material_id', $cmId)
             ->orderBy('qr.submitted_at', 'DESC')
             ->get()->getResultArray();
@@ -446,7 +446,7 @@ class Schedule extends AdminController
 
         $members = $this->db->table('cls_class_members cm')
             ->select('cm.user_id, u.name AS user_name, u.email')
-            ->join('mein_users u', 'u.id = cm.user_id', 'left')
+            ->join('users u', 'u.id = cm.user_id', 'left')
             ->where('cm.class_id', $classId)
             ->where('cm.status', 'active')
             ->get()->getResultArray();

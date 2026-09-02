@@ -11,6 +11,7 @@ class PageController extends BaseController
         'page_title' => 'Lessons',
         'module'     => 'courses',
         'submodule'  => 'course_lesson',
+        'body_class' => 'rd-dashboard-page',
     ];
 
     public function getData($course_id, $lesson_id)

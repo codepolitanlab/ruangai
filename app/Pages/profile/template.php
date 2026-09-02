@@ -2,28 +2,14 @@
 
     <style>
         #profile .account-heading {
-            padding: 18px 20px 12px;
+            padding: 14px 20px 0;
             font-size: 1.7rem;
             font-weight: 700;
             color: var(--rd-text);
             line-height: 1.2;
         }
         #profile .account-hero {
-            position: relative;
             margin: 0 16px;
-            z-index: 1;
-        }
-        #profile .account-hero::after {
-            content: "";
-            position: absolute;
-            left: 50%;
-            bottom: -30px;
-            transform: translateX(-50%);
-            width: 160px;
-            height: 60px;
-            border-radius: 50%;
-            background: var(--rd-surface);
-            z-index: 1;
         }
         #profile .account-hero-inner {
             position: relative;
@@ -32,7 +18,7 @@
             background: linear-gradient(135deg, var(--rd-surface-2) 0%, var(--rd-surface) 100%);
             border: 1px solid var(--rd-border);
             color: var(--rd-text);
-            padding: 26px 20px 46px;
+            padding: 22px 20px;
             display: flex;
             align-items: center;
             gap: 16px;
@@ -74,13 +60,11 @@
             margin-top: 2px;
         }
         #profile .account-card {
-            position: relative;
-            z-index: 2;
-            margin: -18px 14px 0;
+            margin: 16px 14px 0;
             background: var(--rd-surface);
             border: 1px solid var(--rd-border);
-            border-radius: 24px 24px 0 0;
-            padding: 26px 18px 60px;
+            border-radius: 20px;
+            padding: 20px 18px 130px;
         }
         #profile .account-list-title {
             font-size: 0.85rem;
@@ -143,7 +127,7 @@
                     <div class="account-avatar" x-text="initials(data?.profile?.user?.name)"></div>
                     <div>
                         <div class="account-name" x-text="data?.profile?.user?.name || 'Undefined'"></div>
-                        <div class="account-bio">Belum ada bio</div>
+                        <div class="account-bio" x-text="(data?.profile?.bio || '').trim() ? data.profile.bio : 'Belum ada bio'"></div>
                     </div>
                 </div>
             </div>

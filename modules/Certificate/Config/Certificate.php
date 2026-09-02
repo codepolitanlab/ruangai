@@ -17,6 +17,7 @@ class Certificate extends BaseConfig
         'course' => 'Course',
         'challenge' => 'Challenge',
         'event' => 'Event',
+        'bootcamp' => 'Bootcamp',
     ];
 
     // Default template name
@@ -25,6 +26,7 @@ class Certificate extends BaseConfig
     // Available templates
     public $availableTemplates = [
         'default'                      => \Certificate\Libraries\DefaultCertificateTemplate::class,
+        'bootcamp'                     => \Certificate\Libraries\BootcampVibeCodingCertificateTemplate::class,
         'comentor'                     => \Certificate\Libraries\ComentorCertificateTemplate::class,
         'workshop_avpn'                => \Certificate\Libraries\WorkshopAVPNCertificateTemplate::class,
         'workshop_genai_untar'         => \Certificate\Libraries\WorkshopGenAIUntarTemplate::class,

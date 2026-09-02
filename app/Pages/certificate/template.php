@@ -6,8 +6,46 @@
         })">
 
     <style>
+        /* ==============================================================
+           TEMA GELAP — disamakan dengan dashboard home user (tanpa ubah logic)
+           ============================================================== */
+        #certificate {
+            background-color: var(--rd-bg);
+            color: var(--rd-text);
+            min-height: 100vh;
+        }
+        #certificate #appCapsule {
+            background-color: var(--rd-bg) !important;
+            color: var(--rd-text);
+        }
+        #certificate .appContent { color: var(--rd-text); }
+
+        /* Judul halaman */
+        #certificate .header-large-title h2,
+        #certificate .header-large-title .h3,
+        #certificate h1, #certificate h2, #certificate h3,
+        #certificate h4, #certificate h5, #certificate h6 {
+            color: var(--rd-text) !important;
+        }
+
+        /* Kartu sertifikat */
+        #certificate .cert-card {
+            background: var(--rd-surface) !important;
+            border: 1px solid var(--rd-border) !important;
+            box-shadow: none !important;
+            color: var(--rd-text) !important;
+            overflow: hidden;
+            transition: background-color .2s ease;
+        }
+        #certificate a.cert-card-link:hover .cert-card { background: var(--rd-surface-2) !important; }
+        #certificate .cert-card .text-primary { color: var(--rd-text) !important; }
+        #certificate .cert-card .text-muted { color: var(--rd-text-muted) !important; }
+        #certificate .cert-card .border-success { border-color: var(--rd-green) !important; color: var(--rd-green) !important; background: var(--rd-green-soft) !important; }
+
+        /* Stripe warna jenis sertifikat */
+        #certificate .cert-card .cert-stripe.bg-primary { background-color: var(--rd-primary) !important; }
+
         .cert-card {
-            background: #fff;
             overflow: hidden;
         }
 
@@ -24,6 +62,16 @@
                 min-height: 120px;
             }
         }
+
+        /* Empty state */
+        #certificate .card.shadow-sm {
+            background-color: var(--rd-surface) !important;
+            border: 1px solid var(--rd-border) !important;
+            box-shadow: none !important;
+            color: var(--rd-text) !important;
+        }
+        #certificate .card.shadow-sm .bi-award { color: var(--rd-text-muted) !important; }
+        #certificate .card.shadow-sm h5 { color: var(--rd-text) !important; }
     </style>
 
     <div id="appCapsule">
@@ -53,7 +101,7 @@
             <!-- Certificate List -->
             <div class="row g-3" x-show="data.certificates && data.certificates.length > 0">
                 <template x-for="cert in data.certificates" :key="cert.cert_code">
-                    <a :href="`/certificate/${cert.cert_code}`">
+                    <a :href="`/certificate/${cert.cert_code}`" class="cert-card-link">
                         <div class="col-12">
                             <div class="cert-card d-flex align-items-stretch shadow-sm rounded-4">
                                 <div class="cert-stripe" :class="{

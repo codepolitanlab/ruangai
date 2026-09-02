@@ -8,25 +8,38 @@ Alpine.data('page', function(slug) {
         init(){
             document.title = this.title;
             Alpine.store('core').currentPage = 'page'
+            this.load()
+            // Muat ulang jika berpindah antar halaman statis via SPA (slug berubah)
+            this.$watch('slug', () => this.load())
+        },
+        load(){
+            this.notFound = false
+            this.page = {}
+            let url = `page/supply/${this.slug}`
 
-            // Get cache if exists
-            let url = `page/supply/${this.slug}`;
-            this.page = $heroicHelper.cached[url] ?? {};
-            if(Object.keys(this.page).length === 0) {
-                $heroicHelper.fetch(url, {
-                    'Authorization': `Bearer ` + localStorage.getItem('heroic_token'),
-                })
-                .then(response => {
-                    if(response.data.page.length == 0) {
-                        this.notFound = true
-                    } else {
-                        this.page = response.data.page
-                        $heroicHelper.cached[url] = this.page
-                        this.title = this.page.title
-                        document.title = this.page.title
-                    }
-                })
+            const cached = $heroicHelper.cached[url]
+            if (cached) {
+                this.applyPage(cached)
+                return
             }
+
+            $heroicHelper.fetch(url, {
+                'Authorization': `Bearer ` + localStorage.getItem('heroic_token'),
+            })
+            .then(response => {
+                if(!response.data.page) {
+                    this.notFound = true
+                } else {
+                    this.applyPage(response.data.page)
+                    $heroicHelper.cached[url] = response.data.page
+                }
+            })
+            .catch(() => { this.notFound = true })
+        },
+        applyPage(p){
+            this.page = p
+            this.title = p.title || 'Detail Halaman'
+            document.title = this.title
         },
     }
 })

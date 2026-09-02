@@ -1,7 +1,7 @@
 <script>
 	Alpine.data('login', (redirect) => {
 		return {
-			defaultRedirect: "/beasiswa/intro",
+			defaultRedirect: "/",
 			title: "Login",
 			showPwd: false,
 			errorMessage: null,

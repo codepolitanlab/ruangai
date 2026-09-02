@@ -21,6 +21,7 @@ class UserProfile extends Model
         'province',
         'city',
         'occupation',
+        'bio',
         'work_experience',
         'skill',
         'institution',

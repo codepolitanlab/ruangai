@@ -51,7 +51,7 @@ class FeedbackModel extends Model
     {
         return $this->db->table('cls_feedbacks f')
             ->select('f.*, u.name AS user_name, u.email AS user_email, u.phone')
-            ->join('mein_users u', 'u.id = f.user_id', 'left')
+            ->join('users u', 'u.id = f.user_id', 'left')
             ->where('f.class_id', $classId)
             ->where('f.deleted_at IS NULL')
             ->orderBy('f.created_at', 'DESC')

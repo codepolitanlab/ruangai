@@ -10,6 +10,7 @@ class PageController extends BaseController
         'page_title'  => 'Daftar Materi',
         'module'      => 'courses',
         'active_page' => 'materi',
+        'body_class'  => 'rd-dashboard-page',
     ];
 
     public function getData($id)

@@ -29,6 +29,8 @@
     --rd-teal-soft: rgba(23, 195, 178, 0.14);
     --rd-purple: #9B5DE5;
     --rd-purple-soft: rgba(155, 93, 229, 0.16);
+    --rd-green: #22C55E;
+    --rd-green-soft: rgba(34, 197, 94, 0.14);
 
     /* ── Border & bayangan ─────────────────────────────────────────── */
     --rd-border: rgba(255, 255, 255, 0.08);
@@ -302,6 +304,11 @@ body.rd-dashboard-page {
 .rd-course-2 { --accent: var(--rd-teal);    --accent-soft: var(--rd-teal-soft); }
 .rd-course-3 { --accent: var(--rd-purple);  --accent-soft: var(--rd-purple-soft); }
 
+/* Tema dashboard "Kelas yang kamu miliki":
+   Live class = hijau, Online course = ungu */
+.rd-course-live   { --accent: var(--rd-green);  --accent-soft: var(--rd-green-soft); }
+.rd-course-online { --accent: var(--rd-purple); --accent-soft: var(--rd-purple-soft); }
+
 .rd-course-star {
     width: 44px;
     height: 44px;
@@ -405,11 +412,45 @@ body.rd-dashboard-page {
    Verifikasi email
    ========================================================================== */
 .rd-verify {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     border-radius: var(--rd-radius);
     background: var(--rd-surface);
-    border: 1px solid var(--rd-border);
+    border: 1px solid rgba(255, 122, 26, 0.35);
     padding: 18px 20px;
     color: var(--rd-text);
+}
+.rd-verify .rd-verify-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--rd-primary-soft);
+    color: var(--rd-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+.rd-verify h5 {
+    color: var(--rd-text);
+    font-size: 0.98rem;
+    font-weight: 700;
+    line-height: 1.45;
+    margin: 0;
+}
+.rd-verify p {
+    color: var(--rd-text-muted);
+    font-size: 0.85rem;
+    margin: 2px 0 0;
+    line-height: 1.5;
+}
+.rd-verify .rd-btn {
+    width: 100%;
+    justify-content: center;
+    margin-top: 14px;
+    margin-bottom: 0;
 }
 
 /* ==========================================================================

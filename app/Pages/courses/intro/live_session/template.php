@@ -74,6 +74,108 @@
 		.bg-warning-2 {
 			background-color: #fe9500;
 		}
+
+		/* ==============================================================
+		   TEMA GELAP — disamakan dengan dashboard home user (tanpa ubah logic)
+		   ============================================================== */
+		#live_session {
+			background-color: var(--rd-bg);
+			color: var(--rd-text);
+			min-height: 100vh;
+		}
+		#live_session #appCapsule {
+			background-color: var(--rd-bg) !important;
+			color: var(--rd-text);
+		}
+		#live_session .card,
+		#live_session .card-body {
+			background-color: var(--rd-surface) !important;
+			color: var(--rd-text) !important;
+			border-color: var(--rd-border) !important;
+		}
+		#live_session h1, #live_session h2, #live_session h3,
+		#live_session h4, #live_session h5, #live_session h6,
+		#live_session .h4, #live_session .h5, #live_session .h6 {
+			color: var(--rd-text) !important;
+		}
+		#live_session .text-muted { color: var(--rd-text-muted) !important; }
+		#live_session .text-dark { color: var(--rd-text) !important; }
+		#live_session .text-primary { color: var(--rd-primary) !important; }
+		#live_session .text-success { color: var(--rd-green, #22C55E) !important; }
+		#live_session .text-warning { color: #f5a623 !important; }
+
+		/* Tabs */
+		#live_session .nav-pills .nav-link { color: var(--rd-text-muted); }
+		#live_session .nav-pills .nav-link.active {
+			background-color: var(--rd-primary);
+			color: var(--rd-primary-contrast);
+		}
+
+		/* Accordion */
+		#live_session .accordion-item {
+			background-color: var(--rd-surface) !important;
+			border-color: var(--rd-border) !important;
+			color: var(--rd-text) !important;
+		}
+		#live_session .accordion-header { background-color: var(--rd-surface) !important; }
+		#live_session .accordion-button {
+			background-color: var(--rd-surface) !important;
+			color: var(--rd-text) !important;
+			box-shadow: none;
+		}
+		#live_session .accordion-button:not(.collapsed) {
+			background-color: var(--rd-surface-2) !important;
+			color: var(--rd-text) !important;
+		}
+		#live_session .accordion-button::after { filter: invert(1); }
+		#live_session .accordion-collapse.bg-light { background-color: var(--rd-surface) !important; }
+		#live_session .bg-light { background-color: var(--rd-surface) !important; }
+
+		/* Status tint accordion */
+		#live_session .accordion-item.attended { background-color: rgba(34, 197, 94, 0.14) !important; }
+		#live_session .accordion-item.attended .accordion-header { background-color: rgba(34, 197, 94, 0.22) !important; }
+		#live_session .accordion-item.ongoing { background-color: rgba(255, 193, 7, 0.1) !important; }
+		#live_session .accordion-item.ongoing .accordion-header { background-color: rgba(255, 193, 7, 0.2) !important; }
+		#live_session .accordion-item.completed .accordion-header { background-color: var(--rd-surface-2) !important; }
+
+		/* Date box */
+		#live_session .date-box.currently {
+			background-color: var(--rd-surface-2) !important;
+			border-color: #00BCD4 !important;
+		}
+
+		/* Badges */
+		#live_session .bg-white { background-color: var(--rd-surface-2) !important; }
+		#live_session .bg-primary-subtle,
+		#live_session .bg-secondary-subtle { background-color: var(--rd-surface-2) !important; }
+		#live_session .badge.text-dark { color: var(--rd-text) !important; }
+
+		/* Buttons */
+		#live_session .btn-primary {
+			background-color: var(--rd-primary) !important;
+			border-color: var(--rd-primary) !important;
+			color: var(--rd-primary-contrast) !important;
+		}
+		#live_session .btn-secondary {
+			background-color: var(--rd-surface-2) !important;
+			border-color: var(--rd-border) !important;
+			color: var(--rd-text) !important;
+		}
+
+		/* Offcanvas share */
+		#live_session .offcanvas {
+			background-color: var(--rd-surface) !important;
+			color: var(--rd-text) !important;
+		}
+		#live_session .offcanvas-header { border-color: var(--rd-border) !important; }
+		#live_session .btn-close { filter: invert(1); }
+
+		/* Menu (_menu partial) */
+		#live_session #course-features .btn-white.bg-white {
+			background-color: var(--rd-surface) !important;
+			color: var(--rd-primary) !important;
+			border-color: var(--rd-border) !important;
+		}
 	</style>
 
 

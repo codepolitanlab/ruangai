@@ -51,6 +51,10 @@
             padding: 12px 14px;
             font-size: 1rem;
         }
+        #member-profile-edit-info textarea.form-control {
+            resize: vertical;
+            min-height: 90px;
+        }
         #member-profile-edit-info .form-control:focus,
         #member-profile-edit-info .form-select:focus {
             background-color: var(--rd-surface-2);
@@ -129,6 +133,13 @@
                     <label class="form-label" for="occupation">Pekerjaan</label>
                     <input type="text" class="form-control" id="occupation" x-model="model.occupation">
                     <small class="text-danger" x-show="errors.occupation" x-text="errors.occupation"></small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="bio">Bio</label>
+                    <textarea class="form-control" id="bio" rows="3" maxlength="500" x-model="model.bio" placeholder="Ceritakan sedikit tentang dirimu..."></textarea>
+                    <small class="text-danger" x-show="errors.bio" x-text="errors.bio"></small>
+                    <small class="text-muted d-block text-end" style="font-size:.78rem" x-text="`${(model.bio || '').length}/500`"></small>
                 </div>
 
                 <div class="form-group mt-2">

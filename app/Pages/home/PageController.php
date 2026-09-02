@@ -34,40 +34,49 @@ class PageController extends BaseController
             ->where('user_id', $jwt->user_id)
             ->countAllResults();
 
-        // Daftar kelas yang dimiliki user (untuk dashboard)
-        $myCourses = $db->table('course_students')
-            ->select('courses.id, courses.course_title, courses.slug, courses.cover, courses.description, course_students.progress, course_students.graduate, live_batch.name AS batch_name')
+        // ===== Online course (tabel courses) — kartu ungu =====
+        $onlineCourses = $db->table('course_students')
+            ->select('courses.id, courses.course_title, courses.slug, courses.cover, courses.description, courses.total_module, course_students.progress, course_students.graduate')
             ->join('courses', 'courses.id = course_students.course_id')
-            ->join('live_batch', 'live_batch.id = course_students.live_batch_id', 'left')
             ->where('course_students.user_id', $jwt->user_id)
             ->where('course_students.deleted_at', null)
             ->orderBy('course_students.created_at', 'ASC')
             ->get()
             ->getResultArray();
 
-        // Jumlah pertemuan live per kelas
-        $meetingCounts = [];
-        if ($myCourses) {
-            $courseIds = array_column($myCourses, 'id');
-            $meetingRows = $db->table('live_meeting_blueprints')
-                ->select('course_id, COUNT(*) AS total')
-                ->whereIn('course_id', $courseIds)
-                ->groupBy('course_id')
-                ->get()
-                ->getResultArray();
-
-            foreach ($meetingRows as $row) {
-                $meetingCounts[$row['course_id']] = (int) $row['total'];
-            }
-        }
-
-        foreach ($myCourses as &$course) {
-            $course['total_meetings'] = $meetingCounts[$course['id']] ?? 9;
-            $course['batch_name']     = $course['batch_name'] ?: 'Batch 1';
+        foreach ($onlineCourses as &$course) {
+            $course['total_module'] = (int) ($course['total_module'] ?? 0);
+            $course['is_live']      = false;
+            $course['batch_name']   = null;
         }
         unset($course);
 
-        $this->data['my_courses'] = $myCourses;
+        // ===== Live session / kelas bootcamp (tabel cls_*) — kartu hijau =====
+        $liveSessions = $db->table('cls_classes c')
+            ->select('c.id, c.name, c.thumbnail, c.description, c.start_date, cm.enrolled_at, s.name AS syllabus_name')
+            ->join('cls_class_members cm', 'cm.class_id = c.id AND cm.user_id = ' . (int) $jwt->user_id)
+            ->join('cls_syllabuses s', 's.id = c.syllabus_id', 'left')
+            ->where('cm.status', 'active')
+            ->where('c.status', 'active')
+            ->where('c.deleted_at IS NULL')
+            ->orderBy('c.start_date', 'DESC')
+            ->get()
+            ->getResultArray();
+
+        foreach ($liveSessions as &$cls) {
+            $cls['is_live']         = true;
+            $cls['course_title']    = $cls['name'];
+            $cls['total_materials'] = (int) $db->table('cls_class_materials')
+                ->where('class_id', $cls['id'])
+                ->countAllResults();
+            // Batch diambil dari akhiran nama kelas, mis. "Bootcamp Vibe Coding — Batch 1"
+            $cls['batch_name']      = preg_match('/[—–-]\s*(.+)$/u', $cls['name'], $m) ? trim($m[1]) : null;
+            unset($cls['name']);
+        }
+        unset($cls);
+
+        // Gabung: live session tampil lebih dulu, lalu online course
+        $this->data['my_courses'] = array_merge($liveSessions, $onlineCourses);
 
         $this->data['total_live_session'] = $db->table('live_attendance')
             ->where('user_id', $jwt->user_id)

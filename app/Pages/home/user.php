@@ -22,26 +22,26 @@
                 <h3 class="rd-promo-title"><span class="text-white">Mastery Class</span><br>Generative AI</h3>
                 <p class="rd-promo-sub">Bangun website portfolio personal yang profesional</p>
                 <div>
-                    <a href="/courses" class="rd-btn rd-btn-primary">Daftar Sekarang <i class="bi bi-arrow-right"></i></a>
+                    <a href="/" class="rd-btn rd-btn-primary">Daftar Sekarang <i class="bi bi-arrow-right"></i></a>
                 </div>
             </div>
         </section>
         <h3 class="rd-section-title mt-4">Kelas yang kamu miliki</h3>
         <div class="rd-course-grid">
-            <template x-for="(course, index) in data?.my_courses" :key="course.id">
+            <template x-for="(course, index) in data?.my_courses" :key="(course.is_live ? 'live' : 'course') + '-' + course.id">
                 <a class="rd-course"
-                   :class="(index === 0 ? 'rd-course-wide ' : '') + 'rd-course-' + ((index % 3) + 1)"
-                   :href="'/courses/intro/' + course.id + '/' + (course.slug || '')">
+                   :class="(index === 0 ? 'rd-course-wide ' : '') + (course.is_live ? 'rd-course-live' : 'rd-course-online')"
+                   :href="course.is_live ? '/bootcamp/classes/' + course.id + '/intro' : '/courses/intro/' + course.id + '/' + (course.slug || '')">
                     <div class="rd-course-star"><i class="bi bi-stars"></i></div>
                     <div class="rd-course-body">
                         <div class="rd-course-badges">
-                            <span class="rd-badge rd-badge-solid">Live Class</span>
-                            <span class="rd-badge rd-badge-outline" x-text="course.batch_name || 'Batch 1'"></span>
+                            <span class="rd-badge rd-badge-solid" x-text="course.is_live ? 'Live Session' : 'Online Course'"></span>
+                            <span class="rd-badge rd-badge-outline" x-show="course.is_live && course.batch_name" x-text="course.batch_name"></span>
                         </div>
                         <h4 class="rd-course-title" x-text="course.course_title"></h4>
                         <div class="rd-course-meta">
                             <i class="bi bi-arrow-right"></i>
-                            <span x-text="(course.total_meetings || 9) + ' Pertemuan'"></span>
+                            <span x-text="course.is_live ? ((course.total_materials || 0) + ' Materi') : ((course.total_module || 0) + ' Modul')"></span>
                         </div>
                     </div>
                 </a>
@@ -65,7 +65,13 @@
 
     <!-- ===== Verifikasi email ===== -->
     <section x-show="!meta.isValidEmail" class="rd-verify my-1">
-        <h5 class="m-0">Kamu belum melakukan verifikasi email nih, silahkan lakukan verifikasi email terlebih dahulu.</h5>
+        <div class="d-flex gap-3 align-items-start w-100">
+            <div class="rd-verify-icon"><i class="bi bi-envelope-exclamation"></i></div>
+            <div style="min-width:0">
+                <h5 class="m-0">Kamu belum memverifikasi email nih!</h5>
+                <p class="mb-0">Segera lakukan verifikasi email agar semua fitur bisa diakses.</p>
+            </div>
+        </div>
         <button x-show="!meta.loading" type="button" x-on:click="showPopupVerification()" class="rd-btn rd-btn-primary my-3">Verifikasi Email Sekarang</button>
         <button x-show="meta.loading" type="button" disabled class="rd-btn rd-btn-primary my-3">
             <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>

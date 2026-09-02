@@ -35,13 +35,13 @@ class ClassMemberModel extends Model
 
     /**
      * Peserta dengan info user (nama, email, dll.).
-     * Kolom user diambil dari tabel mein_users sesuai konvensi aplikasi.
+     * Kolom user diambil dari tabel users (member & admin).
      */
     public function forClassWithUsers(int $classId, ?string $status = null): array
     {
         $builder = $this->db->table('cls_class_members cm')
             ->select('cm.*, u.name AS user_name, u.username, u.email, u.phone, u.avatar')
-            ->join('mein_users u', 'u.id = cm.user_id', 'left')
+            ->join('users u', 'u.id = cm.user_id', 'left')
             ->where('cm.class_id', $classId);
 
         if ($status) {
@@ -62,7 +62,7 @@ class ClassMemberModel extends Model
     }
 
     /**
-     * Cari user di tabel mein_users (exclude yang sudah jadi member kelas).
+     * Cari user di tabel users (exclude yang sudah jadi member kelas).
      */
     public function searchUsers(int $classId, string $query, int $limit = 20): array
     {
@@ -74,7 +74,7 @@ class ClassMemberModel extends Model
             ->get()->getResultArray();
         $excludedIds = array_column($excluded, 'user_id');
 
-        $builder = $db->table('mein_users')
+        $builder = $db->table('users')
             ->select('id, name, username, email, phone')
             ->groupStart()
             ->like('name', $query)
@@ -97,7 +97,7 @@ class ClassMemberModel extends Model
     {
         $db = $this->db;
 
-        $row = $db->table('mein_users')
+        $row = $db->table('users')
             ->select('id, name, username, email, phone')
             ->groupStart()
             ->where('email', $identifier)

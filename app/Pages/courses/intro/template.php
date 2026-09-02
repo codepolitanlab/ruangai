@@ -68,6 +68,95 @@
 			color: white;
 			background: #EAF8FF;
 		}
+
+		/* ==============================================================
+		   TEMA GELAP — disamakan dengan dashboard home user (tanpa ubah logic)
+		   ============================================================== */
+		#course_intro {
+			background-color: var(--rd-bg);
+			color: var(--rd-text);
+			min-height: 100vh;
+		}
+		#course_intro #appCapsule {
+			background-color: var(--rd-bg) !important;
+			color: var(--rd-text);
+		}
+		#course_intro .appContent { color: var(--rd-text); }
+
+		/* Kartu & permukaan terang -> gelap */
+		#course_intro .card,
+		#course_intro .card-body,
+		#course_intro .bg-white,
+		#course_intro .section,
+		#course_intro .bg-light-primary,
+		#course_intro .bg-light-secondary {
+			background-color: var(--rd-surface) !important;
+			color: var(--rd-text) !important;
+			border-color: var(--rd-border) !important;
+		}
+		#course_intro .card { box-shadow: none !important; }
+
+		/* Fade pada cover gambar */
+		#course_intro .card .position-relative > .position-absolute {
+			background: linear-gradient(to top, var(--rd-surface) 0%, transparent 100%) !important;
+		}
+
+		/* Judul */
+		#course_intro h1, #course_intro h2, #course_intro h3,
+		#course_intro h4, #course_intro h5, #course_intro h6,
+		#course_intro .h1, #course_intro .h2, #course_intro .h3,
+		#course_intro .h4, #course_intro .h5, #course_intro .h6 {
+			color: var(--rd-text) !important;
+		}
+
+		/* Teks isi & muted */
+		#course_intro p, #course_intro .card-text,
+		#course_intro .text-muted, #course_intro .text-secondary,
+		#course_intro .card-title, #course_intro .card-subtitle {
+			color: var(--rd-text-muted) !important;
+		}
+		#course_intro .lesson-item h4 { color: var(--rd-text) !important; }
+
+		/* Progress */
+		#course_intro .progress {
+			background-color: var(--rd-border) !important;
+		}
+		#course_intro .progress-bar {
+			background-color: var(--rd-primary) !important;
+		}
+
+		/* Tombol */
+		#course_intro .btn-primary {
+			background-color: var(--rd-primary) !important;
+			border-color: var(--rd-primary) !important;
+			color: var(--rd-primary-contrast) !important;
+		}
+		#course_intro .btn-outline-primary {
+			border-color: var(--rd-primary) !important;
+			color: var(--rd-primary) !important;
+		}
+		#course_intro .btn-outline-primary:hover {
+			background-color: var(--rd-primary-soft) !important;
+			color: var(--rd-primary) !important;
+		}
+		#course_intro .btn-secondary,
+		#course_intro .btn-warning {
+			background-color: var(--rd-surface-2) !important;
+			border-color: var(--rd-border) !important;
+			color: var(--rd-text) !important;
+		}
+
+		/* Item daftar materi */
+		#course_intro .lesson-item:hover { background-color: var(--rd-surface-2); }
+
+		/* Chip ikon kecil di dalam kartu (bg-white text-dark) -> soft oranye */
+		#course_intro .bg-white { background-color: var(--rd-primary-soft) !important; }
+		#course_intro .bg-white i, #course_intro .bg-white .bi { color: var(--rd-primary) !important; }
+		#course_intro .text-dark { color: var(--rd-text) !important; }
+
+		/* Modal teaser */
+		#course_intro .modal-content { background-color: var(--rd-bg) !important; }
+		#course_intro .btn-close { filter: invert(1); }
 	</style>
 
 	<div id="appCapsule">

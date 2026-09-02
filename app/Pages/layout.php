@@ -90,12 +90,21 @@
                 }
             },
             globalHandler(ctx) {
-                // Toggle latar gelap untuk halaman bertema dark (Beranda, Akun & Klaim Voucher).
-                // Dipakai juga saat navigasi SPA (Pinecone) supaya class di body
-                // tidak bocor ke halaman lain yang berlatar terang.
+                // Toggle latar gelap untuk halaman bertema dark (Beranda, Akun, Voucher,
+                // Bootcamp & halaman statis). Dipakai juga saat navigasi SPA (Pinecone)
+                // supaya class di body tidak bocor ke halaman lain yang berlatar terang.
                 const path = (ctx.path || '').replace(/\/+$/, '') || '/';
-                const darkThemedPages = ['/', '/voucher', '/profile', '/profile/edit_info'];
-                if (darkThemedPages.includes(path)) {
+                const darkThemedPages = ['/', '/voucher'];
+                const isDarkPage = darkThemedPages.includes(path)
+                    || path === '/beasiswa/intro'
+                    || path === '/courses'
+                    || path.startsWith('/profile')
+                    || path.startsWith('/bootcamp')
+                    || path.startsWith('/page')
+                    || path.startsWith('/courses/intro')
+                    || path.startsWith('/certificate')
+                    || path.includes('/lesson/');
+                if (isDarkPage) {
                     document.body.classList.add('rd-dashboard-page');
                 } else {
                     document.body.classList.remove('rd-dashboard-page');

@@ -7,6 +7,57 @@
 
     <div id="appCapsule" class="mt-4" x-data="render_certificate()">
 
+        <style>
+            /* ==============================================================
+               TEMA GELAP — disamakan dengan dashboard home user (tanpa ubah logic)
+               ============================================================== */
+            #certificate_print {
+                background-color: var(--rd-bg);
+                color: var(--rd-text);
+                min-height: 100vh;
+            }
+            #certificate_print #appCapsule {
+                background-color: var(--rd-bg) !important;
+                color: var(--rd-text);
+            }
+            #certificate_print .appContent { color: var(--rd-text); }
+
+            /* Judul & teks */
+            #certificate_print h1, #certificate_print h2, #certificate_print h3,
+            #certificate_print h4, #certificate_print h5, #certificate_print h6 {
+                color: var(--rd-text) !important;
+            }
+            #certificate_print p {
+                color: var(--rd-text-muted) !important;
+            }
+            #certificate_print strong {
+                color: var(--rd-text) !important;
+            }
+
+            /* Tombol kembali */
+            #certificate_print a[href="/certificate"] {
+                color: var(--rd-text) !important;
+                text-decoration: none;
+            }
+            #certificate_print a[href="/certificate"] i {
+                color: var(--rd-primary) !important;
+            }
+
+            /* Tombol unduh */
+            #certificate_print .btn-secondary {
+                background-color: var(--rd-primary) !important;
+                border-color: var(--rd-primary) !important;
+                color: var(--rd-primary-contrast, #fff) !important;
+            }
+
+            /* Preview PDF (wadah) */
+            #certificate_print #pdf-pages {
+                background: var(--rd-surface) !important;
+                border: 1px solid var(--rd-border) !important;
+                border-radius: 8px;
+            }
+        </style>
+
         <template x-if="data?.status !== 'failed'">
             <div class="appContent" style="min-height:90vh;">
                 <a href="/certificate" class="mb-4 d-flex align-items-center gap-2">

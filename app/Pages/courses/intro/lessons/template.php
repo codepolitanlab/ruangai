@@ -43,6 +43,65 @@
 		.bg-warning-2 {
 			background-color: #fe9500;
 		}
+
+		/* ==============================================================
+		   TEMA GELAP — disamakan dengan dashboard home user (tanpa ubah logic)
+		   ============================================================== */
+		#course_intro {
+			background-color: var(--rd-bg);
+			color: var(--rd-text);
+			min-height: 100vh;
+		}
+		#course_intro #appCapsule {
+			background-color: var(--rd-bg) !important;
+			color: var(--rd-text);
+		}
+		#course_intro .card,
+		#course_intro .card-body {
+			background-color: var(--rd-surface) !important;
+			color: var(--rd-text) !important;
+			border-color: var(--rd-border) !important;
+		}
+		#course_intro h1, #course_intro h2, #course_intro h3,
+		#course_intro h4, #course_intro h5, #course_intro h6,
+		#course_intro .h4, #course_intro .h5, #course_intro .h6 {
+			color: var(--rd-text) !important;
+		}
+		#course_intro .text-muted { color: var(--rd-text-muted) !important; }
+		#course_intro .text-dark { color: var(--rd-text-muted) !important; }
+		#course_intro .text-primary { color: var(--rd-primary) !important; }
+		#course_intro .btn-secondary {
+			background-color: var(--rd-surface-2) !important;
+			border-color: var(--rd-border) !important;
+			color: var(--rd-text) !important;
+		}
+
+		/* Item materi */
+		#course_intro .lesson-item {
+			background-color: var(--rd-surface-2) !important;
+		}
+		#course_intro .lesson-item.completed {
+			background-color: rgba(34, 197, 94, 0.18) !important;
+		}
+		#course_intro .lesson-item.active,
+		#course_intro .lesson-item.recommended {
+			border-color: var(--rd-primary) !important;
+		}
+		#course_intro .lesson-item.completed h4,
+		#course_intro .lesson-item.completed h5,
+		#course_intro .lesson-item.completed .bi { color: var(--rd-text) !important; }
+
+		/* Progress ring */
+		#course_intro .progress-ring__circle-bg { stroke: var(--rd-border) !important; }
+		#course_intro .progress-ring__circle { stroke: var(--rd-primary) !important; }
+		#course_intro .progress-ring text { fill: var(--rd-text) !important; }
+
+		/* Menu (_menu partial) */
+		#course_intro #course-features .btn-white.bg-white {
+			background-color: var(--rd-surface) !important;
+			color: var(--rd-primary) !important;
+			border-color: var(--rd-border) !important;
+		}
 	</style>
 
 	<div id="appCapsule" class="">

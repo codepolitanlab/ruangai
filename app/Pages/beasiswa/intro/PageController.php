@@ -10,6 +10,7 @@ class PageController extends BaseController
         'page_title'  => 'Detail Kelas',
         'module'      => 'misi_beasiswa',
         'active_page' => 'intro',
+        'body_class'  => 'rd-dashboard-page',
     ];
 
     public function getData()

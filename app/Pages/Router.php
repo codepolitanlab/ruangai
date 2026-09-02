@@ -30,6 +30,22 @@ class Router
             'preload' => true,
             'handler' => '[isLoggedIn]',
         ],
+        '/bootcamp' => [
+            'preload' => true,
+            'handler' => '[isLoggedIn]',
+        ],
+        '/bootcamp/classes/:id/intro' => [
+            'template' => '/bootcamp/intro/template',
+            'handler' => '[isLoggedIn]',
+        ],
+        '/bootcamp/classes/:id/learn' => [
+            'template' => '/bootcamp/learn/template',
+            'handler' => '[isLoggedIn]',
+        ],
+        '/bootcamp/works' => [
+            'template' => '/bootcamp/works/template',
+            'handler' => '[isLoggedIn]',
+        ],
         '/certificate' => [],
         '/certificate/:code' => [
             'template' => '/certificate/detail/template',

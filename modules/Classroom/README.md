@@ -81,6 +81,6 @@ php spark migrate -n 'Classroom'
 
 - Controller memakai method plain (`index`, `store`, `data`, ...) dengan route eksplisit (mengikuti pola modul `Course`, bukan `getX`/`postX`).
 - `$this->db` harus dideklarasikan & diinisialisasi manual (`\Config\Database::connect()`) karena `AdminController`/`BaseController` tidak menyediakannya. Model `CodeIgniter\Model` sudah punya `$this->db`.
-- Tabel user yang dipakai untuk peserta adalah `mein_users` (bukan `users`).
+- Tabel user yang dipakai untuk peserta adalah `users` (member & admin; DB ini tidak punya `mein_users`).
 - `EmailSender` di `app/Libraries/EmailSender.php` memakai `setTemplate()` + `send()` (tidak ada `sendBySlug`).
 - Fitur yang sengaja **belum** diimplementasikan (gap sesuai spec): engine scoring (`cls_member_scores`), pengerjaan kuis oleh member, notifikasi (`cls_notifications`) — tabel & model sudah ada, logika menunggu sisi member.

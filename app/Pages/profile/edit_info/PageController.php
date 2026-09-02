@@ -36,6 +36,7 @@ class PageController extends BaseController
             'gender'     => $profile['gender'] ?? ($user['gender'] ?? null),
             'birthday'   => $profile['birthday'] ?? null,
             'occupation' => $profile['occupation'] ?? null,
+            'bio'        => $profile['bio'] ?? null,
         ];
 
         return $this->respond($data);
@@ -50,6 +51,7 @@ class PageController extends BaseController
             'gender'     => 'permit_empty|in_list[male,female]',
             'birthday'   => 'permit_empty',
             'occupation' => 'permit_empty|max_length[255]',
+            'bio'        => 'permit_empty|max_length[500]',
         ]);
 
         if (! $validation->run($this->request->getPost())) {
@@ -90,6 +92,7 @@ class PageController extends BaseController
             'gender'     => $validData['gender'] ?? null,
             'birthday'   => $birthday,
             'occupation' => $validData['occupation'] ?? null,
+            'bio'        => trim((string) ($validData['bio'] ?? '')) ?: null,
         ];
 
         if ($existingProfile) {

@@ -45,7 +45,7 @@ class MemberWorkModel extends Model
     {
         $builder = $this->db->table('cls_member_works w')
             ->select('w.*, u.name AS user_name, u.email AS user_email')
-            ->join('mein_users u', 'u.id = w.user_id', 'left')
+            ->join('users u', 'u.id = w.user_id', 'left')
             ->where('w.deleted_at IS NULL');
 
         if (! empty($where)) {
@@ -71,7 +71,7 @@ class MemberWorkModel extends Model
     {
         $row = $this->db->table('cls_member_works w')
             ->select('w.*, u.name AS user_name, u.email AS user_email')
-            ->join('mein_users u', 'u.id = w.user_id', 'left')
+            ->join('users u', 'u.id = w.user_id', 'left')
             ->where('w.id', $id)
             ->where('w.deleted_at IS NULL')
             ->get()->getRowArray();
