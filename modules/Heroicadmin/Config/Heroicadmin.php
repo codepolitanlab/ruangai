@@ -146,20 +146,32 @@ class Heroicadmin extends BaseConfig
                 ],
             ],
         ],
-        // [
-        //     'label'    => 'Vouchers',
-        //     'icon'     => 'bi bi-bag-fill',
-        //     'url'      => '#',
-        //     'module'   => 'voucher',
-        //     'children' => [
-        //         'sales' => [
-        //             'label'     => 'Penjualan Voucher',
-        //             'icon'      => 'bi bi-tag-fill',
-        //             'url'       => '/zpanel/vouchers/sales',
-        //             'submodule' => 'sales',
-        //         ],
-        //     ],
-        // ],
+        [
+            'label'    => 'Vouchers',
+            'icon'     => 'bi bi-ticket-perforated',
+            'url'      => '#',
+            'module'   => 'voucher',
+            'children' => [
+                'sales' => [
+                    'label'     => 'Penjualan Voucher',
+                    'icon'      => 'bi bi-tag-fill',
+                    'url'       => 'voucher/sales',
+                    'submodule' => 'sales',
+                ],
+                'generated' => [
+                    'label'     => 'Daftar Voucher',
+                    'icon'      => 'bi bi-list-check',
+                    'url'       => 'voucher/generated',
+                    'submodule' => 'generated',
+                ],
+                'generate' => [
+                    'label'     => 'Generate Voucher',
+                    'icon'      => 'bi bi-plus-circle',
+                    'url'       => 'voucher/generate',
+                    'submodule' => 'generate',
+                ],
+            ],
+        ],
         [
             'label'    => 'Configuration',
             'icon'     => 'bi bi-house-gear-fill',

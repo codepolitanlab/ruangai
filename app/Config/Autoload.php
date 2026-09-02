@@ -52,6 +52,7 @@ class Autoload extends AutoloadConfig
         'Mahasiswi'   => ROOTPATH . 'modules/Mahasiswi',
         'Event'       => ROOTPATH . 'modules/Event',
         'Classroom'   => ROOTPATH . 'modules/Classroom',
+        'Voucher'     => ROOTPATH . 'modules/Voucher',
     ];
 
     /**
