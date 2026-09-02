@@ -144,6 +144,12 @@ class Heroicadmin extends BaseConfig
                     'url'       => 'course/product',
                     'submodule' => 'course_product',
                 ],
+                'classroom' => [
+                    'label'     => 'Classroom',
+                    'icon'      => 'bi bi-mortarboard-fill',
+                    'url'       => 'classroom/products',
+                    'submodule' => 'classroom_product',
+                ],
             ],
         ],
         // [
@@ -205,6 +211,26 @@ class Heroicadmin extends BaseConfig
                     'icon'      => 'bi bi-file-earmark-text',
                     'url'       => 'referral/withdrawals',
                     'submodule' => 'withdrawal',
+                ],
+            ],
+        ],
+        [
+            'label'    => 'Webhook',
+            'icon'     => 'bi bi-broadcast',
+            'url'      => '#',
+            'module'   => 'webhook',
+            'children' => [
+                'logs' => [
+                    'label'     => 'Riwayat Webhook',
+                    'icon'      => 'bi bi-clock-history',
+                    'url'       => 'webhook',
+                    'submodule' => 'logs',
+                ],
+                'sources' => [
+                    'label'     => 'Sumber Webhook',
+                    'icon'      => 'bi bi-hdd-stack',
+                    'url'       => 'webhook/sources',
+                    'submodule' => 'sources',
                 ],
             ],
         ],

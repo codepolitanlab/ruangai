@@ -74,8 +74,9 @@ $routes->group(
         $routes->post('product/(:num)/edit', 'Product::save/$1'); // Update
         $routes->post('product/delete', 'Product::delete'); // Delete
         $routes->get('product/checkout/(:num)', 'Product::checkout/$1'); // Generate checkout link
-    }
+        }
 );
 
 // Zoom meeting link processor
 $routes->get('zoom/(:any)', '\Course\Controllers\Zoom::index/$1');
+$routes->get('checkout/course/(:num)', '\Course\Controllers\Product::checkout/$1'); // Generate checkout link

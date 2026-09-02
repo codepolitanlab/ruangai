@@ -5,16 +5,16 @@
 
 <div class="page-heading">
     <section class="section">
-        <form method="post">
+        <form method="post" action="<?= isset($course_product) ? '/zpanel/products/course/form?id=' . $course_product->id : '/zpanel/products/course/form' ?>">
             <div class="mb-3">
                 <div class="row align-items-center">
                     <div class="col-lg-6">
-                        <h2><?= isset($course_product) ? 'Edit' : 'New' ?> Course Product</h2>
+                        <h2><a href="/zpanel/products/course"><?= $page_title ?></a> • <?= isset($course_product) ? 'Edit' : 'New' ?></h2>
                         <nav aria-label="breadcrumb" class="breadcrumb-header">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="/<?= urlScope() ?>">Dashboard</a></li>
-                                <li class="breadcrumb-item"><a href="/<?= urlScope() ?>/course">Course</a></li>
-                                <li class="breadcrumb-item"><a href="/<?= urlScope() ?>/course/product">Product</a></li>
+                                <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                                <li class="breadcrumb-item" aria-current="page">Products</li>
+                                <li class="breadcrumb-item"><a href="/zpanel/products/course">Course</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Form</li>
                             </ol>
                         </nav>
@@ -46,7 +46,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Course <span class="text-danger">*</span></label>
-                                <select name="course_id" class="form-select" required>
+                                <select name="course_id" class="form-control" required>
                                     <option value="">Select..</option>
                                     <?php foreach($courses as $course): ?>
                                     <option value="<?= $course->id ?>" <?= (isset($course_product) && $course_product->course_id === $course->id) ? 'selected' : '' ?>><?= $course->course_title ?></option>

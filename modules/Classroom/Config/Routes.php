@@ -87,5 +87,17 @@ $routes->group(
         $routes->post('memberworks/(:num)/update', 'MemberWork::update/$1'); // Update karya
         $routes->post('memberworks/(:num)/moderate', 'MemberWork::moderate/$1'); // Publish/reject
         $routes->post('memberworks/(:num)/delete', 'MemberWork::delete/$1'); // Hapus karya
+
+        // ============ PRODUCT (produk kelas/bootcamp) ============
+        $routes->get('products', 'Product::index'); // List produk kelas
+        $routes->get('products/add', 'Product::form'); // Form tambah
+        $routes->post('products/add', 'Product::save'); // Simpan baru
+        $routes->get('products/(:num)/edit', 'Product::form/$1'); // Form edit
+        $routes->post('products/(:num)/edit', 'Product::save/$1'); // Update
+        $routes->post('products/delete', 'Product::delete'); // Hapus (soft delete)
+        $routes->get('products/checkout/(:num)', 'Product::checkout/$1'); // Generate link checkout
     }
 );
+
+// Generate link checkout kelas (admin), meniru checkout/course pada modul Course
+$routes->get('checkout/class/(:num)', '\Classroom\Controllers\Product::checkout/$1');
