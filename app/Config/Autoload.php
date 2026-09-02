@@ -53,6 +53,7 @@ class Autoload extends AutoloadConfig
         'Event'       => ROOTPATH . 'modules/Event',
         'Classroom'   => ROOTPATH . 'modules/Classroom',
         'Voucher'     => ROOTPATH . 'modules/Voucher',
+        'Webhook'     => ROOTPATH . 'modules/Webhook',
     ];
 
     /**

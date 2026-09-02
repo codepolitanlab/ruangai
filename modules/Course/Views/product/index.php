@@ -54,7 +54,8 @@
                                 <th>Price</th>
                                 <th>Discount</th>
                                 <th>Course Duration</th>
-                                <th>Checkout Expire Duration</th>
+                                <th>Checkout Expire (menit)</th>
+                                <th>Status</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -66,6 +67,7 @@
                                     <td><input type="text" class="form-control form-control-sm" name="filter_title" value="<?= $filter_title ?? '' ?>" placeholder="Title"></td>
                                     <td><input type="text" class="form-control form-control-sm" name="filter_subtitle" value="<?= $filter_subtitle ?? '' ?>" placeholder="Subtitle"></td>
                                     <td><input type="text" class="form-control form-control-sm" name="filter_duration" value="<?= $filter_duration ?? '' ?>" placeholder="Duration"></td>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td class="text-end">
@@ -96,14 +98,23 @@
                                         <span class="text-muted">Rp<?= number_format($course->discount, 0, ',', '.') ?></span>
                                     </td>
                                     <td width="10%"><?= $course->duration ?></td>
-                                    <td width="10%"><?= $course->exp_duration ?></td>
+                                    <td width="10%"><?= $course->exp_duration ? round($course->exp_duration / 60) : '-' ?></td>
+                                    <td>
+                                        <?php if ((int) $course->status === 1) : ?>
+                                            <span class="badge bg-success">Aktif</span>
+                                        <?php else : ?>
+                                            <span class="badge bg-secondary">Nonaktif</span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td class="text-end" width="20%">
 
+                                        <?php if ((int) $course->status === 1) : ?>
                                         <a class="btn btn-sm btn-outline-info text-nowrap"
                                             target="_blank"
-                                            href="/<?= urlScope() ?>/course/product/checkout/<?= $course->id ?>">
+                                            href="/checkout/course/<?= $course->id ?>">
                                             <span class="bi bi-credit-card"></span> Checkout
                                         </a>
+                                        <?php endif; ?>
 
                                         <a class="btn btn-sm btn-outline-success text-nowrap"
                                             href="/<?= urlScope() ?>/course/product/<?= $course->id ?>/edit">

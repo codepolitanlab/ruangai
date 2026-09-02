@@ -85,6 +85,14 @@ class Product extends AdminController
         if (! $courseProduct) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
+
+        // Hanya produk aktif yang boleh di-checkout
+        if ((int) ($courseProduct[0]['status'] ?? 0) !== 1) {
+            session()->setFlashdata('error', 'Produk tidak aktif, tidak dapat di-checkout');
+
+            return redirect()->to(urlScope() . '/course/product');
+        }
+
         $courseProduct[0]['type'] = 'course';
 
         // Kita akan gunakan diskon di summary (bukan di produk)
@@ -142,16 +150,24 @@ class Product extends AdminController
 
     public function save($id = null)
     {
+        $normalPrice = (int) $this->request->getPost('normal_price');
+        $price       = (int) $this->request->getPost('price');
+        // Expire duration diinput dalam menit, disimpan dalam satuan detik
+        $expMinutes  = (int) $this->request->getPost('exp_duration');
+        $status      = $this->request->getPost('status');
+
         $data = [
             'course_id'    => $this->request->getPost('course_id'),
             'title'        => $this->request->getPost('title'),
             'subtitle'     => $this->request->getPost('subtitle'),
             'duration'     => $this->request->getPost('duration'),
-            'normal_price' => $this->request->getPost('normal_price'),
-            'price'        => $this->request->getPost('price'),
-            'discount'     => $this->request->getPost('discount'),
+            'normal_price' => $normalPrice,
+            'price'        => $price,
+            // Diskon dihitung otomatis: normal price - price
+            'discount'     => max(0, $normalPrice - $price),
             'description'  => $this->request->getPost('description'),
-            'exp_duration' => $this->request->getPost('exp_duration'),
+            'exp_duration' => $expMinutes * 60,
+            'status'       => $status === null ? 1 : (int) $status,
         ];
 
         $courseProductModel = new \Course\Models\CourseProductModel();

@@ -16,6 +16,15 @@ $routes->get('email/preview/(:segment)', 'Email::preview/$1');
 $routes->get('webhook_feedback', 'Api\WebhookController::index');
 $routes->post('webhook_feedback', 'Api\WebhookController::index');
 
+// Endpoint webhook lama (app/Pages/webhook_cp) dinonaktifkan.
+// Penggantinya: modul Webhook -> POST /webhook/receive/{slug}
+$routes->get('webhook_cp', static function () {
+    return \Config\Services::response()->setStatusCode(410);
+});
+$routes->post('webhook_cp', static function () {
+    return \Config\Services::response()->setStatusCode(410);
+});
+
 $routes->get('checkToken/(:any)', 'Home::checkToken/$1');
 $routes->get('c/(:any)', static function ($code) {
     header('Location: /certificate/' . $code);

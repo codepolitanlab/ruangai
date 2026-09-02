@@ -12,7 +12,7 @@ class CourseProductModel extends Model
     protected $returnType             = 'array';
     protected $useSoftDeletes         = true;
     protected $protectFields          = true;
-    protected $allowedFields          = ['course_id', 'title', 'subtitle', 'duration', 'exp_duration', 'normal_price', 'price', 'discount', 'description'];
+    protected $allowedFields          = ['course_id', 'title', 'subtitle', 'duration', 'exp_duration', 'normal_price', 'price', 'discount', 'status', 'description'];
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
     protected array $casts            = [];
