@@ -16,6 +16,7 @@ class Generate extends AdminController
     {
         $db = \Config\Database::connect();
 
+        // Online course
         $courses = $db->table('courses')
             ->select('id, course_title, has_live_sessions')
             ->where('deleted_at', null)
@@ -23,7 +24,18 @@ class Generate extends AdminController
             ->get()
             ->getResultArray();
 
+        // Kelas bootcamp yang aktif (dari Classroom)
+        $classes = $db->table('cls_classes')
+            ->select('cls_classes.id, cls_classes.name, cls_syllabuses.name AS syllabus_name')
+            ->join('cls_syllabuses', 'cls_syllabuses.id = cls_classes.syllabus_id', 'left')
+            ->where('cls_classes.deleted_at', null)
+            ->where('cls_classes.status', 'active')
+            ->orderBy('cls_classes.name', 'asc')
+            ->get()
+            ->getResultArray();
+
         $this->data['courses'] = $courses;
+        $this->data['classes'] = $classes;
 
         return view('Voucher\Views\generate\index', $this->data);
     }
@@ -59,21 +71,27 @@ class Generate extends AdminController
     {
         $db = \Config\Database::connect();
 
-        $courseId    = (int) $this->request->getPost('course_id');
+        // Tipe voucher: 'course' (online course) atau 'bootcamp' (kelas bootcamp)
+        $objectType = (string) $this->request->getPost('object_type');
+        $objectType = in_array($objectType, ['course', 'bootcamp'], true) ? $objectType : 'course';
+
+        $objectId    = (int) $this->request->getPost('object_id');
         $liveBatchId = (int) $this->request->getPost('live_batch_id');
         $quantity    = max(1, min((int) ($this->request->getPost('quantity') ?: 1), 500));
         $name        = trim((string) $this->request->getPost('name')) ?: 'CODEPOLITAN';
         $email       = trim((string) $this->request->getPost('email')) ?: 'codepolitan@gmail.com';
         $phone       = trim((string) $this->request->getPost('phone')) ?: '-';
 
-        if (! $courseId) {
+        if (! $objectId) {
             return $this->response->setJSON(['success' => false, 'message' => 'Pilih kelas terlebih dahulu.']);
         }
 
-        $metadata = json_encode([
-            'duration'      => '0',
-            'live_batch_id' => (string) $liveBatchId,
-        ]);
+        // Metadata: hanya online course yang memakai batch live session
+        $metadata = ['duration' => '0'];
+        if ($objectType === 'course') {
+            $metadata['live_batch_id'] = (string) $liveBatchId;
+        }
+        $metadataJson = json_encode($metadata);
 
         $characters  = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
         $codeLength  = 8;
@@ -106,13 +124,13 @@ class Generate extends AdminController
             }
 
             $db->table('vouchers')->insert([
-                'object_id'    => $courseId,
-                'object_type'  => 'course',
+                'object_id'    => $objectId,
+                'object_type'  => $objectType,
                 'voucher_code' => $voucherCode,
                 'name'         => $name,
                 'email'        => $email,
                 'phone'        => $phone,
-                'metadata'     => $metadata,
+                'metadata'     => $metadataJson,
                 'created_at'   => date('Y-m-d H:i:s'),
                 'updated_at'   => date('Y-m-d H:i:s'),
             ]);

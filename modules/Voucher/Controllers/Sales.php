@@ -21,6 +21,8 @@ class Sales extends AdminController
 
         // "Penjualan" = voucher yang sudah dipakai/diklaim member.
         $liveBatchJoin = 'live_batch.id = JSON_UNQUOTE(JSON_EXTRACT(vouchers.metadata, \'$.live_batch_id\'))';
+        $courseJoin    = "courses.id = vouchers.object_id AND vouchers.object_type = 'course'";
+        $classJoin     = "cls_classes.id = vouchers.object_id AND vouchers.object_type = 'bootcamp'";
 
         $apply = static function ($b) use ($filter) {
             if (! empty($filter)) {
@@ -65,7 +67,8 @@ class Sales extends AdminController
         // Total
         $countBuilder = $db->table('vouchers')
             ->select('COUNT(DISTINCT vouchers.id) AS total')
-            ->join('courses', 'courses.id = vouchers.object_id', 'left')
+            ->join('courses', $courseJoin, 'left')
+            ->join('cls_classes', $classJoin, 'left')
             ->join('users', 'users.id = vouchers.claimed_by', 'left')
             ->join('live_batch', $liveBatchJoin, 'left')
             ->where('vouchers.deleted_at', null)
@@ -76,8 +79,9 @@ class Sales extends AdminController
 
         // Data halaman
         $builder = $db->table('vouchers')
-            ->select('vouchers.*, courses.course_title, live_batch.name AS live_batch_name, users.email AS claimed_by_email, users.phone AS claimed_by_phone')
-            ->join('courses', 'courses.id = vouchers.object_id', 'left')
+            ->select('vouchers.*, COALESCE(cls_classes.name, courses.course_title) AS course_title, live_batch.name AS live_batch_name, users.email AS claimed_by_email, users.phone AS claimed_by_phone')
+            ->join('courses', $courseJoin, 'left')
+            ->join('cls_classes', $classJoin, 'left')
             ->join('users', 'users.id = vouchers.claimed_by', 'left')
             ->join('live_batch', $liveBatchJoin, 'left')
             ->where('vouchers.deleted_at', null)

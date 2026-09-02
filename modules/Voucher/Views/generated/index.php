@@ -71,6 +71,7 @@
                                     <th>ID</th>
                                     <th>Voucher Code</th>
                                     <th>Kelas</th>
+                                    <th>Tipe</th>
                                     <th>Batch</th>
                                     <th>Nama</th>
                                     <th>Email</th>
@@ -85,6 +86,7 @@
                                     <td><input type="text" class="form-control form-control-sm" name="filter[id]" value="<?= esc($filter['id'] ?? '') ?>" placeholder="ID"></td>
                                     <td><input type="text" class="form-control form-control-sm" name="filter[voucher_code]" value="<?= esc($filter['voucher_code'] ?? '') ?>" placeholder="Code"></td>
                                     <td><input type="text" class="form-control form-control-sm" name="filter[course_title]" value="<?= esc($filter['course_title'] ?? '') ?>" placeholder="Kelas"></td>
+                                    <td></td>
                                     <td></td>
                                     <td><input type="text" class="form-control form-control-sm" name="filter[name]" value="<?= esc($filter['name'] ?? '') ?>" placeholder="Nama"></td>
                                     <td><input type="text" class="form-control form-control-sm" name="filter[email]" value="<?= esc($filter['email'] ?? '') ?>" placeholder="Email"></td>
@@ -105,6 +107,13 @@
                                     <td><?= $v['id'] ?></td>
                                     <td><code><?= esc($v['voucher_code']) ?></code></td>
                                     <td><?= esc($v['course_title'] ?? '-') ?></td>
+                                    <td>
+                                        <?php if (($v['object_type'] ?? 'course') === 'bootcamp'): ?>
+                                            <span class="badge bg-info text-dark">Bootcamp</span>
+                                        <?php else: ?>
+                                            <span class="badge bg-secondary">Course</span>
+                                        <?php endif ?>
+                                    </td>
                                     <td><?= esc($v['batch_name'] ?? '-') ?></td>
                                     <td><?= esc($v['name'] ?? '-') ?></td>
                                     <td><?= esc($v['email'] ?? '-') ?></td>
@@ -138,7 +147,7 @@
 
                                 <?php if (empty($vouchers)): ?>
                                     <tr>
-                                        <td colspan="10" class="text-center py-4 text-muted">Belum ada voucher hasil generate.</td>
+                                        <td colspan="11" class="text-center py-4 text-muted">Belum ada voucher hasil generate.</td>
                                     </tr>
                                 <?php endif ?>
                             </tbody>
@@ -191,6 +200,7 @@
             'ID':             v.id,
             'Voucher Code':   v.voucher_code,
             'Kelas':          v.course_title || '-',
+            'Tipe':           v.object_type === 'bootcamp' ? 'Bootcamp' : 'Course',
             'Batch':          v.batch_name || '-',
             'Nama':           v.name || '-',
             'Email':          v.email || '-',
@@ -203,7 +213,7 @@
     document.getElementById('export_excel').addEventListener('click', function(e) {
         e.preventDefault();
         const ws = XLSX.utils.json_to_sheet(getExportData());
-        ws['!cols'] = Array(9).fill({ wch: 25 });
+        ws['!cols'] = Array(10).fill({ wch: 25 });
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Generated Vouchers');
         XLSX.writeFile(wb, generateFilename('xlsx'));

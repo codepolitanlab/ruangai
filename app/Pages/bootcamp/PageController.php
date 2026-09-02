@@ -85,7 +85,8 @@ class PageController extends BaseController
             ]);
         }
 
-        if ($voucher['object_type'] !== 'classroom') {
+        // Terima object_type 'classroom' (legacy) dan 'bootcamp' untuk kelas bootcamp.
+        if (! in_array($voucher['object_type'], ['classroom', 'bootcamp'], true)) {
             return $this->respondSecure([
                 'status'  => 'failed',
                 'message' => 'Kode akses bukan untuk kelas bootcamp.',

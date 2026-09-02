@@ -20,6 +20,8 @@ class Generated extends AdminController
         $filter  = $this->request->getGet('filter') ?? [];
 
         $liveBatchJoin = 'live_batch.id = JSON_UNQUOTE(JSON_EXTRACT(vouchers.metadata, \'$.live_batch_id\'))';
+        $courseJoin    = "courses.id = vouchers.object_id AND vouchers.object_type = 'course'";
+        $classJoin     = "cls_classes.id = vouchers.object_id AND vouchers.object_type = 'bootcamp'";
 
         // List voucher hasil generate internal (owner CODEPOLITAN)
         $apply = static function ($b) use ($filter) {
@@ -56,7 +58,7 @@ class Generated extends AdminController
                     'id'           => 'vouchers.id',
                     'name'         => 'vouchers.name',
                     'voucher_code' => 'vouchers.voucher_code',
-                    'course_title' => 'courses.course_title',
+                    'course_title' => 'COALESCE(cls_classes.name, courses.course_title)',
                     'claimed'      => 'vouchers.claimed',
                     default        => 'vouchers.created_at',
                 };
@@ -71,7 +73,8 @@ class Generated extends AdminController
         // Total
         $countBuilder = $db->table('vouchers')
             ->select('COUNT(DISTINCT vouchers.id) AS total')
-            ->join('courses', 'courses.id = vouchers.object_id')
+            ->join('courses', $courseJoin, 'left')
+            ->join('cls_classes', $classJoin, 'left')
             ->join('users', 'users.id = vouchers.claimed_by', 'left')
             ->join('live_batch', $liveBatchJoin, 'left')
             ->where('vouchers.deleted_at', null)
@@ -83,8 +86,9 @@ class Generated extends AdminController
 
         // Data halaman
         $builder = $db->table('vouchers')
-            ->select('vouchers.*, courses.course_title, live_batch.name AS batch_name, users.email AS claimed_by_email, users.phone AS claimed_by_phone')
-            ->join('courses', 'courses.id = vouchers.object_id')
+            ->select('vouchers.*, COALESCE(cls_classes.name, courses.course_title) AS course_title, live_batch.name AS batch_name, users.email AS claimed_by_email, users.phone AS claimed_by_phone')
+            ->join('courses', $courseJoin, 'left')
+            ->join('cls_classes', $classJoin, 'left')
             ->join('users', 'users.id = vouchers.claimed_by', 'left')
             ->join('live_batch', $liveBatchJoin, 'left')
             ->where('vouchers.deleted_at', null)

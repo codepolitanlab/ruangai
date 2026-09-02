@@ -41,6 +41,14 @@
                         <div id="alertResult" class="alert d-none mb-3"></div>
 
                         <div class="mb-3">
+                            <label class="form-label fw-bold">Tipe Voucher <span class="text-danger">*</span></label>
+                            <select id="voucher_type" class="form-select">
+                                <option value="course">Online Course</option>
+                                <option value="bootcamp">Bootcamp (Kelas)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3" id="courseField">
                             <label class="form-label fw-bold">Kelas <span class="text-danger">*</span></label>
                             <select id="course_id" class="form-select" required>
                                 <option value="">-- Pilih Kelas --</option>
@@ -51,6 +59,19 @@
                                     </option>
                                 <?php endforeach ?>
                             </select>
+                        </div>
+
+                        <div class="mb-3 d-none" id="bootcampField">
+                            <label class="form-label fw-bold">Kelas Bootcamp <span class="text-danger">*</span></label>
+                            <select id="class_id" class="form-select" required>
+                                <option value="">-- Pilih Kelas Bootcamp --</option>
+                                <?php foreach ($classes as $class): ?>
+                                    <option value="<?= $class['id'] ?>">
+                                        <?= esc($class['name']) ?><?= ! empty($class['syllabus_name']) ? ' — ' . esc($class['syllabus_name']) : '' ?>
+                                    </option>
+                                <?php endforeach ?>
+                            </select>
+                            <div class="form-text">Voucher kelas bootcamp akan memakai <code>object_type = bootcamp</code>.</div>
                         </div>
 
                         <div id="batchWrapper" class="mb-3 d-none">
@@ -127,17 +148,41 @@
 
 <script>
     const VOUCHER_BASE = '<?= $vBase ?>';
-    const coursesData = <?= json_encode(array_column($courses, null, 'id')) ?>;
 
+    const typeSelect      = document.getElementById('voucher_type');
+    const courseField     = document.getElementById('courseField');
     const courseSelect    = document.getElementById('course_id');
+    const bootcampField   = document.getElementById('bootcampField');
+    const classSelect     = document.getElementById('class_id');
     const batchWrapper    = document.getElementById('batchWrapper');
     const batchSelect     = document.getElementById('live_batch_id');
     const metadataPreview = document.getElementById('metadataPreview');
 
+    function currentType() {
+        return typeSelect.value === 'bootcamp' ? 'bootcamp' : 'course';
+    }
+
+    function toggleTypeFields() {
+        const type = currentType();
+        courseField.classList.toggle('d-none', type === 'bootcamp');
+        bootcampField.classList.toggle('d-none', type === 'course');
+        if (type === 'bootcamp') {
+            batchWrapper.classList.add('d-none');
+            batchSelect.innerHTML = '<option value="0">-- Pilih Batch --</option>';
+        }
+        updateMetadataPreview();
+    }
+
     function updateMetadataPreview() {
+        if (currentType() === 'bootcamp') {
+            metadataPreview.textContent = JSON.stringify({ duration: '0' }, null, 2);
+            return;
+        }
         const batchId = batchWrapper.classList.contains('d-none') ? '0' : batchSelect.value;
         metadataPreview.textContent = JSON.stringify({ duration: '0', live_batch_id: String(batchId) }, null, 2);
     }
+
+    typeSelect.addEventListener('change', toggleTypeFields);
 
     courseSelect.addEventListener('change', function() {
         const selected = this.options[this.selectedIndex];
@@ -171,18 +216,19 @@
     batchSelect.addEventListener('change', updateMetadataPreview);
 
     document.getElementById('btnGenerate').addEventListener('click', function() {
-        const courseId   = courseSelect.value;
-        const batchId    = batchWrapper.classList.contains('d-none') ? '0' : batchSelect.value;
-        const name       = document.getElementById('gen_name').value;
-        const email      = document.getElementById('gen_email').value;
-        const phone      = document.getElementById('gen_phone').value;
-        const quantity   = document.getElementById('gen_quantity').value;
-        const alertEl    = document.getElementById('alertResult');
-        const spinner    = document.getElementById('btnSpinner');
+        const type     = currentType();
+        const objectId = type === 'bootcamp' ? classSelect.value : courseSelect.value;
+        const batchId  = (type === 'course' && !batchWrapper.classList.contains('d-none')) ? batchSelect.value : '0';
+        const name     = document.getElementById('gen_name').value;
+        const email    = document.getElementById('gen_email').value;
+        const phone    = document.getElementById('gen_phone').value;
+        const quantity = document.getElementById('gen_quantity').value;
+        const alertEl  = document.getElementById('alertResult');
+        const spinner  = document.getElementById('btnSpinner');
 
         alertEl.className = 'alert d-none';
 
-        if (!courseId) {
+        if (!objectId) {
             alertEl.className = 'alert alert-danger';
             alertEl.textContent = 'Pilih kelas terlebih dahulu.';
             return;
@@ -192,12 +238,13 @@
         this.disabled = true;
 
         const formData = new FormData();
-        formData.append('course_id',    courseId);
+        formData.append('object_type',   type);
+        formData.append('object_id',     objectId);
         formData.append('live_batch_id', batchId);
-        formData.append('name',         name);
-        formData.append('email',        email);
-        formData.append('phone',        phone);
-        formData.append('quantity',     quantity);
+        formData.append('name',          name);
+        formData.append('email',         email);
+        formData.append('phone',         phone);
+        formData.append('quantity',      quantity);
 
         fetch(VOUCHER_BASE + '/generate/store', {
             method: 'POST',
