@@ -11,6 +11,9 @@
             code: '',
             showModal: false,
             redeeming: false,
+            productModal: false,
+            selectedProduct: null,
+            checkingOut: false,
 
             init() {
                 base.init.call(this);
@@ -24,6 +27,16 @@
             goLearn(classId) {
                 // Alur: Kelas Saya -> Intro Bootcamp -> Belajar
                 this.$router.navigate(`/bootcamp/classes/${classId}/intro`);
+            },
+
+            openProduct(prod) {
+                this.selectedProduct = prod;
+                this.productModal = true;
+            },
+
+            closeProduct() {
+                this.productModal = false;
+                this.selectedProduct = null;
             },
 
             async redeem() {
@@ -51,6 +64,27 @@
                     $heroicHelper.toastr('Terjadi kesalahan. Silakan coba lagi.', 'danger', 'bottom');
                 } finally {
                     this.redeeming = false;
+                }
+            },
+
+            async checkout() {
+                const product = this.selectedProduct;
+                if (!product) return;
+
+                this.checkingOut = true;
+                try {
+                    const response = await $heroicHelper.post('/bootcamp/checkout', { product_id: product.id });
+                    if (response.data.status === 'success' && response.data.url) {
+                        // Redirect ke halaman pembayaran; setelah PAID webhook mengaktifkan kelas
+                        window.location.replace(response.data.url);
+                        return;
+                    }
+                    $heroicHelper.toastr(response.data.message || 'Gagal membuat checkout. Silakan coba lagi.', 'danger', 'bottom');
+                } catch (error) {
+                    console.error(error);
+                    $heroicHelper.toastr('Terjadi kesalahan. Silakan coba lagi.', 'danger', 'bottom');
+                } finally {
+                    this.checkingOut = false;
                 }
             }
         }
