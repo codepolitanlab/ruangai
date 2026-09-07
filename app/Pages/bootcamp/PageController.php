@@ -279,7 +279,7 @@ class PageController extends BaseController
         $response   = $CPCheckout->getCheckoutUrl([$item], [], [
             'discount'             => (int) $product['discount'],
             'exp_duration'         => $product['exp_duration'] ?? 86400,
-            'success_redirect_url' => site_url('bootcamp'),
+            'success_redirect_url' => site_url('bootcamp/thankyou'),
         ]);
 
         if (! isset($response['url'])) {
