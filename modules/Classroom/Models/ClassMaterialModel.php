@@ -50,6 +50,21 @@ class ClassMaterialModel extends Model
     }
 
     /**
+     * Satu baris class_material beserta info materi (LEFT JOIN), untuk dipakai
+     * halaman yang menampilkan judul materi (mis. progress/quiz/submission).
+     */
+    public function findWithMaterial(int $id): ?array
+    {
+        $row = $this->db->table('cls_class_materials cm')
+            ->select('cm.*, m.title AS material_title, m.subtitle AS material_subtitle, m.description AS material_description, m.order_seq AS material_order_seq')
+            ->join('cls_materials m', 'm.id = cm.material_id', 'left')
+            ->where('cm.id', $id)
+            ->get()->getRowArray();
+
+        return $row ?: null;
+    }
+
+    /**
      * Auto-generate class_materials untuk tiap materi silabus yang belum ada pivot-nya.
      * Mengembalikan jumlah yang baru dibuat.
      */
