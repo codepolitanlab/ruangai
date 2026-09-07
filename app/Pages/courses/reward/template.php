@@ -43,6 +43,74 @@
 			background-color: #fe9500;
 		}
 
+		/* ==============================================================
+		   TEMA GELAP — selaras dengan beranda/dashboard user (tanpa ubah logic)
+		   ============================================================== */
+		#course_reward {
+			background-color: var(--rd-bg);
+			color: var(--rd-text);
+			min-height: 100vh;
+		}
+		#course_reward #appCapsule {
+			background-color: var(--rd-bg) !important;
+			color: var(--rd-text);
+		}
+		#course_reward .appContent { color: var(--rd-text); }
+
+		/* Permukaan kartu -> gelap */
+		#course_reward .card,
+		#course_reward .card-body,
+		#course_reward .bg-white,
+		#course_reward .bg-info,
+		#course_reward .bg-warning,
+		#course_reward .alert {
+			background-color: var(--rd-surface) !important;
+			color: var(--rd-text) !important;
+			border-color: var(--rd-border) !important;
+		}
+		#course_reward .card { box-shadow: none !important; }
+
+		/* Judul */
+		#course_reward h1, #course_reward h2, #course_reward h3,
+		#course_reward h4, #course_reward h5, #course_reward h6,
+		#course_reward .h1, #course_reward .h2, #course_reward .h3,
+		#course_reward .h4, #course_reward .h5, #course_reward .h6 {
+			color: var(--rd-text) !important;
+		}
+
+		/* Teks isi/muted & utilitas kegelapan */
+		#course_reward p, #course_reward .text-muted, #course_reward .text-secondary,
+		#course_reward .card-text, #course_reward .card-title, #course_reward .card-subtitle {
+			color: var(--rd-text-muted) !important;
+		}
+		#course_reward .text-dark { color: var(--rd-text) !important; }
+		#course_reward .opacity-50, #course_reward .opacity-75 { opacity: 1 !important; }
+
+		/* Tombol & tombol kembali */
+		#course_reward .btn-primary {
+			background-color: var(--rd-primary) !important;
+			border-color: var(--rd-primary) !important;
+			color: var(--rd-primary-contrast) !important;
+		}
+		#course_reward .btn-white.bg-white {
+			background-color: var(--rd-surface-2) !important;
+			color: var(--rd-primary) !important;
+			border-color: var(--rd-border) !important;
+		}
+		#course_reward .btn-white.bg-white .bi { color: var(--rd-primary) !important; }
+
+		/* Badge jumlah token tetap aksen oranye */
+		#course_reward .badge.bg-warning {
+			background-color: var(--rd-primary) !important;
+			color: #fff !important;
+		}
+
+		/* Kartu premium (CardPremiumCourse) */
+		#course_reward .card.overflow-hidden {
+			background-color: var(--rd-surface-2) !important;
+		}
+		#course_reward a:not(.btn) { color: var(--rd-primary); }
+
 	</style>
 
 	<div id="appCapsule" class="">

@@ -51,6 +51,76 @@
 	}
 </style>
 
+<style>
+	/* ==============================================================
+	   TEMA GELAP — selaras dengan beranda/dashboard user (tanpa ubah logic)
+	   ============================================================== */
+	#claim_reward {
+		background-color: var(--rd-bg);
+		color: var(--rd-text);
+		min-height: 100vh;
+	}
+	#claim_reward #appCapsule {
+		background-color: var(--rd-bg) !important;
+		color: var(--rd-text);
+	}
+	#claim_reward .appContent { color: var(--rd-text); }
+
+	/* Permukaan kartu -> gelap */
+	#claim_reward .card,
+	#claim_reward .card-body,
+	#claim_reward .bg-white,
+	#claim_reward .alert {
+		background-color: var(--rd-surface) !important;
+		color: var(--rd-text) !important;
+		border-color: var(--rd-border) !important;
+	}
+	#claim_reward .card { box-shadow: none !important; }
+
+	/* Kartu premium pilihan kelas khusus (inline #0d2535 -> surface-2) */
+	#claim_reward .card.selectable-card {
+		background-color: var(--rd-surface-2) !important;
+		border-color: var(--rd-border) !important;
+	}
+
+	/* Judul */
+	#claim_reward h1, #claim_reward h2, #claim_reward h3,
+	#claim_reward h4, #claim_reward h5, #claim_reward h6,
+	#claim_reward .h1, #claim_reward .h2, #claim_reward .h3,
+	#claim_reward .h4, #claim_reward .h5, #claim_reward .h6 {
+		color: var(--rd-text) !important;
+	}
+
+	/* Teks isi/muted */
+	#claim_reward p, #claim_reward .text-muted, #claim_reward .text-secondary,
+	#claim_reward .card-text, #claim_reward .card-title, #claim_reward .card-subtitle {
+		color: var(--rd-text-muted) !important;
+	}
+	#claim_reward .text-dark { color: var(--rd-text) !important; }
+	#claim_reward .opacity-50, #claim_reward .opacity-75 { opacity: 1 !important; }
+
+	/* Tombol & tombol kembali */
+	#claim_reward .btn-primary {
+		background-color: var(--rd-primary) !important;
+		border-color: var(--rd-primary) !important;
+		color: var(--rd-primary-contrast) !important;
+	}
+	#claim_reward .btn-white.bg-white {
+		background-color: var(--rd-surface-2) !important;
+		color: var(--rd-primary) !important;
+		border-color: var(--rd-border) !important;
+	}
+	#claim_reward .btn-white.bg-white .bi { color: var(--rd-primary) !important; }
+
+	/* Info token */
+	#claim_reward .alert-primary {
+		background-color: var(--rd-primary-soft) !important;
+		color: var(--rd-text) !important;
+		border-color: var(--rd-border) !important;
+	}
+	#claim_reward a:not(.btn) { color: var(--rd-primary); }
+</style>
+
 <div
 	class="header-mobile-only"
 	id="claim_reward"
@@ -66,7 +136,8 @@
 			<div class="bg-white p-4 rounded-4 my-3">
 				<h5 class="fw-bold">Klaim Kelas Khusus</h5>
 
-				<template x-if="data.user_token < 1">
+				<!-- Belum punya token (masih ada kelas khusus yang bisa diklaim) -->
+				<template x-if="data.user_token < 1 && (data?.premium_courses?.length ?? 0) > 0">
 					<div class="mb-4">
 						<p class="fs-6 mb-2 alert bg-warning bg-opacity-50">
 							Kamu belum punya token reward untuk dapat mengklaim kelas khusus. <br><br>
@@ -75,13 +146,26 @@
 					</div>
 				</template>
 
-				<!-- If user has token, show message -->
-				<template x-if="data.user_token > 0">
+				<!-- Punya token & masih ada kelas khusus yang bisa diklaim -->
+				<template x-if="data.user_token > 0 && (data?.premium_courses?.length ?? 0) > 0">
 					<div class="mb-4">
 						<p class="fs-6 mb-2 alert alert-primary">
 							Kamu memiliki <b x-text="data.user_token"></b> token yang belum digunakan.
 						</p>
 						<p class="mb-1">Pilih kelas khusus di bawah ini yang cocok buatmu. Setiap kelas bernilai 1 token.</p>
+					</div>
+				</template>
+
+				<!-- Semua kelas khusus sudah diklaim -->
+				<template x-if="Array.isArray(data?.premium_courses) && data.premium_courses.length === 0">
+					<div class="text-center mb-2">
+						<img src="<?= base_url('mobilekit/assets/img/ruangai/token-coin.png') ?>" width="110" height="110" alt="" class="mb-2">
+						<h5 class="fw-bold">Semua kelas khusus sudah kamu klaim</h5>
+						<p class="mx-auto mb-1" style="max-width: 340px;">
+							Belum ada kelas khusus baru yang bisa diklaim saat ini. Token reward yang kamu miliki
+							akan tetap tersimpan dan bisa kamu gunakan untuk mengklaim kelas khusus berikutnya.
+						</p>
+						<a href="/courses/reward" class="btn btn-primary mt-3"><i class="bi bi-gift me-1"></i> Lihat Daftar Kelas Khusus</a>
 					</div>
 				</template>
 
@@ -130,21 +214,23 @@
 					</div>
 				</template>
 
-				<!-- Button -->
-				<div class="d-grid">
-					<button
-						class="btn btn-primary btn-lg btn-block rounded-4 mt-3 py-2 d-flex align-items-center justify-content-center gap-2"
-						@click="claim"
-						:class="{'disabled': !selected || loading || data.user_token < 1}">
-						<!-- spinner -->
-						<template x-if="loading">
-							<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-						</template>
+				<!-- Button (hanya tampil bila masih ada kelas khusus yang bisa diklaim) -->
+				<template x-if="(data?.premium_courses?.length ?? 0) > 0">
+					<div class="d-grid">
+						<button
+							class="btn btn-primary btn-lg btn-block rounded-4 mt-3 py-2 d-flex align-items-center justify-content-center gap-2"
+							@click="claim"
+							:class="{'disabled': !selected || loading || data.user_token < 1}">
+							<!-- spinner -->
+							<template x-if="loading">
+								<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+							</template>
 
-						<!-- text -->
-						<span x-text="loading ? 'Memproses...' : 'Klaim Kelas'"></span>
-					</button>
-				</div>
+							<!-- text -->
+							<span x-text="loading ? 'Memproses...' : 'Klaim Kelas'"></span>
+						</button>
+					</div>
+				</template>
 
 			</div>
 		</div>
