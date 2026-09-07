@@ -5,7 +5,7 @@
     <section class="rd-hero">
         <img
             class="rd-hero-avatar"
-            :src="data?.user?.avatar && data?.user?.avatar != '' ? data?.user?.avatar : `https://ui-avatars.com/api/?name=${data?.name ?? 'El'}&background=79B2CD&color=FFF`"
+            :src="data?.user?.avatar && data?.user?.avatar != '' ? data?.user?.avatar : `https://ui-avatars.com/api/?name=${data?.name ?? 'El'}&background=1A2840&color=FFF`"
             alt="avatar">
         <div>
             <p class="rd-hero-greet">Selamat Belajar,</p>
@@ -31,7 +31,7 @@
             <template x-for="(course, index) in data?.my_courses" :key="(course.is_live ? 'live' : 'course') + '-' + course.id">
                 <a class="rd-course"
                    :class="(index === 0 ? 'rd-course-wide ' : '') + (course.is_live ? 'rd-course-live' : 'rd-course-online')"
-                   :href="course.is_live ? '/bootcamp/classes/' + course.id + '/intro' : '/courses/intro/' + course.id + '/' + (course.slug || '')">
+                   :href="course.is_live ? '/bootcamp/classes/' + course.id + '/intro' : (course.is_beasiswa ? '/beasiswa/intro' : '/courses/intro/' + course.id + '/' + (course.slug || ''))">
                     <div class="rd-course-star"><i class="bi bi-stars"></i></div>
                     <div class="rd-course-body">
                         <div class="rd-course-badges">

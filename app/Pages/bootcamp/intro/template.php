@@ -5,7 +5,7 @@
     x-cloak>
 
     <style>
-        #bootcamp-intro .bi-hero { margin: 0 20px; height: 180px; object-fit: cover; background-size: cover; background-position: center; background-repeat: no-repeat; background: linear-gradient(135deg, var(--rd-primary-soft,#eef4fb), var(--rd-surface)); border-radius: 16px; border: 1px solid var(--rd-border); display: flex; align-items: center; justify-content: center; color: var(--rd-primary); font-size: 3rem; }
+        #bootcamp-intro .bi-hero { margin: 0 20px; height: 180px; object-fit: cover; background: linear-gradient(135deg, var(--rd-primary-soft,#eef4fb), var(--rd-surface)); background-size: cover; background-position: center; background-repeat: no-repeat; border-radius: 16px; border: 1px solid var(--rd-border); display: flex; align-items: center; justify-content: center; color: var(--rd-primary); font-size: 3rem; }
         #bootcamp-intro .bi-body { padding: 18px 20px 110px; }
         #bootcamp-intro .bi-title { font-size: 1.5rem; font-weight: 800; color: var(--rd-text); line-height: 1.2; }
         #bootcamp-intro .bi-sub { font-size: 0.9rem; color: var(--rd-text-muted); margin-top: 4px; }
@@ -23,6 +23,15 @@
         #bootcamp-intro .bi-badge.ongoing { background: #eef4fb; color: #2563eb; }
         #bootcamp-intro .bi-cta { border: none; border-radius: 999px; padding: 15px; font-size: 1.05rem; font-weight: 700; width: 100%; margin-top: 18px; color: var(--rd-primary-contrast,#fff); background: var(--rd-primary); display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
         #bootcamp-intro .bi-cta:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        /* Tombol kembali — disamakan dgn halaman beasiswa/intro */
+        #bootcamp-intro .btn-white.bg-white {
+            background-color: var(--rd-primary-soft) !important;
+            color: var(--rd-primary) !important;
+        }
+        #bootcamp-intro .btn-white.bg-white .bi {
+            color: var(--rd-primary) !important;
+        }
     </style>
 
     <div id="appCapsule">
@@ -31,7 +40,9 @@
     <template x-if="data.class">
         <div>
             <div style="display:flex;align-items:center;gap:10px;padding:12px 20px 0">
-                <button type="button" style="border:none;background:none;font-size:1.3rem;color:var(--rd-text)" @click="$router.navigate('/')" aria-label="Kembali ke Beranda">&larr;</button>
+                <button type="button" class="btn rounded-4 px-2 btn-white bg-white text-primary" @click="history.back()" aria-label="Kembali">
+                    <h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>
+                </button>
             </div>
 
             <div class="bi-hero" :style="data.class.thumbnail ? `background-image:url('${data.class.thumbnail}')` : ''">

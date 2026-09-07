@@ -48,6 +48,8 @@ class PageController extends BaseController
             $course['total_module'] = (int) ($course['total_module'] ?? 0);
             $course['is_live']      = false;
             $course['batch_name']   = null;
+            // Kelas Misi Beasiswa (GenAI, courses.id = 1) dibuka lewat halaman beasiswa/intro
+            $course['is_beasiswa']  = ((int) $course['id'] === 1);
         }
         unset($course);
 

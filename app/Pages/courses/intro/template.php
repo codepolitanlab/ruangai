@@ -154,6 +154,53 @@
 		#course_intro .bg-white i, #course_intro .bg-white .bi { color: var(--rd-primary) !important; }
 		#course_intro .text-dark { color: var(--rd-text) !important; }
 
+		/* ==============================================================
+		   Penyempurnaan tema gelap — permukaan & aksen konsisten
+		   ============================================================== */
+
+		/* Wadah/section besar bertema .bg-white (Card Kelas, Progres, Handbook,
+		   Klaim Sertifikat, Reward Beasiswa) kembali ke permukaan gelap,
+		   bukan tint oranye — supaya selaras dengan kartu lain. */
+		#course_intro .section,
+		#course_intro .bg-white.overflow-hidden,
+		#course_intro .bg-white.pb-2,
+		#course_intro .bg-white.shadow-sm {
+			background-color: var(--rd-surface) !important;
+			color: var(--rd-text) !important;
+			border-color: var(--rd-border) !important;
+		}
+
+		/* Sub-kartu Klaim Sertifikat: sedikit lebih terang dari permukaan */
+		#course_intro .bg-dark.bg-opacity-10 {
+			background-color: var(--rd-surface-2) !important;
+			border-color: var(--rd-border) !important;
+		}
+
+		/* Kartu CTA Reward Beasiswa tetap memakai aksen utama (oranye),
+		   lengkap dengan body-nya, supaya jelas sebagai tombol ajakan. */
+		#course_intro .card.bg-primary,
+		#course_intro .card.bg-primary .card-body {
+			background-color: var(--rd-primary) !important;
+			border-color: var(--rd-primary) !important;
+		}
+
+		/* Judul section (Klaim Sertifikat / Reward) tetap putih */
+		#course_intro .section h4 {
+			color: var(--rd-text) !important;
+		}
+
+		/* Banner cover: jangkar ke atas supaya bagian atas (kepala subjek) tidak terpotong */
+		#course_intro .bg-white.overflow-hidden img {
+			object-fit: cover;
+			object-position: center top;
+		}
+
+		/* Sesi Live (dipisah jadi section sendiri) — kartu di dalamnya elevated */
+		#course_intro #card-progress-live {
+			background-color: var(--rd-surface-2) !important;
+			border-color: var(--rd-border) !important;
+		}
+
 		/* Modal teaser */
 		#course_intro .modal-content { background-color: var(--rd-bg) !important; }
 		#course_intro .btn-close { filter: invert(1); }
@@ -392,10 +439,13 @@
 								</div>
 							</template> -->
 							
-							<!-- Card Live Session Program Reguler -->
-							<template x-if="data.course?.has_live_sessions === '1'">
-								<div class="col-md-12 mb-3">
-									<h4 class="mb-3 mt-3">Sesi Live</h4>
+						</div>
+					</div>
+
+					<!-- Sesi Live — section terpisah dari Progres Belajar -->
+					<template x-if="data.course?.has_live_sessions === '1'">
+						<div class="p-3 pb-2 bg-white rounded-4 mb-3">
+							<h4 class="mb-3">Sesi Live</h4>
 									<div id="card-progress-live"
 										class="card border-0 shadow-none rounded-4  p-3 d-flex flex-column justify-content-between position-relative"
 										style="min-height: 160px"
@@ -418,10 +468,8 @@
 										<a :href="`/courses/intro/${data?.course?.id}/${data?.course?.slug}/live_session`" class="btn btn-secondary hover rounded-pill p-1 w-100 fs-6" :class="{'disabled': data?.lesson_completed != data?.total_lessons}">Lihat Jadwal</a>
 										<img src="https://ik.imagekit.io/56xwze9cy/jagoansiber/Vector%20(1).png" class="position-absolute end-0" style="top: 12px;opacity: .3;" width="70" alt="">
 									</div>
-								</div>
-							</template>
 						</div>
-					</div>
+					</template>
 
 					<!-- Download Handbook -->
 					<div x-show="data?.student?.reference == 'rai-tdagarut' || data?.student?.reference == 'mentor-adit'" class="p-4 mb-3 rounded-4 bg-white shadow-sm">
@@ -441,7 +489,7 @@
 					<!-- Certificate -->
 					<template x-if="data.course?.has_certificate === '1'">
 						<div class="section p-3 mb-3 pb-4 bg-white rounded-4">
-							<h4 class="fw-bold mb-3" style="color: #222;">Klaim Sertifikat</h4>
+							<h4 class="fw-bold mb-3">Klaim Sertifikat</h4>
 
 							<div class="card border-0 rounded-4 bg-dark bg-opacity-10 cursor-pointer"
 								@click="claimCertificate()"
@@ -488,8 +536,6 @@
 						</a>
 					</template> -->
 
-		</div>
-
 		<template x-if="!data.is_enrolled && $params.course_id == 1">
 			<a href="/courses/reward" class="btn btn-secondary rounded-pill p-1 w-100 fs-6 mb-3">Klaim Kelas</a>
 		</template>
@@ -497,7 +543,7 @@
 		<!-- Klaim Reward, khusus untuk course campaign -->
 		<template x-if="data.course?.id === '1'">
 			<div class="section p-3 mb-3 bg-white rounded-4">
-				<h4 class="fw-bold mb-3" style="color: #222;">Reward Beasiswa</h4>
+				<h4 class="fw-bold mb-3">Reward Beasiswa</h4>
 
 				<div class="card bg-primary border-0 rounded-4 cursor-pointer"
 					@click="claimReward()">
@@ -514,6 +560,8 @@
 				</div>
 			</div>
 		</template>
+		</div>
+
 	</div>
 
 	<?= $this->include('_bottommenu') ?>

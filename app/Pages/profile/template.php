@@ -145,6 +145,24 @@
                     </li>
                 </ul>
 
+                <div class="account-list-title mt-4">Reward &amp; Sertifikat</div>
+                <ul class="account-menu">
+                    <li>
+                        <a href="/courses/reward" class="item">
+                            <i class="bi bi-gift"></i>
+                            <span>Redeem Token</span>
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/certificate" class="item">
+                            <i class="bi bi-patch-check"></i>
+                            <span>Sertifikat</span>
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+
                 <div class="account-list-title mt-4">
                     Aplikasi RuangAI
                     <span>v<?= $version; ?></span>

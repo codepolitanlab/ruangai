@@ -226,7 +226,7 @@ class Schedule extends AdminController
             return $this->notFound();
         }
 
-        $cm = $this->classMaterialModel->find((int) $cmId);
+        $cm = $this->classMaterialModel->findWithMaterial((int) $cmId);
         if (! $cm || (int) $cm['class_id'] !== (int) $classId) {
             return $this->notFound('Materi kelas tidak ditemukan');
         }
@@ -273,7 +273,7 @@ class Schedule extends AdminController
             return $this->notFound();
         }
 
-        $cm = $this->classMaterialModel->find((int) $cmId);
+        $cm = $this->classMaterialModel->findWithMaterial((int) $cmId);
         if (! $cm || (int) $cm['class_id'] !== (int) $classId) {
             return $this->notFound('Materi kelas tidak ditemukan');
         }
@@ -301,7 +301,7 @@ class Schedule extends AdminController
             return $this->notFound();
         }
 
-        $cm = $this->classMaterialModel->find((int) $cmId);
+        $cm = $this->classMaterialModel->findWithMaterial((int) $cmId);
         if (! $cm || (int) $cm['class_id'] !== (int) $classId) {
             return $this->notFound('Materi kelas tidak ditemukan');
         }

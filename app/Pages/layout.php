@@ -102,6 +102,7 @@
                     || path.startsWith('/bootcamp')
                     || path.startsWith('/page')
                     || path.startsWith('/courses/intro')
+                    || path.startsWith('/courses/reward')
                     || path.startsWith('/certificate')
                     || path.includes('/lesson/');
                 if (isDarkPage) {
