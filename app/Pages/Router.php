@@ -34,6 +34,9 @@ class Router
             'preload' => true,
             'handler' => '[isLoggedIn]',
         ],
+        '/bootcamp/thankyou/:checkout_code' => [
+            'template' => '/bootcamp/thankyou/template',
+        ],
         '/bootcamp/classes/:id/intro' => [
             'template' => '/bootcamp/intro/template',
             'handler' => '[isLoggedIn]',

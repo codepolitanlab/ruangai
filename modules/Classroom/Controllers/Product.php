@@ -111,7 +111,7 @@ class Product extends AdminController
         $response   = $CPCheckout->getCheckoutUrl($classProduct, [], [
             'discount'             => $classProduct[0]['discount'],
             'exp_duration'         => $classProduct[0]['exp_duration'] ?? 86400,
-            'success_redirect_url' => site_url('bootcamp'),
+            'success_redirect_url' => site_url('bootcamp/thankyou'),
         ]);
 
         if (! isset($response['url'])) {
