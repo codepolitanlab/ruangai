@@ -2,7 +2,6 @@
 
 namespace Webhook\Handlers;
 
-use Classroom\Models\ClassMemberModel;
 use Course\Models\CourseVoucherModel;
 use Throwable;
 
@@ -14,7 +13,8 @@ use Throwable;
  *  - mencatat / mengisi data pembayaran (payments + payment_items) secara idempotent
  *    berdasarkan checkout_code / external_id;
  *  - saat status "PAID": mengaktifkan produk yang dibeli
- *    (saat ini: course -> membuat voucher akses + email pemberitahuan non-fatal).
+ *    (course/classroom -> membuat voucher akses + email berisi kode voucher ke pembeli,
+ *    pengiriman email non-fatal; classroom -> kode voucher di-redeem member di /bootcamp).
  *
  * Catatan perbaikan dari kode lama:
  *  - CourseVoucherModel berada di namespace Course\Models (kode lama salah memakai App\Models);
@@ -241,7 +241,13 @@ class CodepolitanCheckoutHandler
     }
 
     /**
-     * Classroom -> tambahkan pembeli sebagai peserta kelas (idempotent via cls_class_members).
+     * Classroom -> buat voucher akses kelas (object_type 'bootcamp') untuk pembeli,
+     * lalu kirim kode voucher ke email pembeli (meniru _activateCourse). Member
+     * kemudian me-redeem kode tersebut di halaman /bootcamp untuk masuk ke kelas.
+     *
+     * Idempotent: bila voucher sudah pernah dibuat untuk kombinasi email + kelas,
+     * tidak membuat voucher baru — kode yang sama dikirim ulang ke email pembeli
+     * (menjamin kode tetap sampai meski pengiriman email pertama gagal).
      */
     private function _activateClassroom(int $paymentId, array $item): array
     {
@@ -251,6 +257,14 @@ class CodepolitanCheckoutHandler
         if (! $payment) {
             return ['status' => 'failed', 'message' => 'Data pembayaran tidak ditemukan.'];
         }
+
+        $name  = trim((string) ($payment['customer_name'] ?? ''));
+        $email = strtolower(trim((string) ($payment['customer_email'] ?? '')));
+        if ($name === '' || $email === '') {
+            return ['status' => 'failed', 'message' => 'Data customer (nama/email) tidak lengkap.'];
+        }
+
+        $phone = trim((string) ($payment['customer_phone'] ?? ''));
 
         $classProduct = $db->table('cls_products')
             ->where('id', $item['item_id'])
@@ -264,27 +278,119 @@ class CodepolitanCheckoutHandler
             return ['status' => 'failed', 'message' => 'Produk kelas nonaktif, tidak dapat diaktifkan.'];
         }
 
-        $email = strtolower(trim((string) ($payment['customer_email'] ?? '')));
-        $phone = trim((string) ($payment['customer_phone'] ?? ''));
-
-        $classMemberModel = new ClassMemberModel();
-        $user             = null;
-        if ($email !== '') {
-            $user = $classMemberModel->findUserByIdentifier($email);
-        }
-        if ($user === null && $phone !== '') {
-            $user = $classMemberModel->findUserByIdentifier($phone);
-        }
-        if ($user === null) {
-            return ['status' => 'failed', 'message' => 'User pembeli tidak ditemukan (email/phone tidak cocok di tabel users).'];
+        $class = $db->table('cls_classes')
+            ->where('id', $classProduct['class_id'])
+            ->where('deleted_at IS NULL')
+            ->get()->getRowArray();
+        if (! $class) {
+            return ['status' => 'failed', 'message' => 'Kelas bootcamp tidak ditemukan.'];
         }
 
-        $result = $classMemberModel->addOrReactivate((int) $classProduct['class_id'], (int) $user['id'], 'member');
+        $classId = (int) $classProduct['class_id'];
+
+        // Voucher kelas bootcamp memakai object_type 'bootcamp' (konvensi modul Voucher
+        // & endpoint redeem /bootcamp/redeem); object_id = cls_classes.id.
+        $existing = $db->table('vouchers')
+            ->where('email', $email)
+            ->where('object_id', $classId)
+            ->where('object_type', 'bootcamp')
+            ->where('deleted_at IS NULL')
+            ->get()->getRowArray();
+
+        if ($existing) {
+            // Idempotent: kirim ulang kode yang sama (hindari voucher ganda saat retry/reprocess)
+            $this->sendBootcampVoucherEmail([
+                'name'         => $name,
+                'email'        => $email,
+                'phone'        => $phone,
+                'voucher_code' => $existing['voucher_code'],
+            ], $classProduct, $class);
+
+            return [
+                'status'  => 'success',
+                'message' => 'Voucher kelas sudah ada (idempotent): ' . $existing['voucher_code'],
+            ];
+        }
+
+        // Generate kode voucher unik & simpan
+        $voucherCode = $this->generateVoucherCode();
+        if ($voucherCode === null) {
+            return ['status' => 'failed', 'message' => 'Gagal menghasilkan kode voucher unik.'];
+        }
+
+        $db->table('vouchers')->insert([
+            'object_id'    => $classId,
+            'object_type'  => 'bootcamp',
+            'voucher_code' => $voucherCode,
+            'name'         => $name,
+            'email'        => $email,
+            'phone'        => $phone,
+            'metadata'     => json_encode(['duration' => '0']),
+            'created_at'   => date('Y-m-d H:i:s'),
+            'updated_at'   => date('Y-m-d H:i:s'),
+        ]);
+
+        $this->sendBootcampVoucherEmail([
+            'name'         => $name,
+            'email'        => $email,
+            'phone'        => $phone,
+            'voucher_code' => $voucherCode,
+        ], $classProduct, $class);
 
         return [
             'status'  => 'success',
-            'message' => 'Peserta ' . ($result === 'added' ? 'ditambahkan' : 'diaktifkan kembali') . ' ke kelas #' . $classProduct['class_id'],
+            'message' => 'Voucher kelas dibuat: ' . $voucherCode,
         ];
+    }
+
+    /**
+     * Buat kode voucher unik (karakter tanpa karakter ambigu), memeriksa keunikan
+     * di tabel vouchers.
+     */
+    private function generateVoucherCode(int $length = 8): ?string
+    {
+        $characters  = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // tanpa 0, O, o, l, 1, I
+        $maxAttempts = 10;
+        $db          = \Config\Database::connect();
+
+        for ($i = 0; $i < $maxAttempts; $i++) {
+            $code = '';
+            for ($j = 0; $j < $length; $j++) {
+                $code .= $characters[random_int(0, strlen($characters) - 1)];
+            }
+
+            $exists = $db->table('vouchers')
+                ->where('voucher_code', $code)
+                ->where('deleted_at IS NULL')
+                ->countAllResults();
+
+            if (! $exists) {
+                return $code;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Kirim email berisi kode voucher akses bootcamp (template: emails/bootcamp_voucher).
+     */
+    private function sendBootcampVoucherEmail(array $user, array $classProduct, array $class): void
+    {
+        try {
+            $emailSender = new \App\Libraries\EmailSender();
+            $emailSender->setTemplate('bootcamp_voucher', [
+                'name'          => $user['name'],
+                'email'         => $user['email'],
+                'phone'         => $user['phone'],
+                'voucher_code'  => $user['voucher_code'],
+                'class_name'    => $class['name'] ?? '',
+                'product_title' => $classProduct['title'] ?? '',
+            ]);
+            $emailSender->send($user['email'], 'Kode Akses Kelas Bootcamp: ' . ($classProduct['title'] ?? ''));
+        } catch (Throwable $e) {
+            log_message('error', '[Webhook-CP] Gagal kirim email voucher bootcamp: ' . $e->getMessage());
+        }
     }
 
     private function sendVoucherEmail(array $user, array $voucher, array $courseProduct): void
