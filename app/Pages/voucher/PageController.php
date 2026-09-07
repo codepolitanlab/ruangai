@@ -97,8 +97,9 @@ class PageController extends BaseController
                 ->update(['claimed' => date('Y-m-d H:i:s'), 'claimed_by' => $userId]);
 
             return $this->respond([
-                'status'  => 'success',
-                'message' => 'Kode voucher berhasil dipakai. Kelas bootcamp ditambahkan ke Kelas Saya.',
+                'status'   => 'success',
+                'message'  => 'Kode voucher berhasil dipakai. Kelas bootcamp ditambahkan ke Kelas Saya.',
+                'redirect' => '/bootcamp/classes/' . $classId . '/intro',
             ]);
         }
 
@@ -113,9 +114,25 @@ class PageController extends BaseController
             ]);
         }
 
+        // Bangun redirect ke intro kelas (course: /courses/intro/{course_id}/{slug})
+        $redirect = '/courses';
+        $courseId = (int) ($result['object_id'] ?? 0);
+        if ($courseId) {
+            $course = $db->table('courses')
+                ->select('id, slug')
+                ->where('id', $courseId)
+                ->get()
+                ->getRowArray();
+
+            if ($course && ! empty($course['slug'])) {
+                $redirect = '/courses/intro/' . $course['id'] . '/' . $course['slug'];
+            }
+        }
+
         return $this->respond([
-            'status'  => 'success',
-            'message' => 'Voucher berhasil diklaim. Kelas sudah ditambahkan ke Kelas Saya.',
+            'status'   => 'success',
+            'message'  => 'Voucher berhasil diklaim. Kelas sudah ditambahkan ke Kelas Saya.',
+            'redirect' => $redirect,
         ]);
     }
 }

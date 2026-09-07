@@ -20,8 +20,9 @@
                         if (response.data.status == 'success') {
                             $heroicHelper.toastr(response.data.message, 'success', 'bottom');
                             this.code = '';
+                            const redirect = response.data.redirect || '/courses';
                             setTimeout(() => {
-                                window.location.href = '/courses';
+                                window.location.href = redirect;
                             }, 1200);
                         } else {
                             $heroicHelper.toastr(response.data.message || 'Gagal menukarkan voucher.', 'danger', 'bottom');
