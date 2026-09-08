@@ -7,6 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 // Test
 $routes->get('sese', 'Sese::index');
+$routes->get('test-email', 'Home::email');
 
 $routes->get('r/(:any)', 'Redirect::index/$1');
 

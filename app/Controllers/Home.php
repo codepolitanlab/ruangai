@@ -11,13 +11,14 @@ class Home extends BaseController
 
     public function email()
     {
-        $Heroic = new \App\Libraries\Heroic();
+        $EmailSender = new \App\Libraries\EmailSender();
 
         $to      = 'toha.samba@gmail.com';
         $subject = 'Selamat Bergabung di Komiunitas RuangAI';
         $message = 'Terima kasih terlah bergabung. Selamat kamu telah menjadi juara di RuangAI';
 
-        $Heroic->sendEmail($to, $subject, $message, 1);
+        $EmailSender->setTemplate('sample');
+        $EmailSender->send($to, $subject, $EmailSender->getMessage(), 1);
     }
 
     public function checkToken($token)
