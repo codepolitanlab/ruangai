@@ -99,7 +99,7 @@ $menus = [
 <nav class="sidebar position-fixed" style="z-index: 9999; width: 250px; height: 100vh; overflow-y: auto;">
     <div class="sidebar-logo">
         <!-- <img src="https://ik.imagekit.io/56xwze9cy/ruangai/Redesign/RuangAI-logo-transparan.png" width="150" alt=""> -->
-        <img src="/V2/logo-ruangai.png" width="150" alt="">
+        <img src="https://image.web.id/images/Group-9523.png" width="150" alt="">
     </div>
 
     <ul class="listview flush transparent no-line image-listview mt-2">
