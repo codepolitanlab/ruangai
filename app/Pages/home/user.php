@@ -1,4 +1,19 @@
 
+<?php
+/**
+ * Kartu kelas di Beranda — STATIS, dipakai untuk jualan.
+ *
+ * Ganti `url` dengan link checkout produk (boleh URL dari platform lain).
+ * Selama `url` masih '#' / kosong, kartu tampil tapi belum bisa diklik.
+ * Kartu pertama otomatis tampil lebar (full width), sisanya 2 kolom.
+ * Warna aksen mengikuti urutan: oranye, teal, ungu.
+ */
+$kelasTerbaru = [
+    ['title' => 'Mastery Class Generative AI', 'batch' => 'Batch 1', 'pertemuan' => 9, 'url' => '#'],
+    ['title' => 'Advance VibeCoding',          'batch' => 'Batch 1', 'pertemuan' => 9, 'url' => '#'],
+    ['title' => 'Advance Agentic AI',          'batch' => 'Batch 1', 'pertemuan' => 9, 'url' => '#'],
+];
+?>
 <div class="appContent py-4 rd-dashboard" style="min-height:90vh">
 
     <!-- ===== Hero sambutan ===== -->
@@ -14,7 +29,7 @@
     </section>
 
     
-    <!-- ===== Kelas yang kamu miliki ===== -->
+    <!-- ===== Kelas Terbaru + kartu promo ===== -->
     <section class="rd-section-card">
         <!-- ===== Kartu promo ===== -->
         <section class="rd-promo">
@@ -26,34 +41,27 @@
                 </div>
             </div>
         </section>
-        <h3 class="rd-section-title mt-4">Kelas yang kamu miliki</h3>
+        <h3 class="rd-section-title mt-4">Kelas Terbaru</h3>
         <div class="rd-course-grid">
-            <template x-for="(course, index) in data?.my_courses" :key="(course.is_live ? 'live' : 'course') + '-' + course.id">
-                <a class="rd-course"
-                   :class="(index === 0 ? 'rd-course-wide ' : '') + (course.is_live ? 'rd-course-live' : 'rd-course-online')"
-                   :href="course.is_live ? '/bootcamp/classes/' + course.id + '/intro' : (course.is_beasiswa ? '/beasiswa/intro' : '/courses/intro/' + course.id + '/' + (course.slug || ''))">
+            <?php foreach ($kelasTerbaru as $i => $kelas): ?>
+                <?php $placeholder = in_array(trim((string) $kelas['url']), ['', '#'], true); ?>
+                <a class="rd-course<?= $i === 0 ? ' rd-course-wide' : '' ?> rd-course-<?= ($i % 3) + 1 ?>"
+                   href="<?= esc($placeholder ? '#' : $kelas['url'], 'attr') ?>"
+                   <?= $placeholder ? '@click.prevent.stop' : '' ?>>
                     <div class="rd-course-star"><i class="bi bi-stars"></i></div>
                     <div class="rd-course-body">
                         <div class="rd-course-badges">
-                            <span class="rd-badge rd-badge-solid" x-text="course.is_live ? 'Live Session' : 'Online Course'"></span>
-                            <span class="rd-badge rd-badge-outline" x-show="course.is_live && course.batch_name" x-text="course.batch_name"></span>
+                            <span class="rd-badge rd-badge-solid"><i class="bi bi-camera-video"></i> Live Class</span>
+                            <span class="rd-badge rd-badge-outline"><?= esc($kelas['batch']) ?></span>
                         </div>
-                        <h4 class="rd-course-title" x-text="course.course_title"></h4>
+                        <h4 class="rd-course-title"><?= esc($kelas['title']) ?></h4>
                         <div class="rd-course-meta">
-                            <i class="bi bi-arrow-right"></i>
-                            <span x-text="course.is_live ? ((course.total_materials || 0) + ' Materi') : ((course.total_module || 0) + ' Modul')"></span>
+                            <i class="bi bi-play-fill"></i>
+                            <span><?= (int) $kelas['pertemuan'] ?> Pertemuan</span>
                         </div>
                     </div>
                 </a>
-            </template>
-
-            <template x-if="!data?.my_courses || data?.my_courses.length === 0">
-                <div class="rd-course rd-course-1" style="grid-column: 1 / -1;">
-                    <div class="rd-course-star"><i class="bi bi-book"></i></div>
-                    <h4 class="rd-course-title">Kamu belum memiliki kelas</h4>
-                    <div class="rd-course-meta" style="margin-top:0"><span>Yuk daftar kelas sekarang!</span></div>
-                </div>
-            </template>
+            <?php endforeach; ?>
         </div>
     </section>
 

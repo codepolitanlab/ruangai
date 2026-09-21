@@ -23,6 +23,10 @@ class Router
         '/masuk/:redirect*' => [],
         '/verify_email' => [],
         '/page/:slug' => [],
+        '/kelas' => [
+            'preload' => true,
+            'handler' => '[isLoggedIn]',
+        ],
         '/profile' => [],
         '/profile/edit_info' => [],
         '/profile/edit_account' => [],

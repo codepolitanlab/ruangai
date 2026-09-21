@@ -333,6 +333,14 @@ body.rd-dashboard-page {
     padding: 5px 12px;
     border-radius: 999px;
     line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.rd-badge i {
+    font-size: 0.9em;
+    line-height: 1;
 }
 
 .rd-badge-solid {

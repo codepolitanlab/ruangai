@@ -8,14 +8,12 @@
       name: "",
       gender: "",
       birthday: "",
-      occupation: "",
       bio: "",
     },
     errors: {
       name: "",
       gender: "",
       birthday: "",
-      occupation: "",
       bio: "",
     },
     saving: false,
@@ -42,12 +40,11 @@
       this.model.name = p.name || "";
       this.model.gender = p.gender || "";
       this.model.birthday = p.birthday || "";
-      this.model.occupation = p.occupation || "";
       this.model.bio = p.bio || "";
     },
 
     save() {
-      this.errors = { name: "", gender: "", birthday: "", occupation: "", bio: "" };
+      this.errors = { name: "", gender: "", birthday: "", bio: "" };
       this.saving = true;
 
       $heroicHelper.post('/profile/edit_info', this.model)

@@ -133,11 +133,64 @@
 		</div>
 
 		<div class="appContent" style="min-height:90vh">
+
+			<!-- ===== Kelas Live (cls_classes) yang belum diikuti ===== -->
+			<template x-if="(data?.live_classes?.length ?? 0) > 0">
+				<div class="bg-white p-4 rounded-4 my-3">
+					<h5 class="fw-bold">Kelas Live</h5>
+					<p class="fs-6 mb-3">
+						Kelas live berikut bisa kamu klaim menggunakan token reward. Setiap kelas bernilai 1 token.
+					</p>
+
+					<template x-for="live in data?.live_classes" :key="'live-' + live.id">
+						<div
+							class="card shadow-sm mb-3 rounded-4 position-relative selectable-card"
+							:class="{'shadow-lg scale-selected grayscale-0': isSelected('live', live.id)}"
+							style="background:#0d2535; cursor: pointer; transition: all 0.2s ease-in-out;"
+							@click="if(data.user_token > 0){ selected = live.id; selectedType = 'live' }">
+
+							<!-- Badge checklist -->
+							<template x-if="isSelected('live', live.id)">
+								<div
+									class="position-absolute text-white fs-4 bg-warning rounded-circle d-flex align-items-center justify-content-center"
+									style="width: 28px; height: 28px; left: -10px; top: 25px;">
+									<i class="bi bi-check-lg"></i>
+								</div>
+							</template>
+
+							<!-- Unchecked -->
+							<template x-if="!isSelected('live', live.id)">
+								<div
+									class="position-absolute text-white fs-4 bg-warning rounded-circle d-flex align-items-center justify-content-center"
+									style="width: 28px; height: 28px; left: -10px; top: 25px;">
+									<i class="bi bi-circle-fill"></i>
+								</div>
+							</template>
+
+							<div class="row g-0 align-items-stretch">
+								<!-- Thumbnail -->
+								<div class="col-3">
+									<img :src="live?.thumbnail"
+										class="object-fit-cover rounded-start-5"
+										alt="thumbnail kelas"
+										style="height: 80px; width: 80px; object-fit: cover;">
+								</div>
+
+								<!-- Content -->
+								<div class="col-9 d-flex flex-column justify-content-center text-white p-3">
+									<h5 class="fw-bold text-white text-end pe-2 mb-1" x-text="live?.name"></h5>
+								</div>
+							</div>
+						</div>
+					</template>
+				</div>
+			</template>
+
 			<div class="bg-white p-4 rounded-4 my-3">
 				<h5 class="fw-bold">Klaim Kelas Khusus</h5>
 
-				<!-- Belum punya token (masih ada kelas khusus yang bisa diklaim) -->
-				<template x-if="data.user_token < 1 && (data?.premium_courses?.length ?? 0) > 0">
+				<!-- Belum punya token (masih ada kelas yang bisa diklaim) -->
+				<template x-if="data.user_token < 1 && totalClaimable > 0">
 					<div class="mb-4">
 						<p class="fs-6 mb-2 alert bg-warning bg-opacity-50">
 							Kamu belum punya token reward untuk dapat mengklaim kelas khusus. <br><br>
@@ -146,8 +199,8 @@
 					</div>
 				</template>
 
-				<!-- Punya token & masih ada kelas khusus yang bisa diklaim -->
-				<template x-if="data.user_token > 0 && (data?.premium_courses?.length ?? 0) > 0">
+				<!-- Punya token & masih ada kelas yang bisa diklaim -->
+				<template x-if="data.user_token > 0 && totalClaimable > 0">
 					<div class="mb-4">
 						<p class="fs-6 mb-2 alert alert-primary">
 							Kamu memiliki <b x-text="data.user_token"></b> token yang belum digunakan.
@@ -172,12 +225,12 @@
 				<template x-for="premium in data?.premium_courses" :key="premium.id">
 					<div
 						class="card shadow-sm mb-3 rounded-4 position-relative selectable-card"
-						:class="{'shadow-lg scale-selected grayscale-0': selected === premium.id}"
+						:class="{'shadow-lg scale-selected grayscale-0': isSelected('course', premium.id)}"
 						style="background:#0d2535; cursor: pointer; transition: all 0.2s ease-in-out;"
-						@click="if(data.user_token > 0){ selected = premium.id; courseSlug = premium.slug }">
+						@click="if(data.user_token > 0){ selected = premium.id; selectedType = 'course'; courseSlug = premium.slug }">
 
 						<!-- Badge checklist -->
-						<template x-if="selected === premium.id">
+						<template x-if="isSelected('course', premium.id)">
 							<div
 								class="position-absolute text-white fs-4 bg-warning rounded-circle d-flex align-items-center justify-content-center"
 								style="width: 28px; height: 28px; left: -10px; top: 25px;">
@@ -186,7 +239,7 @@
 						</template>
 
 						<!-- Unchecked -->
-						<template x-if="selected !== premium.id">
+						<template x-if="!isSelected('course', premium.id)">
 							<div
 								class="position-absolute text-white fs-4 bg-warning rounded-circle d-flex align-items-center justify-content-center"
 								style="width: 28px; height: 28px; left: -10px; top: 25px;">
@@ -214,25 +267,25 @@
 					</div>
 				</template>
 
-				<!-- Button (hanya tampil bila masih ada kelas khusus yang bisa diklaim) -->
-				<template x-if="(data?.premium_courses?.length ?? 0) > 0">
-					<div class="d-grid">
-						<button
-							class="btn btn-primary btn-lg btn-block rounded-4 mt-3 py-2 d-flex align-items-center justify-content-center gap-2"
-							@click="claim"
-							:class="{'disabled': !selected || loading || data.user_token < 1}">
-							<!-- spinner -->
-							<template x-if="loading">
-								<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-							</template>
-
-							<!-- text -->
-							<span x-text="loading ? 'Memproses...' : 'Klaim Kelas'"></span>
-						</button>
-					</div>
-				</template>
-
 			</div>
+
+			<!-- Tombol klaim — berlaku untuk kelas live maupun kelas khusus -->
+			<template x-if="totalClaimable > 0">
+				<div class="d-grid mb-3">
+					<button
+						class="btn btn-primary btn-lg btn-block rounded-4 py-2 d-flex align-items-center justify-content-center gap-2"
+						@click="claim"
+						:class="{'disabled': !selected || loading || data.user_token < 1}">
+						<!-- spinner -->
+						<template x-if="loading">
+							<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+						</template>
+
+						<!-- text -->
+						<span x-text="loading ? 'Memproses...' : 'Klaim Kelas'"></span>
+					</button>
+				</div>
+			</template>
 		</div>
 	</div>
 

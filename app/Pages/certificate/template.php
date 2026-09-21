@@ -28,6 +28,43 @@
             color: var(--rd-text) !important;
         }
 
+        /* Header + tombol kembali */
+        #certificate .cert-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        #certificate .cert-header .back-btn {
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            cursor: pointer;
+            border-radius: 50%;
+            background: var(--rd-surface);
+            border: 1px solid var(--rd-border);
+            color: var(--rd-text);
+            font-size: 1.3rem;
+            line-height: 1;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+        }
+        #certificate .cert-header .back-btn:hover {
+            background: var(--rd-surface-2);
+            border-color: var(--rd-primary);
+            color: var(--rd-primary);
+        }
+        #certificate .cert-header .cert-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--rd-text) !important;
+            margin: 0;
+        }
+
         /* Kartu sertifikat */
         #certificate .cert-card {
             background: var(--rd-surface) !important;
@@ -76,8 +113,11 @@
 
     <div id="appCapsule">
         <div class="appContent py-4">
-            <div class="header-large-title mb-4 ps-0">
-                <h2 class="h3 fw-normal">Sertifikat Saya</h2>
+            <div class="cert-header">
+                <button type="button" class="back-btn" onclick="history.back()" aria-label="Kembali">
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+                <h2 class="cert-title">Sertifikat Saya</h2>
             </div>
 
             <!-- Empty State -->

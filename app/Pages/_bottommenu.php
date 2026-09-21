@@ -9,6 +9,13 @@ $menus = [
         'position' => ['bottom', 'sidebar']
     ],
     [
+        'label'  => 'Kelas',
+        'url'    => '/kelas',
+        'icon'   => 'bi bi-journal-text',
+        'module' => 'kelas',
+        'position' => ['bottom', 'sidebar']
+    ],
+    [
         'label'  => 'Klaim Voucher',
         'url'    => '/voucher',
         'icon'   => 'bi bi-ticket-perforated',

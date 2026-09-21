@@ -98,6 +98,7 @@
                 const isDarkPage = darkThemedPages.includes(path)
                     || path === '/beasiswa/intro'
                     || path === '/courses'
+                    || path.startsWith('/kelas')
                     || path.startsWith('/profile')
                     || path.startsWith('/bootcamp')
                     || path.startsWith('/page')

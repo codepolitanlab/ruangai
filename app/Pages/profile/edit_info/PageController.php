@@ -31,12 +31,11 @@ class PageController extends BaseController
             ->getRowArray();
 
         $data['profile'] = [
-            'name'       => $user['name'] ?? null,
-            'email'      => $user['email'] ?? null,
-            'gender'     => $profile['gender'] ?? ($user['gender'] ?? null),
-            'birthday'   => $profile['birthday'] ?? null,
-            'occupation' => $profile['occupation'] ?? null,
-            'bio'        => $profile['bio'] ?? null,
+            'name'     => $user['name'] ?? null,
+            'email'    => $user['email'] ?? null,
+            'gender'   => $profile['gender'] ?? ($user['gender'] ?? null),
+            'birthday' => $profile['birthday'] ?? null,
+            'bio'      => $profile['bio'] ?? null,
         ];
 
         return $this->respond($data);
@@ -47,11 +46,10 @@ class PageController extends BaseController
         $validation = service('validation');
 
         $validation->setRules([
-            'name'       => 'required|min_length[2]|max_length[255]',
-            'gender'     => 'permit_empty|in_list[male,female]',
-            'birthday'   => 'permit_empty',
-            'occupation' => 'permit_empty|max_length[255]',
-            'bio'        => 'permit_empty|max_length[500]',
+            'name'     => 'required|min_length[2]|max_length[255]',
+            'gender'   => 'permit_empty|in_list[male,female]',
+            'birthday' => 'permit_empty',
+            'bio'      => 'permit_empty|max_length[500]',
         ]);
 
         if (! $validation->run($this->request->getPost())) {
@@ -88,11 +86,12 @@ class PageController extends BaseController
             ->first();
 
         $profilePayload = [
-            'user_id'    => $jwt->user_id,
-            'gender'     => $validData['gender'] ?? null,
-            'birthday'   => $birthday,
-            'occupation' => $validData['occupation'] ?? null,
-            'bio'        => trim((string) ($validData['bio'] ?? '')) ?: null,
+            'user_id'  => $jwt->user_id,
+            'gender'   => $validData['gender'] ?? null,
+            'birthday' => $birthday,
+            // 'occupation' sengaja tidak diikutkan: kolom ini tidak bisa diedit dari
+            // app member (dipakai fitur lain: akses beasiswa, daftar mentor, absensi).
+            'bio'      => trim((string) ($validData['bio'] ?? '')) ?: null,
         ];
 
         if ($existingProfile) {

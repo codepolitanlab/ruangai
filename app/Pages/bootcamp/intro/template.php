@@ -40,7 +40,7 @@
     <template x-if="data.class">
         <div>
             <div style="display:flex;align-items:center;gap:10px;padding:12px 20px 0">
-                <button type="button" class="btn rounded-4 px-2 btn-white bg-white text-primary" @click="history.back()" aria-label="Kembali">
+                <button type="button" class="btn rounded-4 px-2 btn-white bg-white text-primary mt-2 mb-3" @click="history.back()" aria-label="Kembali">
                     <h6 class="h6 m-0"><i class="bi bi-arrow-left m-0"></i></h6>
                 </button>
             </div>
