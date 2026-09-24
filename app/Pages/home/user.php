@@ -28,7 +28,25 @@ $kelasTerbaru = [
         </div>
     </section>
 
-    
+    <!-- ===== Terakhir dipelajari ===== -->
+    <a class="rd-resume" x-cloak x-show="data?.last_studied"
+       :href="data?.last_studied?.url"
+       @click.prevent="data?.last_studied?.url && $router.navigate(data.last_studied.url)">
+        <div class="rd-resume-thumb"
+            :style="data?.last_studied?.thumbnail ? `background-image:url('${data.last_studied.thumbnail}')` : ''">
+            <i class="bi bi-play-circle-fill" x-show="!data?.last_studied?.thumbnail"></i>
+        </div>
+        <div class="rd-resume-body">
+            <div class="rd-resume-label">Terakhir Dipelajari</div>
+            <div class="rd-resume-cta"><i class="bi bi-play-fill"></i> Lanjutkan Belajar</div>
+            <div class="rd-resume-title" x-text="data?.last_studied?.title"></div>
+            <div class="rd-resume-progress">
+                <div class="rd-resume-progress-fill" :style="`width:${data?.last_studied?.progress || 0}%`"></div>
+            </div>
+            <div class="rd-resume-percent" x-text="(data?.last_studied?.progress || 0) + '% selesai'"></div>
+        </div>
+    </a>
+
     <!-- ===== Kelas Terbaru + kartu promo ===== -->
     <section class="rd-section-card">
         <!-- ===== Kartu promo ===== -->

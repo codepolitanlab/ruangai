@@ -114,6 +114,10 @@ class PageController extends BaseController
         $this->data['last_course']['total_lessons']    = $completedLessons['total_lessons'] ?? 1;
         $this->data['last_course']['lesson_completed'] = $completedLessons['completed'] ?? 0;
 
+        // ===== Terakhir dipelajari (kursus online & bootcamp) =====
+        // Dipindah dari halaman /kelas.
+        $this->data['last_studied'] = $this->lastStudied($db, (int) $jwt->user_id);
+
         // Get course_students - safe for non-scholarship users
         $this->data['student'] = $db->table('course_students')
             ->select('progress, expire_at, graduate, scholarship_participants.program, scholarship_participants.reference, scholarship_participants.reference_comentor, certificates.cert_claim_date, certificates.cert_code')
@@ -311,5 +315,129 @@ class PageController extends BaseController
             'message' => 'Email has been verified',
             'jwt'     => $newJwt,
         ]);
+    }
+
+    /**
+     * Item yang terakhir dipelajari user: kursus online (course_lesson_progress)
+     * atau bootcamp (cls_learning_progress). Yang paling baru yang dipakai.
+     */
+    private function lastStudied($db, int $userId): ?array
+    {
+        $candidates = [];
+
+        // Kursus online → lesson terakhir yang dibuka
+        $online = $db->table('course_lesson_progress p')
+            ->select('p.course_id, p.created_at, courses.course_title, courses.slug, courses.cover, courses.thumbnail')
+            ->join('courses', 'courses.id = p.course_id')
+            ->join('course_students', 'course_students.course_id = p.course_id AND course_students.user_id = ' . $userId)
+            ->where('p.user_id', $userId)
+            ->where('courses.deleted_at', null)
+            ->orderBy('p.created_at', 'DESC')
+            ->limit(1)
+            ->get()
+            ->getRowArray();
+
+        if ($online) {
+            $courseId = (int) $online['course_id'];
+
+            // Progres = modul wajib yang selesai / total modul wajib
+            $stat = $db->table('course_lessons cl')
+                ->select('COUNT(DISTINCT cl.id) AS total, COUNT(DISTINCT lp.id) AS completed')
+                ->join('course_lesson_progress lp', 'lp.lesson_id = cl.id AND lp.user_id = ' . $userId, 'left')
+                ->where('cl.course_id', $courseId)
+                ->where('cl.mandatory', 1)
+                ->get()
+                ->getRowArray();
+
+            $total = (int) ($stat['total'] ?? 0);
+            $done  = (int) ($stat['completed'] ?? 0);
+
+            $candidates[] = [
+                'time' => (string) $online['created_at'],
+                'item' => [
+                    'title'     => $online['course_title'],
+                    'thumbnail' => $online['thumbnail'] ?: $online['cover'],
+                    'progress'  => $total > 0 ? (int) round(($done / $total) * 100) : 0,
+                    'url'       => '/courses/intro/' . $courseId . '/' . ($online['slug'] ?? ''),
+                ],
+            ];
+        }
+
+        // Bootcamp → resource terakhir yang dikerjakan
+        $live = $db->table('cls_learning_progress p')
+            ->select('cm.class_id, p.created_at, c.name, c.thumbnail')
+            ->join('cls_class_materials cm', 'cm.id = p.class_material_id')
+            ->join('cls_classes c', 'c.id = cm.class_id')
+            ->join('cls_class_members m', "m.class_id = cm.class_id AND m.user_id = {$userId} AND m.status = 'active'")
+            ->where('p.user_id', $userId)
+            ->where('c.deleted_at IS NULL')
+            ->orderBy('p.created_at', 'DESC')
+            ->limit(1)
+            ->get()
+            ->getRowArray();
+
+        if ($live) {
+            $classId = (int) $live['class_id'];
+
+            $candidates[] = [
+                'time' => (string) $live['created_at'],
+                'item' => [
+                    'title'     => $live['name'],
+                    'thumbnail' => $live['thumbnail'],
+                    'progress'  => $this->classProgress($db, $classId, $userId)['percent'],
+                    'url'       => '/bootcamp/classes/' . $classId . '/intro',
+                ],
+            ];
+        }
+
+        if (! $candidates) {
+            return null;
+        }
+
+        usort($candidates, static fn ($a, $b) => strcmp($b['time'], $a['time']));
+
+        return $candidates[0]['item'];
+    }
+
+    /**
+     * Progres user dalam satu kelas bootcamp: resource wajib selesai / total resource wajib.
+     */
+    private function classProgress($db, int $classId, int $userId): array
+    {
+        $cmIds = array_column(
+            $db->table('cls_class_materials')
+                ->select('id')
+                ->where('class_id', $classId)
+                ->get()
+                ->getResultArray(),
+            'id'
+        );
+
+        if (! $cmIds) {
+            return ['percent' => 0, 'completed' => 0, 'total' => 0];
+        }
+
+        $required = $db->table('cls_learning_resources r')
+            ->join('cls_class_materials cm', 'cm.material_id = r.material_id')
+            ->whereIn('cm.id', $cmIds)
+            ->where('r.is_required', 1)
+            ->where('r.deleted_at IS NULL')
+            ->countAllResults();
+
+        // Hanya resource WAJIB yang selesai (konsisten dgn halaman belajar)
+        $completed = $db->table('cls_learning_resources r')
+            ->join('cls_class_materials cm', 'cm.material_id = r.material_id')
+            ->join('cls_learning_progress p', 'p.resource_id = r.id AND p.class_material_id = cm.id AND p.user_id = ' . $userId)
+            ->whereIn('cm.id', $cmIds)
+            ->where('r.is_required', 1)
+            ->where('r.deleted_at IS NULL')
+            ->where('p.status', 'completed')
+            ->countAllResults();
+
+        return [
+            'percent'   => $required > 0 ? (int) round(($completed / $required) * 100) : 0,
+            'completed' => (int) $completed,
+            'total'     => (int) $required,
+        ];
     }
 }

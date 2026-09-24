@@ -115,6 +115,95 @@ body.rd-dashboard-page {
 }
 
 /* ==========================================================================
+   Terakhir dipelajari (lanjutkan belajar)
+   ========================================================================== */
+.rd-resume {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    border-radius: var(--rd-radius);
+    background: linear-gradient(135deg, rgba(255, 122, 26, 0.22), rgba(255, 122, 26, 0.06));
+    border: 1px solid rgba(255, 122, 26, 0.4);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.rd-resume:hover {
+    border-color: var(--rd-primary);
+    transform: translateY(-2px);
+}
+
+.rd-resume-thumb {
+    width: 54px;
+    height: 54px;
+    flex: 0 0 54px;
+    border-radius: var(--rd-radius-sm);
+    background-color: rgba(255, 255, 255, 0.1);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--rd-primary);
+    font-size: 1.4rem;
+}
+
+.rd-resume-body {
+    min-width: 0;
+    flex: 1;
+}
+
+.rd-resume-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--rd-text-muted);
+}
+
+.rd-resume-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--rd-primary);
+}
+
+.rd-resume-title {
+    font-size: 0.85rem;
+    color: var(--rd-text-muted);
+    margin-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rd-resume-progress {
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.rd-resume-progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--rd-primary), var(--rd-primary-hover));
+    transition: width 0.5s ease;
+}
+
+.rd-resume-percent {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--rd-text-muted);
+    margin-top: 4px;
+}
+
+/* ==========================================================================
    Kartu promo
    ========================================================================== */
 .rd-promo {
