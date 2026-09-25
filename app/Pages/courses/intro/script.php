@@ -22,7 +22,11 @@
           // Check if course is scholarship course (id = 1) and user doesn't have scholarship
           if (value && value.has_scholarship === false) {
             window.location.replace('/scholarship');
+            return;
           }
+
+          // Buka halaman intro → langsung lanjut ke lesson terakhir yang dibuka user
+          this.redirectToLastLesson(value);
           // if (!value.is_enrolled) {
           //   alert("Kamu belum terdaftar di kelas. Silahkan daftar terlebih dahulu.")
           //   window.location.replace(`https://www.ruangai.id/registration`)
@@ -53,6 +57,23 @@
             }
           });
         }
+      },
+
+      // Halaman intro langsung mengarah ke lesson terakhir yang dibuka user.
+      // Aturan: hanya user terdaftar, punya riwayat lesson, & kelas belum selesai
+      // (kalau sudah selesai, halaman intro tetap tampil untuk klaim sertifikat).
+      // Hanya sekali per muat halaman supaya tombol Back tetap bisa membuka intro.
+      redirectToLastLesson(value) {
+        if (!value || !value.is_enrolled || value.course_completed) return;
+
+        const lastLessonId = value.last_progress_lesson_id;
+        if (!lastLessonId) return;
+
+        window.__ruangaiIntroResumed = window.__ruangaiIntroResumed || {};
+        if (window.__ruangaiIntroResumed[course_id]) return;
+
+        window.__ruangaiIntroResumed[course_id] = true;
+        this.$router.navigate(`/courses/${course_id}/lesson/${lastLessonId}`);
       },
 
       async navigateToTargetLesson() {
