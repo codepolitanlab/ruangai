@@ -21,6 +21,8 @@
         #bootcamp-learn .bl-pin { background: #fff6e6; color: #b26a00; border-radius: 999px; padding: 2px 8px; font-size: 0.7rem; font-weight: 700; }
         #bootcamp-learn .bl-material { border: 1px solid var(--rd-border); border-radius: 16px; margin-bottom: 12px; overflow: hidden; background: var(--rd-surface); position: relative; }
         #bootcamp-learn .bl-material-head { display: flex; align-items: center; gap: 12px; padding: 14px; cursor: pointer; }
+        #bootcamp-learn .bl-material-body { position: relative; }
+        #bootcamp-learn .bl-material.locked .bl-material-body { min-height: 150px; }
         #bootcamp-learn .bl-res { border-top: 1px dashed var(--rd-border); padding: 10px 14px; display: flex; flex-direction: column; }
         #bootcamp-learn .bl-res-drop { padding: 10px 0 2px; }
         #bootcamp-learn .bl-open-btn { width: 100%; }
@@ -35,7 +37,7 @@
         #bootcamp-learn .bl-btn.primary { background: var(--rd-primary); color: var(--rd-primary-contrast, #fff); }
         #bootcamp-learn .bl-btn.outline { background: transparent; border: 1.5px solid var(--rd-primary); color: var(--rd-primary); }
         #bootcamp-learn .bl-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-        #bootcamp-learn .bl-lock { position: absolute; inset: 0; background: rgba(2, 13, 28, 0.9); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; z-index: 5; border-radius: 16px; padding: 20px; }
+        #bootcamp-learn .bl-lock { position: absolute; inset: 0; background: rgba(2, 13, 28, 0.9); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; z-index: 5; border-radius: 0 0 16px 16px; padding: 20px; }
         #bootcamp-learn .bl-lock-box { text-align: center; max-width: 260px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 18px 20px; }
         #bootcamp-learn .bl-lock-box i { font-size: 1.8rem; color: var(--rd-primary); }
         #bootcamp-learn .bl-lock-title { font-weight: 700; color: var(--rd-text); margin-top: 8px; font-size: 0.95rem; }
