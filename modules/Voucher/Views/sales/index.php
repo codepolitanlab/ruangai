@@ -32,13 +32,14 @@
             <div class="card-body">
                 <form method="GET" action="<?= $vBase ?>/sales">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <p class="mb-0">Total Voucher Terpakai : <b><?= $total_vouchers ?></b></p>
+                        <p class="mb-0">Total Voucher : <b><?= $total_vouchers ?></b></p>
                         <div class="d-flex align-items-center gap-2">
                             <small class="fw-bold">Order By:</small>
                             <select name="filter[field]" class="form-select form-select-sm" style="width: auto;">
                                 <option value="" <?= empty($filter['field']) ? 'selected' : '' ?>>--Select--</option>
                                 <option value="id" <?= ($filter['field'] ?? '') === 'id' ? 'selected' : '' ?>>ID</option>
                                 <option value="name" <?= ($filter['field'] ?? '') === 'name' ? 'selected' : '' ?>>Nama</option>
+                                <option value="created_at" <?= ($filter['field'] ?? '') === 'created_at' ? 'selected' : '' ?>>Terbaru</option>
                                 <option value="claimed" <?= ($filter['field'] ?? '') === 'claimed' ? 'selected' : '' ?>>Waktu Klaim</option>
                             </select>
                             <select name="filter[order]" class="form-select form-select-sm" style="width: auto;">
@@ -118,13 +119,19 @@
                                             <?php endif ?>
                                         </td>
                                         <td><?= esc($voucher['claimed'] ?? '-') ?></td>
-                                        <td><span class="badge bg-success">Claimed</span></td>
+                                        <td>
+                                            <?php if (! empty($voucher['claimed'])): ?>
+                                                <span class="badge bg-success">Claimed</span>
+                                            <?php else: ?>
+                                                <span class="badge bg-warning text-dark">Unclaimed</span>
+                                            <?php endif ?>
+                                        </td>
                                     </tr>
                                 <?php endforeach ?>
 
                                 <?php if (empty($vouchers)): ?>
                                     <tr>
-                                        <td colspan="10" class="text-center py-4 text-muted">Belum ada voucher yang digunakan.</td>
+                                        <td colspan="10" class="text-center py-4 text-muted">Belum ada data voucher.</td>
                                     </tr>
                                 <?php endif ?>
                             </tbody>
@@ -173,7 +180,7 @@
         const minutes = String(today.getMinutes()).padStart(2, '0');
         const seconds = String(today.getSeconds()).padStart(2, '0');
         const timeString = `${hours}:${minutes}:${seconds}`;
-        return `JagoanSiber - Vouchers Terpakai - ${dateString} ${timeString}.${extension}`;
+        return `JagoanSiber - Vouchers - ${dateString} ${timeString}.${extension}`;
     }
 
     function getExportData() {
@@ -187,7 +194,7 @@
             "WhatsApp": voucher.phone || '-',
             "Claimed By": voucher.claimed_by_email || '-',
             "Waktu Klaim": voucher.claimed || '-',
-            "Status": "Claimed",
+            "Status": voucher.claimed ? "Claimed" : "Unclaimed",
         }));
     }
 
@@ -196,7 +203,7 @@
         const ws = XLSX.utils.json_to_sheet(getExportData());
         ws['!cols'] = Array(10).fill({ wch: 25 });
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Vouchers Terpakai");
+        XLSX.utils.book_append_sheet(wb, ws, "Vouchers");
         XLSX.writeFile(wb, generateFilename('xlsx'));
     });
 
@@ -204,7 +211,7 @@
         e.preventDefault();
         const ws = XLSX.utils.json_to_sheet(getExportData());
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Vouchers Terpakai");
+        XLSX.utils.book_append_sheet(wb, ws, "Vouchers");
         XLSX.writeFile(wb, generateFilename('csv'), { bookType: "csv" });
     });
 </script>

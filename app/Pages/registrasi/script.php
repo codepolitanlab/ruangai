@@ -147,9 +147,9 @@
                 Alpine.store('core').sessionToken = response.data.jwt;
               }
               
-              // Redirect to specified page or challenge
+              // Redirect to specified page
               setTimeout(() => {
-                let target = '/challenge';
+                let target = '/';
                 if (this.redirect) {
                   const r = String(this.redirect).trim();
                   if (/^https?:\/\//i.test(r)) {
