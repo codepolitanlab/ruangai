@@ -389,7 +389,7 @@
 										<i class="bi bi-mortarboard" x-show="!bootcamp.thumbnail"></i>
 									</div>
 									<div class="kl-card-body">
-										<span class="kl-badge kl-badge-live">Bootcamp</span>
+										<span class="kl-badge kl-badge-live">Mastery Class</span>
 
 										<div class="kl-card-title" x-text="bootcamp.title"></div>
 
