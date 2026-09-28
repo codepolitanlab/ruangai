@@ -73,9 +73,14 @@ class PageController extends BaseController
                 ->countAllResults();
             // Batch diambil dari akhiran nama kelas, mis. "Bootcamp Vibe Coding — Batch 1"
             $cls['batch_name']      = preg_match('/[—–-]\s*(.+)$/u', $cls['name'], $m) ? trim($m[1]) : null;
+            // Klik langsung masuk ke kelas (learn), tanpa lewat intro
+            $cls['url']             = '/bootcamp/classes/' . $cls['id'] . '/learn';
             unset($cls['name']);
         }
         unset($cls);
+
+        // Bootcamp aktif yang diikuti — dipakai section "Bootcamp Aktif" di Beranda
+        $this->data['my_bootcamps'] = $liveSessions;
 
         // Gabung: live session tampil lebih dulu, lalu online course
         $this->data['my_courses'] = array_merge($liveSessions, $onlineCourses);

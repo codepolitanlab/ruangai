@@ -47,6 +47,31 @@ $kelasTerbaru = [
         </div>
     </a>
 
+    <!-- ===== Bootcamp aktif yang diikuti ===== -->
+    <section class="rd-section-card" x-cloak x-show="(data?.my_bootcamps?.length ?? 0) > 0">
+        <h3 class="rd-section-title">Bootcamp Aktif</h3>
+        <div class="rd-course-grid">
+            <template x-for="(bootcamp, i) in data.my_bootcamps" :key="'home-bootcamp-' + bootcamp.id">
+                <a class="rd-course rd-course-live" :class="i === 0 ? 'rd-course-wide' : ''"
+                   :href="bootcamp.url"
+                   @click.prevent="bootcamp.url && $router.navigate(bootcamp.url)">
+                    <div class="rd-course-star"><i class="bi bi-mortarboard"></i></div>
+                    <div class="rd-course-body">
+                        <div class="rd-course-badges">
+                            <span class="rd-badge rd-badge-solid"><i class="bi bi-camera-video"></i> Live Class</span>
+                            <span class="rd-badge rd-badge-outline" x-show="bootcamp.batch_name" x-text="bootcamp.batch_name"></span>
+                        </div>
+                        <h4 class="rd-course-title" x-text="bootcamp.course_title"></h4>
+                        <div class="rd-course-meta">
+                            <i class="bi bi-play-fill"></i>
+                            <span x-text="(bootcamp.total_materials || 0) + ' Pertemuan'"></span>
+                        </div>
+                    </div>
+                </a>
+            </template>
+        </div>
+    </section>
+
     <!-- ===== Kelas Terbaru + kartu promo ===== -->
     <section class="rd-section-card">
         <!-- ===== Kartu promo ===== -->
