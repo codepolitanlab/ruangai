@@ -9,7 +9,7 @@
  * Warna aksen mengikuti urutan: oranye, teal, ungu.
  */
 $kelasTerbaru = [
-    ['title' => 'Mastery Class Generative AI', 'batch' => 'Batch 1', 'pertemuan' => 9, 'url' => '#'],
+    ['title' => 'Mastery Class: Jago Bikin Konten dengan AI', 'batch' => 'Batch 1', 'pertemuan' => 4, 'url' => '#'],
     ['title' => 'Advance VibeCoding',          'batch' => 'Batch 1', 'pertemuan' => 9, 'url' => '#'],
     ['title' => 'Advance Agentic AI',          'batch' => 'Batch 1', 'pertemuan' => 9, 'url' => '#'],
 ];
