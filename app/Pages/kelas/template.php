@@ -405,7 +405,7 @@
 										</div>
 
 										<div class="kl-card-foot">
-											<button type="button" class="kl-join-btn" @click="openRedeem()">
+											<button type="button" class="kl-join-btn" @click="$router.navigate('/voucher')">
 												<i class="bi bi-key"></i> Daftar
 											</button>
 										</div>
