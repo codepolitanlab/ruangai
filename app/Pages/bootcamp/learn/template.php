@@ -136,6 +136,11 @@
                         <div style="flex:1;min-width:0">
                             <div style="font-weight:700;color:var(--rd-text)" x-text="cm.material_title"></div>
                             <div style="font-size:0.8rem;color:var(--rd-text-muted)" x-text="`${cm.completed_count}/${cm.required_count} tugas selesai`"></div>
+                            <div style="font-size:0.78rem;color:var(--rd-text-muted);display:flex;align-items:center;gap:5px;margin-top:3px"
+                                 x-show="cm.scheduled_at">
+                                <i class="bi bi-calendar-event"></i>
+                                <span x-text="cm.scheduled_at ? ($heroicHelper.formatDate(cm.scheduled_at) + (String(cm.scheduled_at).length >= 16 ? ', ' + String(cm.scheduled_at).substring(11, 16) + ' WIB' : '')) : ''"></span>
+                            </div>
                         </div>
                         <span class="bl-badge" :class="cm.progress_percent===100 ? 'done' : 'ongoing'" x-text="cm.is_open ? (cm.progress_percent + '%') : 'Terkunci'"></span>
                         <i class="bi" :class="openMaterials[cm.id] ? 'bi-chevron-up' : 'bi-chevron-down'" style="color:var(--rd-text-muted)"></i>
