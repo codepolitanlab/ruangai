@@ -33,7 +33,7 @@
         #bootcamp-learn .bl-badge.done { background: #e6f6ec; color: #1a7f4b; }
         #bootcamp-learn .bl-badge.ongoing { background: #eef4fb; color: #2563eb; }
         #bootcamp-learn .bl-badge.wait { background: #f3f4f6; color: #6b7280; }
-        #bootcamp-learn .bl-btn { border: none; border-radius: 999px; padding: 9px 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
+        #bootcamp-learn .bl-btn { border: none; border-radius: 999px; padding: 9px 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer; text-decoration: none; text-align: center; }
         #bootcamp-learn .bl-btn.primary { background: var(--rd-primary); color: var(--rd-primary-contrast, #fff); }
         #bootcamp-learn .bl-btn.outline { background: transparent; border: 1.5px solid var(--rd-primary); color: var(--rd-primary); }
         #bootcamp-learn .bl-btn:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -50,6 +50,7 @@
         #bootcamp-learn .bl-pdf-wrap iframe { width: 100%; height: 58vh; min-height: 360px; border: 0; display: block; background: #fff; }
         #bootcamp-learn .bl-field { width: 100%; border: 1.5px solid var(--rd-border); border-radius: 12px; padding: 11px 14px; font-size: 0.9rem; outline: none; background: #fff; margin-top: 8px; }
         #bootcamp-learn .bl-field:focus { border-color: var(--rd-primary); }
+        #bootcamp-learn .bl-break { overflow-wrap: anywhere; word-break: break-word; }
         #bootcamp-learn .bl-star { font-size: 1.6rem; cursor: pointer; color: #d8dee6; }
         #bootcamp-learn .bl-star.on { color: #f5a623; }
         #bootcamp-learn .bl-res-head { cursor: pointer; }
@@ -383,7 +384,7 @@
                 <template x-if="activeResource && activeResource.type==='url'">
                     <div>
                         <a :href="activeResource.content.url" target="_blank" rel="noopener" class="bl-btn primary" style="display:inline-flex;align-items:center;gap:6px"><i class="bi bi-box-arrow-up-right"></i> Buka Tautan</a>
-                        <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="activeResource.content.instructions" x-text="activeResource.content.instructions"></p>
+                        <p class="bl-break" style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="activeResource.content.instructions" x-text="activeResource.content.instructions"></p>
                     </div>
                 </template>
 
@@ -405,15 +406,15 @@
                 <template x-if="activeResource && activeResource.type==='meeting'">
                     <div style="padding:12px;border:1px solid var(--rd-border);border-radius:12px;background:#fff">
                         <div style="font-weight:700;color:var(--rd-text)" x-text="activeResource.title"></div>
-                        <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:6px" x-show="activeResource.content.description" x-html="linkify(activeResource.content.description)"></p>
+                        <p class="bl-break" style="font-size:0.85rem;color:var(--rd-text-muted);margin:6px 0 0" x-show="activeResource.content.description" x-html="linkify(activeResource.content.description)"></p>
                         <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
                             <span class="bl-badge wait" x-show="activeResource.content.duration" x-text="activeResource.content.duration + ' menit'"></span>
                             <span class="bl-badge wait" x-show="activeResource.content.mode" x-text="meetingModeLabel(activeResource.content.mode)"></span>
                         </div>
-                        <a x-show="meetingUrl(activeResource)" :href="meetingUrl(activeResource)" target="_blank" rel="noopener" class="bl-btn primary mt-2" style="margin-top:12px;display:inline-flex;align-items:center;gap:6px">
+                        <a x-show="meetingUrl(activeResource)" :href="meetingUrl(activeResource)" target="_blank" rel="noopener" class="bl-btn primary" style="margin-top:14px;width:100%;display:flex;align-items:center;justify-content:center;gap:6px">
                             <i class="bi bi-camera-video"></i> Gabung Meeting
                         </a>
-                        <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="activeResource.content.instructions" x-html="linkify(activeResource.content.instructions)"></p>
+                        <p class="bl-break" style="font-size:0.85rem;color:var(--rd-text-muted);margin:10px 0 0" x-show="activeResource.content.instructions" x-html="linkify(activeResource.content.instructions)"></p>
                     </div>
                 </template>
 
