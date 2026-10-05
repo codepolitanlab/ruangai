@@ -153,6 +153,21 @@
                 if (!path) return '';
                 return /^https?:\/\//i.test(path) ? path : ('/' + path.replace(/^\//, ''));
             },
+            // URL khusus iframe preview. Google Drive/Docs tidak bisa di-embed lewat
+            // URL /view atau /edit (Drive menampilkan "Anda memerlukan akses"), jadi
+            // ID-nya dikonversi ke bentuk /preview.
+            pdfEmbedUrl(path) {
+                const url = this.pdfUrl(path);
+                if (!url) return '';
+
+                const drive = url.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]{10,})/);
+                if (drive) return `https://drive.google.com/file/d/${drive[1]}/preview`;
+
+                const docs = url.match(/docs\.google\.com\/(document|presentation|spreadsheets)\/d\/([\w-]{10,})/);
+                if (docs) return `https://docs.google.com/${docs[1]}/d/${docs[2]}/preview`;
+
+                return url;
+            },
             materialOverallPercent() {
                 const mats = this.data.materials || [];
                 let done = 0, total = 0;

@@ -360,7 +360,7 @@
                 <template x-if="activeResource && activeResource.type==='pdf'">
                     <div>
                         <div class="bl-pdf-wrap" x-show="activeResource.content.file_path">
-                            <iframe :src="pdfUrl(activeResource.content.file_path)" title="Preview PDF" frameborder="0" allowfullscreen></iframe>
+                            <iframe :src="pdfEmbedUrl(activeResource.content.file_path)" title="Preview PDF" frameborder="0" allowfullscreen></iframe>
                         </div>
                         <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;flex-wrap:wrap">
                             <a x-show="activeResource.content.file_path" :href="pdfUrl(activeResource.content.file_path)" target="_blank" rel="noopener" class="bl-btn primary" style="display:inline-flex;align-items:center;gap:6px"><i class="bi bi-file-earmark-pdf"></i> Buka PDF Baru</a>
