@@ -113,6 +113,33 @@
                 };
                 return map[type] || 'bi-file-earmark';
             },
+            // Tipe meeting: link biasanya ditempel di field link khusus, tetapi
+            // masih ada data lama yang menempelkannya di deskripsi/instruksi.
+            firstUrl(...texts) {
+                for (const text of texts) {
+                    const found = String(text || '').match(/https?:\/\/[^\s<>"']+/);
+                    if (found) return found[0].replace(/[.,;)]+$/, '');
+                }
+                return '';
+            },
+            meetingUrl(res) {
+                const content = (res && res.content) || {};
+                const url = content.meeting_url || this.firstUrl(content.description, content.instructions);
+                return /^https?:\/\//i.test(url) ? url : '';
+            },
+            meetingModeLabel(mode) {
+                const map = { offline: 'Offline', offline_online: 'Offline + Online', online: 'Online' };
+                return map[mode] || (mode ? 'Mode: ' + mode : '');
+            },
+            // Jadikan URL di dalam teks (deskripsi/instruksi) bisa diklik.
+            linkify(text) {
+                const escaped = String(text || '').replace(/[&<>"']/g, ch => ({
+                    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+                }[ch]));
+
+                return escaped.replace(/https?:\/\/[^\s<>"']+/g, url =>
+                    `<a href="${url}" target="_blank" rel="noopener">${url}</a>`);
+            },
             // Kembalikan boolean eksplisit supaya binding :disabled tidak salah
             isSubmitting(cmId, rid) {
                 return !!this.progressSubmitting[cmId + '-' + rid];

@@ -405,12 +405,15 @@
                 <template x-if="activeResource && activeResource.type==='meeting'">
                     <div style="padding:12px;border:1px solid var(--rd-border);border-radius:12px;background:#fff">
                         <div style="font-weight:700;color:var(--rd-text)" x-text="activeResource.title"></div>
-                        <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:6px" x-show="activeResource.content.description" x-text="activeResource.content.description"></p>
+                        <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:6px" x-show="activeResource.content.description" x-html="linkify(activeResource.content.description)"></p>
                         <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
                             <span class="bl-badge wait" x-show="activeResource.content.duration" x-text="activeResource.content.duration + ' menit'"></span>
-                            <span class="bl-badge wait" x-show="activeResource.content.mode" x-text="'Mode: ' + activeResource.content.mode"></span>
+                            <span class="bl-badge wait" x-show="activeResource.content.mode" x-text="meetingModeLabel(activeResource.content.mode)"></span>
                         </div>
-                        <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="activeResource.content.instructions" x-text="activeResource.content.instructions"></p>
+                        <a x-show="meetingUrl(activeResource)" :href="meetingUrl(activeResource)" target="_blank" rel="noopener" class="bl-btn primary" style="margin-top:12px;display:inline-flex;align-items:center;gap:6px">
+                            <i class="bi bi-camera-video"></i> Gabung Meeting
+                        </a>
+                        <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="activeResource.content.instructions" x-html="linkify(activeResource.content.instructions)"></p>
                     </div>
                 </template>
 

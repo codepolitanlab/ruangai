@@ -370,6 +370,10 @@ $resourceTypeShortLabels = [
 
                         <!-- meeting -->
                         <div data-type="meeting" style="display:none">
+                            <div class="mb-2">
+                                <label class="form-label">Link Meeting (Zoom / Google Meet)</label>
+                                <input type="text" name="meeting_url" class="form-control content-field" placeholder="https://zoom.us/j/... atau https://meet.google.com/...">
+                            </div>
                             <div class="row">
                                 <div class="col-6 mb-2"><label class="form-label">Deskripsi</label><input type="text" name="description" class="form-control content-field"></div>
                                 <div class="col-3 mb-2"><label class="form-label">Durasi (menit)</label><input type="number" name="duration" class="form-control content-field"></div>
@@ -499,7 +503,7 @@ function materialResourceEdit(materialId, resource) {
         url: ['url', 'open_in'], book_ref: ['book_title', 'author', 'chapter', 'page_start', 'page_end', 'isbn'],
         quiz: ['pass_score', 'time_limit_minutes', 'max_attempts'],
         submission: ['submission_type', 'deadline_offset_days', 'allowed_types', 'max_size_mb'],
-        meeting: ['description', 'duration', 'mode']
+        meeting: ['meeting_url', 'description', 'duration', 'mode']
     };
     // Scope pencarian ke blok tipe aktif agar tidak salah isi pada input
     // dengan name duplikat (mis. name="url" ada di blok video DAN blok url).
@@ -689,9 +693,11 @@ function resourceDetailRows(type, content) {
     }
 
     const rows = [];
-    const add = (label, val) => {
+    // `link` opsional: bila diisi, nilainya tampil sebagai tombol "Buka Tautan"
+    // supaya admin tidak perlu copy-paste URL-nya.
+    const add = (label, val, link) => {
         if (val !== undefined && val !== null && val !== '') {
-            rows.push({ label, val });
+            rows.push({ label, val, link: link ? String(link) : '' });
         }
     };
 
@@ -700,7 +706,7 @@ function resourceDetailRows(type, content) {
         case 'pdf': add('File Path', content.file_path); break;
         case 'audio': add('File Path', content.file_path); add('Durasi (menit)', content.duration); break;
         case 'slide': add('Embed URL', content.embed_url); add('Provider', content.provider); break;
-        case 'url': add('URL', content.url); add('Buka di', content.open_in); break;
+        case 'url': add('URL', content.url, content.url); add('Buka di', content.open_in); break;
         case 'book_ref':
             add('Judul Buku', content.book_title); add('Penulis', content.author); add('Bab', content.chapter);
             add('Halaman', content.page_start && content.page_end ? `${content.page_start}–${content.page_end}` : (content.page_start || content.page_end));
@@ -711,11 +717,18 @@ function resourceDetailRows(type, content) {
             add('Tipe Pengumpulan', content.submission_type); add('Deadline (hari)', content.deadline_offset_days);
             add('Allowed Types', content.allowed_types); add('Max Size (MB)', content.max_size_mb);
             break;
-        case 'meeting': add('Deskripsi', content.description); add('Durasi (menit)', content.duration); add('Mode', content.mode); break;
+        case 'meeting': add('Link Meeting', content.meeting_url, content.meeting_url); add('Deskripsi', content.description); add('Durasi (menit)', content.duration); add('Mode', content.mode); break;
     }
 
+    const cell = (r) => {
+        if (! r.link) return previewEsc(r.val);
+
+        return `<a href="${previewEsc(r.link)}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary mb-1"><i class="bi bi-box-arrow-up-right"></i> Buka Tautan</a>`
+            + `<div class="text-muted text-break">${previewEsc(r.val)}</div>`;
+    };
+
     return rows.length
-        ? `<dl class="row mb-0">${rows.map(r => `<dt class="col-sm-5 small text-muted fw-normal">${previewEsc(r.label)}</dt><dd class="col-sm-7 small mb-1">${previewEsc(r.val)}</dd>`).join('')}</dl>`
+        ? `<dl class="row mb-0">${rows.map(r => `<dt class="col-sm-5 small text-muted fw-normal">${previewEsc(r.label)}</dt><dd class="col-sm-7 small mb-1">${cell(r)}</dd>`).join('')}</dl>`
         : '<div class="text-muted small">Tidak ada detail konten.</div>';
 }
 </script>
