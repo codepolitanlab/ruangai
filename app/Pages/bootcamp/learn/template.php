@@ -410,7 +410,7 @@
                             <span class="bl-badge wait" x-show="activeResource.content.duration" x-text="activeResource.content.duration + ' menit'"></span>
                             <span class="bl-badge wait" x-show="activeResource.content.mode" x-text="meetingModeLabel(activeResource.content.mode)"></span>
                         </div>
-                        <a x-show="meetingUrl(activeResource)" :href="meetingUrl(activeResource)" target="_blank" rel="noopener" class="bl-btn primary" style="margin-top:12px;display:inline-flex;align-items:center;gap:6px">
+                        <a x-show="meetingUrl(activeResource)" :href="meetingUrl(activeResource)" target="_blank" rel="noopener" class="bl-btn primary mt-2" style="margin-top:12px;display:inline-flex;align-items:center;gap:6px">
                             <i class="bi bi-camera-video"></i> Gabung Meeting
                         </a>
                         <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="activeResource.content.instructions" x-html="linkify(activeResource.content.instructions)"></p>
