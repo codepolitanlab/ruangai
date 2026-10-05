@@ -113,18 +113,10 @@
                 };
                 return map[type] || 'bi-file-earmark';
             },
-            // Tipe meeting: link biasanya ditempel di field link khusus, tetapi
-            // masih ada data lama yang menempelkannya di deskripsi/instruksi.
-            firstUrl(...texts) {
-                for (const text of texts) {
-                    const found = String(text || '').match(/https?:\/\/[^\s<>"']+/);
-                    if (found) return found[0].replace(/[.,;)]+$/, '');
-                }
-                return '';
-            },
+            // Tipe meeting punya field link sendiri (content.meeting_url) — tidak diambil
+            // dari deskripsi/instruksi.
             meetingUrl(res) {
-                const content = (res && res.content) || {};
-                const url = content.meeting_url || this.firstUrl(content.description, content.instructions);
+                const url = ((res && res.content) || {}).meeting_url || '';
                 return /^https?:\/\//i.test(url) ? url : '';
             },
             meetingModeLabel(mode) {

@@ -36,6 +36,9 @@
         #bootcamp-learn .bl-btn { border: none; border-radius: 999px; padding: 9px 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer; text-decoration: none; text-align: center; }
         #bootcamp-learn .bl-btn.primary { background: var(--rd-primary); color: var(--rd-primary-contrast, #fff); }
         #bootcamp-learn .bl-btn.outline { background: transparent; border: 1.5px solid var(--rd-primary); color: var(--rd-primary); }
+        /* Tombol Gabung Meeting — warna biru khas Zoom, ukuran mengikuti isi (tidak block). */
+        #bootcamp-learn .bl-btn.zoom { background: #2d8cff; color: #fff; }
+        #bootcamp-learn .bl-btn.zoom:hover { background: #1f7ae8; }
         #bootcamp-learn .bl-btn:disabled { opacity: 0.6; cursor: not-allowed; }
         #bootcamp-learn .bl-lock { position: absolute; inset: 0; background: rgba(2, 13, 28, 0.9); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; z-index: 5; border-radius: 0 0 16px 16px; padding: 20px; }
         #bootcamp-learn .bl-lock-box { text-align: center; max-width: 260px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 18px 20px; }
@@ -55,7 +58,11 @@
         #bootcamp-learn .bl-star.on { color: #f5a623; }
         #bootcamp-learn .bl-res-head { cursor: pointer; }
         #bootcamp-learn .bl-modal-overlay { position: fixed; inset: 0; z-index: 1050; background: rgba(15,23,42,0.55); display: flex; align-items: center; justify-content: center; padding: 20px; }
-        #bootcamp-learn .bl-modal-sheet { width: 100%; max-width: 480px; max-height: 85vh; overflow-y: auto; background: #fff; border-radius: 20px; padding: 18px 20px 26px; }
+        /* Sheet modal selalu berlatar putih, sedangkan token tema dashboard itu gelap
+           (--rd-text: #FFFFFF). Override di sini agar semua teks di dalam modal terbaca. */
+        #bootcamp-learn .bl-modal-sheet { width: 100%; max-width: 480px; max-height: 85vh; overflow-y: auto; background: #fff; border-radius: 20px; padding: 18px 20px 26px; --rd-text: #1c2733; --rd-text-muted: #6b7280; --rd-border: #e5e7eb; --rd-surface: #fff; --rd-primary-soft: #eef4fb; }
+        /* x-show menghapus properti inline `display`, jadi tombol harus lewat class. */
+        #bootcamp-learn .bl-meet-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; }
         #bootcamp-learn .bl-modal-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
         #bootcamp-learn .bl-modal-close { border: none; background: none; font-size: 1.6rem; line-height: 1; color: #9aa5b1; cursor: pointer; }
     </style>
@@ -411,7 +418,7 @@
                             <span class="bl-badge wait" x-show="activeResource.content.duration" x-text="activeResource.content.duration + ' menit'"></span>
                             <span class="bl-badge wait" x-show="activeResource.content.mode" x-text="meetingModeLabel(activeResource.content.mode)"></span>
                         </div>
-                        <a x-show="meetingUrl(activeResource)" :href="meetingUrl(activeResource)" target="_blank" rel="noopener" class="bl-btn primary" style="margin-top:14px;width:100%;display:flex;align-items:center;justify-content:center;gap:6px">
+                        <a x-show="meetingUrl(activeResource)" :href="meetingUrl(activeResource)" target="_blank" rel="noopener" class="bl-btn zoom bl-meet-btn">
                             <i class="bi bi-camera-video"></i> Gabung Meeting
                         </a>
                         <p class="bl-break" style="font-size:0.85rem;color:var(--rd-text-muted);margin:10px 0 0" x-show="activeResource.content.instructions" x-html="linkify(activeResource.content.instructions)"></p>
