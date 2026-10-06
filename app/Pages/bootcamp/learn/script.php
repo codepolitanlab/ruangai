@@ -8,7 +8,7 @@
         return {
             ...base,
             classId,
-            tab: 'info',
+            tab: 'materi',
             openMaterials: {},
             openResources: {},
             activeResource: null,
