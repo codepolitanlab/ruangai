@@ -374,6 +374,10 @@ $resourceTypeShortLabels = [
                                 <label class="form-label">Link Meeting (Zoom / Google Meet)</label>
                                 <input type="text" name="meeting_url" class="form-control content-field" placeholder="https://zoom.us/j/... atau https://meet.google.com/...">
                             </div>
+                            <div class="mb-2">
+                                <label class="form-label">Link Rekaman</label>
+                                <input type="text" name="recording_url" class="form-control content-field" placeholder="https://youtube.com/... atau https://drive.google.com/...">
+                            </div>
                             <div class="row">
                                 <div class="col-6 mb-2"><label class="form-label">Deskripsi</label><input type="text" name="description" class="form-control content-field"></div>
                                 <div class="col-3 mb-2"><label class="form-label">Durasi (menit)</label><input type="number" name="duration" class="form-control content-field"></div>
@@ -503,7 +507,7 @@ function materialResourceEdit(materialId, resource) {
         url: ['url', 'open_in'], book_ref: ['book_title', 'author', 'chapter', 'page_start', 'page_end', 'isbn'],
         quiz: ['pass_score', 'time_limit_minutes', 'max_attempts'],
         submission: ['submission_type', 'deadline_offset_days', 'allowed_types', 'max_size_mb'],
-        meeting: ['meeting_url', 'description', 'duration', 'mode']
+        meeting: ['meeting_url', 'recording_url', 'description', 'duration', 'mode']
     };
     // Scope pencarian ke blok tipe aktif agar tidak salah isi pada input
     // dengan name duplikat (mis. name="url" ada di blok video DAN blok url).
@@ -717,7 +721,7 @@ function resourceDetailRows(type, content) {
             add('Tipe Pengumpulan', content.submission_type); add('Deadline (hari)', content.deadline_offset_days);
             add('Allowed Types', content.allowed_types); add('Max Size (MB)', content.max_size_mb);
             break;
-        case 'meeting': add('Link Meeting', content.meeting_url, content.meeting_url); add('Deskripsi', content.description); add('Durasi (menit)', content.duration); add('Mode', content.mode); break;
+        case 'meeting': add('Link Meeting', content.meeting_url, content.meeting_url); add('Link Rekaman', content.recording_url, content.recording_url); add('Deskripsi', content.description); add('Durasi (menit)', content.duration); add('Mode', content.mode); break;
     }
 
     const cell = (r) => {

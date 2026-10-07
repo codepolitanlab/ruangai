@@ -133,7 +133,10 @@
 
                     // Background
                     const bgImg = await loadImage(p.bg);
-                    doc.addImage(bgImg, 'JPEG', 0, 0, pageSize.w, pageSize.h, undefined, 'FAST');
+                    // Format harus sesuai jenis berkas: artwork PNG akan rusak bila
+                    // dipaksa dikodekan sebagai JPEG oleh jsPDF.
+                    const bgFormat = /\.png(\?|#|$)/i.test(p.bg) ? 'PNG' : 'JPEG';
+                    doc.addImage(bgImg, bgFormat, 0, 0, pageSize.w, pageSize.h, undefined, 'FAST');
 
                     // QR (optional)
                     if (qrCfg && qrDataUrl && (p.show_qr ?? true)) {
@@ -271,7 +274,7 @@
             canvas.style.display = 'block';
             canvas.classList.add('shadow');
             canvas.style.width = '100%';
-            canvas.style.marginBottom = '16px';
+            canvas.style.marginBottom = '';
 
             const context = canvas.getContext('2d');
             canvas.height = viewport.height;

@@ -402,6 +402,135 @@ class PageController extends BaseController
         ]);
     }
 
+    /**
+     * POST /bootcamp/learn/claimtopic/{cm_id} — klaim sertifikat per pertemuan.
+     *
+     * Syarat: peserta aktif kelas dan sesi (cls_class_materials.scheduled_at)
+     * sudah terlewati. Sertifikat disimpan sebagai entity_type='bootcamp_topic'
+     * dengan entity_id = cls_class_materials.id (1 baris per peserta per pertemuan).
+     */
+    public function postClaimTopic($cmId)
+    {
+        $Heroic = new \App\Libraries\Heroic();
+        $jwt    = $Heroic->checkToken(true);
+        $db     = \Config\Database::connect();
+        $userId = (int) $jwt->user_id;
+        $cmId   = (int) $cmId;
+
+        $cm = $db->table('cls_class_materials cm')
+            ->select('cm.id, cm.class_id, cm.material_id, cm.scheduled_at, m.title AS material_title')
+            ->join('cls_materials m', 'm.id = cm.material_id', 'left')
+            ->where('cm.id', $cmId)
+            ->get()
+            ->getRowArray();
+
+        if (! $cm || ! $this->isMember($db, (int) $cm['class_id'], $userId)) {
+            return $this->respondSecure(['status' => 'failed', 'message' => 'Akses ditolak.']);
+        }
+
+        // Syarat 1: sesi terlaksana (jadwal hanya dicek kalau diisi admin)
+        if (! empty($cm['scheduled_at']) && strtotime((string) $cm['scheduled_at']) > time()) {
+            return $this->respondSecure([
+                'status'  => 'failed',
+                'message' => 'Sertifikat bisa diklaim setelah sesi pertemuan terlaksana.',
+            ]);
+        }
+
+        // Syarat 2: semua tugas wajib pada topik ini sudah selesai
+        $requiredTotal = $db->table('cls_learning_resources')
+            ->where('material_id', (int) $cm['material_id'])
+            ->where('is_required', 1)
+            ->where('deleted_at IS NULL')
+            ->countAllResults();
+
+        if ($requiredTotal > 0) {
+            $requiredDone = $db->table('cls_learning_progress p')
+                ->join('cls_learning_resources r', 'r.id = p.resource_id')
+                ->where('p.class_material_id', $cmId)
+                ->where('p.user_id', $userId)
+                ->where('p.status', 'completed')
+                ->where('r.is_required', 1)
+                ->where('r.deleted_at IS NULL')
+                ->countAllResults();
+
+            if ($requiredDone < $requiredTotal) {
+                return $this->respondSecure([
+                    'status'  => 'failed',
+                    'message' => 'Selesaikan semua tugas wajib topik ini dulu (' . $requiredDone . '/' . $requiredTotal . ').',
+                ]);
+            }
+        }
+
+        $existing = $db->table('certificates')
+            ->select('cert_code')
+            ->where('user_id', $userId)
+            ->where('entity_type', 'bootcamp_topic')
+            ->where('entity_id', $cmId)
+            ->where('is_active', 1)
+            ->get()
+            ->getRowArray();
+
+        if ($existing) {
+            return $this->respondSecure([
+                'status'    => 'success',
+                'message'   => 'Sertifikat pertemuan ini sudah diklaim.',
+                'cert_code' => $existing['cert_code'],
+                'url'       => site_url('certificate/' . $existing['cert_code']),
+            ]);
+        }
+
+        $class = $db->table('cls_classes')
+            ->select('id, name')
+            ->where('id', (int) $cm['class_id'])
+            ->get()
+            ->getRowArray();
+
+        $user = $db->table('users')->where('id', $userId)->get()->getRowArray();
+
+        $title = trim(($class['name'] ?? 'Bootcamp') . ' — ' . ($cm['material_title'] ?? 'Pertemuan'));
+
+        $certificateModel = model('CertificateModel');
+        $certId           = $certificateModel->createCertificate([
+            'user_id'          => $userId,
+            'entity_type'      => 'bootcamp_topic',
+            'entity_id'        => $cmId,
+            'participant_name' => $user['name'] ?? 'Peserta',
+            'title'            => $title,
+            'template_name'    => 'ruangai_bootcamp',
+            'cert_claim_date'  => date('Y-m-d H:i:s'),
+            'additional_data'  => [
+                'achievement'    => $title,
+                'class_id'       => (int) $cm['class_id'],
+                'class_name'     => $class['name'] ?? null,
+                'topic'          => $cm['material_title'] ?? null,
+                'class_material' => $cmId,
+                'scheduled_at'   => $cm['scheduled_at'],
+                'claim_date'     => date('Y-m-d H:i:s'),
+            ],
+        ]);
+
+        if (! $certId) {
+            return $this->respondSecure([
+                'status'  => 'failed',
+                'message' => 'Gagal membuat sertifikat. Silakan coba lagi.',
+            ]);
+        }
+
+        $cert = $db->table('certificates')
+            ->select('cert_code')
+            ->where('id', (int) $certId)
+            ->get()
+            ->getRowArray();
+
+        return $this->respondSecure([
+            'status'    => 'success',
+            'message'   => 'Selamat! Sertifikat pertemuan berhasil diklaim.',
+            'cert_id'   => (int) $certId,
+            'cert_code' => $cert['cert_code'] ?? null,
+            'url'       => isset($cert['cert_code']) ? site_url('certificate/' . $cert['cert_code']) : null,
+        ]);
+    }
+
     // =====================================================================
     // Helpers
     // =====================================================================
@@ -439,6 +568,25 @@ class PageController extends BaseController
             ->orderBy('m.order_seq', 'ASC')
             ->get()
             ->getResultArray();
+
+        // Sertifikat per pertemuan milik user (1 query untuk semua materi)
+        $topicCerts = [];
+        $cmIds      = array_map(static fn ($cm) => (int) $cm['id'], $cms);
+
+        if ($cmIds !== []) {
+            $rows = $db->table('certificates')
+                ->select('id, cert_code, cert_claim_date, title, entity_id')
+                ->where('user_id', $userId)
+                ->where('entity_type', 'bootcamp_topic')
+                ->whereIn('entity_id', $cmIds)
+                ->where('is_active', 1)
+                ->get()
+                ->getResultArray();
+
+            foreach ($rows as $row) {
+                $topicCerts[(int) $row['entity_id']] = $row;
+            }
+        }
 
         foreach ($cms as &$cm) {
             // MySQLi mengembalikan TINYINT sebagai string — cast agar logika JS benar
@@ -496,6 +644,26 @@ class PageController extends BaseController
             $cm['required_count']  = $requiredCount;
             $cm['completed_count'] = $completedCount;
             $cm['progress_percent'] = $requiredCount > 0 ? (int) round(($completedCount / $requiredCount) * 100) : 0;
+
+            // Sertifikat pertemuan: tugas wajib topik selesai + jadwal (bila ada) sudah lewat
+            $certificate = $topicCerts[(int) $cm['id']] ?? null;
+            $tasksDone   = $requiredCount === 0 || $completedCount >= $requiredCount;
+            $sessionDone = empty($cm['scheduled_at']) || strtotime((string) $cm['scheduled_at']) <= time();
+
+            $cm['topic_certificate'] = $certificate;
+            $cm['topic_claim']       = [
+                'claimed'      => $certificate !== null,
+                'allowed'      => $tasksDone && $sessionDone && $certificate === null,
+                'tasks_done'   => $tasksDone,
+                'session_done' => $sessionDone,
+                'reason'       => $certificate !== null
+                    ? 'Sertifikat pertemuan ini sudah diklaim.'
+                    : (! $sessionDone
+                        ? 'Sertifikat bisa diklaim setelah sesi pertemuan terlaksana.'
+                        : (! $tasksDone
+                            ? 'Selesaikan semua tugas wajib topik ini dulu (' . $completedCount . '/' . $requiredCount . ').'
+                            : '')),
+            ];
         }
         unset($cm);
 

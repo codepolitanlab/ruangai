@@ -18,6 +18,7 @@
             submitSubmitting: {},
             submitFiles: {},
             submitUrls: {},
+            topicClaiming: {},
             feedbackSubmitting: false,
             claiming: false,
             feedback: {
@@ -97,6 +98,27 @@
                 }
             },
 
+            // ===== sertifikat per pertemuan =====
+            async claimTopicCertificate(cmId) {
+                if (this.topicClaiming[cmId]) return;
+
+                this.topicClaiming[cmId] = true;
+                try {
+                    const response = await $heroicHelper.post(`/bootcamp/learn/claimtopic/${cmId}`, {});
+                    if (response.data.status === 'success') {
+                        $heroicHelper.toastr(response.data.message || 'Sertifikat berhasil diklaim.', 'success', 'bottom');
+                        this.loadPage(`/bootcamp/learn/data/${this.classId}?t=${Date.now()}`);
+                    } else {
+                        $heroicHelper.toastr(response.data.message || 'Gagal klaim sertifikat.', 'danger', 'bottom');
+                    }
+                } catch (error) {
+                    console.error(error);
+                    $heroicHelper.toastr('Terjadi kesalahan. Silakan coba lagi.', 'danger', 'bottom');
+                } finally {
+                    this.topicClaiming[cmId] = false;
+                }
+            },
+
             // ===== helper =====
             resIcon(type) {
                 const map = {
@@ -123,6 +145,23 @@
                 const map = { offline: 'Offline', offline_online: 'Offline + Online', online: 'Online' };
                 return map[mode] || (mode ? 'Mode: ' + mode : '');
             },
+            // Link rekaman sesi (diisi dari admin, tipe meeting).
+            recordingUrl(res) {
+                const url = ((res && res.content) || {}).recording_url || '';
+                return /^https?:\/\//i.test(url) ? url : '';
+            },
+            // Akhir sesi = jadwal pertemuan + durasi (menit). null bila datanya tidak lengkap.
+            meetingEndAt(cm, res) {
+                const start    = cm && cm.scheduled_at ? String(cm.scheduled_at).replace(' ', 'T') : '';
+                const duration = parseInt(((res && res.content) || {}).duration, 10) || 0;
+                if (!start || duration <= 0) return null;
+                const startedAt = new Date(start).getTime();
+                return isNaN(startedAt) ? null : startedAt + (duration * 60000);
+            },
+            meetingEnded(cm, res) {
+                const end = this.meetingEndAt(cm, res);
+                return end !== null && Date.now() > end;
+            },
             // Jadikan URL di dalam teks (deskripsi/instruksi) bisa diklik.
             linkify(text) {
                 const escaped = String(text || '').replace(/[&<>"']/g, ch => ({
@@ -138,6 +177,10 @@
             },
             isSubmitSubmitting(rid) {
                 return !!this.submitSubmitting[rid];
+            },
+            // Nilai harus boolean tegas: `undefined` membuat :disabled terpasang di Alpine.
+            isTopicClaiming(cmId) {
+                return !!this.topicClaiming[cmId];
             },
             videoEmbedUrl(res) {
                 const url = (res.content || {}).url || '';

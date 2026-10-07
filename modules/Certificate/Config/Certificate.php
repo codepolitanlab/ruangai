@@ -36,6 +36,7 @@ class Certificate extends BaseConfig
         'genai_video_fest'             => \Certificate\Libraries\GenaiVideoFestTemplate::class,
         'workshop_ruangai_mayar'       => \Certificate\Libraries\WorkshopRuangAIMayarTemplate::class,
         'workshop_ruangai_betterco'    => \Certificate\Libraries\WorkshopRuangAIBetterCOTemplate::class,
+        'ruangai_bootcamp'             => \Certificate\Libraries\RuangAIBootcampCertificateTemplate::class,
         // Add more templates here as needed
     ];
 }

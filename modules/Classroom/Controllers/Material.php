@@ -211,11 +211,20 @@ class Material extends AdminController
             return redirect()->back();
         }
 
+        // Tipe bisa diganti dari form (mis. text -> pdf). Jangan pakai tipe lama
+        // dari DB, karena payload konten dibangun sesuai tipe yang dipilih.
+        $type = $this->request->getPost('type') ?: $resource['type'];
+        if (! in_array($type, LearningResourceModel::TYPES, true)) {
+            session()->setFlashdata('error_message', 'Tipe resource tidak valid');
+
+            return redirect()->back()->withInput();
+        }
+
         $data = [
-            'type'                => $resource['type'],
+            'type'                => $type,
             'title'               => $this->request->getPost('title'),
             'content'             => LearningResourceModel::encodeContent(
-                $this->buildContentPayload($resource['type'])
+                $this->buildContentPayload($type)
             ),
             'completion_criteria' => $this->request->getPost('completion_criteria') ?: $resource['completion_criteria'],
             'is_required'         => $this->request->getPost('is_required') ? 1 : 0,
@@ -352,7 +361,8 @@ class Material extends AdminController
                 break;
 
             case 'meeting':
-                $payload['meeting_url']  = $post['meeting_url'] ?? '';
+                $payload['meeting_url']   = $post['meeting_url'] ?? '';
+                $payload['recording_url'] = $post['recording_url'] ?? '';
                 $payload['description']  = $post['description'] ?? '';
                 $payload['duration']     = $post['duration'] ?? null;
                 $payload['mode']         = $field('mode', 'offline');
