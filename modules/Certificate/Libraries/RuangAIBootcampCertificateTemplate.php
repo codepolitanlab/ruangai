@@ -81,7 +81,7 @@ class RuangAIBootcampCertificateTemplate extends CertificateTemplate
                             autoshrink: true
                         ),
                         'publishDate' => $this->createPosition(
-                            xPct: 82,
+                            xPct: 82.2,
                             yPct: 94,
                             maxWidthPct: 30,
                             fontMm: 4.5,
