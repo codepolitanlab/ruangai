@@ -361,8 +361,9 @@ class Material extends AdminController
                 break;
 
             case 'meeting':
-                $payload['meeting_url']   = $post['meeting_url'] ?? '';
-                $payload['recording_url'] = $post['recording_url'] ?? '';
+                $payload['meeting_url']    = $post['meeting_url'] ?? '';
+                $payload['recording_url']  = $post['recording_url'] ?? '';
+                $payload['recording_type'] = $field('recording_type', 'embed');
                 $payload['description']  = $post['description'] ?? '';
                 $payload['duration']     = $post['duration'] ?? null;
                 $payload['mode']         = $field('mode', 'offline');

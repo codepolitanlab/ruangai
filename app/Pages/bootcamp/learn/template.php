@@ -44,7 +44,7 @@
         #bootcamp-learn .bl-btn { border: none; border-radius: 999px; padding: 9px 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer; text-decoration: none; text-align: center; }
         #bootcamp-learn .bl-btn.primary { background: var(--rd-primary); color: var(--rd-primary-contrast, #fff); }
         #bootcamp-learn .bl-btn.outline { background: transparent; border: 1.5px solid var(--rd-primary); color: var(--rd-primary); }
-        /* Tombol Gabung Meeting — warna biru khas Zoom, ukuran mengikuti isi (tidak block). */
+        /* Tombol Gabung Zoom — warna biru khas Zoom, ukuran mengikuti isi (tidak block). */
         #bootcamp-learn .bl-btn.zoom { background: #2d8cff; color: #fff; }
         #bootcamp-learn .bl-btn.zoom:hover { background: #1f7ae8; }
         #bootcamp-learn .bl-btn:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -479,8 +479,8 @@
                         <!-- Sesi masih berjalan: tombol Zoom. Sesi berakhir: tampil sebagai badge. -->
                         <a x-show="meetingUrl(activeResource) && !meetingEnded(activeCm, activeResource)"
                            :href="meetingUrl(activeResource)" target="_blank" rel="noopener"
-                           class="bl-btn zoom bl-meet-btn" style="margin-top:0">
-                            <i class="bi bi-camera-video"></i> Gabung Meeting
+                           class="bl-btn zoom bl-meet-btn">
+                            <i class="bi bi-camera-video"></i> Gabung Zoom
                         </a>
                         <div x-show="meetingUrl(activeResource) && meetingEnded(activeCm, activeResource)" style="margin-top:12px">
                             <span class="bl-badge wait icon">
@@ -488,6 +488,13 @@
                             </span>
                         </div>
                         <!-- Rekaman: muncul kalau link tersedia, aktif setelah durasi sesi berakhir. -->
+                        <div class="bl-video-wrap" x-show="meetingEnded(activeCm, activeResource) && recordingEmbedUrl(activeResource)" style="margin-top:12px">
+                            <iframe :src="recordingEmbedUrl(activeResource)" title="Rekaman sesi" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <!-- Rekaman bertipe video langsung (.mp4/.webm) -->
+                        <video x-show="meetingEnded(activeCm, activeResource) && recordingVideoUrl(activeResource)"
+                               :src="recordingVideoUrl(activeResource)" controls preload="metadata"
+                               style="width:100%;margin-top:12px;border-radius:12px;background:#000"></video>
                         <a x-show="recordingUrl(activeResource)" :href="recordingUrl(activeResource)" target="_blank" rel="noopener"
                            class="bl-btn primary bl-meet-btn" style="margin-top:10px"
                            :class="{ 'bl-disabled': !meetingEnded(activeCm, activeResource) }">
@@ -553,15 +560,15 @@
                     </div>
                 </template>
 
-                <!-- Tombol Saya Sudah Paham -->
+                <!-- Tombol Saya Sudah Paham (untuk sesi meeting: muncul setelah sesi berakhir) -->
                 <button type="button"
-                        x-show="activeResource && isViewType(activeResource.type) && activeResource.progress !== 'completed' && activeCm && activeCm.is_open == 1"
+                        x-show="activeResource && isViewType(activeResource.type) && activeResource.progress !== 'completed' && activeCm && activeCm.is_open == 1 && isResourceReady(activeCm, activeResource)"
                         class="bl-btn primary" style="margin-top:14px;width:100%"
                         :disabled="activeResource ? isSubmitting(activeCm.id, activeResource.id) : true"
                         @click="markProgressFromModal()">
                     <span x-show="activeResource && isSubmitting(activeCm.id, activeResource.id)" class="spinner-border spinner-border-sm" role="status"></span>
-                    <span x-show="!activeResource || !isSubmitting(activeCm.id, activeResource.id)"><i class="bi bi-check2-circle"></i> Saya Sudah Paham</span>
-                </button>
+                    <span x-show="!activeResource || !isSubmitting(activeCm.id, activeResource.id)"><i class="bi bi-check2-circle"></i> <span x-text="activeResource && activeResource.type === 'meeting' ? 'Saya sudah Mengikuti/Lihat Rekaman' : 'Saya Sudah Paham'"></span></span>
+                </button
             </div>
         </div>
     </div>

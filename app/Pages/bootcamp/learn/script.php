@@ -145,10 +145,16 @@
                 const map = { offline: 'Offline', offline_online: 'Offline + Online', online: 'Online' };
                 return map[mode] || (mode ? 'Mode: ' + mode : '');
             },
-            // Link rekaman sesi (diisi dari admin, tipe meeting).
-            recordingUrl(res) {
-                const url = ((res && res.content) || {}).recording_url || '';
+            // Link rekaman sesi (diisi dari admin, tipe meeting). Boleh berupa URL saja
+            // atau tempelan utuh kode embed Bunny — URL-nya yang diambil.
+            cleanUrl(value) {
+                const raw   = String(value || '').trim();
+                const match = raw.match(/<iframe[^>]*\ssrc\s*=\s*["']([^"']+)["']/i);
+                const url   = (match ? match[1] : raw).replace(/&amp;/g, '&').trim();
                 return /^https?:\/\//i.test(url) ? url : '';
+            },
+            recordingUrl(res) {
+                return this.cleanUrl(((res && res.content) || {}).recording_url);
             },
             // Akhir sesi = jadwal pertemuan + durasi (menit). null bila datanya tidak lengkap.
             meetingEndAt(cm, res) {
@@ -161,6 +167,28 @@
             meetingEnded(cm, res) {
                 const end = this.meetingEndAt(cm, res);
                 return end !== null && Date.now() > end;
+            },
+            // Batas akhir sesi untuk klaim sertifikat & tombol "sudah paham": jadwal mulai
+            // + durasi; bila durasi tidak diisi → berakhir tepat di jadwal mulai. Aturan ini
+            // harus sama dengan PageController::sessionEndAt().
+            sessionEndAt(cm, res) {
+                const start = cm && cm.scheduled_at ? String(cm.scheduled_at).replace(' ', 'T') : '';
+                if (!start) return null;
+
+                const startedAt = new Date(start).getTime();
+                if (isNaN(startedAt)) return null;
+
+                const duration = parseInt(((res && res.content) || {}).duration, 10) || 0;
+                return startedAt + (duration * 60000);
+            },
+            sessionEnded(cm, res) {
+                const end = this.sessionEndAt(cm, res);
+                return end === null || Date.now() > end;
+            },
+            // Resource boleh ditandai "sudah paham": sesi meeting baru bisa setelah sesi berakhir.
+            isResourceReady(cm, res) {
+                if (! cm || ! res) return false;
+                return res.type !== 'meeting' || this.sessionEnded(cm, res);
             },
             // Jadikan URL di dalam teks (deskripsi/instruksi) bisa diklik.
             linkify(text) {
@@ -182,34 +210,79 @@
             isTopicClaiming(cmId) {
                 return !!this.topicClaiming[cmId];
             },
-            videoEmbedUrl(res) {
-                const url = (res.content || {}).url || '';
-                if (!url) return '';
-                const yt = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{6,})/);
+            // Ubah link media apa pun (YouTube/Bunny/Drive/Docs) jadi URL yang cocok
+            // ditempel di iframe. Dipakai video, PDF, dan rekaman meeting.
+            embedUrl(url) {
+                const src = this.cleanUrl(url) || String(url || '').trim();
+                if (!src) return '';
+
+                const yt = src.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{6,})/);
                 if (yt) return 'https://www.youtube.com/embed/' + yt[1];
-                const vimeo = url.match(/vimeo\.com\/(\d+)/);
-                if (vimeo) return 'https://player.vimeo.com/video/' + vimeo[1];
-                return url;
+
+                // Bunny Stream: link share (/play/) atau domain lama tetap diarahkan ke
+                // /embed/ supaya bisa masuk iframe. Query (?token=&expires=) ikut dibawa.
+                const bunny = src.match(/^(?:https?:\/\/)?(?:[\w-]+\.)*(?:mediadelivery\.net|bunnycdn\.com)\/(?:embed|play)\/(\d+)\/([\w-]+)(.*)$/i);
+                if (bunny) return `https://iframe.mediadelivery.net/embed/${bunny[1]}/${bunny[2]}${bunny[3]}`;
+
+                // Google Drive/Docs tidak bisa di-embed lewat URL /view atau /edit.
+                const drive = src.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]{10,})/);
+                if (drive) return `https://drive.google.com/file/d/${drive[1]}/preview`;
+
+                const docs = src.match(/docs\.google\.com\/(document|presentation|spreadsheets)\/d\/([\w-]{10,})/);
+                if (docs) return `https://docs.google.com/${docs[1]}/d/${docs[2]}/preview`;
+
+                return src;
+            },
+            // Provider yang sudah pasti bisa diputar di dalam iframe.
+            isEmbeddableUrl(url) {
+                return /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/)|youtu\.be\/)/i.test(url)
+                    || /mediadelivery\.net\/|bunnycdn\.com\//i.test(url)
+                    || /drive\.google\.com\//i.test(url)
+                    || /docs\.google\.com\//i.test(url);
+            },
+            videoEmbedUrl(res) {
+                return this.embedUrl((res.content || {}).url || '');
             },
             // URL file PDF: biarkan URL absolut (http…) apa adanya, sisanya jadi path relatif root.
             pdfUrl(path) {
                 if (!path) return '';
                 return /^https?:\/\//i.test(path) ? path : ('/' + path.replace(/^\//, ''));
             },
-            // URL khusus iframe preview. Google Drive/Docs tidak bisa di-embed lewat
-            // URL /view atau /edit (Drive menampilkan "Anda memerlukan akses"), jadi
-            // ID-nya dikonversi ke bentuk /preview.
             pdfEmbedUrl(path) {
-                const url = this.pdfUrl(path);
+                return /^https?:\/\//i.test(String(path || '')) ? this.embedUrl(path) : this.pdfUrl(path);
+            },
+            // Link rekaman berupa file video langsung (.mp4/.webm/…) atau halaman embed.
+            isDirectVideoUrl(url) {
+                return /\.(mp4|webm|ogv|ogg|mov|m3u8|mpd)(\?|#|$)/i.test(String(url || ''));
+            },
+            // Tipe rekaman: dari pilihan admin ('embed' / 'direct'); data lama
+            // dideteksi otomatis dari bentuk URL-nya.
+            recordingKind(res) {
+                const content  = (res && res.content) || {};
+                const explicit = String(content.recording_type || '').toLowerCase();
+                if (explicit === 'embed' || explicit === 'direct') return explicit;
+
+                const url = this.recordingUrl(res);
                 if (!url) return '';
 
-                const drive = url.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]{10,})/);
-                if (drive) return `https://drive.google.com/file/d/${drive[1]}/preview`;
+                return this.isDirectVideoUrl(url) ? 'direct' : 'embed';
+            },
+            // Rekaman tipe video langsung → diputar dengan <video>.
+            recordingVideoUrl(res) {
+                return this.recordingKind(res) === 'direct' ? this.recordingUrl(res) : '';
+            },
+            // Rekaman tipe embed → diputar dengan <iframe>. Data lama (tanpa pilihan
+            // tipe) hanya di-embed kalau providernya dikenal.
+            recordingEmbedUrl(res) {
+                if (this.recordingKind(res) !== 'embed') return '';
 
-                const docs = url.match(/docs\.google\.com\/(document|presentation|spreadsheets)\/d\/([\w-]{10,})/);
-                if (docs) return `https://docs.google.com/${docs[1]}/d/${docs[2]}/preview`;
+                const url = this.recordingUrl(res);
+                if (!url) return '';
 
-                return url;
+                const explicit = String(((res && res.content) || {}).recording_type || '').toLowerCase();
+                if (explicit !== 'embed' && ! this.isEmbeddableUrl(url)) return '';
+
+                return this.embedUrl(url);
             },
             materialOverallPercent() {
                 const mats = this.data.materials || [];

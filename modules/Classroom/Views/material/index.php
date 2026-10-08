@@ -271,9 +271,8 @@ $resourceTypeShortLabels = [
                                 <div class="col-4 mb-2">
                                     <label class="form-label">Platform</label>
                                     <select name="platform" class="form-select content-field">
+                                        <option value="bunny">Bunny Stream</option>
                                         <option value="youtube">YouTube</option>
-                                        <option value="vimeo">Vimeo</option>
-                                        <option value="bunny">Bunny</option>
                                         <option value="other">Lainnya</option>
                                     </select>
                                 </div>
@@ -374,9 +373,18 @@ $resourceTypeShortLabels = [
                                 <label class="form-label">Link Meeting (Zoom / Google Meet)</label>
                                 <input type="text" name="meeting_url" class="form-control content-field" placeholder="https://zoom.us/j/... atau https://meet.google.com/...">
                             </div>
-                            <div class="mb-2">
-                                <label class="form-label">Link Rekaman</label>
-                                <input type="text" name="recording_url" class="form-control content-field" placeholder="https://youtube.com/... atau https://drive.google.com/...">
+                            <div class="row">
+                                <div class="col-8 mb-2">
+                                    <label class="form-label">Link Rekaman</label>
+                                    <input type="text" name="recording_url" class="form-control content-field" placeholder="https://iframe.mediadelivery.net/embed/431005/... — boleh tempel kode embed utuh">
+                                </div>
+                                <div class="col-4 mb-2">
+                                    <label class="form-label">Tipe Rekaman</label>
+                                    <select name="recording_type" class="form-select content-field">
+                                        <option value="embed">Embed iframe (Bunny, YouTube, Drive)</option>
+                                        <option value="direct">Video langsung (mp4 / webm)</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-6 mb-2"><label class="form-label">Deskripsi</label><input type="text" name="description" class="form-control content-field"></div>
@@ -507,7 +515,7 @@ function materialResourceEdit(materialId, resource) {
         url: ['url', 'open_in'], book_ref: ['book_title', 'author', 'chapter', 'page_start', 'page_end', 'isbn'],
         quiz: ['pass_score', 'time_limit_minutes', 'max_attempts'],
         submission: ['submission_type', 'deadline_offset_days', 'allowed_types', 'max_size_mb'],
-        meeting: ['meeting_url', 'recording_url', 'description', 'duration', 'mode']
+        meeting: ['meeting_url', 'recording_url', 'recording_type', 'description', 'duration', 'mode']
     };
     // Scope pencarian ke blok tipe aktif agar tidak salah isi pada input
     // dengan name duplikat (mis. name="url" ada di blok video DAN blok url).
@@ -705,8 +713,15 @@ function resourceDetailRows(type, content) {
         }
     };
 
+    // Admin boleh menempel kode embed utuh (<iframe src="…">) — preview pakai URL-nya saja.
+    const cleanLink = (v) => {
+        const raw = String(v || '').trim();
+        const m = raw.match(/<iframe[^>]*\ssrc\s*=\s*["']([^"']+)["']/i);
+        return (m ? m[1] : raw).trim();
+    };
+
     switch (type) {
-        case 'video': add('URL Video', content.url); add('Platform', content.platform); add('Durasi (menit)', content.duration); break;
+        case 'video': add('URL Video', cleanLink(content.url), cleanLink(content.url)); add('Platform', content.platform); add('Durasi (menit)', content.duration); break;
         case 'pdf': add('File Path', content.file_path); break;
         case 'audio': add('File Path', content.file_path); add('Durasi (menit)', content.duration); break;
         case 'slide': add('Embed URL', content.embed_url); add('Provider', content.provider); break;
@@ -721,7 +736,7 @@ function resourceDetailRows(type, content) {
             add('Tipe Pengumpulan', content.submission_type); add('Deadline (hari)', content.deadline_offset_days);
             add('Allowed Types', content.allowed_types); add('Max Size (MB)', content.max_size_mb);
             break;
-        case 'meeting': add('Link Meeting', content.meeting_url, content.meeting_url); add('Link Rekaman', content.recording_url, content.recording_url); add('Deskripsi', content.description); add('Durasi (menit)', content.duration); add('Mode', content.mode); break;
+        case 'meeting': add('Link Meeting', content.meeting_url, content.meeting_url); add('Link Rekaman', cleanLink(content.recording_url), cleanLink(content.recording_url)); add('Tipe Rekaman', content.recording_type); add('Deskripsi', content.description); add('Durasi (menit)', content.duration); add('Mode', content.mode); break;
     }
 
     const cell = (r) => {

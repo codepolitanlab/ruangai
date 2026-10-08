@@ -405,8 +405,8 @@ class PageController extends BaseController
     /**
      * POST /bootcamp/learn/claimtopic/{cm_id} — klaim sertifikat per pertemuan.
      *
-     * Syarat: peserta aktif kelas dan sesi (cls_class_materials.scheduled_at)
-     * sudah terlewati. Sertifikat disimpan sebagai entity_type='bootcamp_topic'
+     * Syarat: peserta aktif kelas dan sesi (cls_class_materials.scheduled_at +
+     * durasi resource meeting) sudah berakhir. Sertifikat disimpan sebagai entity_type='bootcamp_topic'
      * dengan entity_id = cls_class_materials.id (1 baris per peserta per pertemuan).
      */
     public function postClaimTopic($cmId)
@@ -428,11 +428,27 @@ class PageController extends BaseController
             return $this->respondSecure(['status' => 'failed', 'message' => 'Akses ditolak.']);
         }
 
-        // Syarat 1: sesi terlaksana (jadwal hanya dicek kalau diisi admin)
-        if (! empty($cm['scheduled_at']) && strtotime((string) $cm['scheduled_at']) > time()) {
+        // Syarat 1: sesi sudah berakhir = jadwal mulai + durasi resource meeting
+        // (jadwal kosong = tanpa batas waktu — sama dengan buildMaterials())
+        $meetingResources = $db->table('cls_learning_resources')
+            ->select('type, content')
+            ->where('material_id', (int) $cm['material_id'])
+            ->where('type', 'meeting')
+            ->where('deleted_at IS NULL')
+            ->get()
+            ->getResultArray();
+
+        foreach ($meetingResources as &$row) {
+            $row['content'] = LearningResourceModel::decodeContent($row['content']);
+        }
+        unset($row);
+
+        $sessionEnd = $this->sessionEndAt($cm['scheduled_at'], $this->sessionDurationMinutes($meetingResources));
+
+        if ($sessionEnd !== null && $sessionEnd > time()) {
             return $this->respondSecure([
                 'status'  => 'failed',
-                'message' => 'Sertifikat bisa diklaim setelah sesi pertemuan terlaksana.',
+                'message' => 'Sertifikat bisa diklaim setelah sesi pertemuan berakhir.',
             ]);
         }
 
@@ -557,6 +573,41 @@ class PageController extends BaseController
     }
 
     /**
+     * Durasi sesi (menit) dari daftar resource sebuah materi — diambil dari resource
+     * bertipe meeting. 0 bila tidak ada / tidak diisi admin.
+     */
+    private function sessionDurationMinutes(array $resources): int
+    {
+        foreach ($resources as $res) {
+            if (($res['type'] ?? '') !== 'meeting') {
+                continue;
+            }
+
+            $minutes = (int) ((($res['content'] ?? []))['duration'] ?? 0);
+            if ($minutes > 0) {
+                return $minutes;
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Akhir sesi = jadwal mulai + durasi. Durasi kosong → berakhir tepat di jadwal
+     * mulai. null bila jadwal belum diisi (sesi dianggap tanpa batas waktu).
+     */
+    private function sessionEndAt($scheduledAt, int $minutes): ?int
+    {
+        if (empty($scheduledAt)) {
+            return null;
+        }
+
+        $start = strtotime((string) $scheduledAt);
+
+        return $start === false ? null : $start + ($minutes * 60);
+    }
+
+    /**
      * Bangun daftar materi kelas + resource + status progres user.
      */
     private function buildMaterials($db, int $classId, int $userId): array
@@ -645,10 +696,11 @@ class PageController extends BaseController
             $cm['completed_count'] = $completedCount;
             $cm['progress_percent'] = $requiredCount > 0 ? (int) round(($completedCount / $requiredCount) * 100) : 0;
 
-            // Sertifikat pertemuan: tugas wajib topik selesai + jadwal (bila ada) sudah lewat
+            // Sertifikat pertemuan: tugas wajib topik selesai + sesi sudah berakhir
             $certificate = $topicCerts[(int) $cm['id']] ?? null;
             $tasksDone   = $requiredCount === 0 || $completedCount >= $requiredCount;
-            $sessionDone = empty($cm['scheduled_at']) || strtotime((string) $cm['scheduled_at']) <= time();
+            $sessionEnd  = $this->sessionEndAt($cm['scheduled_at'], $this->sessionDurationMinutes($resources));
+            $sessionDone = $sessionEnd === null || $sessionEnd <= time();
 
             $cm['topic_certificate'] = $certificate;
             $cm['topic_claim']       = [
@@ -659,7 +711,7 @@ class PageController extends BaseController
                 'reason'       => $certificate !== null
                     ? 'Sertifikat pertemuan ini sudah diklaim.'
                     : (! $sessionDone
-                        ? 'Sertifikat bisa diklaim setelah sesi pertemuan terlaksana.'
+                        ? 'Sertifikat bisa diklaim setelah sesi pertemuan berakhir.'
                         : (! $tasksDone
                             ? 'Selesaikan semua tugas wajib topik ini dulu (' . $completedCount . '/' . $requiredCount . ').'
                             : '')),
