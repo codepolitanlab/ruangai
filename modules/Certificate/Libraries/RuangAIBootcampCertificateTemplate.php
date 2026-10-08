@@ -57,7 +57,7 @@ class RuangAIBootcampCertificateTemplate extends CertificateTemplate
                         // Nama peserta — area kosong di atas garis (garis artwork di ~48%).
                         'name' => $this->createPosition(
                             xPct: 5.6,
-                            yPct: 44,
+                            yPct: 45.5,
                             maxWidthPct: 50,
                             fontMm: 10,
                             minFontMm: 5,
