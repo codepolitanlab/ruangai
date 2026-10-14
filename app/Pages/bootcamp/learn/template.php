@@ -568,7 +568,7 @@
                         @click="markProgressFromModal()">
                     <span x-show="activeResource && isSubmitting(activeCm.id, activeResource.id)" class="spinner-border spinner-border-sm" role="status"></span>
                     <span x-show="!activeResource || !isSubmitting(activeCm.id, activeResource.id)"><i class="bi bi-check2-circle"></i> <span x-text="activeResource && activeResource.type === 'meeting' ? 'Saya sudah Mengikuti/Lihat Rekaman' : 'Saya Sudah Paham'"></span></span>
-                </button
+                </button>
             </div>
         </div>
     </div>
