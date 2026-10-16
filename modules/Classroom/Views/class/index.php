@@ -98,6 +98,10 @@
                                             href="/<?= urlScope() ?>/classroom/classes/<?= $c['id'] ?>/feedbacks"><i class="bi bi-chat-square-text"></i></a>
                                         <a class="btn btn-sm btn-outline-primary" title="Edit"
                                             href="/<?= urlScope() ?>/classroom/classes/<?= $c['id'] ?>/edit"><i class="bi bi-pencil-square"></i></a>
+                                        <form method="POST" action="/<?= urlScope() ?>/classroom/classes/<?= $c['id'] ?>/duplicate"
+                                            class="d-inline" onsubmit="return confirm('Duplikasi kelas ini beserta jadwal materinya? Data peserta tidak ikut disalin.')">
+                                            <button type="submit" class="btn btn-sm btn-outline-info" title="Duplikasi"><i class="bi bi-copy"></i></button>
+                                        </form>
                                         <form method="POST" action="/<?= urlScope() ?>/classroom/classes/<?= $c['id'] ?>/delete"
                                             class="d-inline" onsubmit="return confirm('Hapus kelas ini?')">
                                             <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus"><i class="bi bi-trash"></i></button>

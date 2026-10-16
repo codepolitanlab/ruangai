@@ -309,6 +309,29 @@ class ClassRoom extends AdminController
     }
 
     /**
+     * Duplikasi kelas (baris kelas + jadwal materi + metadata resource).
+     * Salinan berstatus draft dan semua materi dalam keadaan tertutup.
+     */
+    public function duplicate($id)
+    {
+        try {
+            $newId = $this->model->duplicateWithSchedule((int) $id, user_id());
+
+            if (! $newId) {
+                throw new \RuntimeException('Kelas tidak ditemukan');
+            }
+
+            session()->setFlashdata('success_message', 'Kelas berhasil diduplikasi (status draft). Jadwal materi ikut disalin — periksa & perbarui tanggalnya.');
+
+            return redirect()->to(urlScope() . '/classroom/classes/' . $newId . '/schedule');
+        } catch (\Throwable $e) {
+            session()->setFlashdata('error_message', 'Terjadi kesalahan: ' . $e->getMessage());
+
+            return redirect()->back();
+        }
+    }
+
+    /**
      * Blocker aktivasi kelas:
      * 1. ada materi silabus belum ter-sync ke class_materials
      * 2. ada class_materials tanpa scheduled_at
