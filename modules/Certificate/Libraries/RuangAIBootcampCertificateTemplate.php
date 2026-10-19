@@ -67,12 +67,13 @@ class RuangAIBootcampCertificateTemplate extends CertificateTemplate
                             autoshrink: true
                         ),
                         // Topik pertemuan — dinamis dari additional_data.topic
-                        // (diisi PageController::postClaimTopic). Posisi sementara
-                        // disamakan dengan `name`; silakan atur sendiri nanti.
+                        // (diisi PageController::postClaimTopic). Kotak teks dilebarkan
+                        // ke kanan (88% lebar halaman) supaya judul panjang masih muat
+                        // satu baris dan tidak menimpa teks statis di bawahnya.
                         'topic' => $this->createPosition(
                             xPct: 5.6,
                             yPct: 57,
-                            maxWidthPct: 50,
+                            maxWidthPct: 88,
                             fontMm: 5.5,
                             minFontMm: 3.5,
                             weight: 'bold',

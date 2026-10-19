@@ -243,13 +243,12 @@
     function fitTextSizeByWidth(doc, text, targetWidthMm, baseFontMm, minFontMm) {
         let sizeMm = baseFontMm;
         doc.setFontSize(mmToPt(sizeMm));
-        let wPt = doc.getTextWidth(text);
-        let wMm = wPt * 25.4 / 72;
-        while (wMm > targetWidthMm && sizeMm > minFontMm) {
+        // Ukur dengan splitTextToSize — fungsi yang dipakai doc.text({ maxWidth }) saat
+        // membungkus teks — supaya hasil ukur sama dengan hasil render (getTextWidth bisa
+        // menghasilkan lebar berbeda untuk font custom, sehingga autoshrink tak mengecil).
+        while (doc.splitTextToSize(text, targetWidthMm).length > 1 && sizeMm > minFontMm) {
             sizeMm -= 0.2;
             doc.setFontSize(mmToPt(sizeMm));
-            wPt = doc.getTextWidth(text);
-            wMm = wPt * 25.4 / 72;
         }
         return sizeMm;
     }
