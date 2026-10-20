@@ -359,12 +359,13 @@ class ClassRoom extends AdminController
             }
         }
 
-        // 2. class_materials tanpa scheduled_at
+        // 2. class_materials tanpa scheduled_at (hanya materi silabus kelas ini)
         $unscheduled = $this->db->table('cls_class_materials cm')
             ->select('cm.id, m.title')
             ->join('cls_materials m', 'm.id = cm.material_id', 'left')
             ->where('cm.class_id', $classId)
             ->where('cm.scheduled_at IS NULL')
+            ->where('m.syllabus_id', $class['syllabus_id'])
             ->get()->getResultArray();
 
         foreach ($unscheduled as $row) {

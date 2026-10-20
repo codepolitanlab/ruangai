@@ -105,9 +105,17 @@ class Schedule extends AdminController
             return $this->notFound();
         }
 
-        $created = $this->classMaterialModel->syncFromSyllabus($class['id'], $class['syllabus_id']);
+        $result = $this->classMaterialModel->syncFromSyllabus($class['id'], $class['syllabus_id']);
 
-        session()->setFlashdata('success_message', "Sinkronisasi selesai. {$created} materi baru ditambahkan ke jadwal.");
+        $message = "Sinkronisasi selesai. {$result['created']} materi baru ditambahkan";
+        if ($result['removed'] > 0) {
+            $message .= ", {$result['removed']} baris lama (materi tidak ada di silabus) dihapus";
+        }
+        if ($result['kept'] > 0) {
+            $message .= ", {$result['kept']} baris lama dibiarkan karena sudah punya data peserta";
+        }
+
+        session()->setFlashdata('success_message', $message . '.');
 
         return redirect()->back();
     }
