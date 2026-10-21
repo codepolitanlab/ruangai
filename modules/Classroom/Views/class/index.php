@@ -44,7 +44,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th>ID</th>
                             <th>Nama Kelas</th>
                             <th>Silabus</th>
                             <th>Peserta</th>
@@ -58,7 +58,7 @@
                         <?php if (! empty($classes)) : ?>
                             <?php foreach ($classes as $i => $c) : ?>
                                 <tr>
-                                    <td><?= $i + 1 ?></td>
+                                    <td><?= esc($c['id']) ?></td>
                                     <td class="fw-bold">
                                         <?= esc($c['name']) ?>
                                         <?php if ($c['status'] === 'active') : ?>
