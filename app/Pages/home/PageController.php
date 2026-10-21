@@ -83,11 +83,10 @@ class PageController extends BaseController
         $this->data['my_bootcamps'] = $liveSessions;
 
         // ===== Kelas Terbaru (Beranda) — realtime dari cls_classes, hanya status active =====
-        // Anggota kelas diarahkan ke halaman belajar, pengunjung lain ke halaman intro.
+        // Semua kartu kelas mengarah ke situs utama RuangAI (link eksternal).
         $latestClasses = $db->table('cls_classes c')
-            ->select('c.id, c.name, c.thumbnail, c.description, c.start_date, s.name AS syllabus_name, cm.id AS membership_id')
+            ->select('c.id, c.name, c.thumbnail, c.description, c.start_date, s.name AS syllabus_name')
             ->join('cls_syllabuses s', 's.id = c.syllabus_id', 'left')
-            ->join('cls_class_members cm', 'cm.class_id = c.id AND cm.user_id = ' . (int) $jwt->user_id . " AND cm.status = 'active'", 'left')
             ->where('c.status', 'active')
             ->where('c.deleted_at IS NULL')
             ->orderBy('c.start_date', 'DESC')
@@ -96,24 +95,22 @@ class PageController extends BaseController
             ->getResultArray();
 
         foreach ($latestClasses as &$cls) {
-            $isMember               = ! empty($cls['membership_id']);
-            $cls['is_member']       = $isMember;
             $cls['course_title']    = $cls['name'];
             $cls['total_materials'] = (int) $db->table('cls_class_materials')
                 ->where('class_id', $cls['id'])
                 ->countAllResults();
             // Batch diambil dari akhiran nama kelas, mis. "Bootcamp Vibe Coding — Batch 1"
             $cls['batch_name']      = class_batch_label((string) $cls['name'], $cls['syllabus_name'] ?? null);
-            $cls['url']             = '/bootcamp/classes/' . $cls['id'] . ($isMember ? '/learn' : '/intro');
-            unset($cls['name'], $cls['membership_id']);
+            $cls['url']             = 'https://ruangai.id';
+            unset($cls['name']);
         }
         unset($cls);
 
         // Kartu statis (produk yang belum punya baris di cls_classes) — selalu tampil
-        // setelah kelas realtime. `url` kosong = kartu tampil tapi belum bisa diklik.
+        // setelah kelas realtime. Link menuju halaman produk masing-masing.
         $staticClasses = [
-            ['title' => 'Advance VibeCoding', 'batch' => 'Batch 1', 'meetings' => 9],
-            ['title' => 'Advance Agentic AI', 'batch' => 'Batch 1', 'meetings' => 9],
+            ['title' => 'Advance VibeCoding', 'batch' => 'Batch 1', 'meetings' => 9, 'url' => 'https://www.codepolitan.com/p/page-vibecoding'],
+            ['title' => 'Advance Agentic AI', 'batch' => 'Batch 1', 'meetings' => 9, 'url' => 'https://www.codepolitan.com/p/agentic-ai'],
         ];
 
         foreach ($staticClasses as $i => $static) {
@@ -123,8 +120,7 @@ class PageController extends BaseController
                 'batch_name'      => $static['batch'],
                 'total_materials' => $static['meetings'],
                 'thumbnail'       => null,
-                'url'             => '',
-                'is_member'       => false,
+                'url'             => $static['url'],
                 'is_static'       => true,
             ];
         }

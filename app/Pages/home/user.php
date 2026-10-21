@@ -85,7 +85,9 @@
                 <template x-for="(kelas, i) in data.latest_classes" :key="'home-latest-' + kelas.id">
                     <a class="rd-course" :class="[i === 0 ? 'rd-course-wide' : '', 'rd-course-' + ((i % 3) + 1)]"
                        :href="kelas.url || '#'"
-                       @click.prevent="kelas.url && $router.navigate(kelas.url)">
+                       :target="kelas.url && kelas.url.startsWith('http') ? '_blank' : null"
+                       :rel="kelas.url && kelas.url.startsWith('http') ? 'noopener' : null"
+                       @click.prevent="openClass(kelas.url)">
                         <div class="rd-course-star"><i class="bi bi-stars"></i></div>
                         <div class="rd-course-body">
                             <div class="rd-course-badges">

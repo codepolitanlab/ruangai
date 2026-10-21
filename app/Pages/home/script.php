@@ -324,6 +324,21 @@
       },
       setVideoTutorial(url) {
         this.meta.videoTutorial = url;
+      },
+
+      /**
+       * Buka kartu kelas: link eksternal (http/https) di tab baru,
+       * link internal lewat router SPA.
+       */
+      openClass(url) {
+        if (!url) return;
+
+        if (/^https?:\/\//i.test(url)) {
+          window.open(url, '_blank', 'noopener');
+          return;
+        }
+
+        this.$router.navigate(url);
       }
     };
   });
