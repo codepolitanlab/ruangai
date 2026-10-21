@@ -75,7 +75,7 @@
                 <h3 class="rd-promo-title"><span class="text-white">Mastery Class</span><br>Generative AI</h3>
                 <p class="rd-promo-sub">Bangun website portfolio personal yang profesional</p>
                 <div>
-                    <a href="/" class="rd-btn rd-btn-primary">Daftar Sekarang <i class="bi bi-arrow-right"></i></a>
+                    <a href="https://ruangai.id" target="_blank" class="rd-btn rd-btn-primary">Daftar Sekarang <i class="bi bi-arrow-right"></i></a>
                 </div>
             </div>
         </section>
