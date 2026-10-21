@@ -39,10 +39,11 @@ class Product extends AdminController
         $per_page            = 10;
         $current_page        = $this->request->getGet('page') ?? 1;
 
-        // Buat query dasar + join courses
+        // Buat query dasar + join courses (course yang sudah dihapus tidak diikutkan)
         $baseQuery = $courseProductsModel
             ->where('course_products.deleted_at', null)
             ->join('courses', 'courses.id = course_products.course_id')
+            ->where('courses.deleted_at', null)
             ->select('course_products.*, courses.course_title');
 
         // Terapkan filter
@@ -137,9 +138,10 @@ class Product extends AdminController
             $data['page_title'] = 'Edit Course Product';
         }
 
-        // Ambil data courses untuk dropdown
+        // Ambil data courses untuk dropdown (course yang sudah dihapus tidak diikutkan)
         $db              = \Config\Database::connect();
         $data['courses'] = $db->table('courses')
+            ->where('deleted_at', null)
             ->get()
             ->getResult();
 

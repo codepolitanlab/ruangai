@@ -92,6 +92,10 @@ class SyllabusModel extends Model
 
             $newSyllabusId = $this->insert($syllabus);
 
+            if (! $newSyllabusId) {
+                throw new \RuntimeException('Gagal menyimpan salinan silabus');
+            }
+
             // Deep copy materi + resource
             $materials = $db->table('cls_materials')
                 ->where('syllabus_id', $syllabusId)
@@ -100,13 +104,16 @@ class SyllabusModel extends Model
                 ->get()->getResultArray();
 
             foreach ($materials as $material) {
+                // Simpan id lama sebelum dihapus — dipakai untuk ambil resource materinya.
+                $oldMaterialId = (int) $material['id'];
+
                 unset($material['id'], $material['deleted_at']);
                 $material['syllabus_id'] = $newSyllabusId;
                 $db->table('cls_materials')->insert($material);
                 $newMaterialId = $db->insertID();
 
                 $resources = $db->table('cls_learning_resources')
-                    ->where('material_id', $material['id'])
+                    ->where('material_id', $oldMaterialId)
                     ->where('deleted_at IS NULL')
                     ->orderBy('order_seq', 'ASC')
                     ->get()->getResultArray();

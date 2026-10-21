@@ -21,9 +21,15 @@
         #bootcamp-learn .bl-pin { background: #fff6e6; color: #b26a00; border-radius: 999px; padding: 2px 8px; font-size: 0.7rem; font-weight: 700; }
         #bootcamp-learn .bl-material { border: 1px solid var(--rd-border); border-radius: 16px; margin-bottom: 12px; overflow: hidden; background: var(--rd-surface); position: relative; }
         #bootcamp-learn .bl-material-head { display: flex; align-items: center; gap: 12px; padding: 14px; cursor: pointer; }
+        #bootcamp-learn .bl-material-body { position: relative; background: var(--rd-surface-2, #1a2740); border-radius: 0 0 16px 16px; padding: 4px 8px 8px; }
+        #bootcamp-learn .bl-material.locked .bl-material-body { min-height: 150px; }
         #bootcamp-learn .bl-res { border-top: 1px dashed var(--rd-border); padding: 10px 14px; display: flex; flex-direction: column; }
         #bootcamp-learn .bl-res-drop { padding: 10px 0 2px; }
         #bootcamp-learn .bl-open-btn { width: 100%; }
+        #bootcamp-learn .bl-cert-row { background: rgba(255, 122, 26, 0.07); }
+        #bootcamp-learn .bl-cert-row .bl-open-btn { display: block; text-align: center; }
+        #bootcamp-learn .bl-cert-icon { background: #fff4e0; color: #b26a00; }
+        #bootcamp-learn .bl-cert-note { font-size: 0.78rem; color: var(--rd-text-muted); }
         #bootcamp-learn .bl-res-head { display: flex; align-items: center; gap: 10px; cursor: pointer; }
         #bootcamp-learn .bl-res-icon { width: 34px; height: 34px; border-radius: 10px; background: var(--rd-primary-soft, #eef4fb); display: flex; align-items: center; justify-content: center; color: var(--rd-primary); flex: none; }
         #bootcamp-learn .bl-res-title { font-weight: 600; font-size: 0.92rem; color: var(--rd-text); flex: 1; }
@@ -31,11 +37,20 @@
         #bootcamp-learn .bl-badge.done { background: #e6f6ec; color: #1a7f4b; }
         #bootcamp-learn .bl-badge.ongoing { background: #eef4fb; color: #2563eb; }
         #bootcamp-learn .bl-badge.wait { background: #f3f4f6; color: #6b7280; }
-        #bootcamp-learn .bl-btn { border: none; border-radius: 999px; padding: 9px 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
+        /* Varian tanpa pill: hanya teks berwarna (dipakai status resource). */
+        #bootcamp-learn .bl-badge.plain { background: none; padding: 0; }
+        /* Badge dengan ikon: x-show menghapus inline display, jadi tata letaknya lewat class. */
+        #bootcamp-learn .bl-badge.icon { display: inline-flex; align-items: center; gap: 5px; }
+        #bootcamp-learn .bl-btn { border: none; border-radius: 999px; padding: 9px 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer; text-decoration: none; text-align: center; }
         #bootcamp-learn .bl-btn.primary { background: var(--rd-primary); color: var(--rd-primary-contrast, #fff); }
         #bootcamp-learn .bl-btn.outline { background: transparent; border: 1.5px solid var(--rd-primary); color: var(--rd-primary); }
+        /* Tombol Gabung Zoom — warna biru khas Zoom, ukuran mengikuti isi (tidak block). */
+        #bootcamp-learn .bl-btn.zoom { background: #2d8cff; color: #fff; }
+        #bootcamp-learn .bl-btn.zoom:hover { background: #1f7ae8; }
         #bootcamp-learn .bl-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-        #bootcamp-learn .bl-lock { position: absolute; inset: 0; background: rgba(2, 13, 28, 0.9); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; z-index: 5; border-radius: 16px; padding: 20px; }
+        /* Tombol/link nonaktif: tidak bisa diklik sama sekali. */
+        #bootcamp-learn .bl-disabled { opacity: 0.5; pointer-events: none; cursor: not-allowed; }
+        #bootcamp-learn .bl-lock { position: absolute; inset: 0; background: rgba(2, 13, 28, 0.9); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; z-index: 5; border-radius: 0 0 16px 16px; padding: 20px; }
         #bootcamp-learn .bl-lock-box { text-align: center; max-width: 260px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 18px 20px; }
         #bootcamp-learn .bl-lock-box i { font-size: 1.8rem; color: var(--rd-primary); }
         #bootcamp-learn .bl-lock-title { font-weight: 700; color: var(--rd-text); margin-top: 8px; font-size: 0.95rem; }
@@ -48,11 +63,16 @@
         #bootcamp-learn .bl-pdf-wrap iframe { width: 100%; height: 58vh; min-height: 360px; border: 0; display: block; background: #fff; }
         #bootcamp-learn .bl-field { width: 100%; border: 1.5px solid var(--rd-border); border-radius: 12px; padding: 11px 14px; font-size: 0.9rem; outline: none; background: #fff; margin-top: 8px; }
         #bootcamp-learn .bl-field:focus { border-color: var(--rd-primary); }
+        #bootcamp-learn .bl-break { overflow-wrap: anywhere; word-break: break-word; }
         #bootcamp-learn .bl-star { font-size: 1.6rem; cursor: pointer; color: #d8dee6; }
         #bootcamp-learn .bl-star.on { color: #f5a623; }
         #bootcamp-learn .bl-res-head { cursor: pointer; }
         #bootcamp-learn .bl-modal-overlay { position: fixed; inset: 0; z-index: 1050; background: rgba(15,23,42,0.55); display: flex; align-items: center; justify-content: center; padding: 20px; }
-        #bootcamp-learn .bl-modal-sheet { width: 100%; max-width: 480px; max-height: 85vh; overflow-y: auto; background: #fff; border-radius: 20px; padding: 18px 20px 26px; }
+        /* Sheet modal selalu berlatar putih, sedangkan token tema dashboard itu gelap
+           (--rd-text: #FFFFFF). Override di sini agar semua teks di dalam modal terbaca. */
+        #bootcamp-learn .bl-modal-sheet { width: 100%; max-width: 480px; max-height: 85vh; overflow-y: auto; background: #fff; border-radius: 20px; padding: 18px 20px 26px; --rd-text: #1c2733; --rd-text-muted: #6b7280; --rd-border: #e5e7eb; --rd-surface: #fff; --rd-primary-soft: #eef4fb; }
+        /* x-show menghapus properti inline `display`, jadi tombol harus lewat class. */
+        #bootcamp-learn .bl-meet-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; }
         #bootcamp-learn .bl-modal-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
         #bootcamp-learn .bl-modal-close { border: none; background: none; font-size: 1.6rem; line-height: 1; color: #9aa5b1; cursor: pointer; }
     </style>
@@ -134,6 +154,11 @@
                         <div style="flex:1;min-width:0">
                             <div style="font-weight:700;color:var(--rd-text)" x-text="cm.material_title"></div>
                             <div style="font-size:0.8rem;color:var(--rd-text-muted)" x-text="`${cm.completed_count}/${cm.required_count} tugas selesai`"></div>
+                            <div style="font-size:0.78rem;color:var(--rd-text-muted);display:flex;align-items:center;gap:5px;margin-top:3px"
+                                 x-show="cm.scheduled_at">
+                                <i class="bi bi-calendar-event"></i>
+                                <span x-text="cm.scheduled_at ? ($heroicHelper.formatDate(cm.scheduled_at) + (String(cm.scheduled_at).length >= 16 ? ', ' + String(cm.scheduled_at).substring(11, 16) + ' WIB' : '')) : ''"></span>
+                            </div>
                         </div>
                         <span class="bl-badge" :class="cm.progress_percent===100 ? 'done' : 'ongoing'" x-text="cm.is_open ? (cm.progress_percent + '%') : 'Terkunci'"></span>
                         <i class="bi" :class="openMaterials[cm.id] ? 'bi-chevron-up' : 'bi-chevron-down'" style="color:var(--rd-text-muted)"></i>
@@ -162,7 +187,7 @@
                                 <div class="bl-res-head" @click="toggleResource(cm.id, res.id)">
                                     <div class="bl-res-icon"><i :class="resIcon(res.type)"></i></div>
                                     <div class="bl-res-title" x-text="res.title"></div>
-                                    <span class="bl-badge"
+                                    <span class="bl-badge plain"
                                           :class="res.progress==='completed' ? 'done' : (res.progress==='in_progress' ? 'ongoing' : 'wait')"
                                           x-text="res.progress==='completed' ? 'Selesai' : (res.progress==='in_progress' ? 'Proses' : 'Belum')"></span>
                                     <i class="bi" :class="openResources[cm.id+'-'+res.id] ? 'bi-chevron-up' : 'bi-chevron-down'" style="color:var(--rd-text-muted)"></i>
@@ -175,6 +200,30 @@
                                 </div>
                             </div>
                         </template>
+
+                        <!-- Sertifikat pertemuan: bisa diklaim setelah sesi terlaksana -->
+                        <div class="bl-res bl-cert-row" x-show="cm.is_open == 1">
+                            <div class="bl-res-head" style="cursor:default">
+                                <div class="bl-res-icon bl-cert-icon"><i class="bi bi-award"></i></div>
+                                <div style="flex:1;min-width:0">
+                                    <div class="bl-res-title">Sertifikat Pertemuan</div>
+                                    <div class="bl-cert-note" x-text="(cm.topic_certificate ? 'Sudah diklaim • ' + cm.topic_certificate.cert_code : (cm.topic_claim?.reason || 'Tugas wajib selesai. Sertifikat bisa diklaim.'))"></div>
+                                </div>
+                                <span class="bl-badge" :class="cm.topic_certificate ? 'done' : (cm.topic_claim?.allowed ? 'ongoing' : 'wait')"
+                                      x-text="cm.topic_certificate ? 'Diklaim' : (cm.topic_claim?.allowed ? 'Siap' : 'Belum')"></span>
+                            </div>
+                            <div class="bl-res-drop">
+                                <a x-show="cm.topic_certificate" :href="'/certificate/' + (cm.topic_certificate?.cert_code || '')" target="_blank" rel="noopener" class="bl-btn primary bl-open-btn">
+                                    <i class="bi bi-eye"></i> Lihat Sertifikat
+                                </a>
+                                <button type="button" x-show="!cm.topic_certificate" class="bl-btn primary bl-open-btn"
+                                        :disabled="!cm.topic_claim?.allowed || isTopicClaiming(cm.id)"
+                                        @click="claimTopicCertificate(cm.id)">
+                                    <span x-show="topicClaiming[cm.id]" class="spinner-border spinner-border-sm" role="status"></span>
+                                    <span x-show="!topicClaiming[cm.id]"><i class="bi bi-award"></i> Klaim Sertifikat</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </template>
@@ -203,6 +252,30 @@
     <!-- ==================== TAB SERTIFIKAT ==================== -->
     <template x-if="data.class && tab==='sertifikat'">
         <div class="bl-block">
+            <!-- Sertifikat per pertemuan -->
+            <div class="bl-card">
+                <div style="font-weight:700;color:var(--rd-text);margin-bottom:4px">Sertifikat per Pertemuan</div>
+                <p style="font-size:0.82rem;color:var(--rd-text-muted);margin:0 0 8px">Sertifikat tiap pertemuan bisa diklaim setelah semua tugas wajibnya selesai.</p>
+                <template x-for="cm in (data.materials || [])" :key="'topic-cert-' + cm.id">
+                    <div class="bl-member" style="border-bottom:1px solid var(--rd-border)">
+                        <div style="flex:1;min-width:0">
+                            <div style="font-weight:600;color:var(--rd-text)" x-text="cm.material_title"></div>
+                            <div class="bl-cert-note" x-text="cm.topic_certificate ? ('Diklaim • ' + cm.topic_certificate.cert_code) : (cm.topic_claim?.reason || 'Tugas wajib selesai. Sertifikat bisa diklaim.')"></div>
+                        </div>
+                        <a x-show="cm.topic_certificate" :href="'/certificate/' + (cm.topic_certificate?.cert_code || '')" target="_blank" rel="noopener" class="bl-btn outline" style="flex:none">
+                            <i class="bi bi-eye"></i> Lihat
+                        </a>
+                        <button type="button" x-show="!cm.topic_certificate" class="bl-btn primary" style="flex:none"
+                                :disabled="!cm.topic_claim?.allowed || isTopicClaiming(cm.id)"
+                                @click="claimTopicCertificate(cm.id)">
+                            <span x-show="topicClaiming[cm.id]" class="spinner-border spinner-border-sm" role="status"></span>
+                            <span x-show="!topicClaiming[cm.id]">Klaim</span>
+                        </button>
+                    </div>
+                </template>
+                <div x-show="(data.materials || []).length === 0" style="font-size:0.85rem;color:var(--rd-text-muted);text-align:center;padding:10px 0">Belum ada pertemuan.</div>
+            </div>
+
             <!-- Sudah ada sertifikat -->
             <template x-if="data.certificates && data.certificates.length > 0">
                 <div>
@@ -345,7 +418,7 @@
                 <template x-if="activeResource && activeResource.type==='pdf'">
                     <div>
                         <div class="bl-pdf-wrap" x-show="activeResource.content.file_path">
-                            <iframe :src="pdfUrl(activeResource.content.file_path)" title="Preview PDF" frameborder="0" allowfullscreen></iframe>
+                            <iframe :src="pdfEmbedUrl(activeResource.content.file_path)" title="Preview PDF" frameborder="0" allowfullscreen></iframe>
                         </div>
                         <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;flex-wrap:wrap">
                             <a x-show="activeResource.content.file_path" :href="pdfUrl(activeResource.content.file_path)" target="_blank" rel="noopener" class="bl-btn primary" style="display:inline-flex;align-items:center;gap:6px"><i class="bi bi-file-earmark-pdf"></i> Buka PDF Baru</a>
@@ -376,7 +449,7 @@
                 <template x-if="activeResource && activeResource.type==='url'">
                     <div>
                         <a :href="activeResource.content.url" target="_blank" rel="noopener" class="bl-btn primary" style="display:inline-flex;align-items:center;gap:6px"><i class="bi bi-box-arrow-up-right"></i> Buka Tautan</a>
-                        <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="activeResource.content.instructions" x-text="activeResource.content.instructions"></p>
+                        <p class="bl-break" style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="activeResource.content.instructions" x-text="activeResource.content.instructions"></p>
                     </div>
                 </template>
 
@@ -398,12 +471,40 @@
                 <template x-if="activeResource && activeResource.type==='meeting'">
                     <div style="padding:12px;border:1px solid var(--rd-border);border-radius:12px;background:#fff">
                         <div style="font-weight:700;color:var(--rd-text)" x-text="activeResource.title"></div>
-                        <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:6px" x-show="activeResource.content.description" x-text="activeResource.content.description"></p>
+                        <p class="bl-break" style="font-size:0.85rem;color:var(--rd-text-muted);margin:6px 0 0" x-show="activeResource.content.description" x-html="linkify(activeResource.content.description)"></p>
                         <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
                             <span class="bl-badge wait" x-show="activeResource.content.duration" x-text="activeResource.content.duration + ' menit'"></span>
-                            <span class="bl-badge wait" x-show="activeResource.content.mode" x-text="'Mode: ' + activeResource.content.mode"></span>
+                            <span class="bl-badge wait" x-show="activeResource.content.mode" x-text="meetingModeLabel(activeResource.content.mode)"></span>
                         </div>
-                        <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="activeResource.content.instructions" x-text="activeResource.content.instructions"></p>
+                        <!-- Sesi masih berjalan: tombol Zoom. Sesi berakhir: tampil sebagai badge. -->
+                        <a x-show="meetingUrl(activeResource) && !meetingEnded(activeCm, activeResource)"
+                           :href="meetingUrl(activeResource)" target="_blank" rel="noopener"
+                           class="bl-btn zoom bl-meet-btn">
+                            <i class="bi bi-camera-video"></i> Gabung Zoom
+                        </a>
+                        <div x-show="meetingUrl(activeResource) && meetingEnded(activeCm, activeResource)" style="margin-top:12px">
+                            <span class="bl-badge wait icon">
+                                <i class="bi bi-camera-video"></i> Sesi Zoom Berakhir
+                            </span>
+                        </div>
+                        <!-- Rekaman: muncul kalau link tersedia, aktif setelah durasi sesi berakhir. -->
+                        <div class="bl-video-wrap" x-show="meetingEnded(activeCm, activeResource) && recordingEmbedUrl(activeResource)" style="margin-top:12px">
+                            <iframe :src="recordingEmbedUrl(activeResource)" title="Rekaman sesi" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <!-- Rekaman bertipe video langsung (.mp4/.webm) -->
+                        <video x-show="meetingEnded(activeCm, activeResource) && recordingVideoUrl(activeResource)"
+                               :src="recordingVideoUrl(activeResource)" controls preload="metadata"
+                               style="width:100%;margin-top:12px;border-radius:12px;background:#000"></video>
+                        <a x-show="recordingUrl(activeResource)" :href="recordingUrl(activeResource)" target="_blank" rel="noopener"
+                           class="bl-btn primary bl-meet-btn" style="margin-top:10px"
+                           :class="{ 'bl-disabled': !meetingEnded(activeCm, activeResource) }">
+                            <i class="bi bi-play-circle"></i> Tonton Rekaman
+                        </a>
+                        <p class="bl-cert-note" style="margin:8px 0 0"
+                           x-show="recordingUrl(activeResource) && !meetingEnded(activeCm, activeResource)">
+                            Link rekaman aktif setelah sesi berakhir.
+                        </p>
+                        <p class="bl-break" style="font-size:0.85rem;color:var(--rd-text-muted);margin:10px 0 0" x-show="activeResource.content.instructions" x-html="linkify(activeResource.content.instructions)"></p>
                     </div>
                 </template>
 
@@ -459,14 +560,14 @@
                     </div>
                 </template>
 
-                <!-- Tombol Saya Sudah Paham -->
+                <!-- Tombol Saya Sudah Paham (untuk sesi meeting: muncul setelah sesi berakhir) -->
                 <button type="button"
-                        x-show="activeResource && isViewType(activeResource.type) && activeResource.progress !== 'completed' && activeCm && activeCm.is_open == 1"
+                        x-show="activeResource && isViewType(activeResource.type) && activeResource.progress !== 'completed' && activeCm && activeCm.is_open == 1 && isResourceReady(activeCm, activeResource)"
                         class="bl-btn primary" style="margin-top:14px;width:100%"
                         :disabled="activeResource ? isSubmitting(activeCm.id, activeResource.id) : true"
                         @click="markProgressFromModal()">
                     <span x-show="activeResource && isSubmitting(activeCm.id, activeResource.id)" class="spinner-border spinner-border-sm" role="status"></span>
-                    <span x-show="!activeResource || !isSubmitting(activeCm.id, activeResource.id)"><i class="bi bi-check2-circle"></i> Saya Sudah Paham</span>
+                    <span x-show="!activeResource || !isSubmitting(activeCm.id, activeResource.id)"><i class="bi bi-check2-circle"></i> <span x-text="activeResource && activeResource.type === 'meeting' ? 'Saya sudah Mengikuti/Lihat Rekaman' : 'Saya Sudah Paham'"></span></span>
                 </button>
             </div>
         </div>

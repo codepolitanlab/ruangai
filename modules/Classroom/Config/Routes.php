@@ -36,6 +36,7 @@ $routes->group(
         $routes->get('classes/resources', 'ClassRoom::resources'); // Checklist resource submission
         $routes->post('classes/store', 'ClassRoom::store'); // Create kelas
         $routes->post('classes/(:num)/update', 'ClassRoom::update/$1'); // Update kelas
+        $routes->post('classes/(:num)/duplicate', 'ClassRoom::duplicate/$1'); // Duplikasi kelas + jadwal
         $routes->post('classes/(:num)/delete', 'ClassRoom::delete/$1'); // Delete kelas
 
         // ============ SCHEDULE ============

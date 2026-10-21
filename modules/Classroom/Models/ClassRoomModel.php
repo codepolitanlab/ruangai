@@ -76,4 +76,68 @@ class ClassRoomModel extends Model
             ->where('status', 'active')
             ->countAllResults();
     }
+
+    /**
+     * Duplikasi kelas: salinan baris kelas + jadwal materi (cls_class_materials)
+     * + metadata resource (cls_class_material_resources).
+     * Data peserta & aktivitas (members, progress, submission, feed, notifikasi,
+     * feedback, nilai) TIDAK disalin — salinan dipakai sebagai kerangka batch baru.
+     */
+    public function duplicateWithSchedule(int $classId, ?int $createdBy = null): ?int
+    {
+        $class = $this->find($classId);
+        if (! $class) {
+            return null;
+        }
+
+        $db = $this->db;
+        $db->transBegin();
+
+        try {
+            unset($class['id'], $class['created_at'], $class['updated_at'], $class['deleted_at']);
+            $class['name']   = $class['name'] . ' (Salinan)';
+            $class['status'] = 'draft'; // salinan wajib ditinjau ulang sebelum diaktifkan
+            if ($createdBy !== null) {
+                $class['created_by'] = $createdBy;
+            }
+
+            $newClassId = $this->insert($class);
+
+            if (! $newClassId) {
+                throw new \RuntimeException('Gagal menyimpan salinan kelas');
+            }
+
+            // Jadwal materi ikut tersalin (tanggal, catatan, info meeting), tapi status
+            // buka direset supaya admin membuka materi sesuai jadwal baru.
+            // Catatan: cls_class_materials / cls_class_material_resources tidak punya deleted_at.
+            $schedules = $db->table('cls_class_materials')
+                ->where('class_id', $classId)
+                ->get()->getResultArray();
+
+            foreach ($schedules as $schedule) {
+                unset($schedule['id'], $schedule['created_at'], $schedule['updated_at'], $schedule['deleted_at']);
+                $schedule['class_id']  = $newClassId;
+                $schedule['is_open']   = 0;
+                $schedule['opened_at'] = null;
+                $db->table('cls_class_materials')->insert($schedule);
+            }
+
+            $metadata = $db->table('cls_class_material_resources')
+                ->where('class_id', $classId)
+                ->get()->getResultArray();
+
+            foreach ($metadata as $meta) {
+                unset($meta['id'], $meta['created_at'], $meta['updated_at'], $meta['deleted_at']);
+                $meta['class_id'] = $newClassId;
+                $db->table('cls_class_material_resources')->insert($meta);
+            }
+
+            $db->transCommit();
+
+            return $newClassId;
+        } catch (\Throwable $e) {
+            $db->transRollback();
+            throw $e;
+        }
+    }
 }

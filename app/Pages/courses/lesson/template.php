@@ -315,8 +315,12 @@
         /* Konten video & teks */
         #lesson_detail .video-container { background: #000; }
         #lesson_detail .lesson-content { color: var(--rd-text-muted); }
+        #lesson_detail .lesson-content h1,
         #lesson_detail .lesson-content h2,
-        #lesson_detail .lesson-content h3 { color: var(--rd-text); }
+        #lesson_detail .lesson-content h3,
+        #lesson_detail .lesson-content h4,
+        #lesson_detail .lesson-content h5,
+        #lesson_detail .lesson-content h6 { color: var(--rd-text) !important; }
         #lesson_detail .lesson-content p { color: var(--rd-text-muted); }
         #lesson_detail .lesson-content a { color: var(--rd-primary); }
 

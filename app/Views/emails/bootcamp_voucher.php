@@ -5,6 +5,12 @@ $secondaryColor = '#E7E725';     // Warna aksen
 $logoUrl        = 'https://image.web.id/images/clipboard-image-1753328088.png';
 $bootcampUrl    = $bootcamp_url ?? 'https://ruangai.codepolitan.com/bootcamp';
 $productTitle   = $product_title ?? ($class_name ?? 'Bootcamp');
+
+// Link langsung agar user tidak bingung
+$appUrl      = 'https://ruangai.codepolitan.com';
+$loginUrl    = $appUrl . '/masuk';
+$registerUrl = $appUrl . '/registrasi';
+$voucherUrl  = $appUrl . '/voucher';
 ?>
 
 <!DOCTYPE html>
@@ -71,6 +77,10 @@ $productTitle   = $product_title ?? ($class_name ?? 'Bootcamp');
         font-weight: bold;
         margin: 10px 0;
       }
+      .content a {
+        color: <?= $primaryColor ?>;
+        font-weight: 600;
+      }
       .footer {
         padding: 20px;
         font-size: 14px;
@@ -105,13 +115,17 @@ $productTitle   = $product_title ?? ($class_name ?? 'Bootcamp');
 
                 <p>Cara menggunakan kode voucher:</p>
                 <ol>
-                  <li>Login ke akun RuangAI kamu. Registrasi terlebih dahulu bila belum punya akun di RuangAI.</li>
-                  <li>Buka halaman <strong>Klaim Voucher</strong>, lalu masukkan kode di atas.</li>
+                  <li><a href="<?= esc($loginUrl) ?>">Login ke akun RuangAI</a>. Belum punya akun? <a href="<?= esc($registerUrl) ?>">Registrasi di sini</a>.</li>
+                  <li>Buka halaman <a href="<?= esc($voucherUrl) ?>"><strong>Klaim Voucher</strong></a>, lalu masukkan kode di atas.</li>
                   <li>Kamu akan otomatis terdaftar sebagai peserta kelas bootcamp <strong><?= esc($productTitle) ?></strong>.</li>
                 </ol>
 
                 <p style="text-align:center;">
-                  <a class="btn" href="<?= esc($bootcampUrl) ?>">Buka Halaman Bootcamp</a>
+                  <a class="btn" href="<?= esc($voucherUrl) ?>">Klaim Voucher Sekarang</a>
+                </p>
+
+                <p style="text-align:center;margin-top:0;">
+                  <a href="<?= esc($bootcampUrl) ?>">Buka Halaman Bootcamp</a>
                 </p>
 
                 <p>Jika ada kendala, silakan hubungi tim kami. Selamat belajar!</p>

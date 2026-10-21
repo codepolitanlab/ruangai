@@ -19,7 +19,7 @@ class Sales extends AdminController
         $page    = max(1, (int) ($this->request->getGet('page') ?: 1));
         $filter  = $this->request->getGet('filter') ?? [];
 
-        // "Penjualan" = voucher yang sudah dipakai/diklaim member.
+        // Tampilkan semua voucher (claimed maupun unclaimed).
         $liveBatchJoin = 'live_batch.id = JSON_UNQUOTE(JSON_EXTRACT(vouchers.metadata, \'$.live_batch_id\'))';
         $courseJoin    = "courses.id = vouchers.object_id AND vouchers.object_type = 'course'";
         $classJoin     = "cls_classes.id = vouchers.object_id AND vouchers.object_type = 'bootcamp'";
@@ -54,11 +54,11 @@ class Sales extends AdminController
                     'id'      => 'vouchers.id',
                     'name'    => 'vouchers.name',
                     'claimed' => 'vouchers.claimed',
-                    default   => 'vouchers.claimed',
+                    default   => 'vouchers.created_at',
                 };
                 $b->orderBy($orderField, $filter['order'] === 'asc' ? 'asc' : 'desc');
             } else {
-                $b->orderBy('vouchers.claimed', 'desc');
+                $b->orderBy('vouchers.created_at', 'desc');
             }
 
             return $b;
@@ -71,8 +71,7 @@ class Sales extends AdminController
             ->join('cls_classes', $classJoin, 'left')
             ->join('users', 'users.id = vouchers.claimed_by', 'left')
             ->join('live_batch', $liveBatchJoin, 'left')
-            ->where('vouchers.deleted_at', null)
-            ->where('vouchers.claimed IS NOT NULL', null, false);
+            ->where('vouchers.deleted_at', null);
         $countBuilder = $apply($countBuilder);
         $countRow     = $countBuilder->get()->getRow();
         $total        = $countRow ? (int) $countRow->total : 0;
@@ -84,8 +83,7 @@ class Sales extends AdminController
             ->join('cls_classes', $classJoin, 'left')
             ->join('users', 'users.id = vouchers.claimed_by', 'left')
             ->join('live_batch', $liveBatchJoin, 'left')
-            ->where('vouchers.deleted_at', null)
-            ->where('vouchers.claimed IS NOT NULL', null, false);
+            ->where('vouchers.deleted_at', null);
         $builder = $apply($builder);
 
         $vouchers = $builder

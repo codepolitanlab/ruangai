@@ -15,11 +15,21 @@ class Student extends AdminController
     public function index($course_id = null)
     {
         $students = new \Course\Models\CourseStudentModel();
+        $db       = \Config\Database::connect();
+
+        // course_students bisa punya baris duplikat per user → pakai baris terbaru saja.
+        // Dedupe lewat subquery MAX(id); GROUP BY user_id + SELECT course_students.* tidak valid
+        // saat ONLY_FULL_GROUP_BY aktif (error 1055).
+        $latestIds = $db->table('course_students')
+            ->select('MAX(id) AS id')
+            ->where('course_id', $course_id)
+            ->groupBy('user_id');
 
         // Base query with joins and subqueries
-        $students->select('course_students.*, users.name, users.email, users.last_active, phone');
+        $students->select('course_students.*, users.name, users.email, users.last_active, users.phone');
+        $students->join('(' . $latestIds->getCompiledSelect() . ') latest', 'latest.id = course_students.id');
         $students->join('users', 'users.id = course_students.user_id');
-        $students->where('course_id', $course_id);
+        $students->where('course_students.course_id', $course_id);
 
         // Apply filters
         $filter = $this->request->getGet('filter');
@@ -31,7 +41,7 @@ class Student extends AdminController
                 $students->like('users.email', $filter['email']);
             }
             if (! empty($filter['phone'])) {
-                $students->like('vouchers.phone', $filter['phone']);
+                $students->like('users.phone', $filter['phone']);
             }
             if (! empty($filter['progress'])) {
                 $students->like('course_students.progress', $filter['progress']);
@@ -45,7 +55,7 @@ class Student extends AdminController
                 $orderField = match ($filter['field']) {
                     'name'            => 'users.name',
                     'email'           => 'users.email',
-                    'phone'           => 'vouchers.phone',
+                    'phone'           => 'users.phone',
                     'progress'        => 'course_students.progress',
                     'progress_update' => 'course_students.progress_update',
                     default           => 'course_students.created_at'
@@ -62,7 +72,7 @@ class Student extends AdminController
         $perpage = (int) $this->request->getGet('perpage') ?: 10;
 
         // Paginate results
-        $data['students'] = $students->groupBy('course_students.user_id')->asObject()->paginate($perpage);
+        $data['students'] = $students->asObject()->paginate($perpage);
         $data['pager']    = $students->pager;
 
         $data['total_student'] = count($data['students']);
