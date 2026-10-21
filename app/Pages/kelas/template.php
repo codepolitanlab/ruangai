@@ -89,6 +89,7 @@
 		}
 		#kelas .kl-badge-live { color: var(--rd-green); }
 		#kelas .kl-badge-online { color: var(--rd-primary); }
+		#kelas .kl-badge-done { color: var(--rd-text-muted); }
 		#kelas .kl-card-title {
 			font-size: 0.98rem;
 			font-weight: 700;
@@ -305,9 +306,9 @@
 				</div>
 			</template>
 
-			<!-- ===== Bootcamp yang sedang berlangsung (yang saya ikuti) ===== -->
+			<!-- ===== Bootcamp yang saya ikuti (aktif & selesai) ===== -->
 			<section x-cloak x-show="(data?.my_bootcamps?.length ?? 0) > 0">
-				<div class="kl-list-title">Bootcamp yang Sedang Berlangsung</div>
+				<div class="kl-list-title">Bootcamp yang Saya Ikuti</div>
 
 				<div class="kl-list">
 					<template x-for="bootcamp in data.my_bootcamps" :key="'my-bootcamp-' + bootcamp.id">
@@ -317,7 +318,8 @@
 								<i class="bi bi-mortarboard" x-show="!bootcamp.thumbnail"></i>
 							</div>
 							<div class="kl-card-body">
-								<span class="kl-badge kl-badge-live">Live Class</span>
+								<span class="kl-badge kl-badge-live" x-show="bootcamp.status !== 'done'">Live Class</span>
+								<span class="kl-badge kl-badge-done" x-show="bootcamp.status === 'done'"><i class="bi bi-check2-circle"></i> Selesai</span>
 
 								<div class="kl-card-title" x-text="bootcamp.course_title"></div>
 

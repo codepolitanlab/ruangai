@@ -33,14 +33,16 @@ class PageController extends BaseController
             'email' => $jwt->user['email'] ?? '',
         ];
 
-        // ===== Bootcamp yang sedang berlangsung (yang saya ikuti) =====
+        // ===== Bootcamp yang saya ikuti: aktif + yang sudah selesai (done) =====
+        // Kelas done tetap ditampilkan supaya riwayat batch sebelumnya bisa dibuka lagi.
         $liveRows = $db->table('cls_classes c')
-            ->select('c.id, c.name, c.thumbnail, c.description, c.start_date, cm.enrolled_at, s.name AS syllabus_name')
+            ->select('c.id, c.name, c.status, c.thumbnail, c.description, c.start_date, cm.enrolled_at, s.name AS syllabus_name')
             ->join('cls_class_members cm', 'cm.class_id = c.id AND cm.user_id = ' . $userId)
             ->join('cls_syllabuses s', 's.id = c.syllabus_id', 'left')
             ->where('cm.status', 'active')
-            ->where('c.status', 'active')
+            ->whereIn('c.status', ['active', 'done'])
             ->where('c.deleted_at IS NULL')
+            ->orderBy('c.status', 'ASC') // 'active' lebih dulu, lalu 'done'
             ->orderBy('c.start_date', 'DESC')
             ->get()
             ->getResultArray();
@@ -64,8 +66,9 @@ class PageController extends BaseController
                 'id'              => $classId,
                 'course_title'    => $cls['name'],
                 'thumbnail'       => $cls['thumbnail'],
-                // Batch diambil dari akhiran nama, mis. "Bootcamp Vibe Coding — Batch 1"
-                'batch_name'      => preg_match('/[—–-]\s*(.+)$/u', (string) $cls['name'], $m) ? trim($m[1]) : null,
+                'status'          => $cls['status'],
+                // Batch dari akhiran nama kelas, fallback nama silabus (mis. "Batch 2")
+                'batch_name'      => class_batch_label((string) $cls['name'], $cls['syllabus_name'] ?? null),
                 'syllabus_name'   => $cls['syllabus_name'],
                 'total_materials' => $materialCounts[$classId] ?? 0,
                 'url'             => '/bootcamp/classes/' . $classId . '/intro',

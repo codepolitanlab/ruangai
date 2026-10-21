@@ -72,7 +72,7 @@ class PageController extends BaseController
                 ->where('class_id', $cls['id'])
                 ->countAllResults();
             // Batch diambil dari akhiran nama kelas, mis. "Bootcamp Vibe Coding — Batch 1"
-            $cls['batch_name']      = $this->batchLabel((string) $cls['name'], $cls['syllabus_name'] ?? null);
+            $cls['batch_name']      = class_batch_label((string) $cls['name'], $cls['syllabus_name'] ?? null);
             // Klik langsung masuk ke kelas (learn), tanpa lewat intro
             $cls['url']             = '/bootcamp/classes/' . $cls['id'] . '/learn';
             unset($cls['name']);
@@ -103,7 +103,7 @@ class PageController extends BaseController
                 ->where('class_id', $cls['id'])
                 ->countAllResults();
             // Batch diambil dari akhiran nama kelas, mis. "Bootcamp Vibe Coding — Batch 1"
-            $cls['batch_name']      = $this->batchLabel((string) $cls['name'], $cls['syllabus_name'] ?? null);
+            $cls['batch_name']      = class_batch_label((string) $cls['name'], $cls['syllabus_name'] ?? null);
             $cls['url']             = '/bootcamp/classes/' . $cls['id'] . ($isMember ? '/learn' : '/intro');
             unset($cls['name'], $cls['membership_id']);
         }
@@ -369,25 +369,6 @@ class PageController extends BaseController
             'message' => 'Email has been verified',
             'jwt'     => $newJwt,
         ]);
-    }
-
-    /**
-     * Label batch untuk kartu kelas:
-     * 1) akhiran nama kelas, mis. "Bootcamp Vibe Coding — Batch 1"
-     * 2) nama silabus bila memang berbentuk label batch (mis. "Batch 2")
-     * null bila tidak ada — badge batch disembunyikan.
-     */
-    private function batchLabel(string $className, ?string $syllabusName = null): ?string
-    {
-        if (preg_match('/\s+[—–-]\s*(.+)$/u', $className, $m) && trim($m[1]) !== '') {
-            return trim($m[1]);
-        }
-
-        if ($syllabusName !== null && preg_match('/\bbatch\b/i', $syllabusName)) {
-            return trim($syllabusName);
-        }
-
-        return null;
     }
 
     /**
