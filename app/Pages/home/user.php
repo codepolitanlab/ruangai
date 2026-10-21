@@ -1,18 +1,13 @@
 
 <?php
 /**
- * Kartu kelas di Beranda — STATIS, dipakai untuk jualan.
+ * Kartu kelas di Beranda.
  *
- * Ganti `url` dengan link checkout produk (boleh URL dari platform lain).
- * Selama `url` masih '#' / kosong, kartu tampil tapi belum bisa diklik.
- * Kartu pertama otomatis tampil lebar (full width), sisanya 2 kolom.
- * Warna aksen mengikuti urutan: oranye, teal, ungu.
+ * Daftar "Kelas Terbaru" diambil realtime dari tabel `cls_classes` (status active)
+ * lewat PageController::getData() → `data.latest_classes`:
+ *  - anggota kelas → link ke /bootcamp/classes/{id}/learn
+ *  - pengunjung lain → link ke /bootcamp/classes/{id}/intro
  */
-$kelasTerbaru = [
-    ['title' => 'Mastery Class: Jago Bikin Konten dengan AI', 'batch' => 'Batch 1', 'pertemuan' => 4, 'url' => '#'],
-    ['title' => 'Advance VibeCoding',          'batch' => 'Batch 1', 'pertemuan' => 9, 'url' => '#'],
-    ['title' => 'Advance Agentic AI',          'batch' => 'Batch 1', 'pertemuan' => 9, 'url' => '#'],
-];
 ?>
 <div class="appContent py-4 rd-dashboard" style="min-height:90vh">
 
@@ -84,27 +79,28 @@ $kelasTerbaru = [
                 </div>
             </div>
         </section>
-        <h3 class="rd-section-title mt-4">Kelas Terbaru</h3>
-        <div class="rd-course-grid">
-            <?php foreach ($kelasTerbaru as $i => $kelas): ?>
-                <?php $placeholder = in_array(trim((string) $kelas['url']), ['', '#'], true); ?>
-                <a class="rd-course<?= $i === 0 ? ' rd-course-wide' : '' ?> rd-course-<?= ($i % 3) + 1 ?>"
-                   href="<?= esc($placeholder ? '#' : $kelas['url'], 'attr') ?>"
-                   <?= $placeholder ? '@click.prevent.stop' : '' ?>>
-                    <div class="rd-course-star"><i class="bi bi-stars"></i></div>
-                    <div class="rd-course-body">
-                        <div class="rd-course-badges">
-                            <span class="rd-badge rd-badge-solid"><i class="bi bi-camera-video"></i> Live Class</span>
-                            <span class="rd-badge rd-badge-outline"><?= esc($kelas['batch']) ?></span>
+        <div x-cloak x-show="(data?.latest_classes?.length ?? 0) > 0">
+            <h3 class="rd-section-title mt-4">Kelas Terbaru</h3>
+            <div class="rd-course-grid">
+                <template x-for="(kelas, i) in data.latest_classes" :key="'home-latest-' + kelas.id">
+                    <a class="rd-course" :class="[i === 0 ? 'rd-course-wide' : '', 'rd-course-' + ((i % 3) + 1)]"
+                       :href="kelas.url || '#'"
+                       @click.prevent="kelas.url && $router.navigate(kelas.url)">
+                        <div class="rd-course-star"><i class="bi bi-stars"></i></div>
+                        <div class="rd-course-body">
+                            <div class="rd-course-badges">
+                                <span class="rd-badge rd-badge-solid"><i class="bi bi-camera-video"></i> Live Class</span>
+                                <span class="rd-badge rd-badge-outline" x-show="kelas.batch_name" x-text="kelas.batch_name"></span>
+                            </div>
+                            <h4 class="rd-course-title" x-text="kelas.course_title"></h4>
+                            <div class="rd-course-meta">
+                                <i class="bi bi-play-fill"></i>
+                                <span x-text="(kelas.total_materials || 0) + ' Pertemuan'"></span>
+                            </div>
                         </div>
-                        <h4 class="rd-course-title"><?= esc($kelas['title']) ?></h4>
-                        <div class="rd-course-meta">
-                            <i class="bi bi-play-fill"></i>
-                            <span><?= (int) $kelas['pertemuan'] ?> Pertemuan</span>
-                        </div>
-                    </div>
-                </a>
-            <?php endforeach; ?>
+                    </a>
+                </template>
+            </div>
         </div>
     </section>
 

@@ -72,7 +72,7 @@ class PageController extends BaseController
                 ->where('class_id', $cls['id'])
                 ->countAllResults();
             // Batch diambil dari akhiran nama kelas, mis. "Bootcamp Vibe Coding — Batch 1"
-            $cls['batch_name']      = preg_match('/[—–-]\s*(.+)$/u', $cls['name'], $m) ? trim($m[1]) : null;
+            $cls['batch_name']      = $this->batchLabel((string) $cls['name'], $cls['syllabus_name'] ?? null);
             // Klik langsung masuk ke kelas (learn), tanpa lewat intro
             $cls['url']             = '/bootcamp/classes/' . $cls['id'] . '/learn';
             unset($cls['name']);
@@ -81,6 +81,55 @@ class PageController extends BaseController
 
         // Bootcamp aktif yang diikuti — dipakai section "Bootcamp Aktif" di Beranda
         $this->data['my_bootcamps'] = $liveSessions;
+
+        // ===== Kelas Terbaru (Beranda) — realtime dari cls_classes, hanya status active =====
+        // Anggota kelas diarahkan ke halaman belajar, pengunjung lain ke halaman intro.
+        $latestClasses = $db->table('cls_classes c')
+            ->select('c.id, c.name, c.thumbnail, c.description, c.start_date, s.name AS syllabus_name, cm.id AS membership_id')
+            ->join('cls_syllabuses s', 's.id = c.syllabus_id', 'left')
+            ->join('cls_class_members cm', 'cm.class_id = c.id AND cm.user_id = ' . (int) $jwt->user_id . " AND cm.status = 'active'", 'left')
+            ->where('c.status', 'active')
+            ->where('c.deleted_at IS NULL')
+            ->orderBy('c.start_date', 'DESC')
+            ->orderBy('c.id', 'DESC')
+            ->get()
+            ->getResultArray();
+
+        foreach ($latestClasses as &$cls) {
+            $isMember               = ! empty($cls['membership_id']);
+            $cls['is_member']       = $isMember;
+            $cls['course_title']    = $cls['name'];
+            $cls['total_materials'] = (int) $db->table('cls_class_materials')
+                ->where('class_id', $cls['id'])
+                ->countAllResults();
+            // Batch diambil dari akhiran nama kelas, mis. "Bootcamp Vibe Coding — Batch 1"
+            $cls['batch_name']      = $this->batchLabel((string) $cls['name'], $cls['syllabus_name'] ?? null);
+            $cls['url']             = '/bootcamp/classes/' . $cls['id'] . ($isMember ? '/learn' : '/intro');
+            unset($cls['name'], $cls['membership_id']);
+        }
+        unset($cls);
+
+        // Kartu statis (produk yang belum punya baris di cls_classes) — selalu tampil
+        // setelah kelas realtime. `url` kosong = kartu tampil tapi belum bisa diklik.
+        $staticClasses = [
+            ['title' => 'Advance VibeCoding', 'batch' => 'Batch 1', 'meetings' => 9],
+            ['title' => 'Advance Agentic AI', 'batch' => 'Batch 1', 'meetings' => 9],
+        ];
+
+        foreach ($staticClasses as $i => $static) {
+            $latestClasses[] = [
+                'id'              => 'static-' . ($i + 1),
+                'course_title'    => $static['title'],
+                'batch_name'      => $static['batch'],
+                'total_materials' => $static['meetings'],
+                'thumbnail'       => null,
+                'url'             => '',
+                'is_member'       => false,
+                'is_static'       => true,
+            ];
+        }
+
+        $this->data['latest_classes'] = $latestClasses;
 
         // Gabung: live session tampil lebih dulu, lalu online course
         $this->data['my_courses'] = array_merge($liveSessions, $onlineCourses);
@@ -320,6 +369,25 @@ class PageController extends BaseController
             'message' => 'Email has been verified',
             'jwt'     => $newJwt,
         ]);
+    }
+
+    /**
+     * Label batch untuk kartu kelas:
+     * 1) akhiran nama kelas, mis. "Bootcamp Vibe Coding — Batch 1"
+     * 2) nama silabus bila memang berbentuk label batch (mis. "Batch 2")
+     * null bila tidak ada — badge batch disembunyikan.
+     */
+    private function batchLabel(string $className, ?string $syllabusName = null): ?string
+    {
+        if (preg_match('/\s+[—–-]\s*(.+)$/u', $className, $m) && trim($m[1]) !== '') {
+            return trim($m[1]);
+        }
+
+        if ($syllabusName !== null && preg_match('/\bbatch\b/i', $syllabusName)) {
+            return trim($syllabusName);
+        }
+
+        return null;
     }
 
     /**

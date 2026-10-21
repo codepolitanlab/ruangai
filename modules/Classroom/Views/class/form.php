@@ -80,9 +80,10 @@ if ($isEdit && ! empty($class['certificate_requirement'])) {
                                     <select name="status" class="form-select">
                                         <option value="draft" <?= $class['status'] === 'draft' ? 'selected' : '' ?>>Draft</option>
                                         <option value="active" <?= $class['status'] === 'active' ? 'selected' : '' ?>>Active</option>
+                                        <option value="done" <?= $class['status'] === 'done' ? 'selected' : '' ?>>Done (bootcamp selesai)</option>
                                         <option value="archived" <?= $class['status'] === 'archived' ? 'selected' : '' ?>>Archived</option>
                                     </select>
-                                    <small class="text-muted">Aktivasi (draft → active) diblokir jika ada materi belum ter-sync atau belum dijadwalkan.</small>
+                                    <small class="text-muted">Aktivasi (draft/done → active) diblokir jika ada materi belum ter-sync atau belum dijadwalkan. Status Done = kelas sudah selesai: tidak tampil sebagai kelas aktif, tapi anggota tetap bisa membuka materinya.</small>
                                 </div>
                             <?php endif; ?>
                         </div>

@@ -34,6 +34,7 @@
                         <option value="">Semua Status</option>
                         <option value="draft" <?= ($status ?? '') === 'draft' ? 'selected' : '' ?>>Draft</option>
                         <option value="active" <?= ($status ?? '') === 'active' ? 'selected' : '' ?>>Active</option>
+                        <option value="done" <?= ($status ?? '') === 'done' ? 'selected' : '' ?>>Done</option>
                         <option value="archived" <?= ($status ?? '') === 'archived' ? 'selected' : '' ?>>Archived</option>
                     </select>
                 </form>
@@ -62,6 +63,8 @@
                                         <?= esc($c['name']) ?>
                                         <?php if ($c['status'] === 'active') : ?>
                                             <span class="badge text-bg-success">Active</span>
+                                        <?php elseif ($c['status'] === 'done') : ?>
+                                            <span class="badge text-bg-primary">Done</span>
                                         <?php elseif ($c['status'] === 'archived') : ?>
                                             <span class="badge text-bg-secondary">Archived</span>
                                         <?php else : ?>
@@ -81,6 +84,8 @@
                                     <td>
                                         <?php if ($c['status'] === 'active') : ?>
                                             <span class="badge text-bg-success">Active</span>
+                                        <?php elseif ($c['status'] === 'done') : ?>
+                                            <span class="badge text-bg-primary">Done</span>
                                         <?php elseif ($c['status'] === 'archived') : ?>
                                             <span class="badge text-bg-secondary">Archived</span>
                                         <?php else : ?>
