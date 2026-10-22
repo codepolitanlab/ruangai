@@ -53,7 +53,9 @@ RUN printf 'variables_order = "EGPCS"\n' > /usr/local/etc/php/conf.d/zz-ruangai.
 
 # Migrasi otomatis saat container start (bukan saat build: DB belum ada).
 # Nonaktifkan dengan env RUN_MIGRATIONS=false.
-COPY --chmod=755 docker/entrypoint.d/50-ruangai-migrate.sh /etc/entrypoint.d/50-ruangai-migrate.sh
+# Catatan: sengaja tidak memakai `COPY --chmod` karena opsi itu butuh BuildKit.
+COPY docker/entrypoint.d/50-ruangai-migrate.sh /etc/entrypoint.d/50-ruangai-migrate.sh
+RUN chmod 0755 /etc/entrypoint.d/50-ruangai-migrate.sh
 
 # ---------------------------------------------------------------------------
 # 3) Direktori runtime harus writable oleh www-data.
