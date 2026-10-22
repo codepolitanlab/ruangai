@@ -4,19 +4,26 @@
 # jadi dijalankan di sini — tepat setelah container `db` healthy.
 set -u
 
-if [ "${RUN_MIGRATIONS:-true}" != "true" ]; then
-    echo "[ruangai] migrate: di-skip (RUN_MIGRATIONS=${RUN_MIGRATIONS:-false})"
-    exit 0
-fi
-
 cd /var/www/html || exit 0
 
-echo "[ruangai] migrate: php spark migrate --all"
-if php spark migrate --all; then
-    echo "[ruangai] migrate: selesai"
+if [ "${RUN_MIGRATIONS:-true}" = "true" ]; then
+    echo "[ruangai] migrate: php spark migrate --all"
+    if php spark migrate --all; then
+        echo "[ruangai] migrate: selesai"
+    else
+        # Jangan hentikan container: error sudah tampil di log, app tetap bisa diakses.
+        echo "[ruangai] migrate: GAGAL — cek log di atas (container tetap dijalankan)." >&2
+    fi
 else
-    # Jangan hentikan container: error sudah tampil di log, app tetap bisa diakses.
-    echo "[ruangai] migrate: GAGAL — cek log di atas (container tetap dijalankan)." >&2
+    echo "[ruangai] migrate: di-skip (RUN_MIGRATIONS=${RUN_MIGRATIONS:-false})"
+fi
+
+# Publish aset Heroic ke public/vendor/heroic (idempotent, tidak butuh DB).
+echo "[ruangai] heroic:update"
+if php spark heroic:update; then
+    echo "[ruangai] heroic:update: selesai"
+else
+    echo "[ruangai] heroic:update: GAGAL — cek log di atas." >&2
 fi
 
 exit 0

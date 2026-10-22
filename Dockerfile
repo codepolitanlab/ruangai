@@ -68,7 +68,8 @@ RUN mkdir -p \
         writable/uploads \
         writable/debugbar \
         writable/certificates \
-    && chown -R www-data:www-data writable \
-    && chmod -R ug+rwX writable
+        public/vendor/heroic \
+    && chown -R www-data:www-data writable public/vendor/heroic \
+    && chmod -R ug+rwX writable public/vendor/heroic
 
 USER www-data
