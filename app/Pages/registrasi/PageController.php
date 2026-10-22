@@ -57,13 +57,15 @@ class PageController extends BaseController
         }
         $validData = $validation->getValidated();
 
-        // Check google recaptcha response
-        $recaptchaResponse = $this->request->getPost('recaptcha');
-        $recaptchaSecretKey = config('Heroic')->recaptcha['secretKey'];
-        $Recaptcha          = new \ReCaptcha\ReCaptcha($recaptchaSecretKey);
-        $resp               = $Recaptcha->setExpectedHostname($_SERVER['HTTP_HOST'])->verify($recaptchaResponse, $_SERVER['REMOTE_ADDR']);
-        if (! $resp->isSuccess()) {
-            return $this->respond(['success' => 0, 'errors' => ['recaptcha' => 'Terjadi kesalahan saat mengecek recaptcha: ' . implode(', ', $resp->getErrorCodes())]]);
+        // Check google recaptcha response (dilewati saat development)
+        if (config('Heroic')->recaptcha['enabled']) {
+            $recaptchaResponse  = $this->request->getPost('recaptcha');
+            $recaptchaSecretKey = config('Heroic')->recaptcha['secretKey'];
+            $Recaptcha          = new \ReCaptcha\ReCaptcha($recaptchaSecretKey);
+            $resp               = $Recaptcha->setExpectedHostname($_SERVER['HTTP_HOST'])->verify($recaptchaResponse, $_SERVER['REMOTE_ADDR']);
+            if (! $resp->isSuccess()) {
+                return $this->respond(['success' => 0, 'errors' => ['recaptcha' => 'Terjadi kesalahan saat mengecek recaptcha: ' . implode(', ', $resp->getErrorCodes())]]);
+            }
         }
 
         // Make sure the phone number begins with 62

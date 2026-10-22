@@ -114,7 +114,8 @@
           }
         }
 
-        if (!this.recaptcha || this.recaptcha.trim() === '') {
+        // Cek token hanya jika reCAPTCHA aktif (production).
+        if (recaptchaSiteKey && (!this.recaptcha || this.recaptcha.trim() === '')) {
           this.errorMessage = 'Ceklis dulu Recaptcha.';
           this.buttonSubmitting = false;
           setTimeout(() => (this.errorMessage = ''), 4000);

@@ -151,14 +151,23 @@ class PageController extends BaseController
                 ->getRowArray();
         }
 
+        // Database baru bisa belum punya course sama sekali.
+        if (! $last_course) {
+            $last_course = ['id' => 0, 'title' => null, 'slug' => null];
+        }
+
         // Get completed lessons for current user (only mandatory lessons)
-        $completedLessons = $db->table('course_lessons')
-            ->select('count(course_lessons.id) as total_lessons, count(course_lesson_progress.user_id) as completed')
-            ->join('course_lesson_progress', 'course_lesson_progress.lesson_id = course_lessons.id AND user_id = ' . $jwt->user_id, 'left')
-            ->where('course_lessons.course_id', $last_course['id'])
-            ->where('course_lessons.mandatory', 1)
-            ->get()
-            ->getRowArray();
+        $completedLessons = ['total_lessons' => 1, 'completed' => 0];
+
+        if ((int) $last_course['id'] > 0) {
+            $completedLessons = $db->table('course_lessons')
+                ->select('count(course_lessons.id) as total_lessons, count(course_lesson_progress.user_id) as completed')
+                ->join('course_lesson_progress', 'course_lesson_progress.lesson_id = course_lessons.id AND user_id = ' . $jwt->user_id, 'left')
+                ->where('course_lessons.course_id', $last_course['id'])
+                ->where('course_lessons.mandatory', 1)
+                ->get()
+                ->getRowArray() ?? $completedLessons;
+        }
 
         $this->data['last_course']                     = $last_course;
         $this->data['last_course']['total_lessons']    = $completedLessons['total_lessons'] ?? 1;

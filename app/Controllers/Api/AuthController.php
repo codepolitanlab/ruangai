@@ -128,6 +128,11 @@ class AuthController extends ResourceController
 
     private function _verifyRecaptcha($token)
     {
+        // Di development reCAPTCHA dimatikan: anggap selalu lolos.
+        if (! config('Heroic')->recaptcha['enabled']) {
+            return true;
+        }
+
         $secret = '6LegjmApAAAAADEJOdhueo68VXfHALLhhZ4Am9Od'; // Obtain from reCAPTCHA admin console
         $url    = 'https://www.google.com/recaptcha/api/siteverify';
         $data   = [

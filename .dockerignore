@@ -1,0 +1,23 @@
+# VCS / IDE
+.git
+.gitignore
+.github
+.vscode
+.idea
+
+# Secrets — dikirim lewat environment compose, jangan di-bake ke image
+.env
+
+# Dependency & artefak lokal (composer install dijalankan di dalam image)
+vendor
+node_modules
+.php-cs-fixer.cache
+
+# Data runtime (di-mount dari host)
+writable
+
+# Test & tooling dev
+tests
+
+# OS junk
+.DS_Store

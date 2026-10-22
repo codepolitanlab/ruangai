@@ -24,12 +24,14 @@ class PageController extends BaseController
         // Get database pesantren
         $db = \Config\Database::connect();
 
-        // Check google recaptcha response
-        $recaptchaSecretKey = config('Heroic')->recaptcha['secretKey'];
-        $Recaptcha          = new \ReCaptcha\ReCaptcha($recaptchaSecretKey);
-        $resp               = $Recaptcha->setExpectedHostname($_SERVER['HTTP_HOST'])->verify($recaptchaResponse, $_SERVER['REMOTE_ADDR']);
-        if (! $resp->isSuccess()) {
-            return $this->respond(['success' => 0, 'message' => 'Terjadi kesalahan saat mengecek recaptcha: ' . implode(', ', $resp->getErrorCodes())]);
+        // Check google recaptcha response (dilewati saat development)
+        if (config('Heroic')->recaptcha['enabled']) {
+            $recaptchaSecretKey = config('Heroic')->recaptcha['secretKey'];
+            $Recaptcha          = new \ReCaptcha\ReCaptcha($recaptchaSecretKey);
+            $resp               = $Recaptcha->setExpectedHostname($_SERVER['HTTP_HOST'])->verify($recaptchaResponse, $_SERVER['REMOTE_ADDR']);
+            if (! $resp->isSuccess()) {
+                return $this->respond(['success' => 0, 'message' => 'Terjadi kesalahan saat mengecek recaptcha: ' . implode(', ', $resp->getErrorCodes())]);
+            }
         }
 
         // Make sure the number begin with 62

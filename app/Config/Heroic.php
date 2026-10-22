@@ -59,7 +59,10 @@ class Heroic extends BaseConfig
     ];
 
     // ReCAPTCHA
+    // Otomatis nonaktif di development (tidak ada pengecekan ke Google).
+    // Bisa dipaksa lewat env: heroic_recaptcha_enabled=true|false
     public $recaptcha = [
+        'enabled'        => ENVIRONMENT !== 'development',
         'recaptchaLabel' => 'RuangAI',
         'siteKey'        => '6LcBlpsrAAAAAD8ar_ALNgvFq_1O00DtpIK2Lll7',
         'secretKey'      => '6LcBlpsrAAAAALTayxF003EJc8xtAXHFdrn5PwIT',

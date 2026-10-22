@@ -30,14 +30,26 @@
                 this.model.email = emailParam;
             }
 
-            // Call google recaptcha
-            // this.$nextTick(() => {
+            // Render reCAPTCHA hanya saat diaktifkan (production).
+            if (recaptchaSiteKey) {
+                this.$nextTick(() => this.renderRecaptcha());
+            }
+        },
+
+        renderRecaptcha() {
+            if (!recaptchaSiteKey || this.recaptchaWidget !== null) {
+                return;
+            }
+            if (typeof grecaptcha === 'undefined') {
+                return; // event 'recaptcha-ready' akan memanggil ulang
+            }
+            try {
                 this.recaptchaWidget = grecaptcha.render('grecaptcha', {
                     'sitekey': recaptchaSiteKey
                 });
-                if (this.recaptchaWidget === null)
-                    window.location.href = '/reset_password'
-            // })
+            } catch (e) {
+                console.error('reCAPTCHA init error', e);
+            }
         },
 
         sendTo(to) {
@@ -47,8 +59,8 @@
         confirm() {
             this.sending = true
 
-            // Check if recaptcha widget is initialized
-            if (this.recaptchaWidget === null || typeof grecaptcha === 'undefined') {
+            // Check if recaptcha widget is initialized (hanya jika reCAPTCHA aktif)
+            if (recaptchaSiteKey && (this.recaptchaWidget === null || typeof grecaptcha === 'undefined')) {
                 $heroicHelper.toastr('Recaptcha belum siap, mohon tunggu sebentar.', 'warning');
                 this.sending = false;
                 return;
@@ -66,11 +78,13 @@
                 return;
             }
 
-            this.recaptcha = grecaptcha.getResponse(this.recaptchaWidget);
-            if (this.recaptcha == '') {
-                $heroicHelper.toastr('Ceklis dulu Recaptcha.', 'warning')
-                this.sending = false
-                return;
+            if (recaptchaSiteKey) {
+                this.recaptcha = grecaptcha.getResponse(this.recaptchaWidget);
+                if (this.recaptcha == '') {
+                    $heroicHelper.toastr('Ceklis dulu Recaptcha.', 'warning')
+                    this.sending = false
+                    return;
+                }
             }
 
             // Check register_confirm using axios post
@@ -87,7 +101,9 @@
                         window.PineconeRouter.navigate('/reset_password/change/' + token)
                     } else {
                         $heroicHelper.toastr(response.data.message, 'danger')
-                        grecaptcha.reset(this.recaptchaWidget)
+                        if (this.recaptchaWidget !== null && typeof grecaptcha !== 'undefined') {
+                            grecaptcha.reset(this.recaptchaWidget)
+                        }
                         this.sending = false
                     }
                 })

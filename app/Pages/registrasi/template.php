@@ -70,7 +70,8 @@
     }
 </style>
 
-<div id="member-register" x-data="register(`<?= config('Heroic')->recaptcha['siteKey'] ?>`)">
+<?php $recaptchaSiteKey = config('Heroic')->recaptcha['enabled'] ? config('Heroic')->recaptcha['siteKey'] : ''; ?>
+<div id="member-register" x-data="register('<?= $recaptchaSiteKey ?>')">
 
     <!-- App Capsule -->
     <div id="appCapsule" class="register-container">
