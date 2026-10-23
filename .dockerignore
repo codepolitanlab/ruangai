@@ -13,7 +13,12 @@ vendor
 node_modules
 .php-cs-fixer.cache
 
-# Data runtime (di-mount dari host)
+# Artefak lokal: public/vendor/heroic biasanya symlink ke vendor/ (hanya untuk
+# dev). Source tidak pernah di-COPY ke image, tapi tetap dikecualikan agar
+# context build tidak membawa symlink dangling bila suatu saat source disalin.
+public/vendor
+
+# Data runtime (volume docker, bukan bagian context build)
 writable
 
 # Test & tooling dev

@@ -29,14 +29,14 @@ services:
     platform: linux/amd64
     restart: unless-stopped
     ports:
-      - "${APP_PORT:-8080}:8080"
+      - "8887:8080"
     environment:
       # --- CodeIgniter (override Config\* lewat env) ---
       # Catatan: PHP-FPM membuang nama env yang mengandung titik dari $_ENV,
       # jadi dipakai bentuk underscore yang juga didukung CI4:
       #   {config}_{property}  ->  database.default.hostname = database_default_hostname
       CI_ENVIRONMENT: "${CI_ENVIRONMENT:-development}"
-      app_baseURL: "${APP_BASE_URL:-http://localhost:8080/}"
+      app_baseURL: "${APP_BASE_URL:-http://localhost:8887/}"
 
       # --- Database (service `db`) ---
       database_default_hostname: db
@@ -48,11 +48,16 @@ services:
       # --- Redis (service `redis`) ---
       cache_handler: redis
       cache_redis_host: redis
-      cache_redis_port: "6379"
+      cache_redis_port: "6378"
       session_driver: 'CodeIgniter\Session\Handlers\RedisHandler'
-      session_savePath: 'tcp://redis:6379'
+      session_savePath: 'tcp://redis:6378'
 
       # --- PHP / Nginx (env var serversideup/php) ---
+      # Worker PHP-FPM dijalankan dengan UID/GID host agar file yang ditulis
+      # aplikasi ke source yang di-mount (mis. public/uploads/) tetap milik user
+      # host, bukan root/www-data. Override lewat PUID/PGID bila UID Anda beda.
+      PHP_FPM_CHILD_PROCESS_USER: "${PUID:-1000}"
+      PHP_FPM_CHILD_PROCESS_GROUP: "${PGID:-1000}"
       PHP_OPCACHE_ENABLE: "${PHP_OPCACHE_ENABLE:-0}"
       PHP_MEMORY_LIMIT: "512M"
       PHP_UPLOAD_MAX_FILE_SIZE: "100M"
@@ -62,8 +67,20 @@ services:
       # Migrasi otomatis saat container start (php spark migrate --all).
       RUN_MIGRATIONS: "${RUN_MIGRATIONS:-true}"
     volumes:
-      # Upload, log, session, cache tetap di host agar mudah diinspeksi.
-      - ./writable:/var/www/html/writable
+      # Source code TIDAK di-bake ke image (lihat Dockerfile); di-mount dari host.
+      # Folder top-level baru yang dibutuhkan saat runtime harus ditambahkan di sini.
+      - ./app:/var/www/html/app
+      - ./modules:/var/www/html/modules
+      - ./public:/var/www/html/public
+      - ./spark:/var/www/html/spark:ro
+
+      # .env sengaja TIDAK di-mount: key bertitik di .env (mis.
+      # database.default.hostname=localhost) menang atas env compose
+      # (database_default_hostname=db) di CodeIgniter. Konfigurasi container
+      # diberikan lewat blok `environment` di atas.
+
+      # Upload, log, session, cache tetap di volume agar mudah diinspeksi.
+      - writable-data:/var/www/html/writable
     depends_on:
       db:
         condition: service_healthy
@@ -82,7 +99,7 @@ services:
       MYSQL_USER: "${DB_USERNAME:-app}"
       MYSQL_PASSWORD: "${DB_PASSWORD:-!@#$%}"
     ports:
-      - "${DB_PORT:-3306}:3306"
+      - "33199:3306"
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
@@ -97,7 +114,7 @@ services:
     restart: unless-stopped
     command: ["redis-server", "--appendonly", "yes"]
     ports:
-      - "${REDIS_PORT:-6379}:6379"
+      - "6378:6379"
     volumes:
       - redis_data:/data
     healthcheck:
@@ -109,3 +126,4 @@ services:
 volumes:
   db_data:
   redis_data:
+  writable-data:

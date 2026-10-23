@@ -1,13 +1,24 @@
 # syntax=docker/dockerfile:1
 
 ###############################################################################
-# RuangAI — CodeIgniter 4.6 + PHP 8.4 (FPM) + Nginx
+# RuangAI — runtime image (PHP 8.4 FPM + Nginx)
+#
+# Image ini SENGAJA TIDAK memuat source code aplikasi. Yang di-bake hanya:
+#   - dependency composer (vendor/) dari `composer install --no-dev`
+#   - konfigurasi PHP (variables_order agar $_ENV terisi)
+#   - script entrypoint (migrasi saat container start)
+#   - direktori runtime kosong: writable/ dan mount point source
+#
+# Source aplikasi (app/, modules/, public/, spark) di-bind-mount dari host saat
+# container berjalan — lihat docker-compose.yml. Konsekuensinya:
+#   - perubahan kode tidak perlu rebuild image;
+#   - rebuild hanya perlu ketika composer.json / composer.lock berubah.
 #
 # Base image: yllumi/fpm8.4-nginx
-#   - turunan serversideup/php:8.4-fpm-nginx (S6 Overlay, non-root)
+#   - turunan serversideup/php:8.4-fpm-nginx (S6 Overlay)
 #   - document root default : /var/www/html/public  (cocok dengan public/index.php)
 #   - nginx listen          : 8080 (HTTP) / 8443 (HTTPS)
-#   - user runtime          : www-data (UID/GID 33)
+#   - worker PHP-FPM        : diatur via PHP_FPM_CHILD_PROCESS_USER/GROUP (compose)
 #   - composer 2            : sudah tersedia
 #   - ekstensi PHP          : intl, gd, mysqli, pdo_mysql, redis, zip, opcache, ...
 #
@@ -18,14 +29,18 @@
 
 FROM yllumi/fpm8.4-nginx:latest
 
-# Build perlu root (composer + chown); proses runtime kembali ke www-data.
+# Build perlu root (composer). Container juga tetap root saat runtime agar
+# PHP-FPM bisa menurunkan worker ke UID/GID host (lihat bagian akhir file).
 USER root
 
 WORKDIR /var/www/html
 
 # ---------------------------------------------------------------------------
 # 1) Dependency — layer ini hanya di-invalidate kalau composer.json/lock berubah.
-#    composer.lock* bersifat opsional karena file tersebut di-.gitignore.
+#    Source belum tersedia di sini, dan memang tidak diperlukan: autoloader tetap
+#    dibuat, aturan PSR-4 (App\, Config\, Referral\) di-resolve saat runtime dari
+#    source yang di-mount. `--no-autoloader` tidak dipakai agar autoloader tetap
+#    ter-generate; `--no-scripts` dipakai karena script paket butuh source.
 # ---------------------------------------------------------------------------
 COPY composer.json composer.lock* ./
 
@@ -34,31 +49,22 @@ RUN composer install \
         --no-interaction \
         --no-progress \
         --prefer-dist \
-        --no-scripts \
-        --no-autoloader
+        --no-scripts
 
 # ---------------------------------------------------------------------------
-# 2) Source aplikasi (lihat .dockerignore untuk yang tidak ikut).
+# 2) Mount point source (kosong, hanya agar bind-mount punya target yang jelas)
+#    dan direktori runtime yang dibutuhkan CodeIgniter.
 # ---------------------------------------------------------------------------
-COPY . .
-
-# Autoloader di-generate setelah source tersedia agar classmap App\ lengkap.
-RUN composer dump-autoload --optimize --no-dev --no-scripts
-
-# Direktori runtime dibuat lebih dulu: `php spark` membutuhkan WRITEPATH yang valid.
 RUN mkdir -p \
+        app \
+        modules \
+        public \
         writable/cache \
         writable/logs \
         writable/session \
         writable/uploads \
         writable/debugbar \
-        writable/certificates \
-        public/vendor/heroic
-
-# Publish aset Heroic ke public/vendor/heroic saat build. Aman dijalankan tanpa
-# database (hanya menyalin file), sehingga image production sudah membawa aset
-# terbaru tanpa perlu langkah manual setelah deploy.
-RUN php spark heroic:update
+        writable/certificates
 
 # CodeIgniter membaca override config dari environment ($_ENV). Default PHP-FPM
 # memakai variables_order=GPCS sehingga $_ENV kosong di worker; tambahkan "E".
@@ -72,11 +78,15 @@ RUN printf 'variables_order = "EGPCS"\n' > /usr/local/etc/php/conf.d/zz-ruangai.
 COPY docker/entrypoint.d/50-ruangai-migrate.sh /etc/entrypoint.d/50-ruangai-migrate.sh
 RUN chmod 0755 /etc/entrypoint.d/50-ruangai-migrate.sh
 
-# ---------------------------------------------------------------------------
-# 3) Kepemilikan direktori runtime diberikan ke www-data.
-#    writable/ juga di-bind-mount dari host melalui docker-compose.yml.
-# ---------------------------------------------------------------------------
-RUN chown -R www-data:www-data writable public/vendor/heroic \
-    && chmod -R ug+rwX writable public/vendor/heroic
+# vendor/ hanya dibaca worker PHP; writable/ ditulis worker.
+RUN chown -R www-data:www-data vendor writable \
+    && chmod -R ug+rwX writable
 
-USER www-data
+# ---------------------------------------------------------------------------
+# Container tetap berjalan sebagai root.
+# Diperlukan agar PHP-FPM bisa menurunkan worker ke UID/GID host
+# (PHP_FPM_CHILD_PROCESS_USER/GROUP di docker-compose.yml). Dengan begitu file
+# yang ditulis aplikasi ke source yang di-mount — misalnya public/uploads/ —
+# tetap dimiliki user host, bukan root/www-data.
+# ---------------------------------------------------------------------------
+USER root
