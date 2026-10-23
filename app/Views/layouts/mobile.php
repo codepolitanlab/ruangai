@@ -41,6 +41,8 @@
 
     <script src="<?= asset_url('mobilekit/assets/js/base.js') ?>"></script>
 
+    <!-- Axios eksplisit: jangan bergantung pada bundle heroic (dev vs min berbeda). -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.8.3/dist/axios.min.js"></script>
     <script src="<?= asset_url('vendor/heroic/heroic.' . (($_ENV['CI_ENVIRONMENT'] ?? 'production') === 'development' ? 'dev' : 'min') . '.js') ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/pinecone-router@7.2.x/dist/router.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>

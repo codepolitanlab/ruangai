@@ -18,12 +18,7 @@ else
     echo "[ruangai] migrate: di-skip (RUN_MIGRATIONS=${RUN_MIGRATIONS:-false})"
 fi
 
-# Publish aset Heroic ke public/vendor/heroic (idempotent, tidak butuh DB).
-echo "[ruangai] heroic:update"
-if php spark heroic:update; then
-    echo "[ruangai] heroic:update: selesai"
-else
-    echo "[ruangai] heroic:update: GAGAL — cek log di atas." >&2
-fi
+# Catatan: `php spark heroic:update` dijalankan saat image dibuild
+# (lihat Dockerfile), bukan di sini, agar tidak menyalin ulang tiap start.
 
 exit 0

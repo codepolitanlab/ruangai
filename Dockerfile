@@ -45,6 +45,21 @@ COPY . .
 # Autoloader di-generate setelah source tersedia agar classmap App\ lengkap.
 RUN composer dump-autoload --optimize --no-dev --no-scripts
 
+# Direktori runtime dibuat lebih dulu: `php spark` membutuhkan WRITEPATH yang valid.
+RUN mkdir -p \
+        writable/cache \
+        writable/logs \
+        writable/session \
+        writable/uploads \
+        writable/debugbar \
+        writable/certificates \
+        public/vendor/heroic
+
+# Publish aset Heroic ke public/vendor/heroic saat build. Aman dijalankan tanpa
+# database (hanya menyalin file), sehingga image production sudah membawa aset
+# terbaru tanpa perlu langkah manual setelah deploy.
+RUN php spark heroic:update
+
 # CodeIgniter membaca override config dari environment ($_ENV). Default PHP-FPM
 # memakai variables_order=GPCS sehingga $_ENV kosong di worker; tambahkan "E".
 # (Nama env ber-titik tetap dibuang PHP, jadi compose memakai bentuk underscore:
@@ -58,18 +73,10 @@ COPY docker/entrypoint.d/50-ruangai-migrate.sh /etc/entrypoint.d/50-ruangai-migr
 RUN chmod 0755 /etc/entrypoint.d/50-ruangai-migrate.sh
 
 # ---------------------------------------------------------------------------
-# 3) Direktori runtime harus writable oleh www-data.
+# 3) Kepemilikan direktori runtime diberikan ke www-data.
 #    writable/ juga di-bind-mount dari host melalui docker-compose.yml.
 # ---------------------------------------------------------------------------
-RUN mkdir -p \
-        writable/cache \
-        writable/logs \
-        writable/session \
-        writable/uploads \
-        writable/debugbar \
-        writable/certificates \
-        public/vendor/heroic \
-    && chown -R www-data:www-data writable public/vendor/heroic \
+RUN chown -R www-data:www-data writable public/vendor/heroic \
     && chmod -R ug+rwX writable public/vendor/heroic
 
 USER www-data
