@@ -43,7 +43,7 @@ services:
       database_default_port: "3306"
       database_default_database: "${DB_DATABASE:-app_ruangai}"
       database_default_username: "${DB_USERNAME:-app}"
-      database_default_password: "${DB_PASSWORD:-!@#$%}"
+      database_default_password: "${DB_PASSWORD:-mypass!@#}"
 
       # --- Redis (service `redis`) ---
       cache_handler: redis
@@ -97,7 +97,7 @@ services:
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD:-rootsecret}"
       MYSQL_DATABASE: "${DB_DATABASE:-app_ruangai}"
       MYSQL_USER: "${DB_USERNAME:-app}"
-      MYSQL_PASSWORD: "${DB_PASSWORD:-!@#$%}"
+      MYSQL_PASSWORD: "${DB_PASSWORD:-mypass!@#}"
     ports:
       - "33199:3306"
     volumes:
