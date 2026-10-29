@@ -37,10 +37,10 @@ else
     echo "[ruangai] migrate: di-skip (RUN_MIGRATIONS=${RUN_MIGRATIONS:-false})"
 fi
 
-# public/ berasal dari host (bind-mount), jadi aset Heroic juga harus ada di host.
-if [ ! -e public/vendor/heroic/heroic.min.js ]; then
-    echo "[ruangai] peringatan: public/vendor/heroic belum ada di host." >&2
-    echo "[ruangai]             jalankan 'php spark heroic:update' di host (atau symlink ke vendor/yllumi/heroic/resources/dist)." >&2
+echo "[ruangai] heroic:update: php spark heroic:update (user: root)"
+if ! php spark heroic:update; then
+    echo "[ruangai] heroic:update: GAGAL — aset Heroic tidak berhasil diperbarui." >&2
+    exit 1
 fi
 
 exit 0
