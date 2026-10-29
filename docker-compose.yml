@@ -6,7 +6,7 @@ name: ruangai
 #   docker compose up -d --build
 #   docker compose exec web php spark migrate -n 'Classroom'
 #
-# Migrasi DB otomatis dijalankan saat container `web` start (RUN_MIGRATIONS=true).
+# Migrasi DB dan pembaruan aset Heroic otomatis dijalankan saat container `web` start.
 # Matikan dengan RUN_MIGRATIONS=false bila ingin migrasi manual.
 #
 # Override nilai lewat file .env (dibaca otomatis oleh compose untuk
