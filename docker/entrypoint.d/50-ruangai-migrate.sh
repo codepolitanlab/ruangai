@@ -37,8 +37,8 @@ else
     echo "[ruangai] migrate: di-skip (RUN_MIGRATIONS=${RUN_MIGRATIONS:-false})"
 fi
 
-echo "[ruangai] heroic:update: php spark heroic:update (user: ${php_user})"
-if ! run_as_php php spark heroic:update; then
+echo "[ruangai] heroic:update: php spark heroic:update (user: root)"
+if ! php spark heroic:update; then
     echo "[ruangai] heroic:update: GAGAL — aset Heroic tidak berhasil diperbarui." >&2
     exit 1
 fi
