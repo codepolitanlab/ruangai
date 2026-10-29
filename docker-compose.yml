@@ -10,12 +10,18 @@ name: ruangai
 # Matikan dengan RUN_MIGRATIONS=false bila ingin migrasi manual.
 #
 # Override nilai lewat file .env (dibaca otomatis oleh compose untuk
-# interpolasi), contoh:
+# interpolasi). Daftar lengkap variabel + penjelasannya ada di .env.example,
+# contoh:
 #   DB_PASSWORD=rahasia
 #   DB_ROOT_PASSWORD=rahasia-root
 #   APP_PORT=8000
 #   APP_BASE_URL=http://localhost:8000/
 #   CI_ENVIRONMENT=production
+#   SITENAME=ruangai
+#   ENC_KEY=<random-string>
+#
+# Semua env yang dibaca aplikasi (Config\*, $_ENV, $_SERVER) sudah dipetakan di
+# blok `environment` service `web` di bawah ini.
 ###############################################################################
 
 services:
@@ -29,14 +35,29 @@ services:
     platform: linux/amd64
     restart: unless-stopped
     ports:
-      - "8887:8080"
+      - "${APP_PORT:-8887}:8080"
     environment:
       # --- CodeIgniter (override Config\* lewat env) ---
       # Catatan: PHP-FPM membuang nama env yang mengandung titik dari $_ENV,
       # jadi dipakai bentuk underscore yang juga didukung CI4:
       #   {config}_{property}  ->  database.default.hostname = database_default_hostname
+      # Nama properti harus sama persis (case-sensitive), mis. cpcheckout_serviceURL.
       CI_ENVIRONMENT: "${CI_ENVIRONMENT:-development}"
       app_baseURL: "${APP_BASE_URL:-http://localhost:8887/}"
+      app_indexPage: "${APP_INDEX_PAGE:-}"
+      app_forceGlobalSecureRequests: "${APP_FORCE_HTTPS:-false}"
+      app_CSPEnabled: "${APP_CSP_ENABLED:-false}"
+      app_appTimezone: "${APP_TIMEZONE:-Asia/Jakarta}"
+
+      # --- Identitas situs (dibaca langsung, tanpa prefix Config) ---
+      # SITENAME dipakai layout (manifest/offline) dan FormFields Heroic
+      # (public/uploads/<SITENAME>/...). ENC_KEY adalah kunci filemanager:
+      # md5(SITENAME . ENC_KEY).
+      SITENAME: "${SITENAME:-ruangai}"
+      ENC_KEY: "${ENC_KEY:-}"
+
+      # --- Encryption (Config\Encryption::$key) ---
+      encryption_key: "${ENCRYPTION_KEY:-sadfszdvnvbsfdiu34qwu6yethjgq39aw4er}"
 
       # --- Database (service `db`) ---
       database_default_hostname: db
@@ -44,13 +65,72 @@ services:
       database_default_database: "${DB_DATABASE:-app_ruangai}"
       database_default_username: "${DB_USERNAME:-app}"
       database_default_password: "${DB_PASSWORD:-mypass!@#}"
+      database_default_DBDriver: "${DB_DRIVER:-MySQLi}"
+      database_default_charset: "${DB_CHARSET:-utf8mb4}"
+      database_default_DBCollat: "${DB_COLLATION:-utf8mb4_general_ci}"
 
-      # --- Redis (service `redis`) ---
-      cache_handler: redis
+      # --- Cache (service `redis`) ---
+      # Port di dalam network compose adalah port Redis yang sebenarnya (6379);
+      # REDIS_PORT di bawah hanya mengatur port yang dipublikasikan ke host.
+      cache_handler: "${CACHE_HANDLER:-redis}"
       cache_redis_host: redis
-      cache_redis_port: "6378"
-      session_driver: 'CodeIgniter\Session\Handlers\RedisHandler'
-      session_savePath: 'tcp://redis:6378'
+      cache_redis_port: "6379"
+      cache_prefix: "${CACHE_PREFIX:-}"
+      # Redis di compose ini tanpa password. Bila service `redis` diberi
+      # `requirepass`, aktifkan baris berikut — jangan dibiarkan kosong, karena
+      # handler Redis tetap memanggil AUTH bila key-nya ada.
+      # cache_redis_password: "${REDIS_PASSWORD}"
+
+      # --- Session (service `redis`) ---
+      session_driver: '${SESSION_DRIVER:-CodeIgniter\Session\Handlers\RedisHandler}'
+      session_savePath: '${SESSION_SAVE_PATH:-tcp://redis:6379}'
+      session_cookieName: "${SESSION_COOKIE_NAME:-ci_session}"
+      session_expiration: "${SESSION_EXPIRATION:-7200}"
+
+      # --- Logger ---
+      # Default Config\Logger: 4 (production) / 9 (development). Biarkan kosong
+      # agar nilai default dipakai; nilai kosong akan membuat threshold 0.
+      # logger_threshold: "${LOG_THRESHOLD}"
+
+      # --- Email / SMTP (Config\Email, dipakai App\Libraries\EmailSender) ---
+      email_protocol: "${MAIL_PROTOCOL:-smtp}"
+      email_SMTPHost: "${MAIL_HOST:-localhost}"
+      email_SMTPPort: "${MAIL_PORT:-1025}"
+      email_SMTPUser: "${MAIL_USERNAME:-}"
+      email_SMTPPass: "${MAIL_PASSWORD:-}"
+      email_SMTPCrypto: "${MAIL_ENCRYPTION:-}"
+      email_SMTPTimeout: "${MAIL_TIMEOUT:-5}"
+      email_fromEmail: "${MAIL_FROM_ADDRESS:-admin@admin.com}"
+      email_fromName: "${MAIL_FROM_NAME:-RuangAI}"
+
+      # --- Heroic: JWT, reCAPTCHA, Xendit, SaungWA (Config\Heroic) ---
+      heroic_jwtKey_secret: "${JWT_SECRET:-A8xl9FX2/M77KUnLlrt7mWt4gLFM+6ZbPzG6takiSTU=}"
+      heroic_recaptcha_siteKey: "${RECAPTCHA_SITE_KEY:-6LcBlpsrAAAAAD8ar_ALNgvFq_1O00DtpIK2Lll7}"
+      heroic_recaptcha_secretKey: "${RECAPTCHA_SECRET_KEY:-6LcBlpsrAAAAALTayxF003EJc8xtAXHFdrn5PwIT}"
+      # Aktif/nonaktif reCAPTCHA dihitung dari CI_ENVIRONMENT (aktif selain
+      # development). Paksa lewat baris berikut bila perlu:
+      # heroic_recaptcha_enabled: "${RECAPTCHA_ENABLED}"
+      heroic_xenditSecretKey: "${XENDIT_SECRET_KEY:-xnd_development_VhoXvOVbaFJVWsYO8LiBq153MGLHjjqIEM7AlPnggwS3AEVUTCL3bMXyS7MoSfz}"
+      heroic_xenditPublicKey: "${XENDIT_PUBLIC_KEY:-xnd_public_development_StXS_AOkori6nxKP52JTUV5nnx_BVTA1rnteoDhtFIFUPmPVNYEogUyYEAq4xy}"
+      heroic_xenditCallbackToken: "${XENDIT_CALLBACK_TOKEN:-WaJBJ4O3XUtB2izC5FmyAN2mfgouAWEEmgnoo9XQEgKpQffR}"
+      heroic_saungWA_authKey: "${SAUNGWA_AUTH_KEY:-Bl25APBU3Tcahyo9Rd0ZcCbloR4Gj1i6Ll5lRq6Y3J4DikKUS4}"
+      heroic_saungWA_appKey: "${SAUNGWA_APP_KEY:-da892a07-7b1d-42fb-bcd3-fa407fd2eaed}"
+
+      # --- Zoom (Config\Course) ---
+      course_zoomAccountID: "${ZOOM_ACCOUNT_ID:-BX4NjKOmQGSmrNP5sv5DUQ}"
+      course_zoomClientID: "${ZOOM_CLIENT_ID:-cKS5Uh1NTnOlZqwAlZHddw}"
+      course_zoomClientSecret: "${ZOOM_CLIENT_SECRET:-6rlnoLL8itrOgn9hAY7zHvTveqg86VBB}"
+      course_waitToEnableButtonUnderstand: "${COURSE_WAIT_UNDERSTAND_MS:-60000}"
+
+      # --- CODEPOLITAN Checkout (Config\CPCheckout) ---
+      cpcheckout_serviceURL: "${CPCHECKOUT_SERVICE_URL:-https://payment.test}"
+      cpcheckout_clientCode: "${CPCHECKOUT_CLIENT_CODE:-JS}"
+      cpcheckout_appKey: "${CPCHECKOUT_APP_KEY:-}"
+
+      # --- Web Push / VAPID (Config\WebPush, dipakai App\Libraries\WebPush) ---
+      webpush_subject: "${WEBPUSH_SUBJECT:-mailto:contact@codepolitan.com}"
+      webpush_publicKey: "${WEBPUSH_PUBLIC_KEY:-BDSkwRKMHK7WT6hTXe7oj0OJ6q9pqIX61tjZc4jR9b7ldszNsmRb1AbAVVFPxUerbhsOaV9Xa-99IEgUHzr2IcM}"
+      webpush_privateKey: "${WEBPUSH_PRIVATE_KEY:-DA8Ng4cFIn5W-mI5urQG3rghIziI5Yfh1i1gKzvUkyE}"
 
       # --- PHP / Nginx (env var serversideup/php) ---
       # Worker PHP-FPM dijalankan dengan UID/GID host agar file yang ditulis
@@ -99,7 +179,7 @@ services:
       MYSQL_USER: "${DB_USERNAME:-app}"
       MYSQL_PASSWORD: "${DB_PASSWORD:-mypass!@#}"
     ports:
-      - "33199:3306"
+      - "${DB_PORT:-33199}:3306"
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
@@ -114,7 +194,7 @@ services:
     restart: unless-stopped
     command: ["redis-server", "--appendonly", "yes"]
     ports:
-      - "6378:6379"
+      - "${REDIS_PORT:-6378}:6379"
     volumes:
       - redis_data:/data
     healthcheck:
