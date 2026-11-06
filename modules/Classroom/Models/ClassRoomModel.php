@@ -20,6 +20,7 @@ class ClassRoomModel extends Model
         'status',
         'start_date',
         'whatsapp_group_url',
+        'checkout_url',
         'certificate_requirement',
         'required_feedback_before_claim_certificate',
         'certificate_claimable',

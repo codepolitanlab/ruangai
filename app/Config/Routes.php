@@ -54,6 +54,9 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
     $routes->get('scholarship/live-meetings/nearest', 'ScholarshipController::nearestLiveMeeting');
     $routes->get('scholarship/syncGraduatedB1', 'ScholarshipController::syncGraduatedB1');
 
+    // Jadwal bootcamp classroom terdekat (publik)
+    $routes->get('bootcamp/schedule', 'ClassroomController::schedule');
+
     // Route challenge alibaba
     $routes->get('challenge', 'ChallengeController::index');
     $routes->get('challenge/statistics', 'ChallengeController::statistics');

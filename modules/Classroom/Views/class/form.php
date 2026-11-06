@@ -74,6 +74,12 @@ if ($isEdit && ! empty($class['certificate_requirement'])) {
                                         value="<?= esc($class['whatsapp_group_url'] ?? '') ?>">
                                 </div>
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label">Link Checkout</label>
+                                <input type="text" name="checkout_url" class="form-control" maxlength="500"
+                                    placeholder="https://..." value="<?= esc($class['checkout_url'] ?? '') ?>">
+                                <small class="text-muted">URL halaman pembayaran/checkout kelas ini (diisi manual).</small>
+                            </div>
                             <?php if ($isEdit) : ?>
                                 <div class="mb-3">
                                     <label class="form-label">Status</label>

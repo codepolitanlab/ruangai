@@ -205,6 +205,7 @@ class ClassRoom extends AdminController
             'status'           => 'draft', // Kelas baru tidak bisa langsung active
             'start_date'       => $this->request->getPost('start_date') ?: null,
             'whatsapp_group_url' => $this->request->getPost('whatsapp_group_url'),
+            'checkout_url'     => $this->request->getPost('checkout_url') ?: null,
             'certificate_requirement' => $certRequirement,
             'required_feedback_before_claim_certificate' => $this->request->getPost('required_feedback_before_claim_certificate') ? 1 : 0,
             'certificate_claimable' => $this->request->getPost('certificate_claimable') ? 1 : 0,
@@ -260,6 +261,7 @@ class ClassRoom extends AdminController
             'status'           => $this->request->getPost('status') ?: $class['status'],
             'start_date'       => $this->request->getPost('start_date') ?: null,
             'whatsapp_group_url' => $this->request->getPost('whatsapp_group_url'),
+            'checkout_url'     => $this->request->getPost('checkout_url') ?: null,
             'certificate_requirement' => $certRequirement,
             'required_feedback_before_claim_certificate' => $this->request->getPost('required_feedback_before_claim_certificate') ? 1 : 0,
             'certificate_claimable' => $this->request->getPost('certificate_claimable') ? 1 : 0,
