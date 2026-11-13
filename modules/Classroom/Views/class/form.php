@@ -8,6 +8,7 @@ $selectedRequirement = [];
 if ($isEdit && ! empty($class['certificate_requirement'])) {
     $selectedRequirement = array_map('trim', explode(',', $class['certificate_requirement']));
 }
+$certificateTemplates = (new \Certificate\Config\Certificate())->availableTemplates;
 ?>
 
 <div class="page-heading" x-data="classForm(<?= $isEdit ? 'true' : 'false' ?>)" x-init="init()">
@@ -107,6 +108,18 @@ if ($isEdit && ! empty($class['certificate_requirement'])) {
                                 <input class="form-check-input" type="checkbox" name="required_feedback_before_claim_certificate" id="required_feedback" value="1"
                                     <?= ! empty($class['required_feedback_before_claim_certificate']) ? 'checked' : '' ?>>
                                 <label class="form-check-label" for="required_feedback">Wajib isi feedback sebelum klaim sertifikat</label>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Template Sertifikat</label>
+                                <select name="certificate_template" class="form-select">
+                                    <option value="">— Default otomatis —</option>
+                                    <?php foreach ($certificateTemplates as $tplKey => $tplClass) : ?>
+                                        <option value="<?= esc($tplKey) ?>" <?= ($class['certificate_template'] ?? '') === $tplKey ? 'selected' : '' ?>>
+                                            <?= esc((new $tplClass())->getDescription()) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <small class="text-muted">Artwork sertifikat yang dipakai saat member klaim.</small>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Resource Tugas (Submission) Wajib untuk Klaim</label>

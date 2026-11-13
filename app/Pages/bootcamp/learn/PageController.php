@@ -387,7 +387,7 @@ class PageController extends BaseController
             'entity_id'        => $classId,
             'participant_name' => $user['name'] ?? 'Peserta',
             'title'            => $class['name'] ?? 'Bootcamp',
-            'template_name'    => 'bootcamp',
+            'template_name'    => $class['certificate_template'] ?: 'bootcamp',
             'cert_claim_date'  => date('Y-m-d H:i:s'),
             'additional_data'  => [
                 'syllabus_name' => $class['name'],
@@ -496,7 +496,7 @@ class PageController extends BaseController
         }
 
         $class = $db->table('cls_classes')
-            ->select('id, name')
+            ->select('id, name, certificate_template')
             ->where('id', (int) $cm['class_id'])
             ->get()
             ->getRowArray();
@@ -512,7 +512,7 @@ class PageController extends BaseController
             'entity_id'        => $cmId,
             'participant_name' => $user['name'] ?? 'Peserta',
             'title'            => $title,
-            'template_name'    => 'ruangai_bootcamp',
+            'template_name'    => $class['certificate_template'] ?: 'ruangai_bootcamp',
             'cert_claim_date'  => date('Y-m-d H:i:s'),
             'additional_data'  => [
                 'achievement'    => $title,

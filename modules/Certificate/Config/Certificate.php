@@ -37,6 +37,7 @@ class Certificate extends BaseConfig
         'workshop_ruangai_mayar'       => \Certificate\Libraries\WorkshopRuangAIMayarTemplate::class,
         'workshop_ruangai_betterco'    => \Certificate\Libraries\WorkshopRuangAIBetterCOTemplate::class,
         'ruangai_bootcamp'             => \Certificate\Libraries\RuangAIBootcampCertificateTemplate::class,
+        'ruangai_bootcamp_parenting'   => \Certificate\Libraries\RuangAIBootcampParentingTemplate::class,
         // Add more templates here as needed
     ];
 }

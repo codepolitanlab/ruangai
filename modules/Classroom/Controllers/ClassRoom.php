@@ -209,6 +209,7 @@ class ClassRoom extends AdminController
             'certificate_requirement' => $certRequirement,
             'required_feedback_before_claim_certificate' => $this->request->getPost('required_feedback_before_claim_certificate') ? 1 : 0,
             'certificate_claimable' => $this->request->getPost('certificate_claimable') ? 1 : 0,
+            'certificate_template' => $this->postCertificateTemplate(),
             'created_by'       => user_id(),
         ];
 
@@ -240,6 +241,18 @@ class ClassRoom extends AdminController
         return redirect()->to(urlScope() . '/classroom/classes/' . $classId . '/schedule');
     }
 
+    /**
+     * Template sertifikat pilihan admin (harus salah satu dari konfigurasi Certificate).
+     */
+    private function postCertificateTemplate(): ?string
+    {
+        $name    = (string) $this->request->getPost('certificate_template');
+        $config  = new \Certificate\Config\Certificate();
+        $allowed = array_keys($config->availableTemplates);
+
+        return in_array($name, $allowed, true) ? $name : null;
+    }
+
     public function update($id)
     {
         $class = $this->model->find($id);
@@ -265,6 +278,7 @@ class ClassRoom extends AdminController
             'certificate_requirement' => $certRequirement,
             'required_feedback_before_claim_certificate' => $this->request->getPost('required_feedback_before_claim_certificate') ? 1 : 0,
             'certificate_claimable' => $this->request->getPost('certificate_claimable') ? 1 : 0,
+            'certificate_template' => $this->postCertificateTemplate(),
         ];
 
         // Validasi aktivasi draft -> active

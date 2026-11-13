@@ -24,6 +24,7 @@ class ClassRoomModel extends Model
         'certificate_requirement',
         'required_feedback_before_claim_certificate',
         'certificate_claimable',
+        'certificate_template',
         'created_by',
         'created_at',
         'updated_at',
