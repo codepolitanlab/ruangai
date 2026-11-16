@@ -78,6 +78,10 @@
         /* Aksi sesi meeting: tampil langsung di baris materi, tanpa popup. */
         #bootcamp-learn .bl-meet-actions { display: flex; gap: 8px; padding: 0 0 10px; }
         #bootcamp-learn .bl-meet-actions .bl-btn { flex: 1 1 0; min-width: 0; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.8rem; padding: 9px 8px; line-height: 1.2; }
+        /* Info saat resource belum punya isi/link dari instruktur. */
+        #bootcamp-learn .bl-empty { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px; background: var(--rd-surface-2); border: 1px solid var(--rd-border); color: var(--rd-text-muted); font-size: 0.85rem; line-height: 1.4; }
+        /* Deskripsi pertemuan: kartu tipis, latar sedikit lebih terang dari kartu materi. */
+        #bootcamp-learn .bl-note { background: var(--rd-surface-2); border: 1px solid var(--rd-border); border-radius: 12px; padding: 10px 12px; color: var(--rd-text); font-size: 0.86rem; line-height: 1.5; }
     </style>
 
     <div id="appCapsule">
@@ -181,7 +185,7 @@
 
                         <!-- Deskripsi materi -->
                         <div class="bl-res" x-show="cm.material_description">
-                            <div style="font-size:0.88rem;color:var(--rd-text)" x-text="cm.material_description"></div>
+                            <div class="bl-note" x-text="cm.material_description"></div>
                         </div>
 
                         <!-- Resource: isi materi tampil langsung di halaman, tanpa popup -->
@@ -198,6 +202,12 @@
 
                                 <template x-if="openResources[cm.id+'-'+res.id]">
                                     <div class="bl-res-drop">
+                                        <!-- Resource belum ada isi/link dari instruktur -->
+                                        <div class="bl-empty" x-show="!hasContent(res)">
+                                            <i class="bi bi-hourglass-split"></i>
+                                            <span>Materi belum tersedia. Menunggu dari instruktur.</span>
+                                        </div>
+
                                         <!-- Sesi meeting: satu aksi utama per tahap (gabung → tandai ikut). -->
                                         <div class="bl-meet-actions" x-show="res.type==='meeting' && (meetingUrl(res) || recordingUrl(res) || sessionEnded(cm, res))">
                                             <a x-show="meetingUrl(res) && !meetingEnded(cm, res)"
@@ -364,7 +374,7 @@
 
                                         <!-- Tandai selesai untuk materi yang dibaca/ditonton (meeting pakai tombol di atas). -->
                                         <button type="button"
-                                                x-show="res.type!=='meeting' && isViewType(res.type) && res.progress !== 'completed' && cm.is_open == 1"
+                                                x-show="res.type!=='meeting' && isViewType(res.type) && hasContent(res) && res.progress !== 'completed' && cm.is_open == 1"
                                                 class="bl-btn primary" style="margin-top:14px;width:100%"
                                                 :disabled="isSubmitting(cm.id, res.id)"
                                                 @click="markProgress(cm.id, res.id)">

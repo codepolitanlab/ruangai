@@ -148,6 +148,16 @@
                 const end = this.sessionEndAt(cm, res);
                 return end === null || Date.now() > end;
             },
+            // Resource tanpa isi (link/file masih kosong) tidak boleh ditandai selesai.
+            hasContent(res) {
+                if (! res) return false;
+                const c   = res.content || {};
+                const key = {
+                    text: 'html', video: 'url', pdf: 'file_path', slide: 'embed_url',
+                    audio: 'file_path', url: 'url', book_ref: 'book_title', meeting: 'meeting_url',
+                }[res.type];
+                return key ? String(c[key] || '').trim() !== '' : true;
+            },
             // Jadikan URL di dalam teks (deskripsi/instruksi) bisa diklik.
             linkify(text) {
                 const escaped = String(text || '').replace(/[&<>"']/g, ch => ({
