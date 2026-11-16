@@ -58,23 +58,26 @@
         #bootcamp-learn .bl-member { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--rd-border); }
         #bootcamp-learn .bl-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--rd-primary-soft, #eef4fb); color: var(--rd-primary); display: flex; align-items: center; justify-content: center; font-weight: 700; flex: none; }
         #bootcamp-learn .bl-video-wrap { position: relative; padding-top: 56.25%; border-radius: 12px; overflow: hidden; margin-top: 10px; background: #000; }
+        /* Isi materi teks dari admin: paksa terang, jangan mewarisi warna muted. */
+        #bootcamp-learn .bl-content, #bootcamp-learn .bl-content * { color: var(--rd-text) !important; }
         #bootcamp-learn .bl-video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-        #bootcamp-learn .bl-pdf-wrap { margin-top: 12px; border: 1px solid var(--rd-border); border-radius: 12px; overflow: hidden; background: #fff; }
-        #bootcamp-learn .bl-pdf-wrap iframe { width: 100%; height: 58vh; min-height: 360px; border: 0; display: block; background: #fff; }
+        /* Slide lebih ringkas dari video: tingginya 45% lebar (video 56.25%). */
+        #bootcamp-learn .bl-slide-wrap { padding-top: 45%; margin-top: 6px; }
+        /* Preview PDF/Slide: kotak 16:9 supaya pas satu slide, tidak memakan layar. */
+        #bootcamp-learn .bl-pdf-wrap { margin-top: 12px; border: 1px solid var(--rd-border); border-radius: 12px; overflow: hidden; background: #fff; position: relative; padding-top: 56.25%; }
+        #bootcamp-learn .bl-pdf-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; background: #fff; }
+        /* Baris tombol bawah konten: pakai flex agar tidak menempel/tertimpa media di atasnya. */
+        #bootcamp-learn .bl-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        #bootcamp-learn .bl-actions .bl-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
         #bootcamp-learn .bl-field { width: 100%; border: 1.5px solid var(--rd-border); border-radius: 12px; padding: 11px 14px; font-size: 0.9rem; outline: none; background: #fff; margin-top: 8px; }
         #bootcamp-learn .bl-field:focus { border-color: var(--rd-primary); }
         #bootcamp-learn .bl-break { overflow-wrap: anywhere; word-break: break-word; }
         #bootcamp-learn .bl-star { font-size: 1.6rem; cursor: pointer; color: #d8dee6; }
         #bootcamp-learn .bl-star.on { color: #f5a623; }
         #bootcamp-learn .bl-res-head { cursor: pointer; }
-        #bootcamp-learn .bl-modal-overlay { position: fixed; inset: 0; z-index: 1050; background: rgba(15,23,42,0.55); display: flex; align-items: center; justify-content: center; padding: 20px; }
-        /* Sheet modal selalu berlatar putih, sedangkan token tema dashboard itu gelap
-           (--rd-text: #FFFFFF). Override di sini agar semua teks di dalam modal terbaca. */
-        #bootcamp-learn .bl-modal-sheet { width: 100%; max-width: 480px; max-height: 85vh; overflow-y: auto; background: #fff; border-radius: 20px; padding: 18px 20px 26px; --rd-text: #1c2733; --rd-text-muted: #6b7280; --rd-border: #e5e7eb; --rd-surface: #fff; --rd-primary-soft: #eef4fb; }
-        /* x-show menghapus properti inline `display`, jadi tombol harus lewat class. */
-        #bootcamp-learn .bl-meet-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; }
-        #bootcamp-learn .bl-modal-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
-        #bootcamp-learn .bl-modal-close { border: none; background: none; font-size: 1.6rem; line-height: 1; color: #9aa5b1; cursor: pointer; }
+        /* Aksi sesi meeting: tampil langsung di baris materi, tanpa popup. */
+        #bootcamp-learn .bl-meet-actions { display: flex; gap: 8px; padding: 0 0 10px; }
+        #bootcamp-learn .bl-meet-actions .bl-btn { flex: 1 1 0; min-width: 0; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.8rem; padding: 9px 8px; line-height: 1.2; }
     </style>
 
     <div id="appCapsule">
@@ -178,10 +181,10 @@
 
                         <!-- Deskripsi materi -->
                         <div class="bl-res" x-show="cm.material_description">
-                            <div style="font-size:0.88rem;color:var(--rd-text-muted)" x-text="cm.material_description"></div>
+                            <div style="font-size:0.88rem;color:var(--rd-text)" x-text="cm.material_description"></div>
                         </div>
 
-                        <!-- Resource: klik untuk dropdown, lalu "Buka Materi" membuka modal -->
+                        <!-- Resource: isi materi tampil langsung di halaman, tanpa popup -->
                         <template x-for="res in cm.resources" :key="res.id">
                             <div class="bl-res">
                                 <div class="bl-res-head" @click="toggleResource(cm.id, res.id)">
@@ -192,12 +195,184 @@
                                           x-text="res.progress==='completed' ? 'Selesai' : (res.progress==='in_progress' ? 'Proses' : 'Belum')"></span>
                                     <i class="bi" :class="openResources[cm.id+'-'+res.id] ? 'bi-chevron-up' : 'bi-chevron-down'" style="color:var(--rd-text-muted)"></i>
                                 </div>
-                                <!-- Dropdown: tampilkan tombol Buka Materi -->
-                                <div class="bl-res-drop" x-show="openResources[cm.id+'-'+res.id]">
-                                    <button type="button" class="bl-btn primary bl-open-btn" @click="openResource(cm, res)">
-                                        <i class="bi bi-folder2-open"></i> Buka Materi
-                                    </button>
-                                </div>
+
+                                <template x-if="openResources[cm.id+'-'+res.id]">
+                                    <div class="bl-res-drop">
+                                        <!-- Sesi meeting: satu aksi utama per tahap (gabung → tandai ikut). -->
+                                        <div class="bl-meet-actions" x-show="res.type==='meeting' && (meetingUrl(res) || recordingUrl(res) || sessionEnded(cm, res))">
+                                            <a x-show="meetingUrl(res) && !meetingEnded(cm, res)"
+                                               :href="meetingUrl(res)" target="_blank" rel="noopener"
+                                               class="bl-btn zoom"><i class="bi bi-camera-video"></i> Gabung Zoom</a>
+                                            <a x-show="meetingEnded(cm, res) && recordingUrl(res)"
+                                               :href="recordingUrl(res)" target="_blank" rel="noopener"
+                                               class="bl-btn outline"><i class="bi bi-play-circle"></i> Tonton Rekaman</a>
+                                            <button type="button"
+                                                    x-show="sessionEnded(cm, res) && res.progress !== 'completed'"
+                                                    class="bl-btn primary" @click="markProgress(cm.id, res.id)"
+                                                    :disabled="isSubmitting(cm.id, res.id)">
+                                                <span x-show="isSubmitting(cm.id, res.id)" class="spinner-border spinner-border-sm" role="status"></span>
+                                                <span x-show="!isSubmitting(cm.id, res.id)"><i class="bi bi-check2-circle"></i> Saya sudah ikut</span>
+                                            </button>
+                                        </div>
+
+                                        <!-- TEXT -->
+                                        <template x-if="res.type==='text'">
+                                            <div>
+                                                <div class="bl-content" x-html="res.content.html || ''"></div>
+                                                <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:10px" x-show="res.content.instructions" x-text="res.content.instructions"></p>
+                                            </div>
+                                        </template>
+
+                                        <!-- VIDEO -->
+                                        <template x-if="res.type==='video'">
+                                            <div>
+                                                <div class="bl-video-wrap" x-show="res.content.url">
+                                                    <iframe :src="videoEmbedUrl(res)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                                </div>
+                                                <div class="bl-actions" x-show="res.content.url">
+                                                    <a :href="res.content.url" target="_blank" rel="noopener" class="bl-btn outline"><i class="bi bi-box-arrow-up-right"></i> Buka Video</a>
+                                                </div>
+                                                <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="res.content.instructions" x-text="res.content.instructions"></p>
+                                            </div>
+                                        </template>
+
+                                        <!-- PDF -->
+                                        <template x-if="res.type==='pdf'">
+                                            <div>
+                                                <div class="bl-pdf-wrap" x-show="res.content.file_path">
+                                                    <iframe :src="pdfEmbedUrl(res.content.file_path)" title="Preview PDF" frameborder="0" allowfullscreen></iframe>
+                                                </div>
+                                                <div class="bl-actions" x-show="res.content.file_path">
+                                                    <a :href="pdfUrl(res.content.file_path)" target="_blank" rel="noopener" class="bl-btn primary"><i class="bi bi-file-earmark-pdf"></i> Buka PDF Baru</a>
+                                                </div>
+                                                <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="res.content.instructions" x-text="res.content.instructions"></p>
+                                            </div>
+                                        </template>
+
+                                        <!-- SLIDE -->
+                                        <template x-if="res.type==='slide'">
+                                            <div>
+                                                <div class="bl-video-wrap bl-slide-wrap" x-show="res.content.embed_url">
+                                                    <iframe :src="res.content.embed_url" frameborder="0" allowfullscreen></iframe>
+                                                </div>
+                                                <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="res.content.instructions" x-text="res.content.instructions"></p>
+                                            </div>
+                                        </template>
+
+                                        <!-- AUDIO -->
+                                        <template x-if="res.type==='audio'">
+                                            <div>
+                                                <audio controls style="width:100%;margin-top:6px" :src="'/' + (res.content.file_path || '')"></audio>
+                                                <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="res.content.instructions" x-text="res.content.instructions"></p>
+                                            </div>
+                                        </template>
+
+                                        <!-- URL -->
+                                        <template x-if="res.type==='url'">
+                                            <div>
+                                                <a :href="res.content.url" target="_blank" rel="noopener" class="bl-btn primary" style="display:inline-flex;align-items:center;gap:6px"><i class="bi bi-box-arrow-up-right"></i> Buka Tautan</a>
+                                                <p class="bl-break" style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="res.content.instructions" x-text="res.content.instructions"></p>
+                                            </div>
+                                        </template>
+
+                                        <!-- BOOK REF -->
+                                        <template x-if="res.type==='book_ref'">
+                                            <div style="padding:12px;border:1px solid var(--rd-border);border-radius:12px;background:var(--rd-surface-2)">
+                                                <div style="font-weight:700;color:var(--rd-text)" x-text="res.content.book_title"></div>
+                                                <div style="font-size:0.85rem;color:var(--rd-text-muted)" x-text="res.content.author"></div>
+                                                <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+                                                    <span class="bl-badge wait" x-show="res.content.chapter" x-text="'Bab ' + res.content.chapter"></span>
+                                                    <span class="bl-badge wait" x-show="res.content.page_start" x-text="'Hal ' + res.content.page_start + (res.content.page_end ? '–' + res.content.page_end : '')"></span>
+                                                    <span class="bl-badge wait" x-show="res.content.isbn" x-text="'ISBN ' + res.content.isbn"></span>
+                                                </div>
+                                                <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="res.content.instructions" x-text="res.content.instructions"></p>
+                                            </div>
+                                        </template>
+
+                                        <!-- MEETING: info + rekaman. Tombol gabung/tandai ada di atas baris ini. -->
+                                        <template x-if="res.type==='meeting'">
+                                            <div>
+                                                <p class="bl-break" style="font-size:0.85rem;color:var(--rd-text);margin:0 0 8px" x-show="res.content.description" x-html="linkify(res.content.description)"></p>
+                                                <div style="display:flex;gap:6px;flex-wrap:wrap" x-show="res.content.duration || res.content.mode">
+                                                    <span class="bl-badge wait" x-show="res.content.duration" x-text="res.content.duration + ' menit'"></span>
+                                                    <span class="bl-badge wait" x-show="res.content.mode" x-text="meetingModeLabel(res.content.mode)"></span>
+                                                </div>
+                                                <div class="bl-video-wrap" x-show="meetingEnded(cm, res) && recordingEmbedUrl(res)">
+                                                    <iframe :src="recordingEmbedUrl(res)" title="Rekaman sesi" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                                </div>
+                                                <video x-show="meetingEnded(cm, res) && recordingVideoUrl(res)"
+                                                       :src="recordingVideoUrl(res)" controls preload="metadata"
+                                                       style="width:100%;margin-top:12px;border-radius:12px;background:#000"></video>
+                                                <p class="bl-cert-note" style="margin:8px 0 0"
+                                                   x-show="recordingUrl(res) && !meetingEnded(cm, res)">
+                                                    Link rekaman aktif setelah sesi berakhir.
+                                                </p>
+                                                <p class="bl-break" style="font-size:0.85rem;color:var(--rd-text-muted);margin:10px 0 0" x-show="res.content.instructions" x-html="linkify(res.content.instructions)"></p>
+                                            </div>
+                                        </template>
+
+                                        <!-- QUIZ (belum tersedia) -->
+                                        <template x-if="res.type==='quiz'">
+                                            <div style="padding:12px;border:1px solid var(--rd-border);border-radius:12px;background:var(--rd-surface-2);text-align:center">
+                                                <i class="bi bi-patch-question" style="font-size:1.6rem;color:var(--rd-text-muted)"></i>
+                                                <div style="font-weight:700;color:var(--rd-text);margin-top:6px">Kuis Evaluasi</div>
+                                                <p style="font-size:0.82rem;color:var(--rd-text-muted);margin:4px 0 10px">Kuis akan segera hadir.</p>
+                                                <button type="button" class="bl-btn outline" disabled>Kerjakan Kuis — Segera Hadir</button>
+                                            </div>
+                                        </template>
+
+                                        <!-- SUBMISSION -->
+                                        <template x-if="res.type==='submission'">
+                                            <div>
+                                                <template x-if="res.submission && res.submission.status==='accepted'">
+                                                    <div style="padding:12px;border-radius:12px;background:#e6f6ec;color:#1a7f4b;font-size:0.88rem">
+                                                        <i class="bi bi-check-circle-fill"></i> Tugas diterima. Nilai: <span x-text="res.submission.review_score"></span>
+                                                    </div>
+                                                </template>
+                                                <template x-if="res.submission && res.submission.status==='submitted'">
+                                                    <div style="padding:12px;border-radius:12px;background:#eef4fb;color:#2563eb;font-size:0.88rem">
+                                                        <i class="bi bi-hourglass-split"></i> Tugas menunggu review instruktur.
+                                                    </div>
+                                                </template>
+                                                <template x-if="res.submission && res.submission.status==='revision_needed'">
+                                                    <div style="padding:12px;border-radius:12px;background:#fff6e6;color:#b26a00;font-size:0.88rem;margin-bottom:10px">
+                                                        <i class="bi bi-arrow-repeat"></i> Tugas perlu revisi. <span x-show="res.submission.review_note" x-text="'Catatan: ' + res.submission.review_note"></span>
+                                                    </div>
+                                                </template>
+
+                                                <template x-if="!res.submission || res.submission.status!=='accepted'">
+                                                    <div>
+                                                        <div x-show="(res.content.submission_type || 'upload') === 'upload'">
+                                                            <input type="file" class="bl-field" :id="'sub-file-'+res.id"
+                                                                   @change="submitFiles[res.id] = $event.target.files[0]">
+                                                        </div>
+                                                        <div x-show="(res.content.submission_type || 'upload') === 'url'">
+                                                            <input type="url" class="bl-field" :id="'sub-url-'+res.id"
+                                                                   placeholder="https://..." x-model="submitUrls[res.id]">
+                                                        </div>
+                                                        <button type="button" class="bl-btn primary" style="margin-top:10px;width:100%"
+                                                                :disabled="isSubmitSubmitting(res.id)"
+                                                                @click="submitTask(cm.id, res.id)">
+                                                            <span x-show="isSubmitSubmitting(res.id)" class="spinner-border spinner-border-sm" role="status"></span>
+                                                            <span x-show="!isSubmitSubmitting(res.id)"><i class="bi bi-send"></i> Kumpulkan Tugas</span>
+                                                        </button>
+                                                        <p style="font-size:0.82rem;color:var(--rd-text-muted);margin-top:8px" x-show="res.content.instructions" x-text="res.content.instructions"></p>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+
+                                        <!-- Tandai selesai untuk materi yang dibaca/ditonton (meeting pakai tombol di atas). -->
+                                        <button type="button"
+                                                x-show="res.type!=='meeting' && isViewType(res.type) && res.progress !== 'completed' && cm.is_open == 1"
+                                                class="bl-btn primary" style="margin-top:14px;width:100%"
+                                                :disabled="isSubmitting(cm.id, res.id)"
+                                                @click="markProgress(cm.id, res.id)">
+                                            <span x-show="isSubmitting(cm.id, res.id)" class="spinner-border spinner-border-sm" role="status"></span>
+                                            <span x-show="!isSubmitting(cm.id, res.id)"><i class="bi bi-check2-circle"></i> Saya Sudah Paham</span>
+                                        </button>
+                                    </div>
+                                </template>
                             </div>
                         </template>
 
@@ -380,198 +555,6 @@
 
     </div>
 
-    <!-- ==================== MODAL RESOURCE ==================== -->
-    <div class="bl-modal-overlay" x-show="modalOpen" x-cloak x-transition.opacity @keydown.escape.window="closeResource()" @click.self="closeResource()">
-        <div class="bl-modal-sheet" @click.stop>
-            <div class="bl-modal-head">
-                <div style="display:flex;align-items:center;gap:10px">
-                    <div class="bl-res-icon"><i :class="activeResource ? resIcon(activeResource.type) : ''"></i></div>
-                    <div style="min-width:0">
-                        <div style="font-weight:700;color:#1c2733;font-size:1rem;word-break:break-word" x-text="activeResource?.title"></div>
-                        <div style="font-size:0.8rem;color:var(--rd-text-muted)" x-text="activeResource ? typeLabel(activeResource.type) : ''"></div>
-                    </div>
-                </div>
-                <button type="button" class="bl-modal-close" @click="closeResource()">&times;</button>
-            </div>
-
-            <div class="bl-modal-body">
-                <!-- TEXT -->
-                <template x-if="activeResource && activeResource.type==='text'">
-                    <div>
-                        <div class="bl-content" x-html="activeResource.content.html || ''"></div>
-                        <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:10px" x-show="activeResource.content.instructions" x-text="activeResource.content.instructions"></p>
-                    </div>
-                </template>
-
-                <!-- VIDEO -->
-                <template x-if="activeResource && activeResource.type==='video'">
-                    <div>
-                        <div class="bl-video-wrap mb-3" x-show="activeResource.content.url">
-                            <iframe :src="videoEmbedUrl(activeResource)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                        <a x-show="activeResource.content.url" :href="activeResource.content.url" target="_blank" rel="noopener" class="bl-btn outline" style="margin-top:10px;display:inline-flex;align-items:center;gap:6px"><i class="bi bi-box-arrow-up-right"></i> Buka Video</a>
-                        <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="activeResource.content.instructions" x-text="activeResource.content.instructions"></p>
-                    </div>
-                </template>
-
-                <!-- PDF -->
-                <template x-if="activeResource && activeResource.type==='pdf'">
-                    <div>
-                        <div class="bl-pdf-wrap" x-show="activeResource.content.file_path">
-                            <iframe :src="pdfEmbedUrl(activeResource.content.file_path)" title="Preview PDF" frameborder="0" allowfullscreen></iframe>
-                        </div>
-                        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;flex-wrap:wrap">
-                            <a x-show="activeResource.content.file_path" :href="pdfUrl(activeResource.content.file_path)" target="_blank" rel="noopener" class="bl-btn primary" style="display:inline-flex;align-items:center;gap:6px"><i class="bi bi-file-earmark-pdf"></i> Buka PDF Baru</a>
-                        </div>
-                        <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="activeResource.content.instructions" x-text="activeResource.content.instructions"></p>
-                    </div>
-                </template>
-
-                <!-- SLIDE -->
-                <template x-if="activeResource && activeResource.type==='slide'">
-                    <div>
-                        <div class="bl-video-wrap" x-show="activeResource.content.embed_url">
-                            <iframe :src="activeResource.content.embed_url" frameborder="0" allowfullscreen></iframe>
-                        </div>
-                        <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="activeResource.content.instructions" x-text="activeResource.content.instructions"></p>
-                    </div>
-                </template>
-
-                <!-- AUDIO -->
-                <template x-if="activeResource && activeResource.type==='audio'">
-                    <div>
-                        <audio controls style="width:100%;margin-top:6px" :src="'/' + (activeResource.content.file_path || '')"></audio>
-                        <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="activeResource.content.instructions" x-text="activeResource.content.instructions"></p>
-                    </div>
-                </template>
-
-                <!-- URL -->
-                <template x-if="activeResource && activeResource.type==='url'">
-                    <div>
-                        <a :href="activeResource.content.url" target="_blank" rel="noopener" class="bl-btn primary" style="display:inline-flex;align-items:center;gap:6px"><i class="bi bi-box-arrow-up-right"></i> Buka Tautan</a>
-                        <p class="bl-break" style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="activeResource.content.instructions" x-text="activeResource.content.instructions"></p>
-                    </div>
-                </template>
-
-                <!-- BOOK REF -->
-                <template x-if="activeResource && activeResource.type==='book_ref'">
-                    <div style="padding:12px;border:1px solid var(--rd-border);border-radius:12px;background:#fff">
-                        <div style="font-weight:700;color:var(--rd-text)" x-text="activeResource.content.book_title"></div>
-                        <div style="font-size:0.85rem;color:var(--rd-text-muted)" x-text="activeResource.content.author"></div>
-                        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
-                            <span class="bl-badge wait" x-show="activeResource.content.chapter" x-text="'Bab ' + activeResource.content.chapter"></span>
-                            <span class="bl-badge wait" x-show="activeResource.content.page_start" x-text="'Hal ' + activeResource.content.page_start + (activeResource.content.page_end ? '–' + activeResource.content.page_end : '')"></span>
-                            <span class="bl-badge wait" x-show="activeResource.content.isbn" x-text="'ISBN ' + activeResource.content.isbn"></span>
-                        </div>
-                        <p style="font-size:0.85rem;color:var(--rd-text-muted);margin-top:8px" x-show="activeResource.content.instructions" x-text="activeResource.content.instructions"></p>
-                    </div>
-                </template>
-
-                <!-- MEETING -->
-                <template x-if="activeResource && activeResource.type==='meeting'">
-                    <div style="padding:12px;border:1px solid var(--rd-border);border-radius:12px;background:#fff">
-                        <div style="font-weight:700;color:var(--rd-text)" x-text="activeResource.title"></div>
-                        <p class="bl-break" style="font-size:0.85rem;color:var(--rd-text-muted);margin:6px 0 0" x-show="activeResource.content.description" x-html="linkify(activeResource.content.description)"></p>
-                        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
-                            <span class="bl-badge wait" x-show="activeResource.content.duration" x-text="activeResource.content.duration + ' menit'"></span>
-                            <span class="bl-badge wait" x-show="activeResource.content.mode" x-text="meetingModeLabel(activeResource.content.mode)"></span>
-                        </div>
-                        <!-- Sesi masih berjalan: tombol Zoom. Sesi berakhir: tampil sebagai badge. -->
-                        <a x-show="meetingUrl(activeResource) && !meetingEnded(activeCm, activeResource)"
-                           :href="meetingUrl(activeResource)" target="_blank" rel="noopener"
-                           class="bl-btn zoom bl-meet-btn">
-                            <i class="bi bi-camera-video"></i> Gabung Zoom
-                        </a>
-                        <div x-show="meetingUrl(activeResource) && meetingEnded(activeCm, activeResource)" style="margin-top:12px">
-                            <span class="bl-badge wait icon">
-                                <i class="bi bi-camera-video"></i> Sesi Zoom Berakhir
-                            </span>
-                        </div>
-                        <!-- Rekaman: muncul kalau link tersedia, aktif setelah durasi sesi berakhir. -->
-                        <div class="bl-video-wrap" x-show="meetingEnded(activeCm, activeResource) && recordingEmbedUrl(activeResource)" style="margin-top:12px">
-                            <iframe :src="recordingEmbedUrl(activeResource)" title="Rekaman sesi" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                        <!-- Rekaman bertipe video langsung (.mp4/.webm) -->
-                        <video x-show="meetingEnded(activeCm, activeResource) && recordingVideoUrl(activeResource)"
-                               :src="recordingVideoUrl(activeResource)" controls preload="metadata"
-                               style="width:100%;margin-top:12px;border-radius:12px;background:#000"></video>
-                        <a x-show="recordingUrl(activeResource)" :href="recordingUrl(activeResource)" target="_blank" rel="noopener"
-                           class="bl-btn primary bl-meet-btn" style="margin-top:10px"
-                           :class="{ 'bl-disabled': !meetingEnded(activeCm, activeResource) }">
-                            <i class="bi bi-play-circle"></i> Tonton Rekaman
-                        </a>
-                        <p class="bl-cert-note" style="margin:8px 0 0"
-                           x-show="recordingUrl(activeResource) && !meetingEnded(activeCm, activeResource)">
-                            Link rekaman aktif setelah sesi berakhir.
-                        </p>
-                        <p class="bl-break" style="font-size:0.85rem;color:var(--rd-text-muted);margin:10px 0 0" x-show="activeResource.content.instructions" x-html="linkify(activeResource.content.instructions)"></p>
-                    </div>
-                </template>
-
-                <!-- QUIZ (belum tersedia) -->
-                <template x-if="activeResource && activeResource.type==='quiz'">
-                    <div style="padding:12px;border:1px solid var(--rd-border);border-radius:12px;background:#fff;text-align:center">
-                        <i class="bi bi-patch-question" style="font-size:1.6rem;color:var(--rd-text-muted)"></i>
-                        <div style="font-weight:700;color:var(--rd-text);margin-top:6px">Kuis Evaluasi</div>
-                        <p style="font-size:0.82rem;color:var(--rd-text-muted);margin:4px 0 10px">Kuis akan segera hadir.</p>
-                        <button type="button" class="bl-btn outline" disabled>Kerjakan Kuis — Segera Hadir</button>
-                    </div>
-                </template>
-
-                <!-- SUBMISSION -->
-                <template x-if="activeResource && activeResource.type==='submission'">
-                    <div>
-                        <template x-if="activeResource.submission && activeResource.submission.status==='accepted'">
-                            <div style="padding:12px;border-radius:12px;background:#e6f6ec;color:#1a7f4b;font-size:0.88rem">
-                                <i class="bi bi-check-circle-fill"></i> Tugas diterima. Nilai: <span x-text="activeResource.submission.review_score"></span>
-                            </div>
-                        </template>
-                        <template x-if="activeResource.submission && activeResource.submission.status==='submitted'">
-                            <div style="padding:12px;border-radius:12px;background:#eef4fb;color:#2563eb;font-size:0.88rem">
-                                <i class="bi bi-hourglass-split"></i> Tugas menunggu review instruktur.
-                            </div>
-                        </template>
-                        <template x-if="activeResource.submission && activeResource.submission.status==='revision_needed'">
-                            <div style="padding:12px;border-radius:12px;background:#fff6e6;color:#b26a00;font-size:0.88rem;margin-bottom:10px">
-                                <i class="bi bi-arrow-repeat"></i> Tugas perlu revisi. <span x-show="activeResource.submission.review_note" x-text="'Catatan: ' + activeResource.submission.review_note"></span>
-                            </div>
-                        </template>
-
-                        <!-- Form submission -->
-                        <template x-if="!activeResource.submission || activeResource.submission.status!=='accepted'">
-                            <div>
-                                <div x-show="(activeResource.content.submission_type || 'upload') === 'upload'">
-                                    <input type="file" class="bl-field" :id="'sub-file-'+activeResource.id"
-                                           @change="submitFiles[activeResource.id] = $event.target.files[0]">
-                                </div>
-                                <div x-show="(activeResource.content.submission_type || 'upload') === 'url'">
-                                    <input type="url" class="bl-field" :id="'sub-url-'+activeResource.id"
-                                           placeholder="https://..." x-model="submitUrls[activeResource.id]">
-                                </div>
-                                <button type="button" class="bl-btn primary" style="margin-top:10px;width:100%"
-                                        :disabled="isSubmitSubmitting(activeResource.id)"
-                                        @click="submitFromModal()">
-                                    <span x-show="isSubmitSubmitting(activeResource.id)" class="spinner-border spinner-border-sm" role="status"></span>
-                                    <span x-show="!isSubmitSubmitting(activeResource.id)"><i class="bi bi-send"></i> Kumpulkan Tugas</span>
-                                </button>
-                                <p style="font-size:0.82rem;color:var(--rd-text-muted);margin-top:8px" x-show="activeResource.content.instructions" x-text="activeResource.content.instructions"></p>
-                            </div>
-                        </template>
-                    </div>
-                </template>
-
-                <!-- Tombol Saya Sudah Paham (untuk sesi meeting: muncul setelah sesi berakhir) -->
-                <button type="button"
-                        x-show="activeResource && isViewType(activeResource.type) && activeResource.progress !== 'completed' && activeCm && activeCm.is_open == 1 && isResourceReady(activeCm, activeResource)"
-                        class="bl-btn primary" style="margin-top:14px;width:100%"
-                        :disabled="activeResource ? isSubmitting(activeCm.id, activeResource.id) : true"
-                        @click="markProgressFromModal()">
-                    <span x-show="activeResource && isSubmitting(activeCm.id, activeResource.id)" class="spinner-border spinner-border-sm" role="status"></span>
-                    <span x-show="!activeResource || !isSubmitting(activeCm.id, activeResource.id)"><i class="bi bi-check2-circle"></i> <span x-text="activeResource && activeResource.type === 'meeting' ? 'Saya sudah Mengikuti/Lihat Rekaman' : 'Saya Sudah Paham'"></span></span>
-                </button>
-            </div>
-        </div>
-    </div>
 
     <?= $this->include('_bottommenu') ?>
 </div>

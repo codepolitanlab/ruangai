@@ -11,9 +11,6 @@
             tab: 'materi',
             openMaterials: {},
             openResources: {},
-            activeResource: null,
-            activeCm: null,
-            modalOpen: false,
             progressSubmitting: {},
             submitSubmitting: {},
             submitFiles: {},
@@ -59,43 +56,9 @@
                 this.openResources[key] = !this.openResources[key];
             },
 
-            // ===== modal resource =====
-            openResource(cm, res) {
-                if (!cm || cm.is_open != 1 || !res) return;
-                this.activeCm = cm;
-                this.activeResource = res;
-                this.modalOpen = true;
-            },
-            closeResource() {
-                this.modalOpen = false;
-            },
+            // ===== konten resource =====
             isViewType(type) {
                 return ['text', 'video', 'pdf', 'slide', 'audio', 'url', 'book_ref', 'meeting'].includes(type);
-            },
-            typeLabel(type) {
-                const map = {
-                    text: 'Teks', video: 'Video', pdf: 'PDF', slide: 'Slide', audio: 'Audio',
-                    url: 'Tautan', book_ref: 'Referensi Buku', quiz: 'Kuis', submission: 'Tugas', meeting: 'Sesi Meeting',
-                };
-                return map[type] || type || '';
-            },
-            async markProgressFromModal() {
-                if (!this.activeCm || !this.activeResource) return;
-                await this.markProgress(this.activeCm.id, this.activeResource.id);
-                this.closeResource();
-            },
-            async submitFromModal() {
-                if (!this.activeCm || !this.activeResource) return;
-                const cmId = this.activeCm.id;
-                const rid  = this.activeResource.id;
-                await this.submitTask(cmId, rid);
-                // Sinkronkan ulang resource agar status submission terbaru tampil di modal
-                const cm  = (this.data.materials || []).find(c => c.id == cmId);
-                const res = cm ? cm.resources.find(r => r.id == rid) : null;
-                if (res) {
-                    this.activeCm = cm;
-                    this.activeResource = res;
-                }
             },
 
             // ===== sertifikat per pertemuan =====
@@ -184,11 +147,6 @@
             sessionEnded(cm, res) {
                 const end = this.sessionEndAt(cm, res);
                 return end === null || Date.now() > end;
-            },
-            // Resource boleh ditandai "sudah paham": sesi meeting baru bisa setelah sesi berakhir.
-            isResourceReady(cm, res) {
-                if (! cm || ! res) return false;
-                return res.type !== 'meeting' || this.sessionEnded(cm, res);
             },
             // Jadikan URL di dalam teks (deskripsi/instruksi) bisa diklik.
             linkify(text) {

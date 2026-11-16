@@ -297,7 +297,18 @@ class ClassRoom extends AdminController
             return redirect()->back()->withInput();
         }
 
-        $this->model->update($id, $data);
+        if (! $this->model->update($id, $data)) {
+            $errors = $this->model->errors();
+            session()->setFlashdata(
+                'error_message',
+                $errors
+                    ? implode('<br>', $errors)
+                    : 'Gagal menyimpan kelas. Pastikan migrasi Classroom sudah dijalankan di database.'
+            );
+
+            return redirect()->back()->withInput();
+        }
+
         session()->setFlashdata('success_message', 'Kelas berhasil diperbarui');
 
         return redirect()->to(urlScope() . '/classroom/classes');
